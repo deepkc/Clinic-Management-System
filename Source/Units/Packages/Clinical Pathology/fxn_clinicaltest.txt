@@ -1,0 +1,140 @@
+Procedure SaveReportType(TestNameId:integer;ReportType,IsActive:string);
+Procedure UpdateReportType(ReportTypeId,TestNameId:integer;ReportType,IsActive:string);
+
+Procedure SaveFindingSetup(FindingTitle,FindingTitle_Rich,Default_finding,Default_finding_Rich,IsActive:string);
+Procedure UpdateFindingSetup(FindingSetupId:integer;FindingTitle,FindingTitle_Rich,Default_finding,Default_finding_Rich,IsActive:string);
+
+Procedure Saveclinical_test(FindingSetupId,Testnameid,reporttypeid,displayorder:integer;reporttitle,reporttitle_rich,FindingTitle,FindingTitle_Rich,Default_finding,
+Default_finding_Rich,Isdefault,IsActive:string);
+
+Procedure Updateclinical_test(ClinicalTestid,FindingSetupId,Testnameid,reporttypeid,displayorder:integer;reporttitle,reporttitle_rich,FindingTitle,FindingTitle_Rich,Default_finding,
+Default_finding_Rich,Isdefault,IsActive:string);
+
+
+Procedure Saveclinical_test(FindingSetupId,Testnameid,reporttypeid,displayorder:integer;reporttitle,reporttitle_rich,FindingTitle,FindingTitle_Rich,Default_finding,
+Default_finding_Rich,Isdefault,IsActive:string);
+Var
+     Qry: TQuery;
+begin
+     Qry := TQuery.Create(nil);
+     With Qry do
+     Begin
+          //DIAGNOSISID:=GetMaxId('localdisease','localdiseaseid');
+          Close;
+          DatabaseName := gs_DatabaseName;
+          sql.Clear;
+          sql.Add('insert into clinical_test(clinicaltestid,FindingSetupId,testnameid,reporttypeid,displayorder,reporttitle,reporttitle_rich,Finding_Title,Finding_Title_rich');
+          sql.Add(',Default_finding,Default_finding_Rich,Isdefault,IsActive)');
+          sql.Add('values('+inttostr(GetMaxId('clinical_test','clinicaltestid'))+','+inttostr(FindingSetupId)+','+inttostr(testnameid)+','+inttostr(reporttypeid)+','+inttostr(displayorder));
+          sql.add(','+#39+stringreplace(reporttitle,'''','''''',[rfreplaceall])+#39+','+#39+stringreplace(reporttitle_rich,'''','''''',[rfreplaceall])+#39);
+          sql.add(','+#39+stringreplace(FindingTitle,'''','''''',[rfreplaceall])+#39+','+#39+stringreplace(FindingTitle_Rich,'''','''''',[rfreplaceall])+#39);
+          sql.Add(','+#39+stringreplace(Default_finding,'''','''''',[rfreplaceall])+#39+','+#39+ stringreplace(Default_finding_Rich,'''','''''',[rfreplaceall])+#39);
+          sql.add(','+#39+Isdefault+#39+','+#39+IsActive+#39);
+          sql.Add(')');
+          execsql;
+     end;
+end;
+
+Procedure Updateclinical_test(ClinicalTestid,FindingSetupId,Testnameid,reporttypeid,displayorder:integer;reporttitle,reporttitle_rich,FindingTitle,FindingTitle_Rich,Default_finding,
+Default_finding_Rich,Isdefault,IsActive:string);
+ Var
+     Qry: TQuery;
+Begin
+     Qry := TQuery.Create(nil);
+     With Qry do
+     Begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          sql.Clear;
+          sql.Add(' UPDATE clinical_test Set Finding_Title='+#39+stringreplace(FindingTitle,'''','''''',[rfrseplaceall])+#39+',isdefault='+#39+Isdefault+#39);
+          Sql.Add(',Finding_Title_Rich='+#39+stringreplace(FindingTitle_Rich,'''','''''',[rfreplaceall])+#39+',ISACTIVE='+#39+Isactive+#39);
+          sql.add(',Default_finding='+#39+stringreplace(Default_finding,'''','''''',[rfreplaceall])+#39);
+          sql.add(',Default_finding_rich='+#39+stringreplace(Default_finding_Rich,'''','''''',[rfreplaceall])+#39);
+          sql.Add(',testnameid='+inttostr(Testnameid)+',reporttypeid='+inttostr(reporttypeid)+',displayorder='+inttostr(displayorder));
+          sql.Add(',reporttitle='+#39+reporttitle+#39+',reporttitle_rich='+#39+reporttitle_rich+#39+',FindingSetupId='+inttostr(FindingSetupId));
+          sql.Add(' where ClinicalTestid='+IntToStr(ClinicalTestid));
+          ExecSQL;
+     End;
+     Qry.Free;
+End;
+
+Procedure SaveFindingSetup(FindingTitle,FindingTitle_Rich,Default_finding,Default_finding_Rich,IsActive:string);
+Var
+     Qry: TQuery;
+begin
+     Qry := TQuery.Create(nil);
+     With Qry do
+     Begin
+          //DIAGNOSISID:=GetMaxId('localdisease','localdiseaseid'); stringreplace(Remarks_first.text,'''','''''',[rfreplaceall])
+          Close;
+          DatabaseName := gs_DatabaseName;
+          sql.Clear;
+          sql.Add('insert into clinical_findingsetup(FindingSetupId,FindingTitle,FindingTitle_Rich,Default_finding,Default_finding_Rich,IsActive)');
+          sql.Add('values('+inttostr(GetMaxId('clinical_findingsetup','FindingSetupId'))+','+#39+stringreplace(FindingTitle,'''','''''',[rfreplaceall])+#39);
+          sql.Add(','+#39+stringreplace(FindingTitle_Rich,'''','''''',[rfreplaceall])+#39);
+          sql.Add(','+#39+stringreplace(Default_finding,'''','''''',[rfreplaceall])+#39+','+#39+stringreplace(Default_finding_Rich,'''','''''',[rfreplaceall])+#39);
+          sql.add(','+#39+IsActive+#39);
+          sql.Add(')');
+          execsql;
+     end;
+end;
+
+Procedure UpdateFindingSetup(FindingSetupId:integer;FindingTitle,FindingTitle_Rich,Default_finding,Default_finding_Rich,IsActive:string);
+ Var
+     Qry: TQuery;
+Begin
+     Qry := TQuery.Create(nil);
+     With Qry do
+     Begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          sql.Clear;
+          sql.Add(' UPDATE clinical_findingsetup Set FindingTitle='+#39+stringreplace(FindingTitle,'''','''''',[rfreplaceall])+#39);
+          Sql.Add(',FindingTitle_Rich='+#39+stringreplace(FindingTitle_Rich,'''','''''',[rfreplaceall])+#39+',ISACTIVE='+#39+Isactive+#39);
+          sql.add(',Default_finding='+#39+stringreplace(Default_finding,'''','''''',[rfreplaceall])+#39);
+          sql.add(',Default_finding_rich='+#39+stringreplace(Default_finding_Rich,'''','''''',[rfreplaceall])+#39);
+          sql.Add(' where FindingSetupId='+IntToStr(FindingSetupId));
+          ExecSQL;
+     End;
+     Qry.Free;
+End;
+
+Procedure SaveReportType(TestNameId:integer;ReportType,IsActive:string);
+Var
+     Qry: TQuery;
+begin
+     Qry := TQuery.Create(nil);
+     With Qry do
+     Begin
+          //DIAGNOSISID:=GetMaxId('localdisease','localdiseaseid');
+          Close;
+          DatabaseName := gs_DatabaseName;
+          sql.Clear;
+          sql.Add('insert into clinical_reporttype(reporttypeid,testnameid,reporttype,isactive)');
+          sql.Add('values('+inttostr(GetMaxId('clinical_reporttype','reporttypeid'))+','+inttostr(TestNameId)+','+#39+ReportType+#39+','+#39+IsActive+#39);
+          sql.Add(')');
+          execsql;
+     end;
+end;
+
+Procedure UpdateReportType(ReportTypeId,TestNameId:integer;ReportType,IsActive:string);
+ Var
+     Qry: TQuery;
+Begin
+     Qry := TQuery.Create(nil);
+     With Qry do
+     Begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          sql.Clear;
+          sql.Add(' UPDATE clinical_reporttype Set TESTNAMEID='+inttostr(TestNameId));
+          Sql.Add(',reporttype='+#39+ReportType+#39+',ISACTIVE='+#39+Isactive+#39);
+          sql.Add(' where reporttypeid='+IntToStr(ReportTypeId));
+          ExecSQL;
+     End;
+     Qry.Free;
+End;
+
+
+
+

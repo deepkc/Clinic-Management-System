@@ -1,0 +1,2235 @@
+unit Unit_DoctorRoundVisit;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+     ExtCtrls, Buttons, StdCtrls, ComCtrls, DBCtrls, Mask, OleCtrls,
+     DateEditXControl_TLB, Db, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Grids, DBGrids, ServerDate, Fxn, DM,
+     Unit_Master, Variants;
+
+type
+     TForm_DoctorRoundVisit = class(TForm)
+          Panel1: TPanel;
+          StatusBar1: TStatusBar;
+          PC_DoctorRoundVisit: TPageControl;
+          TS_DoctorService: TTabSheet;
+          DataSourceCommunity: TDataSource;
+          BtnSave: TBitBtn;
+          BitBtnCancel: TBitBtn;
+          Label1: TLabel;
+          Label2: TLabel;
+          Label3: TLabel;
+          Label4: TLabel;
+          Label5: TLabel;
+          DBLCB_VisitDoctor: TDBLookupComboBox;
+          DateEditX_VisitDate: TDateEditX;
+          LabelName: TLabel;
+          Lbl_HospitalNo: TLabel;
+          LabelInptNo: TLabel;
+          Label9: TLabel;
+          LabelChrg: TLabel;
+          Query_VisitDoctor: TOraQuery;
+          DS_VisitDoctor: TDataSource;
+          DBGrid_DoctorService: TDBGrid;
+          Query_DocService: TOraQuery;
+          DS_DocService: TDataSource;
+          Label10: TLabel;
+          LabelInptDate: TLabel;
+          BitBtnVisitDate: TBitBtn;
+          Query_Process: TOraQuery;
+          Label7: TLabel;
+          Edit_DisPer: TEdit;
+          Label8: TLabel;
+          CB_UserDefineRoundChrg: TCheckBox;
+          Edit_UserDefineRoundChrg: TEdit;
+          Label11: TLabel;
+          TS_ChangeMainDoc: TTabSheet;
+          GroupBox1: TGroupBox;
+          Label12: TLabel;
+          Label13: TLabel;
+          DBLCB_ExistingDoc: TDBLookupComboBox;
+          DBLCB_ActualDoc: TDBLookupComboBox;
+          Query_ExistingDoc: TOraQuery;
+          DS_ExistingDoc: TDataSource;
+          DS_RoomType: TDataSource;
+          TS_RoundChhrgDivide: TTabSheet;
+          GroupBox2: TGroupBox;
+          Label16: TLabel;
+          Label17: TLabel;
+          DBLCB_2ndDoc: TDBLookupComboBox;
+          Label18: TLabel;
+          Label_RoundChrg: TLabel;
+          Edit_AmtMainDoc: TEdit;
+          Label20: TLabel;
+          Label21: TLabel;
+          Edit_PerMainDoc: TEdit;
+          Edit_Amt2ndDoc: TEdit;
+          Label14: TLabel;
+          Label15: TLabel;
+          Edit_Per2ndDoc: TEdit;
+          Label22: TLabel;
+          DBLCB_3rdDoc: TDBLookupComboBox;
+          Edit_Amt3rdDoc: TEdit;
+          Label23: TLabel;
+          Label24: TLabel;
+          Edit_Per3rdDoc: TEdit;
+          Label25: TLabel;
+          Label_AccAmt: TLabel;
+          Label27: TLabel;
+          Label_AccPer: TLabel;
+          SB_RoundChrgDivide: TSpeedButton;
+          Label_DocName: TLabel;
+          CB_PercentBasis: TCheckBox;
+          SP_ResetChrgDivide: TSpeedButton;
+          Query_SubProcess: TOraQuery;
+          Query_RoomType: TOraQuery;
+          CBMultipleDay: TCheckBox;
+          LblNoDay: TLabel;
+          EditNoDay: TEdit;
+          SPB_NoRoundTaken: TSpeedButton;
+          CB_ActivityByDateRange: TCheckBox;
+          Label6: TLabel;
+          Label19: TLabel;
+          DateEditX_FromDate: TDateEditX;
+          DateEditX_ToDate: TDateEditX;
+          CB_ReferralDoctor: TCheckBox;
+          CB_DocAllIncomeDivide: TCheckBox;
+          Query_DocService_SubDivide: TOraQuery;
+          Label26: TLabel;
+          DBGrid_RoundChrgSummary: TDBGrid;
+          SpButtonDelete: TSpeedButton;
+          Query_RoundChrgSummary: TOraQuery;
+          DS_RoundChrgSummary: TDataSource;
+          CB_ResetAll: TCheckBox;
+          BitBtn_From: TBitBtn;
+          BitBtn_To: TBitBtn;
+          CB_ChangeDoc: TCheckBox;
+          Label28: TLabel;
+          Edit_Percent: TEdit;
+          CB_All: TCheckBox;
+          CB_MultipleDocShare: TCheckBox;
+          DBGrid_MultipleDoctor: TDBGrid;
+          Query_MultipleDocShare: TOraQuery;
+          DS_MultipleDocShare: TDataSource;
+          CB_FractionPostingBasis: TCheckBox;
+          CB_ChangeMainDocFromparticualDate: TCheckBox;
+          DateEditX_DocChangeFrom: TDateEditX;
+          Label_From: TLabel;
+          BitBtnDocChangeFrom: TBitBtn;
+          TS_AddInvolvedDoctor: TTabSheet;
+          GroupBox3: TGroupBox;
+          Label29: TLabel;
+          Label30: TLabel;
+          Label31: TLabel;
+          Label32: TLabel;
+          DBLCBDocInvolved: TDBLookupComboBox;
+          EditInptId: TEdit;
+          DateEditXFrom: TDateEditX;
+          DateEditXTo: TDateEditX;
+          BitBtn_InvFrom: TBitBtn;
+          BitBtn_InvTo: TBitBtn;
+          QueryVoid: TOraQuery;
+          QueryAddDocInvolved: TOraQuery;
+          DS_AddDocInvolved: TDataSource;
+          Bevel1: TBevel;
+          DBGrid1: TDBGrid;
+          QueryDocInvolvedGrid: TOraQuery;
+          DS_DocInvolvedGrid: TDataSource;
+          BitBtnDel: TBitBtn;
+          TS_SetDoctorDiscount: TTabSheet;
+          GroupBox4: TGroupBox;
+          Label33: TLabel;
+          Label34: TLabel;
+          Label35: TLabel;
+          Label36: TLabel;
+          DBLCBDisDoctor: TDBLookupComboBox;
+          DateEditXDisFrom: TDateEditX;
+          DateEditXDisTo: TDateEditX;
+          EditDiscount: TEdit;
+          Chk_AllDocDiscount: TCheckBox;
+          BitBtn2: TBitBtn;
+          BitBtn3: TBitBtn;
+          QueryDisDoctor: TOraQuery;
+          DSDisDoctor: TDataSource;
+          Chk_DocWiseDiscount: TCheckBox;
+          QueryProcess: TOraQuery;
+          Query_GetDocSvrDivision: TOraQuery;
+          Query_RemovedDocAftMerged: TOraQuery;
+          Query_Get_All_IPCons_Doc: TOraQuery;
+          Query_CheckIn_DocSvrTable: TOraQuery;
+          BitBtn_SetDiscount: TBitBtn;
+          BitBtn_AddDoctor: TBitBtn;
+          BitBtn_SetDisPer: TBitBtn;
+          Query_GetAdmittedPatientInfo: TOraQuery;
+          DBLCB_RoomType: TDBLookupComboBox;
+          procedure BitBtnCancelClick(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure CB_NoOfDoctorChange(Sender: TObject);
+          procedure FormShow(Sender: TObject);
+          procedure BtnSaveClick(Sender: TObject);
+          procedure BitBtnVisitDateClick(Sender: TObject);
+          procedure DBLCB_VisitDoctorKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure CB_NoOfDoctorKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure SpButtonDeleteClick(Sender: TObject);
+          procedure Edit_DisPerKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_DisPerKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure CB_PatientTypeExit(Sender: TObject);
+          procedure SpeedButton2Click(Sender: TObject);
+          procedure Edit_UserDefineRoundChrgKeyPress(Sender: TObject; var Key: Char);
+          procedure CB_UserDefineRoundChrgClick(Sender: TObject);
+          procedure Edit_UserDefineRoundChrgKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure PC_DoctorRoundVisitChange(Sender: TObject);
+          procedure DBLCB_ActualDocKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure Edit_AmtMainDocKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_PerMainDocKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_Amt2ndDocKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_Per2ndDocKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_Amt3rdDocKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_Per3rdDocKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_AmtMainDocExit(Sender: TObject);
+          procedure Edit_PerMainDocExit(Sender: TObject);
+          procedure Edit_Amt2ndDocExit(Sender: TObject);
+          procedure Edit_Per2ndDocExit(Sender: TObject);
+          procedure Edit_Amt3rdDocExit(Sender: TObject);
+          procedure Edit_Per3rdDocExit(Sender: TObject);
+          procedure SB_RoundChrgDivideClick(Sender: TObject);
+          procedure CB_PercentBasisClick(Sender: TObject);
+          procedure SP_ResetChrgDivideClick(Sender: TObject);
+          procedure EditNoDayKeyPress(Sender: TObject; var Key: Char);
+          procedure CBMultipleDayClick(Sender: TObject);
+          procedure CB_ActivityByDateRangeClick(Sender: TObject);
+          procedure SPB_NoRoundTakenClick(Sender: TObject);
+          procedure CB_DocAllIncomeDivideClick(Sender: TObject);
+          procedure BitBtn_FromClick(Sender: TObject);
+          procedure BitBtn_ToClick(Sender: TObject);
+          procedure DBLCB_ExistingDocKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure CB_MultipleDocShareClick(Sender: TObject);
+          procedure DBLCB_RoomTypeKeyPress(Sender: TObject; var Key: Char);
+          procedure CB_FractionPostingBasisClick(Sender: TObject);
+          procedure BitBtnDocChangeFromClick(Sender: TObject);
+          procedure CB_ChangeMainDocFromparticualDateClick(Sender: TObject);
+          procedure BitBtn_InvToClick(Sender: TObject);
+          procedure BitBtn_InvFromClick(Sender: TObject);
+          procedure EditInptIdKeyPress(Sender: TObject; var Key: Char);
+          procedure DBLCBDocInvolvedKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure BitBtnDelClick(Sender: TObject);
+          procedure BitBtn2Click(Sender: TObject);
+          procedure BitBtn3Click(Sender: TObject);
+          procedure Chk_AllDocDiscountClick(Sender: TObject);
+          procedure EditDiscountExit(Sender: TObject);
+          procedure SPB_AddInvolvedDoctorClick(Sender: TObject);
+          procedure BitBtn_SetDiscountClick(Sender: TObject);
+          procedure BitBtn_AddDoctorClick(Sender: TObject);
+          procedure BitBtn_SetDisPerClick(Sender: TObject);
+          procedure DBLCB_RoomTypeClick(Sender: TObject);
+     private
+          { Private declarations }
+     public
+          pi_InpatientId, pi_PatientId, pi_DOCTORROUNDVISITId: Integer;
+          ps_TodaysTime, ps_TodaysDate, ps_InptDate, ps_DisDate, ps_DocCode, Ps_DisDocCode, ps_FormAccess, ps_RateType: String;
+          b_New, b_IsDischargePt, b_ActiveResetDocRound: Boolean;
+
+          pf_TotalAmt, pf_TotPer, pf_RoundChrg, pf_RoundChrgVatAmt, pf_DoctorPart, pf_HosPart: Double;
+
+          Procedure ChangeIPMainDoc;
+          Function DivideRoundChrgForMultiDoc: Boolean;
+
+          procedure RoundCharge_Frct_Post_Medicare_Dynamic;
+          Procedure Remove_Doc_Frct_WhoHaveNoRoundIn_DocSvr_ButExistIn_DrProcedure;
+
+          Procedure DisplayCaption;
+          Function Check_DocSvr_Division(doccode: string): Boolean;
+          Function Check_Already_Record_Exist(InpatientId: Integer; VisitCharge: Double; doccode, TestNameCode: String): Boolean;
+          { Public declarations }
+     end;
+
+var
+     Form_DoctorRoundVisit: TForm_DoctorRoundVisit;
+
+implementation
+
+{$R *.DFM}
+
+procedure TForm_DoctorRoundVisit.BitBtn_AddDoctorClick(Sender: TObject);
+begin
+     { If EditInptId.Text='' then
+       begin
+       MessageDlg('Inpatient Id Cannot be Empty',Mtinformation,[mbok],0);
+       EditInptId.setFocus;
+       Exit;
+       end;
+
+       If DBLCBDocInvolved.KeyValue='' then
+       begin
+       MessageDlg('Involved Doctor Cannot be Empty',Mtinformation,[mbok],0);
+       DBLCBDocInvolved.setFocus;
+       Exit;
+       end;
+
+       with QueryVoid do
+       begin
+       close;
+       DatabaseName:=gs_DatabaseName;
+       Sql.Clear;
+       Sql.Add('Select * from ADDEXTRADOCTORINVOLVED where inpatientid='+EditInptId.Text);
+       Sql.Add('and InvolvedFrom>=:FDAte and InvolvedTo<=:TDate AND DocCode =:DocCode');
+       ParamByName('FDate').asString:=DateEditXFrom.Text;
+       ParamByName('TDate').asString:=DateEditXTo.Text;
+       ParamByName('DocCode').asString:=DateEditXTo.Text;
+       Open;
+       if QueryVoid.FieldByName('DocCode').asString<>'' then
+       begin
+       MessageDlg('Doctor Already Saved for the Patient in Given Date',Mtinformation,[mbok],0);
+       Exit;
+       end;
+
+       Sql.Clear;
+       Sql.Add('Insert Into  ADDEXTRADOCTORINVOLVED(AddDocId, InpatientId, DocCode, InvolvedFrom, InvolvedTo, AddedBy) Values(');
+       Sql.ADd(IntToStr(GetMaxId('ADDEXTRADOCTORINVOLVED','AddDocId')));
+       Sql.Add(','+EditInptId.Text+', '+#39+DBLCBDocInvolved.KeyValue+#39+', '+#39+DateEditXFrom.Text+#39);
+       Sql.Add(', '+#39+DateEditXTo.Text+#39+', '+IntToStr(gi_UserId));
+       Sql.Add(')');
+       //Sql.SaveToFile('ADdDoc.txt');
+       ExecSQL;
+       end;
+       QueryDocInvolvedGrid.Close;
+       QueryDocInvolvedGrid.Open;
+
+       //Now Update the doctor Serviece and doctor proceduer table accordingly............. }
+
+end;
+
+procedure TForm_DoctorRoundVisit.BitBtn_SetDiscountClick(Sender: TObject);
+begin
+     IF Trim(Edit_Percent.Text) = '' Then
+          Edit_Percent.Text := '0';
+
+     IF (StrToFloat(Edit_Percent.Text) > 100) or (StrToFloat(Edit_Percent.Text) < 0) Then
+     Begin
+          MessageDlg('Plz. Check Doctor Part Percent Properly.', mtWarning, [mbok], 0);
+          Edit_Percent.SetFocus;
+          Exit;
+     End;
+
+     IF MessageDlg(' Are You Sure To Cahange Doctor Part.', mtConfirmation, [mbyes, mbno], 0) = mrYes Then
+     Begin
+          IF CB_All.Checked = False Then
+          Begin
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update DOCTORROUNDVISIT Set DoctorPart=VisitCharge*' + Edit_Percent.Text + '/100,');
+                    sql.add(' HospitalPart=VisitCharge - VisitCharge*' + Edit_Percent.Text + '/100');
+                    sql.add(' where DOCTORROUNDVISITId=' + IntToStr(Query_DocService.FieldByName('DOCTORROUNDVISITId').AsInteger));
+                    sql.add(' and NoOfDoctor<>''REFERRAL''');
+                    ExecSQL;
+               End;
+               pi_DOCTORROUNDVISITId := Query_DocService.FieldByName('DOCTORROUNDVISITId').AsInteger;
+               Query_DocService.Close;
+               Query_DocService.Open;
+               Query_DocService.Locate('DOCTORROUNDVISITId', pi_DOCTORROUNDVISITId, []);
+
+               With Query_RoundChrgSummary do
+               Begin
+                    Close;
+                    ParamByName('InpatientId').AsInteger := pi_InpatientId;
+                    Open;
+               End;
+          End
+          Else
+          Begin
+               Query_DocService.First;
+               While Not Query_DocService.EOF do
+               Begin
+                    With Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Update DOCTORROUNDVISIT Set DoctorPart=VisitCharge*' + Edit_Percent.Text + '/100,');
+                         sql.add(' HospitalPart=VisitCharge - VisitCharge*' + Edit_Percent.Text + '/100');
+                         sql.add(' where DOCTORROUNDVISITId=' + IntToStr(Query_DocService.FieldByName('DOCTORROUNDVISITId').AsInteger));
+                         sql.add(' and NoOfDoctor<>''REFERRAL''');
+                         ExecSQL;
+                    End;
+                    Query_DocService.Next;
+               End;
+               Query_DocService.Close;
+               Query_DocService.Open;
+               Query_DocService.First;
+
+               With Query_RoundChrgSummary do
+               Begin
+                    Close;
+                    ParamByName('InpatientId').AsInteger := pi_InpatientId;
+                    Open;
+               End;
+          End;
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.BitBtn_SetDisPerClick(Sender: TObject);
+begin
+     if EditDiscount.Text = '' then
+     begin
+          ShowMessage('Discount Percentage Cannot be Blank !!! ');
+          EditDiscount.SetFocus;
+          Exit;
+     end;
+
+     IF StrToFloat(EditDiscount.Text) > 100 Then
+     Begin
+          MessageDlg('Percentage Exceeds 100 %', mtWarning, [mbok], 0);
+          EditDiscount.SetFocus;
+          Exit;
+     End;
+
+     With QueryProcess do
+     begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          sql.Clear;
+          sql.add('select * from DOCTORROUNDVISIT where InPatientid = ' + IntToStr(pi_InpatientId));
+          if Chk_AllDocDiscount.Checked = true then
+               sql.add('and DocCode in (' + #39 + Ps_DisDocCode + ')')
+          else
+               sql.add(' and DocCode = ' + #39 + DBLCBDisDoctor.KeyValue + #39);
+          sql.add(' and VisitDate>=:FromDate and VisitDate<=:ToDate');
+          // Sql.SaveToFile('C:\DisDoc.txt');
+          ParamByName('FromDate').asString := DateEditXDisFrom.Text;
+          ParamByName('ToDate').asString := DateEditXDisTo.Text;
+          Open;
+
+          while not EOF do
+          begin
+               with Query_Process do
+               begin
+                    Close;
+                    DatabaseName := gs_DatabaseName;
+                    sql.Clear;
+                    sql.add(' Update DOCTORROUNDVISIT set DisPer=' + EditDiscount.Text);
+                    IF gs_TaxRule = 'TAD' Then
+                         sql.add(' ,VatAmt=(VisitCharge-(VisitCharge*' + EditDiscount.Text + '/100))*' + FloatToStr(gf_TaxPercent)
+                                + '/100');
+                    sql.add(' where DOCTORROUNDVISITId = ' + IntToStr(QueryProcess.FieldByName('DOCTORROUNDVISITId').AsInteger));
+                    ExecSQL;
+               end;
+               QueryProcess.Next;
+          end;
+     end;
+     Query_DocService.Close;
+     Query_DocService.Open;
+     PC_DoctorRoundVisit.ActivePageIndex := 0;
+     BtnSave.Enabled := true;
+end;
+
+procedure TForm_DoctorRoundVisit.BitBtnCancelClick(Sender: TObject);
+begin
+     IF PC_DoctorRoundVisit.ActivePageIndex = 2 Then
+     Begin
+          TS_RoundChhrgDivide.TabVisible := False;
+          TS_DoctorService.TabVisible := true;
+          IF b_IsDischargePt Then
+               BtnSave.Enabled := False
+          Else
+               BtnSave.Enabled := true;
+     End
+     Else IF PC_DoctorRoundVisit.ActivePageIndex = 1 Then
+     Begin
+          PC_DoctorRoundVisit.ActivePageIndex := 0;
+          IF b_IsDischargePt Then
+               BtnSave.Enabled := False
+          Else
+               BtnSave.Enabled := true;
+     End
+     Else if PC_DoctorRoundVisit.ActivePageIndex = 3 then
+     begin
+          PC_DoctorRoundVisit.ActivePageIndex := 0;
+          IF b_IsDischargePt Then
+               BtnSave.Enabled := False
+          Else
+          Begin
+               BtnSave.Enabled := true;
+               SpButtonDelete.Enabled := true;
+          End;
+          TS_AddInvolvedDoctor.TabVisible := False;
+          TS_DoctorService.TabVisible := true;
+          TS_ChangeMainDoc.TabVisible := true;
+     end
+     else if PC_DoctorRoundVisit.ActivePageIndex = 4 then
+     begin
+          PC_DoctorRoundVisit.ActivePageIndex := 0;
+          IF b_IsDischargePt Then
+               BtnSave.Enabled := False
+          Else
+               BtnSave.Enabled := true;
+          TS_SetDoctorDiscount.TabVisible := False;
+          TS_DoctorService.TabVisible := true;
+          TS_ChangeMainDoc.TabVisible := true;
+          BtnSave.Enabled := true;
+     end
+     Else
+          Close;
+end;
+
+procedure TForm_DoctorRoundVisit.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = 27 Then
+          BitBtnCancelClick(Sender);
+     IF PC_DoctorRoundVisit.ActivePageIndex = 0 Then
+     Begin
+          IF (Key = 13) and (ActiveControl = DateEditX_VisitDate) Then
+               DBLCB_VisitDoctor.SetFocus;
+
+          IF (Key = VK_F8) and (SpButtonDelete.Enabled = true) Then
+               SpButtonDeleteClick(Sender);
+
+          IF Key = VK_F5 Then
+               CB_UserDefineRoundChrg.Checked := Not(CB_UserDefineRoundChrg.Checked);
+     End
+     Else IF PC_DoctorRoundVisit.ActivePageIndex = 2 Then
+     Begin
+          IF Key = VK_F1 Then
+               CB_DocAllIncomeDivide.Checked := Not(CB_DocAllIncomeDivide.Checked);
+          IF Key = VK_F2 Then
+               CB_PercentBasis.Checked := Not(CB_PercentBasis.Checked);
+     End;
+
+     IF (Key = VK_F12) and (BtnSave.Enabled = true) Then
+          BtnSaveClick(Sender);
+
+end;
+
+procedure TForm_DoctorRoundVisit.CB_NoOfDoctorChange(Sender: TObject);
+begin
+     { IF ps_RateType = 'GEN' Then
+       Begin
+       IF CB_NoOfDoctor.ItemIndex = 0 Then
+       LabelChrg.Caption := Query_GetVisitCharge.FieldByName('RoundChargeSingle').asString
+       Else IF CB_NoOfDoctor.ItemIndex = 1 Then
+       LabelChrg.Caption := Query_GetVisitCharge.FieldByName('RoundChargeDouble').asString
+       Else IF CB_NoOfDoctor.ItemIndex = 2 Then
+       LabelChrg.Caption := Query_GetVisitCharge.FieldByName('RoundChargeMultiple').asString;
+       End
+       Else
+       Begin
+       IF CB_NoOfDoctor.ItemIndex = 0 Then
+       LabelChrg.Caption := Query_GetVisitCharge.FieldByName('RoundChrgFrg').asString
+       Else IF CB_NoOfDoctor.ItemIndex = 1 Then
+       LabelChrg.Caption := Query_GetVisitCharge.FieldByName('RoundChrgFrg').asString
+       Else IF CB_NoOfDoctor.ItemIndex = 2 Then
+       LabelChrg.Caption := Query_GetVisitCharge.FieldByName('RoundChrgFrg').asString;
+       End; }
+end;
+
+procedure TForm_DoctorRoundVisit.FormShow(Sender: TObject);
+begin
+     PC_DoctorRoundVisit.ActivePageIndex := 0;
+     b_New := true;
+
+     With Query_GetAdmittedPatientInfo do
+     Begin
+          Close;
+          ParamByName('InpatientId').AsInteger := pi_InpatientId;
+          Open;
+     End;
+
+     Lbl_HospitalNo.Caption := IntToStr(Query_GetAdmittedPatientInfo.FieldByName('PatientId').AsInteger);
+     LabelInptNo.Caption := IntToStr(pi_InpatientId);
+     LabelName.Caption := Query_GetAdmittedPatientInfo.FieldByName('PatientName').asString;
+     LabelInptDate.Caption := Query_GetAdmittedPatientInfo.FieldByName('AdmnDate').asString;
+     ps_InptDate := Query_GetAdmittedPatientInfo.FieldByName('AdmnDate').asString;
+
+     if Query_GetAdmittedPatientInfo.FieldByName('Discharged').asString = 'Y' then
+     Begin
+          b_IsDischargePt:=True;
+          BtnSave.Enabled := False;
+          SpButtonDelete.Enabled := False;
+          SPB_NoRoundTaken.Enabled := False;
+          SP_ResetChrgDivide.Enabled := False;
+     End
+     Else
+     b_IsDischargePt:=False;
+
+     TS_RoundChhrgDivide.TabVisible := False;
+     TS_SetDoctorDiscount.TabVisible := False;
+     TS_SetDoctorDiscount.TabVisible := False;
+     TS_AddInvolvedDoctor.TabVisible := False;
+
+     {IF b_IsDischargePt = true Then
+     Begin
+          IF ps_FormAccess <> 'FRACTION' Then
+               TS_ChangeMainDoc.TabVisible := False;
+     End;}
+     TS_ChangeMainDoc.TabVisible := False;
+
+     Query_VisitDoctor.Close;
+     Query_VisitDoctor.Open;
+
+     with Query_DocService do
+     Begin
+          Close;
+          sql[5] := ' and InpatientId=' + IntToStr(pi_InpatientId);
+          Open;
+     End;
+
+     With Query_RoomType do
+     Begin
+          Close;
+          Open;
+     End;
+
+     DBLCB_RoomType.KeyValue :=  Query_GetAdmittedPatientInfo.FieldByName('RoomTypeId').AsInteger;
+     DBLCB_RoomTypeClick(Sender);
+
+     With Query_RoundChrgSummary do
+     Begin
+          Close;
+          ParamByName('InpatientId').AsInteger := pi_InpatientId;
+          Open;
+     End;
+     DBGrid_RoundChrgSummary.Visible := true;
+
+     DateEditX_VisitDate.SystemOfDate := gi_DateSystem;
+     DateEditX_VisitDate.Text := ServerDate.TodaysDate;
+     //ChangeCaption(BitBtnVisitDate);
+     DateEditX_VisitDate.SetFocus;
+
+     DateEditX_FromDate.SystemOfDate := gi_DateSystem;
+     DateEditX_ToDate.SystemOfDate := gi_DateSystem;
+     DateEditX_FromDate.Text := DateEditX_VisitDate.Text;
+     DateEditX_ToDate.Text := DateEditX_VisitDate.Text;
+
+     DateEditXFrom.SystemOfDate := gi_DateSystem;
+     DateEditXTo.SystemOfDate := gi_DateSystem;
+     DateEditXFrom.Text := ServerDate.TodaysDate;
+     DateEditXTo.Text := ServerDate.TodaysDate;
+
+     // for Add Doctor involved
+     EditInptId.Text := IntToStr(pi_InpatientId);
+     QueryDocInvolvedGrid.Close;
+     QueryDocInvolvedGrid.Open;
+     QueryAddDocInvolved.Close;
+     QueryAddDocInvolved.Open;
+end;
+
+procedure TForm_DoctorRoundVisit.BtnSaveClick(Sender: TObject);
+var
+     ls_TodaysDate, ls_TodaysTime, ls_DocName, ls_DayStatus, ls_PatientType, ls_IsUserDefine, ls_NoOfDoctor, ls_RateType: String;
+     lf_VatAmt, lf_Discount, lf_ChargeAmt, lf_GrossChrg, lf_DoctorPart, lf_HospitalPart, lf_HosPartRate: Double;
+     I, li_DocId: Integer;
+     ls_RoomTypeCode: String;
+begin
+     ps_TodaysDate := ServerDate.TodaysDate;
+     ps_TodaysTime := ServerDate.TodaysTime;
+     DateEditX_VisitDate.SystemOfDate := gi_DateSystem;
+
+     { IF PC_DoctorRoundVisit.ActivePageIndex=1 Then
+       Begin
+       IF DBLCB_ActualDoc.keyValue=NULL Then
+       Begin
+       MessageDlg('You Must Have To Choose Actual Doctor.',mtWarning,[mbok],0);
+       DBLCB_ActualDoc.SetFocus;
+       Exit;
+       End;
+
+       DateEditX_DocChangeFrom.SystemOfDate:=gi_DateSystem;
+       ChangeCaption(BitBtnDocChangeFrom);
+
+       IF DateEditX_DocChangeFrom.Text < ps_InptDate  Then
+       Begin
+       MessageDlg('Doctor Change Date ('+DateEditX_DocChangeFrom.Text+' ) should not be less than Inpt. Date ('+ps_InptDate+').',
+       mtwarning,[mbok],0);
+       Exit;
+       End;
+
+       IF DateEditX_DocChangeFrom.Text > ServerDate.TodaysDate Then
+       Begin
+       MessageDlg('Doctor Change Date ('+DateEditX_DocChangeFrom.Text+' ) should not be greater than Current Date ('+ServerDate.TodaysDate+').',
+       mtwarning,[mbok],0);
+       Exit;
+       End;
+
+       ChangeIPMainDoc;
+       Exit;
+       End
+       Else IF PC_DoctorRoundVisit.ActivePageIndex=2 Then
+       Begin
+       IF Query_DocService.FieldByName('IsFractionLocked').AsString='Y' Then
+       Begin
+       MessageDlg(' Sorry ! You Cannot Sub Divide Round Charge, Fraction Is Already Locked.',mtWarning,[mbok],0);
+       Exit;
+       End;
+
+       IF (DBLCB_2ndDoc.KeyValue=NULL) and (DBLCB_3rdDoc.KeyValue=NULL) Then
+       Begin
+       MessageDlg('Sorry ! You must have to select at least one doctor.',mtWarning,[mbok],0);
+       DBLCB_2ndDoc.SetFocus;
+       Exit;
+       End;
+
+       IF (DBLCB_2ndDoc.KeyValue=NULL) and (DBLCB_3rdDoc.KeyValue<>Null) Then
+       Begin
+       MessageDlg('Sorry ! You must have to select 2nd doctor before 3rd doctor.',mtWarning,[mbok],0);
+       DBLCB_2ndDoc.SetFocus;
+       Exit;
+       End;
+
+       IF pf_TotalAmt <> pf_RoundChrg Then
+       Begin
+       MessageDlg('Round Charge ( '+Label_RoundChrg.Caption+' ) and Accumulated Amt. ( '+Label_AccAmt.Caption+' ) Does Not Match.',mtWarning,[mbok],0);
+
+       IF CB_PercentBasis.Checked=True Then
+       Edit_PerMainDoc.SetFocus
+       Else
+       Edit_AmtMainDoc.SetFocus;
+
+       Exit;
+       End;
+
+
+       IF (Query_DocService.FieldByName('DocCode').AsString=DBLCB_2ndDoc.KeyValue) or
+       (Query_DocService.FieldByName('DocCode').AsString=DBLCB_3rdDoc.KeyValue) or
+       (DBLCB_2ndDoc.KeyValue=DBLCB_3rdDoc.KeyValue) Then
+       Begin
+       MessageDlg('Same Doctor More Than One Time For Round Charge Divide.',mtWarning,[mbok],0);
+       DBLCB_2ndDoc.SetFocus;
+       Exit;
+       End;
+
+       IF DivideRoundChrgForMultiDoc=False Then Exit;
+
+       CB_DocAllIncomeDivide.Checked:=False;
+       CB_PercentBasis.Checked:=False;
+
+       Edit_PerMainDoc.Text:='0';
+       Edit_AmtMainDoc.Text:='0';
+
+       Edit_Amt2ndDoc.Text:='0';
+       Edit_Per2ndDoc.Text:='0';
+
+       Edit_Amt3rdDoc.Text:='0';
+       Edit_Per3rdDoc.Text:='0';
+
+       BitBtnCancelClick(Sender);
+
+       Query_DocService.Close;
+       Query_DocService.Open;
+
+       With Query_RoundChrgSummary do
+       Begin
+       Close;
+       ParamByName('InpatientId').AsInteger:=pi_InpatientId;
+       Open;
+       End;
+
+       Exit;
+       End; }
+
+     IF DateEditX_VisitDate.Text < ps_InptDate Then
+     Begin
+          MessageDlg('Sorry ! Doctor Visit Date (' + DateEditX_VisitDate.Text + ') is Previous Than Inpt. Date (' + ps_InptDate + ').',
+               mtWarning, [mbok], 0);
+          DateEditX_VisitDate.SetFocus;
+          Exit;
+     End;
+
+     IF DateEditX_VisitDate.Text > ps_TodaysDate Then
+     Begin
+          MessageDlg('Sorry ! Doctor Visit Date (' + DateEditX_VisitDate.Text + ') Exceeds The Current Date (' + ps_TodaysDate + ').',
+               mtWarning, [mbok], 0);
+          DateEditX_VisitDate.SetFocus;
+          Exit;
+     End;
+
+     IF DBLCB_VisitDoctor.KeyValue = NULL Then
+     Begin
+          MessageDlg('Sorry ! You must have to select doctor.', mtWarning, [mbok], 0);
+          DBLCB_VisitDoctor.SetFocus;
+          Exit;
+     End;
+
+     li_DocId := Query_VisitDoctor.FieldByName('DocId').AsInteger;
+     ps_DocCode := DBLCB_VisitDoctor.KeyValue;
+
+     IF Edit_DisPer.Text = '' Then
+          Edit_DisPer.Text := '0';
+
+     IF StrToFloat(Edit_DisPer.Text) > 100 Then
+     Begin
+          MessageDlg('Discount Percent Exceeds 100 %', mtWarning, [mbok], 0);
+          Edit_DisPer.SetFocus;
+          Exit;
+     End;
+
+     IF CB_UserDefineRoundChrg.Checked = true Then
+     Begin
+          IF Trim(Edit_UserDefineRoundChrg.Text) = '' Then
+               Edit_UserDefineRoundChrg.Text := '0';
+
+          IF Edit_UserDefineRoundChrg.Text = '0' Then
+          Begin
+               MessageDlg('You Must Have To Define User Define Charge.', mtWarning, [mbok], 0);
+               Edit_UserDefineRoundChrg.SetFocus;
+               Exit;
+          End;
+
+          ls_IsUserDefine := 'Y';
+
+          lf_GrossChrg := StrToFloat(Edit_UserDefineRoundChrg.Text);
+          lf_VatAmt := lf_GrossChrg * gf_TaxPercent / 100;
+
+     End
+     Else
+     Begin
+          ls_IsUserDefine := 'N';
+
+          lf_GrossChrg := Query_RoomType.FieldByName('RoundVisitCharge').AsFloat;
+          lf_VatAmt := Query_RoomType.FieldByName('RoundVisitSvrTax').AsFloat;
+     End;
+
+     lf_HosPartRate := Query_RoomType.FieldByName('HosPartPercent').AsFloat;
+
+     lf_HospitalPart := RoundingAfterSecondPlace(lf_HosPartRate * lf_GrossChrg / 100);
+     lf_DoctorPart := lf_GrossChrg - lf_HospitalPart;
+
+     IF gs_TaxRule = 'TAD' Then
+     Begin
+          lf_Discount := lf_GrossChrg * StrToFloat(Edit_DisPer.Text) / 100;
+          lf_ChargeAmt := lf_GrossChrg - lf_Discount;
+
+          if lf_Discount > 0 then
+               lf_VatAmt := lf_ChargeAmt * gf_TaxPercent / 100;
+
+     End
+     Else
+          lf_VatAmt := lf_GrossChrg * gf_TaxPercent / 100;
+
+     ls_RateType := 'GEN';
+
+     If Trim(EditNoDay.Text) = '' Then
+          EditNoDay.Text := 'O';
+
+     If (CBMultipleDay.Checked = true) And (StrToInt(EditNoDay.Text) > 1) Then
+     Begin
+          For I := 1 To StrToInt(EditNoDay.Text) Do
+          Begin
+               If I <> 1 Then
+               Begin
+                    If gi_DateSystem = 0 Then
+                         DateEditX_VisitDate.VSDateAsDays := DateEditX_VisitDate.VSDateAsDays + 1
+                    Else
+                         DateEditX_VisitDate.ADDateAsDate := DateEditX_VisitDate.ADDateAsDate + 1;
+               End;
+
+               //Query_RoomType.Locate('VisitDate', DateEditX_VisitDate.Text, []);
+               ls_RoomTypeCode := Query_RoomType.FieldByName('RoomTypeCode').asString;
+
+               { SaveDoctorroundvisit(Isfractionlocked,Isuserdefinerate,Ischargesubdivided,ISDAILYCHARGE,ISEXTRADOCINVOLVED:String;
+                 Visitcharge,Tdsper,Svrchrg,Hospitalpart,Doctorpart,Disper,Vatamt,Noofvisit:Double;
+                 Roomtypeid,Docid,Datapostby,Subdivideby,Patientid,Refdoctorroundvisitid,Inpatientid:Integer;
+                 Dataposttime,Datapostdate,Frctlockdate,Subdividedate,Macid,Paytype,Billdate,Visitdate,Roomtypecode,
+                 Doccode,Ratetype:String); }
+
+//               SaveDoctorroundvisit('N', ls_IsUserDefine, 'N', 'N', 'Y', lf_GrossChrg, gf_TDSPercent, 0, lf_HospitalPart, lf_DoctorPart,
+//                    StrToFloat(Edit_DisPer.Text), lf_VatAmt, 1, Query_RoomType.FieldByName('RoomTypeId').AsInteger, li_DocId, gi_UserId, 0,
+//                    pi_PatientId, 0, pi_InpatientId, ps_TodaysTime, ps_TodaysDate, '', '', gs_MacID, '', '', DateEditX_VisitDate.Text,
+//                    Query_RoomType.FieldByName('RoomTypeCode').asString, ps_DocCode, ls_RateType);
+
+          End;
+     End
+     Else
+     Begin
+          ls_RoomTypeCode := Query_RoomType.FieldByName('RoomTypeCode').asString;
+
+               { SaveDoctorroundvisit(Isfractionlocked,Isuserdefinerate,Ischargesubdivided,ISDAILYCHARGE,ISEXTRADOCINVOLVED:String;
+                 Visitcharge,Tdsper,Svrchrg,Hospitalpart,Doctorpart,Disper,Vatamt,Noofvisit:Double;
+                 Roomtypeid,Docid,Datapostby,Subdivideby,Patientid,Refdoctorroundvisitid,Inpatientid:Integer;
+                 Dataposttime,Datapostdate,Frctlockdate,Subdividedate,Macid,Paytype,Billdate,Visitdate,Roomtypecode,
+                 Doccode,Ratetype:String); }
+
+//               SaveDoctorroundvisit('N', ls_IsUserDefine, 'N', 'N', 'Y', lf_GrossChrg, gf_TDSPercent, 0, lf_HospitalPart, lf_DoctorPart,
+//                    StrToFloat(Edit_DisPer.Text), lf_VatAmt, 1, Query_RoomType.FieldByName('RoomTypeId').AsInteger, li_DocId, gi_UserId, 0,
+//                    pi_PatientId, 0, pi_InpatientId, ps_TodaysTime, ps_TodaysDate, '', '', gs_MacID, '', '', DateEditX_VisitDate.Text,
+//                    Query_RoomType.FieldByName('RoomTypeCode').asString, ps_DocCode, ls_RateType);
+     End;
+
+     with Query_DocService do
+     Begin
+          Close;
+          sql[5] := ' and InpatientId=' + IntToStr(pi_InpatientId);
+          Open;
+     End;
+     b_New := true;
+     DateEditX_VisitDate.Text := ServerDate.TodaysDate;
+     DateEditX_VisitDate.SetFocus;
+     DBLCB_VisitDoctor.KeyValue := NULL;
+     CB_UserDefineRoundChrg.Checked := False;
+     Edit_DisPer.Text := '';
+     LabelChrg.Caption := '0.00';
+     ShowDoneMessage;
+end;
+
+procedure TForm_DoctorRoundVisit.BitBtnVisitDateClick(Sender: TObject);
+begin
+     //ChangeDateSystem(DateEditX_VisitDate, BitBtnVisitDate);
+end;
+
+procedure TForm_DoctorRoundVisit.DBLCB_VisitDoctorKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = 13 Then
+          DBLCB_RoomType.SetFocus;
+     IF Key = VK_Prior Then
+          DateEditX_VisitDate.SetFocus;
+end;
+
+procedure TForm_DoctorRoundVisit.CB_NoOfDoctorKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = 13 Then
+     Begin
+          IF CB_UserDefineRoundChrg.Checked = true Then
+               Edit_UserDefineRoundChrg.SetFocus
+          Else
+               Edit_DisPer.SetFocus;
+     End;
+
+     IF Key = VK_Prior Then
+          DBLCB_RoomType.SetFocus;
+end;
+
+procedure TForm_DoctorRoundVisit.SpButtonDeleteClick(Sender: TObject);
+begin
+     IF MessageDlg('Are You Sure To Delete ?', mtInformation, [mbyes, mbno], 0) = mrYes Then
+     Begin
+          IF CB_ActivityByDateRange.Checked = true Then
+          Begin
+               ChangeToDefaultDate(DateEditX_FromDate, DateEditX_ToDate);
+               //ChangeCaption(BitBtn_From);
+               //ChangeCaption(BitBtn_To);
+
+               IF Query_DocService.FieldByName('NOOFDOCTOR').asString <> 'REFFERAL' Then
+               Begin
+                    with Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Delete From DOCTORROUNDVISIT where ');
+                         sql.add(' DOCTORROUNDVISITId=' + IntToStr(Query_DocService.FieldByName('DOCTORROUNDVISITId').AsInteger));
+                         sql.add(' and NOOFDOCTOR<>''REFFERAL''');
+                         sql.add(' and VisitDate >=' + #39 + DateEditX_FromDate.Text + #39 + ' and VisitDate <=' + #39 +
+                                DateEditX_ToDate.Text + #39);
+                         ExecSQL;
+                    End;
+               End
+               Else
+               Begin
+                    with Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Delete From DOCTORROUNDVISIT where DOCTORROUNDVISITId=' + Query_DocService.FieldByName
+                                ('DOCTORROUNDVISITId').asString);
+                         ExecSQL;
+                    End;
+               End;
+          End
+          Else
+          Begin
+               with Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Delete From DOCTORROUNDVISIT where DOCTORROUNDVISITId=' + Query_DocService.FieldByName('DOCTORROUNDVISITId')
+                           .asString);
+                    ExecSQL;
+               End;
+          End;
+
+          with Query_DocService do
+          Begin
+               Close;
+               sql[5] := ' and InpatientId=' + IntToStr(pi_InpatientId);
+               Open;
+          End;
+          ShowDoneMessage;
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_DisPerKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_DisPer, Key);
+     Key := Key;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_DisPerKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = 13 Then
+          BtnSave.SetFocus;
+end;
+
+procedure TForm_DoctorRoundVisit.CB_PatientTypeExit(Sender: TObject);
+begin
+     CB_NoOfDoctorChange(Sender);
+end;
+
+procedure TForm_DoctorRoundVisit.SpeedButton2Click(Sender: TObject);
+var
+     lf_ChargeAmt, lf_GrossChrg, lf_Discount, lf_VatAmt, lf_HospitalPart, lf_DoctorPart: Double;
+begin
+     IF MessageDlg('Are you sure to Convert Round Charge Into Non-Operation Case.', mtInformation, [mbyes, mbno], 0) = mrNo Then
+          Exit;
+     DBLCB_RoomType.KeyValue := 1; // Non-Operation
+
+     Query_DocService.First;
+     while not Query_DocService.EOF do
+     Begin
+          lf_GrossChrg := 0;
+
+          IF Query_DocService.FieldByName('DayStatus').asString = 'HD' Then
+               lf_GrossChrg := lf_GrossChrg / 2;
+
+          // lf_HospitalPart := RoundingAfterSecondPlace(Query_GetVisitCharge.FieldByName('HosPartPercent').AsFloat * lf_GrossChrg / 100);
+          lf_HospitalPart := 0;
+          lf_DoctorPart := lf_GrossChrg - lf_HospitalPart;
+
+          IF gs_TaxRule = 'TAD' Then
+          Begin
+               lf_Discount := lf_GrossChrg * Query_DocService.FieldByName('DisPer').AsFloat / 100;
+               lf_ChargeAmt := lf_GrossChrg - lf_Discount;
+               lf_VatAmt := lf_ChargeAmt * gf_TaxPercent / 100;
+          End
+          Else
+               lf_VatAmt := lf_GrossChrg * gf_TaxPercent / 100;
+
+          with Query_Process do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Update DOCTORROUNDVISIT Set VisitCharge=' + FloatToStr(lf_GrossChrg));
+               sql.add(' ,VatAmt=' + FloatToStr(lf_VatAmt) + ',HospitalPart=' + FloatToStr(lf_HospitalPart));
+               sql.add(' ,DoctorPart=' + FloatToStr(lf_DoctorPart) + ',PatientType=''NOP''');
+               sql.add(' where DOCTORROUNDVISITId=' + Query_DocService.FieldByName('DOCTORROUNDVISITId').asString);
+               ExecSQL;
+          End;
+          Query_DocService.Next;
+     End;
+     ShowDoneMessage;
+     Query_DocService.Close;
+     Query_DocService.Open;
+     Query_DocService.Last;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_UserDefineRoundChrgKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_UserDefineRoundChrg, Key);
+     Key := Key;
+end;
+
+procedure TForm_DoctorRoundVisit.CB_UserDefineRoundChrgClick(Sender: TObject);
+begin
+     IF CB_UserDefineRoundChrg.Checked = true Then
+     Begin
+          Edit_UserDefineRoundChrg.Color := clWhite;
+          Edit_UserDefineRoundChrg.Enabled := true;
+     End
+     Else
+     Begin
+          Edit_UserDefineRoundChrg.Color := clMenu;
+          Edit_UserDefineRoundChrg.Enabled := False;
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_UserDefineRoundChrgKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+
+     IF Key = 13 Then
+          Edit_DisPer.SetFocus;
+end;
+
+Procedure TForm_DoctorRoundVisit.ChangeIPMainDoc;
+Begin
+     Try
+          DM_Hospital.Db.StartTransaction;
+          With Query_Process do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Update InpatientReg Set DocCode=' + #39 + DBLCB_ActualDoc.KeyValue + #39);
+               sql.add(' where InpatientId=' + IntToStr(pi_InpatientId));
+               ExecSQL;
+
+               Close;
+               sql.Clear;
+               sql.add(' Insert Into ChangeIPMainDoc_Log(DocChangeLogId,PrevDoc,CurrDoc,ModifyBy,ModifyDate,ModifyTime,');
+               sql.add(' InpatientId,IsDocChangeFromParticularDate,DocChangeFromDate)');
+               sql.add(' Values (' + IntToStr(GetMaxId('ChangeIPMainDoc_Log', 'DocChangeLogId')));
+               sql.add(' ,' + #39 + DBLCB_ExistingDoc.KeyValue + #39 + ',' + #39 + DBLCB_ActualDoc.KeyValue + #39);
+               sql.add(' ,' + IntToStr(gi_UserId) + ',' + #39 + ServerDate.TodaysDate + #39 + ',' + #39 + ServerDate.TodaysTime + #39);
+               sql.add(' ,' + IntToStr(pi_InpatientId));
+               IF CB_ChangeMainDocFromparticualDate.Checked = true Then
+                    sql.add(' ,''Y'',' + #39 + DateEditX_DocChangeFrom.Text + #39 + ')')
+               Else
+                    sql.add(' ,''N'','''')');
+               ExecSQL;
+
+               IF (CB_ChangeDoc.Checked = true) and (CB_ChangeMainDocFromparticualDate.Checked = False) Then
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update DOCTORROUNDVISIT Set DocCode=' + #39 + DBLCB_ActualDoc.KeyValue + #39);
+                    sql.add(' where InpatientId=' + IntToStr(pi_InpatientId) + ' and DocCode=' + #39 + DBLCB_ExistingDoc.KeyValue + #39);
+                    ExecSQL;
+               End;
+
+               IF CB_ChangeMainDocFromparticualDate.Checked = true Then
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update DOCTORROUNDVISIT Set DocCode=' + #39 + DBLCB_ActualDoc.KeyValue + #39);
+                    sql.add(' where InpatientId=' + IntToStr(pi_InpatientId) + ' and DocCode=' + #39 + DBLCB_ExistingDoc.KeyValue + #39);
+                    sql.add(' and VisitDate >=' + #39 + DateEditX_DocChangeFrom.Text + #39);
+                    ExecSQL;
+               End;
+          End;
+          DM_Hospital.Db.commit;
+          ShowDoneMessage;
+     Except
+          DM_Hospital.Db.Rollback;
+          MessageDlg('Failure To Change Main Doctor.', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     Query_DocService.Close;
+     Query_DocService.Open;
+
+     With Query_RoundChrgSummary do
+     Begin
+          Close;
+          ParamByName('InpatientId').AsInteger := pi_InpatientId;
+          Open;
+     End;
+End;
+
+procedure TForm_DoctorRoundVisit.PC_DoctorRoundVisitChange(Sender: TObject);
+begin
+     IF PC_DoctorRoundVisit.ActivePageIndex = 1 Then
+     Begin
+          With Query_ExistingDoc do
+          Begin
+               Close;
+               ParamByName('Inpatientid').AsInteger := pi_InpatientId;
+               Open;
+          End;
+          DBLCB_ExistingDoc.KeyValue := Query_ExistingDoc.FieldByName('docCode').asString;
+          DBLCB_ActualDoc.SetFocus;
+
+          IF ps_FormAccess = 'FRACTION' Then
+               BtnSave.Enabled := true;
+
+          DateEditX_DocChangeFrom.Text := ServerDate.TodaysDate;
+
+     End
+     Else IF PC_DoctorRoundVisit.ActivePageIndex = 2 Then
+     Begin
+          EditInptId.Text := IntToStr(pi_InpatientId);
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.DBLCB_ActualDocKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Delete Then
+          DBLCB_ActualDoc.KeyValue := NULL;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_AmtMainDocKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #8 Then
+          Exit;
+     IF Key = #13 Then
+          Edit_PerMainDoc.SetFocus;
+     AvoidMultipleDecimal(Edit_AmtMainDoc, Key);
+     Key := Key;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_PerMainDocKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #8 Then
+          Exit;
+
+     IF Key = #13 Then
+          DBLCB_2ndDoc.SetFocus;
+
+     AvoidMultipleDecimal(Edit_PerMainDoc, Key);
+     Key := Key;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_Amt2ndDocKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #8 Then
+          Exit;
+     AvoidMultipleDecimal(Edit_Amt2ndDoc, Key);
+     Key := Key;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_Per2ndDocKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #8 Then
+          Exit;
+
+     IF Key = #13 Then
+          DBLCB_3rdDoc.SetFocus;
+
+     AvoidMultipleDecimal(Edit_Per2ndDoc, Key);
+     Key := Key;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_Amt3rdDocKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #8 Then
+          Exit;
+     AvoidMultipleDecimal(Edit_Amt3rdDoc, Key);
+     Key := Key;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_Per3rdDocKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #8 Then
+          Exit;
+     AvoidMultipleDecimal(Edit_Per3rdDoc, Key);
+     Key := Key;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_AmtMainDocExit(Sender: TObject);
+begin
+     IF Trim(Edit_AmtMainDoc.Text) = '' Then
+          Edit_AmtMainDoc.Text := '0';
+
+     IF CB_PercentBasis.Checked = true Then
+          Edit_AmtMainDoc.Text := FloatToStr(Round((StrToFloat(Edit_PerMainDoc.Text) * pf_RoundChrg) / 100))
+     Else
+          Edit_PerMainDoc.Text := FloatToStr(Round((StrToFloat(Edit_AmtMainDoc.Text) / pf_RoundChrg) * 100));
+
+     DisplayCaption;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_PerMainDocExit(Sender: TObject);
+begin
+     IF Trim(Edit_PerMainDoc.Text) = '' Then
+          Edit_PerMainDoc.Text := '0';
+
+     IF CB_PercentBasis.Checked = true Then
+          Edit_AmtMainDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_PerMainDoc.Text) * pf_RoundChrg) / 100))
+     Else
+          Edit_PerMainDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_AmtMainDoc.Text) / pf_RoundChrg) * 100));
+     DisplayCaption;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_Amt2ndDocExit(Sender: TObject);
+begin
+     IF Trim(Edit_Amt2ndDoc.Text) = '' Then
+          Edit_Amt2ndDoc.Text := '0';
+
+     IF CB_PercentBasis.Checked = true Then
+          Edit_Amt2ndDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_Per2ndDoc.Text) * pf_RoundChrg) / 100))
+     Else
+          Edit_Per2ndDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_Amt2ndDoc.Text) / pf_RoundChrg) * 100));
+     DisplayCaption;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_Per2ndDocExit(Sender: TObject);
+begin
+     IF Trim(Edit_Per2ndDoc.Text) = '' Then
+          Edit_Per2ndDoc.Text := '0';
+
+     IF CB_PercentBasis.Checked = true Then
+          Edit_Amt2ndDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_Per2ndDoc.Text) * pf_RoundChrg) / 100))
+     Else
+          Edit_Per2ndDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_Amt2ndDoc.Text) / pf_RoundChrg) * 100));
+     DisplayCaption;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_Amt3rdDocExit(Sender: TObject);
+begin
+     IF Trim(Edit_Amt3rdDoc.Text) = '' Then
+          Edit_Amt3rdDoc.Text := '0';
+
+     IF CB_PercentBasis.Checked = true Then
+          Edit_Amt3rdDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_Per3rdDoc.Text) * pf_RoundChrg) / 100))
+     Else
+          Edit_Per3rdDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_Amt3rdDoc.Text) / pf_RoundChrg) * 100));
+     DisplayCaption;
+end;
+
+procedure TForm_DoctorRoundVisit.Edit_Per3rdDocExit(Sender: TObject);
+begin
+     IF Trim(Edit_Per3rdDoc.Text) = '' Then
+          Edit_Per3rdDoc.Text := '0';
+
+     IF CB_PercentBasis.Checked = true Then
+          Edit_Amt3rdDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_Per3rdDoc.Text) * pf_RoundChrg) / 100))
+     Else
+          Edit_Per3rdDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_Amt3rdDoc.Text) / pf_RoundChrg) * 100));
+     DisplayCaption;
+end;
+
+procedure TForm_DoctorRoundVisit.SB_RoundChrgDivideClick(Sender: TObject);
+begin
+     IF Query_DocService.RecordCount <= 0 Then
+     Begin
+          MessageDlg('No Record Found To Divide Round Charge.', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     IF Query_DocService.FieldByName('IsFractionLocked').asString = 'Y' Then
+     Begin
+          MessageDlg(' Sorry ! You Cannot Sub Divide Round Charge, Fraction Is Already Locked.', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     PC_DoctorRoundVisit.ActivePageIndex := 2;
+     TS_RoundChhrgDivide.TabVisible := true;
+     TS_DoctorService.TabVisible := False;
+     TS_ChangeMainDoc.TabVisible := False;
+
+     BtnSave.Enabled := true;
+
+     With Query_DocService_SubDivide do
+     Begin
+          Close;
+          sql[4] := ' DOCTORROUNDVISITId=' + IntToStr(Query_DocService.FieldByName('DOCTORROUNDVISITId').AsInteger);
+          Open;
+     End;
+
+     Label_RoundChrg.Caption := FormatFloat('0.00', Query_DocService.FieldByName('VISITCHARGE').AsFloat);
+     pf_RoundChrg := Query_DocService.FieldByName('VISITCHARGE').AsFloat;
+     pf_RoundChrgVatAmt := Query_DocService.FieldByName('VatAmt').AsFloat;
+     pf_DoctorPart := Query_DocService.FieldByName('DoctorPart').AsFloat;
+     pf_HosPart := Query_DocService.FieldByName('HospitalPart').AsFloat;
+
+     ps_DocCode := Query_DocService.FieldByName('DocCode').asString;
+
+     Label_DocName.Caption := Query_DocService.FieldByName('DOCNAME').asString;
+
+     b_ActiveResetDocRound := False;
+
+     Edit_AmtMainDoc.SetFocus;
+end;
+
+Procedure TForm_DoctorRoundVisit.DisplayCaption;
+Begin
+     IF CB_PercentBasis.Checked = False Then
+     Begin
+          Label_AccAmt.Caption := FormatFloat('0.00', StrToFloat(Edit_AmtMainDoc.Text) + StrToFloat(Edit_Amt2ndDoc.Text) + StrToFloat
+                 (Edit_Amt3rdDoc.Text));
+
+          IF Abs(StrToFloat(Label_RoundChrg.Caption) - StrToFloat(Label_AccAmt.Caption)) <= 0.2 Then
+               Label_AccAmt.Caption := Label_RoundChrg.Caption;
+
+          pf_TotalAmt := StrToFloat(Label_AccAmt.Caption);
+          Label_AccPer.Caption := FormatFloat('0.00', (pf_TotalAmt / pf_RoundChrg) * 100);
+     End
+     Else
+     Begin
+          Label_AccPer.Caption := FormatFloat('0.00', StrToFloat(Edit_PerMainDoc.Text) + StrToFloat(Edit_Per2ndDoc.Text) + StrToFloat
+                 (Edit_Per3rdDoc.Text));
+          pf_TotPer := StrToFloat(Label_AccPer.Caption);
+          Label_AccAmt.Caption := FormatFloat('0.00', (pf_TotPer * pf_RoundChrg) / 100);
+
+          IF Abs(StrToFloat(Label_RoundChrg.Caption) - StrToFloat(Label_AccAmt.Caption)) <= 0.2 Then
+               Label_AccAmt.Caption := Label_RoundChrg.Caption;
+
+          pf_TotalAmt := StrToFloat(Label_AccAmt.Caption);
+     End;
+End;
+
+procedure TForm_DoctorRoundVisit.CB_PercentBasisClick(Sender: TObject);
+begin
+     IF CB_PercentBasis.Checked = true Then
+     Begin
+          Edit_AmtMainDoc.ReadOnly := true;
+          Edit_AmtMainDoc.Color := clScrollBar;
+
+          Edit_Amt2ndDoc.ReadOnly := true;
+          Edit_Amt2ndDoc.Color := clScrollBar;
+
+          Edit_Amt3rdDoc.ReadOnly := true;
+          Edit_Amt3rdDoc.Color := clScrollBar;
+
+          Edit_PerMainDoc.ReadOnly := False;
+          Edit_PerMainDoc.Color := clWhite;
+
+          Edit_Per2ndDoc.ReadOnly := False;
+          Edit_Per2ndDoc.Color := clWhite;
+
+          Edit_Per3rdDoc.ReadOnly := False;
+          Edit_Per3rdDoc.Color := clWhite;
+          Edit_PerMainDoc.SetFocus;
+     End
+     Else
+     Begin
+          Edit_AmtMainDoc.ReadOnly := False;
+          Edit_AmtMainDoc.Color := clWhite;
+
+          Edit_Amt2ndDoc.ReadOnly := False;
+          Edit_Amt2ndDoc.Color := clWhite;
+
+          Edit_Amt3rdDoc.ReadOnly := False;
+          Edit_Amt3rdDoc.Color := clWhite;
+
+          Edit_PerMainDoc.ReadOnly := true;
+          Edit_PerMainDoc.Color := clScrollBar;
+
+          Edit_Per2ndDoc.ReadOnly := true;
+          Edit_Per2ndDoc.Color := clScrollBar;
+
+          Edit_Per3rdDoc.ReadOnly := true;
+          Edit_Per3rdDoc.Color := clScrollBar;
+          Edit_AmtMainDoc.SetFocus;
+     End;
+end;
+
+Function TForm_DoctorRoundVisit.DivideRoundChrgForMultiDoc: Boolean;
+var
+     ls_NoOfDoctor: String;
+Begin
+     ps_TodaysDate := ServerDate.TodaysDate;
+     ps_TodaysTime := ServerDate.TodaysTime;
+
+     IF (DBLCB_2ndDoc.KeyValue <> NULL) and (DBLCB_3rdDoc.KeyValue = NULL) Then
+          ls_NoOfDoctor := 'Double'
+     Else
+          ls_NoOfDoctor := 'Multiple';
+
+     With Query_Process do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select Discharged From InpatientReg where InpatientId=' + IntToStr(pi_InpatientId));
+          Open;
+     End;
+
+     IF Query_Process.FieldByName('Discharged').asString = 'YES' Then
+          b_IsDischargePt := true
+     Else
+          b_IsDischargePt := False;
+
+     Try
+          DM_Hospital.Db.StartTransaction;
+
+          Query_DocService_SubDivide.First;
+          While Not Query_DocService_SubDivide.EOF do
+          Begin
+               pf_RoundChrg := Query_DocService_SubDivide.FieldByName('VISITCHARGE').AsFloat;
+               pf_RoundChrgVatAmt := Query_DocService_SubDivide.FieldByName('VatAmt').AsFloat;
+               pf_DoctorPart := Query_DocService_SubDivide.FieldByName('DoctorPart').AsFloat;
+               pf_HosPart := Query_DocService_SubDivide.FieldByName('HospitalPart').AsFloat;
+
+               IF CB_DocAllIncomeDivide.Checked = true Then
+               Begin
+                    Edit_AmtMainDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_PerMainDoc.Text) * pf_RoundChrg) / 100));
+                    Edit_Amt2ndDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_Per2ndDoc.Text) * pf_RoundChrg) / 100));
+                    Edit_Amt3rdDoc.Text := FloatToStr(RoundingAfterSecondPlace((StrToFloat(Edit_Per3rdDoc.Text) * pf_RoundChrg) / 100));
+               End;
+
+               pi_DOCTORROUNDVISITId := GetMaxId('DOCTORROUNDVISIT', 'DOCTORROUNDVISITId');
+               with Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Insert Into DOCTORROUNDVISIT(DOCTORROUNDVISITId,DocCode,PatientID,InPatientId,VisitDate,');
+                    sql.add(' NoOfDoctor,DayStatus,VisitCharge,DoctorPart,HospitalPart,VatAmt,DisPer,UserId,');
+                    sql.add(' ModifyTime,PatientType,IsUserDefineRate,IsChargeDivide,DivideBy,DivideDate,');
+                    sql.add(' RefDocSvrId,BillDate,BillNo,RoomTypeCode) Values(' + IntToStr(pi_DOCTORROUNDVISITId)
+                           + ' ,' + #39 + DBLCB_2ndDoc.KeyValue + #39);
+                    sql.add(' ,' + IntToStr(pi_PatientId) + ',' + IntToStr(pi_InpatientId));
+                    sql.add(' ,' + #39 + Query_DocService_SubDivide.FieldByName('VisitDate')
+                           .asString + #39 + ',' + #39 + ls_NoOfDoctor + #39);
+                    sql.add(' ,' + #39 + Query_DocService_SubDivide.FieldByName('DayStatus').asString + #39 + ' ,' + Edit_Amt2ndDoc.Text);
+                    sql.add(' ,' + FloatToStr((pf_DoctorPart * StrToFloat(Edit_Per2ndDoc.Text)) / 100));
+                    sql.add(' ,' + FloatToStr((pf_HosPart * StrToFloat(Edit_Per2ndDoc.Text)) / 100));
+                    sql.add(' ,' + FloatToStr(pf_RoundChrgVatAmt * StrToFloat(Edit_Per2ndDoc.Text) / 100));
+                    sql.add(' ,' + Query_DocService_SubDivide.FieldByName('DisPer').asString + ' ,' + IntToStr(gi_UserId));
+                    sql.add(' ,' + #39 + ps_TodaysTime + #39 + ' ,' + #39 + Query_DocService_SubDivide.FieldByName('PatientType')
+                           .asString + #39);
+                    // sql.add(' ,'+#39+Query_DocService.Fieldbyname('IsUserDefineRate').AsString+#39);
+                    sql.add(' ,''Y''');
+                    sql.add(' ,''Y'',' + IntToStr(gi_UserId) + ',' + #39 + ps_TodaysDate + #39);
+                    sql.add(' ,' + Query_DocService_SubDivide.FieldByName('DOCTORROUNDVISITId').asString);
+                    sql.add(' ,' + #39 + Query_DocService_SubDivide.FieldByName('BillDate').asString + #39);
+                    sql.add(' ,' + #39 + Query_DocService_SubDivide.FieldByName('BillNo').asString + #39);
+                    sql.add(' ,' + #39 + Query_DocService_SubDivide.FieldByName('RoomTypeCode').asString + #39 + ')');
+                    ExecSQL;
+
+                    { Update The Fraction Of Previous One }
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update DOCTORROUNDVISIT Set NoOfDoctor=' + #39 + ls_NoOfDoctor + #39 + ',VisitCharge=' +
+                           Edit_AmtMainDoc.Text);
+                    sql.add(' ,VatAmt=' + FloatToStr((pf_RoundChrgVatAmt * StrToFloat(Edit_PerMainDoc.Text)) / 100));
+                    sql.add(' ,HospitalPart=' + FloatToStr((pf_HosPart * StrToFloat(Edit_PerMainDoc.Text)) / 100));
+                    sql.add(' ,DoctorPart=' + FloatToStr((pf_DoctorPart * StrToFloat(Edit_PerMainDoc.Text)) / 100));
+                    sql.add(' ,DivideDate=' + #39 + ps_TodaysDate + #39 + ',IsChargeDivide=''Y'',DivideBy=' + IntToStr(gi_UserId));
+                    sql.add(' ,IsUserDefineRate=''Y'',RefDocSvrId=' + Query_DocService_SubDivide.FieldByName('DOCTORROUNDVISITId')
+                           .asString);
+                    sql.add(' where DOCTORROUNDVISITId=' + Query_DocService_SubDivide.FieldByName('DOCTORROUNDVISITId').asString);
+                    ExecSQL;
+
+                    { Update The Fraction Of Previous One }
+                    IF DBLCB_3rdDoc.KeyValue <> NULL Then
+                    Begin
+                         pi_DOCTORROUNDVISITId := GetMaxId('DOCTORROUNDVISIT', 'DOCTORROUNDVISITId');
+                         Close;
+                         sql.Clear;
+                         sql.add(' Insert Into DOCTORROUNDVISIT(DOCTORROUNDVISITId,DocCode,PatientID,InPatientId,VisitDate,');
+                         sql.add(' NoOfDoctor,DayStatus,VisitCharge,DoctorPart,HospitalPart,VatAmt,DisPer,UserId,');
+                         sql.add(' ModifyTime,PatientType,IsUserDefineRate,IsChargeDivide,DivideBy,DivideDate,');
+                         sql.add(' RefDocSvrId,BillDate,BillNo,RoomTypeCode) Values(' + IntToStr(pi_DOCTORROUNDVISITId)
+                                + ' ,' + #39 + DBLCB_3rdDoc.KeyValue + #39);
+                         sql.add(' ,' + IntToStr(pi_PatientId) + ',' + IntToStr(pi_InpatientId));
+                         sql.add(' ,' + #39 + Query_DocService_SubDivide.FieldByName('VisitDate')
+                                .asString + #39 + ',' + #39 + ls_NoOfDoctor + #39);
+                         sql.add(' ,' + #39 + Query_DocService_SubDivide.FieldByName('DayStatus')
+                                .asString + #39 + ' ,' + Edit_Amt3rdDoc.Text);
+                         sql.add(' ,' + FloatToStr((pf_DoctorPart * StrToFloat(Edit_Per3rdDoc.Text)) / 100));
+                         sql.add(' ,' + FloatToStr((pf_HosPart * StrToFloat(Edit_Per3rdDoc.Text)) / 100));
+                         sql.add(' ,' + FloatToStr(pf_RoundChrgVatAmt * StrToFloat(Edit_Per3rdDoc.Text) / 100));
+                         sql.add(' ,' + Query_DocService_SubDivide.FieldByName('DisPer').asString + ' ,' + IntToStr(gi_UserId));
+                         sql.add(' ,' + #39 + ps_TodaysTime + #39 + ' ,' + #39 + Query_DocService_SubDivide.FieldByName('PatientType')
+                                .asString + #39);
+                         // sql.add(' ,'+#39+Query_DocService.Fieldbyname('IsUserDefineRate').AsString+#39);
+                         sql.add(' ,''Y''');
+                         sql.add(' ,''Y'',' + IntToStr(gi_UserId) + ',' + #39 + ps_TodaysDate + #39);
+                         sql.add(' ,' + Query_DocService_SubDivide.FieldByName('DOCTORROUNDVISITId').asString);
+                         sql.add(' ,' + #39 + Query_DocService_SubDivide.FieldByName('BillDate').asString + #39);
+                         sql.add(' ,' + #39 + Query_DocService_SubDivide.FieldByName('BillNo').asString + #39);
+                         sql.add(' ,' + #39 + Query_DocService_SubDivide.FieldByName('RoomTypeCode').asString + #39 + ')');
+                         ExecSQL;
+                    End;
+               End;
+               Query_DocService_SubDivide.Next;
+          End;
+
+          IF b_IsDischargePt = true Then
+               RoundCharge_Frct_Post_Medicare_Dynamic;
+
+          DM_Hospital.Db.commit;
+          ShowDoneMessage;
+          Result := true;
+     Except
+          DM_Hospital.Db.Rollback;
+          MessageDlg('Failure To Save Data. Plz. Contact With System Administrator.', mtWarning, [mbok], 0);
+          Result := False;
+          Exit;
+     End;
+End;
+
+procedure TForm_DoctorRoundVisit.RoundCharge_Frct_Post_Medicare_Dynamic;
+Var
+     ls_Description, ls_PayType, ls_DocCode, ls_BillNo, ls_BillDate: String;
+     lf_CommRate, lf_CommAmt, lf_CostPrice, lf_CommRateDivide, lf_CommAmtDivide: Double;
+     li_Qty: Integer;
+Begin
+     (* ls_Description:='IP CONSULTATION';
+       With Query_Process Do
+       Begin
+       Close;
+       DatabaseName:=gs_DatabaseName;
+       sql.Clear;
+       sql.Add(' Select BillDate,BillNo,DocCode,PatientType,VisitCharge,DisPer,Count(DocCode) TotalDays');
+       sql.Add(' ,Sum(VisitCharge-(VisitCharge*DisPer/100)) TotalVisitCharge');
+       sql.Add(' From DOCTORROUNDVISIT Where InPatientID='+IntToStr(pi_InPatientId));
+       sql.Add(' Group By BillDate,BillNo,DocCode,PatientType,VisitCharge,DisPer');
+       Open;
+       First;
+       While Not Eof Do
+       Begin
+       ls_BillDate:=Query_Process.FieldByName('BillDate').AsString;
+       ls_DocCode:=Query_Process.FieldByName('DocCode').AsString;
+       ls_BillNo:=Query_Process.FieldByName('BillNo').AsString;
+       IF Copy(ls_BillNo,1,2)='CS' Then
+       ls_PayType:='CASH'
+       Else
+       ls_PayType:='CREDIT';
+
+       With Query_SubProcess Do
+       Begin
+       Close;
+       sql.Clear;
+       sql.Add(' Select 100-HosPartPercent as DocRatePer from DoctorRate ');
+       sql.Add(' where RoomTypeCode='+#39+Query_Process.FieldByName('PatientType').AsString+#39);
+       Open;
+       End;
+
+       lf_CommRate:=Query_SubProcess.FieldByName('DocRatePer').AsFloat;
+       lf_CommAmt:=Query_Process.FieldByName('VisitCharge').AsFloat*(lf_CommRate/100);
+       lf_CostPrice:=Query_Process.FieldByName('VisitCharge').AsFloat;
+       li_Qty:=Query_Process.FieldByName('TotalDays').AsInteger;
+
+
+       IF Check_DocSvr_Division(ls_doccode)=True Then
+       begin
+       Query_GetDocSvrDivision.First;
+       While not Query_GetDocSvrDivision.Eof do
+       begin
+       ls_doccode:=Query_GetDocSvrDivision.fieldbyname('doccode').asstring;
+       lf_CommRateDivide:=Query_GetDocSvrDivision.fieldbyname('docrate').asfloat;
+       lf_CommAmtDivide:=lf_CommAmt*lf_commratedivide/100;
+
+       {    DrProcedures_DocSvr_Break(DocCode:String;DrComID,PositionWiseCommId,PatientId,InPatientID,BillDetailId,DepId,ModifyBy:Integer;
+       TestNameCode,BillNo,BillDate,BillType,PayType,IsFractionPropWithDisPer,IsHospitalPart,AddAmtType,IsOperation,Description,
+       ModifyDate,ModifyTime,DisDate,Remarks:String;
+       DocRatePer,DocCommAmt,AddedPercent,AddedAmt,DisPer,Qty,UnitTestCost:Double);    }
+
+       IF Check_Already_Record_Exist(pi_InPatientId,Query_Process.FieldByName('VisitCharge').AsFloat,ls_DocCode,Query_Process.FieldByName('PatientType').AsString)=False Then
+       DrProcedures_DocSvr_Break(ls_DocCode,0,0,pi_PatientId,pi_InPatientId,0,81,gi_UserId,// 81 -Round Charg depId
+       Query_Process.FieldByName('PatientType').AsString,
+       ls_BillNo,ls_BillDate,'IP',ls_PayType,'N','N','','N',ls_Description,ps_TodaysDate,ps_TodaysTime,
+       ls_BillDate,'IP Con. Sub divide',gs_MacID,lf_CommRate, lf_CommAmt,0,0,
+       Query_Process.FieldByName('DisPer').AsFloat,li_Qty,lf_CostPrice)
+       Else
+       Begin
+       With QueryVoid do
+       Begin
+       Close;
+       sql.Clear;
+       sql.add(' Update DrProcedures set DocCommession='+FloatToStr(lf_CommAmt)+',DocRatePer='+FloatToStr(lf_CommRate));
+       sql.add(' ,UnitTestCost='+FloatToStr(lf_CostPrice)+', Qty='+IntToStr(li_Qty));
+       sql.add(' ,ModifyBy='+IntToStr(gi_UserId)+',ModifyDate='+#39+ps_TodaysDate+#39+',ModifyTime='+#39+ps_TodaysTime+#39);
+       sql.add(' where InpatientId='+FloatToStr(pi_InpatientId)+' and DocCode='+#39+ls_DocCode+#39);
+       sql.add(' and TestNameCode='+#39+Query_Process.FieldByName('PatientType').AsString+#39);
+       sql.add(' and Description=''IP CONSULTATION''');
+       IF b_ActiveResetDocRound=True Then
+       sql.add(' and UnitTestCost='+FloatToStr(lf_CostPrice));
+       ExecSQL;
+       End;
+       End;
+       Query_GetDocSvrDivision.Next;
+       end;
+       end
+       Else
+       Begin
+       IF Check_Already_Record_Exist(pi_InPatientId,Query_Process.FieldByName('VisitCharge').AsFloat,ls_DocCode, Query_Process.FieldByName('PatientType').AsString)=False Then
+       DrProcedures_DocSvr_Break(ls_DocCode,0,0,pi_PatientId,pi_InPatientId,0,81,gi_UserId,// 81 -Round Charg depId
+       Query_Process.FieldByName('PatientType').AsString,
+       ls_BillNo,ls_BillDate,'IP',ls_PayType,'N','N','','N',ls_Description,ps_TodaysDate,ps_TodaysTime,
+       ls_BillDate,'IP Con. Sub divide',gs_MacID,lf_CommRate, lf_CommAmt,0,0,
+       Query_Process.FieldByName('DisPer').AsFloat,li_Qty,lf_CostPrice)
+       Else
+       Begin
+       With QueryVoid do
+       Begin
+       Close;
+       sql.Clear;
+       sql.add(' Update DrProcedures set DocCommession='+FloatToStr(lf_CommAmt)+',DocRatePer='+FloatToStr(lf_CommRate));
+       sql.add(' ,UnitTestCost='+FloatToStr(lf_CostPrice)+', Qty='+IntToStr(li_Qty));
+       sql.add(' ,ModifyBy='+IntToStr(gi_UserId)+',ModifyDate='+#39+ps_TodaysDate+#39+',ModifyTime='+#39+ps_TodaysTime+#39);
+       sql.add(' where InpatientId='+FloatToStr(pi_InpatientId)+' and DocCode='+#39+ls_DocCode+#39);
+       sql.add(' and TestNameCode='+#39+Query_Process.FieldByName('PatientType').AsString+#39);
+       sql.add(' and Description=''IP CONSULTATION''');
+       IF b_ActiveResetDocRound=True Then
+       sql.add(' and UnitTestCost='+FloatToStr(lf_CostPrice));
+       ExecSQL;
+       End;
+       End;
+
+       End;
+       Query_Process.Next;
+       End;
+       End; *)
+End;
+
+Function TForm_DoctorRoundVisit.Check_DocSvr_Division(doccode: string): Boolean;
+Begin
+     With Query_GetDocSvrDivision do
+     begin
+          Close;
+          sql.Clear;
+          sql.add(' select DRCDID,DocCode,DocRate,ISREFCHRGDIVIDE From DOCROUNDCHARGEDIVIDE where DRGID=');
+          sql.add(' (select DRGID From DOCROUNDCHARGEDIVIDE Where DocCode=' + #39 + doccode + #39 + ')');
+          Open;
+     end;
+
+     If Query_GetDocSvrDivision.FieldByName('DRCDID').AsInteger >= 1 Then
+          Result := true
+     else
+          Result := False;
+End;
+
+procedure TForm_DoctorRoundVisit.SP_ResetChrgDivideClick(Sender: TObject);
+begin
+     IF Query_DocService.FieldByName('IsChargeDivide').asString = 'N' Then
+     Begin
+          MessageDlg('Sorry ! You Cannot Reset Round Charge Divide For This Row.', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     IF Query_DocService.FieldByName('IsFractionLocked').asString = 'Y' Then
+     Begin
+          MessageDlg(' Sorry ! You Cannot Reset Round Charge Divide, Fraction Is Already Locked.', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     IF MessageDlg('Are You Sure To Reset Round Charge Divide.', mtConfirmation, [mbyes, mbno], 0) = mrYes Then
+     Begin
+          IF CB_ResetAll.Checked = true Then
+          Begin
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(
+                         ' Select RefDocSvrId,Sum(VisitCharge) as VisitCharge,Sum(VatAmt) as VatAmt,Sum(DoctorPart) as DoctorPart,Sum(HospitalPart) as HospitalPart');
+                    sql.add(
+                         ' From DOCTORROUNDVISIT where RefDocSvrId In (Select Distinct RefDocSvrId From DOCTORROUNDVISIT where InpatientId=:InpatientId and RefDocSvrId > 0)');
+                    sql.add(
+                         ' and DOCTORROUNDVISITId not In (Select Distinct RefDocSvrId From DOCTORROUNDVISIT where InpatientId=:InpatientId and RefDocSvrId > 0)');
+                    sql.add(' Group by RefDocSvrId Order by RefDocSvrId');
+                    ParamByName('InpatientId').AsInteger := pi_InpatientId;
+                    Open;
+               End;
+          End
+          Else
+          Begin
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(
+                         ' Select RefDocSvrId,Sum(VisitCharge) as VisitCharge,Sum(VatAmt) as VatAmt,Sum(DoctorPart) as DoctorPart,Sum(HospitalPart) as HospitalPart');
+                    sql.add(' From DOCTORROUNDVISIT where RefDocSvrId=' + IntToStr(Query_DocService.FieldByName('RefDocSvrId').AsInteger));
+                    sql.add(' and DOCTORROUNDVISITId<>' + IntToStr(Query_DocService.FieldByName('RefDocSvrId').AsInteger));
+                    sql.add(' Group by RefDocSvrId Order by RefDocSvrId');
+                    Open;
+               End;
+          End;
+
+          b_ActiveResetDocRound := true;
+
+          Try
+               DM_Hospital.Db.StartTransaction;
+
+               Query_Process.First;
+               while not Query_Process.EOF Do
+               Begin
+                    With Query_SubProcess do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Update DOCTORROUNDVISIT set VisitCharge=VisitCharge+' + Query_Process.FieldByName('VisitCharge')
+                                .asString);
+                         sql.add(' ,VatAmt=VatAmt+' + Query_Process.FieldByName('VatAmt').asString);
+                         sql.add(' ,DoctorPart=DoctorPart+' + Query_Process.FieldByName('DoctorPart').asString);
+                         sql.add(' ,HospitalPart=HospitalPart+' + Query_Process.FieldByName('HospitalPart').asString);
+                         sql.add(' ,DivideDate=' + #39 + ServerDate.TodaysDate + #39 + ',IsChargeDivide=''N'',DivideBy=' + IntToStr
+                                (gi_UserId));
+                         sql.add(' ,RefDocSvrId=0, NoOfDoctor=''Day Consultation''');
+                         sql.add(' where DOCTORROUNDVISITId=' + IntToStr(Query_Process.FieldByName('RefDocSvrId').AsInteger));
+                         ExecSQL;
+
+                         Close;
+                         sql.Clear;
+                         sql.add(' Delete From DOCTORROUNDVISIT where RefDocSvrId=' + IntToStr
+                                (Query_Process.FieldByName('RefDocSvrId').AsInteger));
+                         sql.add(' and DOCTORROUNDVISITId<>' + IntToStr(Query_Process.FieldByName('RefDocSvrId').AsInteger));
+                         ExecSQL;
+                    End;
+                    Query_Process.Next;
+               End;
+
+               IF b_IsDischargePt = true Then
+               Begin
+                    RoundCharge_Frct_Post_Medicare_Dynamic;
+
+                    Remove_Doc_Frct_WhoHaveNoRoundIn_DocSvr_ButExistIn_DrProcedure;
+
+               End;
+
+               DM_Hospital.Db.commit;
+               ShowDoneMessage;
+          Except
+               DM_Hospital.Db.Rollback;
+          End;
+
+          Query_DocService.Close;
+          Query_DocService.Open;
+
+          With Query_RoundChrgSummary do
+          Begin
+               Close;
+               ParamByName('InpatientId').AsInteger := pi_InpatientId;
+               Open;
+          End;
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.EditNoDayKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #8 Then
+          Exit;
+
+     IF Not(Key In ['0' .. '9']) Then
+     Begin
+          Key := #0;
+          Beep;
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.CBMultipleDayClick(Sender: TObject);
+begin
+     If CBMultipleDay.Checked = true Then
+     Begin
+          LblNoDay.Visible := true;
+          EditNoDay.Visible := true;
+          EditNoDay.Text := '';
+     End
+     Else
+     Begin
+          LblNoDay.Visible := False;
+          EditNoDay.Visible := False;
+          EditNoDay.Text := '0';
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.CB_ActivityByDateRangeClick(Sender: TObject);
+begin
+     If CB_ActivityByDateRange.Checked = true Then
+     Begin
+          DateEditX_FromDate.Enabled := true;
+          DateEditX_ToDate.Enabled := true;
+
+          DateEditX_FromDate.Color := clWhite;
+          DateEditX_ToDate.Color := clWhite;
+     End
+     Else
+     Begin
+          DateEditX_FromDate.Enabled := False;
+          DateEditX_ToDate.Enabled := False;
+
+          DateEditX_FromDate.Color := clScrollBar;
+          DateEditX_ToDate.Color := clScrollBar;
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.SPB_NoRoundTakenClick(Sender: TObject);
+begin
+     If DBLCB_VisitDoctor.KeyValue = NULL Then
+     Begin
+          MessageDlg('Please! Choose Doctor.', mtWarning, [mbok], 0);
+          DBLCB_VisitDoctor.SetFocus;
+          Exit;
+     End;
+
+     if CB_ActivityByDateRange.Checked = False then
+     Begin
+          IF MessageDlg('Are You Sure To Cancel Round Visit for This Particular Day (' + Query_DocService.FieldByName('VisitDate')
+                 .asString + ' ) ?', mtConfirmation, [mbyes, mbno], 0) = mrYes Then
+          Begin
+               with Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update DOCTORROUNDVISIT Set VisitCharge=0,VatAmt=0,HospitalPart=0,DoctorPart=0,ISUSERDEFINERATE=''Y''');
+                    sql.add(' where DOCTORROUNDVISITId=' + IntToStr(Query_DocService.FieldByName('DOCTORROUNDVISITId').AsInteger));
+                    ExecSQL;
+               End;
+               ShowDoneMessage;
+               Query_DocService.Close;
+               Query_DocService.Open;
+               Query_DocService.Last;
+          End;
+     End
+     Else
+     Begin
+
+          {IF CheckProperDateRange(DateEditX_FromDate, DateEditX_ToDate) = False Then
+          Begin
+               MessageDlg('Incorrect Date ! ' + Char(10) + Char(10) + '       Clue -> Either From Date or To Date.', mtWarning, [mbok], 0);
+               Exit;
+          End;
+
+          IF MessageDlg('Are You Sure To Make No Round Charge For This Particular Date Range ?', mtConfirmation, [mbyes, mbno], 0)
+            = mrYes Then
+          Begin
+               with Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update DOCTORROUNDVISIT Set VisitCharge=0,VatAmt=0,HospitalPart=0');
+                    sql.add(' ,DoctorPart=0,PatientType=''OPR'',IsUserDefineRate=''Y''');
+                    sql.add(' Where PatientID=' + IntToStr(pi_PatientId));
+                    sql.add(' And InPatientID=' + IntToStr(pi_InpatientId));
+                    sql.add(' And DocCode=' + Chr(39) + DBLCB_VisitDoctor.KeyValue + Chr(39));
+                    sql.add(' And VisitDate>=' + Chr(39) + DateEditX_FromDate.Text + Chr(39));
+                    sql.add(' And VisitDate<=' + Chr(39) + DateEditX_ToDate.Text + Chr(39));
+                    // sql.SaveToFile('Sql.txt');
+                    ExecSQL;
+               End;
+               ShowDoneMessage;
+               Query_DocService.Close;
+               Query_DocService.Open;
+               Query_DocService.Last;
+          End; }
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.CB_DocAllIncomeDivideClick(Sender: TObject);
+begin
+     IF CB_DocAllIncomeDivide.Checked = true Then
+     Begin
+          With Query_Process do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select Sum(VisitCharge) as VisitCharge From DOCTORROUNDVISIT where InpatientId=' + IntToStr(pi_InpatientId));
+               sql.add(' and DocCode=' + #39 + ps_DocCode + #39);
+               Open;
+          End;
+
+          Label_RoundChrg.Caption := Query_Process.FieldByName('VisitCharge').asString;
+          pf_RoundChrg := Query_Process.FieldByName('VisitCharge').AsFloat;
+
+          With Query_DocService_SubDivide do
+          Begin
+               Close;
+               sql[4] := ' DocCode=' + #39 + ps_DocCode + #39 + ' and InpatientId=' + IntToStr(pi_InpatientId);
+               Open;
+          End;
+     End
+     Else
+     Begin
+          With Query_DocService_SubDivide do
+          Begin
+               Close;
+               sql[4] := ' DOCTORROUNDVISITId=' + IntToStr(Query_DocService.FieldByName('DOCTORROUNDVISITId').AsInteger);
+               Open;
+          End;
+          Label_RoundChrg.Caption := Query_DocService_SubDivide.FieldByName('VisitCharge').asString;
+          pf_RoundChrg := Query_DocService_SubDivide.FieldByName('VisitCharge').AsFloat;
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.BitBtn_FromClick(Sender: TObject);
+begin
+    // ChangeDateSystem(DateEditX_FromDate, BitBtn_From);
+end;
+
+procedure TForm_DoctorRoundVisit.BitBtn_ToClick(Sender: TObject);
+begin
+    // ChangeDateSystem(DateEditX_ToDate, BitBtn_To);
+end;
+
+procedure TForm_DoctorRoundVisit.DBLCB_ExistingDocKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Delete Then
+          DBLCB_ExistingDoc.KeyValue := NULL;
+end;
+
+procedure TForm_DoctorRoundVisit.CB_MultipleDocShareClick(Sender: TObject);
+begin
+     IF CB_MultipleDocShare.Checked = true Then
+     Begin
+          With Query_MultipleDocShare do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select DocCode,(Select Desig||'' ''||F_Name From Doctor where DocCode=DrProcedures.DocCode) as DocName,');
+               sql.add(' TestNameCode as RoomType,Sum(DocCommession*Qty) as DocShare, Sum(DocCommession*Qty*DisPer/100) as DisAmount');
+               sql.add(' ,Sum(DocCommession*Qty - DocCommession*Qty*DisPer/100) NetShare,Sum(UnitTestCost*Qty) as TotalAmt');
+               sql.add(' From Drprocedures where InpatientId=' + IntToStr(pi_InpatientId) + ' and Description=''IP CONSULTATION''');
+               sql.add(' Group by DocCode,TestNameCode Order by DocCode,TestNameCode ');
+               Open;
+          End;
+
+          CB_FractionPostingBasis.Visible := true;
+          CB_FractionPostingBasis.Checked := False;
+          CB_FractionPostingBasis.Left := 582;
+          CB_FractionPostingBasis.Top := 239;
+
+          DBGrid_DoctorService.Visible := False;
+          DBGrid_MultipleDoctor.Visible := true;
+          DBGrid_MultipleDoctor.Left := DBGrid_DoctorService.Left;
+          DBGrid_MultipleDoctor.Height := DBGrid_DoctorService.Height;
+          DBGrid_MultipleDoctor.Top := DBGrid_DoctorService.Top;
+          DBGrid_MultipleDoctor.Width := DBGrid_DoctorService.Width;
+     End
+     Else
+     Begin
+          CB_FractionPostingBasis.Visible := False;
+
+          Query_MultipleDocShare.Close;
+          DBGrid_DoctorService.Visible := true;
+          DBGrid_MultipleDoctor.Visible := False;
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.DBLCB_RoomTypeClick(Sender: TObject);
+begin
+     if DBLCB_RoomType.KeyValue <> NULL then
+     Begin
+          Edit_UserDefineRoundChrg.Text := FloatToStr(Query_RoomType.FieldByName('RoundVisitCharge').AsFloat + Query_RoomType.FieldByName
+                 ('RoundVisitSvrTax').AsFloat);
+          LabelChrg.Caption := FloatToStr(Query_RoomType.FieldByName('RoundVisitCharge').AsFloat + Query_RoomType.FieldByName
+                 ('RoundVisitSvrTax').AsFloat);
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.DBLCB_RoomTypeKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #13 Then
+          BtnSave.SetFocus;
+end;
+
+procedure TForm_DoctorRoundVisit.CB_FractionPostingBasisClick(Sender: TObject);
+begin
+     IF CB_FractionPostingBasis.Checked = true Then
+     Begin
+          With Query_MultipleDocShare do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(
+                    ' Select DocCode,(Select Desig||'' ''||F_Name From Doctor where DocCode=DOCTORROUNDVISIT.DocCode) as DocName,'''' as RoomType,');
+               sql.add(
+                    ' Sum(DoctorPart) as DocShare,Sum(DoctorPart*DisPer/100) as DisAmount,Sum(DoctorPart-(DoctorPart*DisPer/100)) as NetShare');
+               sql.add(' From DOCTORROUNDVISIT where InpatientId=' + IntToStr(pi_InpatientId));
+               sql.add(' Group by InpatientId,DocCode ');
+               sql.add(' Order by InpatientId,DocCode ');
+               Open;
+          End;
+     End
+     Else
+     Begin
+          With Query_MultipleDocShare do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select DocCode,(Select Desig||'' ''||F_Name From Doctor where DocCode=DrProcedures.DocCode) as DocName,');
+               sql.add(' TestNameCode as RoomType,Sum(DocCommession*Qty) as DocShare, Sum(DocCommession*Qty*DisPer/100) as DisAmount');
+               sql.add(' ,Sum(DocCommession*Qty - DocCommession*Qty*DisPer/100) NetShare,Sum(UnitTestCost*Qty) as TotalAmt');
+               sql.add(' From Drprocedures where InpatientId=' + IntToStr(pi_InpatientId) + ' and Description=''IP CONSULTATION''');
+               sql.add(' Group by DocCode,TestNameCode Order by DocCode,TestNameCode ');
+               Open;
+          End;
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.BitBtnDocChangeFromClick(Sender: TObject);
+begin
+     //ChangeDateSystem(DateEditX_DocChangeFrom, BitBtnDocChangeFrom);
+end;
+
+procedure TForm_DoctorRoundVisit.CB_ChangeMainDocFromparticualDateClick(Sender: TObject);
+begin
+     IF CB_ChangeMainDocFromparticualDate.Checked = true Then
+     Begin
+          Label_From.Enabled := true;
+          DateEditX_DocChangeFrom.Enabled := true;
+          DateEditX_DocChangeFrom.Color := clWhite;
+          BitBtnDocChangeFrom.Enabled := true;
+     End
+     Else
+     Begin
+          Label_From.Enabled := False;
+          DateEditX_DocChangeFrom.Enabled := False;
+          DateEditX_DocChangeFrom.Color := clScrollBar;
+          BitBtnDocChangeFrom.Enabled := False;
+     End;
+end;
+
+procedure TForm_DoctorRoundVisit.BitBtn_InvToClick(Sender: TObject);
+begin
+    // ChangeDateSystem(DateEditXTo, BitBtn_InvTo);
+end;
+
+procedure TForm_DoctorRoundVisit.BitBtn_InvFromClick(Sender: TObject);
+begin
+//     ChangeDateSystem(DateEditXFrom, BitBtn_InvFrom);
+end;
+
+procedure TForm_DoctorRoundVisit.EditInptIdKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+     begin
+          with QueryVoid do
+          begin
+               Close;
+               DatabaseName := gs_DatabaseName;
+               sql.Clear;
+               sql.add('Select * form InpatientReg where INPatietnID =' + EditInptId.Text);
+               sql.add('And Discharged=''NO''');
+               Open;
+               If QueryVoid.FieldByName('InpatientId').asString = '' then
+               begin
+                    MessageDlg('Inpatient Already Discharged or Not Admitted', mtInformation, [mbok], 0);
+                    EditInptId.SetFocus;
+                    Exit
+               end;
+          end;
+     end;
+end;
+
+procedure TForm_DoctorRoundVisit.DBLCBDocInvolvedKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = VK_Delete then
+          DBLCBDocInvolved.KeyValue := NULL;
+end;
+
+procedure TForm_DoctorRoundVisit.BitBtnDelClick(Sender: TObject);
+begin
+     if MessageDlg('Are You Sure To Delete?', mtWarning, [mbyes, mbno], 0) = mrNo then
+          Exit
+     else
+     begin
+          Try
+               DM_Hospital.Db.StartTransaction;
+               with QueryVoid do
+               begin
+                    Close;
+                    DatabaseName := gs_DatabaseName;
+                    sql.Clear;
+                    sql.add(' Delete from DOCTORROUNDVISIT where IsExtraDocInvolved=''Y'' and DocCode=' + #39 +
+                           QueryDocInvolvedGrid.FieldByName('DocCode').asString + #39);
+                    sql.add(' and InpatientId=' + IntToStr(pi_InpatientId) + ' and VisitDate >=' + #39 + QueryDocInvolvedGrid.FieldByName
+                           ('InvolvedFrom').asString + #39);
+                    sql.add(' and VisitDate <=' + #39 + QueryDocInvolvedGrid.FieldByName('InvolvedFrom').asString + #39);
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add('Delete from ADDEXTRADOCTORINVOLVED where AddDocId= ' + QueryDocInvolvedGrid.FieldByName('AddDocId').asString);
+                    ExecSQL;
+               end;
+               DM_Hospital.Db.commit;
+               ShowDoneMessage;
+          Except
+               DM_Hospital.Db.Rollback;
+          End;
+     end;
+     QueryDocInvolvedGrid.Close;
+     QueryDocInvolvedGrid.Open;
+
+     // Now Change Accordingly to the DOCTORROUNDVISIT and Doctor procedure as well.................
+end;
+
+procedure TForm_DoctorRoundVisit.BitBtn2Click(Sender: TObject);
+begin
+    // ChangeDateSystem(DateEditXDisFrom, BitBtn2);
+end;
+
+procedure TForm_DoctorRoundVisit.BitBtn3Click(Sender: TObject);
+begin
+    // ChangeDateSystem(DateEditXDisTo, BitBtn3);
+end;
+
+procedure TForm_DoctorRoundVisit.Chk_AllDocDiscountClick(Sender: TObject);
+begin
+     Ps_DisDocCode := '''';
+     with QueryProcess do
+     begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          sql.Clear;
+          sql.add('select distinct DocCode from DOCTORROUNDVISIT where InPatientid = ' + IntToStr(pi_InpatientId));
+          // Sql.Add(' DocCode= '+#39+DBLCBDisDoctor.KeyValue+#39);
+          sql.add(' and VisitDate>=:FromDate and VisitDate<=:ToDate');
+          ParamByName('FromDate').asString := DateEditXDisFrom.Text;
+          ParamByName('ToDate').asString := DateEditXDisTo.Text;
+          Open;
+
+          while not EOF do
+          begin
+               Ps_DisDocCode := Ps_DisDocCode + ' ,' + #39 + QueryProcess.FieldByName('DocCode').asString + #39;
+               Next;
+          end;
+     end;
+end;
+
+procedure TForm_DoctorRoundVisit.EditDiscountExit(Sender: TObject);
+begin
+     IF Trim(EditDiscount.Text) = '' Then
+          EditDiscount.Text := '0';
+end;
+
+procedure TForm_DoctorRoundVisit.SPB_AddInvolvedDoctorClick(Sender: TObject);
+begin
+     PC_DoctorRoundVisit.ActivePageIndex := 3;
+     TS_ChangeMainDoc.TabVisible := False;
+     TS_DoctorService.TabVisible := False;
+     TS_AddInvolvedDoctor.TabVisible := true;
+     SpButtonDelete.Enabled := False;
+     BtnSave.Enabled := False;
+end;
+
+Function TForm_DoctorRoundVisit.Check_Already_Record_Exist(InpatientId: Integer; VisitCharge: Double; doccode, TestNameCode: String)
+  : Boolean;
+Begin
+     With QueryVoid do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select DrProcId From DrProcedures where InpatientId=' + IntToStr(InpatientId));
+          sql.add(' and DocCode=' + #39 + doccode + #39 + ' and TestNameCode=' + #39 + TestNameCode + #39);
+          sql.add(' and Description=''IP CONSULTATION''');
+          IF b_ActiveResetDocRound = true Then
+               sql.add(' and UnitTestCost=' + FloatToStr(VisitCharge));
+          Open;
+     End;
+
+     IF QueryVoid.FieldByName('DrProcId').AsInteger > 0 Then
+          Result := true
+     Else
+          Result := False;
+End;
+
+Procedure TForm_DoctorRoundVisit.Remove_Doc_Frct_WhoHaveNoRoundIn_DocSvr_ButExistIn_DrProcedure;
+Begin
+     With Query_Get_All_IPCons_Doc do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select InpatientId,UnitTestCost,TestNameCode,DocCode From DrProcedures where InpatientId=' + IntToStr(pi_InpatientId));
+          sql.add(' and Description=''IP CONSULTATION''');
+          Open;
+          First;
+          While Not EOF Do
+          Begin
+               With Query_CheckIn_DocSvrTable do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Select * From (Select BillDate,BillNo,DocCode,PatientType,VisitCharge,DisPer,Count(DocCode) TotalDays ');
+                    sql.add(' ,Sum(VisitCharge-(VisitCharge*DisPer/100)) TotalVisitCharge ');
+                    sql.add(' From DOCTORROUNDVISIT Where InPatientID=' + IntToStr(pi_InpatientId));
+                    sql.add(' Group By BillDate,BillNo,DocCode,PatientType,VisitCharge,DisPer) ');
+                    sql.add(' where VisitCharge=' + FloatToStr(Query_Get_All_IPCons_Doc.FieldByName('UnitTestCost').AsFloat));
+                    sql.add(' and PatientType=' + #39 + Query_Get_All_IPCons_Doc.FieldByName('TestNameCode').asString + #39);
+                    sql.add(' and DocCode=' + #39 + Query_Get_All_IPCons_Doc.FieldByName('DocCode').asString + #39);
+                    Open;
+               End;
+
+               IF Query_CheckIn_DocSvrTable.FieldByName('TotalDays').AsInteger = 0 Then
+               Begin
+                    with QueryVoid do
+                    Begin
+                         Close;
+                         DatabaseName := gs_DatabaseName;
+                         sql.Clear;
+                         sql.add(' Delete From DrProcedures where InpatientId=' + IntToStr(pi_InpatientId));
+                         sql.add(' and Description=''IP CONSULTATION''');
+                         sql.add(' and TestNameCode=' + #39 + Query_Get_All_IPCons_Doc.FieldByName('TestNameCode').asString + #39);
+                         sql.add(' and DocCode=' + #39 + Query_Get_All_IPCons_Doc.FieldByName('DocCode').asString + #39);
+                         sql.add(' and UnitTestCost=' + FloatToStr(Query_Get_All_IPCons_Doc.FieldByName('UnitTestCost').AsFloat));
+                         ExecSQL;
+                    End;
+               End;
+               Query_Get_All_IPCons_Doc.Next;
+          End;
+     End;
+End;
+
+END.

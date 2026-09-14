@@ -1,0 +1,4321 @@
+object Form_QRBill: TForm_QRBill
+  Left = 0
+  Top = 0
+  Caption = 'Form_QRBill'
+  ClientHeight = 640
+  ClientWidth = 982
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Scaled = False
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  PixelsPerInch = 96
+  TextHeight = 13
+  object QrBill: TQuickRep
+    Left = 0
+    Top = 1
+    Width = 922
+    Height = 510
+    Frame.Color = clBlack
+    Frame.DrawTop = False
+    Frame.DrawBottom = False
+    Frame.DrawLeft = False
+    Frame.DrawRight = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    Functions.Strings = (
+      'PAGENUMBER'
+      'COLUMNNUMBER'
+      'REPORTTITLE')
+    Functions.DATA = (
+      '0'
+      '0'
+      #39#39)
+    Options = [FirstPageHeader, LastPageFooter]
+    Page.Columns = 1
+    Page.Orientation = poPortrait
+    Page.PaperSize = Custom
+    Page.Continuous = True
+    Page.Values = (
+      230.000000000000000000
+      1350.000000000000000000
+      300.000000000000000000
+      2440.000000000000000000
+      100.000000000000000000
+      150.000000000000000000
+      0.000000000000000000)
+    PrinterSettings.Copies = 1
+    PrinterSettings.OutputBin = Auto
+    PrinterSettings.Duplex = False
+    PrinterSettings.FirstPage = 0
+    PrinterSettings.LastPage = 0
+    PrinterSettings.UseStandardprinter = False
+    PrinterSettings.UseCustomBinCode = False
+    PrinterSettings.CustomBinCode = 0
+    PrinterSettings.ExtendedDuplex = 0
+    PrinterSettings.UseCustomPaperCode = False
+    PrinterSettings.CustomPaperCode = 0
+    PrinterSettings.PrintMetaFile = False
+    PrinterSettings.PrintQuality = 0
+    PrinterSettings.Collate = 0
+    PrinterSettings.ColorOption = 0
+    PrintIfEmpty = True
+    ReportTitle = 'Tax Invoice'
+    SnapToGrid = True
+    Units = MM
+    Zoom = 100
+    PrevFormStyle = fsNormal
+    PreviewInitialState = wsMaximized
+    PrevInitialZoom = qrZoom100
+    PreviewDefaultSaveType = stQRP
+    PreviewLeft = 0
+    PreviewTop = 0
+    object GroupFooterBand1: TQRBand
+      Left = 38
+      Top = 213
+      Width = 828
+      Height = 193
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      AlignToBottom = False
+      Color = clWhite
+      TransparentBand = False
+      ForceNewColumn = False
+      ForceNewPage = False
+      Size.Values = (
+        510.645833333333300000
+        2190.750000000000000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = True
+      BandType = rbGroupFooter
+      object QRLabel28: TQRLabel
+        Left = 294
+        Top = 85
+        Width = 73
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          777.875000000000000000
+          224.895833333333300000
+          193.145833333333300000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'In Words [NPR]'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_Inwords: TQRLabel
+        Left = 294
+        Top = 103
+        Width = 270
+        Height = 30
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          79.375000000000000000
+          777.875000000000000000
+          272.520833333333300000
+          714.375000000000000000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = True
+        Caption = 'Fifteen Thousand twenty five only'
+        Color = clWhite
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        OnPrint = lbl_InwordsPrint
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel30: TQRLabel
+        Left = 7
+        Top = 103
+        Width = 65
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          18.520833333333330000
+          272.520833333333300000
+          171.979166666666700000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'Counter User'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_GrossAmount: TQRLabel
+        Left = 686
+        Top = 5
+        Width = 72
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1815.041666666667000000
+          13.229166666666670000
+          190.500000000000000000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = '00000.00'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_user: TQRLabel
+        Left = 81
+        Top = 103
+        Width = 30
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          214.312500000000000000
+          272.520833333333300000
+          79.375000000000000000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'User :'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel27: TQRLabel
+        Left = 582
+        Top = 5
+        Width = 81
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1539.875000000000000000
+          13.229166666666670000
+          214.312500000000000000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = 'Gross Amount'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel31: TQRLabel
+        Left = 582
+        Top = 24
+        Width = 81
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1539.875000000000000000
+          63.500000000000000000
+          214.312500000000000000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = 'Discount'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_Discount: TQRLabel
+        Left = 686
+        Top = 24
+        Width = 72
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1815.041666666667000000
+          63.500000000000000000
+          190.500000000000000000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = '00.00'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel33: TQRLabel
+        Left = 582
+        Top = 42
+        Width = 81
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1539.875000000000000000
+          111.125000000000000000
+          214.312500000000000000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = 'Taxable Amount'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_TaxableAmount: TQRLabel
+        Left = 686
+        Top = 42
+        Width = 72
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1815.041666666667000000
+          111.125000000000000000
+          190.500000000000000000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = '00.00'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel_TaxSystemCap: TQRLabel
+        Left = 582
+        Top = 59
+        Width = 81
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1539.875000000000000000
+          156.104166666666700000
+          214.312500000000000000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = '5% HST'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_Svrtax: TQRLabel
+        Left = 686
+        Top = 59
+        Width = 72
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1815.041666666667000000
+          156.104166666666700000
+          190.500000000000000000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = '00.00'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel40: TQRLabel
+        Left = 566
+        Top = 102
+        Width = 97
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1497.541666666667000000
+          269.875000000000000000
+          256.645833333333300000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = 'TOTAL AMOUNT'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_Total: TQRLabel
+        Left = 686
+        Top = 102
+        Width = 73
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1815.041666666667000000
+          269.875000000000000000
+          193.145833333333300000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = '00.00'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        OnPrint = lbl_TotalPrint
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel42: TQRLabel
+        Left = 674
+        Top = 5
+        Width = 5
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1783.291666666667000000
+          13.229166666666670000
+          13.229166666666670000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = ':'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel43: TQRLabel
+        Left = 674
+        Top = 24
+        Width = 5
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1783.291666666667000000
+          63.500000000000000000
+          13.229166666666670000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = ':'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel44: TQRLabel
+        Left = 674
+        Top = 42
+        Width = 5
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1783.291666666667000000
+          111.125000000000000000
+          13.229166666666670000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = ':'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel45: TQRLabel
+        Left = 674
+        Top = 59
+        Width = 5
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1783.291666666667000000
+          156.104166666666700000
+          13.229166666666670000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = ':'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel46: TQRLabel
+        Left = 674
+        Top = 102
+        Width = 5
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1783.291666666667000000
+          269.875000000000000000
+          13.229166666666670000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = ':'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel48: TQRLabel
+        Left = 73
+        Top = 103
+        Width = 5
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          193.145833333333300000
+          272.520833333333300000
+          13.229166666666670000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = ':'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel1: TQRLabel
+        Left = 504
+        Top = 118
+        Width = 159
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1333.500000000000000000
+          312.208333333333300000
+          420.687500000000000000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = 'DEPOSIT AMOUNT'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel4: TQRLabel
+        Left = 674
+        Top = 118
+        Width = 5
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1783.291666666667000000
+          312.208333333333300000
+          13.229166666666670000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = ':'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_depositamount: TQRLabel
+        Left = 686
+        Top = 118
+        Width = 73
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1815.041666666667000000
+          312.208333333333300000
+          193.145833333333300000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = '00.00'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel6: TQRLabel
+        Left = 550
+        Top = 134
+        Width = 113
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1455.208333333333000000
+          354.541666666666700000
+          298.979166666666700000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = 'BALANCE AMOUNT'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel11: TQRLabel
+        Left = 674
+        Top = 134
+        Width = 5
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1783.291666666667000000
+          354.541666666666700000
+          13.229166666666670000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = ':'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_balanceamt: TQRLabel
+        Left = 686
+        Top = 134
+        Width = 73
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1815.041666666667000000
+          354.541666666666700000
+          193.145833333333300000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = '00.00'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        OnPrint = lbl_balanceamtPrint
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRShape3: TQRShape
+        Left = 379
+        Top = 2
+        Width = 383
+        Height = 1
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          2.645833333333333000
+          1002.770833333333000000
+          5.291666666666667000
+          1013.354166666667000000)
+        XLColumn = 0
+        Pen.Color = -1
+        Shape = qrsRectangle
+        VertAdjust = 0
+      end
+      object QRLabel22: TQRLabel
+        Left = 7
+        Top = 117
+        Width = 90
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          18.520833333333330000
+          309.562500000000000000
+          238.125000000000000000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'Printed Date/Time :'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_Date: TQRLabel
+        Left = 7
+        Top = 131
+        Width = 262
+        Height = 15
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          39.687500000000000000
+          18.520833333333330000
+          346.604166666666700000
+          693.208333333333300000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = 'Printed Date'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_refundedtest: TQRLabel
+        Left = 379
+        Top = 139
+        Width = 79
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1002.770833333333000000
+          367.770833333333300000
+          209.020833333333300000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = '* Refunded Test'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel34: TQRLabel
+        Left = 249
+        Top = 172
+        Width = 329
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          658.812500000000000000
+          455.083333333333300000
+          870.479166666666700000)
+        XLColumn = 0
+        Alignment = taCenter
+        AlignToBand = True
+        AutoSize = False
+        AutoStretch = False
+        Caption = '** We wish you a good health **'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 9
+      end
+      object lbl_DepositFooter: TQRLabel
+        Left = 249
+        Top = 156
+        Width = 329
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          658.812500000000000000
+          412.750000000000000000
+          870.479166666666700000)
+        XLColumn = 0
+        Alignment = taCenter
+        AlignToBand = True
+        AutoSize = False
+        AutoStretch = False
+        Caption = 'Submission of deposit slip is MUST during bill clearance.'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 9
+      end
+      object QRLabel36: TQRLabel
+        Left = 7
+        Top = 165
+        Width = 128
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          18.520833333333330000
+          436.562500000000000000
+          338.666666666666700000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'User Name : (Your Name) '
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel41: TQRLabel
+        Left = 8
+        Top = 176
+        Width = 147
+        Height = 16
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          42.333333333333330000
+          21.166666666666670000
+          465.666666666666700000
+          388.937500000000000000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'Password : (Your Mobile No.) '
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel47: TQRLabel
+        Left = 7
+        Top = 151
+        Width = 210
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          18.520833333333330000
+          399.520833333333300000
+          555.625000000000000000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'View Report at : www.grandehospital.com'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRShape1: TQRShape
+        Left = 379
+        Top = 95
+        Width = 383
+        Height = 1
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          2.645833333333333000
+          1002.770833333333000000
+          251.354166666666700000
+          1013.354166666667000000)
+        XLColumn = 0
+        Pen.Color = -1
+        Shape = qrsRectangle
+        VertAdjust = 0
+      end
+      object QRLabel62: TQRLabel
+        Left = 68
+        Top = 53
+        Width = 4
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          179.916666666666700000
+          140.229166666666700000
+          10.583333333333330000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = ':'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel51: TQRLabel
+        Left = 550
+        Top = 77
+        Width = 113
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1455.208333333333000000
+          203.729166666666700000
+          298.979166666666700000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = 'Non-Taxable Amount'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel52: TQRLabel
+        Left = 674
+        Top = 77
+        Width = 5
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1783.291666666667000000
+          203.729166666666700000
+          13.229166666666670000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = ':'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_NonTaxable: TQRLabel
+        Left = 686
+        Top = 77
+        Width = 72
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1815.041666666667000000
+          203.729166666666700000
+          190.500000000000000000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = '00.00'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel54: TQRLabel
+        Left = 6
+        Top = 145
+        Width = 55
+        Height = 15
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          39.687500000000000000
+          15.875000000000000000
+          383.645833333333300000
+          145.520833333333300000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'Re-print By'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel56: TQRLabel
+        Left = 62
+        Top = 144
+        Width = 5
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          164.041666666666700000
+          381.000000000000000000
+          13.229166666666670000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Caption = ':'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_ReprintBy: TQRLabel
+        Left = 70
+        Top = 144
+        Width = 30
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          185.208333333333300000
+          381.000000000000000000
+          79.375000000000000000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'User :'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+    end
+    object QRLabel53: TQRLabel
+      Left = 245
+      Top = 234
+      Width = 55
+      Height = 17
+      Enabled = False
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        648.229166666666700000
+        619.125000000000000000
+        145.520833333333300000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Episode No'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = True
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel55: TQRLabel
+      Left = 306
+      Top = 234
+      Width = 4
+      Height = 17
+      Enabled = False
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        809.625000000000000000
+        619.125000000000000000
+        10.583333333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = ':'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = True
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object Lbl_EpisodeNo: TQRLabel
+      Left = 318
+      Top = 234
+      Width = 62
+      Height = 15
+      Enabled = False
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        39.687500000000000000
+        841.375000000000000000
+        619.125000000000000000
+        164.041666666666700000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Episode No'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      OnPrint = lbl_SchemePrint
+      ParentFont = False
+      Transparent = True
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object PageHeaderBand1: TQRBand
+      Left = 38
+      Top = 113
+      Width = 828
+      Height = 58
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      AfterPrint = PageHeaderBand1AfterPrint
+      AlignToBottom = False
+      Color = clWhite
+      TransparentBand = False
+      ForceNewColumn = False
+      ForceNewPage = False
+      Size.Values = (
+        153.458333333333300000
+        2190.750000000000000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
+      BandType = rbTitle
+      object lbl_headName: TQRLabel
+        Left = 332
+        Top = 1
+        Width = 84
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          878.416666666666700000
+          2.645833333333333000
+          222.250000000000000000)
+        XLColumn = 0
+        Alignment = taCenter
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'TAX INVOICE'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 10
+      end
+      object lbl_reprint: TQRLabel
+        Left = 338
+        Top = 20
+        Width = 69
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          894.291666666666700000
+          52.916666666666670000
+          182.562500000000000000)
+        XLColumn = 0
+        Alignment = taCenter
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = '(RE-PRINT)'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 10
+      end
+      object QRLabel17: TQRLabel
+        Left = 379
+        Top = 38
+        Width = 30
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1002.770833333333000000
+          100.541666666666700000
+          79.375000000000000000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'S. No.'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel37: TQRLabel
+        Left = 416
+        Top = 38
+        Width = 44
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1100.666666666667000000
+          100.541666666666700000
+          116.416666666666700000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'Services'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel38: TQRLabel
+        Left = 645
+        Top = 38
+        Width = 23
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1706.562500000000000000
+          100.541666666666700000
+          60.854166666666670000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'Rate'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel20: TQRLabel
+        Left = 673
+        Top = 38
+        Width = 18
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1780.645833333333000000
+          100.541666666666700000
+          47.625000000000000000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'Qty'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel39: TQRLabel
+        Left = 720
+        Top = 38
+        Width = 38
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1905.000000000000000000
+          100.541666666666700000
+          100.541666666666700000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'Amount'
+        Color = clWhite
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRShape2: TQRShape
+        Left = 379
+        Top = 55
+        Width = 383
+        Height = 1
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          2.645833333333333000
+          1002.770833333333000000
+          145.520833333333300000
+          1013.354166666667000000)
+        XLColumn = 0
+        Pen.Color = -1
+        Shape = qrsRectangle
+        VertAdjust = 0
+      end
+      object Lbl_Refund: TQRLabel
+        Left = 419
+        Top = 1
+        Width = 69
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1108.604166666667000000
+          2.645833333333333000
+          182.562500000000000000)
+        XLColumn = 0
+        Alignment = taCenter
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = '[ REFUND ]'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 10
+      end
+    end
+    object QRSubDetail1: TQRSubDetail
+      Left = 38
+      Top = 171
+      Width = 828
+      Height = 20
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      AfterPrint = QRSubDetail1AfterPrint
+      AlignToBottom = False
+      Color = clWhite
+      TransparentBand = False
+      ForceNewColumn = False
+      ForceNewPage = False
+      Size.Values = (
+        52.916666666666670000
+        2190.750000000000000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = True
+      Master = QrBill
+      DataSet = QueryBill
+      FooterBand = PageFooterBand1
+      PrintBefore = False
+      PrintIfEmpty = True
+      object QRDBText1: TQRDBText
+        Left = 416
+        Top = 2
+        Width = 205
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1100.666666666667000000
+          5.291666666666667000
+          542.395833333333300000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = True
+        Color = clWhite
+        DataSet = QueryBill
+        DataField = 'Test'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        OnPrint = QRDBText1Print
+        ParentFont = False
+        Transparent = True
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FullJustify = False
+        MaxBreakChars = 0
+        FontSize = 8
+      end
+      object QRDBText4: TQRDBText
+        Left = 624
+        Top = 2
+        Width = 44
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1651.000000000000000000
+          5.291666666666667000
+          116.416666666666700000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Color = clWhite
+        DataSet = QueryBill
+        DataField = 'Rate'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        Mask = '#0.00'
+        ParentFont = False
+        Transparent = True
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FullJustify = False
+        MaxBreakChars = 0
+        FontSize = 8
+      end
+      object QRDBText5: TQRDBText
+        Left = 672
+        Top = 1
+        Width = 19
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1778.000000000000000000
+          2.645833333333333000
+          50.270833333333330000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Color = clWhite
+        DataSet = QueryBill
+        DataField = 'Qty'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = True
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FullJustify = False
+        MaxBreakChars = 0
+        FontSize = 8
+      end
+      object QRDBText7: TQRDBText
+        Left = 707
+        Top = 1
+        Width = 51
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1870.604166666667000000
+          2.645833333333333000
+          134.937500000000000000)
+        XLColumn = 0
+        Alignment = taRightJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Color = clWhite
+        DataSet = QueryBill
+        DataField = 'Amount'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        Mask = '#0.00'
+        OnPrint = QRDBText7Print
+        ParentFont = False
+        Transparent = True
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FullJustify = False
+        MaxBreakChars = 0
+        FontSize = 8
+      end
+      object QRDBText2: TQRDBText
+        Left = 379
+        Top = 1
+        Width = 22
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          1002.770833333333000000
+          2.645833333333333000
+          58.208333333333330000)
+        XLColumn = 0
+        Alignment = taCenter
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Color = clWhite
+        DataSet = QueryBill
+        DataField = 'SN'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = True
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FullJustify = False
+        MaxBreakChars = 0
+        FontSize = 8
+      end
+    end
+    object PageFooterBand1: TQRBand
+      Left = 38
+      Top = 191
+      Width = 828
+      Height = 22
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      AlignToBottom = False
+      Color = clWhite
+      Enabled = False
+      TransparentBand = False
+      ForceNewColumn = False
+      ForceNewPage = False
+      Size.Values = (
+        58.208333333333330000
+        2190.750000000000000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = True
+      BandType = rbGroupFooter
+      object QRLabel5: TQRLabel
+        Left = 243
+        Top = 3
+        Width = 46
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          642.937500000000000000
+          7.937500000000000000
+          121.708333333333300000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'Sub Total'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel13: TQRLabel
+        Left = 302
+        Top = 4
+        Width = 4
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          799.041666666666700000
+          10.583333333333330000
+          10.583333333333330000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = ':'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_pagetotal: TQRLabel
+        Left = 316
+        Top = 3
+        Width = 46
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          836.083333333333300000
+          7.937500000000000000
+          121.708333333333300000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'Sub Total'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel14: TQRLabel
+        Left = 8
+        Top = 3
+        Width = 25
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          21.166666666666670000
+          7.937500000000000000
+          66.145833333333330000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'Page'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRLabel15: TQRLabel
+        Left = 57
+        Top = 3
+        Width = 11
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          150.812500000000000000
+          7.937500000000000000
+          29.104166666666670000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'of'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object lbl_totpage: TQRLabel
+        Left = 72
+        Top = 3
+        Width = 7
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          190.500000000000000000
+          7.937500000000000000
+          18.520833333333330000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = '2'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+      object QRSysData1: TQRSysData
+        Left = 38
+        Top = 3
+        Width = 15
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          100.541666666666700000
+          7.937500000000000000
+          39.687500000000000000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = False
+        Color = clWhite
+        Data = qrsPageNumber
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        ExportAs = exptText
+        FontSize = 8
+      end
+      object lbl_contd: TQRLabel
+        Left = 187
+        Top = 3
+        Width = 32
+        Height = 17
+        Enabled = False
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          494.770833333333300000
+          7.937500000000000000
+          84.666666666666670000)
+        XLColumn = 0
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 'Contd.'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        WrapStyle = BreakOnSpaces
+        FontSize = 8
+      end
+    end
+    object QRLabel10: TQRLabel
+      Left = 45
+      Top = 133
+      Width = 31
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        119.062500000000000000
+        351.895833333333300000
+        82.020833333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Name '
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel12: TQRLabel
+      Left = 43
+      Top = 114
+      Width = 58
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        113.770833333333300000
+        301.625000000000000000
+        153.458333333333300000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Hospital No.'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel16: TQRLabel
+      Left = 45
+      Top = 167
+      Width = 46
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        119.062500000000000000
+        441.854166666666700000
+        121.708333333333300000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Address '
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object lbl_Addres: TQRLabel
+      Left = 118
+      Top = 167
+      Width = 43
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        312.208333333333300000
+        441.854166666666700000
+        113.770833333333300000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Address'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      OnPrint = lbl_AddresPrint
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object lbl_Name: TQRLabel
+      Left = 118
+      Top = 133
+      Width = 42
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        312.208333333333300000
+        351.895833333333300000
+        111.125000000000000000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Name '
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 10
+    end
+    object Lbl_HosNo: TQRLabel
+      Left = 116
+      Top = 114
+      Width = 77
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        306.916666666666700000
+        301.625000000000000000
+        203.729166666666700000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Hospital No.'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 10
+    end
+    object QRLabel18: TQRLabel
+      Left = 106
+      Top = 133
+      Width = 4
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        280.458333333333300000
+        351.895833333333300000
+        10.583333333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = ':'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel19: TQRLabel
+      Left = 105
+      Top = 114
+      Width = 4
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        277.812500000000000000
+        301.625000000000000000
+        10.583333333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = ':'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel21: TQRLabel
+      Left = 106
+      Top = 167
+      Width = 4
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        280.458333333333300000
+        441.854166666666700000
+        10.583333333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = ':'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel2: TQRLabel
+      Left = 45
+      Top = 151
+      Width = 60
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        119.062500000000000000
+        399.520833333333300000
+        158.750000000000000000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Age/Gender'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel3: TQRLabel
+      Left = 106
+      Top = 151
+      Width = 4
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        280.458333333333300000
+        399.520833333333300000
+        10.583333333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = ':'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object lbl_agesex: TQRLabel
+      Left = 118
+      Top = 151
+      Width = 21
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        312.208333333333300000
+        399.520833333333300000
+        55.562500000000000000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Age'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object lbl_billtype: TQRLabel
+      Left = 45
+      Top = 186
+      Width = 54
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        119.062500000000000000
+        492.125000000000000000
+        142.875000000000000000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Invoice No.'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object lbl_InvoiceNo: TQRLabel
+      Left = 118
+      Top = 186
+      Width = 68
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        312.208333333333300000
+        492.125000000000000000
+        179.916666666666700000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Invoice No'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 10
+    end
+    object QRLabel7: TQRLabel
+      Left = 106
+      Top = 186
+      Width = 4
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        280.458333333333300000
+        492.125000000000000000
+        10.583333333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = ':'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel8: TQRLabel
+      Left = 241
+      Top = 151
+      Width = 57
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        637.645833333333300000
+        399.520833333333300000
+        150.812500000000000000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Contact No.'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel9: TQRLabel
+      Left = 303
+      Top = 151
+      Width = 4
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        801.687500000000000000
+        399.520833333333300000
+        10.583333333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = ':'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object lbl_contactno: TQRLabel
+      Left = 314
+      Top = 151
+      Width = 61
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        830.791666666666700000
+        399.520833333333300000
+        161.395833333333300000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = '9851127038'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      OnPrint = lbl_contactnoPrint
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel23: TQRLabel
+      Left = 241
+      Top = 196
+      Width = 55
+      Height = 17
+      Enabled = False
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        637.645833333333300000
+        518.583333333333300000
+        145.520833333333300000)
+      XLColumn = 0
+      Alignment = taRightJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Refund No.'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object lbl_Refundno: TQRLabel
+      Left = 315
+      Top = 196
+      Width = 57
+      Height = 17
+      Enabled = False
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        833.437500000000000000
+        518.583333333333300000
+        150.812500000000000000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Refund No'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel25: TQRLabel
+      Left = 303
+      Top = 196
+      Width = 4
+      Height = 17
+      Enabled = False
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        801.687500000000000000
+        518.583333333333300000
+        10.583333333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = ':'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel24: TQRLabel
+      Left = 45
+      Top = 204
+      Width = 43
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        119.062500000000000000
+        539.750000000000000000
+        113.770833333333300000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Inv. Date'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel26: TQRLabel
+      Left = 106
+      Top = 204
+      Width = 4
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        280.458333333333300000
+        539.750000000000000000
+        10.583333333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = ':'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object lbl_InvoiceDate: TQRLabel
+      Left = 118
+      Top = 204
+      Width = 85
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        312.208333333333300000
+        539.750000000000000000
+        224.895833333333300000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = '2012/03/26 02:45'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel29: TQRLabel
+      Left = 241
+      Top = 180
+      Width = 58
+      Height = 17
+      Enabled = False
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        637.645833333333300000
+        476.250000000000000000
+        153.458333333333300000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Refund Bills'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel32: TQRLabel
+      Left = 303
+      Top = 180
+      Width = 4
+      Height = 17
+      Enabled = False
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        801.687500000000000000
+        476.250000000000000000
+        10.583333333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = ':'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object lbl_RefundBills: TQRLabel
+      Left = 315
+      Top = 180
+      Width = 7
+      Height = 17
+      Enabled = False
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        833.437500000000000000
+        476.250000000000000000
+        18.520833333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = '0'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QrBarcode: TQRAsBarcode
+      Left = 45
+      Top = 260
+      Width = 172
+      Height = 26
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        68.791666666666670000
+        119.062500000000000000
+        687.916666666666700000
+        455.083333333333300000)
+      XLColumn = 0
+      BarcodeHeight = 25
+      BarcodeWidth = 172
+      Modul = 1
+      Ratio = 2.000000000000000000
+      Text = 'DP68/69-0000129'
+      Typ = bcCode93
+    end
+    object QRLabel49: TQRLabel
+      Left = 45
+      Top = 220
+      Width = 40
+      Height = 15
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        39.687500000000000000
+        119.062500000000000000
+        582.083333333333300000
+        105.833333333333300000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Scheme'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel50: TQRLabel
+      Left = 106
+      Top = 220
+      Width = 4
+      Height = 15
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        39.687500000000000000
+        280.458333333333300000
+        582.083333333333300000
+        10.583333333333330000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = ':'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object lbl_Scheme: TQRLabel
+      Left = 118
+      Top = 220
+      Width = 46
+      Height = 15
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        39.687500000000000000
+        312.208333333333300000
+        582.083333333333300000
+        121.708333333333300000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Scheme'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      OnPrint = lbl_SchemePrint
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object Lbl_DocDept: TQRLabel
+      Left = 118
+      Top = 238
+      Width = 49
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        312.208333333333300000
+        629.708333333333300000
+        129.645833333333300000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Doc/Dept'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      OnPrint = lbl_SchemePrint
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRLabel61: TQRLabel
+      Left = 45
+      Top = 238
+      Width = 51
+      Height = 17
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        44.979166666666670000
+        119.062500000000000000
+        629.708333333333300000
+        134.937500000000000000)
+      XLColumn = 0
+      Alignment = taLeftJustify
+      AlignToBand = False
+      AutoSize = True
+      AutoStretch = False
+      Caption = 'Doc/Dept :'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      WordWrap = True
+      ExportAs = exptText
+      WrapStyle = BreakOnSpaces
+      FontSize = 8
+    end
+    object QRImage1: TQRImage
+      Left = 421
+      Top = 57
+      Width = 105
+      Height = 105
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = False
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Size.Values = (
+        277.812500000000000000
+        1113.895833333333000000
+        150.812500000000000000
+        277.812500000000000000)
+      XLColumn = 0
+      Picture.Data = {
+        0954506E67496D61676589504E470D0A1A0A0000000D494844520000010B0000
+        00CD0806000000AF93554F000000017352474200AECE1CE90000000467414D41
+        0000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000000
+        21744558744372656174696F6E2054696D6500323031363A30373A3037203137
+        3A32363A3439B1AD4AC80000549A4944415478DAED5D07981555D2ADEE170745
+        408288201800151154503120E6AC208A60023398C55D750DBFBAEAAEBAE68419
+        109460404982088281AC828244894A0E92665EECFEEBD4ED97665E849199D17B
+        FCE69379D3E1F67D5DE756D5AD60D80CD2D0D0D0C8014393858686463ED064A1
+        A1A191173459686868E4054D161A1A1A794193858686465ED064A1A1A1911734
+        59FC1D6047892CFC44C80E9590B56A36512448D686C564EC598F8CEAFB90B157
+        03326B35E437C245643A3F6454F4C8352A113459FC551109901D2E21FB8FDFC9
+        5A319DA2CBA791B57206D9C59B339E62F8AA9359BF0599FBB526F38013C8DCE7
+        10224F1119FC438659D14FA451C1D064F15742B898ECC036B2372FA7C8DC9114
+        9D3F86ECEDEB77FA72867F2F321B1E4DAEC32F2457A3A389F877C35FA3A29F52
+        A382A0C9A2AA834D0C1082BD792545981CA2BF8C267BDB9AF2BF8FCB43AE834E
+        26F751DDC8ACDB54CC1772FB2AFAE935762334595451D8A11DCAC4583E8522B3
+        3F226BF59CDD766FF838DC475EC6E4D19E8CDA07925154ABA2A7436337409345
+        15037C0ED69A39145DF825457F1A467670DB4E5C84BFF26818FFE037C02032DD
+        3BED9370B7EC48AE16179059FF302691FA153D3D1A7F2234595411D89B5790B5
+        EA278A2CF882A27347ECFC85AC88FC187B376149F713394E50D931F1F81591EC
+        045C07772057B3D3C975C009EADA1A7F3968B2A8E4B0FFF88DA2CB2653E4A74F
+        D8E49856FAAFAC2144C88E0499005853B02DF948B40597970C6FB5548D017F37
+        3DAC0D5C44AEC3CE2382B3B28435955FBFE1EBB329B37D3D19BE3D1384C1C7C3
+        DCA168485D17C096AACB43065F1FFF2F0D3844DD2DCE2373BF23655745E3AF03
+        4D1695148885882E9D4CD6D2EFF8FFDFA5FE115F19763E98288C9AFB91AB7E0B
+        326AED4FE4ABEEFC9D857CED7C8A2E9F4A0E7BA8739844DCAD2E21EF85FF2B73
+        BFC8D4B729F4D5B344A1EDCA2C01B1585172353D858CBA4D291E7311D842D6A6
+        65727D6BF33226A4EA4A2329058CC77DC4C564366AC3DAC6F1A46336AA3E3459
+        54226015B756CCA0E8AF5F93B5847F36FC5AFA0839C6B06C32F73F9ACCA6A791
+        B96F0B7235684D468DFD528FDCBA8AC2E3FE4B91F99FAB802C167E9807FEAB06
+        F1B10DCADE9C4D93E0B03B2932730019D5F696A02DF731D790A7C39D64EC5137
+        F5DA6212FD4CD115D328BA78A2109BE1A9969E34F6AC2784633669472EFE915D
+        148D2A094D16950036AFD4D15F27B1B93185ACDF7E247BFBBAB2074542626EB8
+        1AB626D7E16C461C7CAA1045AEEB96BC71B6F825603EB89A9F41BE4BDFC8787C
+        78CA5B141EF330F38A250159FEAB0632B134CC7A0F047C45168EA3E89C5164AD
+        F95902BBD26EA97A8A245603A689ABE9A962A668542D68B2A8208010A28BBE22
+        EBF71FC95A3B4F56EA846320E548360D76B089B11779DADD48AE16E74B9465BE
+        08BC7E2659EB178AEFC27DE879E4EDFC72C66323D3FB5168F4036487036C4274
+        22EFF94FB2565127AFFB4457CE246BE178B58DBB611193C65ECA9C49F34C26B6
+        5BEB3597B80DD7FEC79051FB800AFE3634F281268BDD0808AD05A16253C3DAB4
+        9C6CFE5D1C8899100DB3E0168B16E1E97017B91A1FEB0860FE080EBA8E4D85AF
+        C414315940FDBDBEC8786CF8F30729F4CD2BCA090AB238F73F6C36E447160A36
+        93DF2C8A7CFF3E457E18C4170C12F9AB673CDAF0EEC1A65163326A35662DE970
+        A52D21C45CA3524293C59F04C443D85B5793B56E81100442B0ED6D6B25BAD20E
+        6ECF7D012609ACEA9E53EE66B5FD74E5C0DC090407DFC01ACC78B535EAF291A7
+        FD1DE439E99632C7598B265070E4FD64FFB19C498A89E5B073C877C1D3128055
+        F0B3C309CAE64978D24B145DFAADDA6131B17392E5557379C8E467847FC4A8D9
+        50E236CCFA879351E76032AAE9A0AFCA80BF3D59606B32EB4B9C09BCC2635780
+        8A37C94E83BD7D2D595BD7A8DD820D4BD874D826EA3C05B6925DF2470103B284
+        4CDC2D3B91FB849BC9D5F048B515BA93080EBE9EC962827A46D62E8CBDF6255F
+        A717C96061C4CE07B24DAD153329FCD5FF28FAEB4422382A234111525FB7BE64
+        D6396897E636F2F3A714FE964D9FE22D445E3840F37C166F35C94331A09978F6
+        5099B1D5EB29428939493D453CBE83339A3B59C7C65A1BCC218DFCF1B7278B92
+        573BA8DD8282614866A78A84E4972F12E27F070BBF16A6DF0994B2596D37592D
+        F79EF64F320F399B57D4DABBFC7CC141D7CA8E85228B88EC9AF8BB0F95D55BC6
+        EEF691BD65158546FD8B227347A844B16848A2317D577EC06641F35D1B005FCB
+        5A3B9F429FDD2D91A7709E1A106EC468144A82489FE7F11A6EAFF3BB2984B153
+        64CAF35E74FBB7BB3CBF7F27FCEDC9A2F8B10A70AE39310C12EC84B4F006ADD8
+        D4E840EE1617B2D03E40EED69792AB65C772B95568E47D149935D409B4C28F49
+        AE66A791F7FCFFA82D512B4C91C96F5268E2F36A3C08BA0A97C856A7EFE29798
+        541AEDF218C2F083B0F9E53EA63B13C63C95F0B6F04BD1BA442BC03D2B2005BE
+        DA434B77FB3DAB3234593C71F04E6A1685C056C28A1FD6468C3A4D55ECC1FEC7
+        B09971B438010DC428B8BC92621E9EDC8768C746729FD88BD5EE2699AF8AC84D
+        869125FB3332AD2F85BE7C9C9FD1521F40BBD8B32E792FF89F90067631C2A31F
+        20EBB759A2FACB758B3792F7F407C9D3E10EF173A47B1EBB648B6CE7C234C838
+        BEADAB293CE17F92BFE23DFD7EB5EB01A24488399B68D6BA79421AD682F16CD2
+        2D519A03B404D114FEFC202E4D1685419345B991456C1A9D973CAE1A1B64D6DC
+        9F89A10D99FBB624D78127AA842BA8E199565426013844A34BBE23AB788308B7
+        59A3A1045AE19CE8EFB359E0022CCCBDD96C69927D54C59B65FBD4DEB1418D11
+        B67A9D666C62BCA7B486503185BE7894C2DFBDC1664F4DB9AED9E008F25EFCB2
+        EC9E647B5E0B3E89EFDF977FBB9A9C204468B14963B8FDEA7EBE3DC955EF10B5
+        D59B695704A610767DE0F359319D358FB914FDF55BB2362E4E3845E3AF68A939
+        DE4568B2280C9A2C0A260BE7E51521371C8137D4EFFC6FC35F4BB601CDC66D45
+        508C7DF8C75F33B15A16625F630703CED30042B071BA870C6F918AF45C3C91CD
+        887A64363A4ADD3B79352E750F6BF54F141C769772E6B2409B75992C2EEF27FE
+        0B3BB895C263982C10B9098721139AF782A7CAC672C4CD18E7DF3C67D69695AC
+        91FC40EEC33BA63819C5B18B8851F816CC427C13090D4C9E91C70D7F87BD7681
+        448B4A9D0ECCB715758EB3123F85CE2D69B228149A2C0A210B4C159B0B50FB8D
+        BD0F20B35A6D321A1EC9425B9B57E16664D43B54256FED0A6242609A2AB4DBBB
+        67C643214CD1799FAB1D82BDF6550154351A9151B417A55B7DAD6553582B9925
+        CF00F3071A84BDE57789C034D8FC217E06044A41332833ACEDEBC4ACA0923FD8
+        04D9CCE6CB8F4C288792FBC8AE6906C644F2C70A892331EB1E22F343200E9777
+        D7A626B88368EBEF1445942BB6A1372C66CD6993D41295547DD6920A81268BC2
+        A0C9A200B2C096A6E7F00BC973D133E55BF00519A3F029B08620BB2A81ADBCEA
+        A33644E69512C28194F5E8EC8FD45622AFAAE63E8792D9E4781E5BCDB419A189
+        932D556E0F65F278E5B70D5BFE9F118EA9803C136C031B786358C3319B1CA7E2
+        227C994D0CC97359F70B6B2CAD2476021A8881B179F728BFF963843E7F882233
+        0716748E268BC2A0C9A250330484D1A137B94FBC79E7EB514A95ED62A5AABBDC
+        6421560341589E3DC9A88924AF2C3B03D1900A155F385EC6ED6E7365CA8A8DB2
+        7A480413C7236215F6ACAB1C87A5809519CE4D77D3D359D348E3C4841F013122
+        3B3612ED58CF1651885C079F927AC8AA59646F5C2A21DBD8D541CDCE4C800610
+        9D3F36EE60452ABBAA204EAA20307E7602788EC88CFE6AC7C5741574AE268BC2
+        A0C9A250B28095C076BEBBEDD5E439F63A326A35CA4E1A58C51194053BDEE5A4
+        7EF3EFD63614D28D8A8662EE7358764DC0B9B15DB2551C9F081B77353C4A4ADA
+        A53B0E42195D3143221FDDAD3AABBA15D188681FD02860164898F99AB97C0D7E
+        7E44484A54A9ADAA79B3E083CCACA5DF5264CE08F21CDD8DCC524411BF1B1F17
+        9D3554B41BF86A445B816693ED499884A43687A5C604F3499CAD127B618A2926
+        C1589942DB915457BC91CD9025149EF01445564C57845320345914064D163BBB
+        1B52B245D59238E42C321BB5954848B1CD01290EE391284108A138E6B0CD89B0
+        67043CD56C9C3363340E648C8270B043F2C74A110AA36EB3B2C7E1181C1BDA2E
+        C28855DEDABC42CE174D838532BAEA67B1EF510A4F9C90C57F9079D04964AF9D
+        47D1E5D325FA54D2C8B10B22A4B1677E63C4EDB7FC2EDA0ED2E0658786CF9554
+        F77CCEDDBA464C2AD98DC1BC21CE031A117C27FCDDD8705C227C1E84C63F48BC
+        438D0F64EA1AD02676522BD16451183459ECF4D6A921BE061150A95465290D01
+        2B658D7DC97DF845CAE9C8420347221562B2404082DB24D2117916E2CBE0FFCC
+        BD1A643C059191F6FA79D8A865E13259A07E51D5AC788536F769A1B635D7FCA2
+        12B5103ACDE4626D5A218E59391F3E0CC96EADAE0436C044B2475DB9164C125C
+        0B496DA23560BE32A9FC4CA2515EE9898F33610AC14701D22850A0ED2D2BA562
+        79743513DCB2A9643131585BD7AA3FBABD2AB60464B20BA1F09A2C0A83268BF2
+        0CCA4204240B354C0BEC12A0741D9C8E3905057E08B6BD4505871048746750E5
+        6940ADCFB98B602B5307DB8D6BE6896964D64BCADEE4AF3832FB4372B7EEA2AA
+        82EFD84046A8586920203804849926CB9D4B72394C9C0F9F42F21D408A889D70
+        9E4548235B062CC809A9F1A8E605332716380613035A43B66782F376CB2AB237
+        2EA1E8926FA4E6A8D4F8F0ECE24E532968B2280C9A2CFE8C084E680692A4559F
+        DC077520AAB19F0462C91AC882A3B2280D51DDC55E979A11B6DA55C0D62B52B7
+        F354E1411036C68F7278B8563A218416B1716922298C3505F80C60D6102A5935
+        3B2D31F4750B5402D75EE92B7563CCE2FF60B2308A6A28CD07E3CD421C42643B
+        D6AB6D616824D56A93BD6989A4E94BDD0B438D098583A151D99B96B25932872C
+        D62A6C264DF109ED44B2582E68B2280C9A2CFECC706FA71E854A148BAA551602
+        2D35220CA964456CB2788EB986DCC75D9F9320E0D4932DDB58D427AFF6166B24
+        E293C8B213916E5CA8A9412CEC2011892ACDE1944C1947C9663111A48A373259
+        FD2AAE03A692916B47C28E52E4C7A1149EFAB6C4610811C0948884C8DABCDC89
+        6CF5A8802E68237F62CE88268BC2A0C962B7E4862421D6A418406C03FF8E5A15
+        66FD96BCF21F28BB02B2C38238040437AD5FACB630D9868769915C6A1FBB01B6
+        152E1B96CDDA46E4E761B272C3CF61220F05CE5726AD087A9EB2FD8F6BB9DB76
+        9708CCE88271E2573110A7C164066DC1DEA4765D2CD60AA45A779DA629B7B0D6
+        2F92147D77F33354AE076B04D195DFF3B5273219EE2359AD8810959D15D60EE0
+        C4946BAE992B44A542D79DDD2120D6BF643742934561D064B1BBC9221DE0B308
+        95C88E85ECA8A0B339FC08705AB2DA8FED493B5222C5604C89D4DC5B9C7B66E3
+        E3C8D5FC4C31079281D278C8D9408C8451AD0E990D5BABD51FE4B37A8EECACF8
+        2E7D4DE22670FDD088FB24E6C294D0F41ACAB4618DC56233053B10D8A6F5767C
+        D60901771C8AFCDA44E70CA7C8A2716A5B18DA0AC860D52C659220580B5A149B
+        55B22B54BC4915FE81B3D4499AAB6868B2280C9A2C2A0359C4A1722E62D5B845
+        305DEE44EE07E20B10ED190A0861783BBFCAABFEF9295788FCF00193C5436ACB
+        35E62C454775E77A107508BDEF8AFE52CE0EB52C8223EFA5E8CF9F8910CB717C
+        3F31274C27EE21B85548C977C5809478107BC3AF54F2D24942649217E3724C07
+        09592FF51C72BD8A4945CF044D1685419345A5228B3CC12B3FEA4D782F7A2EA5
+        92958D72FEFDBA48FF534A93DF21602D06F91ABEAB0792517D5F71260687DF23
+        0572B2C655F079FE9B27A4983C308FC2C3FF4991399FED74AC434542934561D0
+        645105C90242EA3EFC42F2757A21257E03814DC18F6E1602C8A8E60B5934271F
+        CAFCEFD5409CACC111F748A5F15C64E1E5FBB98FE81CD70E900D1B1EFB284566
+        BE17AF855195A0C9A23068B2A8AA6471C4C5E4BBF8C594D883E8FC316C823C28
+        CEC48CE1E33B4B16ACB5784FFD27B94FBC35892CB6499F11A969A1C9E22F0F4D
+        1655902C105361363D957C1D5F9028D138C2C51478FB22D583C49BC12CD859B2
+        60D3C77FE3686947188390856816033459FC0DA0C9221B59C41C757F2A8CC24B
+        C921DFA3FE61E4BDE0697225092F1061A10F7F7637D93BD63995A64A6167C822
+        5442AE365792EFBCC7537C2188040D0EB951C2B1C95558C6E76E99A71CD06451
+        18345964220B94976B7424794FB845E54BD891F2BDB1EC6E84255641FA9BAE9A
+        ADD2C1637107D9E05487F29CF318798EE951E66FE853121A712F591B973972E5
+        3447060A210BDCC75F83BC27DF4EEE23BB95A941819889409F33A4B6A6B7C3DD
+        2AD8CCFA13E6291A95127ED29C091DDCB6AF75BEB35D230D4D168541934506B2
+        90DE1D879C25F108681DF8E7C056722C046193B57C3A45168CA3C84F1F8B4911
+        4B2B4F7B66701BB99B9F291DD14B374596BF23757CEE08275D7D5AA2141DCAEA
+        D5694ABE6E6F4BF0149A2F874632B12C9FA14C17F82358E8D16CD9D5EC54721F
+        7AAE7AFED2E360B324F4C5BF293CF94D72353E4E6DC5FE694D8F4BCD13EA74F2
+        7345667D287532E4D97622A14C934561D06451A164911E10F4C8E43E1499D64F
+        958B133928250CF8DA42DBC973FA03E4697F5BCEE847446A224C3BD6995D4AE4
+        6D5C2A896A88B0B456CF953470172A81B5BF5D859E6347259D10B2D046E68DA2
+        D0A0EBE4BE6865F0E792458679C238A6F7A3C8777D582B5BEF7C9A3F6968B228
+        0C9A2C2A2159C48034F3D0A7BD25B53C519437F900952AEE398309E3E82B763D
+        D6815F0569D2CC2B37D2C0CD86479189F685A63B251F051DCE421FDF2AB92008
+        14AB28B2880F7BCBEF14441323D4E490A0B2FC0843934561D0645189C942C6C1
+        6AB638115159CA95467B709A15A1C788E7986B556FD2720AA546B62852C3254F
+        05D7441DCE69EF50785A5F8A67804682154E166A1E2214FCF0168A2EF8226FE5
+        42934561D06451C9C942C6B26323053FE841167C0F52ED3BCD57C6268451E740
+        F29EF190AA388E906DA4C2FBAA177CBFD240752D54A58ACE1C4051D63C0C7752
+        CBC0CA421600935970F0758A30F2D0B2345914064D1655802C80E8B2C9141C70
+        85A366A7C9AF709C7CF03750512D3290B005C7A79302AE8AD5A8FC0CF9773820
+        E1E1D2D6208F4A56F07704873A1A4E7201E0CA4416A4882DF84E47C7D7933D0F
+        45934561D064511E6481EDC26C5B9E52F4C55D70F5E914444214FEFA050A7DF1
+        78A2D667F22D4AB690E7F4FBC8DBE11F52F54ACAF0639B11DB8DAC0D483ABB54
+        9BF293B9DF1164A04B1A9ECB545B9352B68F3F435D51B3F641AA886FE97B6C5A
+        4E81BE9DA4CB59625C059085ECC864895B9156ACE62EA6AADBE2180E7ED63B67
+        8D0E4D168541934539904564F64764AF9B9FD466AFCCD5A467A8549FE295DE44
+        0A7A8D06F1BA14F9C25AF90305DEB920D5E12803089151AB21F9AE1AC4829E5A
+        F11B8153704846BE7D4D95B98336C19A84E7EC7F93BBD969D26F3438FA418A2E
+        FE5AB24E5131DC7D507B2909884CD3D261E368DC8CCCD6C4BDF3270B84A35B2B
+        BFCF4EAC2E375FA7BEAAC4B5671D325113236D15F3CC40E7B592574E76AA8767
+        D62E345914064D16E54016A1F7AFA6F0DCE159C842AEA89AF5B8BC52FD1A15BA
+        5D10CA43CF21B3CEC1798DD5DABA8A42C3EE94E235C9392158E9BDA7FE833CD0
+        2A3C89084B94A50B8D79546C78A96701C197BE1DF5A445A1ABD9E9CE4E426F8A
+        2E9CA082B29C7E21F07778D11FE5F89B52A2362D368702032EA7B817B100B240
+        866A68DA3B59E347049827984B280AC4F3840C5BC47B48AB817CC0E30F7D7637
+        457E199939FB963459140A4D16E541161FDD4C115E35299FA9943EA128B71714
+        C1359B1C4B3E5EE5CDC6C7E63E37544CE1F1FFA5D037AFA4A8D82854835A13D2
+        232486E0560A328945118A9DEC8F8891C579FF913606E923380D09DE8206E0BF
+        7A3099079D9C106E36778A9F69453B4516631EA63092CE7291857A2A39CE8EA8
+        C23A668396E439F3FF24102D27784C91C9AF53F08BC732774B234D16854293C5
+        EE268BD2F729DE28A5FA7D577DC026C401390EB6251D3CF8F1AD4E915FE7E36D
+        6BC8D7FDC3944238D179A328F8C91D6A954E56C5F3220BC09040272F1399E7A4
+        5B12DBB17CBDE2FF34A53F9F2C4ACFD36629D5E7BFFC3DD50C3AC73C419B0ABC
+        7759D636939A2C0A83268B0A260BE912B6750D0BE5C3E46E7F47DAA6C4C94023
+        E440DF8BA55A787CAC421643992C2E481CB7E84B0A22C23256513B867CC942BA
+        B7FF41BE6EFDC87DF805891D109EABE227507067F79285CCD396D5E43EF116F2
+        9DF57F12799A0DA8ED51F2D289699DC13168B2280C9A2C2A9A2C004441F26AE9
+        EBD63745634887E87C5E31DFBDA81459AC15CD049DC6E208B3C932E1190A4D7A
+        41FAA98A8F03025A9A2C36AF5065F5168C735476750C1CA31E047A9DF5B02AD7
+        1FBB170B6CC94BED68B79385732F744BF35DF6564E3F0FA2504B5E382EEB7C6A
+        B2280C9A2C2A0359D8CAF95974E754A9EC9D0D68111878FB3C2989173FBD7813
+        79CEB89FBC27DF951ABDC9CF80712131CD5AF0A52A9CCB40D15FEFC52F91ABF9
+        19528E3F30E446B59BC35A8D5DB24948C3737C2F72B3F9515A8D47F256883591
+        C407BB912CB0C11BD82675355C397C3CE87F52F25C1B4D16E5084D1695812C20
+        049645D5EEF84E3508CE041E6764DABB2A86205908D03FB57A3D16D8814E05EE
+        5257DFBA9A3582DF54DE070B91CAE73842E5826C5F4BD11F3FE495F86732AAD5
+        260F9B42AE961791B9F70169AB6D05DE3C87AF333FF1C1EE240B6CB9864BC87F
+        C34832D1B93DCB71C8B80D7CD0236BAC85268BC2A0C9A23290851526A34E33F2
+        771F9C55E0A4402ED2C2A7F52DDB54C8115A6F97D7C9ACD538C3052CC968C5FD
+        64ACA8008E8FB1E310D82E0573A4249FA7885C079EA4F24C921044CB805943D2
+        DE77B7900548B14643F25DDE4FB585CC0404B04DEE4321BD1B52AED0645109C8
+        02A1D4DE739F204FBB1B33D7CE64A0635768684FB27E9F95124FE15C45753CAB
+        DB947C673E2465F7766A2C4C48D20364DD3C6913E06AD9890C2B44A1CF1FA6C8
+        CF9F29A249CED4DA8D64811C19CF29BDC97BEABD59C3D3910017FAB097E4B3C4
+        7BACA681268BC2A0C9A2A2C9825777B3E191E4EBF26676138411FD651405065E
+        E934154A276CB66A3CECDD83CCFD8E26779BCBC975C8D93BE94C0C8989129EF4
+        22594BBE962DDEB4D5A9761759609E9808BD97F4C9199C854A61256F9D47468E
+        46CA9A2C0A83268B8A240B29DD7734F93A3ECF1A01BCFB990508E64170D81D64
+        2D9E98BB382E9B1AEE637A90E7B8EB29BA619164A462ABD1DCBB310BDA11050D
+        D1660D2330F06AB2B7AD4E5FD373779005E6699FE6E4BDE01999AF6CE7A24B3C
+        6A8044E78C60EDC397F5B29A2C0A83268BF2208B8F6FA5C882B1799285A1FA9B
+        B2EDED39EE5AD58723571A390B5764463F0A8EB8377703643801F97A45378E56
+        3B2B4E1E86B5661E853E61B2D9BC4CEC78847A1B0D5B49852C6BE9B72CE80D58
+        C369459EA3BAA99C95A4402ED4F344FE8B4A02DB05CD62ECA314465E495E6461
+        C8D8E1C8F51C7D25B9DB5E415494A3B33C1C9BBF8CA4209B6AD9CC8F18345914
+        064D16E59148B6701CD9288E4B39A6123E851A0D64DB2FA5847F365861F11584
+        3EBD4B0546E51032A4667B5139EB849B1302C3CF12FAAC3745E68D913126C759
+        A03277F0C39B54593A1084BB887C17FC8F5C2D2F8C1306724C82D02E4A36954D
+        CC2A24918C49093B32F19686199F392AED195D8DDB29D32C1F2D0444C1E65268
+        E84DD2CB359F0A389A2C0A83268BCA5CCF82051F3112A1D1FF97BEAC5E1A20E6
+        C2DF6B3CB9F64FB408088DFD3745A6BEA5B2554B056559CBA63059F494202C89
+        D1409B013849BBBC99B2E350F2FCB1CA14314AA5D957867A1628F5C7841D1A7E
+        8F4314F941934561D0645109C90276379A0EA3845DE47B56DBB335FF49395115
+        C6F1F7FC429C81F1677CAA85F83104B9C80261D59B96ABC027FE7B0C252FB493
+        0CD53235392A922CD0F079FB7A0A4F7B972293DF90BAA1BA60EF9F074D16958C
+        2CD047040145E1492FC816A0E17742B0F301B233596DF7751F22E9DDF1677CF2
+        30A9042E5A412EB2E0B9B0C3C5E4BFF613721DD83E7E8DCA4616D6B6B564CD1F
+        43E1AF9E25EB8F95CA97536087764D168541934525230BF4C3B056CD266BDD42
+        B2D62F207BE312E538CDC361273BA7C1AD5474EBA494EDC5F0B827283CFD5DA2
+        C036F91DC156DE0B9F65B23853CAE4A16EA56C8D42D8D07DEC981EE2F7882761
+        F10A5EF2527B5EC5D7541A33C45AF22D4556CC90707514F5B1D72F52C56E0AD0
+        2E345914064D16958C2C9261FD3693CD9041145DF28D247CE55384D62EFE837C
+        5D5E27F79197A57C1E9EF82C45977E47B46D9D98350800330FEE2065F7A49932
+        7649F6A8C304728EEA1B9254C52B3A67388546DD9FBEAE6525F059802C22DF0F
+        246BF124550D4C88553B38CB1B9A2C2A3159C480E4B1F0372F0B69E4DC3A457B
+        C27D8F206FA7E7C9AC7748EADF58D8AD75F3A5F00E3251914F62337958EB16A9
+        2DD56AB545DB3061C238096988E80CA16236934ADA664795802C62B0564CA7F0
+        77AF52E497D1647873FB79345914064D1655802C0008B3C4493061901FC95119
+        BE36EC98146F26B3F9E9E43DFD0132F76B9DFF4DD8DC88AE9CA97230F6A8275A
+        44E487F79593355355F14A441600CC29046545E68E728835F3EBADC9A23068B2
+        2807B2B07EFB510AD0E40ECAB2240D5C7C01FE1AB2B2E7B302C6C7B4F1570A7E
+        743345974F573D41ECCC8481CA5228D5E739A21399079CA43A8CE55BEB73ED2F
+        14FD6130DF6706596B662B3F45A68ADB0590053AABD99B97E7314FB6683688B5
+        00311A7BD6CDAD51259FBD7D1D853EBE4DFAC6AAACD3F4F7D364511834599447
+        04E7A77749F198BCC9027D3A8A6A888F400AD2363A9A5C079F92D778911C151C
+        7A93045A654B3A93B278259BC9D3F66A5574974D0FACBA16C2BF4D0FB9D85431
+        1B1F235B8FC8A530D864492EEB87CF0283AE2592F601597C258544708E7B8222
+        3F0EC92382D356CFC6F30461C77C19B50F2257A3A3A4064719276BBA994687F7
+        8157F0F837649C274D16854193457990050B6F64DEE83CC3BD6DA77F86A58AD1
+        982E29DF0F67A3F7947FE414389B4D84F057CF5064FC53224CD9EE03ADC57FF3
+        97AAAA1642C67F18287539113DEA45F1DBA32FA7E8A2F114FAF01616C6266CB6
+        DC47E6411DE2570029217C3A6B3BC442C862F483149E3920FF82BDC9F3C4C763
+        5BD83CF044F274E8AD7A9B643DDDA2F0F4BE14FEEC1FD256201D345914064D16
+        159D752A55B278D5E731B8983050F3D2C89128165D368509EA46D5EC27937661
+        85C9D5B233F93A3EA76223D0DA8FCF41797C3413F25EF4ACDC2FF2D327147CAF
+        2B19AC3DA011B2F7E297E3DBAE91EFDFA7F0F827A58151C60649BB2D455D3561
+        468426A253BD3C4F668E907904B605F8D9A4637C9A79D26451183459543459C4
+        6F684BE094E78C875435ED2C5DB9C4261F711F45E67C96D99647B3E4936E256F
+        87BB4533B0D6CCA1409F33557365CF1EE43DF90E364F7A2AB21878B9681F36AB
+        ECA86FE93EAA9BBA049B56A151FF921A9FE5E1B3D8F5B27ACE3C956CE267BB9D
+        3CA7DD9BB5B88DF40F41F2DAF47E69E749934561D0645159C8426EAAB22CFD77
+        4C961EA4D98E93BE189FDD9D52B83705D2599DC9E214451648B20ABEDB59A5B7
+        F32AEB39EE3A16B67F396471859826F6A615E4EBFAB6A4B7CB25167CA1E22B2A
+        1359004834E3F9F1DF3251DA2D669E275B95D7EB7F99EA06570A9A2C0A83268B
+        CA4416000BB9BFE75832EB672FF0129D3B52764604E94C049821875D40BE8B5F
+        14B280361278F37C2684A562C37BDADD409E53EF499085BF96EC3EA0B88CEBA0
+        93E412115E91435FFD4FE233323A152B822C48F576F55FFBB19852D902B0C451
+        DBAF8B8AEE2C354F9A2C0A83268BCA46162CE4FE2B069099637704FD4B439FDC
+        2EF923E9FD16AA197391ACBE0DD5276CC387BEFC8F84947B4EE8C526CF036CCA
+        0CA7E03B174908B8E78C0755693FB7726806075E29F7C91A6A5E5164C104E607
+        B1B5BA38EBEE08FA8704075DA3B6B64B396A355914064D16958E2C22E44741DA
+        A6A7653D4C91C51DB23D9AD9C91925D7012790EFEA4149CFC55A42F126691E6C
+        6D5F2FA6062A51B9993C5CFBB58A0B946815D87141025AB6AEE61549169D5F25
+        57EB4BF2208B6B557ABD268B5D82268BCA461651D62CEE9C22DB84590FCB872C
+        0486C42660F723B5E398A59A20874BC85E338FA2EBE63159B4967AA028B613FE
+        F2BF2ACB34EBB5A902CD903FD80CF994CD9093B31EA7C9A2FCA0C9A23291058A
+        EDEE558FFC377F254577B3217FB220114CA35663313B5C071CCF0BB16356C40B
+        EA20A6C1A2E8AF5F5378DA3B64FDF6BDAA7F914FCA77459005CAFBF1FC14DD34
+        3625153F1DB419527ED0645169C842752573B7BF93BC27DF999300223F0DA3D0
+        C7CE16AB9923A291FFEE39F321A965097F85BD7E81649EBAD01D1D919E7684CC
+        DA07CB3DADDF7E90DEA7F69AB9126D9A13BB9D2C6C49A3771FDB437C2C468EFA
+        A5884909F6EF22CFA91D9CBB064D1695812C9CFB9BFB1D49BEABDE2FD5CD3C0D
+        F83EE16F5FA5D0C8FB246F2227B00ADFFD3D6B145E4506436E24F79197A8ADD3
+        EF0752887FF75CF49C6CA78230A40CDF777D9CEAD839847A77928513D169D669
+        4ADE2B07B0A9D630C709B6906AF0FDABD28E4D934561D064B15BC9C24E1C83FF
+        C7AA65A3DA76E363C97BE133FC52D7A15C409D4D099DFE713019FE1A398F37EA
+        1F4645378C927C92E0F0BB29FAF370A959E139FD5F14FEE231E9DC65366A23D1
+        9E66E3E3643B35F4C5BF89503DCBAC209F8553955CCD93A5E6CE5B8DEFD59ABC
+        E73FC9849123DC5BBE98ED141EFF14859858D3CD93268BC2A0C9A23CC862F075
+        14F965540EB27092A3A0DAF3FF115E8D151FC1422854E36E7569DE63B656CEA0
+        E047B7C88E463E15B44044BEAB074B7878F0BD6E145D3E85DC2D2E20DF950325
+        B90B9A0452D9BD4C16D83D892EFA8A42A3EEE3EB97B383731493D3F4FEB9C902
+        E602E6073537E05F9179AA47EEC33B92FB986BF29E277BE352E9776A23792ECD
+        3C69B2280C9A2CCAA315C0D72FA8E230D9A6D2E2D5B15A4D326B34948C53F423
+        3558C8D0F8A720B03612FEEE7516BCFB732492258050E7A27FCE16C10E4F7953
+        FA80B85B5EC426CF20D62C1E67627888DCED6F21EF798FF3B13559AB789C2293
+        FB28AD229706500059603B36BAE84B268B68E6EB428BF0EE4906CF0BC68DF80F
+        E4AAE40A524B7321E5D71972BD940348074D168541934515297E1383F4F0F8B0
+        27591B96B0769287031230DDE4BFE23D329BB4237B079B30AC3560B5F69EF398
+        CA605D30CE31418E95C2BDA8C9195D3639BF5A1B95ACF84D7C9EFE58C9CF713D
+        D9AB7FCAE8A8D564511834595421B24007F4D0A7775264E6FBAC96EF539043D5
+        AC7F18F93ABD488653004754732472CEFF9C5CFB1F23BE0AB400084F7A5E7A95
+        A86DD5F2DD3ADD7D131595BAA2E1AF5F96024399E649934561D0645145C802BD
+        4450F63EFC0D0B7CC1E3511DD6B1DBE26E7B956A992869EB21268865127F1059
+        3C81ACD9C328BA6A963A255BD466322A2159C84ED1D87FE74CF5D76451183459
+        5401B2B0B7AEA2D0974F5214FD4691629E47A5A8B217B179C10D90BBF9D9E4EB
+        FA2EABE9CB59D0C364D66B263522B0531181F3112492CBA9998CCA4416812D14
+        FEAE8FFC88369123FE44934561D06451C9C90295BD2353DF6073E10BB5FD5760
+        239D3890D6BD675DF25D3B4C76622233DF23D7A1E7B166F1ABD4B974356A4381
+        8F6E6142FA5095FDCB1795842CA22BA65174EA3B1499CD26946F8FBC08559345
+        61D0645149C922BA78A2F4EF44011A6BFD62328A72C7536405C8A2D6FE5474FB
+        B7149EF81C592BBF9700B0E087BDC8FE6305F97B7C48919F875368C43D6AA722
+        5F52AA60B2C0363288140971D6EA39057570D3645118345964248B6DE43EEC3C
+        F2757B77E7D4FE4281E6BE2B66482E03763CACD53F494AB9F80EF2E946960B20
+        8BBD9B5051AF7154F2DAA9D223C4D7F9650A7DFE7F424C7EC461844A2484DCCE
+        95699A0C9005224F7B0CCD99CF522EB02214FDED07A9A88EEA5FD6AA9FC95EB7
+        40F1433EE1E949D0645118345964200BA46D9B8D8E22CF0937ABC6C4B188C272
+        81212FBDB57925D196DFC8DAF23BD93B368A6FC2DEBA866CB6BD119A5D68A3DF
+        AC886916D78FA0C0A0EE52ED1BFD4E43139F25EBF7D9E4EBCE64C164151CFE4F
+        956F916F3876344C46ED03C8DBA1B78AFB28EF79B2A3646F592D2D042C9E1F54
+        EBB6B6AD91BA9A0832336264BA13E1E39A2C0A83268B4C64E1F41715F55F54F2
+        F29C264355AD0EEE2042C7F470B1A2043816E194FB3334190871B55AAC4DBC26
+        B114484117CD62CCC352CA0FBD4FC3A31FA0307C16798490275D5882B7A43F87
+        3814CB7B9E6CC980B543DB249D5E327325792E8F04BA1CD0645118345964220B
+        005383726C7F166229E23BEBB42C1448C26A7434F92EED23A1E2D020ACC056C9
+        B388CEF98CC2631EE143AC9D1042B5355BD5E649934561D064918D2CFE6A90AF
+        DA26739F4325C7C275E049CA89BAF04BA95509A76EDEBE8ABF00345914064D16
+        7F27B210D8E24C350F6A2F8D86D0701959A686A7DA2EABF5550D9A2C0A83268B
+        BF1D59903440369B1C4F9E137A52E8F34754C5EFF2D871A962D06451183459FC
+        2DC9222429E9EEA3BA5264F21B64812CB2B528FC8B42934561D06491D5C1896D
+        4023755BCEB1FBD567693E8FA1F4DFD541A9494D31875DBAAFC0A0C4F9B1BF1B
+        9461B3A1D478E2632CE5108C17DEB1249A130964D6BAF964AD5F984A1669C7E3
+        DCDC4EFE9DB29F93F61A69C66E6778DE4CCF69E77BEDECD06451183459A4250B
+        D5730361D1D2949757E2B8A07B7C1203618703CE4E892A768B2A4E06E2220CB7
+        F4FE90BFB3BA1F7718DA6A97414AE64130D1B7130E4554CB42A117F80B62DF04
+        8E8D04D5DF620573F06FDC07B921A5BF31084A3424310F6A8CCEF5105C15272C
+        23118F80E3F01393D2B8A0D96ADB569EC34C0831E607DB9618B7900AFC1EC589
+        6BE37C7C9EFC0C29E373AE119BC764C876B147CD259E19D7888D33DD73C68E89
+        DD0BD7C6B360BE8102FC2E9A2C0A83268B746481802C5E75D17334BAF43B8AFC
+        38C4D9EBDF2ECD79504D2AF2C360F91B5E54A47FBB5A762473DF966456AF4FD6
+        E66552293BFAD33029812782E7AF4EAEA6A790FBC8AEE4AADB9CA2AB7FA6285F
+        178D8A11F865EC7388220316083BB095AC15D3C95A36558AC0A09DA0046BAD5F
+        4C264ADF4783EA58C034851CA2F3C6F0CF68115ACF49B79251B31145BEFC2F59
+        5BD7E25B16C2F11C7F13197BD496A230D6F2E9F1664271201AB3DE21E46ED599
+        A8FA3E14230F7BFB5A8A2E182F599CAE43CF95FB87BF7E899F6D8314B241EB43
+        77DB1E64D4A89FD00A62738AF1B97C64AFFC5E52DFA56F494CE331D0A6E06C72
+        1DDC5EC2CF511CC7A87BB0744BA3A25A6A3B1624194B97F7F829F2FD07E46A70
+        844AB507A9F2E7D6FA45325F08DC42BFD67C0943934561D06491862C1041E96E
+        7395D47F882EFE9A421FDF2C7D2A201CFEEB46481F0ED4760C7FFB1A99079E40
+        BECBDE56E9D0BC3A42A38815DC8DF20B8C62B876C926555DFBB81B9C60ACEDAA
+        512FBFD8256F9C49DE4B5E2357E3E3D438A0214033C0F93F0FA3E8C2AFC8DBF9
+        25218BE8BC51E43EEA7267357634161C8FDEA753DFA1D0D8C7C8755457F25DF0
+        A49003FC11A1AF9E9163703FFF759F11D56A4CE191F75064C640D5F734F9B979
+        5CAEE6A793AFE3F3AA872A566C8CC929B2139EFA967A0646888928F2F58B22AC
+        AE667CCE15EFA98B400391CC55878820F0AC69618B3684388EEDEB136347D5F1
+        D3FF459E63AFA3E89C4F2930F02A72356927FD561128261A558C58A039B01681
+        D4739421443E4A6944174FA2F0B8C7D8B45A90D716B0268BC2A0C9222D596C95
+        4EE2BECEAFC88A1D4265AA92CD64EFD84A45377E4AAEC32FA2302A60FFFC29F9
+        6FFA5C4ABF591B16F1AA37888F592F352F5D879CA3567116F8C8B7AF92EFAA0F
+        24D12AF2E320168CE1AC8974929C8CC8B477C97FDB2472ED7F2CFFFB1DD656A6
+        90FBF00BF91E178AB086C63D41DEB31F216BCD2F320E14DF35F7394CB41E7BDB
+        3A5E8DFB92B56595DCDFFA7D161575FF884CA757A9BDE5370ABC7D8154C712B2
+        E83E94C9627F89D4C458D39245B353996C9E963E23E1094F4B7296E7C45BA48A
+        16F25624B06BBFD6FCF96C2AE973963CA3F78C0765BE10AB119EF4226B5A8792
+        FBD86BF96F7529FCCD2B2CBCF39818D7CBB5900E1F377B4016A7FC53341E64BB
+        0686DE246507CDC6C7C87D5CCDCE1427ACB57C1ACFDB60310951A00761EA6683
+        9614993554AE6BEC73A8049B21F2D45A354B7ABAE69366AFC9A23068B278FC60
+        A7CA7602C96481BC8908AFA8283E0315DA7BDA7D52091BC5676D5F75F29C7C97
+        9C1378F35C254C8EA3D173FC8DE43DF709B2D7CEA3300B348E83BA8EDA96E1E9
+        EFA9DC06D660E0D728BA7592983DA8EE149D3B4AFA79783B3D2F9A4A78F2EB4C
+        0CB74909FF92E78F219BED7BCF61E792AFFB1026885F1591B14961BBDCE46A71
+        01F92F7E892D942899C8BEE49539F4696F49DB368A0A270B29AFB7F04BF29EC3
+        AB799B2B85B0A04D210214CD9203FD2EE373B6A8EB56AB2D353142639F26F761
+        A790F7D2D7C9DCFB000AF6EB42E1F963C8AC5653CC9114476469B2F8F066D1D0
+        A09D2157C6DBE12EF25EF83FF95BE8B37F509489C1C5448942C3269B6D25CF1F
+        2B4977D0E4DC27F46452FDB7F8520203AE14B324176168B2280C9A2C9E685A26
+        A43B992C322134E29FE2BB809661ADFD8557F08B9CEB28279CB97713F2DF3159
+        CC87F0C467D99E6F28E5F745589061CA421899F11E45E68DA6A29B27A8FA971B
+        974ADE86B97F5BB907D4E908AFCCDECE2F3369FD48252F9D24268AFB9033C977
+        797FB2F8F8D0B03BC4DE477E09D47777EBCBA4529451AD0EB95B5DCC84B29802
+        EF7614A76CA164819D12F86ACC8647C9DF23105A3625A4D972514D59D9D119CD
+        D7F51D59D183EF5F2DC971E87AE665130E4589F159849F356D2F947464E11C87
+        2431F85EBCE73E2EE65868D403643181605E7DE805CBDA44A0CF1932F7AAB030
+        847F99906F68C233ACCDBD1237E7D282CD946A0F2CAAE8D7AF4AE16F4F16813E
+        A7CB0A9D8C64B2400E85726486E44574353F530409751F5030C6D5EA1231014A
+        F8C535C8C95F701C857E26017BC73A5E157B5374C9B7BC3A7727D78127881601
+        618320A383395661845EDB254AD3009958AC91A0019051548BC9E295AC6481F1
+        990D8E205FB77E92E711FEFA4556F7036C3EDC262B7560E01564B3D653285940
+        60E1CC8419031322FCCD4B9219EB39E976D694EE14872F3E77353C9A89AF1F05
+        3FBB9BB5992236A9DA94228BF16AA708642A7E880C66C84E91C55CB52BC22648
+        B57FCD13DF06D2EE619E257656CAE694C0742CBA736A45BF7E550A7F7BB280EA
+        1F41E39B24A4F82CD82C080EBE467635EC1D51D6023E22D7119D2934F27EB691
+        F7E497FD1F625F073EEC45D6DCE12CA4615ED56B4AE56C77DBEE646F5E41257D
+        3B136D5B2BC209ED411AFC9CF1801046E0ADF3C9D3A137B99A9E2A428E5D1498
+        4562DF07B691876D76085E56B2983F56CC16CFF137ABADD552882EFE8A42436E
+        20FFF523896A36E4736E67D38A85C9574D1C91B10A5C30B392C92234FA21317F
+        4018188F081D9B1266DD83C8DFEBCBC47C31A10607F5A0288ACFF0EB6496260B
+        D69ECCDA07B180D66553665E22292C992C660EA0920157F358AAA9ED5B2616CF
+        2977CB3C66228B92678F62336F3E190D5A92FBE8AB845C602E06DE3A4FD2DA71
+        2C0839DECC2909AE26C74BF11F8DFCF1B7270BACCAC18157A67C9642160BBE94
+        8ADA6A376423F97B30591C769E7270CE191EB79FB1E2467F192DD190E6BE4788
+        C71E88CCE82F1E7CCF990FB09035A7E89C112C384DC8756457C9FA0CBC71966A
+        587CF02914FAF85656F53F522FB73423F292BBC5F959C922F8512F26A025F2E2
+        BB1AB7A3C882B1D2155D12C6F6DA8F5CAD2F11076EE05DD6609804640C4C1E16
+        7A99B24D6FB3D9808C53540E470A788ACFE29D8E52A98BC4FFE1ACD092BAEF91
+        FB43E0640EE77D4E8101DD440B12B325992C58ABC12E05BAAD990D5B5178EADB
+        324FB24BC2C406B2F51CDF537C3B11BE8E6CE7324962BB1A5A9CF7C2A7339285
+        903C7F5746FD16E43AA8BD9A6FFE2C34F651710A9BFC397AAC447EFAA84C5B03
+        CF69F7CA7D35F2C7DF9E2C605E04DEBE506DB7398039006FBEEFA267C85A3133
+        49B358CF9AC5576422CE62D20B141AFF94C44E403380D3B33410CF10FEFC41F1
+        57F8AEF9A84C135FC415845875F7DFFE9D108E68393F0C4AAC842C9C6E1676EF
+        F94F490C41F17F0FE5B7BC1AB95B5E40BEAE7D45550FBC7D3E0B4A07F29EF784
+        5C13ABAA08381381B9473D2AFAD72F2A0E63F914268F06420229D8BA864ADE3A
+        57C57144424C84E7909FCD22F415815680DD20A969590AAE66A7C9963110FAF4
+        2E0ACF784F6D0707779079603B3689FA8BE6141C783945982CAADD3583E7A181
+        343942957231B7788CDEB31F65ADE08A32D70FBC7719934D1326B8A7C85A3481
+        829FDC46D6B6F56266F9AFFFAC4C093F6CC9A2A031AE0F8DC57FC36869031099
+        FE2E9F7B87DA8A75801AA3BECBDE8AFB6234F283260B069C74F0FC273E605362
+        EF0378A53E46762DA4DB98F82C82B25361B02A2FA5EFE0EB60B5D7D8E730721D
+        D04EBCFFB2BF0F07E6CA9964AD9A2DABBFC94262366A2BC15BC69EFBC8752470
+        8BB50C6BCB6FA23DE065C63958E99362AAE55EAEFDDB0A5945D14FD570B3D0ED
+        2BCE55F818A24BBE61013A58AE0DF2B0585352A9E6AAD4BFF8585838A4700CAF
+        FAD8EA4C8608D9F2A92A32D2B2A49DA26C433259C024B2B7AD291BB38057C6CB
+        1ACEA1E78ADA1F5D3A9908FE160460B1F9807B885F06D758F2AD685DAEE66791
+        51AF193FC3172A714D1ECF90D5DFACDB2CF5F23C4E0B63420F583C3B9B7251D6
+        AC648CAC21E0D94BD724B5362D6793E97BE7983DC875E089E4E2398753B67438
+        3B7697105C97D501AA51069A2C0056D3C35FFD8FC293DF50BF4B58714804C1C0
+        F69B38021D3B9B05D14690135EB458A62656494454CA0BEC948263E18E1FC32A
+        371C8ED241CCB3878AEB086E751C707E317B44C8BCD5CA267421B680C721E1E7
+        3007F06D219C1C55B6583845BD46FF0F27184AEA602639F4246232B9A04DE962
+        3EE8278A31C5724B70ED50893C83381BA531B29D76CE62D198724F211427FE5A
+        82D38A15F9F89CBF618EE08BC07D642C8E0F01DBA49140EAB563D7C43C82E030
+        275E08B6E97CB6A34C6C8C110B8B9730702BE14CC5B19857E73547F09BF79257
+        0BAB60AE21D06411030B1B1C8C71C228187622041B4817728C97389E9C66EE54
+        F253D585935BB3BBAA82C5BE8FA4EF413AC5B36959C614D3C80B9A2C92C18401
+        9F4168C2D34A9DD5F8CB0095C13CED6E14334B63E7A0C9A23458BD45A00FBA5A
+        C1CBAF51B5811D1BC484C0374239DA196A6487268B0C803D8E3EA0D15F465164
+        FE18C949D0A81A40129CAB6907896645AF14A93CAEB1CBD064910B701EC224D9
+        BE41760DB003626F584C16130982914AE79568EC5E081954DB5B7AB622F60249
+        7646DD662A62B4C0A6431AD9A1C9A2108883D24E725496AA7CA5B1FB91DC2620
+        F6A3F1A74093858686465ED064A1A1A191173459686868E4054D161A1A1A7941
+        93858686465ED064910348B4422D4BA34E53324C17599B57484939246E210334
+        0649F9463F0EFF5E2AD16CFDAF4491122787C1966AD566ED03652B16DBAE92B3
+        E04C3D52BB8DDA07246E1A2E961276A89A25F0D7906D41C40BD8259BA5308EAA
+        0FB14F629CDBD6482C8851B7A98C197926320EA4AB23CFA3C67E897C08246AAD
+        9BAF3E73AE81E43324C7114AFD615CFC1C18AFFC3D6587C1560974A86ACE6352
+        0F1F51F382727EB83F8F1B312A921312DB35923A184D13F93478C60D4B24A232
+        91116AABF9DEB64E6D89FAF6E47FAF958C5B299117EB2E2F6D11A252E11B897E
+        9817159969A8A0BA8D4BD4F3F3F369941F3459E400EA5184BF7A867C5DDF15A1
+        0D0DFF8708326A43A2B02E720F502F32F0CE45AA9256D3D3A49277F0831E646F
+        FC5532272180103ACFE9F7CB0B1CFEFCFF14B920310C95BE6B342077BB9BE47A
+        100EA45947A6F7A7E4042EF711174B852AD4EDC4BD90D6EDE5FB28E1B329340A
+        F53B4790F7A26729FCED2B525417BD4C4B5E3F4332425D077790314BE97C2685
+        40FFAEE4E970A754EB06C98427F7512D0F04AAA190EB90B3A538AE51AD566242
+        98188283AF97F600FE1B55842BC82134EA7E2121D4F740852F541A1772426E46
+        2428AD097C17BF240426F33AFB630A8F7F528AFE200D5D5D3B2A15AEC2D3FBF1
+        733C23495FF16B215B567A9D902AF0132A216FC7E7D435789C9EF677A8EFA2E4
+        0F0A7D743393F9E1E439E3FE8A7E7DFE52D0649103A867296471E540559F0182
+        C2AB3852B051B81602113B06409B00086CE0F5B3448B40A15E7BFB3A16C4A1D2
+        050CA9D1C83D4146AABBF5A512F085E6C446B5DAE4BFEE530A8D7998857EA414
+        D841EA3A841BC56222733E23D7A1E748B198100ADEF00A8C0234E85522E5F9DE
+        EB2AFF86D00487DE2869DC283853FCBF234488015FE757F9BAE74A15EE40BF4B
+        A51295E7B8EB2938EC2E497F47497F77EB2E52FA1F05718CEAFB3289DDA0EA54
+        C4C0021B78B793CC4151EF99F211082C38E4062145FF4D6329FCDD6B149EC064
+        7AF4952ACCDA0AABD4F2E6A7C76B7A480D1168323C0FA8412A9A01B27F99E850
+        111CF544510E004590A3BF4E221018881B44E16E75A99CE76A743405075D4BAE
+        A3BA91F78C07D4F898B041A66683D60912D2281768B2C80154D7468F1054A232
+        FC35A5EE05545C6BEB1AF25F359057F02329F0E63992860EF5D775C859F29206
+        DE385BD46BF4EA80E611FCB0A7680D9E76D753785A5F6917E03DFF49257C6F9D
+        2F0207E10E0EB99ECC7ACDC9DF7D4822029105004211FD7D961014D4F2D0E70F
+        93F7AC87A5015178CA5B14FEF23FBCD23E2F7D37202CA8E780A23925CFB591D4
+        791B85636AECCBCF3148041DC28AF3417A4AB85A91AFDB3BAAC41E008271FA85
+        A49821186FFFCB640CBEAB0789C902CD02F787D981E78D9185F7A2E754052BD4
+        026192907475167AD4E040611DF7119DA4401012BCD03F44C8E2BB3EF2E3EBA2
+        EA922623F0EEC542B2BE6EEF8A4685F90EF267D2BCE9D8EB94D913DC2A5A8EB9
+        FFB1F182401AE5034D163950862C7805771F7B8D64A722F700C210187039ABF4
+        775178E273AA141CC8026609DBDEA8AA65FFB152FC0C3025B07287C63E229DB3
+        5064172A3A4AFBB9798537D94481D6E139F166FEB9356914B6540247656D0800
+        840804834EE8281F07E18069E4EFF1A1244B05DE3887C775529C2CCC7D0F9771
+        E039205428F917789DC779CEA3BCA23710AD00857161DAA0564478E2F3AA400D
+        93853CE3812724FC05200B7E5ED4E6946A558EFF00EA3FAA92FBAF1E2CCD88C2
+        E31CF3C5A9B721E6D9A9FF54DAD9FB57498B85A2BBA629E261F2F2F71C2B4485
+        5603E9C842B4978157C9987C17BFAC7AB5AC5F24DF076A7918B19A23A87711DC
+        21CF8816061AE5074D1639509A2CA0826365834A8C527C26DBE2D195DF5351CF
+        3152E11BAABC9005AFDC54BC49CACFD970FCD56A2C2D0EB1120787DE2095C051
+        F4C5DEB24AF9237895477B00083EDA194ADB803892C882D56D9055F093DBC942
+        C57056C1517712353DD1D304264FE09D8E65C8C2D7E54D0A0CBC521C9B1E2605
+        68238A2CF6136D06A48302C3703C42F341116098091EBE264C95785D08900504
+        74FD42721F7F93FA8C8533F2CB2831B3FCD77C1CD774E073808F02A696ABE191
+        325694EF8386805A9B30C9226C7259BFFD48DE331F9034729820059105938D51
+        E7203159549B858054C792EF810950A3FCA0C92207CA924547F25F3180CD90D5
+        5244569C9AAC5DF8BABC41C54F1D9E200B5EDDB18AFA6F18A9D470A702160410
+        2B391C7BE8291A44F9FBBD1BB349F3819829252FB797A428085D7CB7058D73DE
+        BB3C5E9817BE09744383B3555594B2C9CBE68994DAFBE3370AF4ED9C4A16F55B
+        88CF051DCBA015C86E871516E2311B2BB305A60F0AE1C6764CA2CB268B93D67B
+        EA3D22C42964D1BF8B8CB5E88EC9CE67213193A05DE079636608BAB0C12C4A86
+        94E99F392069F72222FE179841F0D908594CEE43FE2BDF17276D0CD8050ABEDF
+        BD2C59F4BB541A2049957507206A10249CB31AE5074D163950DAC109F55F8ABD
+        C237F0EA29CAD1C84401E147C32231432E7A8602AF9DA67C16378E4EB99E9005
+        BFF4D038B03B016F3EAA73793ADCCDA6472F16B26784A050D509B638EC70681C
+        D68A19E230F49EF3886A56BCE577A55DB03910AB820D351E260F1A1EB90E3E39
+        EEE004B9C03C90E799F4BC343596AE691D7A4BE73494FC47C32014B0851F01DB
+        9CD1B9C3A57E665ACDA2EFC5A21115DDFDBD7C043322F8D1ADD2B5DD7FD39884
+        83F3F08BA4D1B1905338200ECEE047374B29400F6B3286DBC75A578422AC89C0
+        89891EABD08C425F3C2EED1B51D314A502DC879D2B6422DA9A9BC9E2D2D7240D
+        1DB53503EF741247B1EC0CC96E08934AFFAE6A37483B38CB159A2C72005B77B0
+        E14108883D080EB951D477A8BD529EFEF71F1591B07D5EF24A07519DE1AC83CA
+        0C7211675C1260BA8486FF533A9079CFB85F7C171020E255D9C7020D075E78CA
+        1B4252B13A93B8B6BBDD8DB20B102FB86B5B4232107E384A61CAC8C7ACE66337
+        048E4B2F8F03D5BE0D680D9D5E547F67C10E8DB88F056D813816A135C041894A
+        E3F01724170BC676ABA7FD6DCE0AEF9400C4D6298F179A85345A2667EB74CCC3
+        B29D2926DA0F83283CEE0922D93A35D525618A1C761E45174F204F9BAB94B612
+        9B93DFBE975D26EC24B90E6C2F55CE31D7722ECF0FB6A2E18390A2CA4C30F045
+        80886D6985D093AF7BBE986E42166CAE843EB943624050EE5FA3FCA0C92207A4
+        986EF166B6BDF7538D787845856D8E97563A762186C029D58697170E46A8C808
+        1602D0DF34057CBC54CCE6D53526F8AAEFE95615B485E0233419DAB0440548B1
+        1D6E14ED4D46AD4665AA6C433020B452553CD6D7136A3D8F113B20A269F04A2D
+        C57E930AD462DC58814142D2EB0340B018C68F22BC009F8B73A4704CA97AA2F2
+        DC28308C79907B46D57D109456633F35AEAD6B554161A7482F9A1A8308A5D831
+        CF8F984FC9D744101762467CD5D5DCC5D2CEF9F5C43C49401AEE016F4FECBEE8
+        488F6AE8FEEAA9CFB763A39AFB5295CC35760D9A2C72402A66B1A9A17EE11717
+        020B010609B8DC2298A8406DEEDD38EE9790AAD72098EAF554F56E4434820C70
+        8E537E5ECAF5F3E7423449455A14396D9208C6144098D72F96A8463927E95E88
+        7844BB81E4D2F6D28660DD42210A93890E9A8608179E0582EB0447C19C91F1D7
+        DA3F115D89E320B088464DEA7502328CA2DC3EAA6F8380506C065199D9E68F9F
+        45DA25D46C94FA07B46804F162C7241292AE6784484C7FA2C4BF348EC63CF2BC
+        491324CC0BDF17A68B1093C79F745D5B7A9C60FE402CD8C2D6285F68B2C881C8
+        0F1FA8A638CE0B0A606594884E5ECDD1B60FA6849B556BD47AC431A8DD19FAE2
+        3169BD07D51A5BAA91B923D81478416C6FB92E9B3750D7E18484332E0638F8E0
+        0084F3D373EA3DF1CFC5D7F14177117E6CABBADB5EAD8EFFEA19B94EAC698E6C
+        7DA21BFBA209AA643E0A6AB35099079F2CA608BAA3592B67B0E9F4818C35F4F9
+        43642D9F46AE969DD8EE7F50DD8B7F0F0EFF0779DA768F3B373107911F078B13
+        53E6016D07582811E7212640068446DEA7FC11570C90FE26F1E7613283398308
+        52B3E1913C8FD7C8F6AA449992228AF0D84725B6C47FF97B12941699F66EEAF7
+        50FB20F25DDE17FF92AE722A0C5D3993D19C190D9B35CA0F9A2C7240FC02E39F
+        14FBDEE41710DB84F0C8CBCE03AFBE817E9728B597B503FFD51F887D1F99FD89
+        344E8670BA5A9C2F028AC6BFBE6E7DE39DCBB0BD1899F68E045921B00B903E9D
+        7D4E17BF035674C421C4B4053832B1CB01A0290F1C9A201EF80AB0AD0A0726FC
+        20A151FF926851C43C784FBE4B622110F7804E5E70908646DC2B3B1D12AA0DB2
+        40AFD4655344C04066881295A0A92137C4B77021A82020F8204080D839892E9E
+        288404BF80984F190042882EF842FAACA2EB5A0C12458AF8141EA3FBA8AEE238
+        86C6825811715EB20683180C386F7D9D5FE6E77C544814B11A683A2DD5D7D184
+        88BF13D9561EF784F44C95ADE4D91F8B73188E5D8DF283268B1C886F9D22549A
+        B58478231D3641A4D768FF2EA20AA3713054725FF721D23E104229C277D879E2
+        DD476B3D2F62071A1EADAE3B4DC56AF82E792DBE4528C14CD84560AD0284E33D
+        ED1E159948CA0918E87B8910055650D7A167492FD6F0B8FFCA79D8768490218C
+        1B3E0FFFD543E2A6866A2C64888085463FC0E430556DE9325988B3924D111020
+        FC08D050F07B60E0D512078166C3B8AFB56A1615F51CC7AB7913754D980E70C0
+        A2D6A5E9CE387FC18F6F917EB1FEEB870BC9C420643110DAD81D4CC4375078D2
+        0BAC55BD2ABB3DEE3657C7495A72705A5D22F127D0A0402612CC06487365B76A
+        8988796BDD459CCBD86589FB7034CA0D9A2C7200AB3F843D5EEB116AFD5EFB48
+        5C04B630B19DE73AA29374C40A4F7D873CC75E2B710DC1CFEE8E93054C05D9DD
+        90CC49844EABCE5F6AB7A4AF5A0159C0036F9E27CE43FFB59F48F017B402D971
+        40B6AB93CF81484FF81C84682EEF271A07B64221FCB0D7B163204966A7DC5DB6
+        602DDBFD65C8824D1B69ADC8A600FAAE227A14BFA349B3FB849E12A825A1EBBC
+        8A4BEC070BA23CCFE437499A2FB30915DB1549879C64818EF24C4A707096BC76
+        9AC4A9F82E7955C2C1D1881AFD5441C6310D4A7535935B93FBC84B25594EE22D
+        90B8271DD20C72B7ECC85A46AFD44C5E8D5D86268B1C88852E9BAC11203B5476
+        3FF6A823310A70DC49B4E4E117CA0A1978EB0231493C6DAFA2F08C01D2FD4AC8
+        E2CBFF4AF770F835446567E1870A8FCC53445662A58C2E1C4FC161B7930BF115
+        2D3BC95626B6597DBCB2C294899185E4731CD49E8208A4DA172BAC2D3D52FDD7
+        0E53E361DBDFCDA604CC8532BD3CD392C5D5ACD91C45DE731F538D907FFF9185
+        B0AB2492A139B4A76D0F2A79E32CD9C980F68240319825D139C3559F55360940
+        049990208B11126C164319B228D9CC04751B595B578986006D0E5DCE63DB9FB1
+        602EE9DCBEC7DEE22045E779681DB233C5F31E99F99E8A4959F38BF86FFCDD87
+        A6EF0CA7B153D06491037133A4EB3B1278950C496462151D6401E760148E415E
+        E120C0083C923C8E9819F2D3C7A209C41D9C48C59EF256DC0C09B2FD8E06CCB2
+        FB807C0B78FD032AB51CAB6B2253F41FBCFADFA252B73F7FD8A9A15143455FD6
+        6ACCC77456311B70286225E79516E692F444F556A330B25A4B93056B4208E002
+        61A123BAEC36B030425021B0701E227F055A107C04F06F48AA3C6B55C8C988A5
+        AAA783228B714C669F2A9F85B43034940F26892C0064BE063FEC251A91B1671D
+        09D28AF978E266084827C921ACBEA462D95D822606ED020171D040A00909C16B
+        940B3459E48064414E785AFC08D02EE4C58C46542A37ABFD256F9DCB6A6F27C9
+        AD808023500B3B2858D57DE73F2944829C0E4448FA9152BE7F5B755D26A1086B
+        1B106AE8D51072D7FEC70A19C077807C0A49105BFD938A0275B418A4A063D705
+        2B297632A46B9A9389895C0C2137B6FF1177801D1309F2FAFA4511246831A189
+        CF92C51A81BFE7178A2C98A450FBC1CB26938CEB2B550F03C06E8C874D91E8E2
+        4932166CD1C28781ED4E6C19C35700A211E2C9007170F218E197101F4A242466
+        97CDFF05075C210E4E5C13C03503FD2F95FF439B4258770CD85541BD0DECBEC4
+        8A08D996255A5C64D687F28CF81BB4271917C2C79158A75B03941B3459E440E4
+        A74F28F2DD6BAA4BB9145F5106335659082052CFA171C0132FDA00AF70C17E97
+        C8EA884C54447A42809198253B09CEAA1899FD116B1BC324343CF2F33079E1BD
+        A7DFEF3851152064D87645EE03221B918086AD4CF82400681B1239C9AB28B498
+        98F75F5A2FF2B82DA7091284D47DE8B992F815F9F635C911412E0956790821B6
+        34B1CB00405043E31E279B4D201CEF3EA2B3329B7E192D4288064BB12EF2B8AE
+        EBE053A52E4626402B8B2E1C97D2F91CD19898339816EEA3AE90DD10F5C021F1
+        4B8058B13D0CA28D5F87092CFAF3A749D751DF038814664E64465FB2D0358EE7
+        42A237DBDFA692CB34CA0D9A2C7200C283D0683293BCEBFC52434380D71D1993
+        B4675D5EEDE04C73CABAAD9AC59A414876476261C9D6F6B5AA5B9653484682A1
+        F8DA66839612AD89A84E5793E3524AF5417B406A3B5469B37A7D3653A6CB1668
+        2C10098263F3DF21BC58E1E3014D2873B7FA678A2EF94E8DB5F1B1523F43D47F
+        94FB6313020E4D908554EC625302BB2CCE5D25980BE38319A3D47827F57BF36F
+        145D345E4C1044479AACC9281F4CE6DD10B9D6B6D54925F12C2119683EE8296B
+        D6DC3FB16B037D83090E240793251E5D4ACAE4B351BA2FF95EFC9C92A8C69FE1
+        39303689B1687E26CFD381897B6A940B3459686868E4054D161A1A1A79419385
+        8686465ED064A1A1A191173459686868E4855D238B9B8C8A1EBF86864679E08D
+        DC34A0C94243434393858686469ED064A1A1A19117AA16599C4CF4C444A2588F
+        DC62FEF75DA7ECE235FBF224F470FE3D9FC7EB34F26D782FD10DF711D5AF9938
+        B498FF3EE54EA2A163139FB51F4474FED9443562C70588D6F0B846F4249AB93C
+        F36DBB7C45D4AE03512C18B3780DD10CBEF6074312C734BC89C7F064D218FE20
+        5AD08FE8B9BB0A3B2686DA7D88FED353FD7B327F2FFDB34C4B7B3EF6B4AE7C4E
+        2C853DA0AEFB015F7763398FAFC5F34497F37750A7D431FD93EE950E670D233A
+        9BE7BE5AD218374C251AD623FBDC170A7CC7A7F1D81E3E47FD7E2A7F77977550
+        FF5EC0DFD9732FF2F87FE4D733D1968096F2380E382EF5989DC1A32C7A28DF5A
+        2EEFFA2EA24A914533FED2EEEE9AF401BF54436A114DD8958BA6238B3B889E7F
+        C111647E0191EE116BD3977CCFEEF3888E3F24C375711CBF3C13D2BCB4C92F5B
+        0AF85EE3F97A43714E77A2A7FB3109A5392CFEF2E5734C0C8D897ACF226AEE08
+        6436B268C673723BCF49BADA302B795E1EBFAB1CC797E598254CD64F6528D59F
+        6DEEC3FC3DF6E1EF712EED3A7A6F5673962CAC65C882BFB7E75F57EFCB964F89
+        EEE1CF2EE0673A3FF9184D16B9519E64D16B2951EB26A99F657BA1F2421AB268
+        CF2FC3151DD447B378E5EA3336E905E1176316AFCE7DF81B7CE54947A09818C6
+        F36743F9FCEB0713B5755EE22D63F8C539A7EC2D632F20CEFB84AF39938FEF3D
+        58694CB1734ABF9010EC071D020BF3AA756BBBFC8E016A5FC6C2C59F37AF9F18
+        4336B2485E256730390FA3C4F86273545EE34B9E6B10519F658963320A086B22
+        AFDC9998FB311D798C7CDEE52CA827F35C16F367731F217AFB8D5D782F1CE425
+        AC49EFD09A7EAC815C93D7A5CBEFFEBB0955872C924C100854C9D96A12938522
+        FE7242085990DB3FC2C7B346105EA68432DD2A9F8E2CDA7CCEAAF3D989438AF9
+        FC957C9F297CCD29B3D5679DA6B00AECA899292F080BE6D3839D95924D8BB7F6
+        65322875CB6C64111B437CE54CD264E2E739D76D91C73133D90C78FAF5B22B77
+        3259A453AB53C05AC9833CAE46FEF21FDF529EFFFF38F32F64C1D7BFD7196F26
+        B2CD38F769D08689A5538F241307662293CA5BDD887E2BF5CE4CE2F7EBE48E89
+        772A26A8A5E76D65F27C319336EA943027E57DE1EB8CA0B2739A6B2C9867213C
+        87A857F23C787A6AB22818C9023CA707D1D6FB9C179127FC932222B8119257FF
+        624AB26529F38B97D60C29A5B22763C344B6DBF94B6B93A4069716B0F84B96C1
+        4CCA6886249DD33A8950CA983D051C33814DAAA71FE117AF1FAFB6AD13F72D84
+        2C92358D0D4C6A0F744B25BC5D1A1FE67A6AAAD6139F870C665CF72C739F8C6C
+        E654190D8EEFB7A5A622A998B65A9E6431B275016349034D1605E0B6D54487E3
+        9B735EB2DF92FC174B78C57FEA5FA993BD8659F9A589BC4AC556F924E7650A32
+        3838411828F6D2A643D24AE0008CBFB2C3CE93456C0539BEB57A7936F0CBB2F1
+        B854C16A51EA79D3095A3EC724DF3B797EF2228B563CEF639C7B50AA2FE0B672
+        1ADF6C26B3DE4F2A0D30054CF87358685F4E4304F99245F218A1C16141B997DF
+        890393E699929E7D037F27CF3D425434DB59E929BD195066BE5A9735434A1F13
+        BE2FF758E2E40ADF15BF0F7359ABE8D553BD239A2CF24516271890CE468E0943
+        5C700B258B64B0D05CDE2FB1BAE28BFBDABFF366483A941E67B9992149F7C844
+        166971169B1EFC1C8D1CA2DCC273DCBF5DC269585EE36B9124F8E21FE1CF7B8D
+        714C9E0CF397C90CA9CDDFE5A31D1D939185B3CDC4F4DA610C65B40416CCE74A
+        F939CA8B2CE891DC63A91D9B9BA4F750FB2C0A443B36417A9C9DFD98F17C9F0D
+        E54416D72F256ADB447D348B5FE03E43F8A56675F3F68EEA33511B27EEBC8313
+        2FFB69ADD50E0B1CA833F8FE37744D3D27D9EC825AFC76A0AC73309F639291B7
+        66F169AA19064DEAF15EA9D72AAFF1C5577F5264F136CFE183531DB2C8A499DD
+        9B3AF7B195BAF7C4C49861AAD293CEB5B152F338864E2AFB5DE422D01461E56B
+        D666B3A8D5AE681659C6129F0B47B398CCD7BCEF4EAD591484E4176A7213FE42
+        1D3B36F90B81736C72EBF2218B166CE2DC9EB4451B0E246D9DF2BF27F397DD7F
+        D2CE6F9DD6FE2F8FEBBE34F66BF2D629AFEC8FB2D0D6F7973D3FAE7AE7734C12
+        F2258B591D73FB542694D3F8B22D04D90424D7D6E94B87AAEF36939F00D77EFC
+        9454C14F47160FF2FB93DC55B18C3692275964F359C4C6D22CCD5CC8B63D69B2
+        C80FC9310FCB889E3D806861EC6FC982CE2BE1C83F127BDBBB6A869409B622B5
+        2B02F5766852E054BAA0AC2D7C9D912C705F67090CC2799D3A269CB072ED9EA9
+        015FB56FE2172C4740533EC7C4902F596455999356FBF21A9F04A81D5736B80A
+        8EE46CB1125D3E7702DB92CE4340DCD07312E7959EE7D2C7E4D22C4EE57B5C7C
+        7642C827F338573E5938598018738D0548762643A32BEE5A36CEA3A250F9C942
+        4343A3524093858686465ED064A1A1A191173459686868E4054D161A1A1A7941
+        93858686465ED064A1A1A191173459686868E4054D16551149816429C13A993E
+        DF0DC8948C56BACAD4AE5C4BA362A1C9A22AA28A9045BA2A533B7B2D8D8A8726
+        8BAA884A4816E9B0B319939A2C2A27345954451448162888DBA547D9FC8C7841
+        DCC62A2DBCC521891C88301F33B92BD10763530BC48C1F4CD4AEA753F66E16D1
+        DB4796CDB18080D778217DE118E45E94C99170AEF57E475568579345E584268B
+        AA88E4E4B70C889145ED3B1269E1A5114B7AEAF2A34A9947A2DEFD1DF8F7A944
+        AD21E96B88FAED4B549454812CEC4FCD9CCC543334235924A797978214BBEDA4
+        C9A2B242934555440164915C9B23567CB757BFD4E232C90568A0516C5CA3CA07
+        8E65A15E586AA597B27A4FA6D69C78BF16913B8D80A73343920BD748B1996544
+        4F8F49AD66A6C9A2724293455544016648BC32D532A2C70E50E5E2D295B6BBF7
+        853495C8D2949E8B9912A5AF41799205D0AC3B9B326C7234E2F36B3749324734
+        59546A68B2A88A28802C4A6B162995A84A95AD6B71AFAA0F81E638B1BAA3A58B
+        E1A4D32CF2228B1EAACAD4693193074584F8B8857E55EB546B16951F9A2CAA22
+        0A200B54E57AF0BEEC3E8BD2856D5128F621742E732A776DE897BBEA743A014F
+        57652A5E67321D3459546A68B2A88A28EFDD90B3D80CE1DF1BD54FDD0D99759F
+        6AD4932CBCB35E673322693724DB0E46BA2A533359BBE9CEE7D7704C8F35ACA9
+        AC6CEDD42D5DA62AA135D4645129A1C94223270AAA0AAEF19785260B8D9CD064
+        A10168B2D0C8094D161A80260B0D0D8DBCF0A793858686C6DF069A2C343434F2
+        82260B0D0D8DBCA0C9424343232F68B2D0D0D0C80B9A2C343434F282260B0D0D
+        8DBCA0C9424343232F68B2D0D0D0C80B9A2C343434F282260B0D0D8DBCA0C942
+        4343232F68B2D0D0D0C80B9A2C343434F282260B0D0D8DBCA0C9424343232F68
+        B2D0D0D0C80BFF0FC24C6F79E45C45530000000049454E44AE426082}
+    end
+  end
+    object QueryBill: TOraQuery
+    SQL.Strings = (
+            'Select * from VW_PATIENTBILL'
+            'WHERE 99=99')
+    Left = 536
+    Top = 432
+  end
+  object QueryFooter: TOraQuery
+    SQL.Strings = (
+            'SELECT * FROM VW_PATIENTBILL_SUMMARY'
+            'WHERE 99=99')
+    Left = 624
+    Top = 432
+  end
+end

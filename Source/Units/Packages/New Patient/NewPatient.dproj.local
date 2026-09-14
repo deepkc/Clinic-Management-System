@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2011/11/11 12:53:40.979.pas,C:\Users\vicky\Documents\RAD Studio\Projects\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\New Patient\Unit_NewPatient.pas</Transaction>
+    <Transaction>2011/11/11 12:53:40.979.dfm,C:\Users\vicky\Documents\RAD Studio\Projects\Unit1.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\New Patient\Unit_NewPatient.dfm</Transaction>
+    <Transaction>2011/11/11 12:53:47.046.dproj,C:\Users\vicky\Documents\RAD Studio\Projects\Package1.dproj=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\New Patient\NewPatient.dproj</Transaction>
+    <Transaction>2011/11/16 17:45:58.186.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\New Patient\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\New Patient\Unit_DmNewPatient.pas</Transaction>
+    <Transaction>2011/11/16 17:45:58.186.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\New Patient\Unit1.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\New Patient\Unit_DmNewPatient.dfm</Transaction>
+    <Transaction>2011/11/17 12:28:49.115.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\New Patient\Unit_DmNewPatient.pas=</Transaction>
+    <Transaction>2011/11/17 12:28:49.115.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\New Patient\Unit_DmNewPatient.dfm=</Transaction>
+    <Transaction>2011/11/17 14:54:22.767.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\New Patient\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\New Patient\UnitNewPatientFxn.pas</Transaction>
+    <Transaction>2011/11/17 15:35:06.448.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\New Patient\UnitNewPatientFxn.pas=</Transaction>
+    <Transaction>2011/12/27 10:59:02.399.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Unit_Parent.pas=</Transaction>
+    <Transaction>2011/12/27 10:59:02.399.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Unit_Parent.dfm=</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="-1" SortType="1"/>
+</BorlandProject>

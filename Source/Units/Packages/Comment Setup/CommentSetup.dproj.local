@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2012/01/10 11:18:37.024.pas,C:\Users\vicky\Documents\RAD Studio\Projects\Unit2.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Comment Setup\Unit_CommentSetup.pas</Transaction>
+    <Transaction>2012/01/10 11:18:37.024.dfm,C:\Users\vicky\Documents\RAD Studio\Projects\Unit2.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Comment Setup\Unit_CommentSetup.dfm</Transaction>
+    <Transaction>2012/01/10 11:18:41.390.dproj,C:\Users\vicky\Documents\RAD Studio\Projects\Package1.dproj=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Comment Setup\CommentSetup.dproj</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="-1" SortType="1"/>
+</BorlandProject>

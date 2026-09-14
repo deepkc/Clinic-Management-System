@@ -1,0 +1,127 @@
+unit UnitBlockableTestSetup;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, ExtCtrls, ComCtrls, Grids, DBGrids, DB, MemDS,
+  DBAccess, Ora, DBCtrls;
+
+type
+  TForm_BlockableTestSetup = class(TForm)
+    Panel1: TPanel;
+    BitBtn1: TBitBtn;
+    BitBtn_Save: TBitBtn;
+    BitBtn3: TBitBtn;
+    Panel2: TPanel;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    DBGrid1: TDBGrid;
+    OraQuery_Dbgrid: TOraQuery;
+    DataSource_Dbgrid: TDataSource;
+    Label1: TLabel;
+    Label2: TLabel;
+    DBLCB_DEPARTMENT: TDBLookupComboBox;
+    DBLCB_TESTNAME: TDBLookupComboBox;
+    CheckBox1: TCheckBox;
+    OraQuery_Department: TOraQuery;
+    OraQuery_Testname: TOraQuery;
+    DataSource_Department: TDataSource;
+    DataSource_Testname: TDataSource;
+    OraQuery_Process: TOraQuery;
+    procedure PageControl1Change(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure DBLCB_DEPARTMENTClick(Sender: TObject);
+    procedure BitBtn_SaveClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_BlockableTestSetup: TForm_BlockableTestSetup;
+
+implementation
+
+{$R *.dfm}
+uses Fxn,DM,ServerDate;
+
+procedure TForm_BlockableTestSetup.BitBtn1Click(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex=1 then
+     begin
+          PageControl1.ActivePageIndex:=0;
+          BitBtn_Save.Enabled:=false;
+          DBLCB_DEPARTMENT.KeyValue:=0;
+          DBLCB_TESTNAME.KeyValue:=0;
+     end
+     else
+     Close;
+end;
+
+procedure TForm_BlockableTestSetup.BitBtn3Click(Sender: TObject);
+begin
+     BitBtn_Save.Enabled:=True;
+     PageControl1.ActivePageIndex:=1;
+     DBLCB_DEPARTMENT.KeyValue:=0;
+     DBLCB_TESTNAME.KeyValue:=0;
+
+end;
+
+procedure TForm_BlockableTestSetup.BitBtn_SaveClick(Sender: TObject);
+var maxid:integer;
+begin
+     with OraQuery_Process do
+     begin
+          close;
+          session:=DM_Hospital.DB;
+          SQL.Clear;
+          sql.Add('insert into hs_iste_isblockabletest values(');
+          SQL.Add(' ')
+     end;
+end;
+
+procedure TForm_BlockableTestSetup.DBLCB_DEPARTMENTClick(Sender: TObject);
+begin
+     with OraQuery_Testname do
+     begin
+          close;
+          session:=DM_Hospital.DB;
+          SQL.Clear;
+          sql.Add('select * from hs_tena_testname where tena_depid='+intTOStr(DBLCB_DEPARTMENT.KeyValue));
+          open;
+     end;
+end;
+
+procedure TForm_BlockableTestSetup.FormShow(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex:=0;
+     BitBtn_Save.Enabled:=false;
+
+     OraQuery_Dbgrid.Close;
+     OraQuery_Dbgrid.Session:=DM_Hospital.DB;
+     OraQuery_Dbgrid.Open;
+
+     OraQuery_Department.Close;
+     OraQuery_Department.Session:=DM_Hospital.DB;
+     OraQuery_Department.Open;
+
+     OraQuery_Testname.Close;
+     OraQuery_Department.Session:=DM_Hospital.DB;
+     OraQuery_Department.Open;
+
+end;
+
+procedure TForm_BlockableTestSetup.PageControl1Change(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex=0 then
+     PageControl1.ActivePageIndex:=1
+     else
+     PageControl1.ActivePageIndex:=0;
+end;
+
+end.

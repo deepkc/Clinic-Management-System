@@ -1,0 +1,1108 @@
+unit Unit_SpecialDeposits;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,Fxn, ServerDate, Unit_Master,Dm,
+  Dialogs, DB, DBTables, StdCtrls, DBCtrls, ExtCtrls,PatientClass, Buttons,Unit_QrDepositSlip_Manipal,
+  Grids, DBGrids, SMDBGrid, ComCtrls, OleCtrls, DateEditXControl_TLB;
+
+type
+  TForm_SpecialDeposits = class(TForm)
+    Panel3: TPanel;
+    Query_DepositType: TQuery;
+    DS_DepositType: TDataSource;
+    Ds_List: TDataSource;
+    Query_List: TQuery;
+    DBGrid1: TDBGrid;
+    Panel1: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    lbl_DepositBalance: TLabel;
+    Label3: TLabel;
+    Label5: TLabel;
+    Dblcb_DepositType: TDBLookupComboBox;
+    Cb_Mode: TComboBox;
+    Le_Payment: TLabeledEdit;
+    Label4: TLabel;
+    Lbl_Total: TLabel;
+    Le_HosNo: TLabeledEdit;
+    lbl_PatientName: TLabel;
+    Label6: TLabel;
+    lbl_RemainingBalance: TLabel;
+    Query_PendingSampleColnBill: TQuery;
+    DS_PendingSampleColnBill: TDataSource;
+    Query_Process: TQuery;
+    LBL_InpatientId: TLabeledEdit;
+    CB_AllDepositIPWise: TCheckBox;
+    Label_RefundDeposit: TLabel;
+    Label9: TLabel;
+    Label12: TLabel;
+    Lbl_CurrentAgeGender: TLabel;
+    Lbl_MemberNoCap: TLabel;
+    Lbl_InpatientNo: TLabel;
+    Label13: TLabel;
+    Lbl_Phoneno: TLabel;
+    Label15: TLabel;
+    Lbl_address: TLabel;
+    Lbl_Bg: TLabel;
+    Label17: TLabel;
+    Label10: TLabel;
+    lbl_Scheme: TLabel;
+    Label11: TLabel;
+    Label_HospitalNo: TLabel;
+    Panel4: TPanel;
+    BB_Save: TBitBtn;
+    BB_Close: TBitBtn;
+    StatusBar1: TStatusBar;
+    BB_RePrintBill: TBitBtn;
+    CB_Preview: TCheckBox;
+    Edit_Remarks: TEdit;
+    CB_IsDepositRefund: TCheckBox;
+    Label7: TLabel;
+    Edit_PreveBillNo: TEdit;
+    DBGrid_PrevBillNoInfo: TDBGrid;
+    CheckBox_OLDDeposit: TCheckBox;
+    CB_RefundAll: TCheckBox;
+    Query_LoadRecepit: TQuery;
+    CB_ManualDate: TCheckBox;
+    Label8: TLabel;
+    DEX_TodayDate: TDateEditX;
+    SPB_TodayDate: TSpeedButton;
+    CB_ChangeDepositDate: TCheckBox;
+    SPB_SetDiscount: TSpeedButton;
+    SPB_Delete: TSpeedButton;
+    CB_ShowOldDeposit: TCheckBox;
+    SPB_SetIPNoToOldDeposit: TSpeedButton;
+    Edit_IPNO: TEdit;
+    CB_IPWise: TCheckBox;
+    CB_TakeOPDeposit: TCheckBox;
+    procedure Le_PaymentKeyPress(Sender: TObject; var Key: Char);
+    procedure BB_SaveClick(Sender: TObject);
+    procedure BB_CloseClick(Sender: TObject);
+    procedure Dblcb_DepositTypeClick(Sender: TObject);
+    procedure Le_HosNoKeyPress(Sender: TObject; var Key: Char);
+    procedure LBL_InpatientIdKeyPress(Sender: TObject; var Key: Char);
+    procedure Dblcb_DepositTypeKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_AllDepositIPWiseClick(Sender: TObject);
+    procedure Le_HosNoExit(Sender: TObject);
+    procedure Cb_ModeKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure BB_RePrintBillClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure CB_IsDepositRefundClick(Sender: TObject);
+    procedure Edit_PreveBillNoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure Edit_PreveBillNoKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_PreveBillNoChange(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure CB_RefundAllClick(Sender: TObject);
+    procedure SPB_TodayDateClick(Sender: TObject);
+    procedure CB_ManualDateClick(Sender: TObject);
+    procedure CB_ChangeDepositDateClick(Sender: TObject);
+    procedure SPB_SetDiscountClick(Sender: TObject);
+    procedure SPB_DeleteClick(Sender: TObject);
+    procedure SPB_SetIPNoToOldDepositClick(Sender: TObject);
+    procedure CB_ShowOldDepositClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+        pb_IsReprint: Boolean;
+        pf_DueAmount: Double;
+        pf_DepTotAfterSampleNotReceived : Double;
+
+        pi_PatientId,pi_InpatientId : Integer;
+
+        pi_DISINDEPOSITTRANSID : Integer;
+
+        ps_TodaysDate,ps_TodaysTime : string;
+
+    { Public declarations }
+    Procedure PrintBill;
+    procedure loaddata;
+
+    Procedure IsSampleCollnBlockedDueLackofDeposit(PatientID: Integer);
+    procedure PermissionToSampleCollect;
+    procedure DisplayBasicInfo;
+
+  end;
+
+Var
+     Form_SpecialDeposits: TForm_SpecialDeposits;
+
+implementation
+
+uses Unit_QrDepositSlip;
+
+{$R *.dfm}
+
+{ TFrame2 }
+
+procedure TForm_SpecialDeposits.BB_CloseClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_SpecialDeposits.BB_RePrintBillClick(Sender: TObject);
+begin
+     if Query_List.FieldByName('SPDE_DepositId').AsInteger <=0 then
+     Begin
+          MessageDlg('No Record to Print Deposit Receipt.',mtWarning,[mbok],0);
+          Exit;
+     End;
+
+     LoadPatientData(gi_PatientID);
+     pb_IsReprint:=True;
+     Gs_BillNo:=Query_List.FieldByName('SPDE_DepositNo').AsString;
+     PrintBill;
+end;
+
+procedure TForm_SpecialDeposits.BB_SaveClick(Sender: TObject);
+Var
+     DrAmount,CrAmount,DepositBalance: Double;
+     DepositType,Remarks,ls_ReferenceDepositNo,ls_IsOldDeposit, ls_DataPostDate, ls_DataPostTime:String;
+begin
+     if StrToInt(Le_HosNo.Text)<>StrToInt(Label_HospitalNo.Caption) then
+     begin
+          MessageDlg('Hospital No Mismatch ! The displaying no is " '+Le_HosNo.Text+' " but you are doing bed exchange for this no " '+Label_HospitalNo.Caption+' ".',
+          mtWarning,[mbOK],0);
+          Le_HosNo.SetFocus;
+          Exit;
+     end;
+
+     if gi_PatientId<>StrToInt(Le_HosNo.Text) then
+     Begin
+          MessageDlg('Please Check Patient Name Properly.',mtWarning,[mbok],0);
+          Exit;
+     End;
+
+     if gi_InPatientId<>StrToInt(LBL_InpatientId.Text) then
+     Begin
+          MessageDlg('Please Check Patient Name Properly.',mtWarning,[mbok],0);
+          Exit;
+     End;
+
+     if CB_RefundAll.Checked=False then
+     begin
+          if Trim(Le_Payment.Text) = '' then
+          begin
+               ShowMessage('Amount is blank, Please fill the Amount');
+               Exit;
+          end;
+     end;
+
+     if Trim(Dblcb_DepositType.Text)='' then
+     begin
+          MessageDlg('Please Select Deposit Type.',mtInformation,[mbok],0);
+          Dblcb_DepositType.SetFocus;
+          Exit;
+     end;
+
+
+     if CB_RefundAll.Checked=False then
+     begin
+          if StrToFloat(Le_Payment.Text) = 0 then
+          begin
+               MessageDlg('Amount is zero, Please fill the Amount',mtInformation,[mbok],0);
+               Le_Payment.SetFocus;
+               Exit;
+          end;
+     end;
+
+     if CB_TakeOPDeposit.Checked=False then
+     Begin
+          With query_process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Select Inre_InpatientId Inpatientid,Inre_DISINDEPOSITTRANSID DISINDEPOSITTRANSID,INRE_ISTRANSLOCKED');
+               SQL.Add(' From HS_INRE_InpatientReg where Inre_PatientId='+IntToStr(gi_PatientID));
+               if CB_IPWise.Checked=True then
+               SQL.Add(' and Inre_InPatientId='+IntToStr(gi_InPatientID))
+               Else
+               SQL.Add(' and Inre_IsDischarged=''N''');
+               Open;
+          end;
+
+          if (query_process.FieldByName('INRE_ISTRANSLOCKED').AsString='Y') then
+          begin
+               MessageDlg('Sorry No Patient Admitted with this hospital no.',mtWarning,[mbOK],0);
+               Exit;
+          end;
+
+          if (query_process.FieldByName('InpatientId').AsInteger <=0) and (Dblcb_DepositType.KeyValue=1) then
+          begin
+               MessageDlg('Sorry No Patient Admitted with this hospital no.',mtWarning,[mbOK],0);
+               Exit;
+          end;
+
+          gi_InPatientID:=query_process.FieldByName('InpatientId').AsInteger;
+          pi_InPatientID:=query_process.FieldByName('InpatientId').AsInteger;
+          pi_DISINDEPOSITTRANSID:=query_process.FieldByName('DISINDEPOSITTRANSID').AsInteger;
+     End
+     else
+     Begin
+          gi_InPatientID:=0;
+          pi_InPatientID:=0;
+          pi_DISINDEPOSITTRANSID:=0;
+     End;
+
+     if checkbox_OLDDeposit.Checked=True then
+     ls_IsOldDeposit:='Y'
+     else
+     ls_IsOldDeposit:='N';
+
+     if Cb_Mode.ItemIndex=0 then
+     begin
+          DrAmount:=StrToFloat(Le_Payment.Text);
+          CrAmount:=0;
+          DepositType:='DEPOSIT';
+          //Remarks:='DEPOSIT FOR '+Dblcb_DepositType.KeyValue;
+          ls_ReferenceDepositNo:='';
+
+          (*if (pf_DueAmount > 0) and (DrAmount < (pf_DueAmount-pf_DepTotAfterSampleNotReceived)) then
+          Begin
+               IF Not (MessageDlg('Deposit Amount Couldn''t Covered the Due Amount for Sample Collection. Still Sample Couldn''t Collect.'+Char(10)+
+               'Despite of this do you want to take deposit ?', mtConfirmation,[mbYes,mbNo],0)=mrYes) Then
+               Exit;
+          End;*)
+     end
+     else
+     if Cb_Mode.ItemIndex=1 then
+     begin
+          if CB_RefundAll.Checked=True then
+          begin
+               DrAmount:=0;
+               DepositType:='DEPOSIT REFUND';
+          end
+          else
+          begin
+          if (Edit_PreveBillNo.Text)='' then
+          begin
+               MessageDlg('Please Select Previous Deposit No.',mtWarning,[mbOK],0);
+               Edit_PreveBillNo.SetFocus;
+               Exit;
+          end;
+
+          if Copy(Edit_PreveBillNo.Text,1,2)='DR' then
+          begin
+               MessageDlg('This is Deposit Refund No. So You Cannot Refund Again With This No.',mtWarning,[mbOK],0);
+               Edit_PreveBillNo.SetFocus;
+               Exit;
+          end;
+
+          With Query_Process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Select SPDE_DepositId,SPDE_REFERENCENO From HS_SPDE_SPECIALDeposit where SPDE_DepositNo='+#39+Edit_PreveBillNo.Text+#39);
+               //SQL.Add(' and SPDE_InPatientId='+IntToStr(pi_InPatientID));
+               Open;
+          end;
+
+          if Query_Process.FieldByName('SPDE_DepositId').AsInteger=0 then
+          begin
+               MessageDlg('No Deposit Exist With This Deposit No., Please Put Proper Previous Deposit No.',mtWarning,[mbOK],0);
+               Edit_PreveBillNo.SetFocus;
+               Exit;
+          end;
+
+          if Trim(Query_Process.FieldByName('SPDE_REFERENCENO').AsString)<>'' then
+          begin
+               MessageDlg('Sorry This is Advance Deposit. You Can Refund Only Admission Deposit or Top Up Deposit.',mtWarning,[mbOK],0);
+               Edit_PreveBillNo.SetFocus;
+               Exit;
+          end;
+          With Query_Process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Select SPDE_DepositId,SPDE_REFERENCENO From HS_SPDE_SPECIALDeposit where SPDE_REFERENCENO='+#39+Edit_PreveBillNo.Text+#39);
+               //SQL.Add(' and SPDE_InPatientId='+IntToStr(pi_InPatientID));
+               Open;
+          end;
+          if Query_Process.FieldByName('SPDE_DepositId').AsInteger > 0 then
+          begin
+               MessageDlg('Deposit Is Already Refunded With This No. Please Check Properly.',mtWarning,[mbOK],0);
+               Edit_PreveBillNo.SetFocus;
+               Exit;
+          end;
+          ls_ReferenceDepositNo:=Edit_PreveBillNo.Text;
+          DrAmount:=0;
+          CrAmount:=StrToFloat(Le_Payment.Text);
+          DepositType:='DEPOSIT REFUND';
+          //Remarks:='DEPOSIT REFUND FOR '+Dblcb_DepositType.KeyValue;
+          DepositBalance:=GetInpatientSpecialDepositBalance(gi_PatientID);
+          if CrAmount>DepositBalance then
+          begin
+               MessageDlg('Illegal Operation!!! Depost Balance Is Less Than Refund Amount',mtError,[mbOK],0);
+               Exit;
+          end;
+          end;
+     end;
+
+     gi_PatientID:=StrToInt(Le_HosNo.Text);
+     gi_InPatientID:=StrToInt(LBL_InpatientId.Text);
+
+     if Dblcb_DepositType.keyvalue=2 then
+     begin
+          LBL_InpatientId.text:='0';
+          gi_inpatientid:=0;
+     end;
+
+     pi_PatientID:=gi_PatientID;
+     pi_InPatientID:=gi_InPatientID;
+
+     if CB_TakeOPDeposit.Checked=False then
+     Begin
+          if (gi_InPatientID=0) and (Dblcb_DepositType.KeyValue=1) then
+          begin
+               MessageDlg('IP No Shouldn''t be Zero(0), Please Check IP No Properly.',mtWarning,[mbOK],0);
+               LBL_InpatientId.SetFocus;
+               Exit;
+          end;
+     End;
+
+     if CB_ManualDate.Checked=True then
+     Begin
+          DEX_TodayDate.SystemOfDate:=gi_datesystem;
+          ps_TodaysDate:=DEX_TodayDate.Text;
+     End
+     Else
+     ps_TodaysDate:=TodaysDate;
+     ps_TodaysTime:=TodaysTime;
+
+
+     ls_DataPostDate:=TodaysDate;
+     ls_DataPostTime:=TodaysTime;
+
+     if CB_RefundAll.Checked=True then
+     begin
+          with Query_LoadRecepit do
+          begin
+               Close;
+               SQL[2]:='and SPDE_INPATIENTID='+IntToStr(pi_InPatientID)+' and SPDE_IsTransLocked=''N''';
+               Open;
+               First;
+          end;
+          try
+               DM_Hospital.DB.StartTransaction;
+          while not Query_LoadRecepit.eof do
+          begin
+               DrAmount:=0;
+               ls_ReferenceDepositNo:=Query_LoadRecepit.FieldByName('SPDE_DEPOSITNO').AsString;
+               CrAmount := Query_LoadRecepit.FieldByName('SPDE_DRAMOUNT').AsFloat;
+               Try
+                    SaveSpecialDeposit(0, pi_InPatientID, pi_PatientId, 0, gi_UserID,0, DrAmount,CrAmount,
+                         DepositType , '', ls_ReferenceDepositNo, '', '', Ps_TodaysDate, Ps_TodaysTime,ls_DataPostDate,ls_DataPostTime,'N',GetPatientCagetory(Pi_PatientId),ls_IsOldDeposit);
+               except
+                    SaveSpecialDeposit(0, pi_InPatientID, pi_PatientId, 0, gi_UserID,0, DrAmount,CrAmount,
+                         DepositType , '', ls_ReferenceDepositNo, '', '', Ps_TodaysDate, Ps_TodaysTime,ls_DataPostDate,ls_DataPostTime,'N',GetPatientCagetory(Pi_PatientId),ls_IsOldDeposit);
+               End;
+               Query_LoadRecepit.Next;
+          end;
+          pb_IsReprint:=False;
+          DM_Hospital.DB.Commit;
+          ShowDoneMessage;
+          except
+          DM_Hospital.DB.Rollback;
+          MsgBox(1005, 0, '', '', '');
+          end;
+
+     end
+     else
+     begin
+
+     Try
+          DM_Hospital.DB.StartTransaction;
+
+                    (*Try
+               SaveDeposit(0, 0, gi_PatientId, gi_UserID, DrAmount, CrAmount,DepositType ,Dblcb_DepositType.KeyValue,'', TodaysDate, TodaysTime,
+                    Remarks);
+          Except
+              SaveDeposit(0, 0, gi_PatientId, gi_UserID, DrAmount, CrAmount,DepositType ,Dblcb_DepositType.KeyValue,'', TodaysDate, TodaysTime,
+                    Remarks);
+          End;*)
+
+          (*
+               SaveDeposit(DEPOSITHEADID,INPATIENTID,PATIENTID,BANKID,DEPOSITBY : Integer ;DRAMOUNT,CRAMOUNT :Double;
+                      DEPOSITTYPE,REFERENCETYPE,REFERENCENO,CHEQUENO,REMARKS,DEPOSITDATE,DEPOSITTIME :string); Stdcall;
+          *)
+           Try
+               SaveSpecialDeposit(0, pi_InPatientID, pi_PatientId, 0, gi_UserID,0, DrAmount,CrAmount,
+                    DepositType , '', ls_ReferenceDepositNo, '', '', Ps_TodaysDate, Ps_TodaysTime,ls_DataPostDate,ls_DataPostTime,'N',GetPatientCagetory(Pi_PatientId),ls_IsOldDeposit);
+          except
+               SaveSpecialDeposit(0, pi_InPatientID, pi_PatientId, 0, gi_UserID,0, DrAmount,CrAmount,
+                    DepositType , '', ls_ReferenceDepositNo, '', '', Ps_TodaysDate, Ps_TodaysTime,ls_DataPostDate,ls_DataPostTime,'N',GetPatientCagetory(Pi_PatientId),ls_IsOldDeposit);
+          End;
+
+          (*if DrAmount > 0 then // Deposit Coln.
+          Begin
+               if pf_DueAmount <= (pf_DepTotAfterSampleNotReceived + DrAmount) then
+               PermissionToSampleCollect;
+          End;*)
+
+          pb_IsReprint:=False;
+          DM_Hospital.DB.Commit;
+          ShowDoneMessage;
+     Except
+          DM_Hospital.DB.Rollback;
+          MsgBox(1005, 0, '', '', '');
+     End;
+     end;
+
+     if MessageDlg('Do You Want To Print ?',mtConfirmation,[mbYes,mbNo],0)=mryes then
+     PrintBill;
+
+     loaddata;
+     Le_Payment.Text:='';
+     Dblcb_DepositType.KeyValue:=NULL;
+     Cb_Mode.ItemIndex:=0;
+     gi_PatientID:=0;
+     //lbl_PatientName.Caption:='';
+     Edit_PreveBillNo.Text:='';
+     CB_IsDepositRefund.Checked:=False;
+//     free;
+end;
+
+procedure TForm_SpecialDeposits.CB_AllDepositIPWiseClick(Sender: TObject);
+begin
+     loaddata;
+end;
+
+procedure TForm_SpecialDeposits.CB_ChangeDepositDateClick(Sender: TObject);
+begin
+     if CB_ChangeDepositDate.Checked=True then
+     Begin
+          CB_ManualDate.Checked:=False;
+          Label8.Enabled:=True;
+          DEX_TodayDate.Enabled:=True;
+          DEX_TodayDate.SystemOfDate:=gi_datesystem;
+          DEX_TodayDate.Text:=TodaysDate;
+          SPB_TodayDate.Enabled:=True;
+     End
+     Else
+     Begin
+          Label8.Enabled:=False;
+          DEX_TodayDate.Enabled:=False;
+          SPB_TodayDate.Enabled:=False;
+     End;
+end;
+
+procedure TForm_SpecialDeposits.CB_IsDepositRefundClick(Sender: TObject);
+begin
+     if CB_IsDepositRefund.Checked=True then
+     begin
+          Cb_Mode.ItemIndex:=1;
+          Le_Payment.ReadOnly:=True;
+          Le_Payment.Color:=clMedGray;
+          Cb_Mode.Color:=clMedGray;
+          DBGrid_PrevBillNoInfo.Left:=125;
+          DBGrid_PrevBillNoInfo.Top:=198;
+          DBGrid_PrevBillNoInfo.Height:=134;
+          DBGrid_PrevBillNoInfo.Width:=400;
+
+          Edit_PreveBillNo.Enabled:=True;
+          Edit_PreveBillNo.ReadOnly:=False;
+          Edit_PreveBillNo.Color:=clWhite;
+          Label7.Enabled:=True;
+          Edit_PreveBillNo.SetFocus;
+     end
+     else
+     begin
+          Cb_Mode.ItemIndex:=0;
+          Cb_Mode.Color:=clCream;
+          Le_Payment.ReadOnly:=False;
+          Le_Payment.Color:=clWhite;
+          DBGrid_PrevBillNoInfo.Visible:=False;
+
+          Edit_PreveBillNo.Enabled:=False;
+          Edit_PreveBillNo.ReadOnly:=True;
+          Edit_PreveBillNo.Color:=clMedGray;
+          Label7.Enabled:=False;
+     end;
+
+end;
+
+procedure TForm_SpecialDeposits.Cb_ModeKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#13 then Le_Payment.SetFocus;
+
+end;
+
+procedure TForm_SpecialDeposits.CB_RefundAllClick(Sender: TObject);
+begin
+     if CB_RefundAll.Checked=True then
+     begin
+          Cb_Mode.ItemIndex:=1;
+          Le_Payment.ReadOnly:=True;
+          Le_Payment.Color:=clMedGray;
+          Cb_Mode.Color:=clMedGray;
+          Edit_Remarks.SetFocus;
+          CB_IsDepositRefund.Checked:=False;
+          CB_IsDepositRefund.Enabled := False;
+     end
+     else
+     begin
+          Cb_Mode.ItemIndex:=0;
+          Cb_Mode.Color:=clCream;
+          Le_Payment.ReadOnly:=False;
+          Le_Payment.Color:=clWhite;
+          CB_IsDepositRefund.Enabled := True;
+     end;
+end;
+
+procedure TForm_SpecialDeposits.CB_ShowOldDepositClick(Sender: TObject);
+begin
+     loaddata;
+end;
+
+procedure TForm_SpecialDeposits.CB_ManualDateClick(Sender: TObject);
+begin
+     if CB_ManualDate.Checked=True then
+     Begin
+          CB_ChangeDepositDate.Checked:=False;
+          Label8.Enabled:=True;
+          DEX_TodayDate.Enabled:=True;
+          DEX_TodayDate.SystemOfDate:=gi_datesystem;
+          DEX_TodayDate.Text:=TodaysDate;
+          SPB_TodayDate.Enabled:=True;
+     End
+     Else
+     Begin
+          Label8.Enabled:=False;
+          DEX_TodayDate.Enabled:=False;
+          SPB_TodayDate.Enabled:=False;
+     End;
+end;
+
+procedure TForm_SpecialDeposits.PermissionToSampleCollect;
+Begin
+     With Query_PendingSampleColnBill do
+     Begin
+          First;
+          while Not EOF do
+          Begin
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.Add(' Update PatientTest Set TestProgressStatus=2 where BillNo='+#39+Query_PendingSampleColnBill.FieldByName('BillNo').AsString+#39);
+                    sql.Add(' and TestProgressStatus=1');
+                    ExecSQL;
+               End;
+               Query_PendingSampleColnBill.Next;
+          End;
+     End;
+End;
+
+procedure TForm_SpecialDeposits.DBGrid1DblClick(Sender: TObject);
+begin
+     Edit_PreveBillNo.Text:=Query_List.FieldByName('SPDE_DEPOSITNO').AsString;
+end;
+
+procedure TForm_SpecialDeposits.Dblcb_DepositTypeClick(Sender: TObject);
+begin
+      if gi_patientId>0 then
+      begin
+          //MyPatient :=TPatient.Create;
+          //MyPatient.LoadData(gi_PatientID);
+          LoadPatientData(gi_patientId);
+          lbl_DepositBalance.Visible:=True;
+          //lbl_DepositBalance.Caption:=FormatFloat('#0,0.00',(GetTotalMemberDeposit(gi_PatientID,Dblcb_DepositType.KeyValue)));
+      end;
+
+end;
+
+procedure TForm_SpecialDeposits.Dblcb_DepositTypeKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#13 then Le_Payment.SetFocus;
+end;
+
+procedure TForm_SpecialDeposits.LBL_InpatientIdKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     begin
+          gi_InPatientID:=StrToInt(LBL_InpatientId.Text);
+          With query_process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Select Inre_InpatientId InpatientId,Inre_PatientId Patientid,Inre_DISINDEPOSITTRANSID DISINDEPOSITTRANSID,Inre_SchemeId Schemeid,');
+               Sql.Add('(Select SCHE_Scheme From HS_SCHE_Scheme where SCHE_SchemeId=Inre_SchemeId) Scheme,');
+               SQL.Add(' Inre_IsDischarged IsDischarged  From Hs_inre_InpatientReg IPR where Inre_InPatientId='+IntToStr(gi_InPatientID));
+               //SQL.Add(' and IsDischarged=''N''');
+               Open;
+          end;
+
+          if query_process.FieldByName('InpatientId').AsInteger <=0 then
+          begin
+               MessageDlg('Sorry No Patient Admitted with this Inpatient No.',mtWarning,[mbOK],0);
+               Exit;
+          end;
+
+          if query_process.FieldByName('IsDischarged').AsString ='Y' then
+          begin
+               IF MessageDlg('Patient is already discharged with this IP No . Do you want to continuee ?',mtWarning,[mbyes,mbNo],0)=mrNo Then
+               Exit;
+          end;
+
+          pi_DISINDEPOSITTRANSID:=query_process.FieldByName('DISINDEPOSITTRANSID').AsInteger;
+          gi_InPatientID:=query_process.FieldByName('InpatientId').AsInteger;
+          gi_PatientID:=query_process.FieldByName('patientId').AsInteger;
+          pi_PatientID:=query_process.FieldByName('patientId').AsInteger;
+          Le_HosNo.Text:=IntToStr(query_process.FieldByName('patientId').AsInteger);
+          Label_HospitalNo.Caption:=Le_HosNo.Text;
+
+          LoadPatientData(gi_PatientID);
+          DisplayBasicInfo;
+          lbl_Scheme.Caption:=query_process.FieldByName('Scheme').AsString;
+
+          loaddata;
+     end;
+end;
+
+procedure TForm_SpecialDeposits.Le_HosNoExit(Sender: TObject);
+begin
+     (*if Trim(Le_HosNo.Text)='' then Le_HosNo.Text:='0';
+     if (Pi_PatientId = 0) and (StrToInt(Le_HosNo.Text)>0)  then
+     begin
+          MessageDlg('Please do enter after keeping hospital no.',mtWarning,[mbok],0);
+          Le_HosNo.SetFocus;
+          Exit;
+     end;
+
+     if (Pi_PatientId > 0) and (StrToInt(Le_HosNo.Text)>0) and (Pi_PatientId<>StrToInt(Le_HosNo.Text)) then
+     begin
+          MessageDlg('Patient Information is not refresh. You are putting hospital no " '+Le_HosNo.Text+' " '+Char(10)
+          +'but showing infromation of hospital no " '+IntToStr(pi_PatientId)+' ".',mtWarning,[mbok],0);
+          Le_HosNo.SetFocus;
+          Exit;
+     end;*)
+end;
+
+procedure TForm_SpecialDeposits.Le_HosNoKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     begin
+          if Le_HosNo.Text<>'' then
+          begin
+               Pi_PatientId:=StrToInt(Le_HosNo.Text);
+               Label_HospitalNo.Caption:=Le_HosNo.Text;
+
+               if IsRegisteredPatient(StrToInt(Le_HosNo.Text)) then
+               begin
+                    gi_PatientID:=StrToInt(Le_HosNo.Text);
+                    LoadPatientData(gi_PatientID);
+                    lbl_PatientName.Caption:=Gs_PatientName;
+               end
+               else
+                    Le_HosNo.SetFocus;
+          end;
+
+          With query_process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Select INRE_InpatientId Inpatientid,INRE_DISINDEPOSITTRANSID DISINDEPOSITTRANSID,INRE_SchemeId SchemeId,(Select SCHE_Scheme From HS_SCHE_Scheme where ');
+               SQL.Add(' SCHE_SchemeId=IPR.INRE_SchemeId) Scheme From HS_INRE_INPATIENTREG IPR where INRE_PatientId='+IntToStr(gi_PatientID));
+               SQL.Add(' and INRE_IsDischarged=''N''');
+               SQL.Add(' Order by INRE_InpatientID Desc');
+               Open;
+          end;
+          CB_RefundAll.Checked:=False;
+          if query_process.FieldByName('InpatientId').AsInteger <=0 then
+          begin
+               With query_process do
+               begin
+                    Close;
+                    SQL.Clear;
+                    SQL.Add(' Select INRE_PatientId PatientId,INRE_InpatientId InpatientId,INRE_DISINDEPOSITTRANSID DISINDEPOSITTRANSID,INRE_SchemeId SchemeId,(Select SCHE_Scheme From HS_SCHE_Scheme where ');
+                    SQL.Add(' SCHE_SchemeId=IPR.INRE_SchemeId) Scheme From HS_INRE_InpatientReg IPR');
+                    SQL.Add(' where INRE_InpatientId In (Select Max(INRE_InpatientId) From HS_INRE_Inpatientreg where  INRE_PatientId='+IntToStr(gi_PatientID));
+                    SQL.Add(' )');
+                    Open;
+               end;
+
+               if query_process.FieldByName('InpatientId').AsInteger > 0 then
+               Begin
+                    IF MessageDlg('Patient is already discharged. Do you want to continue ?',mtConfirmation,[mbyes,mbNo],0)=mrno Then
+                    Exit;
+               End;
+               {
+               Else
+               Begin
+                    MessageDlg('Sorry No Patient Admitted With This Hospital No Till Date.',mtWarning,[mbOK],0);
+                    Exit;
+               End;}
+          end;
+
+
+          DisplayBasicInfo;
+          lbl_Scheme.Caption:=query_process.FieldByName('Scheme').AsString;
+
+          gi_InPatientID:=query_process.FieldByName('InpatientId').AsInteger;
+          pi_InPatientID:=query_process.FieldByName('InpatientId').AsInteger;
+          LBL_InpatientId.Text:=IntToStr(query_process.FieldByName('InpatientId').AsInteger);
+          pi_DISINDEPOSITTRANSID:=query_process.FieldByName('DISINDEPOSITTRANSID').AsInteger;
+
+          loaddata;
+          //lbl_RemainingBalance.Caption:=FormatFloat('#0,0.00',(GetDepositBalance(gi_PatientID)));
+          Dblcb_DepositType.SetFocus;
+
+     end;
+end;
+
+Procedure TForm_SpecialDeposits.DisplayBasicInfo;
+begin
+     lbl_Patientname.Caption:=Gs_PatientName;
+     Lbl_address.Caption:=Gs_Address;
+     Lbl_CurrentAgeGender.Caption:=Gs_CurrentAgeGender;
+
+     if Trim(Gs_PhoneNo)<>'' then
+     Lbl_Phoneno.Caption:=Gs_PhoneNo
+     Else
+     Lbl_Phoneno.Caption:='N/A';
+
+     if Trim(Gs_BloodGroup)<>'' then
+     Lbl_Bg.Caption:=Gs_BloodGroup
+     Else
+     Lbl_Bg.Caption:='N/A';
+end;
+
+
+procedure TForm_SpecialDeposits.Edit_PreveBillNoChange(Sender: TObject);
+begin
+     IF (CB_IsDepositRefund.Checked=True) Then
+     DBGrid_PrevBillNoInfo.Visible:=True;
+end;
+
+procedure TForm_SpecialDeposits.Edit_PreveBillNoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if CB_IsDepositRefund.Checked=True then
+     Begin
+         IF (key=VK_ESCAPE) Then Edit_PreveBillNo.Text:='';
+
+         IF (key=VK_Down) and (Query_List.Active)  Then
+         Begin
+              DBGrid_PrevBillNoInfo.Visible:=True;
+              Query_List.Next;
+              Edit_PreveBillNo.Text:=Query_List.FieldByName('SPDE_DEPOSITNO').AsString;
+              Le_Payment.Text:=FloatToStr(Query_List.FieldByName('SPDE_DRAMOUNT').AsFloat);
+         End;
+
+         IF (key=VK_Up) and (Query_List.Active)  Then
+         Begin
+              DBGrid_PrevBillNoInfo.Visible:=True;
+              Query_List.Prior;
+              Edit_PreveBillNo.Text:=Query_List.FieldByName('SPDE_DEPOSITNO').AsString;
+              Le_Payment.Text:=FloatToStr(Query_List.FieldByName('SPDE_DRAMOUNT').AsFloat);
+         End;
+     End;
+end;
+
+procedure TForm_SpecialDeposits.Edit_PreveBillNoKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key=#13 then
+     Begin
+          if (Trim(Edit_PreveBillNo.Text)='') and (CB_IsDepositRefund.Checked=True) then
+          Begin
+               MessageDlg('Please Put Previous Deposit No.',mtWarning,[mbOK],0);
+               Edit_PreveBillNo.SetFocus;
+               Exit;
+          End;
+          DBGrid_PrevBillNoInfo.Visible:=False;
+          With Query_Process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Select SPDE_InpatientId,SPDE_DepositId,SPDE_REFERENCENO,SPDE_DRAMOUNT,SPDE_DepositType,');
+               SQL.Add('(Select DEHE_DEPOSITHEADID From HS_DEHE_DEPOSITHEAD where DEHE_DEPOSITHEAD=SPDE_DepositType) as DepositTypeId');
+               SQL.Add(' From HS_SPDE_SPECIALDeposit where SPDE_DepositNo='+#39+Edit_PreveBillNo.Text+#39);
+               Open;
+          end;
+
+          Le_Payment.Text:=FloatToStr(Query_Process.FieldByName('SPDE_DRAMOUNT').AsFloat);
+
+          if Query_Process.FieldByName('DepositTypeId').AsInteger > 0 then
+          Dblcb_DepositType.KeyValue:=Query_Process.FieldByName('DepositTypeId').AsInteger;
+
+          if Query_Process.FieldByName('SPDE_InpatientId').asInteger=0 then
+          begin
+               With Query_Process do
+               begin
+                    Close;
+                    SQL.Clear;
+                    SQL.Add(' Select SUM(SPDE_DRAMOUNT-SPDE_CRAMOUNT)TOTAL');
+                    SQL.Add(' From HS_SPDE_SPECIALDeposit where SPDE_PATIENTID='+IntToSTr(gi_PatientID));
+                    sql.add('and SPDE_DepositNo='+#39+Edit_PreveBillNo.Text+#39);
+                    Open;
+               end;
+               if Query_Process.FieldByName('TOTAL').AsFloat>0 then
+               Le_Payment.Text:=FloatToStr(Query_Process.FieldByName('TOTAL').AsFloat);
+          end;
+          Edit_Remarks.SetFocus;
+     End;
+end;
+
+procedure TForm_SpecialDeposits.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key=VK_F12 then
+     BB_SaveClick(Sender);
+
+     if Key=VK_F1 then CB_Preview.Checked:=not(CB_Preview.Checked);
+     if Key=VK_F2 then CB_IsDepositRefund.Checked:=not(CB_IsDepositRefund.Checked);
+
+     if Key=27 then Close;
+end;
+
+procedure TForm_SpecialDeposits.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key=#13 then BB_Save.SetFocus;
+end;
+
+procedure TForm_SpecialDeposits.FormShow(Sender: TObject);
+begin
+     if gi_PatientID > 0 then
+     Begin
+          Le_HosNo.Text:=IntToStr(gi_PatientID);
+     End;
+
+     Label8.Enabled:=False;
+     DEX_TodayDate.Enabled:=False;
+     SPB_TodayDate.Enabled:=False;
+
+     if (gi_UserId=1) or (gi_UserId=21) then
+     begin
+          Label8.Enabled:=False;
+          DEX_TodayDate.Enabled:=False;
+          SPB_TodayDate.Enabled:=False;
+     end
+     Else
+     Begin
+          Label8.Enabled:=False;
+          Label8.Visible:=False;
+          DEX_TodayDate.Enabled:=False;
+          DEX_TodayDate.Visible:=False;
+          SPB_TodayDate.Enabled:=False;
+          SPB_TodayDate.Visible:=False;
+          CB_ManualDate.Enabled:=False;
+          CB_ManualDate.Visible:=False;
+
+          CB_ChangeDepositDate.Enabled:=False;
+          CB_ChangeDepositDate.Visible:=False;
+
+          SPB_SetDiscount.Enabled:=False;
+          SPB_SetDiscount.Visible:=False;
+
+          SPB_Delete.Enabled:=False;
+          SPB_Delete.Visible:=False;
+     End;
+
+     Le_HosNo.SetFocus;
+end;
+
+Procedure TForm_SpecialDeposits.IsSampleCollnBlockedDueLackofDeposit(PatientID: Integer);
+Begin
+     pf_DueAmount:=0;
+     With Query_PendingSampleColnBill do
+     Begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          sql.Clear;
+          sql.add(' Select SEBD_BillNo,SEBD_BillDate,SEBD_BillTime,Sum((SEBD_Amount*SEBD_Qty)+SEBD_VatAmt-(SEBD_Amount*SEBD_Qty*SEBD_DisPer/100)) as Total');
+          sql.add(' From HS_SEBD_ServiceBillDetail where SEBD_BillNo In (Select BillNo From PatientTest PT where PatientId='+IntToStr(PatientID));
+          sql.add(' and PatientTestId Not In (Select TECA_PatientTestId From HS_TECA_TestCancel Where TECA_PatientTestId=PT.PatientTestId) and TestProgressStatus=1)');
+          sql.add(' Group by SEBD_BillNo,SEBD_BillDate,SEBD_BillTime Order by SEBD_BillNo');
+          Open;
+          First;
+          while not EOF do
+          Begin
+               pf_DueAmount:=pf_DueAmount+Query_PendingSampleColnBill.FieldByName('Total').AsFloat;
+               Query_PendingSampleColnBill.Next;
+          End;
+     End;
+     Query_PendingSampleColnBill.First;
+     With Query_Process do
+     Begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          sql.Clear;
+          sql.Add(' Select Sum(SPDE_DrAmount-SPDE_CrAmount) as DepTotAfterSampleNotReceived From HS_SPDE_SPECIALDeposit where SPDE_PatientId='+IntToStr(PatientID));
+          sql.Add(' and SPDE_DepositDate >='+#39+Query_PendingSampleColnBill.FieldByName('SEBD_BillDate').AsString+#39);
+          sql.Add(' and SPDE_DepositTime >='+#39+Query_PendingSampleColnBill.FieldByName('SEBD_BillTime').AsString+#39);
+          Open;
+     End;
+     pf_DepTotAfterSampleNotReceived:=Query_Process.FieldByName('DepTotAfterSampleNotReceived').AsFloat;
+End;
+
+procedure TForm_SpecialDeposits.Le_PaymentKeyPress(Sender: TObject; var Key: Char);
+begin
+    { if key=#13 then Edit_Remarks.SetFocus;
+     IF key in [#8] then Exit;
+     AvoidMultipleDecimal(Le_Payment,key);
+     key:=Key;}
+end;
+
+procedure TForm_SpecialDeposits.loaddata;
+Var
+Ld_Total,Lc_Total:Double;
+begin
+     Query_DepositType.Close;
+     Query_DepositType.Open;
+     {
+     if gi_InPatientID=0 then
+     CB_AllDepositIPWise.Checked:=True;  }
+     with Query_List do
+     begin
+          close;
+          databasename:=gs_DatabaseName;
+          if CB_AllDepositIPWise.Checked=True then
+          sql[1]:='Where SPDE_PATIENTID='+Inttostr(gi_PatientID)
+          else
+          begin
+               if gi_InPatientID>0 then
+               sql[1]:='Where SPDE_InPATIENTID='+Inttostr(gi_InPatientID)
+               else
+               sql[1]:='Where SPDE_PATIENTID='+Inttostr(gi_PatientID);
+          end;
+
+          if CB_ShowOldDeposit.Checked=True then
+          sql[2]:=' Or (SPDE_PatientId='+IntToStr(gi_PatientID)+' and SPDE_InPATIENTID=0)'
+          else
+          sql[2]:=' ';
+
+          open;
+     end;
+     Ld_Total:=00.00;
+     Lc_Total:=0;
+     Query_List.First;
+     while not Query_List.Eof do
+     begin
+          Ld_Total:=Ld_Total+Query_List.FieldByName('SPDE_DrAmount').AsFloat;
+          LC_Total:=Lc_Total+Query_List.FieldByName('SPDE_CrAmount').AsFloat;
+          Query_List.Next;
+     end;
+     Label_RefundDeposit.Caption:=FormatFloat('#0,0.00',(Lc_Total));
+     lbl_total.Caption:=FormatFloat('#0,0.00',(Ld_Total));
+     lbl_RemainingBalance.Caption:=FormatFloat('#0,0.00',(Ld_Total-Lc_Total));
+end;
+
+procedure TForm_SpecialDeposits.PrintBill;
+Var
+     i: Integer;
+begin
+     try
+          Form_QrDepositSlip_Manipal := TForm_QrDepositSlip_Manipal.Create(nil);
+          if pb_IsReprint then
+               Form_QrDepositSlip_Manipal.lbl_reprint.Enabled := true;
+          with Form_QrDepositSlip_Manipal do
+          begin
+               QrDepositSlip.Prepare;
+               //lbl_totpage.Caption := IntToStr(QrDepositSlip.QRPrinter.PageCount);
+               if CB_Preview.Checked=False then
+               QrDepositSlip.Print
+               Else
+               QrDepositSlip.PreviewModal;
+          end;
+     finally
+          pb_IsReprint := false;
+          Form_QrDepositSlip_Manipal.Free;
+     end;
+end;
+
+procedure TForm_SpecialDeposits.SPB_SetDiscountClick(Sender: TObject);
+begin
+     if (Query_List.FieldByName('SPDE_IsTransLocked').AsString='Y') Then
+     (*and ((Query_List.FieldByName('SPDE_REFERENCETYPE').AsString='DISCHARGE ADJUSTED DEPOSIT')
+     or (Query_List.FieldByName('SPDE_REFERENCETYPE').AsString='FINAL DISCHARGE COLN')) then*)
+     begin
+          MessageDlg('Sorry ! Transaction Is Already Locked.',mtWarning,[mbOK],0);
+          Exit;
+     end;
+
+     if MessageDlg(' Are You Sure To Change Deposit Date ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+     Begin
+          With Query_Process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Update HS_SPDE_SPECIALDEPOSIT Set SPDE_PrevDepositDate=SPDE_DepositDate,SPDE_DepositDate='+#39+DEX_TodayDate.text+#39);
+               SQL.Add(' ,SPDE_DepositDateChangeBy='+IntToStr(gi_UserID));
+               SQL.Add(' where SPDE_DEPOSITID='+IntToStr(Query_List.FieldByName('SPDE_DEPOSITID').AsInteger));
+               ExecSQL;
+          end;
+          ShowDoneMessage;
+          loaddata;
+     End;
+end;
+
+procedure TForm_SpecialDeposits.SPB_SetIPNoToOldDepositClick(Sender: TObject);
+begin
+     if MessageDlg(' Are You Sure To Change Deposit Date ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+     Begin
+          With Query_Process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Update HS_SPDE_SPECIALDEPOSIT Set SPDE_InpatientId='+Edit_IPNO.Text);
+               SQL.Add(' where SPDE_DEPOSITID='+IntToStr(Query_List.FieldByName('SPDE_DEPOSITID').AsInteger));
+               ExecSQL;
+          end;
+          ShowDoneMessage;
+          Edit_IPNO.Text:='';
+          loaddata;
+     End;
+end;
+
+procedure TForm_SpecialDeposits.SPB_TodayDateClick(Sender: TObject);
+begin
+     ChangeDateSystem(DEX_TodayDate, SPB_TodayDate);
+end;
+
+procedure TForm_SpecialDeposits.SPB_DeleteClick(Sender: TObject);
+Var ls_LogRemarks : string;
+begin
+     if (Query_List.FieldByName('SPDE_IsTransLocked').AsString='Y') Then
+     (*and ((Query_List.FieldByName('SPDE_REFERENCETYPE').AsString='DISCHARGE ADJUSTED DEPOSIT')
+     or (Query_List.FieldByName('SPDE_REFERENCETYPE').AsString='FINAL DISCHARGE COLN')) then*)
+     begin
+          MessageDlg('Sorry ! Transaction Is Already Locked.',mtWarning,[mbOK],0);
+          Exit;
+     end;
+
+     if MessageDlg(' Are You Sure To Delete Deposit ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+     Begin
+          ls_LogRemarks:=' DepositID='+Query_List.FieldByName('SPDE_DepositId').AsString+', PatientId='+Query_List.FieldByName('SPDE_PatientId').AsString+
+                         ',InpatientId='+Query_List.FieldByName('SPDE_InpatientId').AsString;
+          if Query_List.FieldByName('SPDE_CRAmount').AsFloat<>0 then
+          ls_LogRemarks:=ls_LogRemarks+' , CrAmount='+Query_List.FieldByName('SPDE_CRAmount').AsString
+          Else
+          ls_LogRemarks:=ls_LogRemarks+' , DrAmount='+Query_List.FieldByName('SPDE_DrAmount').AsString;
+          ls_LogRemarks:=ls_LogRemarks+' ,DepositType='+Query_List.FieldByName('SPDE_DepositType').AsString+', ReferenceType='+Query_List.FieldByName('SPDE_ReferenceType').AsString
+                    +', DepositDate='+Query_List.FieldByName('SPDE_DEPOSITDATE').AsString+', DepositTime='+Query_List.FieldByName('SPDE_DEPOSITTIME').AsString+',DepositBy='+Query_List.FieldByName('SPDE_DEPOSITBY').AsString;
+
+
+          With Query_Process do
+          begin
+               Close;
+               DatabaseName:=gs_DatabaseName;
+               SQL.Clear;
+               SQL.add(' Insert Into HS_LOG_GLOBAL(LOG_LOGID,LOG_MODULENAME,LOG_USERID,LOG_DATAPOSTDATE,LOG_DATAPOSTTIME,LOG_REMARKS)');
+               SQL.add(' Values ('+IntToStr(GetMaxId('HS_LOG_GLOBAL','LOG_LOGID'))+',''SPLDEPOISTDELETE'','+IntToStr(gi_UserID)+','+#39+TodaysDate+#39);
+               SQL.add(' ,'+#39+TodaysTime+#39+','+#39+ls_LogRemarks+#39+')');
+               ExecSQL;
+
+
+               Close;
+               SQL.Clear;
+               SQL.Add(' Delete From HS_SPDE_SPECIALDEPOSIT ');
+               SQL.Add(' where SPDE_DEPOSITID='+IntToStr(Query_List.FieldByName('SPDE_DEPOSITID').AsInteger));
+               ExecSQL;
+          end;
+          ShowDoneMessage;
+          loaddata;
+     End;
+end;
+
+end.

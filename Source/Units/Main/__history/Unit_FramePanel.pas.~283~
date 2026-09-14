@@ -1,0 +1,2007 @@
+unit Unit_FramePanel;
+
+interface
+
+uses
+      Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,Unit_MainFormPatientAdministration,
+     Unit1,unit_worklist, Unit_BillingParent, Unit_TestNameSetup, Unit_Test, Unit_UnitSetup, DateRange,
+     Unit_QrWorklist, Unit_FindingSetup, Unit_DepartmentSetup, Unit_SensitiveMedicineSetup,
+     Unit_SensitiveMedicineTestWiseSetup, Unit_CommunitySetup, Unit_SchemeSetup,DM,
+     Unit_Verification, Unit_SampleSourceSetup, Unit_DoctorSetup, Unit_CommentSetup, Unit_FooterSetup,Unit_TestNameSetupNew,
+     UnitSalesBook, Unit_TaxReport, Unit_ClinicalPathDep, Unit_ReportFooterSetup, Unit_PackageScheme,
+     Unit_SchemeDetail,Unit_MainBloodCollection,Unit_ReffWiseRevenue,Unit_SchemeWiseRevenue,UnitNoofTestDone,Unit_SampleWise, Unit_Testsetupdetail,
+     Unit_ClinicalSetup,Unit_TestPackageDetail,Unit_CollectionCenterReport,Unit_Regulation,Unit_ManualRepFooterSetup,Unit_PatientTestDetail,
+     Dialogs, StdCtrls, Buttons, jpeg, ExtCtrls, DB, DBTables, DBAccess, Ora,OraSmart,MemDS, OraError,Unit_AllPatientTest,UnitEditFindAlternate
+     ,Unit_ModuleSetup,Unit_MainmenuSetup,Unit_SubmenuSetup,Unit_FunctionSetup,Unit_ClinicalMasterSetup,Unit_ClinicalMasterwiseTestSetup,
+     UnitUserWiseCollection, UnitDeptWiseReport, UnitDeptTestWiseReport, UnitRefundBillReport,
+     Unit_DocWiseFraction, Unit_CreditPaymentDetail, Unit_CashCreditSalesReport, Unit_ReceiptDetailReport,Unit_CashServiceSalesReport,
+     Unit_DepositCollection, Unit_CreditBill, Unit_CreditDiscount, Unit_MaterializedView, Unit_HospitalSetup{,UnitMedExamEntry}, Unit_ReferalDoctorSetup,Unit_LogReportClinicalPathFinding,Unit_LogReportClinicalSetUp,Unit_SetupSourceTestCode,Unit_TestCalculation,Unit_CalculationName,Unit_ServiceCreditSalesReport,Unit_PatientSchemeRectification,Unit_PtTestReport,
+  AppEvnts;
+
+type
+     TFrame_Panel = class(TFrame)
+          Timer1: TTimer;
+          Timer2: TTimer;
+          PanelMain: TPanel;
+          SB_FormsCertificate: TSpeedButton;
+          SB_Cash: TSpeedButton;
+    SB_Analysis: TSpeedButton;
+          SB_Setup: TSpeedButton;
+          Image22: TImage;
+          BitBtn2: TBitBtn;
+          Panel_Setup: TPanel;
+          Label1: TLabel;
+          Timer3: TTimer;
+          Label3: TLabel;
+          Timer4: TTimer;
+          BB_SetupBack: TBitBtn;
+          BB_MainBack: TBitBtn;
+          Timer5: TTimer;
+          Query: TOraQuery;
+          Sb_SampleCollection: TSpeedButton;
+          SB_Pathology: TSpeedButton;
+          BB_Verification: TSpeedButton;
+          CategoryPanelGroup1: TCategoryPanelGroup;
+          CategoryPanel1: TCategoryPanel;
+          BitBtn4: TBitBtn;
+          BitBtn9: TBitBtn;
+          BitBtn7: TBitBtn;
+          BB_SampleSourceSetup: TBitBtn;
+          CategoryPanel2: TCategoryPanel;
+          BitBtn10: TBitBtn;
+          BitBtn13: TBitBtn;
+          BitBtn12: TBitBtn;
+          BitBtn14: TBitBtn;
+          BitBtn15: TBitBtn;
+          CategoryPanel3: TCategoryPanel;
+          BB_DepartmentSetup: TBitBtn;
+          BitBtn11: TBitBtn;
+          BitBtn5: TBitBtn;
+          BitBtn16: TBitBtn;
+          BitBtn17: TBitBtn;
+          BitBtn20: TBitBtn;
+          BitBtn21: TBitBtn;
+    BitBtn_PatientSchemeRectification: TBitBtn;
+          BitBtn23: TBitBtn;
+          BitBtn24: TBitBtn;
+    BitBtn25: TBitBtn;
+    BB_Broadcast: TSpeedButton;
+    Image_Verify: TImage;
+    Image_Report: TImage;
+    btn_regulation: TBitBtn;
+    btn_manual: TBitBtn;
+    btn_patient: TSpeedButton;
+    btn_service: TSpeedButton;
+    btn_Member: TSpeedButton;
+    Button_Integration: TButton;
+    ctgrypnl1: TCategoryPanel;
+    BitBtn18: TBitBtn;
+    BitBtn_ClinicalNew: TBitBtn;
+    Btn_HospitalRegulation: TBitBtn;
+    SPB_PatientAdministration: TSpeedButton;
+    CategoryPanel6: TCategoryPanel;
+    BitBtn_Module: TBitBtn;
+    BitBtn_SubMenu: TBitBtn;
+    BitBtn_SystemFunction: TBitBtn;
+    BitBtn_MainMenu: TBitBtn;
+    BitBtn_ClinicalMasterSetup: TBitBtn;
+    BitBtn1: TBitBtn;
+    BitBtn28: TBitBtn;
+    BitBtn29: TBitBtn;
+    SB_Report: TSpeedButton;
+    Panel_Report: TPanel;
+    Label2: TLabel;
+    Image2: TImage;
+    BitBtn30: TBitBtn;
+    CategoryPanelGroup3: TCategoryPanelGroup;
+    CategoryPanel9: TCategoryPanel;
+    Button5: TButton;
+    Button11: TButton;
+    CategoryPanel8: TCategoryPanel;
+    btnBB_DoctorFraction: TBitBtn;
+    CategoryPanel7: TCategoryPanel;
+    Button4: TButton;
+    Button6: TButton;
+    Button7: TButton;
+    Button10: TButton;
+    CategoryPanel10: TCategoryPanel;
+    BitBtn31: TBitBtn;
+    BitBtn32: TBitBtn;
+    BB_MView: TBitBtn;
+    CategoryPanel11: TCategoryPanel;
+    BitBtn33: TBitBtn;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button8: TButton;
+    Button9: TButton;
+    BB_ReffWiseRevenue: TBitBtn;
+    BitBtn34: TBitBtn;
+    BitBtn35: TBitBtn;
+    BitBtn36: TBitBtn;
+    Timer6: TTimer;
+    Panel_Analysis: TPanel;
+    Label4: TLabel;
+    BB_ReportBack: TBitBtn;
+    CategoryPanelGroup2: TCategoryPanelGroup;
+    CategoryPanel5: TCategoryPanel;
+    Btn_UserWiseReport: TBitBtn;
+    Btn_DepartmentWise: TBitBtn;
+    Btn_DeptTestWise: TBitBtn;
+    CategoryPanel4: TCategoryPanel;
+    BitBtn6: TBitBtn;
+    BitBtn8: TBitBtn;
+    btn_testdetail: TBitBtn;
+    BitBtn26: TBitBtn;
+    BitBtn27: TBitBtn;
+    BitBtn3: TBitBtn;
+    btn_sampleinventory: TBitBtn;
+    btn_samplecollection: TBitBtn;
+    bb_patienttest: TBitBtn;
+    BitBtn19: TBitBtn;
+    BitBtn_Drwisepatientcase: TBitBtn;
+    BitBtn37: TBitBtn;
+    BitBtn38: TBitBtn;
+    BitBtn40: TBitBtn;
+    BitBtn41: TBitBtn;
+    Button13: TButton;
+    BitBtn_PatientRectification: TBitBtn;
+    Button16: TButton;
+    BitBtn_EmailSetup: TBitBtn;
+    Button12: TButton;
+    BitBtn22: TBitBtn;
+    ApplicationEvents1: TApplicationEvents;
+    BitBtn39: TBitBtn;
+    CategoryPanel12: TCategoryPanel;
+    btn_docfraction: TBitBtn;
+    BitBtn42: TBitBtn;
+    btn_FractionSetupSpl: TBitBtn;
+    btn2: TBitBtn;
+    BitBtn43: TBitBtn;
+          procedure Timer1Timer(Sender: TObject);
+          procedure SB_FormsCertificateClick(Sender: TObject);
+          procedure Timer2Timer(Sender: TObject);
+          procedure BB_MainBackClick(Sender: TObject);
+          procedure SB_CashClick(Sender: TObject);
+          procedure Timer3Timer(Sender: TObject);
+          procedure BitBtn4Click(Sender: TObject);
+          procedure PanelMainMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+          procedure SB_CashMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+          procedure SB_FormsCertificateMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+          procedure SPB_PatientAdministrationClick(Sender: TObject);
+          procedure SB_SetupClick(Sender: TObject);
+          procedure BitBtn2Click(Sender: TObject);
+          procedure SB_SetupMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+          procedure Timer5Timer(Sender: TObject);
+          procedure SB_AnalysisClick(Sender: TObject);
+          procedure BitBtn5Click(Sender: TObject);
+          procedure SB_PathologyClick(Sender: TObject);
+          procedure Sb_SampleCollectionClick(Sender: TObject);
+          procedure BitBtn9Click(Sender: TObject);
+          procedure BitBtn7Click(Sender: TObject);
+          procedure BitBtn6Click(Sender: TObject);
+          procedure BitBtn8Click(Sender: TObject);
+          procedure BitBtn10Click(Sender: TObject);
+          procedure BB_VerificationClick(Sender: TObject);
+          procedure BB_DepartmentSetupClick(Sender: TObject);
+          procedure BB_SampleSourceSetupClick(Sender: TObject);
+          procedure BitBtn11Click(Sender: TObject);
+          procedure BitBtn12Click(Sender: TObject);
+          procedure BitBtn13Click(Sender: TObject);
+          procedure BitBtn14Click(Sender: TObject);
+          procedure BitBtn15Click(Sender: TObject);
+          procedure CategoryPanel1Click(Sender: TObject);
+          procedure CategoryPanel2Click(Sender: TObject);
+          procedure CategoryPanel3Click(Sender: TObject);
+          procedure BitBtn16Click(Sender: TObject);
+          procedure BitBtn17Click(Sender: TObject);
+          procedure BitBtn20Click(Sender: TObject);
+          procedure BitBtn21Click(Sender: TObject);
+          procedure BitBtn23Click(Sender: TObject);
+          procedure BitBtn24Click(Sender: TObject);
+    procedure BitBtn25Click(Sender: TObject);
+    procedure BB_BroadcastClick(Sender: TObject);
+    procedure BB_ReffWiseRevenueClick(Sender: TObject);
+    procedure BitBtn26Click(Sender: TObject);
+    procedure BitBtn27Click(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure btn_regulationClick(Sender: TObject);
+    procedure btn_manualClick(Sender: TObject);
+    procedure btn_serviceClick(Sender: TObject);
+    procedure btn_samplecollectionClick(Sender: TObject);
+    procedure btn_testdetailClick(Sender: TObject);
+    procedure bb_patienttestClick(Sender: TObject);
+    procedure Button_IntegrationClick(Sender: TObject);
+    procedure BitBtn18Click(Sender: TObject);
+    procedure BitBtn19Click(Sender: TObject);
+    procedure BitBtn_DrwisepatientcaseClick(Sender: TObject);
+    procedure Btn_HospitalRegulationClick(Sender: TObject);
+    procedure Btn_UserWiseReportClick(Sender: TObject);
+    procedure Btn_DepartmentWiseClick(Sender: TObject);
+    Procedure CheckModuleAccess;
+    procedure Btn_DeptTestWiseClick(Sender: TObject);
+    procedure BitBtn_ModuleClick(Sender: TObject);
+    procedure BitBtn_SubMenuClick(Sender: TObject);
+    procedure BitBtn_MainMenuClick(Sender: TObject);
+    procedure BitBtn_SystemFunctionClick(Sender: TObject);
+    procedure CategoryPanel3Expand(Sender: TObject);
+    procedure CategoryPanel6Expand(Sender: TObject);
+    procedure BitBtn_ClinicalMasterSetupClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn28Click(Sender: TObject);
+    procedure Timer6Timer(Sender: TObject);
+    procedure SB_ReportClick(Sender: TObject);
+    procedure BitBtn35Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
+    procedure BitBtn36Click(Sender: TObject);
+    procedure Button9Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button12Click(Sender: TObject);
+    procedure Button11Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
+    procedure Button10Click(Sender: TObject);
+    procedure BB_MViewClick(Sender: TObject);
+    procedure BitBtn32Click(Sender: TObject);
+    procedure BitBtn31Click(Sender: TObject);
+    procedure BitBtn37Click(Sender: TObject);
+    procedure BitBtn38Click(Sender: TObject);
+    procedure BitBtn41Click(Sender: TObject);
+    procedure BitBtn39Click(Sender: TObject);
+    procedure BitBtn40Click(Sender: TObject);
+    procedure BitBtn_PatientRectificationClick(Sender: TObject);
+    procedure BitBtn29Click(Sender: TObject);
+    procedure BitBtn_PatientSchemeRectificationClick(Sender: TObject);
+    procedure Button16Click(Sender: TObject);
+    procedure Button13Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure BitBtn_EmailSetupClick(Sender: TObject);
+    procedure BitBtn22Click(Sender: TObject);
+    procedure btn_docfractionClick(Sender: TObject);
+    procedure BitBtn42Click(Sender: TObject);
+    procedure btn_FractionSetupSplClick(Sender: TObject);
+    procedure btn2Click(Sender: TObject);
+    procedure btnBB_DoctorFractionClick(Sender: TObject);
+    procedure BitBtn43Click(Sender: TObject);
+     private
+          Hidden: boolean;
+          { Private declarations }
+     public
+     ArrayOfButton: Array [0 .. 7] Of TSpeedButton;
+     Constructor Create(AOwner:Tcomponent);Override;
+               { Public declarations }
+     end;
+
+implementation
+
+uses Unit_Main, Fxn,//Fxn_Hos
+     ServerDate, Unit_Users, Unit_departmentsetupnew,Unit_UserWiseCollection,Unit_DepartmentWiseSummary,unit_SaveEmailAddress,
+      Unit_PathologyParent,unit_mainlab,Unit_QrPatientTestList,Unit_DoctorwisePatientcase,Unit_ReportTree,
+  Unit_HospitalRulesRegulation,Unit_DeptTestWiseReport,Unit_DefaultHistoSetup,Unit_UserRectification,Unit_RefundSalesTestwiseReport,
+  Unit_PatientTestRectification,Unit_FractionSetup,Unit_FractionMgmt,Unit_DoctorIncomeChange,Unit_FractionSetup_Special,Unit_FractionMgmtNew;
+{$R *.dfm}
+
+const
+     COLLAPSE = 0;
+     SLIDE = 1;
+     BLEND = 2;
+
+procedure TFrame_Panel.BitBtn10Click(Sender: TObject);
+begin
+     try
+          Form_FindingSetup := TForm_FindingSetup.Create(nil);
+          Form_FindingSetup.ShowModal;
+     finally
+          Form_FindingSetup.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn11Click(Sender: TObject);
+begin
+     try
+          Form_DoctorSetup := TForm_DoctorSetup.Create(nil);
+          Form_DoctorSetup.ShowModal;
+     finally
+          Form_DoctorSetup.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn12Click(Sender: TObject);
+begin
+     try
+          Form_CommentSetup := TForm_CommentSetup.Create(nil);
+          Form_CommentSetup.ShowModal;
+     finally
+          Form_CommentSetup.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn13Click(Sender: TObject);
+begin
+     try
+          Form_FooterSetup := TForm_FooterSetup.Create(Nil);
+          Form_FooterSetup.ShowModal;
+     finally
+          Form_FooterSetup.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn14Click(Sender: TObject);
+begin
+     try
+          Form_SensitiveMedicineSetup := TForm_SensitiveMedicineSetup.Create(Nil);
+          Form_SensitiveMedicineSetup.ShowModal;
+     finally
+          Form_SensitiveMedicineSetup.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn15Click(Sender: TObject);
+begin
+     try
+          Form_SensitiveMedicineTestWise := TForm_SensitiveMedicineTestWise.Create(Nil);
+          Form_SensitiveMedicineTestWise.ShowModal;
+     finally
+          Form_SensitiveMedicineTestWise.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn16Click(Sender: TObject);
+begin
+     With FormCommunity Do
+     Begin
+          Try
+               FormCommunity := TFormCommunity.Create(Application);
+               ShowModal;
+          Finally
+               Free;
+          End;
+     End;
+end;
+
+procedure TFrame_Panel.BitBtn17Click(Sender: TObject);
+begin
+     try
+          Form_Scheme := TForm_Scheme.Create(nil);
+          Form_Scheme.ShowModal;
+     finally
+          Form_Scheme.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn18Click(Sender: TObject);
+begin
+     try
+          Form_MainBloodCollection := TForm_MainBloodCollection.Create(self);
+          Form_MainBloodCollection.ShowModal;
+     finally
+          Form_MainBloodCollection.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn19Click(Sender: TObject);
+begin
+     try
+          Form_AllPatientTest := TForm_AllPatientTest.Create(nil);
+          Form_AllPatientTest.ShowModal;
+     finally
+          Form_AllPatientTest.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn1Click(Sender: TObject);
+begin
+     With Form_ClinicalMasterwiseTestSetup do
+     begin
+          try
+               Form_ClinicalMasterwiseTestSetup:=TForm_ClinicalMasterwiseTestSetup.Create(nil);
+               Showmodal;
+          finally
+               Form_ClinicalMasterwiseTestSetup.free
+          end;
+     end;
+end;
+
+procedure TFrame_Panel.SPB_PatientAdministrationClick(Sender: TObject);
+begin
+    { if not CheckAccess('REGISTRATION') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end; }
+     Try
+          Form_MainPatientAdministration := TForm_MainPatientAdministration.Create(nil);
+          With Form_MainPatientAdministration do
+          Begin
+               LoadGuidedMenuPatientAdministration;
+               gs_CalledFormName := 'PA';
+               gs_ModuleName := 'Administration';
+               gs_CalledFrom:='RegisteredPatientList';
+               //gs_CalledFrom := '';
+               gi_PatientId := 0;
+               //LoadDoc;
+               BitBtn_Admission.Visible:=False;
+               BitBtn_DischargeBilling.Visible:=False;
+               BitBtn_Deposit.Visible:=False;
+               LoadFrameParent;
+               ShowModal;
+          End;
+     Finally
+          Form_MainPatientAdministration.Free;
+     End;
+     {try
+          Form_Parent := TForm_Parent.Create(Nil);
+          gi_BillCase := 1;
+          Form_Parent.ShowModal;
+     finally
+          Form_Parent.Free;
+     end;}
+end;
+
+procedure TFrame_Panel.BitBtn20Click(Sender: TObject);
+begin
+     try
+          Form_ExtendedReportDep := TForm_ExtendedReportDep.Create(nil);
+          Form_ExtendedReportDep.ShowModal;
+     finally
+          Form_ExtendedReportDep.Free;
+     end;
+
+end;
+
+procedure TFrame_Panel.BitBtn21Click(Sender: TObject);
+begin
+     Try
+          Form_ReportFooterSetup := TForm_ReportFooterSetup.Create(Nil);
+          Form_ReportFooterSetup.ShowModal;
+     Finally
+          Form_ReportFooterSetup.Free;
+     End;
+end;
+
+procedure TFrame_Panel.BitBtn22Click(Sender: TObject);
+begin
+     with Form_PtTestReport do
+     begin
+          try
+               begin
+                    Form_PtTestReport:=TForm_PtTestReport.Create(application);
+                    ShowModal;
+               end;
+          finally
+                  free;
+          end;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn_EmailSetupClick(Sender: TObject);
+begin
+     Try
+          Form_SaveEmailAddress := TForm_SaveEmailAddress.Create(Nil);
+          Form_SaveEmailAddress.ShowModal;
+     Finally
+          Form_SaveEmailAddress.Free;
+     End;
+end;
+
+procedure TFrame_Panel.BitBtn23Click(Sender: TObject);
+begin
+     try
+    FormEditFindAlternate:=TFormEditFindAlternate.Create(Nil);
+    FormEditFindAlternate.ShowModal;
+    finally
+    FormEditFindAlternate.Free;
+    end;
+
+    (*
+    try
+          FormEditFindAlternate:=TFormEditFindAlternate.Create(Nil);
+          FormEditFindAlternate.ShowModal;
+     finally
+          FormEditFindAlternate.Free;
+    end;    *)
+   // if gi_compileValue=14 then
+
+   //if gi_compileValue=14 then
+//    gs_DepType := GetUserDepType(gi_UserID);
+//    if gs_DepType='H' then
+//    begin
+//         begin
+//             try
+//               Form_DefaultSetup:=TForm_DefaultSetup.Create(nil);
+//               Form_DefaultSetup.ShowModal;
+//          finally
+//               Form_DefaultSetup.Free;
+//          end;
+//         end;
+//    end
+//    else
+//    begin
+//         BitBtn_ClinicalNew.Enabled:=False;
+//         BitBtn_ClinicalMasterSetup.Enabled:=false;
+//         BitBtn1.Enabled:=False;
+//    end;
+
+    {if gi_compileValue=11 then
+    begin
+        Try
+            Form_ClinicalTest := TForm_ClinicalTest.Create(Nil);
+            Form_ClinicalTest.ShowModal;
+        Finally
+            Form_ClinicalTest.Free;
+        End;
+    end;}
+  { else
+    begin
+         try
+          FormEditFindAlternate:=TFormEditFindAlternate.Create(Nil);
+          FormEditFindAlternate.ShowModal;
+     finally
+          FormEditFindAlternate.Free;
+    end;
+    end; }
+end;
+
+procedure TFrame_Panel.BitBtn24Click(Sender: TObject);
+begin
+     try
+          Form_SchemeDetail := TForm_SchemeDetail.Create(nil);
+          Form_SchemeDetail.ShowModal;
+     finally
+          Form_SchemeDetail.Free;
+     end;
+
+end;
+
+procedure TFrame_Panel.BitBtn25Click(Sender: TObject);
+begin
+     Try
+          Form_TestPackageDetail:=TForm_TestPackageDetail.Create(Nil);
+          Form_TestPackageDetail.ShowModal;
+     Finally
+          Form_TestPackageDetail.Free;
+     End;
+
+end;
+
+procedure TFrame_Panel.BitBtn26Click(Sender: TObject);
+begin
+Exit;
+//     if not CheckAccess('COMMUNITY REVENUE REPORT') then
+//     begin
+//          ShowMessage('Access Denied');
+//          exit;
+//     end;
+
+     try
+          Form_SchemeWiseRevenue := TForm_SchemeWiseRevenue.Create(nil);
+          Form_SchemeWiseRevenue.ShowModal;
+     finally
+          Form_SchemeWiseRevenue.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn27Click(Sender: TObject);
+begin
+
+     if not CheckAccess('COLLECTION CENTER REPORT') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+      Exit;
+     try
+          gs_CalledFrom:='Collection Counter';
+          Form_CollectionCenterReport := TForm_CollectionCenterReport.Create(nil);
+          Form_CollectionCenterReport.ShowModal;
+     finally
+          Form_CollectionCenterReport.Free;
+          gs_CalledFrom:='';
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn28Click(Sender: TObject);
+begin
+     try
+          Form_HospitalSetup := TForm_HospitalSetup.Create(nil);
+          Form_HospitalSetup.ShowModal;
+     finally
+          Form_HospitalSetup.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn29Click(Sender: TObject);
+begin
+     try
+          Form_ReferalDoctorSetup := TForm_ReferalDoctorSetup.Create(nil);
+          Form_ReferalDoctorSetup.ShowModal;
+     finally
+          Form_ReferalDoctorSetup.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn2Click(Sender: TObject);
+begin
+     // Try
+     // Form_ShareCertificate:=TForm_ShareCertificate.Create(NIl);
+     // Form_ShareCertificate.ShowModal;
+     // Finally
+     // Form_ShareCertificate.Free;
+     // End;
+     // try
+     // Form_PathologyParent:=TForm_PathologyParent.Create(Nil);
+     // Form_PathologyParent.ShowModal;
+     // finally
+     // Form_PathologyParent.Free;
+     // end;
+end;
+
+procedure TFrame_Panel.BitBtn31Click(Sender: TObject);
+begin
+     {if not CheckAccess('SALES BOOK') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end; }
+
+     try
+          Form_SalesBook := TForm_SalesBook.Create(nil);
+          Form_SalesBook.ShowModal;
+     finally
+          Form_SalesBook.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn32Click(Sender: TObject);
+begin
+    { if not CheckAccess('TAX REPORT') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end; }
+
+     try
+          Form_TaxReport := TForm_TaxReport.Create(nil);
+          Form_TaxReport.ShowModal;
+     finally
+          Form_TaxReport.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn35Click(Sender: TObject);
+begin
+     {if not CheckAccess('COMMUNITY REVENUE REPORT') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;}
+
+     try
+          Form_SchemeWiseRevenue := TForm_SchemeWiseRevenue.Create(nil);
+          Form_SchemeWiseRevenue.ShowModal;
+     finally
+          Form_SchemeWiseRevenue.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn36Click(Sender: TObject);
+begin
+     if not CheckAccess('PATIENT TEST LIST') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+
+     try
+          gs_CalledFrom := 'PATIENTTEST LIST';
+          Form_DateRange := TForm_DateRange.Create(nil);
+          Form_DateRange.ShowModal;
+     finally
+          Form_DateRange.Free;
+     end;
+     if not gb_proceed then
+          exit;
+     try
+          Form_QrPatientTesList := TForm_QrPatientTesList.Create(nil);
+          Form_QrPatientTesList.QuickRep1.Prepare;
+          Form_QrPatientTesList.totpage := Form_QrPatientTesList.QuickRep1.QRPrinter.PageCount;
+          Form_QrPatientTesList.QuickRep1.Preview;
+     finally
+          Form_QrPatientTesList.Free;
+          gs_CalledFrom := '';
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn37Click(Sender: TObject);
+begin
+     try
+          Form_LogReportClinicalPathFinding:=TForm_LogReportClinicalPathFinding.Create(Self);
+          Form_LogReportClinicalPathFinding.ShowModal;
+     finally
+          Form_LogReportClinicalPathFinding.Free
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn38Click(Sender: TObject);
+begin
+     try
+          Form_LogReportClinicalSetup:=TForm_LogReportClinicalSetup.Create(nil);
+          Form_LogReportClinicalSetup.ShowModal;
+     finally
+          Form_LogReportClinicalSetup.Free
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn39Click(Sender: TObject);
+begin
+//     try
+//          Form_SourceSetupTestCode:=TForm_SourceSetupTestCode.Create(nil);
+//          Form_SourceSetupTestCode.ShowModal;
+//     finally
+//          Form_SourceSetupTestCode.Free;
+//     end;
+     try
+          Form_PatientTestRectification := TForm_PatientTestRectification.Create(nil);
+          Form_PatientTestRectification.ShowModal;
+     finally
+          Form_PatientTestRectification.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn3Click(Sender: TObject);
+begin
+     try
+          FormNoofTestDone:=TFormNoofTestDone.Create(nil);
+          FormNoofTestDone.ShowModal;
+     finally
+          FormNoofTestDone.Free;
+     end;
+end;
+
+
+procedure TFrame_Panel.BitBtn40Click(Sender: TObject);
+begin
+     try
+          Form_AutoCalculation:=TForm_AutoCalculation.Create(nil);
+          Form_AutoCalculation.ShowModal;
+     finally
+          Form_AutoCalculation.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn41Click(Sender: TObject);
+begin
+     try
+          Form_TestCalculation:=TForm_TestCalculation.create(nil);
+          Form_TestCalculation.showmodal;
+     finally
+          Form_TestCalculation.free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn42Click(Sender: TObject);
+begin
+      try
+     Form_DoctorIncomeCorrect:=TForm_DoctorIncomeCorrect.Create(nil);
+     Form_DoctorIncomeCorrect.ShowModal;
+     finally
+     Form_DoctorIncomeCorrect.Free;
+     end;
+
+end;
+
+procedure TFrame_Panel.BitBtn43Click(Sender: TObject);
+begin
+
+//        Try
+//          FormMedExamEntry:=TFormMedExamEntry.Create(Application);
+//          Showmodal;
+//        Finally
+//
+//        End;
+
+end;
+
+procedure TFrame_Panel.BitBtn_PatientRectificationClick(Sender: TObject);
+begin
+     try
+          Form_UserRectification := TForm_UserRectification.Create(nil);
+          Form_UserRectification.ShowModal;
+     finally
+          Form_UserRectification.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn_PatientSchemeRectificationClick(Sender: TObject);
+begin
+     try
+          Form_PatientSchemeRectification := TForm_PatientSchemeRectification.Create(nil);
+          Form_PatientSchemeRectification.ShowModal;
+     finally
+          Form_PatientSchemeRectification.Free;
+     end;
+
+end;
+
+procedure TFrame_Panel.BitBtn4Click(Sender: TObject);
+begin
+     try
+          Form_TestNameSetupNew := TForm_TestNameSetupNew.Create(nil);
+          Form_TestNameSetupNew.ShowModal;
+     finally
+          Form_TestNameSetupNew.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn5Click(Sender: TObject);
+begin
+     try
+          Form_Users := TForm_Users.Create(nil);
+          Form_Users.ShowModal;
+     finally
+          Form_Users.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn6Click(Sender: TObject);
+begin
+     if not CheckAccess('PATIENT TEST LIST') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+
+     try
+          gs_CalledFrom := 'PATIENTTEST LIST';
+          Form_DateRange := TForm_DateRange.Create(nil);
+          Form_DateRange.ShowModal;
+     finally
+          Form_DateRange.Free;
+     end;
+     if not gb_proceed then
+          exit;
+     try
+          Form_QrPatientTesList := TForm_QrPatientTesList.Create(nil);
+          Form_QrPatientTesList.QuickRep1.Prepare;
+          Form_QrPatientTesList.totpage := Form_QrPatientTesList.QuickRep1.QRPrinter.PageCount;
+          Form_QrPatientTesList.QuickRep1.Preview;
+     finally
+          Form_QrPatientTesList.Free;
+          gs_CalledFrom := '';
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn7Click(Sender: TObject);
+begin
+     try
+          Form_UnitName := TForm_UnitName.Create(nil);
+          Form_UnitName.ShowModal;
+     finally
+          Form_UnitName.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn8Click(Sender: TObject);
+begin
+     {if not CheckAccess('WORK LIST') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+     try
+          gs_CalledFrom := 'WORK LIST';
+          Form_DateRange := TForm_DateRange.Create(nil);
+          Form_DateRange.ShowModal;
+     finally
+          Form_DateRange.Free;
+     end;
+     if not gb_proceed then
+          exit;
+     try
+          Form_QrWorkList := TForm_QrWorkList.Create(nil);
+          Form_QrWorkList.QuickRep1.Prepare;
+          Form_QrWorkList.totpage := Form_QrWorkList.QuickRep1.QRPrinter.PageCount;
+          Form_QrWorkList.QuickRep1.Preview;
+     finally
+          Form_QrWorkList.Free;
+          gs_CalledFrom := '';
+     end;}
+     try
+          Form_WorkList:= TForm_WorkList.Create(nil);
+          Form_WorkList.ShowModal;
+     finally
+          Form_WorkList.Free;
+     end;
+
+
+end;
+
+procedure TFrame_Panel.BitBtn9Click(Sender: TObject);
+begin
+     try
+          Form_Test := TForm_Test.Create(nil);
+          Form_Test.ShowModal;
+     finally
+          Form_Test.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn_ClinicalMasterSetupClick(Sender: TObject);
+begin
+      With Form_MasterSetup do
+     begin
+          try
+               Form_MasterSetup:=TForm_MasterSetup.Create(nil);
+               pi_setupid:=1;
+               Showmodal;
+          finally
+               Form_MasterSetup.free
+          end;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn_DrwisepatientcaseClick(Sender: TObject);
+begin
+     try
+      Form_DoctorwisePatientcase:=TForm_DoctorwisePatientcase.Create(nil);
+      with Form_DoctorwisePatientcase do
+      begin
+        ShowModal;
+      end;
+
+     finally
+         Form_DoctorwisePatientcase.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn_MainMenuClick(Sender: TObject);
+var qry:TOraQuery;
+begin
+      Form_MainmenuSetup := TForm_MainmenuSetup.Create(nil);
+     try
+          with Form_MainmenuSetup do
+          begin
+                //bb_new.Enabled:=false;
+                //bitbtn_save.Enabled:=false;
+                QRY:=TOraQuery.Create(NIL);
+                WITH QRY DO
+                BEGIN
+                     close;
+                     session:=DM_Hospital.DB;
+                     sql.Clear;
+                     sql.Add('select * from HS_MEPR_MENUPREVILAGE');
+                     Sql.Add('where mepr_userid='+inttostr(gi_UserID)+' and MEPR_ACCESSTYPE=''FUNCTION''');
+                     SQL.Add('and MEPR_submenuid='+inttostr(BitBtn_MainMenu.tag));
+                     open;
+                     first;
+                     while NOT Eof  do
+                     BEGIN
+                          if QRY.FieldByName('mepr_captionname').AsString='New' then
+                          begin
+                               bb_new.Enabled:=True ;
+                          end
+                          else if QRY.FieldByName('mepr_captionname').AsString='Save' then
+                          begin
+                               bitbtn_save.Enabled:=True;
+                          end;
+                          Next;
+                     END;
+                END;
+                QRY:=TOraQuery.Create(NIL);
+          end;
+          Form_MainmenuSetup.ShowModal;
+     finally
+          Form_MainmenuSetup.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn_ModuleClick(Sender: TObject);
+var qry:TOraQuery;
+begin
+      Form_ModuleSetup := TForm_ModuleSetup.Create(nil);
+     try
+           with Form_ModuleSetup do
+           begin
+                //bb_new.Enabled:=false;
+                //bitbtn_save.Enabled:=false;
+                QRY:=TOraQuery.Create(NIL);
+                WITH QRY DO
+                BEGIN
+                     close;
+                     session:=DM_Hospital.DB;
+                     sql.Clear;
+                     sql.Add('select * from HS_MEPR_MENUPREVILAGE');
+                     Sql.Add('where mepr_userid='+inttostr(gi_UserID)+' and MEPR_ACCESSTYPE=''FUNCTION''');
+                     SQL.Add('and MEPR_submenuid='+inttostr(BitBtn_Module.tag));
+                     open;
+                     first;
+                     while NOT Eof  do
+                     BEGIN
+                          if QRY.FieldByName('mepr_captionname').AsString='New' then
+                          begin
+                               bb_new.Enabled:=True ;
+                          end
+                          else if QRY.FieldByName('mepr_captionname').AsString='Save' then
+                          begin
+                               bitbtn_save.Enabled:=True;
+                          end;
+                          Next;
+                     END;
+                END;
+                QRY:=TOraQuery.Create(NIL);
+           end;
+          Form_ModuleSetup.ShowModal;
+     finally
+          Form_ModuleSetup.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn_SubMenuClick(Sender: TObject);
+begin
+     Form_SubmenuSetup := TForm_SubmenuSetup.Create(nil);
+     try
+          Form_SubmenuSetup.ShowModal;
+     finally
+          Form_SubmenuSetup.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BitBtn_SystemFunctionClick(Sender: TObject);
+begin
+     Form_FunctionSetup := TForm_FunctionSetup.Create(nil);
+     try
+          Form_FunctionSetup.ShowModal;
+     finally
+          Form_FunctionSetup.Free;
+     end;
+end;
+
+procedure TFrame_Panel.btn2Click(Sender: TObject);
+begin
+     Form_FractionMgmtNew:=TForm_FractionMgmtNew.Create(nil);
+     try
+     Form_FractionMgmtNew.ShowModal;
+     finally
+     Form_FractionMgmtNew.Free;
+     end;
+end;
+
+procedure TFrame_Panel.btnBB_DoctorFractionClick(Sender: TObject);
+begin
+     Try
+          Form_DocWiseFraction := TForm_DocWiseFraction.Create(nil);
+          Form_DocWiseFraction.ShowModal;
+     Finally
+          Form_DocWiseFraction.Free;
+     End;
+end;
+
+procedure TFrame_Panel.Btn_DepartmentWiseClick(Sender: TObject);
+begin
+     Try
+          Form_DepartmentWiseSummary := TForm_DepartmentWiseSummary.Create(nil);
+          Form_DepartmentWiseSummary.ShowModal;
+     Finally
+          Form_DepartmentWiseSummary.Free;
+     End;
+end;
+
+procedure TFrame_Panel.Btn_DeptTestWiseClick(Sender: TObject);
+begin
+     try
+          Form_DeptTestWiseReport := TForm_DeptTestWiseReport.Create(Nil);
+          Form_DeptTestWiseReport.ShowModal;
+     finally
+          Form_DeptTestWiseReport.Free;
+     end;
+end;
+
+procedure TFrame_Panel.btn_docfractionClick(Sender: TObject);
+begin
+     try
+          Form_FractionSetup := TForm_FractionSetup.Create(nil);
+          Form_FractionSetup.ShowModal;
+     finally
+          Form_FractionSetup.Free;
+     end;
+end;
+
+procedure TFrame_Panel.btn_FractionSetupSplClick(Sender: TObject);
+begin
+     try
+          Form_FractionSetup_Specail := TForm_FractionSetup_Specail.Create(nil);
+          Form_FractionSetup_Specail.ShowModal;
+     finally
+          Form_FractionSetup_Specail.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Btn_HospitalRegulationClick(Sender: TObject);
+begin
+     try
+          Form_HospitalRulesRegulation:=TForm_HospitalRulesRegulation.Create(Nil);
+          Form_HospitalRulesRegulation.ShowModal;
+     finally
+          Form_HospitalRulesRegulation.Free;
+
+     end;
+end;
+
+procedure TFrame_Panel.btn_manualClick(Sender: TObject);
+begin
+    try
+      Form_ManualRepFooterSetup:=TForm_ManualRepFooterSetup.create(nil);
+      with Form_ManualRepFooterSetup do
+      begin
+        ShowModal;
+      end;
+    finally
+      Form_ManualRepFooterSetup.Free;
+    end;
+end;
+
+procedure TFrame_Panel.btn_regulationClick(Sender: TObject);
+begin
+    try
+    Form_Regulation:=TForm_Regulation.Create(nil);
+    with Form_Regulation do
+    begin
+        ShowModal;
+    end;
+    finally
+       Form_Regulation.Free;
+    end;
+end;
+
+procedure TFrame_Panel.btn_samplecollectionClick(Sender: TObject);
+begin
+   try
+    Form_SampleWiseReport:=TForm_SampleWiseReport.Create(nil);
+    with Form_SampleWiseReport do
+    begin
+       ShowModal;
+    end;
+    finally
+      Form_SampleWiseReport.Free;
+    end;
+end;
+
+procedure TFrame_Panel.btn_serviceClick(Sender: TObject);
+begin
+//     if not CheckAccess('INTEGRATION') then
+//     begin
+//          ShowMessage('Access Denied');
+//          exit;
+//     end;
+   // WinExec('F:\MiDas Project\MiDas Dr. Homs V 3.2 Central\LabIntegration\Bin\Mapping.exe', SW_SHOWNORMAL);
+end;
+
+procedure TFrame_Panel.btn_testdetailClick(Sender: TObject);
+begin
+     try
+      Form_testdetail:=TForm_testdetail.Create(nil);
+      with Form_testdetail do
+      begin
+        ShowModal;
+      end;
+
+     finally
+         Form_testdetail.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Btn_UserWiseReportClick(Sender: TObject);
+begin
+     try
+          Form_UserWiseCollection := TForm_UserWiseCollection.Create(nil);
+          Form_UserWiseCollection.ShowModal;
+     finally
+          Form_UserWiseCollection.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button10Click(Sender: TObject);
+begin
+     try
+          Form_CreditPaymentDetail:=TForm_CreditPaymentDetail.Create(nil);
+          Form_CreditPaymentDetail.ShowModal;
+     finally
+          Form_CreditPaymentDetail.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button11Click(Sender: TObject);
+begin
+     Form_CashCreditSalesReport:=TForm_CashCreditSalesReport.Create(nil);
+     try
+          With Form_CashCreditSalesReport do
+          begin
+               ShowModal;
+          end;
+     finally
+          Form_CashCreditSalesReport.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button12Click(Sender: TObject);
+begin
+     Form_ReceiptDetailReport:=TForm_ReceiptDetailReport.Create(nil);
+     try
+          Form_ReceiptDetailReport.ShowModal;
+     finally
+          Form_ReceiptDetailReport.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button13Click(Sender: TObject);
+begin
+      try
+          Form_ServiceCreditSalesReport:=TForm_ServiceCreditSalesReport.Create(nil);
+          Form_ServiceCreditSalesReport.showmodal;
+     finally
+          Form_ServiceCreditSalesReport.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button16Click(Sender: TObject);
+begin
+     try
+          Form_RefundSalesTestwiseReport:=TForm_RefundSalesTestwiseReport.Create(nil);
+          Form_RefundSalesTestwiseReport.showmodal;
+     finally
+          Form_RefundSalesTestwiseReport.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button1Click(Sender: TObject);
+begin
+     try
+          FormUserWiseCollection:=TFormUserWiseCollection.Create(nil);
+          FormUserWiseCollection.ShowModal;
+     finally
+          FormUserWiseCollection.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button2Click(Sender: TObject);
+begin
+     try
+          FormDeptwiseCollection := TFormDeptwiseCollection.Create(nil);
+          With FormDeptwiseCollection do
+          begin
+               gs_CalledFrom:='CollReport';
+               Chk_Detail.Visible:=True;
+               ShowModal;
+          end;
+     finally
+          FormDeptwiseCollection.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button3Click(Sender: TObject);
+begin
+     try
+          FormNoofTestDone:=TFormNoofTestDone.Create(nil);
+          FormNoofTestDone.ShowModal;
+     finally
+          FormNoofTestDone.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button4Click(Sender: TObject);
+begin
+     try
+          Form_DepositCollection:=TForm_DepositCollection.Create(nil);
+          Form_DepositCollection.ShowModal;
+     finally
+          Form_DepositCollection.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button5Click(Sender: TObject);
+begin
+     try
+          FormDeptwiseCollection := TFormDeptwiseCollection.Create(nil);
+          With FormDeptwiseCollection do
+          begin
+               gs_CalledFrom:='NewCollReport';
+               Chk_Detail.Visible:=False;
+               ShowModal;
+          end;
+
+     finally
+          FormDeptwiseCollection.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button6Click(Sender: TObject);
+begin
+     Try
+           Form_CreditBill:=TForm_CreditBill.Create(Self);
+           Form_CreditBill.ShowModal;
+      Finally
+           Form_CreditBill.Free;
+      End;
+end;
+
+procedure TFrame_Panel.Button7Click(Sender: TObject);
+begin
+     try
+          Form_CreditDiscount:=TForm_CreditDiscount.Create(nil);
+          Form_CreditDiscount.ShowModal;
+     finally
+          Form_CreditDiscount.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button8Click(Sender: TObject);
+begin
+     try
+          FormDeptTestWiseReport:=TFormDeptTestWiseReport.Create(nil);
+          FormDeptTestWiseReport.ShowModal;
+     finally
+          FormDeptTestWiseReport.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Button9Click(Sender: TObject);
+begin
+     Try
+          FormRefundBillReport:=TFormRefundBillReport.create(nil);
+          FormRefundBillReport.showmodal;
+     Finally
+          FormRefundBillReport.free;
+     End;
+end;
+
+procedure TFrame_Panel.Button_IntegrationClick(Sender: TObject);
+begin
+    try
+        Form_MainLab:=TForm_MainLab.Create(nil);
+        Form_MainLab.ShowModal;
+     finally
+        Form_MainLab.Free;
+     end;
+end;
+
+procedure TFrame_Panel.CategoryPanel1Click(Sender: TObject);
+begin
+     // CategoryPanelGroup1.CollapseAll;
+     // CategoryPanel1.Collapsed:=false;
+end;
+
+procedure TFrame_Panel.CategoryPanel2Click(Sender: TObject);
+begin
+     // CategoryPanelGroup1.CollapseAll;
+     // CategoryPanel2.Collapsed:=false;
+end;
+
+procedure TFrame_Panel.CategoryPanel3Click(Sender: TObject);
+begin
+     // CategoryPanelGroup1.CollapseAll;
+     // CategoryPanel3.Collapsed:=false;
+end;
+
+procedure TFrame_Panel.CategoryPanel3Expand(Sender: TObject);
+var   QRY:TOraQuery ;
+begin
+     //btn_regulation.Enabled:=False;
+     QRY:=TOraQuery.Create(NIL);
+     WITH QRY DO
+     BEGIN
+          close;
+          session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.Add('select * from HS_MEPR_MENUPREVILAGE');
+          Sql.Add('where mepr_userid='+inttostr(gi_UserID)+' and MEPR_ACCESSTYPE=''SUBMENU''');
+          SQL.Add('and MEPR_menuid='+inttostr(CategoryPanel3.Tag));
+          open;
+          first;
+          while NOT Eof  do
+          BEGIN
+               if QRY.FieldByName('mepr_captionname').AsString='Laboratory Regulation' then
+               begin
+                    btn_regulation.Enabled:=True;
+                    btn_regulation.Tag:= QRY.FieldByName('mepr_submenuid').AsInteger;
+               end;
+               Next;
+          END;
+     END;
+     QRY.Free;
+
+
+end;
+
+procedure TFrame_Panel.CategoryPanel6Expand(Sender: TObject);
+var   QRY:TOraQuery ;
+begin
+     //BitBtn_MainMenu.Enabled:=false;
+     //BitBtn_Module.Enabled:=false;
+     QRY:=TOraQuery.Create(NIL);
+     WITH QRY DO
+     BEGIN
+          close;
+          session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.Add('select * from HS_MEPR_MENUPREVILAGE');
+          Sql.Add('where mepr_userid='+inttostr(gi_UserID)+' and MEPR_ACCESSTYPE=''SUBMENU''');
+          SQL.Add('and MEPR_menuid='+inttostr(CategoryPanel6.Tag));
+          open;
+          first;
+          while NOT Eof  do
+          BEGIN
+               if QRY.FieldByName('mepr_captionname').AsString='Mainmenu Setup' then
+               begin
+                    BitBtn_MainMenu.Enabled:=True;
+                    BitBtn_MainMenu.Tag:=QRY.FieldByName('mepr_submenuid').AsInteger;
+               end
+               else if QRY.FieldByName('mepr_captionname').AsString='Module Setup' then
+               begin
+                    BitBtn_Module.Enabled:=True;
+                    BitBtn_Module.Tag:=QRY.FieldByName('mepr_submenuid').AsInteger;
+               end;
+               Next;
+          END;
+     END;
+     QRY.Free;
+end;
+
+procedure TFrame_Panel.CheckModuleAccess;
+var
+     I: Integer;
+     Query_Blank: TOraQuery;
+begin
+     {
+     ArrayOfButton[0] := SPB_PatientAdministration;
+     ArrayOfButton[1] := Sb_SampleCollection;
+     ArrayOfButton[2] := SB_Pathology;
+     ArrayOfButton[3] := BB_Verification;
+     ArrayOfButton[4] := SB_Reports;
+     ArrayOfButton[5] := SB_Setup;
+     ArrayOfButton[6] := BB_Broadcast;
+     }
+     ArrayOfButton[0] := SPB_PatientAdministration;
+     ArrayOfButton[1] := Sb_SampleCollection;
+     ArrayOfButton[2] := SB_Pathology;
+     ArrayOfButton[3] := BB_Verification;
+     ArrayOfButton[4] := SB_Analysis;
+     ArrayOfButton[5] := SB_Setup;
+     ArrayOfButton[6] := BB_Broadcast;
+     ArrayOfButton[7] := SB_Report;
+     for I := 0 to 7 do
+     begin
+          ArrayOfButton[I].Enabled := false;
+     end;
+     Query_Blank := TOraQuery.Create(nil);
+     with Query_Blank do
+     begin
+          close;
+          Session := DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add(' Select * from HS_MEPR_MENUPREVILAGE');
+          SQL.Add(' where Upper(MEPR_AccessType)=''MODULE'' and MEPR_USERID=' + inttostr(gi_userId));
+          Open;
+          if Query_Blank.FieldByName('MEPR_PREVILAGEID').AsInteger > 0 then
+          begin
+               {
+               while not eof do
+               begin
+                    if FieldByName('MEPR_CAPTIONNAME').AsString = 'Patient Administration' then
+                         SPB_PatientAdministration.Enabled := true
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Sample Collection' then
+                         Sb_SampleCollection.Enabled := true
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Test Result' then
+                         SB_Pathology.Enabled := true
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Verification' then
+                         BB_Verification.Enabled := true
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Utilities' then
+                    begin
+                         SB_Setup.Enabled := true;
+                         SB_Setup.Tag:=FieldByName('MEPR_moduleid').AsInteger;
+
+                    end
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Reports' then
+                         SB_Reports.Enabled := true
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Report Dispatch' then
+                         BB_Broadcast.Enabled := true;
+                    Next;
+               end;
+               }
+               while not eof do
+               begin
+                    if FieldByName('MEPR_CAPTIONNAME').AsString = 'Patient Administration' then
+                         SPB_PatientAdministration.Enabled := true
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Sample Collection' then
+                         Sb_SampleCollection.Enabled := true
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Test Result' then
+                         SB_Pathology.Enabled := true
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Verification' then
+                         BB_Verification.Enabled := true
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Utilities' then
+                    begin
+                         SB_Setup.Enabled := true;
+                         SB_Setup.Tag:=FieldByName('MEPR_moduleid').AsInteger;
+
+                    end
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Analysis' then
+                         SB_Analysis.Enabled := true
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Report Dispatch' then
+                         BB_Broadcast.Enabled := true
+                    else if FieldByName('MEPR_CAPTIONNAME').AsString = 'Reports' then
+                         SB_Report.Enabled := true;
+                    Next;
+               end;
+          end;
+     end;
+     //SB_Setup.Enabled := True;
+     Query_Blank.Free;
+end;
+
+constructor TFrame_Panel.Create(AOwner: Tcomponent);
+begin
+     inherited;
+     CheckModuleAccess;
+
+     if gi_compileValue in [1,2,3,4,5,6,7,8,9,10,11,12,14,17,21,22,23,24,25,26,27] then
+     begin
+          if CheckAccess('PATIENT RECTIFICATION') then
+          begin
+               BitBtn_PatientRectification.Visible:=True;
+          end;
+
+          if CheckAccess('PATIENT SCHEME RECTIFICATION') then
+          begin
+               BitBtn_PatientSchemeRectification.Visible:=True;
+          end;
+     end;
+
+     if gi_compileValue=22 then
+     BitBtn_EmailSetup.Visible:=True
+     else
+     BitBtn_EmailSetup.Visible:=false;
+
+     if gi_compileValue=22 then
+     bitbtn39.Visible:=false
+     else
+     bitbtn39.Visible:=false;
+
+
+     {if not CheckAccess('TEST SETUP') then
+     begin
+          CategoryPanel1.Enabled:=False;
+     end;
+     if not CheckAccess('INVESTIGATION RESULT SETUP') then
+     begin
+          CategoryPanel2.Enabled:=False;
+     end;
+     if not CheckAccess('ADMIN SETUP') then
+     begin
+          CategoryPanel3.Enabled:=False;
+     end;  }
+
+     if gb_LicenseExpired=True then
+     begin
+          Sb_SampleCollection.enabled:=False;
+          SB_Pathology.Enabled:=False;
+          BB_Verification.enabled:=false;
+          SB_Report.Enabled:=True;
+          SB_Setup.Enabled:=false;
+          SB_Analysis.Enabled:=True;
+          SPB_PatientAdministration.Enabled:=false;
+          gb_LicenseExpired:=false;
+     end;
+     if gb_LicenseExpiredMidas=True then
+     begin
+          Sb_SampleCollection.enabled:=False;
+          SB_Pathology.Enabled:=False;
+          BB_Verification.enabled:=false;
+          SB_Report.Enabled:=True;
+          SB_Setup.Enabled:=True;
+          SB_Analysis.Enabled:=True;
+          SPB_PatientAdministration.Enabled:=false;
+          gb_LicenseExpiredMidas:=false;
+     end;
+end;
+
+procedure TFrame_Panel.BB_DepartmentSetupClick(Sender: TObject);
+begin
+     try
+          Form_DepartmentSetupNew := TForm_DepartmentSetupNew.Create(nil);
+          Form_DepartmentSetupNew.ShowModal;
+     finally
+          Form_DepartmentSetupNew.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BB_MainBackClick(Sender: TObject);
+begin
+     Timer2.Enabled := true;
+     Form_Main.RB1.Checked := true;
+     Form_Main.RB2.Checked := false;
+end;
+
+procedure TFrame_Panel.BB_MViewClick(Sender: TObject);
+begin
+     Form_MaterializedView:=TForm_MaterializedView.create(self);
+     try
+          Form_MaterializedView.Showmodal;
+     finally
+          Form_MaterializedView.Free;
+     end;
+end;
+
+procedure TFrame_Panel.bb_patienttestClick(Sender: TObject);
+begin
+     try
+      Form_PatienttestDetail:=TForm_PatienttestDetail.Create(nil);
+      with Form_PatienttestDetail do
+      begin
+        ShowModal;
+      end;
+
+     finally
+         Form_PatienttestDetail.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BB_ReffWiseRevenueClick(Sender: TObject);
+begin
+     try
+          Form_ReffWiseRevenue := TForm_ReffWiseRevenue.Create(nil);
+          Form_ReffWiseRevenue.ShowModal;
+     finally
+          Form_ReffWiseRevenue.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BB_SampleSourceSetupClick(Sender: TObject);
+begin
+     try
+          Form_SampleSourceSetup := TForm_SampleSourceSetup.Create(nil);
+          Form_SampleSourceSetup.ShowModal;
+     finally
+          Form_SampleSourceSetup.Free;
+     end;
+end;
+
+
+
+procedure TFrame_Panel.PanelMainMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+begin
+     //lbl_hint.Caption := '';
+end;
+
+procedure TFrame_Panel.SB_CashClick(Sender: TObject);
+var
+     Flags: DWORD;
+     Handle: HWND;
+begin
+     if not CheckAccess('BILLING') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+
+     // try
+     // Form_CashReceive:=TForm_CashReceive.Create(Nil);
+     // //Form_CashReceive.Color:=clWebLightSteelBlue;
+     // Form_CashReceive.ShowModal;
+     // finally
+     // Form_CashReceive.Free;
+     // end;
+     // gs_CalledFrom:='BILLING';
+     Gb_isServiceBill := false;
+     try
+          Form_BillingParent := TForm_BillingParent.Create(nil);
+          gi_BillCase := 2;
+          Form_BillingParent.ShowModal;
+     finally
+          Form_BillingParent.Free;
+     end;
+end;
+
+procedure TFrame_Panel.SB_CashMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+begin
+     //lbl_hint.Caption := '1. Access to Billing.' + #13;
+     // '2. View list of Cash Receipts.'+#13+
+     // '3. View list of Members Ledger.'  ;
+end;
+
+procedure TFrame_Panel.SB_SetupClick(Sender: TObject);
+VAR QRY:TORAQUERY;
+begin
+     //CategoryPanel3.Enabled:=false;
+    // CategoryPanel6.Enabled:=false;
+     QRY:=TOraQuery.Create(NIL);
+     WITH QRY DO
+     BEGIN
+          close;
+          session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.Add('select * from HS_MEPR_MENUPREVILAGE');
+          Sql.Add('where mepr_userid='+inttostr(gi_UserID)+' and MEPR_ACCESSTYPE=''MAINMENU''');
+          SQL.Add('and MEPR_moduleid='+inttostr(sb_setup.Tag));
+          open;
+          first;
+          while NOT Eof  do
+          BEGIN
+               if QRY.FieldByName('mepr_captionname').AsString='Admin Setup' then
+               begin
+                    CategoryPanel3.Enabled:=True;
+                    CategoryPanel3.Tag:= QRY.FieldByName('mepr_menuid').asinteger;
+               end
+               else if QRY.FieldByName('mepr_captionname').AsString='User Access Setup' then
+               begin
+                    CategoryPanel6.Enabled:=True;
+                    CategoryPanel6.Tag:= QRY.FieldByName('mepr_menuid').asinteger;
+               end;
+               Next;
+          END;
+     END;
+
+     QRY.Free;
+     {if not CheckAccess('SETUP') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;}
+     CategoryPanelGroup1.CollapseAll;
+     Timer3.Enabled := true;
+     Form_Main.RB1.Checked := false;
+     Form_Main.RB2.Checked := true;
+end;
+
+procedure TFrame_Panel.SB_SetupMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+begin
+     //lbl_hint.Caption := '1. User Setup' + #13 + '2. Setup 1.' + #13 + '3. Setup 2.';
+end;
+
+procedure TFrame_Panel.BB_BroadcastClick(Sender: TObject);
+begin
+     if not CheckAccess('BROADCAST') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+     try
+          gs_CalledFrom:='BROADCAST';
+          Form_Verification := TForm_Verification.Create(nil);
+          Form_Verification.ShowModal;
+     finally
+          Form_Verification.Free;
+     end;
+end;
+
+procedure TFrame_Panel.BB_VerificationClick(Sender: TObject);
+begin
+     if not CheckAccess('VERIFICATION') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+     try
+          gs_CalledFrom:='VERIFICATION';
+          Form_Verification := TForm_Verification.Create(nil);
+
+          Form_Verification.ShowModal;
+     finally
+          Form_Verification.Free;
+     end;
+end;
+
+procedure TFrame_Panel.Sb_SampleCollectionClick(Sender: TObject);
+begin
+     if not CheckAccess('SAMPLE COLLECTION') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+     try
+          Form_PathologyParent := TForm_PathologyParent.Create(Nil);
+          with Form_PathologyParent do
+          begin
+               gs_CalledFrom := 'SAMPLE COLLECTION';
+               BB_Findings.Visible := false;
+               BB_SampleCollection.Visible := false;
+               BB_Print.Visible := false;
+               BB_Preview.Visible := false;
+               BB_Report.Visible := false;
+               BB_NameModify.Visible := false;
+               BB_SampleCollectionClick(Sender);
+               // with Frame_SampleCollection do
+               // begin
+               // GB_Option.Visible := false;
+               // end;
+               ShowModal;
+          end;
+     finally
+          Form_PathologyParent.Free;
+     end;
+end;
+
+procedure TFrame_Panel.SB_PathologyClick(Sender: TObject);
+Var
+     Shift: TShiftState;
+     key: Word;
+begin
+     if not CheckAccess('TEST RESULT') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+     try
+          Form_PathologyParent := TForm_PathologyParent.Create(Nil);
+          with Form_PathologyParent do
+          begin
+               gs_CalledFrom := 'PATHOLOGY';
+               BB_SampleCollectionClick(Sender);
+               Frame_SampleCollection.BB_CollectedListClick(Sender);
+               BB_SampleCollection.Visible := false;
+               BB_NameModify.Visible := false;
+               BB_Report.Visible := false;
+               Frame_SampleCollection.BB_Modify.Visible := false;
+               Frame_SampleCollection.Se_CLDays.Text:='0';
+               ShowModal;
+          end;
+     finally
+          Form_PathologyParent.Free;
+     end;
+
+     {if not CheckAccess('TEST RESULT') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+     try
+          gs_CalledFrom:='TEST RESULT';
+          Form_Verification := TForm_Verification.Create(nil);
+
+          Form_Verification.ShowModal;
+     finally
+          Form_Verification.Free;
+     end;}
+end;
+
+procedure TFrame_Panel.SB_ReportClick(Sender: TObject);
+begin
+      if not CheckAccess('REPORTS') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+     Timer6.Enabled := true;
+     Form_Main.RB1.Checked := false;
+     Form_Main.RB2.Checked := true;
+end;
+
+procedure TFrame_Panel.SB_AnalysisClick(Sender: TObject);
+begin
+     if gi_compileValue=12 then//bnb
+     begin
+          {if not CheckAccess('ANALYSIS') then
+          begin
+               ShowMessage('Access Denied');
+               exit;
+          end
+          else }
+          begin
+               try
+                    Form_ReportTree:=TForm_ReportTree.Create(nil);
+                    Form_ReportTree.ShowModal;
+               finally
+                    Form_ReportTree.Free;
+               end;
+               //Timer5.Enabled := true;
+               //Form_Main.RB1.Checked := false;
+               //Form_Main.RB2.Checked := true;
+          end;
+     end
+     else
+     begin
+         if not CheckAccess('ANALYSIS') then
+         begin
+              ShowMessage('Access Denied');
+              exit;
+         end;
+         Timer5.Enabled := true;
+         Form_Main.RB1.Checked := false;
+         Form_Main.RB2.Checked := true;
+     end;
+end;
+
+procedure TFrame_Panel.SB_FormsCertificateClick(Sender: TObject);
+begin
+     if not CheckAccess('REGISTRATION') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+     Timer1.Enabled := true;
+     Form_Main.RB1.Checked := false;
+     Form_Main.RB2.Checked := true;
+end;
+
+procedure TFrame_Panel.SB_FormsCertificateMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+begin
+     //lbl_hint.Caption := '1. Patient Registration Entry form.' + #13 + '2. View Medical History.';
+end;
+
+procedure TFrame_Panel.Timer1Timer(Sender: TObject);
+Var
+     i: Integer;
+begin
+     Panel_Report.Visible := false;
+     Panel_Setup.Visible := false;
+     if PanelMain.Left >= -635 then
+          PanelMain.Left := PanelMain.Left - 30
+     else
+     begin
+          Timer1.Enabled := false;
+          PanelMain.Left := -635;
+     end;
+end;
+
+procedure TFrame_Panel.Timer2Timer(Sender: TObject);
+begin
+     if PanelMain.Left <= -3 then
+          PanelMain.Left := PanelMain.Left + 30
+     else
+     begin
+          Timer2.Enabled := false;
+          PanelMain.Left := -3;
+     end;
+     Panel_Setup.Visible := false;
+end;
+
+procedure TFrame_Panel.Timer3Timer(Sender: TObject);
+begin
+     Panel_Setup.Visible := true;
+     Panel_Setup.BringToFront;
+     if PanelMain.Left >= -635 then
+          PanelMain.Left := PanelMain.Left - 30
+     else
+     begin
+          Timer3.Enabled := false;
+          PanelMain.Left := -635;
+     end;
+end;
+
+procedure TFrame_Panel.Timer5Timer(Sender: TObject);
+begin
+     Panel_Analysis.Visible := true;
+     //Panel_Analysis.BringToFront;
+     Panel_Report.visible := false;
+     if PanelMain.Left >= -635 then
+          PanelMain.Left := PanelMain.Left - 30
+     else
+     begin
+          Timer5.Enabled := false;
+          PanelMain.Left := -635;
+     end;
+     CategoryPanelGroup2.collapseAll;
+     //Panel_Analysis.Left := 432;
+     //Panel_Analysis.Top := 284;
+end;
+
+
+procedure TFrame_Panel.Timer6Timer(Sender: TObject);
+begin
+     Panel_Report.Visible := true;
+     Panel_Report.BringToFront;
+     Panel_Analysis.visible := false;
+     if PanelMain.Left >= -635 then
+          PanelMain.Left := PanelMain.Left - 30
+     else
+     begin
+          Timer6.Enabled := false;
+          PanelMain.Left := -635;
+     end;
+
+     CategoryPanelGroup3.collapseAll;
+end;
+
+
+end.

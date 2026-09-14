@@ -1,0 +1,206 @@
+unit Unit_RefundSalesTestwiseReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DBCtrls, StdCtrls, ExtCtrls, Buttons, OleCtrls, DateEditXControl_TLB,
+  DB, MemDS, DBAccess, Ora, DM, DBTables;
+
+type
+  TForm_RefundSalesTestwiseReport = class(TForm)
+    Panel1: TPanel;
+    BitBtnCancel: TBitBtn;
+    BitBtn1: TBitBtn;
+    Panel2: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label4: TLabel;
+    Label3: TLabel;
+    DateEditX_FromDate: TDateEditX;
+    DateEditX_ToDate: TDateEditX;
+    BitBtn_FromDate: TBitBtn;
+    BitBtn_ToDate: TBitBtn;
+    DBLCB_RefDocCode: TDBLookupComboBox;
+    DBLCB_Hospital: TDBLookupComboBox;
+    GroupBox1: TGroupBox;
+    RB_DirectRefund: TRadioButton;
+    RB_ServiceRefund: TRadioButton;
+    Query_Refund: TOraQuery;
+    DS_RefDoc: TDataSource;
+    QueryRefDoc: TOraQuery;
+    OraQuery_Hospital: TOraQuery;
+    DS_Hospital: TDataSource;
+    procedure BitBtnCancelClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn_FromDateClick(Sender: TObject);
+    procedure BitBtn_ToDateClick(Sender: TObject);
+    procedure DBLCB_HospitalClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure DBLCB_HospitalKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_RefDocCodeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_RefundSalesTestwiseReport: TForm_RefundSalesTestwiseReport;
+
+implementation
+uses Fxn, UnitSendToExcel, ServerDate;
+
+{$R *.dfm}
+
+procedure TForm_RefundSalesTestwiseReport.BitBtn1Click(Sender: TObject);
+begin
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     BitBtn_FromDate.Caption := gs_DateCaption;
+     BitBtn_ToDate.Caption := gs_DateCaption;
+     gs_From := DateEditX_FromDate.text;
+     gs_to := DateEditX_ToDate.text;
+    // DateEditX_FromDate.SystemOfDate := 0;
+    // DateEditX_ToDate.SystemOfDate := 0;
+    // BitBtn_FromDate.Caption := 'BS';
+    // BitBtn_ToDate.Caption := 'BS';
+
+     if RB_ServiceRefund.Checked=True then
+     begin
+
+          with Query_Refund do
+          Begin
+               Close;
+               sql[0]:='select ROWNUM AS SN, RD.* from VW_SERVICEREFUNDDETAILTESTWISE RD ';
+               SQL[1] := ' where refunddate>=' +QuotedStr(gs_From)+'and refunddate<='+QuotedStr(gs_to);
+               if DBLCB_RefDocCode.KeyValue<>NULL then
+               begin
+                    SQL[2] := ' AND REFDOCID='+intToStr(DBLCB_RefDocCode.KeyValue);
+                    //ls_DoctorName := DBLCB_RefDocCode.Text;
+               end;
+               if DBLCB_Hospital.KeyValue<>NULL then
+               begin
+                    SQL[3] := ' AND REFHOSCODE='+QuotedStr(DBLCB_Hospital.KeyValue);
+                    //ls_HospitalName := DBLCB_Hospital.Text;
+               end;
+
+               SQL[5] := 'order by sn';
+              // sql.SaveToFile('C:\jpt167.txt');
+               Open;
+          End;
+
+          SendToExcels(Query_Refund, nil, 'Service Refund Sales TestWise Report', DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,
+           '', gs_HospitalName, gs_HospitalAddress, 13);
+     end;
+
+     if RB_DirectRefund.checked=True then
+     begin
+          with Query_Refund do
+          Begin
+               Close;
+               sql[0]:='select ROWNUM AS SN, RD.* from VW_CASHREFUNDDETAILTESTWISE RD ';
+               SQL[1] := ' where refunddate>=' +QuotedStr(gs_From)+'and refunddate<='+QuotedStr(gs_To);
+               if DBLCB_RefDocCode.KeyValue<>NULL then
+               begin
+                    SQL[2] := ' AND REFDOCID='+intToStr(DBLCB_RefDocCode.KeyValue);
+                    //ls_DoctorName := DBLCB_RefDocCode.Text;
+               end;
+               if DBLCB_Hospital.KeyValue<>NULL then
+               begin
+                    SQL[3] := ' AND REFHOSCODE='+QuotedStr(DBLCB_Hospital.KeyValue);
+                    //ls_HospitalName := DBLCB_Hospital.Text;
+               end;
+
+                SQL[5] := 'order by sn';
+              // sql.SaveToFile('C:\jpt168.txt');
+               Open;
+          End;
+
+          SendToExcels(Query_Refund, nil, 'Cash Refund Sales TestWise Report', DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,
+           '', gs_HospitalName, gs_HospitalAddress,13);
+     end;
+
+end;
+
+procedure TForm_RefundSalesTestwiseReport.BitBtnCancelClick(Sender: TObject);
+begin
+     close;
+end;
+
+procedure TForm_RefundSalesTestwiseReport.BitBtn_FromDateClick(Sender: TObject);
+begin
+     if DateEditX_FromDate.SystemOfDate = 0 then
+     begin
+          BitBtn_FromDate.Caption := 'AD';
+          DateEditX_FromDate.SystemOfDate := 1;
+     end
+     else if DateEditX_FromDate.SystemOfDate = 1 then
+     begin
+          BitBtn_FromDate.Caption := 'BS';
+          DateEditX_FromDate.SystemOfDate := 0;
+     end;
+end;
+
+procedure TForm_RefundSalesTestwiseReport.BitBtn_ToDateClick(Sender: TObject);
+begin
+     if DateEditX_ToDate.SystemOfDate = 0 then
+     begin
+          BitBtn_ToDate.Caption := 'AD';
+          DateEditX_ToDate.SystemOfDate := 1;
+     end
+     else if DateEditX_ToDate.SystemOfDate = 1 then
+     begin
+          BitBtn_ToDate.Caption := 'BS';
+          DateEditX_ToDate.SystemOfDate := 0;
+     end;
+end;
+
+procedure TForm_RefundSalesTestwiseReport.DBLCB_HospitalClick(Sender: TObject);
+begin
+     with QueryRefDoc do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.clear;
+          sql.Add('select REDO_DOCID as docid,REDO_DOCCODE as docode,TRIM(REPLACE(REPLACE(REPLACE(replace(REDO_DOCNAME,''DR''),''PROF''),''.''),''(MRS)''))DOCNAME ');
+          sql.Add('from HS_REDO_REFERALDOCTOR');
+          SQL.Add('where REDO_HOSPITALCODE='+QuotedStr(DBLCB_Hospital.KeyValue));
+          sql.Add(' and redo_dactive=''Y'' order by REDO_DOCNAME');
+          //sql.SaveToFile('D:\check.txt');
+          Open;
+     end;
+end;
+
+procedure TForm_RefundSalesTestwiseReport.DBLCB_HospitalKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     if key=VK_DELETE then
+     DBLCB_Hospital.KeyValue:=Null;
+
+end;
+
+procedure TForm_RefundSalesTestwiseReport.DBLCB_RefDocCodeKeyDown(
+  Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key=VK_DELETE then
+     DBLCB_RefDocCode.KeyValue:=-1;
+
+end;
+
+procedure TForm_RefundSalesTestwiseReport.FormShow(Sender: TObject);
+begin
+     DateEditX_FromDate.text := ServerDate.TodaysDate;
+     DateEditX_ToDate.text := ServerDate.TodaysDate;
+     BitBtn_FromDate.Caption := 'AD';
+     BitBtn_ToDate.Caption := 'AD';
+     QueryRefDoc.Close;
+     QueryRefDoc.Open;
+     OraQuery_Hospital.Close;
+     OraQuery_Hospital.Open;
+
+end;
+
+end.

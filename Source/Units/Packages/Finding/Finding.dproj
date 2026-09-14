@@ -1,0 +1,306 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{5A3AAE8B-E9A4-4290-AC89-864E59E54545}</ProjectGuid>
+			<MainSource>Finding.dpk</MainSource>
+			<ProjectVersion>12.0</ProjectVersion>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_DcuOutput>..\..\..\..\Dcu\</DCC_DcuOutput>
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DesignOnlyPackage>false</DesignOnlyPackage>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DependencyCheckOutputName>..\..\..\..\Bin\Finding.bpl</DCC_DependencyCheckOutputName>
+			<DCC_BplOutput>..\..\..\..\Bin\</DCC_BplOutput>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<DCC_Platform>x86</DCC_Platform>
+			<GenPackage>true</GenPackage>
+			<DCC_S>false</DCC_S>
+			<DCC_DcpOutput>..\..\..\..\Dcp\</DCC_DcpOutput>
+			<GenDll>true</GenDll>
+			<DCC_N>false</DCC_N>
+			<DCC_E>false</DCC_E>
+			<DCC_F>false</DCC_F>
+			<DCC_K>false</DCC_K>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_MapFile>3</DCC_MapFile>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="Finding.dpk">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="rtl.dcp"/>
+			<DCCReference Include="vcl.dcp"/>
+			<DCCReference Include="MidasFunction.dcp"/>
+			<DCCReference Include="SampleCollection.dcp"/>
+			<DCCReference Include="adortl.dcp"/>
+			<DCCReference Include="Global.dcp"/>
+			<DCCReference Include="acnt2010_R.dcp"/>
+			<DCCReference Include="Unit_FindingFrame.pas">
+				<Form>Frame_Finding</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Unit_QrInvestigativeResult.pas">
+				<Form>Form_QrFinding</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_FindingSetup.pas">
+				<Form>Form_FindingSetup</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_FindingComment.pas">
+				<Form>Form_FindingComment</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_FindingFootnote.pas">
+				<Form>Form_FindingFootnote</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_SensitivityResult.pas">
+				<Form>Form_SensitivityResult</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_SelectTest.pas">
+				<Form>Form_SelectTest</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_ReportFooterSetup.pas">
+				<Form>Form_ReportFooterSetup</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_ManualRepFooterSetup.pas">
+				<Form>Form_ManualRepFooterSetup</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_InvestigationMemberSetup.pas">
+				<Form>Form_InvestigationMember</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_Mangalam_QrInvestigativeResult.pas">
+				<Form>Form_QrFinding_mangalam</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_Dhulikhel_QrInvestigativeResult.pas">
+				<Form>Form_dhulikhel_QrFinding</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_ENT_QrInvestigativeResult.pas">
+				<Form>Form_ENT_QrFinding</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseENTReport.pas">
+				<Form>Form_QrDeptWiseENTReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseDhirghayuReport.pas">
+				<Form>Form_QrDeptWiseDhirghayuReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseGautamBuddhaReport.pas">
+				<Form>Form_QrDeptWiseGautamBuddhaReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseNMCReport.pas">
+				<Form>Form_QrDeptWiseNMCReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseCivilHospitalReport.pas">
+				<Form>Form_QrDeptWiseCivilHospitalReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseNMCA4Report.pas">
+				<Form>Form_QrDeptWiseNMCA4Report</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseNepalCancerReport.pas">
+				<Form>Form_QrDeptWiseNepalCancerReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseNeuroBrtReport.pas">
+				<Form>Form_QrDeptWiseNeuroBrtReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseNeuroBrtMicrobiologyReport.pas">
+				<Form>Form_QrDeptWiseNeuroBrtMicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_SensitivityResultNew.pas">
+				<Form>Form_SensitivityResultNew</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseBNBReport.pas">
+				<Form>Form_QrDeptWiseBnbReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_SensitivityResultNeuroBrt.pas">
+				<Form>Form_SensitivityResultNeuroBrt</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseMeridianReport.pas">
+				<Form>Form_QrDeptWiseMeridianReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseShankarapurReport.pas">
+				<Form>Form_QrDeptWiseShankarapurReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseShankarapurMicrobiologyReport.pas">
+				<Form>Form_QrDeptWiseShankarapurMicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseVigourMicrobiologyReport.pas">
+				<Form>Form_QrDeptWiseVigourMicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseVigourReport.pas">
+				<Form>Form_QrDeptWiseVigourReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseEraMicrobiologyReport.pas">
+				<Form>Form_QrDeptWiseEraMicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseEraReport.pas">
+				<Form>Form_QrDeptWiseEraReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseA4Reportkpl.pas">
+				<Form>Form_QrDeptWiseBioDiagReportKpl</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrFindingAarogyaReport.pas">
+				<Form>Form_QrFindingAarogyaReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrFindingIntrepidReport.pas">
+				<Form>Form_QrFindingIntrepidReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrAarogyaMicrobiologyReport.pas">
+				<Form>Form_QrAarogyaMicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrIntrepidMicrobiologyReport.pas">
+				<Form>Form_QrIntrepidMicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseNCHRCA4MicrobiologyReport.pas">
+				<Form>Form_QrDeptWiseNCHRCA4MicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseINTREPIDA4MicrobiologyReport.pas">
+				<Form>Form_QrDeptWiseINTREPIDA4MicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseMANGALAMA4MicrobiologyReport.pas">
+				<Form>Form_QrDeptWiseMANGALAMA4MicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrFindingMangalamReport.pas">
+				<Form>Form_QrFindingMangalamReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWisePATANLABA4MicrobiologyReport.pas">
+				<Form>Form_QrDeptWisepatanA4MicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrFindingPatanLabReport.pas">
+				<Form>Form_QrFindingPatanLabReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrPatanHistoPathInvestigativeResult.pas">
+				<Form>Form_patanHistoQrPathFinding</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseNRLLABA4MicrobiologyReport.pas">
+				<Form>Form_QrDeptWiseNRLA4MicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrFindingNRLLabReport.pas">
+				<Form>Form_QrFindingNRLLabReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrNRLHistoPathInvestigativeResult.pas">
+				<Form>Form_NRLHistoQrPathFinding</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseGMCLABA4MicrobiologyReport.pas">
+				<Form>Form_QrDeptWiseGMCA4MicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrFindingGMCLabReport.pas">
+				<Form>Form_QrFindingGMCLabReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrGMCHistoPathInvestigativeResult.pas">
+				<Form>Form_GMCHistoQrPathFinding</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseA4ReportNOZOMIkpl.pas">
+				<Form>Form_QrDeptWiseA4NOZOMIReportKpl</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseNOZOMIMicrobiologyReport.pas">
+				<Form>Form_QrDeptWiseNOZOMIMicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseA4ReportKPLkpl.pas">
+				<Form>Form_QrDeptWiseA4NReportKPLkpl</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseKPLMicrobiologyReport.pas">
+				<Form>Form_QrDeptWiseKPLMicrobiologyReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrFindingIntrepidReport_KPL.pas">
+				<Form>Form_QrFindingIntrepidReport_KPL</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrFindingGMCLabReport_kpl.pas">
+				<Form>Form_QrFindingGMCLabReport_kpl</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseGMCLABA4MicrobiologyReport_kpl.pas">
+				<Form>Form_QrDeptWiseGMCA4MicrobiologyReport_kpl</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseNOZOMIMicrobiologyReport_hetaudaref.pas">
+				<Form>Form_QrDeptWiseMicrobiologyReport_hetaudaref</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptWiseA4Report_hetaudaref.pas">
+				<Form>Form_QrDeptWiseA4_hetaudarefl</Form>
+			</DCCReference>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>Package</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Source>
+						<Source Name="MainSource">Finding.dpk</Source>
+					</Source>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+						<Parameters Name="HostApplication">..\..\..\..\Bin\MidasDrHomsV3_2.exe</Parameters>
+					</Parameters>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1033</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName"/>
+						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename"/>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Excluded_Packages>
+						<Excluded_Packages Name="E:\Working Shishir\CANCER HOSPITAL\Midas Dr. Homs V 4.0 Cancer\Bin\TMSD2010.bpl">File E:\Working Shishir\CANCER HOSPITAL\Midas Dr. Homs V 4.0 Cancer\Bin\TMSD2010.bpl not found</Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\7.0\Bpl\tmsxlsd2010.bpl">File C:\Users\Public\Documents\RAD Studio\7.0\Bpl\tmsxlsd2010.bpl not found</Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\7.0\Bpl\tmsded2010.bpl">File C:\Users\Public\Documents\RAD Studio\7.0\Bpl\tmsded2010.bpl not found</Excluded_Packages>
+						<Excluded_Packages Name="E:\Working Shishir\CANCER HOSPITAL\Midas Dr. Homs V 4.0 Cancer\Bin\tmsexd2010.bpl">File E:\Working Shishir\CANCER HOSPITAL\Midas Dr. Homs V 4.0 Cancer\Bin\tmsexd2010.bpl not found</Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\7.0\Bpl\MAIL.bpl">File C:\Users\Public\Documents\RAD Studio\7.0\Bpl\MAIL.bpl not found</Excluded_Packages>
+						<Excluded_Packages Name="$(BDS)\bin\dcloffice2k140.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDS)\bin\dclofficexp140.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+					</Excluded_Packages>
+				</Delphi.Personality>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

@@ -1,0 +1,2079 @@
+unit UnitEditFindAlternate;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ComCtrls, StdCtrls, Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, Db,Variants,DM,
+  DBTables, MemDS, DBAccess, Ora, TeCanvas, ToolWin;
+
+type
+  TFormEditFindAlternate = class(TForm)
+    PageControlFind: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    Panel1: TPanel;
+    BtnNew: TBitBtn;
+    BitBtnSave: TBitBtn;
+    BitBtnCancel: TBitBtn;
+    DBGrid1: TDBGrid;
+    DataSourceQueryFind: TDataSource;
+    Bevel2: TBevel;
+    Label2: TLabel;
+    CMBTestName: TDBLookupComboBox;
+    DataSourceQueryTestName: TDataSource;
+    CheckFind: TCheckBox;
+    SpeedButton1: TSpeedButton;
+    Label1: TLabel;
+    EditTitleOne: TEdit;
+    Label3: TLabel;
+    EditTitleTwo: TEdit;
+    Label4: TLabel;
+    SpeedButton2: TSpeedButton;
+    Label5: TLabel;
+    EditTitleThree: TEdit;
+    Label6: TLabel;
+    EditTitleFour: TEdit;
+    Label7: TLabel;
+    EditTitleFive: TEdit;
+    Label8: TLabel;
+    EditTitleSix: TEdit;
+    Label9: TLabel;
+    EditTitleSeven: TEdit;
+    Label10: TLabel;
+    EditTitleEight: TEdit;
+    Label11: TLabel;
+    EditTitleNine: TEdit;
+    Label12: TLabel;
+    EditTitleTen: TEdit;
+    Label13: TLabel;
+    Edit_Description: TEdit;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    EditTitleEleven: TEdit;
+    EditTitleTwelve: TEdit;
+    EditTitleThirteen: TEdit;
+    EditTitleFourteen: TEdit;
+    EditTitleFifteen: TEdit;
+    EditTitleSixteen: TEdit;
+    Memo18: TRichEdit;
+    SpeedButton3: TSpeedButton;
+    Table1: TTable;
+    Table2: TTable;
+    SpeedButton4: TSpeedButton;
+    CB_Title1: TCheckBox;
+    CB_Title2: TCheckBox;
+    CB_Title3: TCheckBox;
+    CB_Title4: TCheckBox;
+    CB_Title5: TCheckBox;
+    CB_Title6: TCheckBox;
+    CB_Title7: TCheckBox;
+    CB_Title8: TCheckBox;
+    CB_Title9: TCheckBox;
+    CB_Title10: TCheckBox;
+    CB_Title11: TCheckBox;
+    CB_Title12: TCheckBox;
+    CB_Title13: TCheckBox;
+    CB_Title14: TCheckBox;
+    CB_Title15: TCheckBox;
+    CB_Title16: TCheckBox;
+    Label20: TLabel;
+    MemoDisplay: TMemo;
+    SpeedButton5: TSpeedButton;
+    EditReportType: TEdit;
+    Label21: TLabel;
+    Label22: TLabel;
+    EditTitleSeventeen: TEdit;
+    BitBtn1: TBitBtn;
+    QueryCheck: TOraQuery;
+    QueryFind: TOraQuery;
+    QueryTestName: TOraQuery;
+    Query_Process: TOraQuery;
+    Query1: TQuery;
+    Memo1: TRichEdit;
+    Memo2: TRichEdit;
+    Memo3: TRichEdit;
+    Memo4: TRichEdit;
+    Memo5: TRichEdit;
+    Memo6: TRichEdit;
+    Memo7: TRichEdit;
+    memo8: TRichEdit;
+    Memo9: TRichEdit;
+    Memo10: TRichEdit;
+    Memo11: TRichEdit;
+    Memo12: TRichEdit;
+    Memo13: TRichEdit;
+    Memo14: TRichEdit;
+    Memo15: TRichEdit;
+    Memo16: TRichEdit;
+    Memo17: TRichEdit;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton5: TToolButton;
+    ToolButton7: TToolButton;
+    ToolButton12: TToolButton;
+    ToolButton9: TToolButton;
+    Tbtn_Font: TToolButton;
+    ToolButton16: TToolButton;
+    ToolButton8: TToolButton;
+    ToolButton10: TToolButton;
+    ToolButton11: TToolButton;
+    ComboBox2: TComboBox;
+    ComboBox1: TComboBox;
+    ButtonColor1: TButtonColor;
+    ColorDialog1: TColorDialog;
+    FontDialog1: TFontDialog;
+    Memo: TMemo;
+
+    procedure BitBtnCancelClick(Sender: TObject);
+    procedure BtnNewClick(Sender: TObject);
+    procedure BitBtnSaveClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
+    procedure CMBTestKeyPress(Sender: TObject; var Key: Char);
+    Procedure RetriveModifyData;
+
+    procedure CMBTestNameClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure PageControlFindChange(Sender: TObject);
+    procedure RichEditFindingKeyPress(Sender: TObject; var Key: Char);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
+    procedure SpeedButton4Click(Sender: TObject);
+    procedure SpeedButton5Click(Sender: TObject);
+    procedure Memo1Change(Sender: TObject);
+    procedure Memo1Click(Sender: TObject);
+    procedure Memo2Click(Sender: TObject);
+    procedure Memo2Change(Sender: TObject);
+    procedure Memo3Change(Sender: TObject);
+    procedure Memo3Click(Sender: TObject);
+    procedure Memo4Click(Sender: TObject);
+    procedure Memo4Change(Sender: TObject);
+    procedure Memo5Change(Sender: TObject);
+    procedure Memo5Click(Sender: TObject);
+    procedure Memo6Click(Sender: TObject);
+    procedure Memo6Change(Sender: TObject);
+    procedure Memo7Change(Sender: TObject);
+    procedure Memo7Click(Sender: TObject);
+    procedure Memo8Click(Sender: TObject);
+    procedure Memo8Change(Sender: TObject);
+    procedure Memo9Change(Sender: TObject);
+    procedure Memo9Click(Sender: TObject);
+    procedure Memo10Change(Sender: TObject);
+    procedure Memo10Click(Sender: TObject);
+    procedure Memo11Click(Sender: TObject);
+    procedure Memo11Change(Sender: TObject);
+    procedure Memo12Change(Sender: TObject);
+    procedure Memo12Click(Sender: TObject);
+    procedure Memo13Click(Sender: TObject);
+    procedure Memo13Change(Sender: TObject);
+    procedure Memo14Change(Sender: TObject);
+    procedure Memo14Click(Sender: TObject);
+    procedure Memo15Click(Sender: TObject);
+    procedure Memo15Change(Sender: TObject);
+    procedure Memo16Change(Sender: TObject);
+    procedure Memo16Click(Sender: TObject);
+    procedure Memo17Change(Sender: TObject);
+    procedure Memo17Click(Sender: TObject);
+    procedure Memo1Enter(Sender: TObject);
+    procedure Memo1Exit(Sender: TObject);
+    procedure Memo2Exit(Sender: TObject);
+    procedure Memo2Enter(Sender: TObject);
+    procedure Memo3Enter(Sender: TObject);
+    procedure Memo3Exit(Sender: TObject);
+    procedure Memo4Exit(Sender: TObject);
+    procedure Memo4Enter(Sender: TObject);
+    procedure Memo5Enter(Sender: TObject);
+    procedure Memo5Exit(Sender: TObject);
+    procedure Memo6Exit(Sender: TObject);
+    procedure Memo6Enter(Sender: TObject);
+    procedure Memo7Enter(Sender: TObject);
+    procedure Memo7Exit(Sender: TObject);
+    procedure Memo8Enter(Sender: TObject);
+    procedure Memo8Exit(Sender: TObject);
+    procedure Memo9Enter(Sender: TObject);
+    procedure Memo9Exit(Sender: TObject);
+    procedure Memo10Enter(Sender: TObject);
+    procedure Memo10Exit(Sender: TObject);
+    procedure Memo11Enter(Sender: TObject);
+    procedure Memo11Exit(Sender: TObject);
+    procedure Memo12Enter(Sender: TObject);
+    procedure Memo12Exit(Sender: TObject);
+    procedure Memo13Enter(Sender: TObject);
+    procedure Memo13Exit(Sender: TObject);
+    procedure Memo14Enter(Sender: TObject);
+    procedure Memo14Exit(Sender: TObject);
+    procedure Memo15Enter(Sender: TObject);
+    procedure Memo15Exit(Sender: TObject);
+    procedure Memo16Enter(Sender: TObject);
+    procedure Memo16Exit(Sender: TObject);
+    procedure Memo17Enter(Sender: TObject);
+    procedure Memo17Exit(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure ToolButton1Click(Sender: TObject);
+    procedure Memo18Enter(Sender: TObject);
+    procedure ToolButton2Click(Sender: TObject);
+    procedure ToolButton3Click(Sender: TObject);
+    procedure ToolButton7Click(Sender: TObject);
+    procedure Tbtn_FontClick(Sender: TObject);
+    procedure ToolButton8Click(Sender: TObject);
+    procedure ToolButton10Click(Sender: TObject);
+    procedure ToolButton11Click(Sender: TObject);
+    procedure ComboBox2Change(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
+    procedure ButtonColor1Click(Sender: TObject);
+    procedure Memo1SelectionChange(Sender: TObject);
+    procedure Memo2SelectionChange(Sender: TObject);
+    procedure Memo3SelectionChange(Sender: TObject);
+    procedure Memo4SelectionChange(Sender: TObject);
+    procedure Memo5SelectionChange(Sender: TObject);
+    procedure Memo6SelectionChange(Sender: TObject);
+    procedure Memo7SelectionChange(Sender: TObject);
+    procedure memo8SelectionChange(Sender: TObject);
+    procedure Memo9SelectionChange(Sender: TObject);
+    procedure Memo10SelectionChange(Sender: TObject);
+    procedure Memo11SelectionChange(Sender: TObject);
+    procedure Memo12SelectionChange(Sender: TObject);
+    procedure Memo13SelectionChange(Sender: TObject);
+    procedure Memo14SelectionChange(Sender: TObject);
+    procedure Memo15SelectionChange(Sender: TObject);
+    procedure Memo16SelectionChange(Sender: TObject);
+    procedure Memo17SelectionChange(Sender: TObject);
+  private
+    { Private declarations }
+    Function CheckDef:Boolean;
+    procedure CreateTempTable;
+    procedure ResizeMemoHeight(MyMemo: TRichEdit; ResizeType: String);
+  public
+
+    { Public declarations }
+    lToAppend:Boolean;
+    Arr_RIch:array Of TRichEdit;
+    WritingPadID,Pi_TestNameID:Integer;
+
+  end;
+
+var
+  FormEditFindAlternate: TFormEditFindAlternate;
+
+implementation
+
+uses  Fxn     ;
+
+{$R *.DFM}
+
+Procedure TFormEditFindAlternate.ResizeMemoHeight(MyMemo:TRichEdit;ResizeType:String);
+begin
+     If ResizeType='I' Then
+     MyMemo.Height:=80
+     Else
+     MyMemo.Height:=21;
+     MyMemo.BringToFront;
+end;
+
+Function TFormEditFindAlternate.CheckDef:Boolean;
+Begin
+     With QueryCheck Do
+     Begin
+          Close;
+          ParamByName('TestNameID').AsInteger:=CMBTestName.KeyValue;
+          Open;
+          IF FieldByName('EditFindingID').asinteger>0 Then
+          CheckDef:=True
+          Else
+          CheckDef:=False;
+     End;
+End;
+procedure TFormEditFindAlternate.BitBtnCancelClick(Sender: TObject);
+begin
+     IF PageControlFind.ActivePageIndex=0 Then
+        Close
+     Else
+     Begin
+
+        PageControlFind.ActivePageIndex:=0;
+        BtnNew.Enabled:=True;
+        BitBtnSave.Enabled:=False;
+     End;
+End;
+
+procedure TFormEditFindAlternate.BtnNewClick(Sender: TObject);
+begin
+     IF CMBTestName.KeyValue=Null Then
+     Begin
+          Showmessage('Would you mind ! Please Select Test Name ');
+          PageControlFind.ActivePageIndex:=0;
+          CMBTestName.SetFocus;
+          Exit;
+     End;
+     PageControlFind.ActivePageIndex:=1;
+     BitBtnSave.Enabled:=True;
+     BtnNew.Enabled:=False;
+     lToAppend:=True;
+     Edit_Description.Text:='';
+     EditTitleOne.SetFocus;
+     EditTitleOne.Text:='';
+     EditTitleTwo.Text:='';
+     EditTitleThree.Text:='';
+     EditTitleFour.Text:='';
+     EditTitleFive.Text:='';
+     EditTitleSix.Text:='';
+     EditTitleSeven.Text:='';
+     EditTitleEight.Text:='';
+     EditTitleNine.Text:='';
+     EditTitleTen.Text:='';
+     EditTitleEleven.Text:='';
+     EditTitleTwelve.Text:='';
+     EditTitleThirteen.Text:='';
+     EditTitleFourteen.Text:='';
+     EditTitleFifteen.Text:='';
+     EditTitleSixteen.Text:='';
+
+     Memo1.Text:='';
+     Memo2.Text:='';
+     Memo3.Text:='';
+     Memo4.Text:='';
+     Memo5.Text:='';
+     Memo6.Text:='';
+     Memo7.Text:='';
+     Memo8.Text:='';
+     Memo9.Text:='';
+     Memo10.Text:='';
+     Memo11.Text:='';
+     Memo12.Text:='';
+     Memo13.Text:='';
+     Memo14.Text:='';
+     Memo15.Text:='';
+     Memo16.Text:='';
+
+
+     IF CheckDef=True Then
+     Begin
+         CheckFind.Checked:=False;
+         CheckFind.Enabled:=False;
+     End
+     Else
+        CheckFind.Enabled:=True;
+End;
+
+
+procedure TFormEditFindAlternate.ButtonColor1Click(Sender: TObject);
+begin
+     SetFontColor(ButtonColor1,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.BitBtnSaveClick(Sender: TObject);
+var
+RMemo1,RMemo2,RMemo3,RMemo4,RMemo5,RMemo6,RMemo7,RMemo8,
+RMemo9,RMemo10,RMemo11,RMemo12,RMemo13,RMemo14,RMemo15,RMemo16,RMemo17,RMemo18:string;
+begin
+     If Edit_Description.Text='' then
+     begin
+          ShowMessage('Please Enter Report Title');
+          Edit_Description.SetFocus;
+          Exit;
+     end;
+
+     If EditReportType.Text='' then
+     begin
+          ShowMessage('Please Enter Report Type');
+          EditReportType.SetFocus;
+          Exit;
+     end;
+
+     Memo.Lines.Clear;
+     Memo1.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo1:=Memo.Text;
+
+
+     Memo.Lines.Clear;
+     Memo2.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo2:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo3.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo3:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo4.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo4:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo5.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo5:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo6.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo6:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo7.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo7:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo8.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo8:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo9.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo9:=Memo.Text;
+
+
+     Memo.Lines.Clear;
+     Memo10.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo10:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo11.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo11:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo12.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo12:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo13.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo13:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo14.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo14:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo15.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo15:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo16.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo16:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo17.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo17:=Memo.Text;
+
+     Memo.Lines.Clear;
+     Memo18.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     RMemo18:=Memo.Text;
+
+     Try
+        DM_hospital.DB.StartTransaction;
+        If lToAppend=True then
+        begin
+             With Query_Process do
+             begin
+                  Close;
+                  Session:=DM_Hospital.DB;
+                  Sql.Clear;
+                  Sql.Add('Insert into TESTEDITFINDING(EDITFINDINGID,TESTNAMEID,DEFFIND,TITLEONE,TITLETWO, ');
+                  Sql.Add('TITLETHREE,TITLEFOUR,TITLEFIVE,TITLESIX,TITLESEVEN,TITLEEIGHT,TITLENINE,TITLETEN,');
+                  Sql.Add('TITLEELEVEN,TITLETWELVE,TITLETHIRTEEN,TITLEFOURTEEN,TITLEFIFTEEN,TITLESIXTEEN,TITLESEVENTEEN,');
+                  Sql.Add('RESONEDESC,RESTWODESC,RESTHREEDESC,RESFOURDESC,RESFIVEDESC,RESSIXDESC,RESSEVENDESC,');
+                  Sql.Add('RESEIGHTDESC,RESNINEDESC,RESTENDESC,RESELEVENDESC,RESTWELVEDESC,RESTHIRTEENDESC');
+                  Sql.Add(',RESFOURTEENDESC,RESFIFTEENDESC,RESSIXTEENDESC,RESSEVENTEENDESC,DESCRIPTION,ReportNote,ReportType,IsReportHead1,IsReportHead2,');
+                  sql.Add('IsReportHead3,IsReportHead4,IsReportHead5,IsReportHead6,IsReportHead7,IsReportHead8,');
+                  sql.Add('IsReportHead9,IsReportHead10,IsReportHead11,IsReportHead12,IsReportHead13,IsReportHead14,');
+                  sql.Add('IsReportHead15,IsReportHead16) VALUES (');
+                  Sql.Add(IntToStr(GetmaxId('TestEditFinding','EditFindingID')));
+                  Sql.Add(','+VarToStr(CMBTestName.KeyValue));
+                  If CheckFind.Checked=True Then
+                  Sql.Add(',''T''')
+                  Else
+                  Sql.Add(',''F''');
+                  //Sql.Add(','+#39+' '+#39); ,FINDINGS
+
+                  Sql.Add(','+#39+StringReplace(EditTitleOne.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleTwo.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleThree.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleFour.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleFive.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleSix.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleSeven.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleEight.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleNine.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleTen.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleEleven.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleTwelve.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleThirteen.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleFourteen.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleFifteen.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleSixteen.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditTitleSeventeen.Text,'''','''''',[rfReplaceAll])+#39);
+
+                  Sql.Add(','+#39+StringReplace(Rmemo1,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo2,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo3,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo4,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo5,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo6,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo7,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo8,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo9,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo10,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo11,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo12,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo13,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo14,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo15,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo16,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(Rmemo17,'''','''''',[rfReplaceAll])+#39);
+
+                  {Sql.Add(',:RESONEDESC');
+                  Sql.Add(',:RESTWODESC');
+                  Sql.Add(',:RESTHREEDESC');
+                  Sql.Add(',:RESFOURDESC');
+                  Sql.Add(',:RESFIVEDESC');
+                  Sql.Add(',:RESSIXDESC');
+                  Sql.Add(',:RESSEVENDESC');
+                  Sql.Add(',:RESEIGHTDESC');
+                  Sql.Add(',:RESNINEDESC');
+                  Sql.Add(',:RESTENDESC');
+                  Sql.Add(',:RESELEVENDESC');
+                  Sql.Add(',:RESTWELVEDESC');
+                  Sql.Add(',:RESTHIRTEENDESC');
+                  Sql.Add(',:RESFOURTEENDESC');
+                  Sql.Add(',:RESFIFTEENDESC');
+                  Sql.Add(',:RESSIXTEENDESC');
+                  Sql.Add(',:RESSEVENTEENDESC');
+                  }
+                  Sql.Add(','+#39+StringReplace(Edit_Description.Text,'''','''''',[rfReplaceAll])+#39+','+#39+StringReplace(RMemo17,'''','''''''',[rfReplaceAll])+#39);
+                  Sql.Add(','+#39+StringReplace(EditReportType.Text,'''','''''',[rfReplaceAll])+#39);
+                  IF CB_Title1.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title2.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title3.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title4.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title5.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title6.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title7.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title8.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title9.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title10.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title11.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title12.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title13.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title14.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title15.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  IF CB_Title16.Checked=True Then
+                  sql.Add(',''Y''')
+                  Else
+                  sql.Add(',''N''');
+
+                  Sql.Add(')');
+                  {ParambyName('RESONEDESC').AsString:=Memo1.Text;
+                  ParambyName('RESTWODESC').AsString:=Memo2.Text;
+                  ParambyName('RESTHREEDESC').AsString:=Memo3.Text;
+                  ParambyName('RESFOURDESC').AsString:=Memo4.Text;
+                  ParambyName('RESFIVEDESC').AsString:=Memo5.Text;
+                  ParambyName('RESSIXDESC').AsString:=Memo6.Text;
+                  ParambyName('RESSEVENDESC').AsString:=Memo7.Text;
+                  ParambyName('RESEIGHTDESC').AsString:=Memo8.Text;
+                  ParambyName('RESNINEDESC').AsString:=Memo9.Text;
+                  ParambyName('RESTENDESC').AsString:=Memo10.Text;
+                  ParambyName('RESELEVENDESC').AsString:=Memo11.Text;
+                  ParambyName('RESTWELVEDESC').AsString:=Memo12.Text;
+                  ParambyName('RESTHIRTEENDESC').AsString:=Memo13.Text;
+                  ParambyName('RESFOURTEENDESC').AsString:=Memo14.Text;
+                  ParambyName('RESFIFTEENDESC').AsString:=Memo15.Text;
+                  ParambyName('RESSIXTEENDESC').AsString:=Memo16.Text;
+                  ParambyName('RESSEVENTEENDESC').AsString:=Memo17.Text;
+                  }
+                  sql.SaveToFile('Sql.txt');
+                  ExecSQL;
+             end;
+        end
+        Else
+        begin
+             With Query_Process do
+             begin
+                  Close;
+                  Session:=DM_Hospital.DB;
+                  Sql.Clear;
+                  Sql.Add('UPDATE TESTEDITFINDING SET ');
+                  If CheckFind.Checked=True Then
+                  Sql.Add('DEFFIND=''T''')
+                  Else
+                  Sql.Add('DEFFIND=''F''');
+
+                  Sql.Add(',TITLEONE='+#39+StringReplace(EditTitleOne.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLETWO='+#39+StringReplace(EditTitleTwo.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLETHREE='+#39+StringReplace(EditTitleThree.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLEFOUR='+#39+StringReplace(EditTitleFour.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLEFIVE='+#39+StringReplace(EditTitleFive.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLESIX='+#39+StringReplace(EditTitleSix.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLESEVEN='+#39+StringReplace(EditTitleSeven.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLEEIGHT='+#39+StringReplace(EditTitleEight.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLENINE='+#39+StringReplace(EditTitleNine.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLETEN='+#39+StringReplace(EditTitleTen.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLEELEVEN='+#39+StringReplace(EditTitleEleven.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLETWELVE='+#39+StringReplace(EditTitleTwelve.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLETHIRTEEN='+#39+StringReplace(EditTitleThirteen.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLEFOURTEEN='+#39+StringReplace(EditTitleFourteen.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLEFIFTEEN='+#39+StringReplace(EditTitleFifteen.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLESIXTEEN='+#39+StringReplace(EditTitleSixteen.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',TITLESEVENTEEN='+#39+StringReplace(EditTitleSeventeen.Text,'''','''''',[rfReplaceAll])+#39);
+
+                  {Sql.Add(',RESONEDESC=:RESONEDESC');//+#39+StringReplace(Memo1.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESTWODESC=:RESTWODESC');//+#39+StringReplace(Memo2.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESTHREEDESC=:RESTHREEDESC');//'+#39+StringReplace(Memo3.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESFOURDESC=:RESFOURDESC');//+#39+StringReplace(Memo4.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESFIVEDESC=:RESFIVEDESC');//+#39+StringReplace(Memo5.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESSIXDESC=:RESSIXDESC');//+#39+StringReplace(Memo6.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESSEVENDESC=:RESSEVENDESC');//+#39+StringReplace(Memo7.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESEIGHTDESC=:RESEIGHTDESC');//+#39+StringReplace(Memo8.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESNINEDESC=:RESNINEDESC');//+#39+StringReplace(Memo9.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESTENDESC=:RESTENDESC');//+#39+StringReplace(Memo10.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESELEVENDESC=:RESELEVENDESC');//+#39+StringReplace(Memo11.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESTWELVEDESC=:RESTWELVEDESC');//+#39+StringReplace(Memo12.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESTHIRTEENDESC=:RESTHIRTEENDESC');//+#39+StringReplace(Memo13.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESFOURTEENDESC=:RESFOURTEENDESC');//+#39+StringReplace(Memo14.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESFIFTEENDESC=:RESFIFTEENDESC');//+#39+StringReplace(Memo15.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESSIXTEENDESC=:RESSIXTEENDESC');//+#39+StringReplace(Memo16.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESSEVENTEENDESC=:RESSEVENTEENDESC');//+#39+StringReplace(Memo17.Text,'''','''''',[rfReplaceAll])+#39);
+                  }
+
+                  Sql.Add(',RESONEDESC='+#39+StringReplace(Rmemo1,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESTWODESC='+#39+StringReplace(Rmemo2,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESTHREEDESC='+#39+StringReplace(Rmemo3,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESFOURDESC='+#39+StringReplace(Rmemo4,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESFIVEDESC='+#39+StringReplace(Rmemo5,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESSIXDESC='+#39+StringReplace(Rmemo6,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESSEVENDESC='+#39+StringReplace(Rmemo7,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESEIGHTDESC='+#39+StringReplace(Rmemo8,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESNINEDESC='+#39+StringReplace(Rmemo9,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESTENDESC='+#39+StringReplace(Rmemo10,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESELEVENDESC='+#39+StringReplace(Rmemo11,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESTWELVEDESC='+#39+StringReplace(Rmemo12,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESTHIRTEENDESC='+#39+StringReplace(Rmemo13,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESFOURTEENDESC='+#39+StringReplace(Rmemo14,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESFIFTEENDESC='+#39+StringReplace(Rmemo15,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESSIXTEENDESC='+#39+StringReplace(Rmemo16,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',RESSEVENTEENDESC='+#39+StringReplace(Rmemo17,'''','''''',[rfReplaceAll])+#39);
+
+                  Sql.Add(',DESCRIPTION='+#39+StringReplace(Edit_Description.Text,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',ReportNote='+#39+StringReplace(Rmemo18,'''','''''',[rfReplaceAll])+#39);
+                  Sql.Add(',ReportType='+#39+StringReplace(EditReportType.Text,'''','''''',[rfReplaceAll])+#39);
+                  IF CB_Title1.Checked=True Then
+                  sql.Add(',IsReportHead1=''Y''')
+                  Else
+                  sql.Add(',IsReportHead1=''N''');
+
+                  IF CB_Title2.Checked=True Then
+                  sql.Add(',IsReportHead2=''Y''')
+                  Else
+                  sql.Add(',IsReportHead2=''N''');
+
+                  IF CB_Title3.Checked=True Then
+                  sql.Add(',IsReportHead3=''Y''')
+                  Else
+                  sql.Add(',IsReportHead3=''N''');
+
+                  IF CB_Title4.Checked=True Then
+                  sql.Add(',IsReportHead4=''Y''')
+                  Else
+                  sql.Add(',IsReportHead4=''N''');
+
+                  IF CB_Title5.Checked=True Then
+                  sql.Add(',IsReportHead5=''Y''')
+                  Else
+                  sql.Add(',IsReportHead5=''N''');
+
+                  IF CB_Title6.Checked=True Then
+                  sql.Add(',=IsReportHead6''Y''')
+                  Else
+                  sql.Add(',IsReportHead6=''N''');
+
+                  IF CB_Title7.Checked=True Then
+                  sql.Add(',IsReportHead7=''Y''')
+                  Else
+                  sql.Add(',IsReportHead7=''N''');
+
+                  IF CB_Title8.Checked=True Then
+                  sql.Add(',IsReportHead8=''Y''')
+                  Else
+                  sql.Add(',IsReportHead8=''N''');
+
+                  IF CB_Title9.Checked=True Then
+                  sql.Add(',IsReportHead9=''Y''')
+                  Else
+                  sql.Add(',IsReportHead9=''N''');
+
+                  IF CB_Title10.Checked=True Then
+                  sql.Add(',IsReportHead10=''Y''')
+                  Else
+                  sql.Add(',IsReportHead10=''N''');
+
+                  IF CB_Title11.Checked=True Then
+                  sql.Add(',IsReportHead11=''Y''')
+                  Else
+                  sql.Add(',IsReportHead11=''N''');
+
+                  IF CB_Title12.Checked=True Then
+                  sql.Add(',IsReportHead12=''Y''')
+                  Else
+                  sql.Add(',IsReportHead12=''N''');
+
+                  IF CB_Title13.Checked=True Then
+                  sql.Add(',IsReportHead13=''Y''')
+                  Else
+                  sql.Add(',IsReportHead13=''N''');
+
+                  IF CB_Title14.Checked=True Then
+                  sql.Add(',IsReportHead14=''Y''')
+                  Else
+                  sql.Add(',IsReportHead14=''N''');
+
+                  IF CB_Title15.Checked=True Then
+                  sql.Add(',IsReportHead15=''Y''')
+                  Else
+                  sql.Add(',IsReportHead15=''N''');
+
+                  IF CB_Title16.Checked=True Then
+                  sql.Add(',IsReportHead16=''Y''')
+                  Else
+                  sql.Add(',IsReportHead16=''N''');
+                  Sql.Add(' Where EDITFINDINGID='+QueryFind.FieldbyName('EDITFINDINGID') .asstring);
+
+                  {ParambyName('RESONEDESC').AsString:=Memo1.Text;
+                  ParambyName('RESTWODESC').AsString:=Memo2.Text;
+                  ParambyName('RESTHREEDESC').AsString:=Memo3.Text;
+                  ParambyName('RESFOURDESC').AsString:=Memo4.Text;
+                  ParambyName('RESFIVEDESC').AsString:=Memo5.Text;
+                  ParambyName('RESSIXDESC').AsString:=Memo6.Text;
+                  ParambyName('RESSEVENDESC').AsString:=Memo7.Text;
+                  ParambyName('RESEIGHTDESC').AsString:=Memo8.Text;
+                  ParambyName('RESNINEDESC').AsString:=Memo9.Text;
+                  ParambyName('RESTENDESC').AsString:=Memo10.Text;
+                  ParambyName('RESELEVENDESC').AsString:=Memo11.Text;
+                  ParambyName('RESTWELVEDESC').AsString:=Memo12.Text;
+                  ParambyName('RESTHIRTEENDESC').AsString:=Memo13.Text;
+                  ParambyName('RESFOURTEENDESC').AsString:=Memo14.Text;
+                  ParambyName('RESFIFTEENDESC').AsString:=Memo15.Text;
+                  ParambyName('RESSIXTEENDESC').AsString:=Memo16.Text;
+                  ParambyName('RESSEVENTEENDESC').AsString:=Memo17.Text;
+                  }
+                  ExecSQL;
+             end;
+        end;
+        DM_hospital.DB.Commit;
+        ShowDoneMessage;
+        PageControlFind.ActivePageIndex:=0;
+        BtnNew.Enabled:=True;
+        BitBtnSave.Enabled:=False;
+        With QueryFind Do
+        Begin
+             Close;
+             Open;
+        End;
+     Except
+        DM_hospital.DB.Rollback;
+        ShowMessage('Sorry ! Unable to save the Data.');
+        Edit_Description.SetFocus;
+     End;
+
+End;
+Procedure TFormEditFindAlternate.RetriveModifyData;
+Begin
+      With QueryFind Do
+      Begin
+           IF Not Active Then Active:=True;
+           IF FieldByName('EditFindingID').AsInteger<=0 Then
+           Begin
+                 Showmessage('There are no data in this test');
+                 PageControlFind.ActivePageIndex:=0;
+                 Exit;
+           End;
+           PageControlFind.ActivePageIndex:=1;
+           IF CheckDef=False Then
+           Begin
+                CheckFind.Enabled:=True;
+                CheckFind.Checked:=False;
+           End
+           Else
+           Begin
+                CheckFind.Checked:=False;
+                CheckFind.Enabled:=False;
+           End;
+           IF FieldbyName('DefFind').AsString='T' Then
+           Begin
+                CheckFind.Enabled:=True;
+                CheckFind.Checked:=True;
+           End;
+
+           //RichEditFinding.Text:=QueryFind.FieldByName('Findings').AsString;
+           Edit_Description.Text:=FieldbyName('Description').AsString;
+           EditTitleOne.Text:=FieldbyName('TitleOne').AsString;
+           EditTitleTwo.Text:=FieldbyName('TitleTwo').AsString;
+           EditTitleThree.Text:=FieldbyName('TitleThree').AsString;
+           EditTitleFour.Text:=FieldbyName('TitleFour').AsString;
+           EditTitleFive.Text:=FieldbyName('TitleFive').AsString;
+           EditTitleSix.Text:=FieldbyName('TitleSix').AsString;
+           EditTitleSeven.Text:=FieldbyName('TitleSeven').AsString;
+           EditTitleEight.Text:=FieldbyName('TitleEight').AsString;
+           EditTitleNine.Text:=FieldbyName('TitleNine').AsString;
+           EditTitleTen.Text:=FieldbyName('TitleTen').AsString;
+           EditTitleEleven.Text:=FieldbyName('TitleEleven').AsString;
+           EditTitleTwelve.Text:=FieldbyName('TitleTwelve').AsString;
+           EditTitleThirteen.Text:=FieldbyName('TitleThirteen').AsString;
+           EditTitleFourteen.Text:=FieldbyName('TitleFourteen').AsString;
+           EditTitleFifteen.Text:=FieldbyName('TitleFifteen').AsString;
+           EditTitleSixteen.Text:=FieldbyName('TitleSixteen').AsString;
+           EditTitleSeventeen.Text:=FieldbyName('TitleSeventeen').AsString;
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESONEDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo1.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESTWODESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo2.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESTHREEDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo3.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESFOURDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo4.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESFIVEDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo5.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESSIXDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo6.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESSEVENDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo7.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESEIGHTDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo8.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESNINEDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo9.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESTENDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo10.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESELEVENDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo11.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESTWELVEDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo12.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESTHIRTEENDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo13.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESFOURTEENDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo14.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESFIFTEENDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo15.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESSIXTEENDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo16.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('RESSEVENTEENDESC').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo17.Lines.LoadFromFile('tt.txt');
+
+           Memo.Lines.Clear;
+           Memo.Text:=FieldbyName('ReportNote').AsString;
+           Memo.Lines.SaveToFile('tt.txt');
+           Memo18.Lines.LoadFromFile('tt.txt');
+
+           EditReportType.Text:=FieldbyName('ReportType').AsString;
+
+           IF FieldbyName('IsReportHead1').AsString='Y' Then
+           CB_Title1.Checked:=True
+           Else
+           CB_Title1.Checked:=False;
+
+           IF FieldbyName('IsReportHead2').AsString='Y' Then
+           CB_Title2.Checked:=True
+           Else
+           CB_Title2.Checked:=False;
+
+           IF FieldbyName('IsReportHead3').AsString='Y' Then
+           CB_Title3.Checked:=True
+           Else
+           CB_Title3.Checked:=False;
+
+           IF FieldbyName('IsReportHead4').AsString='Y' Then
+           CB_Title4.Checked:=True
+           Else
+           CB_Title4.Checked:=False;
+
+           IF FieldbyName('IsReportHead5').AsString='Y' Then
+           CB_Title5.Checked:=True
+           Else
+           CB_Title5.Checked:=False;
+
+           IF FieldbyName('IsReportHead6').AsString='Y' Then
+           CB_Title6.Checked:=True
+           Else
+           CB_Title6.Checked:=False;
+
+           IF FieldbyName('IsReportHead7').AsString='Y' Then
+           CB_Title7.Checked:=True
+           Else
+           CB_Title7.Checked:=False;
+
+           IF FieldbyName('IsReportHead8').AsString='Y' Then
+           CB_Title8.Checked:=True
+           Else
+           CB_Title8.Checked:=False;
+
+           IF FieldbyName('IsReportHead9').AsString='Y' Then
+           CB_Title9.Checked:=True
+           Else
+           CB_Title9.Checked:=False;
+
+           IF FieldbyName('IsReportHead10').AsString='Y' Then
+           CB_Title10.Checked:=True
+           Else
+           CB_Title10.Checked:=False;
+
+           IF FieldbyName('IsReportHead11').AsString='Y' Then
+           CB_Title11.Checked:=True
+           Else
+           CB_Title11.Checked:=False;
+
+           IF FieldbyName('IsReportHead12').AsString='Y' Then
+           CB_Title12.Checked:=True
+           Else
+           CB_Title12.Checked:=False;
+
+           IF FieldbyName('IsReportHead13').AsString='Y' Then
+           CB_Title13.Checked:=True
+           Else
+           CB_Title13.Checked:=False;
+
+           IF FieldbyName('IsReportHead14').AsString='Y' Then
+           CB_Title14.Checked:=True
+           Else
+           CB_Title14.Checked:=False;
+
+           IF FieldbyName('IsReportHead15').AsString='Y' Then
+           CB_Title15.Checked:=True
+           Else
+           CB_Title15.Checked:=False;
+
+           IF FieldbyName('IsReportHead16').AsString='Y' Then
+           CB_Title16.Checked:=True
+           Else
+           CB_Title16.Checked:=False;
+      End;
+      BitBtnSave.Enabled:=True;
+      BtnNew.Enabled:=False;
+End;
+procedure TFormEditFindAlternate.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+{
+     With DM_Hospital.DB.TableTestFinding do
+     Begin
+          Close;
+     End;   }
+     With QueryFind Do
+     Begin
+          Close;
+     End;
+     QueryTestName.Close;
+End;
+
+procedure TFormEditFindAlternate.FormShow(Sender: TObject);
+begin
+     PageControlFind.ActivePageIndex:=0;
+     //If not QueryTestName.Active Then QueryTestName.Active:=True;
+     With QueryTestName Do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql[2]:='AND tena_depid in (select dept_depid from hs_dept_department where dept_deptype='+quotedstr(gs_DepType)+')';
+          sql[2]:='and deptype='+gs_DepType;
+          Sql[3]:='Order By Tena_TestName';
+          sql.SaveToFile('c:\checkforhisto.txt');
+          Open;
+     End;
+     with QueryFind do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          Open;
+     end;
+     If Pi_TestNameID>0 Then
+     Begin
+          CMBTestName.KeyValue:=Pi_TestNameID;
+          CMBTestNameClick(Sender);
+     End;
+     SetLength(Arr_RIch,1);
+     SetfontSizeValue(ComboBox1);
+     SetfontNameValue(ComboBox2);
+end;
+
+procedure TFormEditFindAlternate.CMBTestKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+ // DBLookupComboBoxTest.:=dmhospital.TableTest.FieldbyName('Test').AsString;
+end;
+
+procedure TFormEditFindAlternate.CMBTestNameClick(Sender: TObject);
+begin
+     With  QueryFind do
+     Begin
+          Close;
+          ParamByName('TestNameID').AsInteger:=CMBTestName.KeyValue;
+          Open;
+     End;
+End;
+
+procedure TFormEditFindAlternate.ComboBox1Change(Sender: TObject);
+begin
+     SetFontSize(ComboBox1,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.ComboBox2Change(Sender: TObject);
+begin
+      SetFontName(ComboBox2, Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.DBGrid1DblClick(Sender: TObject);
+begin
+     lToAppend:=False;
+     RetriveModifyData;
+end;
+
+procedure TFormEditFindAlternate.PageControlFindChange(Sender: TObject);
+begin
+  BtnNewClick(Sender);
+end;
+
+procedure TFormEditFindAlternate.RichEditFindingKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  If Key=Chr(39) then
+  Begin
+    Key:=#0;
+    Beep;
+  End;
+end;
+{procedure TFormEditFind.DeleteData;
+  Var MyQuery:TQuery;
+Begin
+ {MyQuery:=TQuery.Create(Self);
+ MyQuery.DatabaseName:=QueryTestName.DatabaseName;
+ With MyQuery Do
+ Begin
+   With SQL Do
+   Begin
+     Add('Delete From
+   End;
+ End;
+End; }
+
+procedure TFormEditFindAlternate.SpeedButton1Click(Sender: TObject);
+begin
+
+     If (QueryFind.FieldByName('EDITFINDINGID').AsString)='' Then
+     Begin
+          MessageDlg('Sorry No Record Exist.',mtInformation,[MbOk],0);
+          Exit;
+     End;
+
+     With Query_Process Do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          With Sql Do
+          Begin
+               Clear;
+               Add('Select  TestSpecialID From PatientTestSpecial_lab');
+               Add(' Where EditFindingID='+QueryFind.FieldByName('EDITFINDINGID').AsString);
+               Add(' Order By TestSpecialID');
+          End;
+          Open;
+          Last;
+          If Trim(FieldbyName('TestSpecialID').AsString)<>'' Then
+          Begin
+               MessageDlg('Sorry You Can''t Delete, It Has Been Used.',mtInformation,[MbOk],0);
+               Exit;
+          End;
+     End;
+
+     If MessageDlg('Are you sure Delete ?',MTConfirmation,[mbyes,mbno],0)=mryes then
+     Begin
+         IF QueryFind.Active Then
+         Begin
+              With Query_Process do
+              begin
+                   Close;
+                   Sql.Clear;
+                   Sql.Add('Delete From   TestEditFinding ');
+                   Sql.Add(' Where EDITFINDINGID='+QueryFind.FieldByName('EDITFINDINGID').AsString);
+                   ExecSQL;
+              end;
+              QueryFind.Close;
+              QueryFind.Open;
+         End;
+     End;
+End;
+
+procedure TFormEditFindAlternate.CreateTempTable;
+begin
+     With Table1 Do
+     Begin
+          If Active Then Active:=False;
+          DatabaseName:=gs_TempPath;
+          Close;
+          TableName:='MasterTable.DB';
+          TableType:=ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('EditFindingId',ftInteger);
+          FieldDefs.Add('TestName',ftString,100);
+          FieldDefs.Add('ReportTitle',ftString,100);
+          IndexDefs.Clear;
+          CreateTable;
+     End;
+
+     With Table2 Do
+     Begin
+          If Active Then Active:=False;
+          DatabaseName:=gs_TempPath;
+          Close;
+          TableName:='DetailTable.DB';
+          TableType:=ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('EditFindingId',ftInteger);
+          FieldDefs.Add('Title',ftString,100);
+          FieldDefs.Add('Finding',ftMemo,4000);
+          IndexDefs.Clear;
+          CreateTable;
+     End;
+end;
+
+procedure TFormEditFindAlternate.SpeedButton3Click(Sender: TObject);
+Var  Qry:TQuery;
+     Title,Finding:Integer;
+begin
+     CreateTempTable;
+     Qry:=TQuery.Create(Nil);
+     With Qry Do
+     Begin
+          Close;
+          DataBaseName:='Hospital';
+          With Sql Do
+          Begin
+               Clear;
+               Add('Select TEF.*,(Select TestName From TestName Where TestNameID=TEF.TestNameID) TestName From TestEditFinding TEF Order By EditFindingID');
+          End;
+          Open;
+          Table1.Open;
+          Table2.Open;
+          While Not Eof Do
+          Begin
+               Table1.Append;
+               Table1.FieldByName('EditFindingId').AsInteger:=FieldByName('EditFindingId').AsInteger;
+               Table1.FieldByName('TestName').AsString:=FieldByName('TestName').AsString;
+               Table1.FieldByName('ReportTitle').AsString:=FieldByName('Description').AsString;
+               For Title:=4 To 19 Do
+               Begin
+                    If Trim(Fields[Title].AsString)<>'' Then
+                    Begin
+                         Table2.Append;
+                         Table2.FieldByName('EditFindingId').AsInteger:=FieldByName('EditFindingId').AsInteger;
+                         Table2.Fields[1].AsString:=Fields[Title].AsString;
+                         Table2.Fields[2].AsString:=Fields[Title+16].AsString;
+                         Table2.Post;
+                    End
+                    Else
+                    Begin
+                         Break
+                    End;
+               End;
+               Table1.Post;
+               Next;
+          End;
+          Close;
+          Free;
+     End;
+          {
+     With FormEditAlternatePreview Do
+     Begin
+          Try
+               FormEditAlternatePreview:=TFormEditAlternatePreview.Create(Nil);
+               With QryMain Do
+               Begin
+                    Close;
+                    DataBaseName:=gs_TempPath;
+                    Open;
+               End;
+
+               With QrySub Do
+               Begin
+                    Close;
+                    DataBaseName:=gs_TempPath;
+                    Open;
+               End;
+               QuickRep1.Preview;
+
+          Finally
+               Free;
+          End;
+     End;}
+end;
+
+procedure TFormEditFindAlternate.SpeedButton4Click(Sender: TObject);
+begin
+{
+     With FormFontStyle Do
+     Begin
+          Try
+               FormFontStyle:=TFormFontStyle.Create(Nil);
+               //If lToAppend=True Then
+               //lb_IsNew:=True
+               //Else lb_IsNew:=False;
+               Pi_EditFindingID:=QueryFind.FieldbyName('EDITFINDINGID') .AsInteger;
+
+               ShowModal;
+          Finally
+               Free;
+          End;
+     End;    }
+end;
+
+procedure TFormEditFindAlternate.SpeedButton5Click(Sender: TObject);
+begin
+     If WritingPadID=1 Then
+     Begin
+          Memo1.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=2 Then
+     Begin
+          Memo2.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=3 Then
+     Begin
+          Memo3.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=4 Then
+     Begin
+          Memo4.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=5 Then
+     Begin
+          Memo5.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=6 Then
+     Begin
+          Memo6.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=7 Then
+     Begin
+          Memo7.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=8 Then
+     Begin
+          Memo8.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=9 Then
+     Begin
+          Memo9.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=10 Then
+     Begin
+          Memo10.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=11 Then
+     Begin
+          Memo11.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=12 Then
+     Begin
+          Memo12.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=13 Then
+     Begin
+          Memo13.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=14 Then
+     Begin
+          Memo14.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=15 Then
+     Begin
+          Memo15.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=16 Then
+     Begin
+          Memo16.Text:=MemoDisplay.Text;
+     End
+     Else If WritingPadID=17 Then
+     Begin
+          Memo17.Text:=MemoDisplay.Text;
+     End;
+end;
+
+procedure TFormEditFindAlternate.Tbtn_FontClick(Sender: TObject);
+begin
+     if FontDialog1.Execute then
+     begin
+         Arr_RIch[0].SelAttributes.Style:=FontDialog1.Font.Style;
+         Arr_RIch[0].SelAttributes.Name:=FontDialog1.Font.Name;
+         Arr_RIch[0].SelAttributes.Color:=FontDialog1.Font.Color;
+         Arr_RIch[0].SelAttributes.Size:=FontDialog1.Font.Size;
+     end;
+end;
+
+procedure TFormEditFindAlternate.ToolButton10Click(Sender: TObject);
+begin
+     RichAlign(Arr_RIch[0], taCenter);
+end;
+
+procedure TFormEditFindAlternate.ToolButton11Click(Sender: TObject);
+begin
+     RichAlign(Arr_RIch[0], taRightJustify);
+end;
+
+procedure TFormEditFindAlternate.ToolButton1Click(Sender: TObject);
+
+begin
+     SetLength(Arr_RIch,1);
+     SetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]) ;
+end;
+
+procedure TFormEditFindAlternate.ToolButton2Click(Sender: TObject);
+begin
+     SetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+end;
+
+procedure TFormEditFindAlternate.ToolButton3Click(Sender: TObject);
+begin
+     SetFontAttribute(ToolButton2,Arr_RIch[0],[fsUnderline]);
+end;
+
+procedure TFormEditFindAlternate.ToolButton7Click(Sender: TObject);
+begin
+     SetFontAttribute(ToolButton2,Arr_RIch[0],[fsStrikeOut]);
+end;
+
+procedure TFormEditFindAlternate.ToolButton8Click(Sender: TObject);
+begin
+     RichAlign(Arr_RIch[0], taLeftJustify)
+end;
+
+procedure TFormEditFindAlternate.Memo1Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo1.Text;
+     WritingPadID:=1;
+     
+end;
+
+procedure TFormEditFindAlternate.Memo1Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo1.Text;
+     WritingPadID:=1;
+end;
+
+procedure TFormEditFindAlternate.Memo2Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo2.Text;
+     WritingPadID:=2;
+end;
+
+procedure TFormEditFindAlternate.Memo2Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo2.Text;
+     WritingPadID:=2;
+     
+end;
+
+procedure TFormEditFindAlternate.Memo3Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo3.Text;
+     WritingPadID:=3;
+     
+end;
+
+procedure TFormEditFindAlternate.Memo3Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo3.Text;
+     WritingPadID:=3;
+end;
+
+procedure TFormEditFindAlternate.Memo4Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo4.Text;
+     WritingPadID:=4;
+end;
+
+procedure TFormEditFindAlternate.Memo4Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo4.Text;
+     WritingPadID:=4;
+     
+end;
+
+procedure TFormEditFindAlternate.Memo5Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo5.Text;
+     WritingPadID:=5;
+end;
+
+procedure TFormEditFindAlternate.Memo5Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo5.Text;
+     WritingPadID:=5;
+end;
+
+procedure TFormEditFindAlternate.Memo6Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo6.Text;
+     WritingPadID:=6;
+end;
+
+procedure TFormEditFindAlternate.Memo6Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo6.Text;
+     WritingPadID:=6;
+end;
+
+procedure TFormEditFindAlternate.Memo7Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo7.Text;
+     WritingPadID:=7;
+end;
+
+procedure TFormEditFindAlternate.Memo7Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo7.Text;
+     WritingPadID:=7;
+end;
+
+procedure TFormEditFindAlternate.Memo8Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo8.Text;
+     WritingPadID:=8;
+end;
+
+procedure TFormEditFindAlternate.Memo8Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo8.Text;
+     WritingPadID:=8;
+end;
+
+procedure TFormEditFindAlternate.Memo9Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo9.Text;
+     WritingPadID:=9;
+end;
+
+procedure TFormEditFindAlternate.Memo9Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo9.Text;
+     WritingPadID:=9;
+end;
+
+procedure TFormEditFindAlternate.Memo10Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo10.Text;
+     WritingPadID:=10;
+end;
+
+procedure TFormEditFindAlternate.Memo10Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo10.Text;
+     WritingPadID:=10;
+end;
+
+procedure TFormEditFindAlternate.Memo11Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo11.Text;
+     WritingPadID:=11;
+end;
+
+procedure TFormEditFindAlternate.Memo11Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo11.Text;
+     WritingPadID:=11;
+end;
+
+procedure TFormEditFindAlternate.Memo12Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo12.Text;
+     WritingPadID:=12;
+end;
+
+procedure TFormEditFindAlternate.Memo12Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo12.Text;
+     WritingPadID:=12;
+end;
+
+procedure TFormEditFindAlternate.Memo13Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo13.Text;
+     WritingPadID:=13;
+end;
+
+procedure TFormEditFindAlternate.Memo13Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo13.Text;
+     WritingPadID:=13;
+end;
+
+procedure TFormEditFindAlternate.Memo14Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo14.Text;
+     WritingPadID:=14;
+end;
+
+procedure TFormEditFindAlternate.Memo14Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo14.Text;
+     WritingPadID:=14;
+end;
+
+procedure TFormEditFindAlternate.Memo15Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo15.Text;
+     WritingPadID:=15;
+end;
+
+procedure TFormEditFindAlternate.Memo15Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo15.Text;
+     WritingPadID:=15;
+end;
+
+procedure TFormEditFindAlternate.Memo16Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo16.Text;
+     WritingPadID:=16;
+end;
+
+procedure TFormEditFindAlternate.Memo16Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo16.Text;
+     WritingPadID:=16;
+end;
+
+procedure TFormEditFindAlternate.Memo17Change(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo17.Text;
+     WritingPadID:=17;
+end;
+
+procedure TFormEditFindAlternate.Memo17Click(Sender: TObject);
+begin
+     MemoDisplay.Text:=Memo17.Text;
+     WritingPadID:=17;
+end;
+
+procedure TFormEditFindAlternate.Memo1Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo1,'I');
+     Arr_RIch[0]:=Memo1;
+end;
+
+procedure TFormEditFindAlternate.Memo1Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo1,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo1SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo2Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo2,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo2SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo2Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo2,'I');
+     Arr_RIch[0]:=Memo2;
+end;
+
+procedure TFormEditFindAlternate.Memo3Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo3,'I');
+     Arr_RIch[0]:=Memo3;
+end;
+
+procedure TFormEditFindAlternate.Memo3Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo3,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo3SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo4Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo4,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo4SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo4Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo4,'I');
+     Arr_RIch[0]:=Memo4;
+end;
+
+procedure TFormEditFindAlternate.Memo5Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo5,'I');
+     Arr_RIch[0]:=Memo5;
+end;
+
+procedure TFormEditFindAlternate.Memo5Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo5,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo5SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo6Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo6,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo6SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo6Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo6,'I');
+     Arr_RIch[0]:=Memo6;
+end;
+
+procedure TFormEditFindAlternate.Memo7Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo7,'I');
+     Arr_RIch[0]:=Memo7;
+end;
+
+procedure TFormEditFindAlternate.Memo7Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo7,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo7SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo8Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo8,'I');
+     Arr_RIch[0]:=Memo8;
+end;
+
+procedure TFormEditFindAlternate.Memo8Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo8,'D');
+end;
+
+procedure TFormEditFindAlternate.memo8SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo9Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo9,'I');
+     Arr_RIch[0]:=Memo9;
+end;
+
+procedure TFormEditFindAlternate.Memo9Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo9,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo9SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo10Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo10,'I');
+     Arr_RIch[0]:=Memo10;
+end;
+
+procedure TFormEditFindAlternate.Memo10Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo10,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo10SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo11Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo11,'I');
+     Arr_RIch[0]:=Memo11;
+end;
+
+procedure TFormEditFindAlternate.Memo11Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo11,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo11SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo12Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo12,'I');
+     Arr_RIch[0]:=Memo12;
+end;
+
+procedure TFormEditFindAlternate.Memo12Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo12,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo12SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo13Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo13,'I');
+     Arr_RIch[0]:=Memo13;
+end;
+
+procedure TFormEditFindAlternate.Memo13Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo13,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo13SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo14Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo14,'I');
+     Arr_RIch[0]:=Memo14;
+end;
+
+procedure TFormEditFindAlternate.Memo14Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo14,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo14SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo15Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo15,'I');
+     Arr_RIch[0]:=Memo15;
+end;
+
+procedure TFormEditFindAlternate.Memo15Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo15,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo15SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo16Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo16,'I');
+     Arr_RIch[0]:=Memo16;
+end;
+
+procedure TFormEditFindAlternate.Memo16Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo16,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo16SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo17Enter(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo17,'I');
+     Arr_RIch[0]:=Memo17;
+end;
+
+procedure TFormEditFindAlternate.Memo17Exit(Sender: TObject);
+begin
+     ResizeMemoHeight(Memo17,'D');
+end;
+
+procedure TFormEditFindAlternate.Memo17SelectionChange(Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFormEditFindAlternate.Memo18Enter(Sender: TObject);
+begin
+     Arr_RIch[0]:=Memo18;
+end;
+
+procedure TFormEditFindAlternate.BitBtn1Click(Sender: TObject);
+begin
+{
+     With FormKeyWordSetup Do
+     Begin
+          Try
+               FormKeyWordSetup:=TFormKeyWordSetup.Create(Nil);
+               pi_TestNameId:=QueryFind.FieldByName('TestNameId').AsInteger;
+               pi_EditFindingId:=QueryFind.FieldByName('EditFindingId').AsInteger;
+               ShowModal;
+          Finally
+               Free;
+          End;
+     End; }
+end;
+
+END.

@@ -1,0 +1,339 @@
+unit Unit_QRServiceCreditSales;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, QuickRpt, QRCtrls, DB, MemDS, DBAccess, Ora;
+
+type
+  TForm_QRServiceCreditSales = class(TForm)
+    qr_ServiceCreditSales: TQuickRep;
+    PageHeaderBand1: TQRBand;
+    QRLabel16: TQRLabel;
+    QRLabel_Add: TQRLabel;
+    QRLabel40: TQRLabel;
+    QRLabelTo: TQRLabel;
+    QRLabel20: TQRLabel;
+    QRLabelFrom: TQRLabel;
+    QRLabel21: TQRLabel;
+    QRLabelReportTitle: TQRLabel;
+    Query_ServiceCredit: TOraQuery;
+    Query_Refund: TOraQuery;
+    QRSubDetail1: TQRSubDetail;
+    dbInvDate: TQRDBText;
+    dbInvNo: TQRDBText;
+    dbRegTime: TQRDBText;
+    dbInvBy: TQRDBText;
+    dbRefNam: TQRDBText;
+    dbHisNo: TQRDBText;
+    dbPatientNam: TQRDBText;
+    dbAmt: TQRDBText;
+    dbDisc: TQRDBText;
+    dbGrs: TQRDBText;
+    dbVat: TQRDBText;
+    dbTotl: TQRDBText;
+    dbPaid: TQRDBText;
+    dbDue: TQRDBText;
+    dbSchm: TQRDBText;
+    QRShape19: TQRShape;
+    QRShape20: TQRShape;
+    QRShape21: TQRShape;
+    QRShape22: TQRShape;
+    QRShape23: TQRShape;
+    QRShape25: TQRShape;
+    QRShape26: TQRShape;
+    QRShape27: TQRShape;
+    QRShape28: TQRShape;
+    QRShape29: TQRShape;
+    QRShape30: TQRShape;
+    QRShape31: TQRShape;
+    QRShape32: TQRShape;
+    QRShape33: TQRShape;
+    QRLabel3: TQRLabel;
+    QRLabel4: TQRLabel;
+    QRLabel5: TQRLabel;
+    QRLabel1: TQRLabel;
+    QRLabel2: TQRLabel;
+    QRLabel6: TQRLabel;
+    QRLabel7: TQRLabel;
+    QRLabel8: TQRLabel;
+    QRLabel9: TQRLabel;
+    QRLabel10: TQRLabel;
+    QRLabel11: TQRLabel;
+    QRLabel12: TQRLabel;
+    QRLabel13: TQRLabel;
+    QRLabel14: TQRLabel;
+    QRLabel15: TQRLabel;
+    QRLabel17: TQRLabel;
+    QRShape1: TQRShape;
+    QRShape2: TQRShape;
+    QRShape3: TQRShape;
+    QRShape4: TQRShape;
+    QRShape5: TQRShape;
+    QRShape6: TQRShape;
+    QRShape7: TQRShape;
+    QRShape8: TQRShape;
+    QRShape9: TQRShape;
+    QRShape10: TQRShape;
+    QRShape11: TQRShape;
+    QRShape12: TQRShape;
+    QRShape13: TQRShape;
+    QRShape14: TQRShape;
+    QRShape17: TQRShape;
+    QRShape15: TQRShape;
+    QRShape16: TQRShape;
+    QRShape18: TQRShape;
+    QRShape24: TQRShape;
+    SummaryBand1: TQRBand;
+    QRExpr2: TQRExpr;
+    QRLabel18: TQRLabel;
+    QRExpr10: TQRExpr;
+    QRLabel19: TQRLabel;
+    QRExpr1: TQRExpr;
+    QRExpr13: TQRExpr;
+    QRExpr14: TQRExpr;
+    QRShape36: TQRShape;
+    QRShape38: TQRShape;
+    QRExpr3: TQRExpr;
+    QRExpr4: TQRExpr;
+    QRShape39: TQRShape;
+    QRShape35: TQRShape;
+    QRShape40: TQRShape;
+    QRShape34: TQRShape;
+    QRShape41: TQRShape;
+    QRShape37: TQRShape;
+    SubDetail3: TQRSubDetail;
+    QRDBText5: TQRDBText;
+    QRDBText25: TQRDBText;
+    QRDBText26: TQRDBText;
+    QRDBText27: TQRDBText;
+    QRDBText28: TQRDBText;
+    QRDBText29: TQRDBText;
+    QRDBText30: TQRDBText;
+    QRDBText36: TQRDBText;
+    QRDBText37: TQRDBText;
+    QRShape42: TQRShape;
+    QRShape45: TQRShape;
+    Band2: TQRBand;
+    QRLabel22: TQRLabel;
+    QRExpr11: TQRExpr;
+    QRExpr16: TQRExpr;
+    QRExpr17: TQRExpr;
+    QRExpr23: TQRExpr;
+    QRExpr24: TQRExpr;
+    QRShape49: TQRShape;
+    QRShape50: TQRShape;
+    QRShape46: TQRShape;
+    QRShape51: TQRShape;
+    QRShape52: TQRShape;
+    QRShape43: TQRShape;
+    QRShape53: TQRShape;
+    QRShape54: TQRShape;
+    QRShape55: TQRShape;
+    QRShape44: TQRShape;
+    QRShape56: TQRShape;
+    QRShape57: TQRShape;
+    QRShape58: TQRShape;
+    QRShape48: TQRShape;
+    QRShape59: TQRShape;
+    QRShape60: TQRShape;
+    QRShape47: TQRShape;
+    QRDBText1: TQRDBText;
+    QRDBText2: TQRDBText;
+    QRDBText3: TQRDBText;
+    QRDBText4: TQRDBText;
+    QRBand1: TQRBand;
+    QRExpr5: TQRExpr;
+    QRLabel23: TQRLabel;
+    QRExpr6: TQRExpr;
+    QRExpr7: TQRExpr;
+    QRExpr8: TQRExpr;
+    QRExpr9: TQRExpr;
+    QRLabel24: TQRLabel;
+    QRLabel25: TQRLabel;
+    QRShape61: TQRShape;
+    QRLabel26: TQRLabel;
+    procedure QRLabel16Print(sender: TObject; var Value: string);
+    procedure QRLabel_AddPrint(sender: TObject; var Value: string);
+    procedure QRLabel40Print(sender: TObject; var Value: string);
+    procedure QRExpr2Print(sender: TObject; var Value: string);
+    procedure QRExpr11Print(sender: TObject; var Value: string);
+    procedure QRExpr5Print(sender: TObject; var Value: string);
+    procedure QRExpr16Print(sender: TObject; var Value: string);
+    procedure QRExpr6Print(sender: TObject; var Value: string);
+    procedure QRExpr3Print(sender: TObject; var Value: string);
+    procedure QRExpr17Print(sender: TObject; var Value: string);
+    procedure QRExpr7Print(sender: TObject; var Value: string);
+    procedure QRExpr1Print(sender: TObject; var Value: string);
+    procedure QRExpr23Print(sender: TObject; var Value: string);
+    procedure QRExpr8Print(sender: TObject; var Value: string);
+    procedure QRExpr4Print(sender: TObject; var Value: string);
+    procedure QRExpr24Print(sender: TObject; var Value: string);
+    procedure QRExpr9Print(sender: TObject; var Value: string);
+    procedure QRExpr10Print(sender: TObject; var Value: string);
+    procedure QRLabel26Print(sender: TObject; var Value: string);
+    procedure QRLabel12Print(sender: TObject; var Value: string);
+    procedure QRDBText36Print(sender: TObject; var Value: string);
+  private
+    { Private declarations }
+  public
+  pi_sn:Integer;
+  pf_amount,pf_refundedamount,pf_Discount,pf_RefDiscount,pf_refgross,pf_gross,
+  pf_refhst,pf_hst,pf_reftotal,pf_total:double;
+    { Public declarations }
+  end;
+
+var
+  Form_QRServiceCreditSales: TForm_QRServiceCreditSales;
+
+implementation
+
+uses Fxn;
+
+{$R *.dfm}
+
+procedure TForm_QRServiceCreditSales.QRDBText36Print(sender: TObject;
+  var Value: string);
+begin
+     if gi_compileValue=14 then
+     value:='VAT';
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr10Print(sender: TObject;
+  var Value: string);
+begin
+     pf_Discount:=strtofloat(Value);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr11Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     pf_refundedamount:=StrToFloat(value);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr16Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     pf_RefDiscount:=StrToFloat(Value);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr17Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     pf_refgross:=StrToFloat(value);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr1Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     pf_hst:=strtofloat(value);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr23Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     pf_refhst:=strtofloat(value);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr24Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     pf_reftotal:=strtofloat(value);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr2Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     pf_amount:=StrToFloat(Value);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr3Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     pf_gross:=StrToFloat(value);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr4Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     pf_Total:=strtofloat(value);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr5Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     Value:=FloatToStr(pf_amount-pf_refundedamount);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr6Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     Value:=FloatToStr(pf_Discount-pf_refdiscount);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr7Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     Value:=FloatToStr(pf_gross-pf_refgross);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr8Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     Value:=FloatToStr(pf_hst-pf_refhst);
+end;
+
+procedure TForm_QRServiceCreditSales.QRExpr9Print(sender: TObject;
+  var Value: string);
+begin
+     if value<>'' then
+     Value:=FloatToStr(pf_total-pf_reftotal);
+end;
+
+procedure TForm_QRServiceCreditSales.QRLabel12Print(sender: TObject;
+  var Value: string);
+begin
+     if gi_compileValue=14 then
+     value:='VAT';
+end;
+
+procedure TForm_QRServiceCreditSales.QRLabel16Print(sender: TObject;
+  var Value: string);
+begin
+     value:= gs_HospitalName;
+end;
+
+procedure TForm_QRServiceCreditSales.QRLabel26Print(sender: TObject;
+  var Value: string);
+begin
+     pi_sn:=pi_sn+1;
+     Value:=IntToStr(pi_sn);
+end;
+
+procedure TForm_QRServiceCreditSales.QRLabel40Print(sender: TObject;
+  var Value: string);
+begin
+     Value := '';
+end;
+
+procedure TForm_QRServiceCreditSales.QRLabel_AddPrint(sender: TObject;
+  var Value: string);
+begin
+     Value := gs_HospitalAddress;
+end;
+
+end.

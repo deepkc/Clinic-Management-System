@@ -1,0 +1,1065 @@
+unit Unit_Users;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,Unit_Master,
+  Dialogs, OleCtrls, DateEditXControl_TLB, StdCtrls, Grids, DBGrids, ComCtrls,Jpeg,EncryptDecrypt,
+  Buttons, ExtCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError,Unit_StaffDepartmentSetup, DM, DBCtrls, ExtDlgs, ADODB
+;
+
+type
+  TForm_Users = class(TForm)
+    PageControl_Users: TPageControl;
+    Panel1: TPanel;
+    BB_New: TBitBtn;
+    BB_Previlage: TBitBtn;
+    BB_Save: TBitBtn;
+    BB_Close: TBitBtn;
+    TabSheet_List: TTabSheet;
+    TabSheet_New: TTabSheet;
+    DBGrid1: TDBGrid;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Edit_UserName: TEdit;
+    Edit_Password: TEdit;
+    Edit_ConfirmPassword: TEdit;
+    DEX_ExpDate: TDateEditX;
+    Query_UserEntry: TOraQuery;
+    Label5: TLabel;
+    Edit_FullName: TEdit;
+    Query_List: TOraQuery;
+    DS_List: TDataSource;
+    ADVS_ExpDate: TSpeedButton;
+    Edit_SUserId: TEdit;
+    Edit_SUserName: TEdit;
+    Edit_SExpDate: TEdit;
+    Edit_SFullName: TEdit;
+    StatusBar1: TStatusBar;
+    Ds_StaffDep: TDataSource;
+    Ds_DocNurse: TDataSource;
+    Query_DocNurse: TOraQuery;
+    Query_StaffDep: TOraQuery;
+    GroupBox1: TGroupBox;
+    Rb_Doctor: TRadioButton;
+    Rb_Nurse: TRadioButton;
+    Rb_Other: TRadioButton;
+    Dblcb_DocNurse: TDBLookupComboBox;
+    Dblcb_StaffDep: TDBLookupComboBox;
+    Label6: TLabel;
+    Label7: TLabel;
+    SpeedButton4: TSpeedButton;
+    Dblc_Gname: TDBLookupComboBox;
+    Label8: TLabel;
+    Ds_Ganame: TDataSource;
+    Query_Gname: TOraQuery;
+    DBLCB_StaffDept: TDBLookupComboBox;
+    BitBtn1: TBitBtn;
+    Image1: TImage;
+    Label9: TLabel;
+    sp_picOpen: TSpeedButton;
+    OpenPictureDialog1: TOpenPictureDialog;
+    qryTQuery: TOraQuery;
+    Label10: TLabel;
+    cb_staffdepartment: TComboBox;
+    Label11: TLabel;
+    Edit_Desig: TEdit;
+    btn_ReportPrevilage: TBitBtn;
+    Btn_MenuPrevilage: TBitBtn;
+    Label_NMCNO: TLabel;
+    Edit_NMCNO: TEdit;
+    procedure BB_CloseClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure PageControl_UsersChange(Sender: TObject);
+    procedure ADVS_ExpDateClick(Sender: TObject);
+    procedure Edit_SUserIdChange(Sender: TObject);
+    procedure Edit_SUserNameChange(Sender: TObject);
+    procedure Edit_SExpDateChange(Sender: TObject);
+    procedure Edit_SExpDateKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_SFullNameChange(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure BB_NewClick(Sender: TObject);
+    procedure BB_PrevilageClick(Sender: TObject);
+    procedure BB_SaveClick(Sender: TObject);
+    procedure DBGrid1TitleClick(Column: TColumn);
+    procedure Rb_OtherClick(Sender: TObject);
+    procedure Rb_NurseClick(Sender: TObject);
+    procedure Rb_DoctorClick(Sender: TObject);
+    procedure SpeedButton4Click(Sender: TObject);
+    procedure ResizetoJPGLocal (Image:Timage);
+    procedure Edit_StaffDepartmentChange(Sender: TObject);
+    procedure DBLCB_StaffDeptClick(Sender: TObject);
+    procedure DBLCB_StaffDeptKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure sp_picOpenClick(Sender: TObject);
+    procedure LoadImage(Userid: integer);
+    procedure Dblcb_DocNurseClick(Sender: TObject);
+    procedure btn_ReportPrevilageClick(Sender: TObject);
+
+
+
+  private
+    { Private declarations }
+    procedure DocSignatureSaveToReportFooter(Userid: integer; Signature: TImage);
+  public
+    pi_userid: integer;
+    ps_ExpdateEncrypt: string;
+    pi_GroupID : Integer;
+
+    pi_getuserid: integer;
+    ps_changepassword: string;
+    pb_isnew: boolean;
+    ps_todaysdate: DateEditX;
+
+    MiDasSwitch,SortVal,ColIndex:integer;//These are variables required as static purpose in procedure MiDas Sort
+    procedure MiDasSort(Column: TColumn;Qname:TOraQuery);
+    Function CheckExistingPrivilege(UserId,AcessStatusID:Integer;ModuleName:String):Boolean;
+
+    procedure clearFields;
+    procedure searchlist;
+    procedure PostUserPrivilegeLog;
+    { Public declarations }
+
+  end;
+
+var
+  Form_Users: TForm_Users;
+
+implementation
+
+uses fxn, ServerDate, Change, Unit_Previlage,
+  Unit_Message, UnitUserAccessDep, Unit_ReportPrevilage,Unit_VMenuPrevilage;
+{$R *.dfm}
+
+procedure TForm_Users.BB_CloseClick(Sender: TObject);
+begin
+     IF PageControl_Users.ActivePageIndex = 1 Then
+     begin
+          PageControl_Users.ActivePageIndex := 0;
+          BB_New.Enabled := True;
+          BB_Previlage.Enabled := True;
+          BB_Save.Enabled := False;
+          clearFields;
+     end
+     Else
+          close;
+          pb_isnew := True;
+end;
+
+procedure TForm_Users.ResizetoJPGLocal(Image: Timage);
+var
+     JpegImg: TJpegImage;
+     bmp:Tbitmap;
+begin
+     JpegImg := TJpegImage.Create;
+     bmp:=TBitmap.create;
+     try
+     // copy the Graphics to an intermediate bitmap of the required size
+          bmp.PixelFormat := pf64Bit;
+          bmp.Width := 128;
+          bmp.Height := 72;
+          bmp.Canvas.StretchDraw(Rect(0, 0, bmp.Width, bmp.Height), Image.Picture.Graphic);
+
+          JpegImg.Assign(bmp);
+
+     // put back into the JPG and save it
+          Image.Picture.Assign(JpegImg);
+     finally
+          bmp.Free;
+          JpegImg.Free;
+     end;
+
+end;
+
+procedure TForm_Users.clearFields;
+begin
+     CreateQuery;
+     Edit_UserName.Clear;
+     Edit_Password.Clear;
+     Edit_ConfirmPassword.Clear;
+     Edit_FullName.Clear;
+     Edit_Desig.Clear;
+     DEX_ExpDate.SystemOfDate:=gi_datesystem;
+     DEX_ExpDate.text := TodaysDate;
+end;
+
+procedure TForm_Users.FormShow(Sender: TObject);
+begin
+     //PageControl_Users.Pages[1].TabVisible := True;
+     //PageControl_Users.Pages[0].TabVisible := True;
+     CreateQuery;
+     Rb_Other.Checked:=true;
+     BB_Save.Enabled:=false;
+     PageControl_Users.ActivePageIndex:=0;
+     Query_List.close;
+     Query_list.session:=Dm_Hospital.Db;
+     Query_List.Open;
+     StatusBar1.Panels[0].Text:='Total Records :' +IntToStr( DS_List.DataSet.RecordCount);
+     pb_isnew := True;
+     //  Query_Gname.Close;
+     //  Query_gname.Open;
+end;
+
+procedure TForm_Users.LoadImage(Userid: integer);
+Var
+     ms: TMemoryStream;
+     JPG: TJPEGImage;
+begin
+      Image1.Picture:=nil;
+      with qryTQuery do
+      begin
+           Close;
+           Sql.Clear;
+          // ConnectionString:='Provider=MSDASQL.1;Password='+gs_DB_Password+';Persist Security Info=True;User ID='+gs_DB_UserName+';Data Source='+gs_AliasName;
+           Sql.Add('Select signature from lab_usermain where userid='+inttostr(userid));
+           Open;
+
+           JPG:=TJPEGImage.Create;
+           ms:=TMemoryStream.Create;
+           try
+                TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                ms.Position := 0;
+           if ms.Size>0 then
+           begin
+                JPG.LoadFromStream(ms);
+                Image1.Picture.Assign(JPG);
+           end;
+               //QRImage1.Picture.Assign(JPG);
+           finally
+                JPG.Free;
+                ms.Free;
+           end;
+               //QuickRep1.Preview;
+      end;
+
+end;
+
+procedure TForm_Users.MiDasSort(Column: TColumn; Qname: TOraQuery);
+var ArrFname:array of string;
+    i,intcolCount,intSQlCount:integer;
+begin
+
+     intColCount:=Column.Grid.FieldCount;
+     setlength(ArrFname,intColCount);
+     ColIndex:=column.Index;
+
+     for i:=0 to intColCount-1 do
+     begin
+          ArrFname[i]:=Column.Grid.Fields[i].FieldName;
+     end;
+     intSQLcount:=Qname.SQL.Count;
+     if MiDasSwitch=0 then
+     begin
+          with Qname do
+          begin
+               close;
+               if SortVal<>0 then
+               begin
+                    sql.Delete(intSQLcount-1);
+               end;
+                    sql.add('ORDER BY'+' '+ArrFname[column.Index]);
+               open;
+               MiDasSwitch:=1;
+               SortVal:=Qname.SQL.Count;
+               //column.Font.Color:=clRed;
+          end;
+     end
+     else
+     begin
+          With Qname do
+          begin
+               close;
+               if SortVal<>0 then
+               begin
+                    sql.Delete(intSQLcount-1);
+               end;
+                    sql.add('ORDER BY '+' '+ArrFname[column.Index]+' '+'DESC');
+               open;
+               MiDasSwitch:=0;
+               //column.Font.Color:=clBlack;
+          end;
+     end;
+end;
+
+procedure TForm_Users.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     IF (Key = VK_F2) Then
+     BB_NewClick(Sender);
+     IF (Key = VK_F12) Then
+     BB_SaveClick(Sender);
+     if Key = 27 then
+     BB_CloseClick(Sender);
+end;
+
+procedure TForm_Users.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+    keybd_event(9, 13, 0, 0);
+end;
+
+procedure TForm_Users.PageControl_UsersChange(Sender: TObject);
+begin
+     IF PageControl_Users.ActivePageIndex = 1 Then
+          PageControl_Users.ActivePageIndex := 0
+     Else
+          PageControl_Users.ActivePageIndex := 1;
+end;
+
+procedure TForm_Users.Rb_DoctorClick(Sender: TObject);
+begin
+     if Rb_Doctor.Checked=true then
+     begin
+          Label7.Caption:='Doctor';
+          Dblcb_DocNurse.Enabled:=true;
+          Label_NMCNO.Caption:='NMC No :';
+          //Dblcb_DocNurse.ListField:='Name';
+          //Dblcb_DocNurse.KeyValue:='NurseId';
+          with Query_DocNurse do
+          begin
+               close;
+               session:=Dm_Hospital.Db;
+//               sql.Clear;
+               if gi_compileValue=3 then
+                  sql[0]:='select doct_docname as Name,doct_docid as NurseId from hs_doct_doctor'
+               else
+                  sql[0]:='select doct_docname as Name,doct_docid as NurseId from hs_doct_doctor';
+               Open;
+          end;
+          Dblcb_StaffDep.KeyValue:=null;
+          Dblcb_StaffDep.Enabled:=false;
+          Query_DocNurse.Close;
+          Query_DocNurse.Open;
+     end;
+end;
+
+procedure TForm_Users.Rb_NurseClick(Sender: TObject);
+begin
+     if Rb_Nurse.Checked=true then
+     begin
+          Label7.Caption:='Nurse';
+          Dblcb_StaffDep.KeyValue:=null;
+          Dblcb_StaffDep.Enabled:=false;
+          Dblcb_DocNurse.Enabled:=true;
+          with Query_DocNurse do
+          begin
+               close;
+               session:=Dm_Hospital.Db;
+ //              sql.Clear;
+               sql[0]:='select NurseId,Name from nurse';
+               Open;
+          end;
+          Dblcb_DocNurse.ListField:='Name';
+          Dblcb_DocNurse.KeyValue:='NurseId';
+          Query_DocNurse.Close;
+          Query_DocNurse.Open;
+     end;
+end;
+
+procedure TForm_Users.Rb_OtherClick(Sender: TObject);
+begin
+     if Rb_Other.Checked=true then
+     begin
+          Label7.Caption:='Other';
+          Label_NMCNO.Caption:='NHPC No :';
+          Dblcb_StaffDep.Enabled:=true;
+          Dblcb_DocNurse.Enabled:=false;
+         // Query_StaffDep.Close;
+         // Query_StaffDep.Open;
+          Dblcb_DocNurse.KeyValue:=null;
+     end;
+end;
+
+procedure TForm_Users.ADVS_ExpDateClick(Sender: TObject);
+begin
+     if ADVS_ExpDate.Caption = 'BS' then
+     begin
+          DEX_ExpDate.SystemOfDate := 1;
+          ADVS_ExpDate.Caption := 'AD';
+     end
+     else
+     begin
+          DEX_ExpDate.SystemOfDate := 0;
+          ADVS_ExpDate.Caption := 'BS';
+     end;
+end;
+
+procedure TForm_Users.Edit_SUserIdChange(Sender: TObject);
+begin
+  searchlist;
+end;
+
+procedure TForm_Users.Edit_SUserNameChange(Sender: TObject);
+begin
+  searchlist;
+end;
+
+procedure TForm_Users.Edit_StaffDepartmentChange(Sender: TObject);
+begin
+     searchlist;
+end;
+
+procedure TForm_Users.Edit_SExpDateChange(Sender: TObject);
+begin
+     searchlist;
+end;
+
+procedure TForm_Users.Edit_SExpDateKeyPress(Sender: TObject; var Key: Char);
+begin
+     if not (key in ['0'..'9','/',#8 ]) then
+          key:=#0;
+end;
+
+procedure TForm_Users.Edit_SFullNameChange(Sender: TObject);
+begin
+     searchlist;
+end;
+
+procedure TForm_Users.searchlist;
+begin
+     with Query_List do
+     begin
+         close;
+         session:=Dm_Hospital.Db;
+         if Edit_SUserId.Text <> '' then
+           sql[2] := 'where userid like ' + #39 + '%' + Edit_SUserId.Text + '%' +
+             #39
+         else if Edit_SUserName.Text <> '' then
+           sql[2] := 'where username like ' + #39 + '%' + Trim(Edit_SUserName.Text)
+             + '%' + #39
+         else if Edit_SFullName.Text <> '' then
+           sql[2] := 'where fullname like ' + #39 + '%' + Trim(Edit_SFullName.Text)
+             + '%' + #39
+         else if DBLCB_StaffDept.Text <> '' then
+           sql[2] := 'where Userdepid='+IntToStr(DBLCB_StaffDept.KeyValue)
+         else if Edit_SExpDate.Text <> '' then
+           sql[2] := 'where vsexpdate like ' + #39 + '%' + Trim(Edit_SExpDate.Text)
+             + '%' + #39
+         else
+           sql[2] := 'where 1=1';
+         Open;
+         StatusBar1.Panels[0].Text:='Total Records :' +IntToStr( DS_List.DataSet.RecordCount);
+     end;
+end;
+
+
+procedure TForm_Users.SpeedButton4Click(Sender: TObject);
+begin
+     try
+     Form_StaffDepSetup:=TForm_StaffDepSetup.Create(nil);
+     Form_StaffDepSetup.ShowModal;
+     finally
+     Form_StaffDepSetup.Free;
+     end;
+
+     Query_StaffDep.Close;
+     Query_StaffDep.Open;
+end;
+
+procedure TForm_Users.sp_picOpenClick(Sender: TObject);
+begin
+     if OpenPictureDialog1.Execute then
+     begin
+          Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
+          ResizetoJPGLocal(Image1);
+
+     end;
+end;
+
+procedure TForm_Users.DBGrid1DblClick(Sender: TObject);
+begin
+  pb_isnew := False;
+  pi_userid := Query_List.FieldByName('userid').AsInteger;
+  BB_NewClick(Sender);
+  LoadImage(pi_userid);
+
+  // pb_isnew:=true;
+end;
+
+procedure TForm_Users.DBGrid1TitleClick(Column: TColumn);
+begin
+  if column.index<>0 then
+  begin
+    MiDasSort(column,Query_List);
+  end;
+end;
+
+procedure TForm_Users.Dblcb_DocNurseClick(Sender: TObject);
+begin
+    if Dblcb_DocNurse.Enabled then
+      Edit_FullName.Text:=Dblcb_DocNurse.Text;
+end;
+
+procedure TForm_Users.DBLCB_StaffDeptClick(Sender: TObject);
+begin
+     searchlist;
+end;
+
+procedure TForm_Users.DBLCB_StaffDeptKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if key=VK_Delete then
+     Begin
+          DBLCB_StaffDept.KeyValue:=NULL;
+          searchlist;
+     End;
+end;
+
+procedure TForm_Users.DocSignatureSaveToReportFooter(Userid: integer;
+  Signature: TImage);
+var
+     msBinImgStream: TMemoryStream;
+     // imgCustom:TImage;
+     imgJpg: TJPEGImage;
+     sSql: String;
+begin
+     if Signature.Picture.Graphic=nil then
+     exit;
+     // save signature
+     msBinImgStream := TMemoryStream.Create;
+     // imgCustom := TImage.Create(self);
+     imgJpg := TJPEGImage.Create;
+     // imgJpg.Assign(Image1.Picture.Bitmap);
+     imgJpg.Assign(Signature.Picture.Graphic);
+     imgJpg.SaveToStream(msBinImgStream);
+
+    // sSql := 'update usermain set signature=:pBlob where userid=' + IntToStr(Userid);
+     // ssql:='INSERT INTO report_footer (DocID,Signature) VALUES ((Select Max(docID)+1 from report_footer),:pBlob)';
+
+//     qryTQuery.ConnectionString :=
+//       'Provider=MSDASQL.1;Password=' + gs_DB_Password +
+//       ';Persist Security Info=True;User ID=' + gs_DB_UserName +
+//       ';Data Source=' + gs_AliasName;
+
+     qryTQuery.Session:=DM_Hospital.DB;
+     qryTQuery.SQL.Clear;
+     qryTQuery.SQL.add('update lab_usermain set signature=:pBlob where userid=' + IntToStr(Userid));
+     qryTQuery.Params.ParamByName('pBlob').ParamType:=ptInput;
+     qryTQuery.Params.ParamByName('pBlob').LoadFromStream(msBinImgStream,ftOraBlob);
+     qryTQuery.ExecSQL;
+     Image1.Picture := nil;
+end;
+
+procedure TForm_Users.BB_NewClick(Sender: TObject);
+var
+ls_deptype,expdates:string;
+begin
+     image1.Picture:=nil;
+     BB_Save.Enabled:=True;
+     if pb_isnew = True then
+     begin
+         PageControl_Users.ActivePageIndex := 1;
+         BB_New.Enabled := False;
+         BB_Previlage.Enabled := False;
+         BB_Save.Enabled := True;
+         DEX_ExpDate.SystemOfDate:=gi_datesystem;
+         DEX_ExpDate.text:=TodaysDate;
+         ADVS_ExpDate.Caption:=gs_DateCaption;
+         Edit_UserName.SetFocus;
+         Dblc_Gname.KeyValue:=null;
+
+         if gi_compileValue<>14 then
+         begin
+              Label_NMCNO.Visible:=false;
+              Edit_NMCNO.Visible:=False;
+         end;
+
+     end
+     else
+     begin
+         PageControl_Users.ActivePageIndex := 1;
+         BB_New.Enabled := False;
+         BB_Previlage.Enabled := False;
+         BB_Save.Enabled := True;
+         Edit_UserName.SetFocus;
+         Edit_UserName.Text := Query_List.FieldByName('username').AsString;
+
+         Edit_Password.Text := Change.DecodePWDEx(Query_List.FieldByName('upassword').AsString);
+         Edit_ConfirmPassword.Text := Change.DecodePWDEx(Query_List.FieldByName('upassword').AsString);
+         Edit_FullName.Text := Query_List.FieldByName('fullname').AsString;
+         Edit_Desig.Text := Query_List.FieldByName('designation').AsString;
+         //cb_staffdepartment.ItemIndex:=cb_staffdepartment.Items.IndexOf(Query_List.FieldByName('deptype').AsString);
+         ls_deptype:= Query_List.FieldByName('deptype').AsString;
+         if ls_deptype='P' then
+         cb_staffdepartment.ItemIndex:=cb_staffdepartment.Items.IndexOf('PATHOLOGY');
+
+         if ls_deptype='R' then
+         cb_staffdepartment.ItemIndex:=cb_staffdepartment.Items.IndexOf('RADIOLOGY');
+
+         if ls_deptype='H' then
+         cb_staffdepartment.ItemIndex:=cb_staffdepartment.Items.IndexOf('HISTOLOGY');
+
+         if gi_compileValue<>14 then
+         begin
+              Label_NMCNO.Visible:=false;
+              Edit_NMCNO.Visible:=False;
+         end;
+
+         if gi_compileValue=14 then
+         begin
+              if Query_List.FieldByName('NMCNO').AsString<>'' then
+              begin
+                   Edit_NMCNO.text:=Query_List.FieldByName('NMCNO').AsString;
+              end;
+              if Query_List.FieldByName('NHPCNO').AsString<>'' then
+              begin
+                   Edit_NMCNO.text:=Query_List.FieldByName('NHPCNO').AsString;
+              end;
+         end;
+
+
+
+
+         if Query_List.FieldByName('NurseId').Asinteger>0 then
+         begin
+              Dblcb_DocNurse.KeyValue:=Query_List.FieldByName('NurseId').Asinteger;
+              Rb_Nurse.Checked:=true;
+         end
+         else if Query_List.FieldByName('DoctorId').Asinteger>0 then
+         begin
+              Dblcb_DocNurse.KeyValue:=Query_List.FieldByName('DoctorId').Asinteger;
+              Rb_Doctor.Checked:=true;
+         end
+         else if Query_List.FieldByName('UserDepId').Asinteger>0 then
+         begin
+              Dblcb_StaffDep.KeyValue:=Query_List.FieldByName('Userdepid').Asinteger;
+              Rb_Other.Checked:=true;
+         end;
+
+         if Query_List.FieldByName('GroupId').Asinteger > 0 then
+         Dblc_Gname.KeyValue:=Query_List.FieldByName('GroupId').Asinteger
+         else
+         Dblc_Gname.KeyValue:=null;
+
+         pi_GroupID:=Query_List.FieldByName('GroupId').Asinteger;
+
+         DEX_ExpDate.SystemOfDate:=gi_datesystem;
+        // DEX_ExpDate.Text := Query_List.FieldByName('expdate').AsString;
+         expdates:=(DecryptStr(Query_List.FieldByName('expdate').AsString,Gs_EncryptionKey));
+
+         //expdates:=(Query_List.FieldByName('expdate').AsString);
+         //expdates:= MidasDecrypt(Gs_EncryptionKey,expdates);
+         DEX_ExpDate.Text := copy(expdates,0,10);
+
+     end;
+end;
+
+procedure TForm_Users.BB_PrevilageClick(Sender: TObject);
+begin
+  Form_Previlege := TForm_Previlege.Create(Nil);
+  with Form_Previlege do
+  begin
+    try
+     //panel5.Visible:=false;
+     //PbIsUser:=true;
+     Label_UserName.Visible:=true;
+     Label1.Visible:=true;
+      ps_username := Form_Users.Query_List.FieldByName('fullname').AsString;
+      Label_UserName.Caption := ps_username;
+      pi_userid := Form_Users.Query_List.FieldByName('userid').AsInteger;
+      loaddatas;
+      showmodal;
+    finally
+      free;
+    end;
+  end;
+end;
+
+procedure TForm_Users.BB_SaveClick(Sender: TObject);
+Var
+     Li_DoctorId,Li_NurseId,Li_UserDepId,Li_GroupId,li_UserID:Integer;
+     Qry:TOraQuery;
+     NMCNO,NHPCNO,ls_TimeStamp,expdates:String;
+begin
+     ls_TimeStamp:='+'+ServerDate.TodaysTime;
+     if Edit_UserName.Text = '' then
+     begin
+          MessageDlg('Missing Data', mtInformation, [mbOK], 0);
+          Edit_UserName.SetFocus;
+          exit;
+     end;
+     if Edit_Password.Text = '' then
+     begin
+          MessageDlg('Missing Data', mtInformation, [mbOK], 0);
+          Edit_Password.SetFocus;
+          exit;
+     end;
+     if Edit_ConfirmPassword.Text = '' then
+     begin
+          MessageDlg('Missing Data', mtInformation, [mbOK], 0);
+          Edit_ConfirmPassword.SetFocus;
+          exit;
+     end;
+
+    { if Edit_NMCNO.Text='' then
+     begin
+          MessageDlg('Missing Data', mtInformation, [mbOK], 0);
+          Edit_NMCNO.SetFocus;
+          exit;
+     end; }
+
+     if DEX_ExpDate.Text = '' then
+     begin
+          MessageDlg('Missing Data', mtInformation, [mbOK], 0);
+          DEX_ExpDate.SetFocus;
+          exit;
+     end;
+     if Edit_Password.Text <> Edit_ConfirmPassword.Text then
+     begin
+          MessageDlg('Password donot match', mtInformation, [mbOK], 0);
+          Edit_Password.SetFocus;
+          exit;
+     end;
+
+     if cb_staffdepartment.ItemIndex=-1 then
+     begin
+          MessageDlg('Please Select Department', mtInformation, [mbOK], 0);
+          cb_staffdepartment.SetFocus;
+          exit;
+     end;
+     if Rb_Doctor.Checked = True then
+     begin
+          if Dblcb_DocNurse.KeyValue = null then
+          begin
+               MessageDlg('Please choose doctor', mtInformation, [mbOK], 0);
+               exit;
+          end
+          else
+          begin
+               Li_DoctorId := Dblcb_DocNurse.KeyValue;
+               Li_NurseId := 0;
+               Li_UserDepId := 0;
+          end;
+     end;
+     if Rb_Nurse.Checked = True then
+     begin
+          if Dblcb_DocNurse.KeyValue = null then
+          begin
+               MessageDlg('Please choose Nurse', mtInformation, [mbOK], 0);
+               exit;
+          end
+          else
+          begin
+               Li_NurseId := Dblcb_DocNurse.KeyValue;
+               Li_DoctorId := 0;
+               Li_UserDepId := 0;
+          end;
+     end;
+
+     if Rb_Doctor.Checked=True then
+     begin
+          NMCNO:=Edit_NMCNO.Text;
+     end;
+
+     if Rb_Other.Checked=True then
+     begin
+          NHPCNO:=Edit_NMCNO.Text;
+     end;
+
+     if Dblc_Gname.KeyValue > 0 then
+          Li_GroupId := Dblc_Gname.KeyValue
+     else
+          Li_GroupId := 0;
+
+     if Rb_Other.Checked = True then
+     begin
+          if Dblcb_StaffDep.KeyValue = null then
+          begin
+             //  MessageDlg('Please choose staff department', mtInformation, [mbOK], 0);
+            //   exit;
+          end
+          else
+          begin
+               Li_NurseId := 0;
+               Li_DoctorId := 0;
+               Li_UserDepId := Dblcb_StaffDep.KeyValue;
+          end;
+     end;
+
+     ps_changepassword := Change.EncodePWDEx(Edit_Password.Text, 0, 5);
+     expdates:=DEX_ExpDate.text;
+     //expdates:='DELPHI10';
+     expdates:= EncryptStr(expdates+ls_TimeStamp,Gs_EncryptionKey);
+     if pb_isnew = True then
+     begin
+          if CheckDuplicateDataFrmTmp('lab_UserMain', 'UserName', gs_DatabaseName, Trim(Edit_UserName.Text)) = False then
+          begin
+               with Query_UserEntry do
+               begin
+                    close;
+                    session:=Dm_Hospital.Db;
+                    SQL.Clear;
+                    SQL.add('Select nvl(Max(UserId),0)max from lab_usermain');
+                    Open;
+                    pi_getuserid := FieldByName('Max').AsInteger + 1;
+                    SQL.Clear;
+                    SQL.add(' Insert into lab_usermain (userid, username, upassword, fullname,designation, expdate,NurseId,DoctorId,');
+                    SQL.add(' UserDepId,GroupId,DepType,UserCreateBy,DataPostDate,DataPostTime,NMCNO,NHPCNO) ');
+                    SQL.add(' Values ( ' + IntToStr(pi_getuserid));
+                    SQL.add(' ,' + #39 + StringReplace(Edit_UserName.Text, '''', '''''', [rfReplaceAll]) + #39);
+                    SQL.add(' ,' + #39 + StringReplace(ps_changepassword, '''', '''''', [rfReplaceAll]) + #39);
+                    SQL.add(' ,' + #39 + StringReplace(Edit_FullName.Text, '''', '''''', [rfReplaceAll]) + #39);
+                    SQL.add(' ,' + #39 + StringReplace(Edit_Desig.Text, '''', '''''', [rfReplaceAll]) + #39);
+                    SQL.add(' ,' + #39 + expdates + #39 + ',' + IntToStr(Li_NurseId) + ',' + IntToStr(Li_DoctorId)
+                           + ',' + IntToStr(Li_UserDepId) + ',' + IntToStr(Li_GroupId));
+                    //SQL.add(' ,'+#39+(cb_staffdepartment.Text)+#39);
+                    if cb_staffdepartment.ItemIndex = 0 then
+                        SQL.add(' ,''P''')
+                    Else if cb_staffdepartment.ItemIndex = 1 then
+                         SQL.add(' ,''R''')
+                    Else
+                         SQL.add(' ,''H''');
+                    SQL.add(' ,' + IntToStr(gi_UserID));
+                    SQL.add(' ,' + #39 + ServerDate.TodaysDate + #39 + ',' + #39 + ServerDate.TodaysTime + #39);
+                    sql.Add(' ,'+#39+NMCNO+#39+' ,'+#39+NHPCNO+#39);
+                    SQL.add(')');
+                    ExecSQL;
+                    li_UserID:=pi_getuserid;
+               end;
+          end
+          else
+          begin
+               MessageDlg('User Name' + '  ' + Edit_UserName.Text + '  Already Exist Please Type Another UserName ', mtError, [mbOK], 0);
+               exit;
+          end;
+          Qry := TOraQuery.Create(nil);
+          if Dblc_Gname.KeyValue > 0 then
+          begin
+               with Qry do
+               begin
+                    close;
+                    session:=Dm_Hospital.Db;
+                    SQL.Clear;
+                    SQL.add('select max(userid) as Nmax from lab_usermain');
+                    Open;
+               end;
+               pi_userid := Qry.FieldByName('Nmax').AsInteger;
+               with Qry do
+               begin
+                    close;
+                    session:=Dm_Hospital.Db;
+                    SQL.Clear;
+                    SQL.add('select * from GroupPrivilege where groupId=' + IntToStr(Dblc_Gname.KeyValue));
+                    Open;
+               end;
+               while not Qry.Eof do
+               begin
+                    with Query_UserEntry do
+                    begin
+                         close;
+                         session:=Dm_Hospital.Db;
+                         SQL.Clear;
+                         SQL.add(
+                              'Insert into UserPrivilege(upId,UserId,AcessStatus,AcessStatusId,DataPostDate,DataPostTime,DataPostBy,MacId,IsFromGroupPrivilege) values');
+                         SQL.add('(' + IntToStr(GetMaxId('UserPrivilege', 'upId')) + ',' + IntToStr(pi_userid) + ',' + #39 + Qry.FieldByName
+                                ('AcessStatus').AsString + #39 + ',' + IntToStr(Qry.FieldByName('AcessStatusId').AsInteger)
+                                + ',' + #39 + TodaysDate + #39);
+                         SQL.add(',' + #39 + TodaysTime + #39 + ',' + IntToStr(gi_UserID) + ',' + #39 + gs_MacID + #39 + ',''Y''');
+                         SQL.add(')');
+                         ExecSQL;
+                    end;
+                    Qry.Next;
+               end;
+          end;
+
+     end
+     else
+     begin
+          Try
+          DM_Hospital.DB.StartTransaction;
+          with Query_UserEntry do
+          begin
+               close;
+               session:=Dm_Hospital.Db;
+               SQL.Clear;
+               SQL.add('update lab_usermain set username=' + #39 + StringReplace(Edit_UserName.Text, '''', '''''', [rfReplaceAll]) + #39);
+               SQL.add(' ,upassword=' + #39 + StringReplace(ps_changepassword, '''', '''''', [rfReplaceAll]) + #39);
+               SQL.add(' ,fullname=' + #39 + StringReplace(Edit_FullName.Text, '''', '''''', [rfReplaceAll]) + #39);
+               SQL.add(' ,designation=' + #39 + StringReplace(Edit_Desig.Text, '''', '''''', [rfReplaceAll]) + #39);
+               SQL.add(' ,expdate=' + #39 + expdates + #39);
+               SQL.add(' ,GroupId=' + IntToStr(Li_GroupId));
+               SQL.add(' ,NurseId=' + IntToStr(Li_NurseId) + ',DoctorId=' + IntToStr(Li_DoctorId) + ',UserDepId=' + IntToStr(Li_UserDepId));
+               SQL.add(' ,UserCreateBy=' + IntToStr(gi_UserID));
+               if cb_staffdepartment.ItemIndex = 0 then
+                        SQL.add(' ,DepType=''P''')
+                    Else if cb_staffdepartment.ItemIndex = 1 then
+                         SQL.add(' ,DepType=''R''')
+                    Else
+                         SQL.add(' ,DepType=''H''');
+               SQL.add(' ,DataPostDate=' + #39 + ServerDate.TodaysDate + #39 + ',DataPostTime=' + #39 + ServerDate.TodaysTime + #39);
+               sql.Add(' ,NMCNO='+#39+NMCNO+#39+' , NHPCNO='+#39+NHPCNO+#39);
+               SQL.add(' where userid=' + IntToStr(pi_userid));
+               ExecSQL;
+               li_UserID:=pi_userid;
+          end;
+
+          // user privilege at update
+          Qry := TOraQuery.Create(nil);
+          if Dblc_Gname.KeyValue > 0 then
+          begin
+               if (pi_GroupID > 0) and (pi_GroupID <> Dblc_Gname.KeyValue) then
+               PostUserPrivilegeLog;
+
+               with Qry do
+               begin
+                    close;
+                    session:=Dm_Hospital.Db;
+                    SQL.Clear;
+                    SQL.add('select * from GroupPrivilege where groupId=' + IntToStr(Dblc_Gname.KeyValue));
+                    Open;
+               end;
+
+               while not Qry.Eof do
+               begin
+                    if CheckExistingPrivilege(pi_userid, Qry.FieldByName('AcessStatusId').AsInteger, Qry.FieldByName('AcessStatus')
+                           .AsString) = False then
+                    begin
+                         with Query_UserEntry do
+                         begin
+                              close;
+                              session:=Dm_Hospital.Db;
+                              SQL.Clear;
+                              SQL.add(
+                                   'Insert into UserPrivilege(upId,UserId,AcessStatus,AcessStatusId,DataPostDate,DataPostTime,DataPostBy,MacId,IsFromGroupPrivilege) values');
+                              SQL.add('(' + IntToStr(GetMaxId('UserPrivilege', 'upId')) + ',' + IntToStr(pi_userid)
+                                     + ',' + #39 + Qry.FieldByName('AcessStatus').AsString + #39 + ',' + IntToStr
+                                     (Qry.FieldByName('AcessStatusId').AsInteger) + ',' + #39 + TodaysDate + #39);
+                              SQL.add(',' + #39 + TodaysTime + #39 + ',' + IntToStr(gi_UserID) + ',' + #39 + gs_MacID + #39 + ',''Y''');
+                              SQL.add(')');
+                              ExecSQL;
+                         end;
+                    end;
+                    Qry.Next;
+               end;
+          end;
+               DocSignatureSaveToReportFooter(li_UserID, Image1);
+               DM_Hospital.DB.Commit;
+                ShowDoneMessage;
+          Except
+               DM_Hospital.DB.RollBack;
+               MessageDlg('Failure to Update User !',mtWarning,[mbok],0);
+          End;
+          pb_isnew := True;
+     end;
+     DocSignatureSaveToReportFooter(li_UserID, Image1);
+     ShowDoneMessage;
+     ClearAll(PageControl_Users.Pages[1]);
+     PageControl_Users.ActivePageIndex := 0;
+     BB_New.Enabled := True;
+     BB_Previlage.Enabled := True;
+     BB_Save.Enabled := False;
+
+     StatusBar1.Panels[0].Text := 'Total Records :' + IntToStr(DS_List.DataSet.RecordCount);
+     with Query_List do
+     begin
+          close;
+          Open;
+          Locate('UserID', pi_userid, []);
+     end;
+
+     // ShowDoneMessage;
+     Qry.Free;
+end;
+
+procedure TForm_Users.BitBtn1Click(Sender: TObject);
+begin
+     if Query_List.FieldByName('userid').AsInteger>0 then
+     begin
+           FormUserAccessDep:=TFormUserAccessDep.Create(nil);
+           FormUserAccessDep.UserID:= Query_List.FieldByName('userid').AsInteger;
+           FormUserAccessDep.UserName.Caption:= Query_List.FieldByName('username').AsString;
+           try
+
+             FormUserAccessDep.ShowModal;
+           finally
+                FormUserAccessDep.Free;
+           end;
+     end
+     else
+     begin
+          MessageDlg('Please choose the user',mtWarning,[mbok],0) ;
+     end;
+end;
+
+procedure TForm_Users.btn_ReportPrevilageClick(Sender: TObject);
+begin
+    { Try
+          PackageModule := LoadPackage('MenuPrevilage.bpl');
+     Except
+          Exit;
+     End;
+      AClass :=GetClass('TForm_VirtualMenuPrevilage');
+     if AClass <> nil then
+     begin
+          try
+               with TComponentClass(AClass).Create(self) as TCustomForm do
+               begin
+                    ShowModal;
+               end;
+          Except
+               SimulateKeyPress(self.Handle, VK_ESCAPE);
+          end;
+     end; }
+
+     Form_VirtualMenuPrevilage:=TForm_VirtualMenuPrevilage.create(nil);
+     with Form_VirtualMenuPrevilage do
+     begin
+          try
+               Label_UserName.Visible:=true;
+               ps_username := Query_List.FieldByName('fullname').AsString;
+               Label_UserName.Caption := ps_username;
+               pi_userid :=Query_List.FieldByName('userid').AsInteger;
+               ShowModal;
+          finally
+               free;
+          end;
+     end;
+     {Exit;
+     Form_MenuPrevilage := TForm_MenuPrevilage.Create(Nil);
+     with Form_MenuPrevilage do
+     begin
+          try
+               Label_UserName.Visible:=true;
+               ps_username := Form_Users.Query_List.FieldByName('fullname').AsString;
+               Label_UserName.Caption := ps_username;
+               pi_userid := Form_Users.Query_List.FieldByName('userid').AsInteger;
+               ShowModal;
+          finally
+               free;
+          end;
+     end;}
+end;
+
+function TForm_Users.CheckExistingPrivilege(UserId, AcessStatusID: Integer;
+  ModuleName: String): Boolean;
+  Var
+  Qry:TOraQuery;
+begin
+     Qry:=TOraQuery.Create(nil);
+     with Qry do
+     begin
+          Close;
+          session:=Dm_Hospital.Db;
+          sql.Clear;
+          sql.Add('select ACESSSTATUSID from userPrivilege where acessstatus='+#39+ModuleName+#39);
+          sql.Add('and userid='+inttostr(UserId));
+          sql.Add('and ACESSSTATUSID='+inttostr(AcessStatusID));
+          Open;
+          if FieldByName('ACESSSTATUSID').AsInteger>0 then
+          Result:=True
+          else
+          Result:=False;
+     end;
+
+end;
+
+
+procedure TForm_Users.PostUserPrivilegeLog;
+Begin
+     //With
+End;
+
+end.

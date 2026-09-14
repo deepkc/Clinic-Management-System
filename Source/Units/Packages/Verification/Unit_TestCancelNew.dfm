@@ -1,0 +1,378 @@
+object Form_TestCancelNew: TForm_TestCancelNew
+  Left = 0
+  Top = 0
+  AutoSize = True
+  Caption = 'Test Cancel'
+  ClientHeight = 348
+  ClientWidth = 628
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel2: TPanel
+    Left = 0
+    Top = 0
+    Width = 628
+    Height = 33
+    Align = alTop
+    BevelOuter = bvNone
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    object BB_Save: TBitBtn
+      Left = 472
+      Top = 0
+      Width = 78
+      Height = 33
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alRight
+      Caption = '&Save'
+      DoubleBuffered = True
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        1800000000000003000001000000010000000000000000000000000000975233
+        9A55359954349652339652339652339652339652339652339652339A55359B55
+        359853349451320000009451369D5534BD5A22BB5A24B75926C7B0A4C8B5ACC8
+        B5ACC8B5ACC8B5ACC8B5ACC9B5ABBF6532B759269B55358040408F5030A05633
+        C46127C46127C46127D3CDCBD4D4D5D4D4D5D4D4D5CB9373C7784AD3CFCDC66F
+        3BC461279D56348F50308F5030A15734CB672CCB672CCB672CDED8D5DFDFE0DF
+        DFE0DFDFE0D18A61CB672CDED8D5CD7541CB672C9E56348F50308F5030A15834
+        D26E30D26E30D26E30EAE5E1ECECECECECECECECECDA9367D26E30EAE5E1D57D
+        46D26E309E56358F50308F5030A25835D67233D67233D67233F3E7E0F7F7F7F7
+        F7F7F7F7F7F2E4DBF0DCD0F7F5F5DA824AD672339E57358F50308F5030A35935
+        DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB76
+        36DB76369F57358F50308F5030A35935DF7A39F2ECE8FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFDDCBBFDF7A399F57358F50308F5030A45A36
+        E4803EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE7DB
+        D3E4803E9F58368F50308F5030A45B37E98746FCFCFCFCFCFCFCFCFCFCFCFCFC
+        FCFCFCFCFCFCFCFCFCFCFCFCFCFCE5D9D1E98746A058368F50308F5030A55C38
+        EE9150F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3DED3
+        CCEE9150A059378F5030945231A55D3AF49C5DE5E5E5E5E5E5E5E5E5E5E5E5E5
+        E5E5E5E5E5E5E5E5E5E5E5E5E5E5DAD4CFF49C5DA059378F5030945231A65F3B
+        F8A668D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3CCC7
+        C3F8A668A05A389955339F5535A45D3BF9AC6FD0CECDD3D3D3D3D3D3D3D3D3D3
+        D3D3D3D3D3D3D3D3D3D3D3D3D3D3CCC7C4F9AC6F9E58378E55390000009C5534
+        9B55359B55359B55359B55359B55359B55359B55359B55359B55359B55359B55
+        359B55359C553400000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000}
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BB_SaveClick
+    end
+    object BB_Close: TBitBtn
+      Left = 550
+      Top = 0
+      Width = 78
+      Height = 33
+      Margins.Left = 0
+      Margins.Top = 6
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = '&Close'
+      DoubleBuffered = True
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        18000000000000030000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFF6569BA717FE06B6EBEFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFDFEFFFFFFFFFFFFB9BADD7A83E6
+        6A80FF273CD9EBECF6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7677
+        C58788D9FFFFFFFFFFFFA0A1D34D54DE2536EB0B20D9E3E3F3FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFDCDCEE0E16C0B1B2DEFFFFFFFFFFFFE9E9F41519BF
+        060EDB0412D87B7DC3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2C34BA1822
+        C1FFFFFFFFFFFFFFFFFFFFFFFF5A5BBA0002CF0309D8080FC1DADAECFFFFFFFF
+        FFFFFFFFFFFFFFFF7A7CC50C21DF9C9DD2FFFFFFFFFFFFFFFFFFFFFFFFFDFDFE
+        1E1FB00001D00106D52326B1FFFFFFFFFFFFFFFFFFA9AAD30C28E52733BEFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE8E9F41112B50000D10103CE5A5CB9FF
+        FFFFB1B2D90B1FD40C26DFD2D1E7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFE2E3F21516B50000D20101C44D4EB8070EC30514E16F70BEFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F5FA2D2DB00001CC00
+        00CC0103D13639B3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFE2E2F23236B70207CF0103D20001C97777C2FFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7174CA0F1ED10717E40510DE0E
+        13BA0507C10608CC6162BEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9B9BD2
+        4F58D23D57F71D3CFA0D26F01921BFEBEBF6C4C4E5191BBE2325D44A4ABBF9F9
+        FCFFFFFFFFFFFFFFFFFF8487D0A2ABF78D9DFF6A7FFF3A55F9313BC1EFEFF7FF
+        FFFFFFFFFFFDFDFE5B5CBF4041D1494AC4A2A2D5FFFFFFFFFFFF8788CCB6BBF5
+        A3ACFB6973E17678C8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC8C8E65555
+        C16061CC5A5ABDADAED9DFDFEF9192D29A9DE29596D2FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFEDEDF77C7DC96162C58383CB}
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BB_CloseClick
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 33
+    Width = 628
+    Height = 315
+    Align = alClient
+    TabOrder = 1
+    object Label1: TLabel
+      Left = 24
+      Top = 40
+      Width = 64
+      Height = 13
+      Caption = 'Patient Name'
+    end
+    object Label2: TLabel
+      Left = 24
+      Top = 16
+      Width = 48
+      Height = 13
+      Caption = 'Patient ID'
+    end
+    object Label3: TLabel
+      Left = 24
+      Top = 64
+      Width = 54
+      Height = 13
+      Caption = 'Sample No.'
+    end
+    object Label4: TLabel
+      Left = 24
+      Top = 97
+      Width = 51
+      Height = 13
+      Caption = 'Test Name'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsUnderline]
+      ParentFont = False
+    end
+    object Label5: TLabel
+      Left = 272
+      Top = 97
+      Width = 41
+      Height = 13
+      Caption = 'Remarks'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsUnderline]
+      ParentFont = False
+    end
+    object Label6: TLabel
+      Left = 96
+      Top = 40
+      Width = 4
+      Height = 13
+      Caption = ':'
+    end
+    object Label8: TLabel
+      Left = 96
+      Top = 64
+      Width = 4
+      Height = 13
+      Caption = ':'
+    end
+    object Label9: TLabel
+      Left = 96
+      Top = 16
+      Width = 4
+      Height = 13
+      Caption = ':'
+    end
+    object lbl_PatientName: TLabel
+      Left = 112
+      Top = 40
+      Width = 64
+      Height = 13
+      Caption = 'Patient Name'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lbl_Patientid: TLabel
+      Left = 112
+      Top = 16
+      Width = 48
+      Height = 13
+      Caption = 'Patient ID'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lbl_SampleNo: TLabel
+      Left = 112
+      Top = 64
+      Width = 54
+      Height = 13
+      Caption = 'Sample No.'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lbl_TestName: TLabel
+      Left = 568
+      Top = 321
+      Width = 60
+      Height = 13
+      Caption = 'Test Name'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label10: TLabel
+      Left = 392
+      Top = 40
+      Width = 57
+      Height = 13
+      Caption = 'Cancel Time'
+    end
+    object Label11: TLabel
+      Left = 392
+      Top = 16
+      Width = 58
+      Height = 13
+      Caption = 'Cancel Date'
+    end
+    object Label12: TLabel
+      Left = 392
+      Top = 64
+      Width = 47
+      Height = 13
+      Caption = 'Cancel by'
+    end
+    object Label14: TLabel
+      Left = 464
+      Top = 40
+      Width = 4
+      Height = 13
+      Caption = ':'
+    end
+    object Label15: TLabel
+      Left = 464
+      Top = 16
+      Width = 4
+      Height = 13
+      Caption = ':'
+    end
+    object Label16: TLabel
+      Left = 464
+      Top = 64
+      Width = 4
+      Height = 13
+      Caption = ':'
+    end
+    object lbl_canceltime: TLabel
+      Left = 480
+      Top = 40
+      Width = 64
+      Height = 13
+      Caption = 'Patient Name'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lbl_Canceldate: TLabel
+      Left = 480
+      Top = 16
+      Width = 48
+      Height = 13
+      Caption = 'Patient ID'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lbl_CancelBy: TLabel
+      Left = 480
+      Top = 64
+      Width = 54
+      Height = 13
+      Caption = 'Sample No.'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object shp_rect: TShape
+      Left = 13
+      Top = 6
+      Width = 604
+      Height = 81
+      Brush.Style = bsClear
+      Shape = stRoundRect
+    end
+    object spl1: TSplitter
+      Left = 237
+      Top = 116
+      Width = 4
+      Height = 189
+      Align = alNone
+      Color = clAppWorkSpace
+      ParentColor = False
+    end
+    object Memo_Remarks: TMemo
+      Left = 272
+      Top = 116
+      Width = 337
+      Height = 189
+      TabOrder = 0
+    end
+    object chklst_testname: TCheckListBox
+      Left = 24
+      Top = 116
+      Width = 176
+      Height = 189
+      OnClickCheck = chklst_testnameClickCheck
+      ItemHeight = 13
+      TabOrder = 1
+    end
+    object chk_all: TCheckBox
+      Left = 171
+      Top = 96
+      Width = 40
+      Height = 17
+      Caption = 'All'
+      TabOrder = 2
+      OnClick = chk_allClick
+    end
+  end
+  object Query_Blank: TOraQuery
+    Left = 200
+    Top = 48
+  end
+end

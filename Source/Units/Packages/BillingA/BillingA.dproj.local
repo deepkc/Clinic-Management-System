@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2011/11/13 11:18:34.990.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Unit_Parent.pas=</Transaction>
+    <Transaction>2011/11/13 11:18:34.990.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Unit_Parent.dfm=</Transaction>
+    <Transaction>2011/11/13 11:20:19.344.pas,C:\Users\vicky\Documents\RAD Studio\Projects\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit_BillingParent.pas</Transaction>
+    <Transaction>2011/11/13 11:20:19.344.dfm,C:\Users\vicky\Documents\RAD Studio\Projects\Unit1.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit_BillingParent.dfm</Transaction>
+    <Transaction>2011/11/13 11:21:06.866.dproj,C:\Users\vicky\Documents\RAD Studio\Projects\Package1.dproj=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Billing.dproj</Transaction>
+    <Transaction>2011/11/13 11:35:50.980.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Unit_Parent.pas=</Transaction>
+    <Transaction>2011/11/13 11:35:50.981.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Unit_Parent.dfm=</Transaction>
+    <Transaction>2011/11/13 11:57:11.707.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit_BillListFrame.pas</Transaction>
+    <Transaction>2011/11/13 11:57:11.707.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit1.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit_BillListFrame.dfm</Transaction>
+    <Transaction>2011/11/13 14:45:01.892.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit_IndoorPatientList.pas</Transaction>
+    <Transaction>2011/11/13 14:45:01.892.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit1.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit_IndoorPatientList.dfm</Transaction>
+    <Transaction>2011/11/13 14:45:47.972.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit_OutdoorPatientList.pas</Transaction>
+    <Transaction>2011/11/13 14:45:47.972.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit1.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit_OutdoorPatientList.dfm</Transaction>
+    <Transaction>2011/12/06 11:15:12.760.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit_QrBill.pas</Transaction>
+    <Transaction>2011/12/06 11:15:12.782.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit1.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit_QrBill.dfm</Transaction>
+    <Transaction>2011/12/08 17:20:21.169.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit_TestList.pas</Transaction>
+    <Transaction>2011/12/08 17:20:21.181.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit1.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Billing\Unit_TestList.dfm</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="-1" SortType="1"/>
+</BorlandProject>

@@ -1,0 +1,45 @@
+package MachineIntegration;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  VclSmp,
+  SMCmpntD2010,
+  BarcodeD10,
+  Global,
+  MidasFunction;
+
+contains
+  Unit_MachineTestMapping in 'Unit_MachineTestMapping.pas' {Form_MachineTestMapping},
+  Unit_MachineTestNameMapping in 'Unit_MachineTestNameMapping.pas' {Form_MachineTestNameMapping},
+  Unit_MachineTestNameSetup in 'Unit_MachineTestNameSetup.pas' {Form_MachinetestNameSetup},
+  Unit_MachineTestSetup in 'Unit_MachineTestSetup.pas' {Form_MachinetestSetup},
+  Unit_UpdateSampleNo in 'Unit_UpdateSampleNo.pas' {Form_update},
+  Unit_MainLab in 'Unit_MainLab.pas' {Form_MainLab},
+  Unit_ResultVerification in 'Unit_ResultVerification.pas' {Form_ResultVerification},
+  Unit_QrLabSticker in 'Unit_QrLabSticker.pas';
+
+end.

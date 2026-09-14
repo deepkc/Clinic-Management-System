@@ -1,0 +1,46 @@
+BDE Migration Wizard log
+
+Created at: 6/15/2017 2:24:18 PM
+
+Initializing unit list
+
+Allocating temporary folder
+
+Processing file: D:\working rabin\INTREPID\Source\Units\Packages\Privilege Setup\Unit_FunctionSetup.pas
+
+7 change(s)
+
+Processing file: D:\working rabin\INTREPID\Source\Units\Packages\Privilege Setup\Unit_MainmenuSetup.pas
+
+4 change(s)
+
+Processing file: D:\working rabin\INTREPID\Source\Units\Packages\Privilege Setup\Unit_ModuleSetup.pas
+
+3 change(s)
+
+Processing file: D:\working rabin\INTREPID\Source\Units\Packages\Privilege Setup\Unit_SubmenuSetup.pas
+
+6 change(s)
+
+Processing file: D:\working rabin\INTREPID\Source\Units\Packages\Privilege Setup\Unit_FunctionSetup.DFM
+
+4 change(s)
+
+Processing file: D:\working rabin\INTREPID\Source\Units\Packages\Privilege Setup\Unit_MainmenuSetup.DFM
+
+3 change(s)
+
+Processing file: D:\working rabin\INTREPID\Source\Units\Packages\Privilege Setup\Unit_ModuleSetup.DFM
+
+2 change(s)
+
+Processing file: D:\working rabin\INTREPID\Source\Units\Packages\Privilege Setup\Unit_SubmenuSetup.DFM
+
+3 change(s)
+
+Replacing original files with changed versions
+
+Removing temporary folder
+
+Replace procedure was performed sucessfully.
+

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2017/07/12 17:08:31.190.dproj,C:\Users\user\Documents\RAD Studio\Projects\Package1.dproj=C:\Users\user\Documents\RAD Studio\Projects\ClinicalHistology.dproj</Transaction>
+    <Transaction>2017/07/12 17:09:31.006.pas,E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Clinical Histology\Setup\Unit_DefaultHistoSetup.pas=</Transaction>
+    <Transaction>2017/07/12 17:09:31.006.dfm,E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Clinical Histology\Setup\Unit_DefaultHistoSetup.dfm=</Transaction>
+    <Transaction>2017/07/12 17:13:58.246.dproj,C:\Users\user\Documents\RAD Studio\Projects\ClinicalHistology.dproj=E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Clinical Histology\ClinicalHistology.dproj</Transaction>
+    <Transaction>2017/07/12 17:54:48.061.pas,E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Clinical Histology\Setup\Unit_DefaultHistoSetup.pas=</Transaction>
+    <Transaction>2017/07/12 17:54:48.061.dfm,E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Clinical Histology\Setup\Unit_DefaultHistoSetup.dfm=</Transaction>
+    <Transaction>2017/07/13 08:31:11.509.pas,E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Clinical Histology\Unit_ClinicalReportType.pas=</Transaction>
+    <Transaction>2017/07/13 08:31:11.509.dfm,E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Clinical Histology\Unit_ClinicalReportType.dfm=</Transaction>
+  </Transactions>
+</BorlandProject>

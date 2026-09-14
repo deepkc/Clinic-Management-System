@@ -1,0 +1,440 @@
+unit Unit_TestPackage;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Db, ExtCtrls, StdCtrls, Buttons, DBCtrls, Grids, DBGrids,
+  Fxn,Variants,DM,ServerDate,Unit_Master,
+  ComCtrls;
+
+type
+  TForm_TestPackage = class(TForm)
+    PageTestName: TPageControl;
+    PageDep: TTabSheet;
+    Label1: TLabel;
+    SpeedButton1: TSpeedButton;
+    EditSearch: TEdit;
+    DBGridTestName: TDBGrid;
+    Button1: TButton;
+    PageDepNew: TTabSheet;
+    Label2: TLabel;
+    Bevel2: TBevel;
+    DBLCB_PackageTest: TDBLookupComboBox;
+    Panel1: TPanel;
+    BitBtnNew: TBitBtn;
+    BitBtnSave: TBitBtn;
+    BitBtnCancel: TBitBtn;
+    Query_PackageTestName: TOraQuery;
+    DS_PackageTestName: TDataSource;
+    DS_PackageTestList: TDataSource;
+    Query_Process: TOraQuery;
+    Query_TestName: TOraQuery;
+    DS_TestName: TDataSource;
+    DBGrid_TestPackage: TDBGrid;
+    Label3: TLabel;
+    SPBAdd: TSpeedButton;
+    SpeedButton3: TSpeedButton;
+    DBLCB_TestItems: TDBLookupComboBox;
+    Query_SubProcess: TOraQuery;
+    Table_PackageTest: TTable;
+    Query_PackageTestList: TQuery;
+    Query_TempProcess: TQuery;
+    procedure FormShow(Sender: TObject);
+    procedure BitBtnNewClick(Sender: TObject);
+    procedure DBGridTestNameDblClick(Sender: TObject);
+    procedure SPBAddClick(Sender: TObject);
+    Procedure GetPackageList;
+    procedure SpeedButton3Click(Sender: TObject);
+    procedure BitBtnCancelClick(Sender: TObject);
+    procedure DBLCB_PackageTestKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_PackageTestClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure PageTestNameChange(Sender: TObject);
+    procedure BitBtnSaveClick(Sender: TObject);
+    procedure DBGrid_TestPackageDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBLCB_TestItemsKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+  private
+          b_IsNew:Boolean;
+          Procedure CreateTempPackageTest;
+          Procedure RefreshTable;
+          procedure LoadData;
+
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_TestPackage: TForm_TestPackage;
+
+implementation
+
+
+{$R *.DFM}
+
+
+Procedure TForm_TestPackage.CreateTempPackageTest;
+Begin
+     Table_PackageTest.Close;
+     IF FileExists(gs_TempPath+'\PackageTest.db') Then DeleteFile(gs_TempPath+'\PackageTest.db');
+     with Table_PackageTest do
+     Begin
+          Close;
+          Databasename:=gs_TempPath;
+          Exclusive:=False;
+          Tablename:='PackageTest.db';
+          tableType:=ttDefault;
+          FieldDefs.Clear;
+          Fielddefs.add('MTestNameCode',ftstring,10);
+          Fielddefs.add('DTestNameCode',ftstring,10);
+          Fielddefs.add('MTestNameId',ftInteger);
+          Fielddefs.add('DTestNameID',ftInteger);
+          Fielddefs.add('TestName',ftstring,100);
+          Fielddefs.add('IsActive',ftstring,1);
+          CreateTable;
+     End;
+End;
+
+Procedure TForm_TestPackage.RefreshTable;
+Begin
+     Table_PackageTest.DatabaseName:=gs_TempPath;
+     Table_PackageTest.Close;
+     Table_PackageTest.EmptyTable;
+     Table_PackageTest.Open;
+end;
+
+procedure TForm_TestPackage.FormShow(Sender: TObject);
+begin
+     PageTestName.ActivePageIndex:=0;
+     CreateTempPackageTest;
+     Query_PackageTestName.Close;
+     Query_PackageTestName.Open;
+
+     Query_TestName.Close;
+     Query_TestName.Open;
+
+     EditSearch.SetFocus;
+end;
+
+procedure TForm_TestPackage.BitBtnNewClick(Sender: TObject);
+begin
+     //RefreshTable;     
+     PageTestName.ActivePageIndex:=1;
+     DBLCB_PackageTest.KeyValue:=Null;
+     DBLCB_TestItems.KeyValue:=NULL;
+     BitBtnNew.Enabled:=False;
+     BitBtnSave.Enabled:=True;
+     DBLCB_PackageTest.Enabled:=True;
+     DBLCB_PackageTest.Color:=clWhite;
+     b_IsNew:=True;
+     RefreshTable;
+     Query_PackageTestList.Close;
+     DBLCB_PackageTest.SetFocus;
+end;
+
+
+
+procedure TForm_TestPackage.DBGridTestNameDblClick(Sender: TObject);
+begin
+     IF Query_PackageTestName.RecordCount <=0 Then
+     Begin
+          MessageDlg('Sorry No Record For Modification.',mtWarning,[mbok],0);
+          EditSearch.SetFocus;
+          Exit;
+     End;
+
+     PageTestName.ActivePageIndex:=1;
+     DBLCB_PackageTest.KeyValue:=Query_PackageTestName.FieldByName('TestNameId').AsInteger;
+     DBLCB_PackageTest.Enabled:=False;
+     DBLCB_PackageTest.Color:=clMenu;
+
+     RefreshTable;
+     LoadData;
+     GetPackageList;
+
+     b_IsNew:=False;
+     BitBtnNew.Enabled:=False;
+     BitBtnSave.Enabled:=True;
+     DBLCB_TestItems.SetFocus;
+end;
+
+procedure TForm_TestPackage.LoadData;
+Begin
+     With Query_Process do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Select PT.TEPD_TestPackageID as TestPackageID,PT.TEPD_TestNameID as TestNameID,TN.TENA_TestName as TestName From HS_TENA_TestName TN,HS_TEPD_TestPackageDetail PT where ');
+          sql.add(' TN.TENA_TestNameID=PT.TEPD_TestNameId and PT.TEPD_TestPackageID='+IntToStr(DBLCB_PackageTest.KeyValue));
+          sql.add(' Order By TN.TENA_TestName');
+          Open;
+          First;
+          while not EOF Do
+          Begin
+               Table_PackageTest.Append;
+               Table_PackageTest.FieldByName('MTestNameID').AsInteger:=Query_Process.FieldByName('TestPackageID').AsInteger;
+               Table_PackageTest.FieldByName('DTestNameID').AsInteger:=Query_Process.FieldByName('TestNameID').AsInteger;
+               Table_PackageTest.FieldByName('TestName').AsString:=Query_Process.FieldByName('TestName').AsString;
+               Table_PackageTest.FieldByName('IsActive').AsString:='Y';
+               Table_PackageTest.Post;
+               Query_Process.Next;
+          End;
+     End;
+End;
+
+
+procedure TForm_TestPackage.SPBAddClick(Sender: TObject);
+begin
+     IF Trim(DBLCB_PackageTest.Text)='' Then
+     Begin
+          MessageDlg('You Must Have To Select Package Name.',mtWarning,[mbok],0);
+          DBLCB_PackageTest.SetFocus;
+          Exit;
+     End;
+
+     IF Trim(DBLCB_TestItems.Text)='' Then
+     Begin
+          MessageDlg('You Must Have To Select Package Items.',mtWarning,[mbok],0);
+          DBLCB_TestItems.SetFocus;
+          Exit;
+     End;
+
+     IF Query_PackageTestList.Locate('DTestNameId;IsActive',VarArrayOf([DBLCB_TestItems.KeyValue,'Y']),[]) Then
+     Begin
+          MessageDlg('This Items is already exist in list.',mtWarning,[mbok],0);
+          Query_PackageTestList.Locate('DTestNameId',DBLCB_TestItems.KeyValue,[]);
+          Exit;
+     End;
+
+     With Table_PackageTest do
+     Begin
+          Append;
+          FieldByName('MTestNameId').AsString:=DBLCB_PackageTest.KeyValue;
+          FieldByName('DTestNameId').AsString:=DBLCB_TestItems.KeyValue;
+          FieldByName('TestName').AsString:=DBLCB_TestItems.Text;
+          FieldByName('IsActive').AsString:='Y';
+          Post;
+     End;
+     GetPackageList;
+end;
+
+Procedure TForm_TestPackage.GetPackageList;
+Begin
+     With Query_PackageTestList do
+     Begin
+          Close;
+          DatabaseName:=gs_temppath;
+          sql.Clear;
+          sql.add(' Select * From PackageTest.db where MTestNameId='+IntToStr(DBLCB_PackageTest.KeyValue));
+          sql.add(' Order by TestName '); 
+          Open;
+     End;
+End;
+
+
+procedure TForm_TestPackage.SpeedButton3Click(Sender: TObject);
+begin
+     IF Query_PackageTestList.RecordCount <=0 Then
+     Begin
+          MessageDlg('No Record To Remove From Package List.',mtWarning,[mbok],0);
+          DBLCB_TestItems.SetFocus;
+          Exit;
+     End;
+
+     With Query_Process do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Update PackageTest.db set IsActive=''N'' where DTestNameId='+IntToStr(Query_PackageTestList.FieldByName('DTestNameId').AsInteger));
+          ExecSQL;
+     End;
+
+     GetPackageList;
+end;
+
+procedure TForm_TestPackage.BitBtnCancelClick(Sender: TObject);
+begin
+     IF PageTestName.ActivePageIndex=0 Then
+        Close
+     Else
+     Begin
+          PageTestName.ActivePageIndex:=0;
+          Query_PackageTestName.Close;
+          Query_PackageTestName.Open;
+          BitBtnNew.Enabled:=True;
+          BitBtnSave.Enabled:=False;
+     End;
+end;
+
+procedure TForm_TestPackage.DBLCB_PackageTestKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF (key=VK_Delete) and (DBLCB_PackageTest.Enabled=True) Then
+     DBLCB_PackageTest.KeyValue:=NULL;
+
+     IF key=13 Then
+     DBLCB_TestItems.SetFocus;
+end;
+
+procedure TForm_TestPackage.DBLCB_PackageTestClick(Sender: TObject);
+begin
+     GetPackageList;
+end;
+
+procedure TForm_TestPackage.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     IF key=27 Then BitBtnCancelClick(Sender);
+     IF PageTestName.ActivePageIndex=1 Then
+     Begin
+          IF key=VK_F1 Then
+          SPBAddClick(Sender);
+          IF key=VK_F2 Then
+          SpeedButton3Click(Sender);
+     End;
+end;
+
+procedure TForm_TestPackage.PageTestNameChange(Sender: TObject);
+begin
+     IF PageTestName.ActivePageIndex=1 Then
+     Exit
+     Else
+     BitBtnNewClick(sender);
+end;
+
+procedure TForm_TestPackage.BitBtnSaveClick(Sender: TObject);
+Var ls_TodaysDate,ls_TodaysTime : String;
+begin
+     IF Query_PackageTestList.RecordCount <= 0 Then
+     Begin
+          MessageDlg('No Record To Save.',mtWarning,[mbok],0);
+          DBLCB_TestItems.SetFocus;
+          Exit;
+     End;
+
+     {Query_PackageTestName.First;
+     IF (b_IsNew=True) and (Query_PackageTestName.Locate('TestNameCode',DBLCB_PackageTest.KeyValue,[])) Then
+     Begin
+          MessageDlg('Items Of This Package Test Name is Already Exist. You Cannot Add Same Package Test Name.',mtWarning,[mbok],0);
+          DBLCB_PackageTest.SetFocus;
+          Exit;
+     End;}
+
+     DBLCB_PackageTest.KeyValue:=Query_PackageTestName.FieldByName('TestNameId').AsInteger;
+
+     ls_TodaysDate:=TodaysDate;
+     ls_TodaysTime:=TodaysTime;
+
+     Try
+          DM_Hospital.DB.StartTransaction;
+          Query_PackageTestList.First;
+          while not Query_PackageTestList.EOF Do
+          Begin
+               with Query_Process do
+               Begin
+                    Close;
+                    Session:=DM_Hospital.DB;
+                    sql.Clear;
+                    sql.add(' Select * From HS_TEPD_TESTPACKAGEDETAIL where TEPD_TestPackageID='+IntToStr(Query_PackageTestList.FieldByName('MTestNameId').AsInteger));
+                    sql.add(' and TEPD_TestNameID='+IntToStr(Query_PackageTestList.FieldByName('DTestNameId').AsInteger));
+                    Open;
+               End;
+
+               IF (Query_Process.RecordCount <= 0) Then
+               Begin
+                    SaveTestPackageDetail(Query_PackageTestList.FieldByName('MTestNameId').AsInteger,
+                               Query_PackageTestList.FieldByName('DTestNameId').AsInteger,
+                               IntToStr(gi_UserID), ls_TodaysDate, ls_TodaysTime,
+                               Query_PackageTestList.FieldByName('IsActive').AsString, '', '');
+               End
+               Else IF (Query_Process.RecordCount > 0) and (Query_PackageTestList.FieldByName('IsActive').AsString='N') Then
+               Begin
+                    With Query_SubProcess do
+                    Begin
+                         Close;
+                         Session:=DM_Hospital.DB;
+                         sql.Clear;
+                         sql.Add(' Delete From HS_TEPD_TESTPACKAGEDETAIL where TEPD_TestPackageID='+IntToStr(Query_PackageTestList.FieldByName('MTestNameId').AsInteger));
+                         sql.Add(' and TEPD_TestNameId='+IntToStr(Query_PackageTestList.FieldByName('DTestNameId').AsInteger));
+                         ExecSQL;
+                    End;
+               End;
+               Query_PackageTestList.Next;
+          End;
+
+          { Keep or Remove status about package name From TestName }
+          With Query_Process do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select * From HS_TEPD_TESTPACKAGEDETAIL where TEPD_TestPackageID='+IntToStr(DBLCB_PackageTest.KeyValue));
+               Open;
+          End;
+
+          With Query_TempProcess do
+          Begin
+               Close;
+              databasename:=gs_temppath;
+               sql.Clear;
+               sql.add(' Select * From PackageTest.db where MTestNameId='+IntToStr(DBLCB_PackageTest.KeyValue));
+               sql.add(' and IsActive=''Y'' Order by TestName ');
+               Open;
+          End;
+
+          With Query_SubProcess do
+          Begin
+               Close;
+               Session:=DM_Hospital.DB;
+               sql.Clear;
+               IF (Query_Process.RecordCount > 0) and (Query_TempProcess.RecordCount > 0 ) Then
+               sql.add(' Update TestName Set IsPackageTest=''Y'' where TestNameId='+IntToStr(DBLCB_PackageTest.KeyValue))
+               Else
+               sql.add(' Update TestName Set IsPackageTest=''N'' where TestNameId='+IntToStr(DBLCB_PackageTest.KeyValue));
+               ExecSQL;
+          End;
+
+          DM_Hospital.DB.Commit;
+          ShowDoneMessage;
+     Except
+          DM_Hospital.DB.Rollback;
+          MessageDlg('Failure To Save Data !',mtWarning,[mbok],0);
+          Exit;
+     End;
+
+     DBLCB_TestItems.KeyValue:=NULL;
+
+     RefreshTable;     
+     LoadData;
+     GetPackageList;
+
+     Query_PackageTestList.Close;
+     Query_PackageTestList.Open;
+     Query_PackageTestList.First;
+end;
+
+procedure TForm_TestPackage.DBGrid_TestPackageDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+     IF Query_PackageTestList.FieldByName('IsActive').asString='N' Then
+     Begin
+          DBGrid_TestPackage.Canvas.Font.Color:=clRed;
+          DBGrid_TestPackage.DefaultDrawDataCell(rect,Column.Field,State);
+     End ;
+end;
+
+procedure TForm_TestPackage.DBLCB_TestItemsKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF (key=VK_UP) and (DBLCB_PackageTest.Enabled=True) Then
+     DBLCB_PackageTest.SetFocus;
+end;
+
+end.

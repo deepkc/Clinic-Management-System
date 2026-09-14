@@ -1,0 +1,678 @@
+unit Unit_DoctorWiseChargeSetup;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, fxn,
+  Dialogs, ExtCtrls, Grids, DBGrids, StdCtrls, DBCtrls, Buttons, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Unit_Master_Hos;
+
+type
+  TForm_DoctorWiseChargeSetup = class(TForm)
+    pnl_DepWiseCharge: TPanel;
+    Label_Department: TLabel;
+    Dblcb_Doctor: TDBLookupComboBox;
+    Label_Vatamt: TLabel;
+    Label_TotalAmt: TLabel;
+    Label_NewRegCharge: TLabel;
+    Edit_NewRegCharge: TEdit;
+    Edit_NewRegTaxPer: TEdit;
+    Label21: TLabel;
+    Edit_NewVatAmt: TEdit;
+    Edit_NewTotalAmount: TEdit;
+    Edit_FollowupTotalAmount: TEdit;
+    Edit_FollowupVatAmt: TEdit;
+    Label23: TLabel;
+    Edit_FollowupTaxPer: TEdit;
+    Edit_FollowUpCharge: TEdit;
+    Label_FollowupCharge: TLabel;
+    Label_RegChargeOPD: TLabel;
+    Edit_RegOPDCardCharge: TEdit;
+    Edit_RegOPDCardTaxPer: TEdit;
+    Label27: TLabel;
+    Edit_RegOPDCardVatAmt: TEdit;
+    Edit_RegOPDCardTotalAmount: TEdit;
+    Edit_InpatientRegChargeTotalAmount: TEdit;
+    Edit_InpatientRegVatAmt: TEdit;
+    Label29: TLabel;
+    Edit_InpatientTaxPer: TEdit;
+    Edit_InpatientRegCharge: TEdit;
+    Label_InpatientRegCharge: TLabel;
+    Bb_Save: TBitBtn;
+    DS_Doctor: TDataSource;
+    Query_Doctor: TOraQuery;
+    DS_DocWiseCharge: TDataSource;
+    Query_PatientType: TOraQuery;
+    ComboBox_Currency: TComboBox;
+    Query_save: TOraQuery;
+    Label_FollowupDays: TLabel;
+    Edit_FollowupDays: TEdit;
+    CB_IncludingServiceTaxCharges: TCheckBox;
+    qry_DocWiseCharge: TOraQuery;
+    Query_Process: TOraQuery;
+    DS_PatientType: TDataSource;
+    Label25: TLabel;
+    DBLCB_PatientType: TDBLookupComboBox;
+    Label1: TLabel;
+    DBGridDept: TDBGrid;
+    CB_IsChargeRoundOffGEN: TCheckBox;
+    le_FreeFollowupDays: TLabeledEdit;
+    BB_Close: TBitBtn;
+    CB_IsChargeActive: TCheckBox;
+    LE_IntermediateFollowupDays: TLabeledEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    Edit_InterFollowupTotalAmount: TEdit;
+    Edit_InterFollowupVatAmt: TEdit;
+    Edit_InterFollowupTaxPer: TEdit;
+    Edit_InterFollowUpCharge: TEdit;
+    Label4: TLabel;
+    Label5: TLabel;
+    Edit_DocRefFollowupTotAmt: TEdit;
+    Edit_DocRefFollowupVatAmt: TEdit;
+    Edit_DocRefFollowupTaxPer: TEdit;
+    Edit_DocReferalCharge: TEdit;
+    procedure Bb_CancelClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+
+    procedure Calculate_Tax_And_Amount;
+    procedure Bb_SaveClick(Sender: TObject);
+    procedure Edit_NewRegChargeExit(Sender: TObject);
+    procedure Set_SvrTax_Percent;
+    Procedure Set_Zero_InBlank;
+    procedure Edit_FollowUpChargeExit(Sender: TObject);
+    procedure Edit_RegOPDCardChargeExit(Sender: TObject);
+    procedure Edit_InpatientRegChargeExit(Sender: TObject);
+    procedure Edit_ChargeKeyPress(Sender: TObject; var Key: Char);
+    Procedure SaveData;
+    Procedure NewEntryMode;
+    procedure DBGridDeptDblClick(Sender: TObject);
+    procedure Dblcb_DoctorClick(Sender: TObject);
+    procedure BB_CloseClick(Sender: TObject);
+    procedure le_FreeFollowupDaysExit(Sender: TObject);
+    procedure DBGridDeptDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+      State: TGridDrawState);
+    procedure Edit_DocReferalChargeExit(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+            pb_IsNew: boolean;
+            pf_NEWREGCHARGE,pf_FOLLOWUPCHARGE,pf_INTERFOLLOWUPCHARGE,pf_RegOPDCardCharge,pf_ADMISSONCHARGE : Double;
+            pf_NEWREGTAX,pf_FOLLOWUPTAX, pf_INTERFOLLOWUPTAX, pf_RegOPDCardTAX,pf_ADMISSONTAX,pf_DocRefFOLLOWUPCHARGE,pf_DocRefFollowupTAX : Double;
+
+            pi_DocID : Integer;
+
+            pi_DOCWISECHARGEID : Integer;
+
+            procedure GetDoctorWiseCharge;
+
+    { Public declarations }
+  end;
+
+var
+  Form_DoctorWiseChargeSetup: TForm_DoctorWiseChargeSetup;
+
+implementation
+
+uses Unit_DepartmentSetupNew;
+
+{$R *.dfm}
+
+Procedure SaveRateCharge(DEPCODE, PATIENTTYPE,ISCHARGEWITHSVRTAX,CURRENCY: string; NEWVISITCHARGE, NEWVISITSVRTAX,
+          FOLLOWUPCHARGE,FOLLOWUPSVRTAX,ADMISSIONCHARGE,ADMISSIONSVRTAX,DEWC_REGCHARGE,DEWC_REGSVRTAX: double; FREEFOLLOWUPDAYS: INTEGER); stdcall;
+external 'MidasFunction.bpl';
+
+Procedure UpdateRateCharge(DEPCODE, PATIENTTYPE,ISCHARGEWITHSVRTAX,CURRENCY: string; NEWVISITCHARGE, NEWVISITSVRTAX,
+          FOLLOWUPCHARGE,FOLLOWUPSVRTAX,ADMISSIONCHARGE,ADMISSIONSVRTAX,DEWC_REGCHARGE,DEWC_REGSVRTAX: double; FREEFOLLOWUPDAYS: INTEGER); stdcall;
+external 'MidasFunction.bpl';
+
+procedure TForm_DoctorWiseChargeSetup.BB_CloseClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.Bb_SaveClick(Sender: TObject);
+begin
+     if (Dblcb_Doctor.Text = '') then
+     begin
+          MsgBox(1006, 0, '', '', '');
+          exit;
+     end;
+
+     IF Trim(DBLCB_PatientType.Text)='' Then
+     begin
+          messagedlg('You Must Have to Choose Patient Type.',mtWarning,[mbok],0);
+          DBLCB_PatientType.SetFocus;
+          Exit;
+     end;
+
+     IF Trim(ComboBox_Currency.Text)='' Then
+     begin
+          messagedlg('You Must Have to Choose Currency Type.',mtWarning,[mbok],0);
+          ComboBox_Currency.SetFocus;
+          Exit;
+     end;
+
+
+     IF StrToInt(le_FreeFollowupDays.Text) > 400 Then
+     begin
+          messagedlg('Free Followup Days Cross 400 Days.',mtWarning,[mbok],0);
+          le_FreeFollowupDays.SetFocus;
+          Exit;
+     end;
+
+     if Trim(le_FreeFollowupDays.Text)='' then le_FreeFollowupDays.Text:='0';
+     if Trim(LE_IntermediateFollowupDays.Text)='' then LE_IntermediateFollowupDays.Text:='0';
+
+     Set_Zero_InBlank;
+     Calculate_Tax_And_Amount;
+     savedata;
+     ClearAll(pnl_DepWiseCharge);
+     NewEntryMode;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.Bb_CancelClick(Sender: TObject);
+begin
+     close;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.Calculate_Tax_And_Amount;
+begin
+     IF CB_IncludingServiceTaxCharges.Checked=True Then
+     Begin
+          IF CB_IsChargeRoundOffGEN.Checked=False Then
+          Begin
+               Edit_NewVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_NewRegCharge.Text)-(StrToFloat(Edit_NewRegCharge.Text) / ((StrToFloat(Edit_NewRegTaxPer.Text)/100)+1)),3));
+               pf_NEWREGCHARGE:=GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_NewRegCharge.Text)-StrToFloat(Edit_NewVatAmt.Text),3);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_NewTotalAmount.Text:=FloatToStr(StrToFloat(Edit_NewRegCharge.Text)+StrToFloat(Edit_NewVatAmt.Text))
+               Else
+               Edit_NewTotalAmount.Text:=Edit_NewRegCharge.Text;
+
+
+               Edit_FollowupVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_FollowupCharge.Text)-(StrToFloat(Edit_FollowupCharge.Text) / ((StrToFloat(Edit_FollowupTaxPer.Text)/100)+1)),3));
+               pf_FOLLOWUPCHARGE:=GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_FollowupCharge.Text)-StrToFloat(Edit_FollowupVatAmt.Text),3);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_FollowupTotalAmount.Text:=FloatToStr(StrToFloat(Edit_FollowupCharge.Text)+StrToFloat(Edit_FollowupVatAmt.Text))
+               Else
+               Edit_FollowupTotalAmount.Text:=Edit_FollowupCharge.Text;
+
+               Edit_INTERFollowupVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_INTERFollowupCharge.Text)-(StrToFloat(Edit_INTERFollowupCharge.Text) / ((StrToFloat(Edit_INTERFollowupTaxPer.Text)/100)+1)),3));
+               pf_INTERFOLLOWUPCHARGE:=GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_INTERFollowupCharge.Text)-StrToFloat(Edit_INTERFollowupVatAmt.Text),3);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_INTERFollowupTotalAmount.Text:=FloatToStr(StrToFloat(Edit_INTERFollowupCharge.Text)+StrToFloat(Edit_INTERFollowupVatAmt.Text))
+               Else
+               Edit_INTERFollowupTotalAmount.Text:=Edit_INTERFollowupCharge.Text;
+
+
+               Edit_RegOPDCardVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_RegOPDCardCharge.Text)-(StrToFloat(Edit_RegOPDCardCharge.Text) / ((StrToFloat(Edit_RegOPDCardTaxPer.Text)/100)+1)),3));
+               pf_RegOPDCardCharge:=GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_RegOPDCardCharge.Text)-StrToFloat(Edit_RegOPDCardVatAmt.Text),3);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_RegOPDCardTotalAmount.Text:=FloatToStr(StrToFloat(Edit_RegOPDCardCharge.Text)+StrToFloat(Edit_RegOPDCardVatAmt.Text))
+               Else
+               Edit_RegOPDCardTotalAmount.Text:=Edit_RegOPDCardCharge.Text;
+
+
+               Edit_InpatientRegVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_InpatientRegCharge.Text)-(StrToFloat(Edit_InpatientRegCharge.Text) / ((StrToFloat(Edit_InpatientTaxPer.Text)/100)+1)),3));
+               pf_ADMISSONCHARGE:=GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_InpatientRegCharge.Text)-StrToFloat(Edit_InpatientRegVatAmt.Text),3);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_InpatientRegChargeTotalAmount.Text:=FloatToStr(StrToFloat(Edit_InpatientRegCharge.Text)+StrToFloat(Edit_InpatientRegVatAmt.Text))
+               Else
+               Edit_InpatientRegChargeTotalAmount.Text:=Edit_InpatientRegCharge.Text;
+
+               Edit_DocRefFollowupVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_DocReferalCharge.Text)-(StrToFloat(Edit_DocReferalCharge.Text) / ((StrToFloat(Edit_DocRefFollowupTaxPer.Text)/100)+1)),3));
+               pf_DocRefFOLLOWUPCHARGE:=GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_DocReferalCharge.Text)-StrToFloat(Edit_DocRefFollowupVatAmt.Text),3);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_DocRefFollowupTotAmt.Text:=FloatToStr(StrToFloat(Edit_DocReferalCharge.Text)+StrToFloat(Edit_DocRefFollowupVatAmt.Text))
+               Else
+               Edit_DocRefFollowupTotAmt.Text:=Edit_DocReferalCharge.Text;
+
+
+
+          End
+          Else
+          Begin
+               Edit_NewVatAmt.Text:=FloatToStr(Round(StrToFloat(Edit_NewRegCharge.Text)-(StrToFloat(Edit_NewRegCharge.Text) / ((StrToFloat(Edit_NewRegTaxPer.Text)/100)+1))));
+               pf_NEWREGCHARGE:=StrToFloat(Edit_NewRegCharge.Text)-StrToFloat(Edit_NewVatAmt.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_NewTotalAmount.Text:=FloatToStr(StrToFloat(Edit_NewRegCharge.Text)+StrToFloat(Edit_NewVatAmt.Text))
+               Else
+               Edit_NewTotalAmount.Text:=Edit_NewRegCharge.Text;
+
+               Edit_FollowupVatAmt.Text:=FloatToStr(Round(StrToFloat(Edit_FollowupCharge.Text)-(StrToFloat(Edit_FollowupCharge.Text) / ((StrToFloat(Edit_FollowupTaxPer.Text)/100)+1))));
+               pf_FOLLOWUPCHARGE:=StrToFloat(Edit_FollowupCharge.Text)-StrToFloat(Edit_FollowupVatAmt.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_FollowupTotalAmount.Text:=FloatToStr(StrToFloat(Edit_FollowupCharge.Text)+StrToFloat(Edit_FollowupVatAmt.Text))
+               Else
+               Edit_FollowupTotalAmount.Text:=Edit_FollowupCharge.Text;
+
+               Edit_INTERFollowupVatAmt.Text:=FloatToStr(Round(StrToFloat(Edit_INTERFollowupCharge.Text)-(StrToFloat(Edit_INTERFollowupCharge.Text) / ((StrToFloat(Edit_INTERFollowupTaxPer.Text)/100)+1))));
+               pf_INTERFOLLOWUPCHARGE:=StrToFloat(Edit_INTERFollowupCharge.Text)-StrToFloat(Edit_INTERFollowupVatAmt.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_INTERFollowupTotalAmount.Text:=FloatToStr(StrToFloat(Edit_INTERFollowupCharge.Text)+StrToFloat(Edit_INTERFollowupVatAmt.Text))
+               Else
+               Edit_INTERFollowupTotalAmount.Text:=Edit_INTERFollowupCharge.Text;
+
+               Edit_RegOPDCardVatAmt.Text:=FloatToStr(Round(StrToFloat(Edit_RegOPDCardCharge.Text)-(StrToFloat(Edit_NewRegCharge.Text) / ((StrToFloat(Edit_RegOPDCardTaxPer.Text)/100)+1))));
+               pf_RegOPDCardCharge:=StrToFloat(Edit_RegOPDCardCharge.Text)-StrToFloat(Edit_RegOPDCardVatAmt.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_RegOPDCardTotalAmount.Text:=FloatToStr(StrToFloat(Edit_RegOPDCardCharge.Text)+StrToFloat(Edit_RegOPDCardVatAmt.Text))
+               Else
+               Edit_RegOPDCardTotalAmount.Text:=Edit_RegOPDCardCharge.Text;
+
+               Edit_InpatientRegVatAmt.Text:=FloatToStr(Round(StrToFloat(Edit_InpatientRegCharge.Text)-(StrToFloat(Edit_InpatientRegCharge.Text) / ((StrToFloat(Edit_InpatientRegVatAmt.Text)/100)+1))));
+               pf_ADMISSONCHARGE:=StrToFloat(Edit_InpatientRegCharge.Text)-StrToFloat(Edit_InpatientRegVatAmt.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_InpatientRegChargeTotalAmount.Text:=FloatToStr(StrToFloat(Edit_InpatientRegCharge.Text)+StrToFloat(Edit_InpatientRegVatAmt.Text))
+               Else
+               Edit_InpatientRegChargeTotalAmount.Text:=Edit_InpatientRegCharge.Text;
+
+               Edit_DocRefFollowupVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_DocReferalCharge.Text)-(StrToFloat(Edit_DocReferalCharge.Text) / ((StrToFloat(Edit_DocRefFollowupTaxPer.Text)/100)+1)),3));
+               pf_DocRefFOLLOWUPCHARGE:=GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_DocReferalCharge.Text)-StrToFloat(Edit_DocRefFollowupVatAmt.Text),3);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_DocRefFollowupTotAmt.Text:=FloatToStr(StrToFloat(Edit_DocReferalCharge.Text)+StrToFloat(Edit_DocRefFollowupVatAmt.Text))
+               Else
+               Edit_DocRefFollowupTotAmt.Text:=Edit_DocReferalCharge.Text;
+          End;
+     End
+     Else
+     Begin
+          IF CB_IsChargeRoundOffGEN.Checked=False Then
+          Begin
+               Edit_NewVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_NewRegCharge.Text) * (StrToFloat(Edit_NewRegTaxPer.Text)/100),3));
+               pf_NEWREGCHARGE:=StrToFloat(Edit_NewRegCharge.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_NewTotalAmount.Text:=FloatToStr(StrToFloat(Edit_NewRegCharge.Text)+StrToFloat(Edit_NewVatAmt.Text))
+               Else
+               Edit_NewTotalAmount.Text:=Edit_NewRegCharge.Text;
+
+               Edit_FollowupVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_FollowupCharge.Text) * (StrToFloat(Edit_FollowupTaxPer.Text)/100),3));
+               pf_FOLLOWUPCHARGE:=StrToFloat(Edit_FollowupCharge.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_FollowupTotalAmount.Text:=FloatToStr(StrToFloat(Edit_FollowupCharge.Text)+StrToFloat(Edit_FollowupVatAmt.Text))
+               Else
+               Edit_FollowupTotalAmount.Text:=Edit_FollowupCharge.Text;
+
+               Edit_INTERFollowupVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_INTERFollowupCharge.Text) * (StrToFloat(Edit_INTERFollowupTaxPer.Text)/100),3));
+               pf_INTERFOLLOWUPCHARGE:=StrToFloat(Edit_INTERFollowupCharge.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_INTERFollowupTotalAmount.Text:=FloatToStr(StrToFloat(Edit_INTERFollowupCharge.Text)+StrToFloat(Edit_INTERFollowupVatAmt.Text))
+               Else
+               Edit_INTERFollowupTotalAmount.Text:=Edit_INTERFollowupCharge.Text;
+
+
+               Edit_RegOPDCardVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_RegOPDCardCharge.Text) * (StrToFloat(Edit_RegOPDCardTaxPer.Text)/100),3));
+               pf_RegOPDCardCharge:=StrToFloat(Edit_RegOPDCardCharge.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_RegOPDCardTotalAmount.Text:=FloatToStr(StrToFloat(Edit_RegOPDCardCharge.Text)+StrToFloat(Edit_RegOPDCardVatAmt.Text))
+               Else
+               Edit_RegOPDCardTotalAmount.Text:=Edit_RegOPDCardCharge.Text;
+
+               Edit_InpatientRegVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_InpatientRegCharge.Text) * (StrToFloat(Edit_InpatientTaxPer.Text)/100),3));
+               pf_ADMISSONCHARGE:=StrToFloat(Edit_InpatientRegCharge.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_InpatientRegChargeTotalAmount.Text:=FloatToStr(StrToFloat(Edit_InpatientRegCharge.Text)+StrToFloat(Edit_InpatientRegVatAmt.Text))
+               Else
+               Edit_InpatientRegChargeTotalAmount.Text:=Edit_InpatientRegCharge.Text;
+
+               (*Edit_DocRefFollowupVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_DocReferalCharge.Text)-(StrToFloat(Edit_DocReferalCharge.Text) / ((StrToFloat(Edit_DocRefFollowupTaxPer.Text)/100)+1)),3));
+               pf_DocRefFOLLOWUPCHARGE:=GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_DocReferalCharge.Text)-StrToFloat(Edit_DocRefFollowupVatAmt.Text),3);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_DocRefFollowupTotAmt.Text:=FloatToStr(StrToFloat(Edit_DocReferalCharge.Text)+StrToFloat(Edit_DocRefFollowupVatAmt.Text))
+               Else
+               Edit_DocRefFollowupTotAmt.Text:=Edit_DocReferalCharge.Text;*)
+
+               Edit_DocRefFollowupVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_DocReferalCharge.Text) * (StrToFloat(Edit_DocRefFollowupTaxPer.Text)/100),3));
+               pf_DocRefFOLLOWUPCHARGE:=StrToFloat(Edit_DocReferalCharge.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_DocRefFollowupTotAmt.Text:=FloatToStr(StrToFloat(Edit_DocReferalCharge.Text)+StrToFloat(Edit_DocRefFollowupVatAmt.Text))
+               Else
+               Edit_DocRefFollowupTotAmt.Text:=Edit_DocReferalCharge.Text;
+
+          End
+          Else
+          Begin
+               Edit_NewVatAmt.Text:=FloatToStr(Round(StrToFloat(Edit_NewRegCharge.Text) * (StrToFloat(Edit_NewRegTaxPer.Text)/100)));
+               pf_NEWREGCHARGE:=StrToFloat(Edit_NewRegCharge.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_NewTotalAmount.Text:=FloatToStr(StrToFloat(Edit_NewRegCharge.Text)+StrToFloat(Edit_NewVatAmt.Text))
+               Else
+               Edit_NewTotalAmount.Text:=Edit_NewRegCharge.Text;
+
+
+
+
+               Edit_FollowupVatAmt.Text:=FloatToStr(Round(StrToFloat(Edit_FollowupCharge.Text) * (StrToFloat(Edit_FollowupTaxPer.Text)/100)));
+               pf_FOLLOWUPCHARGE:=StrToFloat(Edit_FollowupCharge.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_FollowupTotalAmount.Text:=FloatToStr(StrToFloat(Edit_FollowupCharge.Text)+StrToFloat(Edit_FollowupVatAmt.Text))
+               Else
+               Edit_FollowupTotalAmount.Text:=Edit_FollowupCharge.Text;
+
+
+               Edit_INTERFollowupVatAmt.Text:=FloatToStr(Round(StrToFloat(Edit_INTERFollowupCharge.Text) * (StrToFloat(Edit_INTERFollowupTaxPer.Text)/100)));
+               pf_INTERFOLLOWUPCHARGE:=StrToFloat(Edit_INTERFollowupCharge.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_INTERFollowupTotalAmount.Text:=FloatToStr(StrToFloat(Edit_INTERFollowupCharge.Text)+StrToFloat(Edit_INTERFollowupVatAmt.Text))
+               Else
+               Edit_INTERFollowupTotalAmount.Text:=Edit_INTERFollowupCharge.Text;
+
+
+
+               Edit_RegOPDCardVatAmt.Text:=FloatToStr(Round(StrToFloat(Edit_RegOPDCardCharge.Text) * (StrToFloat(Edit_RegOPDCardTaxPer.Text)/100)));
+               pf_RegOPDCardCharge:=StrToFloat(Edit_RegOPDCardCharge.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_RegOPDCardTotalAmount.Text:=FloatToStr(StrToFloat(Edit_RegOPDCardCharge.Text)+StrToFloat(Edit_RegOPDCardVatAmt.Text))
+               Else
+               Edit_RegOPDCardTotalAmount.Text:=Edit_RegOPDCardCharge.Text;
+
+
+               Edit_InpatientRegVatAmt.Text:=FloatToStr(Round(StrToFloat(Edit_InpatientRegCharge.Text) * (StrToFloat(Edit_InpatientTaxPer.Text)/100)));
+               pf_ADMISSONCHARGE:=StrToFloat(Edit_InpatientRegCharge.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_InpatientRegChargeTotalAmount.Text:=FloatToStr(StrToFloat(Edit_InpatientRegCharge.Text)+StrToFloat(Edit_InpatientRegVatAmt.Text))
+               Else
+               Edit_InpatientRegChargeTotalAmount.Text:=Edit_InpatientRegCharge.Text;
+
+               Edit_DocRefFollowupVatAmt.Text:=FloatToStr(GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_DocReferalCharge.Text) * (StrToFloat(Edit_DocRefFollowupTaxPer.Text)/100),3));
+               pf_DocRefFOLLOWUPCHARGE:=StrToFloat(Edit_DocReferalCharge.Text);
+               IF CB_IncludingServiceTaxCharges.Checked=False Then
+               Edit_DocRefFollowupTotAmt.Text:=FloatToStr(StrToFloat(Edit_DocReferalCharge.Text)+StrToFloat(Edit_DocRefFollowupVatAmt.Text))
+               Else
+               Edit_DocRefFollowupTotAmt.Text:=Edit_DocReferalCharge.Text;
+          End;
+     End;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.DBGridDeptDblClick(Sender: TObject);
+begin
+     IF qry_DocWiseCharge.FieldByName('DOCWISECHARGEID').AsInteger<=0 Then
+     begin
+          MessageDlg('No Record to Modify.',mtWarning,[mbOK],0);
+          Exit;
+     end;
+
+     pi_DOCWISECHARGEID:=qry_DocWiseCharge.FieldByName('DOCWISECHARGEID').AsInteger;
+
+     pb_IsNew:=False;
+     Dblcb_Doctor.Enabled:=True;
+     Dblcb_Doctor.KeyValue:=qry_DocWiseCharge.FieldByName('DocID').AsInteger;
+     Dblcb_Doctor.Color:=clMenu;
+     Dblcb_Doctor.Enabled:=False;
+
+
+
+     DBLCB_PatientType.Enabled:=True;
+     DBLCB_PatientType.KeyValue:=qry_DocWiseCharge.FieldByName('PatientTypeCode').AsString;
+     DBLCB_PatientType.Color:=clMenu;
+     DBLCB_PatientType.Enabled:=False;
+
+
+     if qry_DocWiseCharge.FieldByName('CURRENCYTYPE').AsString='NRS' then
+     ComboBox_Currency.ItemIndex:=0
+     else
+     ComboBox_Currency.ItemIndex:=1;
+     //ComboBox_Currency.Text:=qry_DocWiseCharge.FieldByName('CURRENCYTYPE').AsString;
+     ComboBox_Currency.SetFocus;
+
+     le_FreeFollowupDays.Text:=IntToStr(qry_DocWiseCharge.FieldByName('FREEFOLLOWUPDAYS').AsInteger);
+
+     if qry_DocWiseCharge.FieldByName('ISCHARGEWITHTAX').AsString='Y' then
+     CB_IncludingServiceTaxCharges.Checked:=True
+     Else
+     CB_IncludingServiceTaxCharges.Checked:=False;
+
+     if qry_DocWiseCharge.FieldByName('ISCHARGEACTIVE').AsString='Y' then
+     CB_IsChargeActive.Checked:=True
+     Else
+     CB_IsChargeActive.Checked:=False;
+
+     IF qry_DocWiseCharge.FieldByName('ISCHARGEWITHTAX').ASString='Y' Then
+     Begin
+          CB_IncludingServiceTaxCharges.Checked:=True;
+
+          Edit_NewRegCharge.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('NewVisitCharge').ASFloat + qry_DocWiseCharge.FieldByName('NewVisitTax').AsFloat);
+          Edit_FollowUpCharge.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('FOLLOWUPCHARGE').ASFloat + qry_DocWiseCharge.FieldByName('FOLLOWUPTAX').AsFloat );
+          //Edit_INTERFollowUpCharge.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('INTERFOLLOWUPCHARGE').ASFloat + qry_DocWiseCharge.FieldByName('INTERFOLLOWUPTAX').AsFloat );
+          Edit_RegOPDCardCharge.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('REGOPDCARDCHARGE').ASFloat + qry_DocWiseCharge.FieldByName('REGOPDCARDTAX').AsFloat);
+          Edit_InpatientRegCharge.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('ADMISSIONCHARGE').ASFloat + qry_DocWiseCharge.FieldByName('ADMISSIONTAX').AsFloat);
+          Edit_DocReferalCharge.Text:= FloatToStr(qry_DocWiseCharge.FieldByName('REFERFOLLOWUPCHARGE').AsFloat+qry_DocWiseCharge.FieldByName('REFERFOLLOWUPTAX').AsFloat);
+
+     End
+     Else
+     Begin
+          CB_IncludingServiceTaxCharges.Checked:=False;
+
+          Edit_NewRegCharge.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('NewVisitCharge').ASFloat);
+          Edit_FollowUpCharge.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('FOLLOWUPCHARGE').ASFloat);
+          //Edit_INTERFollowUpCharge.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('INTERFOLLOWUPCHARGE').ASFloat);
+          Edit_RegOPDCardCharge.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('REGOPDCARDCHARGE').ASFloat);
+          Edit_InpatientRegCharge.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('ADMISSIONCHARGE').ASFloat);
+          Edit_DocReferalCharge.Text:= FloatToStr(qry_DocWiseCharge.FieldByName('REFERFOLLOWUPCHARGE').AsFloat);
+     End;
+
+     pf_NEWREGCHARGE:=qry_DocWiseCharge.FieldByName('NewVisitCharge').ASFloat;
+     Edit_NewTotalAmount.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('NewVisitCharge').AsFloat+qry_DocWiseCharge.FieldByName('NewVisitTax').AsFloat);
+     Edit_NewVatAmt.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('NewVisitTax').AsFloat);
+
+     pf_FOLLOWUPCHARGE:=qry_DocWiseCharge.FieldByName('FOLLOWUPCHARGE').ASFloat;
+     Edit_FollowupTotalAmount.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('FOLLOWUPCHARGE').AsFloat+qry_DocWiseCharge.FieldByName('FOLLOWUPTAX').AsFloat);
+     Edit_FollowupVatAmt.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('FOLLOWUPTAX').AsFloat);
+
+     //pf_INTERFOLLOWUPCHARGE:=qry_DocWiseCharge.FieldByName('INTERFOLLOWUPCHARGE').ASFloat;
+     //Edit_INTERFollowupTotalAmount.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('INTERFOLLOWUPCHARGE').AsFloat+qry_DocWiseCharge.FieldByName('INTERFOLLOWUPTAX').AsFloat);
+     //Edit_INTERFollowupVatAmt.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('INTERFOLLOWUPTAX').AsFloat);
+
+     pf_RegOPDCardCharge:=qry_DocWiseCharge.FieldByName('REGOPDCARDCHARGE').ASFloat;
+     Edit_RegOPDCardTotalAmount.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('REGOPDCARDCHARGE').AsFloat+qry_DocWiseCharge.FieldByName('REGOPDCARDTAX').AsFloat);
+     Edit_RegOPDCardVatAmt.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('REGOPDCARDTAX').AsFloat);
+
+     pf_ADMISSONCHARGE:=qry_DocWiseCharge.FieldByName('ADMISSIONCHARGE').ASFloat;
+     Edit_InpatientRegChargeTotalAmount.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('ADMISSIONCHARGE').AsFloat+qry_DocWiseCharge.FieldByName('ADMISSIONTAX').AsFloat);
+     Edit_InpatientRegVatAmt.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('ADMISSIONTAX').AsFloat);
+
+     pf_DocRefFOLLOWUPCHARGE:=qry_DocWiseCharge.FieldByName('REFERFOLLOWUPCHARGE').ASFloat;
+     Edit_DocRefFollowupTotAmt.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('REFERFOLLOWUPCHARGE').AsFloat+qry_DocWiseCharge.FieldByName('REFERFOLLOWUPTAX').AsFloat);
+     Edit_DocRefFollowupVatAmt.Text:=FloatToStr(qry_DocWiseCharge.FieldByName('REFERFOLLOWUPTAX').AsFloat);
+
+end;
+
+procedure TForm_DoctorWiseChargeSetup.DBGridDeptDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer;
+  Column: TColumn; State: TGridDrawState);
+begin
+     IF qry_DocWiseCharge.FieldByName('IsChargeActive').AsString = 'N' Then
+     begin
+          DBGridDept.Canvas.Font.Color := clRed;
+          DBGridDept.DefaultDrawDataCell(Rect, Column.Field, State);
+     end;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.Dblcb_DoctorClick(
+  Sender: TObject);
+begin
+     if Dblcb_Doctor.Text<>'' then
+     Begin
+          pi_DocID:=Dblcb_Doctor.KeyValue;
+          GetDoctorWiseCharge;
+     End;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.Edit_ChargeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if not (key in ['0'..'9',DecimalSeparator,#8,#13]) then
+     key:=#0;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.Edit_DocReferalChargeExit(
+  Sender: TObject);
+begin
+     Set_Zero_InBlank;
+     Calculate_Tax_And_Amount;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.Edit_FollowUpChargeExit(
+  Sender: TObject);
+begin
+     Set_Zero_InBlank;
+     Calculate_Tax_And_Amount;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.Edit_InpatientRegChargeExit(
+  Sender: TObject);
+begin
+     Set_Zero_InBlank;
+     Calculate_Tax_And_Amount;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.Edit_NewRegChargeExit(Sender: TObject);
+begin
+     Set_Zero_InBlank;
+     Calculate_Tax_And_Amount;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.Edit_RegOPDCardChargeExit(Sender: TObject);
+begin
+     Set_Zero_InBlank;
+     Calculate_Tax_And_Amount;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.FormShow(Sender: TObject);
+begin
+     NewEntryMode;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.SaveData;
+var
+     ls_PATIENTTYPECODE,ls_ISCHARGEWITHSVRTAX,ls_CURRENCYTYPE, ls_ISCHARGEACTIVE: string;
+     li_DOCID,li_DEPID, li_FREEFOLLOWUPDAYS, li_INTERFOLLOWUPDAYS: INTEGER;
+begin
+     li_DOCID:=Dblcb_Doctor.KeyValue;
+     li_DEPID :=Query_Doctor.FieldByName('DEPID').AsInteger;
+     ls_PATIENTTYPECODE:=DBLCB_PatientType.KeyValue;
+
+     if CB_IncludingServiceTaxCharges.Checked=True then
+     ls_ISCHARGEWITHSVRTAX:='Y'
+     Else
+     ls_ISCHARGEWITHSVRTAX:='N';
+
+     if CB_IsChargeActive.Checked=True then
+     ls_ISCHARGEACTIVE:='Y'
+     Else
+     ls_ISCHARGEACTIVE:='N';
+
+     ls_CURRENCYTYPE:=ComboBox_Currency.Text;
+
+     li_FREEFOLLOWUPDAYS:=StrToInt(le_FreeFollowupDays.Text);
+     li_INTERFOLLOWUPDAYS:=StrToInt(LE_IntermediateFollowupDays.Text);
+
+
+     pf_NEWREGTAX:=StrToFloat(Edit_NewVatAmt.Text);
+     pf_FOLLOWUPTAX:=StrToFloat(Edit_FollowupVatAmt.Text);
+     pf_INTERFOLLOWUPTAX:=StrToFloat(Edit_INTERFollowupVatAmt.Text);
+     pf_RegOPDCardTAX:=StrToFloat(Edit_RegOPDCardVatAmt.Text);
+     pf_ADMISSONTAX:=StrToFloat(Edit_InpatientRegVatAmt.Text);
+     pf_DocRefFollowupTAX:=StrToFloat(Edit_DocRefFollowupVatAmt.Text);
+
+
+     if pb_IsNew then
+     SaveDoctorWiseCharge(ls_PATIENTTYPECODE,ls_CURRENCYTYPE,ls_ISCHARGEWITHSVRTAX,ls_ISCHARGEACTIVE,pf_NEWREGCHARGE, pf_NEWREGTAX,
+          pf_FOLLOWUPCHARGE,pf_FOLLOWUPTAX, pf_INTERFOLLOWUPCHARGE,pf_INTERFOLLOWUPTAX, pf_RegOPDCardCharge,pf_RegOPDCardTAX,pf_ADMISSONCHARGE,pf_ADMISSONTAX,pf_DocRefFOLLOWUPCHARGE,pf_DocRefFollowupTAX,
+          li_DocID,li_DEPID, li_FREEFOLLOWUPDAYS, li_INTERFOLLOWUPDAYS)
+     else
+     UpdateDoctorWiseCharge(ls_CURRENCYTYPE,ls_ISCHARGEWITHSVRTAX,ls_ISCHARGEACTIVE,pf_NEWREGCHARGE, pf_NEWREGTAX,
+                    pf_FOLLOWUPCHARGE,pf_FOLLOWUPTAX, pf_INTERFOLLOWUPCHARGE,pf_INTERFOLLOWUPTAX, pf_RegOPDCardCharge,pf_RegOPDCardTAX,pf_ADMISSONCHARGE,pf_ADMISSONTAX,pf_DocRefFOLLOWUPCHARGE,pf_DocRefFollowupTAX,
+                    li_FREEFOLLOWUPDAYS,li_INTERFOLLOWUPDAYS, pi_DOCWISECHARGEID);
+     ShowDoneMessage;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.Set_SvrTax_Percent;
+begin
+     Edit_NewRegTaxPer.Text:=FloatToStr(gf_TaxPercent);
+     Edit_FollowupTaxPer.Text:=FloatToStr(gf_TaxPercent);
+     Edit_InterFollowupTaxPer.Text:=FloatToStr(gf_TaxPercent);
+     Edit_RegOPDCardTaxPer.Text:=FloatToStr(gf_TaxPercent);
+     Edit_InpatientTaxPer.Text:=FloatToStr(gf_TaxPercent);
+     Edit_DocRefFollowupTaxPer.Text:=FloatToStr(gf_TaxPercent);
+end;
+
+procedure TForm_DoctorWiseChargeSetup.Set_Zero_InBlank;
+begin
+     IF Trim(Edit_NewRegCharge.Text)='' Then Edit_NewRegCharge.Text:='0';
+     IF Trim(Edit_FollowUpCharge.Text)='' Then Edit_FollowUpCharge.Text:='0';
+     IF Trim(Edit_INTERFollowUpCharge.Text)='' Then Edit_INTERFollowUpCharge.Text:='0';
+     IF Trim(Edit_RegOPDCardCharge.Text)='' Then Edit_RegOPDCardCharge.Text:='0';
+     IF Trim(Edit_InpatientRegCharge.Text)='' Then Edit_InpatientRegCharge.Text:='0';
+     if Trim(Edit_DocReferalCharge.Text)='' Then Edit_DocReferalCharge.Text:='0';
+     
+end;
+
+procedure TForm_DoctorWiseChargeSetup.GetDoctorWiseCharge;
+begin
+     With qry_DocWiseCharge do
+     begin
+          Close;
+          SQL.Clear;
+          SQL.Add(' Select * From VW_HS_SETUP_DOCWISECHARGE');
+          SQL.Add(' Where DOCID='+IntToStr(pi_DocID));
+          SQL.Add(' Order by DOCNAME,PATIENTTYPECODE');
+          Open;
+     end;
+end;
+
+procedure TForm_DoctorWiseChargeSetup.le_FreeFollowupDaysExit(
+  Sender: TObject);
+begin
+     if Trim(le_FreeFollowupDays.Text)='' then
+     le_FreeFollowupDays.Text:='0';
+end;
+
+Procedure TForm_DoctorWiseChargeSetup.NewEntryMode;
+Begin
+     pb_IsNew:=True;
+     Query_Doctor.Close;
+     Query_Doctor.Open;
+     Dblcb_Doctor.KeyValue:=pi_DocID;
+     Dblcb_Doctor.Enabled:=True;
+     Dblcb_Doctor.Color:=clWhite;
+
+     GetDoctorWiseCharge;
+
+     Query_PatientType.Close;
+     Query_PatientType.Open;
+
+     DBLCB_PatientType.KeyValue:=Query_PatientType.FieldByName('PATY_PatientTypeCode').AsString;
+     DBLCB_PatientType.Enabled:=True;
+     DBLCB_PatientType.Color:=clWhite;
+
+     begin
+          LE_IntermediateFollowupDays.ReadOnly:=True;
+          LE_IntermediateFollowupDays.Enabled:=False;
+          LE_IntermediateFollowupDays.Color:=clWhite;
+
+          Label3.Enabled:=False;
+          Edit_InterFollowUpCharge.Enabled:=False;
+          Edit_InterFollowUpCharge.Color:=clMenu;
+
+          Edit_InterFollowupTaxPer.Enabled:=False;
+          Edit_InterFollowupTaxPer.Color:=clMenu;
+
+          Edit_InterFollowupVatAmt.Enabled:=False;
+          Edit_InterFollowupVatAmt.Color:=clMenu;
+
+          Edit_InterFollowupTotalAmount.Enabled:=False;
+          Edit_InterFollowupTotalAmount.Color:=clMenu;
+     end;
+
+     ComboBox_Currency.ItemIndex:=0;
+
+     Set_SvrTax_Percent;
+     CB_IsChargeActive.Checked:=True;
+
+     Dblcb_Doctor.SetFocus;
+End;
+
+
+
+
+end.

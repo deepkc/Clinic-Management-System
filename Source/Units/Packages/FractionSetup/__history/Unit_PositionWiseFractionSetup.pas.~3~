@@ -1,0 +1,756 @@
+unit Unit_PositionWiseFractionSetup;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+     ExtCtrls, ComCtrls, StdCtrls, Buttons, Grids, DBGrids, DBCtrls, Db, Variants,
+     DBTables, DBAccess, Ora, OraSmart, MemDS, OraError;
+
+type
+     TForm_PositionWiseFractionSetup = class(TForm)
+          Panel1: TPanel;
+          BtnSave: TBitBtn;
+          BtnCancel: TBitBtn;
+          StatusBar1: TStatusBar;
+          PageControl1: TPageControl;
+          TabSheet1: TTabSheet;
+          DBGridCommType: TDBGrid;
+          Edit_FractionRate: TEdit;
+          CB_STD: TCheckBox;
+          Label8: TLabel;
+          Label9: TLabel;
+          Query_TestName: TOraQuery;
+          DS_TestName: TDataSource;
+          DBLCB_TestName: TDBLookupComboBox;
+          Edit_PositionName: TEdit;
+    DS_PositionWiseFraction: TDataSource;
+          Query_Void: TOraQuery;
+          Label1: TLabel;
+          LabelCommAmt: TLabel;
+          Label2: TLabel;
+          Edit_Name: TEdit;
+          SBDelete: TSpeedButton;
+          CB_FixedCommession: TCheckBox;
+          CB_FractionProportional: TCheckBox;
+          Label3: TLabel;
+          Label_TestPrice: TLabel;
+          Edit_FractionAmount: TEdit;
+          Label5: TLabel;
+          Label6: TLabel;
+          Label11: TLabel;
+          Label12: TLabel;
+          Label13: TLabel;
+          Label14: TLabel;
+          CB_CompForFration: TCheckBox;
+          Label10: TLabel;
+          Label15: TLabel;
+          DBLCB_Position: TDBLookupComboBox;
+          SB_mattype: TSpeedButton;
+          Query_Position: TOraQuery;
+          DS_Position: TDataSource;
+          Label16: TLabel;
+          Label_FractionFor: TLabel;
+          CB_DefaultDocPerson: TCheckBox;
+          DBLCB_DefaultDocPos: TDBLookupComboBox;
+          Query_DocPerson: TOraQuery;
+          DS_DocPerosn: TDataSource;
+          SpeedButton1: TSpeedButton;
+          CB_IsActiveParticipant: TCheckBox;
+          SPB_DoctorWiseFrctSetup: TSpeedButton;
+    Query_PositionWiseFraction: TOraQuery;
+          Label_Mode: TLabel;
+          CB_FBInTestPriceInsteadofFrctTotal: TCheckBox;
+          RB_Rate: TRadioButton;
+          RB_Amt: TRadioButton;
+          procedure FormShow(Sender: TObject);
+          procedure BtnCancelClick(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure DBLCB_TestNameClick(Sender: TObject);
+          procedure BtnSaveClick(Sender: TObject);
+          procedure DBGridCommTypeDblClick(Sender: TObject);
+          procedure Edit_FractionRateKeyPress(Sender: TObject; var Key: Char);
+          procedure DBLCB_TestNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure SBDeleteClick(Sender: TObject);
+          procedure Edit_FractionAmountKeyPress(Sender: TObject; var Key: Char);
+          procedure SB_mattypeClick(Sender: TObject);
+          procedure DBLCB_PositionKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure Edit_FractionAmountExit(Sender: TObject);
+          procedure DBLCB_PositionKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_NameKeyPress(Sender: TObject; var Key: Char);
+          procedure CB_DefaultDocPersonClick(Sender: TObject);
+          procedure SpeedButton1Click(Sender: TObject);
+          procedure CB_FixedCommessionClick(Sender: TObject);
+          procedure DBGridCommTypeDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+               State: TGridDrawState);
+          procedure Edit_FractionRateExit(Sender: TObject);
+          procedure SPB_DoctorWiseFrctSetupClick(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure FormDestroy(Sender: TObject);
+          procedure RB_RateClick(Sender: TObject);
+          procedure RB_AmtClick(Sender: TObject);
+     private
+          procedure ReadyForNewData;
+          { Private declarations }
+     public
+          b_IsNew: Boolean;
+          POSITIONWISEFractionID: Integer;
+          pf_TestPrice,pf_TestPriceBFAdj: Double;
+          ps_FractionFor, ps_SystemType2nd: String;
+
+          pf_TotFrctAmt, pf_TotFrctRate: Double;
+
+          pf_FractionAmtStd, pf_FractionRateStd: Double;
+
+          pf_FractionAmtActual, pf_FractionRateActual: Double;
+
+          { Public declarations }
+     end;
+
+var
+     Form_PositionWiseFractionSetup: TForm_PositionWiseFractionSetup;
+
+implementation
+
+uses Fxn, Unit_Message, DM, Unit_Master, Unit_Position, Unit_DoctorWiseFrctSetup;
+{$R *.DFM}
+
+procedure TForm_PositionWiseFractionSetup.FormShow(Sender: TObject);
+begin
+     Query_TestName.Close;
+     Query_TestName.Open;
+
+     Query_Position.Close;
+     Query_Position.Open;
+
+     Query_DocPerson.Close;
+     Query_DocPerson.Open;
+
+     // DBLCB_DefaultDocPos.Top:=89;
+     DBLCB_DefaultDocPos.Left := 76;
+
+     IF DBLCB_TestName.KeyValue <> NULL Then
+          DBLCB_TestNameClick(Sender);
+
+     ReadyForNewData;
+end;
+
+procedure TForm_PositionWiseFractionSetup.BtnCancelClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_PositionWiseFractionSetup.FormCreate(Sender: TObject);
+begin
+     Form_DoctorWiseFrctSetup := TForm_DoctorWiseFrctSetup.Create(Nil);
+end;
+
+procedure TForm_PositionWiseFractionSetup.FormDestroy(Sender: TObject);
+begin
+     Form_DoctorWiseFrctSetup.Free;
+end;
+
+procedure TForm_PositionWiseFractionSetup.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = 27 Then
+          Close;
+     IF Key = VK_F1 Then
+          CB_FixedCommession.Checked := Not(CB_FixedCommession.Checked);
+     IF Key = VK_F2 Then
+          CB_FractionProportional.Checked := Not(CB_FractionProportional.Checked);
+     IF Key = VK_F12 Then
+          BtnSaveClick(Sender);
+end;
+
+procedure TForm_PositionWiseFractionSetup.DBLCB_TestNameClick(Sender: TObject);
+begin
+     IF DBLCB_TestName.KeyValue = NULL Then
+          Exit;
+     With Query_PositionWiseFraction do
+     Begin
+          Close;
+          ParamByName('FractionId').AsInteger := DBLCB_TestName.KeyValue;
+          Open;
+     End;
+     LabelCommAmt.Caption := Query_TestName.FieldByName('FractionAmount').AsString + ' (Rs.)' + ' ( ' + Query_TestName.FieldByName
+       ('FractionRate').AsString + ' (%)' + ' )';
+end;
+
+procedure TForm_PositionWiseFractionSetup.BtnSaveClick(Sender: TObject);
+var
+     lf_StdAmt, lf_TotAmt: Double;
+     ls_Name: String;
+     li_DocId: Integer;
+begin
+     IF (DBLCB_TestName.KeyValue = NULL) or (DBLCB_TestName.KeyValue = 0) Then
+     Begin
+          MessageDlg('Plz. First Select Test Name.', mtInformation, [mbok], 0);
+          DBLCB_TestName.SetFocus;
+          Exit;
+     End;
+
+     IF (CB_FixedCommession.Checked = True) and (DBLCB_DefaultDocPos.KeyValue = NULL) Then
+     Begin
+          MessageDlg('Plz. Choose Doctor/Tech. for Fixed Person(Position) Getting Commession.', mtInformation, [mbok], 0);
+          DBLCB_DefaultDocPos.SetFocus;
+          Exit;
+     End;
+
+     IF DBLCB_Position.KeyValue = NULL Then
+     Begin
+          MessageDlg('Plz. First Select Position.', mtInformation, [mbok], 0);
+          DBLCB_Position.SetFocus;
+          Exit;
+     End;
+
+     IF (Trim(Edit_FractionRate.Text) = '') and (Trim(Edit_FractionAmount.Text) = '') Then
+     Begin
+          MessageDlg('Plz. Put Commession.', mtInformation, [mbok], 0);
+          Edit_FractionRate.SetFocus;
+          Exit;
+     End;
+
+     IF Trim(Edit_FractionAmount.Text) = '' Then
+          Edit_FractionAmount.Text := '0';
+     IF (Trim(Edit_FractionRate.Text) = '') and (StrToFloat(Edit_FractionAmount.Text) > 0) Then
+          Edit_FractionAmountExit(Sender);
+
+     IF DBLCB_DefaultDocPos.KeyValue <> NULL Then
+     Begin
+          li_DocId := DBLCB_DefaultDocPos.KeyValue;
+          ls_Name := DBLCB_DefaultDocPos.Text;
+     End
+     Else
+     Begin
+          li_DocId := 0;
+          ls_Name := '';
+     End;
+
+     IF (StrToFloat(Label_TestPrice.Caption) > 0) and
+       (((StrToFloat(Edit_FractionRate.Text) <= 0) and (StrToFloat(Edit_FractionAmount.Text) > 0)) or
+            ((StrToFloat(Edit_FractionRate.Text) > 0) and (StrToFloat(Edit_FractionAmount.Text) <= 0))) Then
+     Begin
+          IF ((StrToFloat(Edit_FractionRate.Text) <= 0) and (StrToFloat(Edit_FractionAmount.Text) > 0)) Then
+               Edit_FractionAmountExit(Sender)
+          Else
+               Edit_FractionRateExit(Sender);
+     End;
+
+     { IF (CB_FixedCommession.Checked=True) and (Trim(Edit_Name.Text)='') Then
+       Begin
+       MessageDlg('Plz. Put The Name of Fixed Person Getting Fraction.',mtInformation,[mbok],0);
+       Edit_Name.SetFocus;
+       Exit;
+       End; }
+
+     With Query_Void do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select Sum(POWF_FractionRate) as FractionRate,Sum(POWF_FractionAmount) as FractionAmount From ');
+          sql.add(' HS_POWF_POSITIONWISEFRACTION where POWF_FractionId=' + IntToStr(DBLCB_TestName.KeyValue));
+          Open;
+     End;
+
+     IF Query_TestName.FieldByName('ISRATEAMT').AsString = 'R' Then
+     Begin
+          lf_StdAmt := Query_TestName.FieldByName('FractionRate').AsFloat;
+          IF b_IsNew Then
+               lf_TotAmt := Query_Void.FieldByName('FractionRate').AsFloat + StrToFloat(Edit_FractionRate.Text)
+          Else
+               lf_TotAmt := Query_Void.FieldByName('FractionRate').AsFloat + StrToFloat(Edit_FractionRate.Text)
+                 - Query_PositionWiseFraction.FieldByName('FractionRate').AsFloat;
+
+          { IF lf_StdAmt < lf_TotAmt Then
+            Begin
+            MessageDlg('Total Commession Rate  ('+FloatToStr(lf_TotAmt)+')  Excede The Statndard Total  ('+FloatToStr(lf_StdAmt)+')  Commession Rate.',mtWarning,[mbok],0);
+            Edit_FractionRate.SetFocus;
+            Exit;
+            End; }
+     End
+     Else
+     Begin
+          lf_StdAmt := Query_TestName.FieldByName('FractionAmount').AsFloat;
+          IF b_IsNew Then
+               lf_TotAmt := Query_Void.FieldByName('FractionAmount').AsFloat + StrToFloat(Edit_FractionRate.Text)
+          Else
+               lf_TotAmt := Query_Void.FieldByName('FractionAmount').AsFloat + StrToFloat(Edit_FractionRate.Text)
+                 - Query_PositionWiseFraction.FieldByName('FractionAmount').AsFloat;
+     End;
+
+     IF DBLCB_Position.Text = 'SERVICE' Then { Sp. Case For Om Hospital (Service as Part of Operation) }
+     Begin
+          ls_Name := 'SERVICE';
+          CB_FixedCommession.Checked := True;
+          li_DocId := 0;
+     End;
+
+     IF b_IsNew Then
+     Begin
+          POSITIONWISEFractionID := GetMaxId('hs_powf_PositionWiseFraction', 'powf_POSITIONWISEFractionID');
+          With Query_Void do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Insert Into hs_powf_PositionWiseFraction(powf_POSITIONWISEFractionID,powf_FractionId,powf_PositionId,powf_PositionName,powf_Name,powf_DocId,');
+               sql.add(
+                    ' powf_IsDefaultDoc,powf_FractionRate,powf_FractionAmount,powf_FRACTIONRATESTD,powf_FRACTIONAMOUNTSTD,POWF_ISFRCTBREAKINTESTPRICE,powf_ISFIXEDPERSONFORFRACTION,');
+               sql.add(' powf_IsFractionPropWithDisPer,powf_IsCompForFraction,powf_FractionFor,powf_IsActive) Values (' + IntToStr(POSITIONWISEFractionID));
+               sql.add(' ,' + IntToStr(DBLCB_TestName.KeyValue) + ',' + IntToStr(DBLCB_Position.KeyValue));
+               sql.add(' ,' + #39 + DBLCB_Position.Text + #39);
+               sql.add(' ,' + #39 + ls_Name + #39 + ',' + IntToStr(li_DocId));
+               IF CB_DefaultDocPerson.Checked Then
+                    sql.add(' ,''Y''')
+               Else
+                    sql.add(' ,''N''');
+
+               sql.add(' ,' + FloatToStr(pf_FractionRateActual) + ',' + FloatToStr(pf_FractionAmtActual));
+               sql.add(' ,' + FloatToStr(pf_FractionRateStd) + ',' + FloatToStr(pf_FractionAmtStd));
+
+               IF CB_FBInTestPriceInsteadofFrctTotal.Checked = True Then
+                    sql.add(' ,''Y''')
+               Else
+                    sql.add(' ,''N''');
+
+               IF CB_FixedCommession.Checked = True Then
+                    sql.add(' ,''Y''')
+               Else
+                    sql.add(' ,''N''');
+               IF CB_FractionProportional.Checked = True Then
+                    sql.add(' ,''Y''')
+               Else
+                    sql.add(' ,''N''');
+
+               IF CB_CompForFration.Checked = True Then
+                    sql.add(' ,''Y''')
+               Else
+                    sql.add(' ,''N''');
+
+               sql.add(' ,' + #39 + ps_FractionFor + #39);
+               IF CB_IsActiveParticipant.Checked = True Then
+                    sql.add(' ,''Y''')
+               Else
+                    sql.add(' ,''N''');
+               sql.add(' )');
+               // sql.SaveToFile('C:\PositonWise.Txt');
+               ExecSQL;
+          End;
+     End
+     Else
+     Begin
+          With Query_Void do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Update hs_powf_PositionWiseFraction Set ');
+               sql.add(' powf_PositionId=' + IntToStr(DBLCB_Position.KeyValue) + ',');
+               sql.add(' powf_PositionName=' + #39 + DBLCB_Position.Text + #39 + ',');
+               sql.add(' powf_Name=' + #39 + ls_Name + #39 + ',');
+               sql.add(' powf_DocId=' + IntToStr(li_DocId) + ',');
+
+               IF CB_DefaultDocPerson.Checked Then
+                    sql.add(' powf_IsDefaultDoc=''Y''')
+               Else
+                    sql.add(' powf_IsDefaultDoc=''N''');
+
+               // sql.add(' FractionAmount=' + Edit_FractionAmount.Text + ',FractionRate =' + Edit_FractionRate.Text);
+               sql.add(' ,powf_FractionAmount=' + FloatToStr(pf_FractionAmtActual) + ',powf_FractionRate =' + FloatToStr(pf_FractionRateActual));
+               sql.add(' ,powf_FractionAmountStd=' + FloatToStr(pf_FractionAmtStd) + ', powf_FractionRateStd=' + FloatToStr(pf_FractionRateStd));
+
+               IF CB_FBInTestPriceInsteadofFrctTotal.Checked = True Then
+                    sql.add(' ,POWF_ISFRCTBREAKINTESTPRICE=''Y''')
+               Else
+                    sql.add(' ,POWF_ISFRCTBREAKINTESTPRICE=''N''');
+
+               IF CB_FixedCommession.Checked = True Then
+                    sql.add(' ,POWF_ISFIXEDPERSONFORFRACTION=''Y''')
+               Else
+                    sql.add(' ,POWF_ISFIXEDPERSONFORFRACTION=''N''');
+               IF CB_FractionProportional.Checked = True Then
+                    sql.add(' ,POWF_IsFractionPropWithDisPer=''Y''')
+               Else
+                    sql.add(' ,POWF_IsFractionPropWithDisPer=''N''');
+
+               IF CB_CompForFration.Checked = True Then
+                    sql.add(' ,POWF_IsCompForFraction=''Y''')
+               Else
+                    sql.add(' ,POWF_IsCompForFraction=''N''');
+
+               IF CB_IsActiveParticipant.Checked = True Then
+                    sql.add(' ,POWF_IsActive=''Y''')
+               Else
+                    sql.add(' ,POWF_IsActive=''N''');
+
+               sql.add(' where POWF_POSITIONWISEFractionID=' + IntToStr(POSITIONWISEFractionID));
+               ExecSQL;
+          End;
+     End;
+
+     ShowDoneMessage;
+
+     Query_PositionWiseFraction.Close;
+     Query_PositionWiseFraction.Open;
+     Query_PositionWiseFraction.Locate('POSITIONWISEFractionID', POSITIONWISEFractionID, []);
+
+     ReadyForNewData;
+end;
+
+procedure TForm_PositionWiseFractionSetup.RB_AmtClick(Sender: TObject);
+begin
+     IF RB_Amt.Checked = True Then
+     Begin
+          Edit_FractionAmount.Color := clWhite;
+          Edit_FractionAmount.ReadOnly := False;
+
+          Edit_FractionRate.Color := cl3DLight;
+          Edit_FractionRate.ReadOnly := True;
+     End;
+end;
+
+procedure TForm_PositionWiseFractionSetup.RB_RateClick(Sender: TObject);
+begin
+     IF RB_Rate.Checked = True Then
+     Begin
+          Edit_FractionRate.Color := clWhite;
+          Edit_FractionRate.ReadOnly := False;
+
+          Edit_FractionAmount.Color := cl3DLight;
+          Edit_FractionAmount.ReadOnly := True;
+     End;
+end;
+
+procedure TForm_PositionWiseFractionSetup.ReadyForNewData;
+Begin
+     b_IsNew := True;
+
+     Label_Mode.Caption := 'New Mode';
+
+     DBLCB_Position.KeyValue := NULL;
+
+     Edit_PositionName.Text := '';
+     Edit_FractionRate.Text := '';
+
+     Edit_FractionAmount.Text := '';
+     Edit_Name.Text := '';
+     CB_DefaultDocPerson.Checked := False;
+     CB_FixedCommession.Checked := False;
+     CB_FractionProportional.Checked := False;
+     CB_CompForFration.Checked := False;
+     DBLCB_Position.SetFocus;
+End;
+
+procedure TForm_PositionWiseFractionSetup.DBGridCommTypeDblClick(Sender: TObject);
+begin
+     b_IsNew := False;
+     Label_Mode.Caption := 'Edit Mode';
+     DBLCB_Position.SetFocus;
+     POSITIONWISEFractionID := Query_PositionWiseFraction.FieldByName('POSITIONWISEFractionID').AsInteger;
+     DBLCB_TestName.KeyValue := Query_PositionWiseFraction.FieldByName('FractionId').AsInteger;
+     DBLCB_Position.KeyValue := Query_PositionWiseFraction.FieldByName('PositionId').AsInteger;
+
+     IF Query_PositionWiseFraction.FieldByName('IsDefaultDoc').AsString = 'Y' Then
+          CB_DefaultDocPerson.Checked := True
+     Else
+          CB_DefaultDocPerson.Checked := False;
+
+     IF Query_PositionWiseFraction.FieldByName('ISFIXEDPERSONFORFRACTION').AsString = 'Y' Then
+          DBLCB_DefaultDocPos.KeyValue := Query_PositionWiseFraction.FieldByName('DocId').AsInteger
+     Else
+          DBLCB_DefaultDocPos.KeyValue := NULL;
+
+     pf_FractionRateActual := Query_PositionWiseFraction.FieldByName('FractionRate').AsFloat;
+     Edit_FractionAmount.Text := Query_PositionWiseFraction.FieldByName('FractionAmount').AsString;
+     pf_FractionAmtActual := Query_PositionWiseFraction.FieldByName('FractionAmount').AsFloat;
+
+     pf_FractionRateStd := Query_PositionWiseFraction.FieldByName('FractionRateStd').AsFloat;
+     pf_FractionAmtStd := Query_PositionWiseFraction.FieldByName('FractionAmountStd').AsFloat;
+
+     IF Query_PositionWiseFraction.FieldByName('ISFRACTIONBREAKINTESTPRICE').AsString = 'Y' Then
+     Begin
+          CB_FBInTestPriceInsteadofFrctTotal.Checked := True;
+          Edit_FractionRate.Text := Query_PositionWiseFraction.FieldByName('FractionRate').AsString;
+     End
+     Else
+     Begin
+          CB_FBInTestPriceInsteadofFrctTotal.Checked := False;
+          Edit_FractionRate.Text := Query_PositionWiseFraction.FieldByName('FractionRateStd').AsString;
+     End;
+
+     IF Query_PositionWiseFraction.FieldByName('ISFIXEDPERSONFORFRACTION').AsString = 'Y' Then
+          CB_FixedCommession.Checked := True
+     Else
+          CB_FixedCommession.Checked := False;
+
+     IF Query_PositionWiseFraction.FieldByName('ISFRACTIONPROPWITHDISPER').AsString = 'Y' Then
+          CB_FractionProportional.Checked := True
+     Else
+          CB_FractionProportional.Checked := False;
+
+     IF Query_PositionWiseFraction.FieldByName('ISCOMPFORFRACTION').AsString = 'Y' Then
+          CB_CompForFration.Checked := True
+     Else
+          CB_CompForFration.Checked := False;
+
+     IF Query_PositionWiseFraction.FieldByName('IsActive').AsString = 'Y' Then
+     CB_IsActiveParticipant.Checked:=True
+     Else
+     CB_IsActiveParticipant.Checked:=False;
+end;
+
+procedure TForm_PositionWiseFractionSetup.Edit_FractionRateKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_FractionRate, Key);
+     Key := Key;
+end;
+
+procedure TForm_PositionWiseFractionSetup.DBLCB_TestNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Delete Then
+     Begin
+          DBLCB_TestName.KeyValue := NULL;
+          Query_PositionWiseFraction.Close;
+     End;
+end;
+
+procedure TForm_PositionWiseFractionSetup.SBDeleteClick(Sender: TObject);
+begin
+     IF MessageDlg('Are You Sure To Delete Position Wise Commession SetUp ?', mtConfirmation, [mbYes, MBNo], 0) = mrYes Then
+     Begin
+          With Query_Void do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select * From FractionDetail where POSITIONWISEFractionID=' + IntToStr(Query_PositionWiseFraction.FieldByName
+                           ('POSITIONWISEFractionID').AsInteger));
+               Open;
+               IF RecordCount > 0 Then
+               Begin
+                    MessageDlg('Sorry ! You Cannot Delete This Setup Because It Is Already Used In Doctor Fraction.', mtWarning, [mbok], 0);
+                    Exit;
+               End;
+          End;
+
+          With Query_Void do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Delete From PositionWiseFraction where');
+               sql.add(' POSITIONWISEFractionID=' + IntToStr(Query_PositionWiseFraction.FieldByName('POSITIONWISEFractionID').AsInteger));
+               ExecSQL;
+          End;
+
+          With Query_PositionWiseFraction do
+          Begin
+               Close;
+               ParamByName('FractionId').AsInteger := DBLCB_TestName.KeyValue;
+               Open;
+          End;
+     End;
+end;
+
+procedure TForm_PositionWiseFractionSetup.Edit_FractionAmountKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #13 Then
+          Edit_FractionAmountExit(Sender);
+
+     IF Key in [#8] Then
+          Exit;
+     AvoidMultipleDecimal(Edit_FractionAmount, Key);
+     Key := Key;
+end;
+
+procedure TForm_PositionWiseFractionSetup.SB_mattypeClick(Sender: TObject);
+begin
+     With Form_Position Do
+     Begin
+          Try
+               Form_Position := TForm_Position.Create(Application);
+               ShowModal;
+          Finally
+               Free;
+          End;
+     End;
+     Query_Position.Close;
+     Query_Position.Open;
+end;
+
+procedure TForm_PositionWiseFractionSetup.DBLCB_PositionKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Delete Then
+          DBLCB_Position.KeyValue := NULL;
+end;
+
+procedure TForm_PositionWiseFractionSetup.Edit_FractionAmountExit(Sender: TObject);
+begin
+     IF Trim(Edit_FractionAmount.Text) = '' Then
+          Edit_FractionAmount.Text := '0';
+
+     IF (DBLCB_TestName.KeyValue <> NULL) and (pf_TestPrice > 0) and (Trim(Edit_FractionAmount.Text) <> '') Then
+     Begin
+          if RB_Amt.Checked = True then
+          Begin
+               if CB_FBInTestPriceInsteadofFrctTotal.Checked = True then
+               Edit_FractionRate.Text := FormatFloat('0.00000', ((StrToFloat(Edit_FractionAmount.Text) / pf_TestPrice) * 100))
+               Else
+               Begin
+                    Edit_FractionRate.Text := FormatFloat('0.00000', ((StrToFloat(Edit_FractionAmount.Text) / pf_TotFrctAmt) * 100));
+                    pf_FractionRateStd := StrToFloat(Edit_FractionRate.Text);
+                    pf_FractionRateActual := ((StrToFloat(Edit_FractionAmount.Text) / pf_TestPrice) * 100);
+               End;
+          End;
+     End
+     Else
+     Begin
+          if (pf_TestPrice=0) and (RB_Amt.Checked=True) then
+          Begin
+               MessageDlg('Sorry ! Test Price is Zero(0). So Fraction Couldn''t Break Down In Amount. Only Posible In Percent(%).',mtWarning,[mbok],0);
+               Edit_FractionAmount.Text:='0';
+               RB_Rate.Checked:=True;
+               Edit_FractionRate.SetFocus;
+               Exit;
+          End;
+     End;
+end;
+
+procedure TForm_PositionWiseFractionSetup.DBLCB_PositionKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF (Key = #13) and (DBLCB_Position.KeyValue <> NULL) Then
+          Edit_Name.SetFocus;
+end;
+
+procedure TForm_PositionWiseFractionSetup.Edit_NameKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #13 Then
+          CB_FixedCommession.SetFocus;
+end;
+
+procedure TForm_PositionWiseFractionSetup.CB_DefaultDocPersonClick(Sender: TObject);
+begin
+     { IF CB_DefaultDocPerson.Checked=True Then
+       Begin
+       DBLCB_DefaultDocPos.Visible:=True;
+       DBLCB_DefaultDocPos.Top:=89;
+       DBLCB_DefaultDocPos.Left:=76;
+       Edit_Name.TabStop:=False;
+       Edit_Name.ReadOnly:=True;
+       End
+       Else
+       Begin
+       DBLCB_DefaultDocPos.Visible:=False;
+       Edit_Name.TabStop:=True;
+       Edit_Name.ReadOnly:=False;
+       End; }
+end;
+
+procedure TForm_PositionWiseFractionSetup.SpeedButton1Click(Sender: TObject);
+begin
+     //
+end;
+
+procedure TForm_PositionWiseFractionSetup.CB_FixedCommessionClick(Sender: TObject);
+begin
+     IF CB_FixedCommession.Checked = True Then
+     Begin
+          Query_DocPerson.Close;
+          Query_DocPerson.Open;
+          DBLCB_DefaultDocPos.Enabled := True;
+     End
+     Else
+     Begin
+          Query_DocPerson.Close;
+          DBLCB_DefaultDocPos.Enabled := False;
+     End;
+end;
+
+procedure TForm_PositionWiseFractionSetup.DBGridCommTypeDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer;
+     Column: TColumn; State: TGridDrawState);
+begin
+     IF Query_PositionWiseFraction.FieldByName('IsActive').AsString = 'F' Then
+     Begin
+          DBGridCommType.Canvas.Font.Color := clRed;
+          DBGridCommType.DefaultDrawDataCell(Rect, Column.Field, State);
+     End;
+end;
+
+procedure TForm_PositionWiseFractionSetup.Edit_FractionRateExit(Sender: TObject);
+begin
+     IF Trim(Edit_FractionRate.Text) = '' Then
+          Edit_FractionRate.Text := '0';
+
+     IF (DBLCB_TestName.KeyValue <> NULL) and (pf_TestPrice > 0) and (Trim(Edit_FractionRate.Text) <> '') Then
+     Begin
+          IF Trim(Edit_FractionAmount.Text) = '' Then
+               Edit_FractionAmount.Text := '0';
+          // Edit_FractionRate.Text:=FormatFloat('0.00000',((StrToFloat(Edit_FractionAmount.Text)/pf_TestPrice)*100));
+
+          if CB_FBInTestPriceInsteadofFrctTotal.Checked = True then
+          Begin
+               IF Abs((pf_TestPrice * (StrToFloat(Edit_FractionRate.Text)) / 100) - StrToFloat(Edit_FractionAmount.Text)) > 0.5 Then
+                    Edit_FractionAmount.Text := FormatFloat('0.00000', (pf_TestPrice * (StrToFloat(Edit_FractionRate.Text)) / 100));
+               pf_FractionAmtActual := StrToFloat(Edit_FractionAmount.Text);
+               pf_FractionAmtStd := pf_FractionAmtActual;
+
+               // --
+               if RB_Rate.Checked=True then
+               Begin
+                    pf_FractionRateActual := StrToFloat(Edit_FractionRate.Text);
+                    pf_FractionRateStd := pf_FractionRateActual;
+               End;
+          End
+          Else
+          Begin
+               IF Abs((pf_TotFrctAmt * (StrToFloat(Edit_FractionRate.Text)) / 100) - StrToFloat(Edit_FractionAmount.Text)) > 0.5 Then
+                    Edit_FractionAmount.Text := FormatFloat('0.00000', (pf_TotFrctAmt * (StrToFloat(Edit_FractionRate.Text)) / 100));
+               pf_FractionAmtActual := StrToFloat(Edit_FractionAmount.Text);
+               pf_FractionAmtStd := ((pf_TotFrctAmt * (StrToFloat(Edit_FractionRate.Text)) / 100));
+
+               pf_FractionRateStd := GetNoOfDecimalPartOfFloatNum((((StrToFloat(Edit_FractionAmount.Text) / pf_TotFrctAmt) * 100)), 2);
+               pf_FractionRateActual := ((StrToFloat(Edit_FractionAmount.Text) / pf_TestPrice) * 100);
+
+          End;
+     End
+     Else
+     Begin
+          IF (pf_TestPrice=0) and (RB_Rate.Checked=True) Then
+          Begin
+               if CB_FBInTestPriceInsteadofFrctTotal.Checked=False then
+               Begin
+                    pf_FractionRateStd := StrToFloat(Edit_FractionRate.Text);
+                    pf_FractionRateActual := GetNoOfDecimalPartOfFloatNum((pf_TotFrctRate * StrToFloat(Edit_FractionRate.Text))/100,3);
+               End
+               Else
+               Begin
+                    pf_FractionRateStd := StrToFloat(Edit_FractionRate.Text);
+                    pf_FractionRateActual := StrToFloat(Edit_FractionRate.Text);
+               End;
+          End;
+     End;
+end;
+
+procedure TForm_PositionWiseFractionSetup.SPB_DoctorWiseFrctSetupClick(Sender: TObject);
+begin
+     With Form_DoctorWiseFrctSetup Do
+     Begin
+          DBLCB_TestName.KeyValue := Self.DBLCB_TestName.KeyValue;
+          DBLCB_TestName.Enabled := False;
+
+          Label_TestPrice.Caption := Self.Label_TestPrice.Caption;
+          Label_FractionFor.Caption := Self.Label_FractionFor.Caption;
+
+          DBLCB_Position.KeyValue := Self.Query_PositionWiseFraction.FieldByName('PositionId').AsInteger;
+          DBLCB_Position.Color := clMenu;
+          DBLCB_Position.Enabled := False;
+
+          pi_POSITIONWISEFractionID := Self.Query_PositionWiseFraction.FieldByName('POSITIONWISEFractionID').AsInteger;
+          Label_Percent.Caption := Self.Query_PositionWiseFraction.FieldByName('FractionRate').AsString;
+          Label_Amt.Caption := Self.Query_PositionWiseFraction.FieldByName('FractionAmount').AsString;
+
+          pf_TestPrice := Self.pf_TestPrice;
+          ps_FractionFor := Self.ps_FractionFor;
+          ShowModal;
+     End;
+end;
+
+end.

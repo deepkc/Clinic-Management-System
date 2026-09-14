@@ -1,0 +1,2 @@
+select doct_docname as docname from hs_doct_Doctor Where doct_DocCode in (Select DocCode from cancer_user.patienttest
+Where PatientTestID=12)

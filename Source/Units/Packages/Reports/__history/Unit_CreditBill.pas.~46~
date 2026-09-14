@@ -1,0 +1,1002 @@
+unit Unit_CreditBill;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+     DBCtrls, OleCtrls, DateEditXControl_TLB, StdCtrls, serverdate, Buttons,
+     ExtCtrls,Db, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, ComCtrls,variants;
+
+type
+     TForm_CreditBill = class(TForm)
+          Panel1: TPanel;
+          Panel2: TPanel;
+          Bevel1: TBevel;
+          BitBtnPreview: TBitBtn;
+          BitBtnExcel: TBitBtn;
+          BitBtnCancel: TBitBtn;
+          Label1: TLabel;
+          DateEditX_FromDate: TDateEditX;
+          Label2: TLabel;
+          DateEditX_ToDate: TDateEditX;
+          Label_Identification: TLabel;
+          CMBReceivable: TDBLookupComboBox;
+          QuerCreditParty: TOraQuery;
+          DataSourceCreditParty: TDataSource;
+          StatusBar1: TStatusBar;
+          RadioButton_OPCollection: TRadioButton;
+          RadioButton_IPCollection: TRadioButton;
+          QueryCRBill: TOraQuery;
+          QueryCRBillBILLDATE: TStringField;
+          QueryCRBillBILLNO: TStringField;
+          QueryCRBillPATIENTID: TFloatField;
+          QueryCRBillName: TStringField;
+          QueryCRBillMODIFYBY: TFloatField;
+          QueryCRBillRATETYPE: TStringField;
+          QueryCRBillTOTAL: TFloatField;
+          QueryCRBillDISCOUNT: TFloatField;
+          QueryCRBillVATAMT: TFloatField;
+          QueryCRBillNETTOTAL: TFloatField;
+          QueryCRBillUserName: TStringField;
+          QueryCRMETotal: TOraQuery;
+          QueryCRMETotalTOTAL: TFloatField;
+          QueryCRMETotalDISCOUNT: TFloatField;
+          QueryCRMETotalVATAMT: TFloatField;
+          QueryCRMETotalNETTOTAL: TFloatField;
+          Query1: TOraQuery;
+          QueryName: TOraQuery;
+          QueryMEBill: TOraQuery;
+          QueryMEBillBILLDATE: TStringField;
+          QueryMEBillBILLNO: TStringField;
+          QueryMEBillPATIENTID: TFloatField;
+          QueryMEBillname: TStringField;
+          QueryMEBillMODIFYBY: TFloatField;
+          QueryMEBillRATETYPE: TStringField;
+          QueryMEBillTOTAL: TFloatField;
+          QueryMEBillDISCOUNT: TFloatField;
+          QueryMEBillVATAMT: TFloatField;
+          QueryMEBillNETTOTAL: TFloatField;
+          QueryMEBillUserName: TStringField;
+          QueryCRMaster: TOraQuery;
+          DataSourceCRMaster: TDataSource;
+          CheckBoxReceivableParty: TCheckBox;
+          Query_SubProcess: TOraQuery;
+          Query_Process: TOraQuery;
+          Label3: TLabel;
+          DBCommunity: TDBLookupComboBox;
+          DSCommunity: TDataSource;
+          QryCommunity: TOraQuery;
+          RadioButton_IPOP: TRadioButton;
+          RGCreditOption: TRadioGroup;
+          Query_Blank: TOraQuery;
+          CheckBoxMedicare: TCheckBox;
+          BtnFrom: TSpeedButton;
+          BtnTo: TSpeedButton;
+          RGReportOption: TRadioGroup;
+    Table_InptRevenueList: TTable;
+    TblCRBill: TTable;
+    Query_Temp: TQuery;
+          procedure BitBtnCancelClick(Sender: TObject);
+          procedure BitBtnExcelClick(Sender: TObject);
+          procedure BitBtnPreviewClick(Sender: TObject);
+          procedure BitBtn_FromDateClick(Sender: TObject);
+          procedure FormShow(Sender: TObject);
+          procedure BitBtn_ToDateClick(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure FormDestroy(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word;
+               Shift: TShiftState);
+          procedure CheckBoxReceivablePartyClick(Sender: TObject);
+          procedure CheckBoxMedicareClick(Sender: TObject);
+          procedure CMBReceivableKeyDown(Sender: TObject; var Key: Word;
+               Shift: TShiftState);
+          procedure CreateTempTable;
+          procedure RadioButton_IPCollectionClick(Sender: TObject);
+          procedure RadioButton_OPCollectionClick(Sender: TObject);
+          procedure DBCommunityClick(Sender: TObject);
+          procedure CreateTempCreditBill;
+          procedure PostDataIntoTempTable;
+          procedure PharmacyIncomeDetail;
+          function IsCreditpaid(BillNo: String): Boolean;
+          procedure BtnFromClick(Sender: TObject);
+          procedure BtnToClick(Sender: TObject);
+     private
+          function IsDischargeBill(BillNo: String; InPatientID: Integer)
+            : Boolean;
+          { Private declarations }
+     public
+          b_SendToExcel: Boolean;
+          pf_Deposit: Double;
+          { Public declarations }
+     end;
+
+var
+     Form_CreditBill: TForm_CreditBill;
+
+implementation
+
+uses Fxn, UnitSendToExcel, UnitReportCreditNew, UnitReportCreditReceivable,DM
+     { , UnitReportCredit } ;
+{$R *.DFM}
+
+procedure TForm_CreditBill.CreateTempTable;
+Begin
+     with Table_InptRevenueList do
+     Begin
+          DatabaseName := gs_TempPath;
+          Close;
+          TableName := 'IPCreditReport.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('PatientId', ftInteger);
+          FieldDefs.Add('InPatientId', ftInteger);
+          FieldDefs.Add('SchemeId', ftInteger);
+          FieldDefs.Add('Scheme', ftString, 100);
+          FieldDefs.Add('Name', ftString, 50);
+          FieldDefs.Add('MemberNo', ftString, 15);
+          FieldDefs.Add('BillNo', ftString, 20);
+          FieldDefs.Add('BillDate', ftString, 10);
+          FieldDefs.Add('InptDate', ftString, 10);
+          FieldDefs.Add('DisDate', ftString, 10);
+          FieldDefs.Add('GrossAmt', ftFloat);
+          FieldDefs.Add('FreeConAmt', ftFloat);
+          FieldDefs.Add('HSTax', ftFloat);
+          FieldDefs.Add('NetAmount', ftFloat);
+          FieldDefs.Add('DepositAmt', ftFloat);
+          FieldDefs.Add('PaidAmt', ftFloat);
+          FieldDefs.Add('DueAmt', ftFloat);
+          FieldDefs.Add('RefundAmt', ftFloat);
+          FieldDefs.Add('RemainingAmt', ftFloat);
+          IndexDefs.Clear;
+          CreateTable;
+     End;
+End;
+
+procedure TForm_CreditBill.BitBtnCancelClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_CreditBill.BitBtnPreviewClick(Sender: TObject);
+var
+     lf_TotMedCharge: Double;
+     ls_ReportTitle: String;
+begin
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     BtnFrom.Caption := gs_DateCaption;
+     BtnTo.Caption := gs_DateCaption;
+     gs_From := DateEditX_FromDate.text;
+     gs_to := DateEditX_ToDate.text;
+     DateEditX_FromDate.SystemOfDate := 0;
+     DateEditX_ToDate.SystemOfDate := 0;
+     BtnFrom.Caption := 'BS';
+     BtnTo.Caption := 'BS';
+
+     { IF RadioButton_OPCollection.Checked=True Then
+       Begin }
+     IF (CheckBoxReceivableParty.Checked = False) and (CheckBoxMedicare.Checked = False) Then
+     Begin
+          CreateTempCreditBill;
+          PostDataIntoTempTable;
+          With FormReportCreditNew Do { Receivable Party + Medicare }
+          Begin
+               if RGReportOption.ItemIndex = 0 then
+               Begin
+                    With Qry_summaryMaster do
+                    Begin
+                         Close;
+                         Session:=dm_Hospital.DB;
+                         Sql.Clear;
+                         sql.Add('Select Distinct BIDE_CommunityID COMMUNITYID, (Select COMM_community from HS_COMM_COMMUNITY where COMM_communityid=BD.BIDE_communityid) Community');
+                         sql.Add('from  HS_BIDE_billdetail BD where (BIDE_BillDate>=' + Quotedstr(gs_From)+' AND BIDE_BillDate<=' + Quotedstr(gs_to)+ ')');
+                         if DBCommunity.KeyValue<>Null then
+                              sql.Add('and BIDE_CommunityID='+inttostr(DBCommunity.KeyValue));
+                         sql.Add('and BIDE_communityid>0 Order By Community');
+                         Open;
+                    End;
+                    With Qry_summaryDetail Do
+                    Begin
+                         Close;
+                         Session:=dm_Hospital.DB;
+                         Sql.Clear;
+                         Sql.Add('Select Schemeid SCHEMEID,scheme SCHEME,sum(Total)total,Sum(Discount)Discount,Sum(Vatamt)vatamt,sum(nettotal)nettotal from (');
+                         Sql.Add('Select BIDE_SchemeID SCHEMEID,(Select SCHE_Scheme From HS_SCHE_Scheme Where SCHE_SchemeID=BD.BIDE_SchemeID)Scheme');
+                         Sql.Add(',Sum(BIDE_qty*BIDE_Amount) as Total,sum((BIDE_qty*BIDE_Amount)*(BIDE_DISPER/100)) as Discount,Sum(BIDE_VatAmt*BIDE_Qty) as VatAmt');
+                         Sql.Add(',Sum(((BIDE_Qty*BIDE_Amount)+BIDE_VatAmt*BIDE_Qty)-(BIDE_Qty*BIDE_Amount*BIDE_DISPER/100)) as NetTotal');
+                         Sql.Add('From HS_BIDE_BillDetail BD Where BIDE_PayType In(''CREDIT'',''REFUND'')');
+                         If RadioButton_OPCollection.Checked = True Then
+                         Sql.Add('And BIDE_BillType In(''O'',''B'')')
+                         Else If RadioButton_IPCollection.Checked = True Then
+                         Sql.Add('And BIDE_BillType In(''IP'',''A'')')
+                         Else
+                         Sql.Add('AND BIDE_BillType In (''B'',''O'',''IP'',''A'')');
+                         If RGCreditOption.ItemIndex = 0 Then
+                         Sql.add(' And NVL(BIDE_IsCrPaid,''N'')<>''Y''')
+                         Else If RGCreditOption.ItemIndex = 1 Then
+                         Sql.Add( ' And BIDE_IsCrPaid=''Y''')
+                         Else
+                         Sql.add(' And ''AniD''=''AniD''');
+                         Sql.Add('And (BIDE_BillNo Like ''PR%''  or BIDE_BillNo Like ''CR%'' Or BIDE_BillNo Like ''RF%'')');
+                         Sql.Add(' And (BIDE_BillDate>=' + Quotedstr(gs_From)+' AND BIDE_BillDate<=' + Quotedstr(gs_to)+ ')');
+                         Sql.Add('And BIDE_Communityid=:Communityid');
+                         Sql.Add('And BIDE_Amount > 0 And (BIDE_BillNo Like ''CR%'' Or BIDE_BillNo Like ''RF%'')');
+                         Sql.Add('Group by BIDE_schemeid');
+                         Sql.Add('Union');
+                         Sql.Add('Select REDE_SchemeID SCHEMEID,(Select SCHE_Scheme From HS_SCHE_Scheme Where SCHE_SchemeID=RD.REDE_SchemeID)Scheme');
+                         Sql.Add(' ,-Sum(REDE_qty*REDE_Amount) as Total,-sum((REDE_qty*REDE_Amount)*(REDE_DISPER/100)) as Discount,-Sum(REDE_VatAmt*REDE_Qty) as VatAmt');
+                         Sql.Add(' ,-Sum(((REDE_Qty*REDE_Amount)+REDE_VatAmt*REDE_Qty)-(REDE_Qty*REDE_Amount*REDE_DISPER/100)) as NetTotal');
+                         Sql.Add(' From HS_REDE_refunddetail RD Where REDE_PayType In(''CREDIT'',''REFUND'')');
+                          If RadioButton_OPCollection.Checked = True Then
+                         Sql.Add('And REDE_BillType In(''O'',''B'')')
+                         Else If RadioButton_IPCollection.Checked = True Then
+                         Sql.Add('And REDE_BillType In(''IP'',''A'')')
+                         Else
+                         Sql.Add('AND REDE_BillType In (''B'',''O'',''IP'',''A'')');
+                         Sql.Add(' And (REDE_REFUNDDATE>=' + Quotedstr(gs_From)+' AND REDE_REFUNDDATE<=' + Quotedstr(gs_to)+ ')');
+                         Sql.Add('And REDE_Communityid=:Communityid');
+                         Sql.Add(' And REDE_billdetailid in (Select BIDE_billdetailid from HS_BIDE_billdetail where BIDE_billdetailid=RD.REDE_billdetailid and REDE_Refundbillno like ''CR%'')');
+                         Sql.Add(' And REDE_Amount > 0 And (REDE_RefundBillNo Like ''CR%'' Or REDE_RefundBillNo Like ''RF%'')');
+                         Sql.Add(' Group by REDE_SchemeID)');
+                         Sql.Add(' group by Schemeid,Scheme');
+                         //sql.SaveToFile('C:\detail.txt');
+                         Open;
+                    End;
+                    QRLabel67.Caption:=gs_From;
+                    QRLabel77.Caption:=gs_to;
+                    QRLabel79.Caption:=serverdate.TodaysDate;
+                    QuickRep3.Preview;
+                    Exit;
+               End;
+               With QryMaster Do
+               Begin
+                    Close;
+                    DatabaseName := gs_TempPath;
+                    sql.Clear;
+                    Sql.Add(' Select Distinct SchemeID, CommunityID, Community, Scheme From CreditBill.db Order By Community, Scheme');
+                    Open;
+               End;
+
+               With QryDetail Do
+               Begin
+                    Close;
+                    DatabaseName := gs_TempPath;
+                    Sql.Clear;
+                    Sql.Add('Select BillDate, BillNo, PatientID, PatientName, HospitalIncome, PharmacyIncome, Discount, NetTotal, ');
+                    Sql.Add(' Deposit, Dues, UserName, Remarks From CreditBill.db Where CommunityID=:CommunityID And SchemeID=:SchemeID');
+                    Sql.Add(' And BillNo Like ''CR%'' Order By BillDate, BillNo, PatientID');
+                    // Sql.SaveToFile('2.txt');
+                    Open;
+               End;
+
+               With QryDetailRefund Do
+               Begin
+                    Close;
+                    DatabaseName := gs_TempPath;
+                    Sql.Clear;
+                    Sql.Add('Select BillDate, BillNo, PatientID, PatientName, HospitalIncome, PharmacyIncome, Discount, NetTotal, ');
+                    Sql.Add(' Deposit, Dues, UserName, Remarks From CreditBill.db Where CommunityID =:CommunityID And SchemeID =:SchemeID');
+                    Sql.Add(' And BillNo Like ''RF%'' Order By BillDate, BillNo, PatientID');
+                    // Sql.SaveToFile('2.txt');
+                    Open;
+               End;
+               {
+               With QryCreditSum Do
+               Begin
+                    Close;
+                    DatabaseName := gs_TempPath;
+                    Open;
+               End;
+
+               With QryCreditRefundSum Do
+               Begin
+                    Close;
+                    DatabaseName := gs_TempPath;
+                    Open;
+               End;
+               }
+               IF RadioButton_OPCollection.Checked = True Then
+               Begin
+                    ls_ReportTitle := 'Credit Report (OP)';
+               End
+               Else If RadioButton_IPCollection.Checked = True Then
+               Begin
+                    ls_ReportTitle := 'Credit Report (IP)';
+               End
+               Else If RadioButton_IPOP.Checked = True Then
+               Begin
+                    ls_ReportTitle := 'Credit Report (OP+IP)';
+               End;
+
+               IF b_SendToExcel = True Then
+               Begin
+                    { SendToExcelMultiQuery(QueryCRBill,QueryMEBill,nil,nil,nil,ls_ReportTitle,'ME Bill :','','','',
+                      DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,'',gs_HosName,gs_HosAddress,2); }
+                    // SendToExcelMasterDetail(QryMaster,QryDetail,ls_ReportTitle,DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,
+                    // '',gs_HosName,gs_HosAddress,'CREDIT');
+                    // b_SendToExcel:=False;
+               End
+               Else
+               Begin
+                    CrSno := 0;
+                    CrRfSno := 0;
+                    MeSno := 1;
+                    QRLabelFrom.Caption := DateEditX_FromDate.text;
+                    QRLabelTo.Caption := DateEditX_ToDate.text;
+                    QRLabelToday.Caption := serverdate.TodaysDate;
+
+                    QRLabel50.Caption := DateEditX_FromDate.text;
+                    QRLabel48.Caption := DateEditX_ToDate.text;
+                    QRLabel47.Caption := serverdate.TodaysDate;
+
+                    IF CMBReceivable.text <> '' Then
+                    Begin
+                         QRLabel20.Font.Color := clBlack;
+                         QRLabel20.Caption := CMBReceivable.text;
+                         QRLabelReceive.Font.Color := clBlack;
+
+                         QRLabel42.Font.Color := clBlack;
+                         QRLabel42.Caption := CMBReceivable.text;
+                         QRLabel22.Font.Color := clBlack;
+
+                         QRLabel10.Font.Color := clWhite;
+                         QRSubDetailMEBill.Height := 0;
+                         FooterMEBill.Height := 0;
+                    End
+                    Else
+                    Begin
+                         QRLabel20.Font.Color := clWhite;
+                         QRLabelReceive.Font.Color := clWhite;
+
+                         QRLabel42.Font.Color := clWhite;
+                         QRLabel22.Font.Color := clWhite;
+
+                         QRLabel10.Font.Color := clBlack;
+                         QRSubDetailMEBill.Height := 20;
+                         FooterMEBill.Height := 61;
+                    End;
+                    QRLabelReportTitle.Caption := ls_ReportTitle;
+                    // QuickRep1.Preview;
+                    QRLabel52.Caption := ls_ReportTitle;
+                    QuickRep2.Preview;
+               End;
+               QueryCRMETotal.Close;
+               QueryCRBill.Close;
+               QueryMEBill.Close;
+               QueryName.Close;
+               QryMaster.Close;
+          End;
+     End
+     Else IF CheckBoxReceivableParty.Checked = True Then { Receivable party }
+     Begin
+          With FormReportCreditReceivable Do
+          Begin
+               with QueryName do
+               Begin
+                    Close;
+                    ParamByName('FromDate').AsString := DateEditX_FromDate.text;
+                    ParamByName('ToDate').AsString := DateEditX_ToDate.text;
+                    Open;
+               End;
+
+               With QueryCRMaster Do
+               Begin
+                    Close;
+                    ParamByName('FromDate').AsString := DateEditX_FromDate.text;
+                    ParamByName('ToDate').AsString := DateEditX_ToDate.text;
+                    Open;
+               End;
+
+               With QueryCRBill Do
+               Begin
+                    Close;
+                    Sql[5] :=' And (BillDate>=:FromDate AND BillDate<=:ToDate) ';
+                    ParamByName('FromDate').AsString := DateEditX_FromDate.text;
+                    ParamByName('ToDate').AsString := DateEditX_ToDate.text;
+                    Open;
+               End;
+               IF RadioButton_OPCollection.Checked = True Then
+                    ls_ReportTitle := 'Credit Report (Receivable Party)(OP)'
+               Else
+                    ls_ReportTitle := 'Credit Report (Receivable Party)(IP)';
+               IF b_SendToExcel = True Then
+               Begin
+                    // SendToExcelMasterDetail(QueryCRMaster,QueryCRBill,ls_ReportTitle,DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,
+                    // '',gs_HosName,gs_HosAddress,'CREDIT');
+                    // b_SendToExcel:=False;
+               End
+               Else
+               Begin
+                    CrSno := 1;
+                    MeSno := 1;
+                    QRLabelFrom.Caption := DateEditX_FromDate.text;
+                    QRLabelTo.Caption := DateEditX_ToDate.text;
+                    QRLabelToday.Caption := serverdate.TodaysDate;
+                    QRLabelReportTitle.Caption := ls_ReportTitle;
+                    QuickRep1.Preview;
+               End;
+               QueryCRMETotal.Close;
+               QueryCRBill.Close;
+               QueryMEBill.Close;
+               QueryName.Close;
+          End;
+     End;
+End;
+
+procedure TForm_CreditBill.BitBtnExcelClick(Sender: TObject);
+Var
+     ls_ReportTitle: String;
+begin
+     IF MessageDlg(' Are you sure to send in excel ?', mtInformation,[mbYes, mbNo], 0) = mrYes Then
+     Begin
+          b_SendToExcel := True;
+          BitBtnPreviewClick(Sender);
+     End;
+End;
+
+procedure TForm_CreditBill.BitBtn_FromDateClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX_FromDate, BtnTo);
+end;
+
+procedure TForm_CreditBill.FormShow(Sender: TObject);
+begin
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_FromDate.text := serverdate.TodaysDate;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.text := serverdate.TodaysDate;
+     DateEditX_FromDate.SystemOfDate := 0;
+     DateEditX_ToDate.SystemOfDate := 0;
+     BtnFrom.Caption := 'BS';
+     BtnTo.Caption := 'BS';
+     QryCommunity.Open;
+     QuerCreditParty.Open;
+end;
+
+procedure TForm_CreditBill.BitBtn_ToDateClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX_ToDate, BtnFrom);
+end;
+
+procedure TForm_CreditBill.BtnFromClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX_FromDate, BtnFrom);
+end;
+
+procedure TForm_CreditBill.BtnToClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX_ToDate, BtnTo);
+end;
+
+procedure TForm_CreditBill.FormCreate(Sender: TObject);
+begin
+     Application.CreateForm(TFormReportCreditReceivable,
+          FormReportCreditReceivable);
+     Application.CreateForm(TFormReportCreditNew, FormReportCreditNew);
+end;
+
+procedure TForm_CreditBill.FormDestroy(Sender: TObject);
+begin
+     FormReportCreditReceivable.Free;
+     FormReportCreditNew.Free;
+end;
+
+procedure TForm_CreditBill.FormKeyDown(Sender: TObject; var Key: Word;
+     Shift: TShiftState);
+begin
+     IF Key = 27 Then
+          Close;
+     IF Key = VK_F1 Then
+          BitBtnPreviewClick(Sender);
+     IF Key = VK_F2 Then
+          BitBtnExcelClick(Sender);
+
+     IF Key = VK_F3 Then
+          RadioButton_OPCollection.Checked := True;
+     IF Key = VK_F4 Then
+          RadioButton_IPCollection.Checked := True;
+     IF Key = VK_F5 Then
+          RadioButton_IPOP.Checked := True;
+end;
+
+procedure TForm_CreditBill.CheckBoxReceivablePartyClick(Sender: TObject);
+begin
+     IF CheckBoxReceivableParty.Checked Then
+     Begin
+          CheckBoxMedicare.Checked := False;
+          CMBReceivable.KeyValue := -1;
+          CMBReceivable.Enabled := False;
+          CMBReceivable.Color := ClMenu;
+     End
+     Else
+     Begin
+          CMBReceivable.Enabled := True;
+          CMBReceivable.Color := clWhite;
+     End;
+end;
+
+procedure TForm_CreditBill.CheckBoxMedicareClick(Sender: TObject);
+begin
+     IF CheckBoxMedicare.Checked Then
+     Begin
+          CheckBoxReceivableParty.Checked := False;
+          CMBReceivable.KeyValue := -1;
+          CMBReceivable.Enabled := False;
+          CMBReceivable.Color := ClMenu;
+     End
+     Else
+     Begin
+          CMBReceivable.Enabled := True;
+          CMBReceivable.Color := clWhite;
+     End;
+end;
+
+procedure TForm_CreditBill.CMBReceivableKeyDown(Sender: TObject; var Key: Word;
+     Shift: TShiftState);
+begin
+     IF Key = VK_Delete Then
+          DBCommunity.KeyValue := -1;
+end;
+
+procedure TForm_CreditBill.RadioButton_IPCollectionClick(Sender: TObject);
+begin
+     { IF RadioButton_IPCollection.Checked=True Then
+       Begin
+       CheckBoxReceivableParty.Checked:=False;
+       CheckBoxReceivableParty.Visible:=False;
+       CheckBoxMedicare.Checked:=False;
+       CheckBoxMedicare.Visible:=False;
+       End; }
+end;
+
+procedure TForm_CreditBill.RadioButton_OPCollectionClick(Sender: TObject);
+begin
+     { IF RadioButton_OPCollection.Checked=True Then
+       Begin
+       CheckBoxReceivableParty.Visible:=True;
+       CheckBoxMedicare.Visible:=True;
+       End; }
+end;
+
+procedure TForm_CreditBill.DBCommunityClick(Sender: TObject);
+begin
+
+     If DBCommunity.text = '' Then
+          Exit;
+
+     With QuerCreditParty Do
+     Begin
+          Close;
+          ParamByName('CommunityID').AsInteger := DBCommunity.KeyValue;
+          Open;
+     End;
+end;
+
+procedure TForm_CreditBill.CreateTempCreditBill;
+begin
+     If FileExists(gs_TempPath + '\CreditBill.db') Then
+     Begin
+          With TblCRBill Do
+          Begin
+               DatabaseName := gs_TempPath;
+               Close;
+               TableName := 'CreditBill.db';
+               EmptyTable;
+          End;
+     End;
+
+     with TblCRBill do
+     Begin
+          DatabaseName := gs_TempPath;
+          Close;
+          TableName := 'CreditBill.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('BillDate', ftString, 10);
+          FieldDefs.Add('BillNo', ftString, 16);
+          FieldDefs.Add('PatientId', ftInteger);
+          FieldDefs.Add('InPatientId', ftInteger);
+          FieldDefs.Add('CommunityID', ftInteger);
+          FieldDefs.Add('SchemeID', ftInteger);
+          FieldDefs.Add('PatientName', ftString, 50);
+          FieldDefs.Add('HospitalIncome', ftFloat);
+          FieldDefs.Add('PharmacyIncome', ftFloat);
+          FieldDefs.Add('Discount', ftFloat);
+          FieldDefs.Add('NetTotal', ftFloat);
+          FieldDefs.Add('Deposit', ftFloat);
+          FieldDefs.Add('Dues', ftFloat);
+          FieldDefs.Add('Community', ftString, 100);
+          FieldDefs.Add('Scheme', ftString, 100);
+          FieldDefs.Add('UserName', ftString, 100);
+          FieldDefs.Add('Remarks', ftString, 100);
+          IndexDefs.Clear;
+          CreateTable;
+     End;
+end;
+
+procedure TForm_CreditBill.PostDataIntoTempTable;
+begin
+     With TblCRBill Do
+     Begin
+          Close;
+          EmptyTable;
+          Open;
+     End;
+     { With Query_Process Do
+       Begin
+       Close;
+       DatabaseName := gs_DatabaseName;
+       Sql.Clear;
+       Sql.Add('Select Distinct SchemeID,CommunityID,(Select Community From Community Where CommunityID=BD.CommunityID) Community');
+       Sql.Add(' ,(Select SchemeName From Scheme Where SchemeID=BD.SchemeID) Scheme From BillDetail BD');
+       //Sql.Add(' Where PayType=''CREDIT''  And RFBillNo Is Null');
+       Sql.Add(' Where PayType In(''CREDIT'',''REFUND'')');
+       Sql.Add(' And ''AniD''=''AniD'' ');
+       Sql.Add(' And ''AniD''=''AniD'' ');
+       Sql.Add(' And BillType In(''O'',''B'',''IP'',''A'') ');
+       Sql.Add(' And BillDate>='+Quotedstr(DateEditX_FromDate.text)+' And BillDate<='+Quotedstr(DateEditX_ToDate.text));
+       //Sql.Add(' And CommunityID>0 And Amount > 0 ');
+       Sql.Add(' And Amount > 0 ');
+       Sql.Add(' And ''AniD''=''AniD'' ');
+       Sql.Add(' And SchemeID Is Not Null ');
+       Sql.Add(' And (PrevBillNo Is Null Or PrevBillNo Like ''CR%'')');
+       Sql.Add(' And (BillNo Like ''CR%'' Or BillNo Like ''RF%'')');
+
+       If DBCommunity.Text<>'' Then
+       Sql[3]:=' And CommunityID='+IntToStr(DBCommunity.KeyValue)
+       Else
+       Sql[3]:=' And ''AniD''=''AniD''';
+
+       If CMBReceivable.Text<>'' Then
+       Sql[4]:=' And SchemeID='+IntToStr(CMBReceivable.KeyValue)
+       Else
+       Sql[4]:=' And ''AniD''=''AniD''';
+
+       If RadioButton_OPCollection.Checked=True Then
+       Sql[5]:=' And BillType In(''O'',''B'')'
+       Else If RadioButton_IPCollection.Checked=True Then
+       Sql[5]:=' And BillType In(''IP'',''A'')'
+       Else
+       Sql[5]:=' And BillType In(''O'',''B'',''A'',''IP'')';
+       Sql[8]:=' And ''AniD''=''AniD''';
+       Sql.SaveToFile('Sql.txt');
+       Open; }
+
+     // While Not Eof Do
+     // Begin
+
+     With Query_SubProcess Do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          Sql.Clear;
+          Sql.Add('Select BIDE_BillNo BILLNO,BIDE_BillDATE BILLDATE,BIDE_PatientId PATIENTID,BIDE_InPatientID INPATIENTID,BIDE_SchemeID SCHEMEID,BIDE_CommunityID COMMUNITYID,');
+          Sql.Add('(Select COMM_Community From HS_COMM_Community Where COMM_CommunityID=BD.BIDE_CommunityID) Community');
+          Sql.Add(' ,(Select SCHE_Scheme SCHEME From HS_SCHE_Scheme Where SCHE_SchemeID=BD.BIDE_SchemeID)Scheme,');
+          Sql.Add('(Select BIMA_Billby From HS_BIMA_BillMaster Where BIMA_BillNo=BD.BIDE_BillNo) Disbillby, ');
+          Sql.Add(' (Select PAMA_Remarks From HS_PAMA_patientmain Where PAMA_Patientid=BD.BIDE_patientid) As Remarks');
+          Sql.Add(' ,(Select PAMA_FName||'' ''||PAMA_MName||'' ''||PAMA_LName From HS_PAMA_Patientmain Where PAMA_Patientid=BD.BIDE_patientid) As PatientName');
+          Sql.Add(' ,Case When BIDE_InPatientID>0 Then (Select UserName From LAB_USERMAIN Where Userid=BD.BIDE_billby) Else (Select UserName From LAB_USERMAIN Where Userid=BD.BIDE_BILLBY) End As UserName');
+          Sql.Add(' ,Sum(BIDE_qty*BIDE_Amount) as Total,sum((BIDE_qty*BIDE_Amount)*(BIDE_DISPER/100)) as Discount,Sum(BIDE_VatAmt) as VatAmt');
+          Sql.Add(' ,Sum(((BIDE_Qty*BIDE_Amount)+BIDE_VatAmt)-(BIDE_Qty*BIDE_Amount*BIDE_DISPER/100)) as NetTotal');
+          Sql.Add(' From HS_BIDE_BillDetail BD Where BIDE_PayType In(''CREDIT'',''REFUND'') ');
+          Sql.Add(' AND BIDE_BillType In (''B'',''O'',''IP'',''A'') ');
+          // Sql.Add(' And (BillNo Like ''PR%''  or BillNo Like ''CR%'' ) And RFBillNo Is Null ');
+          Sql.Add(' And (BIDE_BillNo Like ''PR%''  or BIDE_BillNo Like ''CR%'' Or BIDE_BillNo Like ''RF%'')');
+          Sql.Add(' And (BIDE_BillDate>=' + Chr(39) + gs_From + Chr(39)+ ' AND BIDE_BillDate<=' + Chr(39) + gs_to + Chr(39) + ')');
+          Sql.Add(' And ''AniD''=''AniD'' ');
+          if DBCommunity.text <> '' then
+               Sql.Add(' And BIDE_CommunityId =' + inttostr(DBCommunity.KeyValue));
+          if CMBReceivable.text <> '' then
+               Sql.Add(' And BIDE_SchemeId = ' + inttostr(CMBReceivable.KeyValue));
+          Sql.Add(' And BIDE_Amount > 0 And (BIDE_BillNo Like ''CR%'' Or BIDE_BillNo Like ''RF%'')');
+          Sql.Add(' Group by BIDE_BillNo,BIDE_BillDATE,BIDE_PatientId,BIDE_InPatientID,BIDE_SchemeID,BIDE_CommunityID, BIDE_billby order by BIDE_BillDate,BIDE_billNo');
+          If RadioButton_OPCollection.Checked = True Then
+               Sql[11] := ' And BIDE_BillType In(''O'',''B'')'
+          Else If RadioButton_IPCollection.Checked = True Then
+               Sql[11] := ' And BIDE_BillType In(''IP'',''A'')'
+          Else
+               Sql[11] := ' And BIDE_BillType In(''O'',''B'',''A'',''IP'')';
+          If RGCreditOption.ItemIndex = 0 Then
+               Sql[13] := ' And NVL(BIDE_IsCrPaid,''N'')<>''Y'''
+          Else If RGCreditOption.ItemIndex = 1 Then
+               Sql[13] := ' And BIDE_IsCrPaid=''Y'''
+          Else
+               Sql[13] := ' And ''AniD''=''AniD''';
+          Sql.SaveToFile('C:\credit.txt');
+          Open;
+     End;
+     While Not Query_SubProcess.Eof Do
+     Begin
+          TblCRBill.Append;
+          TblCRBill.FieldByName('BillDate').AsString :=Query_SubProcess.FieldByName('BillDate').AsString;
+          TblCRBill.FieldByName('BillNo').AsString :=Query_SubProcess.FieldByName('BillNo').AsString;
+          TblCRBill.FieldByName('PatientID').AsInteger :=Query_SubProcess.FieldByName('PatientID').AsInteger;
+          TblCRBill.FieldByName('InPatientID').AsInteger :=Query_SubProcess.FieldByName('InPatientID').AsInteger;
+          TblCRBill.FieldByName('CommunityID').AsInteger :=Query_SubProcess.FieldByName('CommunityID').AsInteger;
+          TblCRBill.FieldByName('SchemeID').AsInteger :=Query_SubProcess.FieldByName('SchemeID').AsInteger;
+          TblCRBill.FieldByName('PatientName').AsString :=Query_SubProcess.FieldByName('PatientName').AsString;
+          TblCRBill.FieldByName('HospitalIncome').AsFloat :=Query_SubProcess.FieldByName('Total').AsFloat;
+          TblCRBill.FieldByName('Discount').AsFloat :=Query_SubProcess.FieldByName('Discount').AsFloat;
+          TblCRBill.FieldByName('NetTotal').AsFloat :=Query_SubProcess.FieldByName('NetTotal').AsFloat;
+          TblCRBill.FieldByName('Community').AsString :=Query_SubProcess.FieldByName('Community').AsString;
+          TblCRBill.FieldByName('Scheme').AsString :=Query_SubProcess.FieldByName('Scheme').AsString;
+          TblCRBill.FieldByName('UserName').AsString :=Query_SubProcess.FieldByName('UserName').AsString;
+          TblCRBill.FieldByName('Remarks').AsString :=Query_SubProcess.FieldByName('Remarks').AsString;
+          TblCRBill.FieldByName('Deposit').AsFloat := 0.00;
+          TblCRBill.FieldByName('Dues').AsFloat := 0.00;
+          TblCRBill.FieldByName('PharmacyIncome').AsFloat := 0.00;
+          If IsCreditpaid(Query_SubProcess.FieldByName('BillNo').AsString)= True Then
+          Begin
+               TblCRBill.FieldByName('Deposit').AsFloat := pf_Deposit;
+               TblCRBill.FieldByName('Dues').AsFloat :=Query_SubProcess.FieldByName('NetTotal').AsFloat - pf_Deposit;
+          End
+          Else
+          Begin
+               TblCRBill.FieldByName('Deposit').AsFloat := 0;
+               TblCRBill.FieldByName('Dues').AsFloat :=Query_SubProcess.FieldByName('NetTotal').AsFloat;
+          End;
+          TblCRBill.Post;
+          Query_SubProcess.Next;
+     End;
+
+     { REFUND BILL }
+     With Query_SubProcess Do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          Sql.Clear;
+          Sql.Add('Select REDE_RefundBillNo BILLNO, REDE_REFUNDDATE REFUNDDATE, REDE_PatientId PATIENTID ,REDE_InPatientID INPATIENTID,REDE_SchemeID SCHEMEID,REDE_CommunityID COMMUNITYID,');
+          Sql.Add('(Select COMM_Community COMMUNITY From HS_COMM_Community Where COMM_CommunityID=RD.REDE_CommunityID) Community');
+          Sql.Add(' ,(Select SCHE_Scheme SCHEME From HS_SCHE_Scheme Where SCHE_SchemeID=RD.REDE_SchemeID)Scheme,');
+          Sql.Add(' (Select PAMA_Remarks From HS_PAMA_Patientmain Where PAMA_Patientid=RD.REDE_patientid) As Remarks');
+          Sql.Add(' ,(Select PAMA_FName||'' ''||PAMA_MName||'' ''||PAMA_LName From HS_PAMA_Patientmain Where PAMA_Patientid=RD.REDE_patientid) As PatientName');
+          Sql.Add('  ,(Select UserName From LAB_USERMAIN Where Userid=RD.REDE_Refundby) UserName');
+          Sql.Add(' ,Sum(REDE_qty*REDE_Amount) as Total,sum((REDE_qty*REDE_Amount)*(REDE_DISPER/100)) as Discount,Sum(REDE_VatAmt) as VatAmt');
+          Sql.Add(' ,Sum(((REDE_Qty*REDE_Amount)+REDE_VatAmt)-(REDE_Qty*REDE_Amount*REDE_DISPER/100)) as NetTotal');
+          Sql.Add(' From HS_REDE_refunddetail RD Where REDE_PayType In(''CREDIT'',''REFUND'') ');
+          Sql.Add(' AND REDE_BillType In (''B'',''O'',''IP'',''A'') ');
+          Sql.Add(' And (REDE_RefundBillNo Like ''PR%''  or REDE_RefundBillNo Like ''CR%'' Or REDE_RefundBillNo Like ''RF%'')');
+          Sql.Add(' And (REDE_REFUNDDATE>=' + Chr(39) + gs_From + Chr(39)+ ' AND REDE_REFUNDDATE<=' + Chr(39) + gs_to + Chr(39) + ')');
+          Sql.Add(' And ''AniD''=''AniD'' ');
+          if DBCommunity.text <> '' then
+               Sql.Add(' And REDE_CommunityId =' + inttostr(DBCommunity.KeyValue));
+          if CMBReceivable.text <> '' then
+               Sql.Add(' And REDE_SchemeId = ' + inttostr(CMBReceivable.KeyValue));
+          Sql.Add(' And REDE_billdetailid in (Select BIDE_billdetailid from HS_BIDE_billdetail where BIDE_billdetailid=RD.REDE_billdetailid and REDE_RefundBillNo like ''CR%'')');
+          Sql.Add(' And REDE_Amount > 0 And (REDE_RefundBillNo Like ''CR%'' Or REDE_RefundBillNo Like ''RF%'')');
+          Sql.Add(' Group by REDE_RefundBillNo,REDE_REFUNDDATE,REDE_PatientId,REDE_InPatientID,REDE_SchemeID,REDE_CommunityID,REDE_Refundby order by REDE_REFUNDDATE,billNo');
+          If RadioButton_OPCollection.Checked = True Then
+               Sql[10] := ' And REDE_BillType In(''O'',''B'')'
+          Else If RadioButton_IPCollection.Checked = True Then
+               Sql[10] := ' And REDE_BillType In(''IP'',''A'')'
+          Else
+               Sql[10] := ' And REDE_BillType In(''O'',''B'',''A'',''IP'')';
+          {
+          If RGCreditOption.ItemIndex = 0 Then
+               Sql[12] := ' And NVL(REDE_IsCrPaid,''N'')<>''Y'''
+          Else If RGCreditOption.ItemIndex = 1 Then
+               Sql[12] := ' And REDE_IsCrPaid=''Y'''
+          Else
+               Sql[12] := ' And ''AniD''=''AniD''';
+          }
+          Sql.SaveToFile('C:\credit11.txt');
+          Open;
+     End;
+     While Not Query_SubProcess.Eof Do
+     Begin
+          TblCRBill.Append;
+          TblCRBill.FieldByName('BillDate').AsString :=Query_SubProcess.FieldByName('REFUNDDATE').AsString;
+          TblCRBill.FieldByName('BillNo').AsString :=Query_SubProcess.FieldByName('BillNo').AsString;
+          TblCRBill.FieldByName('PatientID').AsInteger :=Query_SubProcess.FieldByName('PatientID').AsInteger;
+          TblCRBill.FieldByName('InPatientID').AsInteger :=Query_SubProcess.FieldByName('InPatientID').AsInteger;
+          TblCRBill.FieldByName('CommunityID').AsInteger :=Query_SubProcess.FieldByName('CommunityID').AsInteger;
+          TblCRBill.FieldByName('SchemeID').AsInteger :=Query_SubProcess.FieldByName('SchemeID').AsInteger;
+          TblCRBill.FieldByName('PatientName').AsString :=Query_SubProcess.FieldByName('PatientName').AsString;
+          TblCRBill.FieldByName('HospitalIncome').AsFloat :=Query_SubProcess.FieldByName('Total').AsFloat;
+          TblCRBill.FieldByName('Discount').AsFloat :=Query_SubProcess.FieldByName('Discount').AsFloat;
+          TblCRBill.FieldByName('NetTotal').AsFloat :=Query_SubProcess.FieldByName('NetTotal').AsFloat;
+          TblCRBill.FieldByName('Community').AsString :=Query_SubProcess.FieldByName('Community').AsString;
+          TblCRBill.FieldByName('Scheme').AsString :=Query_SubProcess.FieldByName('Scheme').AsString;
+          TblCRBill.FieldByName('UserName').AsString :=Query_SubProcess.FieldByName('UserName').AsString;
+          TblCRBill.FieldByName('Remarks').AsString :=Query_SubProcess.FieldByName('Remarks').AsString;
+          TblCRBill.FieldByName('Deposit').AsFloat := 0.00;
+          TblCRBill.FieldByName('Dues').AsFloat := 0.00;
+          TblCRBill.FieldByName('PharmacyIncome').AsFloat := 0.00;
+          If IsCreditpaid(Query_SubProcess.FieldByName('BillNo').AsString)= True Then
+          Begin
+               TblCRBill.FieldByName('Deposit').AsFloat := pf_Deposit;
+               TblCRBill.FieldByName('Dues').AsFloat :=Query_SubProcess.FieldByName('NetTotal').AsFloat - pf_Deposit;
+          End
+          Else
+          Begin
+               TblCRBill.FieldByName('Deposit').AsFloat := 0;
+               TblCRBill.FieldByName('Dues').AsFloat :=Query_SubProcess.FieldByName('NetTotal').AsFloat;
+          End;
+          TblCRBill.Post;
+          Query_SubProcess.Next;
+     End;
+     // Query_Process.Next;
+     // End;
+     // End;
+end;
+
+procedure TForm_CreditBill.PharmacyIncomeDetail;
+Var
+     lf_MDTotal, lf_MDDiscount, lf_MDNetTotal: Double;
+Begin
+     lf_MDTotal := 0;
+     lf_MDDiscount := 0;
+
+     { CREDIT   Getting Net medicine(After Medicine Refund) amount }
+     with Query_Process do
+     Begin
+          Close;
+          Sql.Clear;
+          Sql.Add(' select SD.PatientID,SD.InpatientID,Sum(Round(SD.Qty*SD.UnitRate,5))  as Total,');
+          Sql.Add(' Sum(Round((SD.Qty*SD.UnitRate) * SD.Discount/100,5)) as Discount');
+          Sql.Add(' From SaleMaster SM,SaleDetail SD,InPatientReg IR,ItemsList IL where (SM.SaleMasterId=SD.SaleMasterId)');
+          Sql.Add(' and (SD.itemsid=IL.itemsid) And SD.InpatientId=IR.InpatientId and (SM.ST=''N'') and (SM.STATUS1=1) And (SD.PatientId < 9999900) ');
+          Sql.Add(' And IR.DisDate Between ' + #39 + DateEditX_FromDate.text +#39);
+          Sql.Add(' AND ' + #39 + DateEditX_ToDate.text + #39 +' And IR.Discharged=''YES'' ');
+          Sql.Add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+          Sql.Add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CREDIT'' and CancelStatus=''N'' ');
+          Sql.Add(' and billdate>=' + #39 + DateEditX_FromDate.text + #39 +'and billdate <=' + #39 + DateEditX_ToDate.text + #39 + ')');
+          Sql.Add(' Group By SD.PatientID,SD.InpatientID');
+          // sql.SaveToFile('Credit.txt');
+          Open;
+     End;
+
+     While Not Query_Process.Eof Do
+     Begin
+          lf_MDTotal := Query_Process.FieldByName('Total').AsFloat - Query_Process.FieldByName('Discount').AsFloat;
+          With Query_Temp Do
+          Begin
+               Close;
+               DatabaseName := gs_TempPath;
+               Sql.Clear;
+               Sql.Add(' UPdate CreditBill.db Set PharmacyIncome = PharmacyIncome + '+ FloatToStr(lf_MDTotal));
+               Sql.Add(' Where PatientID=' + Query_Process.FieldByName('PatientID').AsString);
+               Sql.Add(' And InPatientID=' + Query_Process.FieldByName('InPatientID').AsString);
+               ExecSQL;
+               Sql.Clear;
+               Sql.Add(' UPdate CreditBill.db Set NetTotal = NetTotal + ' +FloatToStr(lf_MDTotal));
+               Sql.Add(' Where PatientID=' + Query_Process.FieldByName('PatientID').AsString);
+               Sql.Add(' And InPatientID=' + Query_Process.FieldByName('InPatientID').AsString);
+               ExecSQL;
+               Sql.Clear;
+               Sql.Add(' UPdate CreditBill.db Set Dues = Dues + ' + FloatToStr(lf_MDTotal));
+               Sql.Add(' Where PatientID=' + Query_Process.FieldByName('PatientID').AsString);
+               Sql.Add(' And InPatientID=' + Query_Process.FieldByName('InPatientID').AsString);
+               ExecSQL;
+          End;
+          Query_Process.Next;
+     End;
+     lf_MDTotal := 0;
+     lf_MDDiscount := 0;
+
+     // First Find out the Paitent list
+     With Query_Process do
+     begin
+          Close;
+          Sql.Clear;
+          Sql.Add(' Select InptDate,DisDate,PatientId, InpatientID From InpatientReg Where Discharged=''YES'' ');
+          Sql.Add(' and DisDate>=:FromDate and DisDate<=:ToDate and InpatientId In(');
+          Sql.Add(' Select Distinct InPatientId From BillDetail Where (BillType=''IP'' or BillType=''A'')');
+          Sql.Add(' and PayType=''CREDIT'' And Service<>''IPREF'' and CancelStatus=''N''');
+          Sql.Add(' And SchemeID > 0 and DisBillDate>=:FromDate and DisBillDate <=:ToDate');
+          Sql.Add(' )');
+          // sql.SaveToFile('CreditR.txt');
+          ParamByName('FromDate').AsString := DateEditX_FromDate.text;
+          ParamByName('ToDate').AsString := DateEditX_ToDate.text;
+          Open;
+          First;
+          While not Eof do
+          begin
+               With Query_SubProcess do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select Sum((RD.Qty * RD.UnitPrice)-(RD.Qty * RD.Discount)) as NetTotal ');
+                    Sql.Add(' From ReturnMaster RM,ReturnDetail RD where (RM.ReturnMasterId=RD.ReturnMasterId(+))');
+                    Sql.Add(' and (RM.ST=''N'') and (RM.Credit1=1) and (RM.CustomerID < 9999900)');
+                    Sql.Add(' and RM.ReturnDate>=' + #39 + Query_Process.FieldByName('InptDate').AsString + #39);
+                    Sql.Add(' and RM.ReturnDate<=' + #39 + Query_Process.FieldByName('DisDate').AsString + #39);
+                    Sql.Add(' and RM.CustomerId=' + Query_Process.FieldByName('PatientId').AsString);
+                    // sql.add(' and RM.InpatientId='+Query_Process.FieldByName('InPatientID').AsString);
+                    Sql.Add(' And RM.CustomerID In(Select PatientID From InpatientReg Where PatientID=RM.CustomerId And ');
+                    Sql.Add(' ((RM.Returndate>=Inptdate And RM.Returndate<Disdate)) ');
+                    Sql.Add(' OR (RM.Returndate=DisDate And RM.Rettime<=(Select OutTime From InpatientDetail Where');
+                    Sql.Add(' InPatientId=InpatientReg.InPatientId and DisBillDate=InpatientReg.DisDate))) ');
+                    // sql.SaveToFile('CreditRef.txt');
+                    Open;
+
+                    lf_MDTotal := FieldByName('NetTotal').AsFloat;
+                    With Query_Temp Do
+                    Begin
+                         Close;
+                         DatabaseName := gs_TempPath;
+                         Sql.Clear;
+                         Sql.Add(' UPdate CreditBill.db Set PharmacyIncome = PharmacyIncome - ' + FloatToStr(lf_MDTotal));
+                         Sql.Add(' Where PatientID=' + Query_Process.FieldByName('PatientID').AsString);
+                         Sql.Add(' And InPatientID=' + Query_Process.FieldByName('InPatientID').AsString);
+                         ExecSQL;
+                         Sql.Clear;
+                         Sql.Add(' UPdate CreditBill.db Set NetTotal = NetTotal - '+ FloatToStr(lf_MDTotal));
+                         Sql.Add(' Where PatientID=' + Query_Process.FieldByName('PatientID').AsString);
+                         Sql.Add(' And InPatientID=' + Query_Process.FieldByName('InPatientID').AsString);
+                         ExecSQL;
+                         Sql.Clear;
+                         Sql.Add(' UPdate CreditBill.db Set Dues = Dues - '+ FloatToStr(lf_MDTotal));
+                         Sql.Add(' Where PatientID=' + Query_Process.FieldByName('PatientID').AsString);
+                         Sql.Add(' And InPatientID=' + Query_Process.FieldByName('InPatientID').AsString);
+                         ExecSQL;
+                    End;
+               end;
+               Next;
+          end;
+     end;
+end;
+
+function TForm_CreditBill.IsCreditpaid(BillNo: String): Boolean;
+begin
+     With Query_Blank Do
+     Begin
+          With Sql Do
+          Begin
+               Clear;
+               Add('Select Distinct CRPM_CRBILLNODETAIL BILLNO From HS_CRPM_Creditpaymentmaster where CRPM_CRBILLNODETAIL=' + Chr(39) + BillNo + Chr(39));
+          End;
+          Open;
+          If Trim(FieldByName('BillNo').AsString) <> '' Then
+          Begin
+               Result := True;
+               With Sql Do
+               Begin
+                    Clear;
+                    Add('Select Sum(CRPM_RECEIPTAMOUNTD) Deposit From HS_CRPM_Creditpaymentmaster where CRPM_CRBILLNODETAIL=' + Quotedstr(BillNo));
+               End;
+               Open;
+               pf_Deposit := FieldByName('Deposit').AsFloat;
+          End
+          Else
+          Begin
+               Result := False;
+               pf_Deposit := 0;
+          End;
+     End;
+end;
+
+function TForm_CreditBill.IsDischargeBill(BillNo: String; InPatientID: Integer)
+  : Boolean;
+Begin
+     With Query_Blank Do
+     Begin
+          { Close;
+            DatabaseName:=gs_DatabaseName;
+            With Sql Do
+            Begin
+            Clear;
+            Add('Select Distinct NVL(BillNo,''NO'') BillNo From InPatientDetail where BillNo='+Chr(39)+BillNo+Chr(39));
+            End;
+            Open; }
+          If Trim(FieldByName('BillNo').AsString) <> '' Then
+          Begin
+               Result := True;
+               With Sql Do
+               Begin
+                    Clear;
+                    Add('Select Sum(Cr-Dr) Deposit From IPDeposit where InPatientID='+ inttostr(InPatientID));
+               End;
+               Open;
+               pf_Deposit := FieldByName('Deposit').AsFloat;
+          End
+          Else
+          Begin
+               Result := False;
+               pf_Deposit := 0;
+          End;
+     End;
+end;
+
+end.

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2002/07/25 01:09:15.878.pas,D:\Clinical Pathology\ServerDate.pas=</Transaction>
+    <Transaction>2002/07/25 01:09:20.597.pas,D:\Clinical Pathology\Fxn.pas=</Transaction>
+    <Transaction>2002/07/25 01:09:24.984.pas,D:\Clinical Pathology\DM.pas=</Transaction>
+    <Transaction>2002/07/25 01:09:24.985.dfm,D:\Clinical Pathology\DM.dfm=</Transaction>
+    <Transaction>2012/09/24 05:27:30.946.pas,D:\Midas Dr. Homs V 4.0\Source\Units\Packages\Clinical Pathology\Unit4.pas=D:\Midas Dr. Homs V 4.0\Source\Units\Packages\Clinical Pathology\Unit_TestWiseReport.pas</Transaction>
+    <Transaction>2012/09/24 05:27:30.946.dfm,D:\Midas Dr. Homs V 4.0\Source\Units\Packages\Clinical Pathology\Unit4.dfm=D:\Midas Dr. Homs V 4.0\Source\Units\Packages\Clinical Pathology\Unit_TestWiseReport.dfm</Transaction>
+    <Transaction>2012/09/26 23:10:54.353.pas,D:\Midas Dr. Homs V 4.0\Source\Units\Packages\Clinical Pathology\Unit4.pas=D:\Midas Dr. Homs V 4.0\Source\Units\Packages\Clinical Pathology\Unit_QrPathologyReport.pas</Transaction>
+    <Transaction>2012/09/26 23:10:54.353.dfm,D:\Midas Dr. Homs V 4.0\Source\Units\Packages\Clinical Pathology\Unit4.dfm=D:\Midas Dr. Homs V 4.0\Source\Units\Packages\Clinical Pathology\Unit_QrPathologyReport.dfm</Transaction>
+    <Transaction>2015/02/25 16:07:22.407.pas,D:\Source New Table Concept(Cancer Hospital) For New Histology\MiDas Dr. Homs V 3.2 Cancer\Source\Units\Packages\Clinical Pathology\Unit_QrPathInvestigativeResult.pas=</Transaction>
+    <Transaction>2015/02/25 16:07:22.413.dfm,D:\Source New Table Concept(Cancer Hospital) For New Histology\MiDas Dr. Homs V 3.2 Cancer\Source\Units\Packages\Clinical Pathology\Unit_QrPathInvestigativeResult.dfm=</Transaction>
+    <Transaction>2015/02/25 16:11:19.166.pas,D:\Source New Table Concept(Cancer Hospital) For New Histology\MiDas Dr. Homs V 3.2 Cancer\Source\Units\Packages\Clinical Pathology\Report\Unit_QrPathInvestigativeResult.pas=</Transaction>
+    <Transaction>2015/02/25 16:11:19.166.dfm,D:\Source New Table Concept(Cancer Hospital) For New Histology\MiDas Dr. Homs V 3.2 Cancer\Source\Units\Packages\Clinical Pathology\Report\Unit_QrPathInvestigativeResult.dfm=</Transaction>
+    <Transaction>2015/04/23 10:21:21.223.pas,D:\Working Shishir\Lab Sources\Nepal Cancer\Source New Table Concept(Cancer Hospital) For New Histology\MiDas Dr. Homs V 3.2 Cancer\Source\Units\Packages\Clinical Pathology\Unit_QrPathInvestigativeResult.pas=</Transaction>
+    <Transaction>2015/04/23 10:21:21.223.dfm,D:\Working Shishir\Lab Sources\Nepal Cancer\Source New Table Concept(Cancer Hospital) For New Histology\MiDas Dr. Homs V 3.2 Cancer\Source\Units\Packages\Clinical Pathology\Unit_QrPathInvestigativeResult.dfm=</Transaction>
+    <Transaction>2015/04/23 10:21:28.887.pas,D:\Working Shishir\Lab Sources\Nepal Cancer\Source New Table Concept(Cancer Hospital) For New Histology\MiDas Dr. Homs V 3.2 Cancer\Source\Units\Packages\Clinical Pathology\UnitEditFindAlternate.pas=</Transaction>
+    <Transaction>2015/04/23 10:21:28.887.dfm,D:\Working Shishir\Lab Sources\Nepal Cancer\Source New Table Concept(Cancer Hospital) For New Histology\MiDas Dr. Homs V 3.2 Cancer\Source\Units\Packages\Clinical Pathology\UnitEditFindAlternate.dfm=</Transaction>
+    <Transaction>2015/04/23 10:21:35.231.pas,D:\Working Shishir\Lab Sources\Nepal Cancer\Source New Table Concept(Cancer Hospital) For New Histology\MiDas Dr. Homs V 3.2 Cancer\Source\Units\Packages\Clinical Pathology\UnitEditFindingAnalysis.pas=</Transaction>
+    <Transaction>2015/04/23 10:21:35.231.dfm,D:\Working Shishir\Lab Sources\Nepal Cancer\Source New Table Concept(Cancer Hospital) For New Histology\MiDas Dr. Homs V 3.2 Cancer\Source\Units\Packages\Clinical Pathology\UnitEditFindingAnalysis.dfm=</Transaction>
+    <Transaction>2015/04/23 10:21:47.133.pas,D:\Working Shishir\Lab Sources\Nepal Cancer\Source New Table Concept(Cancer Hospital) For New Histology\MiDas Dr. Homs V 3.2 Cancer\Source\Units\Packages\Clinical Pathology\Unit_ClinicalPathFindingNew.pas=</Transaction>
+    <Transaction>2015/04/23 10:21:47.133.dfm,D:\Working Shishir\Lab Sources\Nepal Cancer\Source New Table Concept(Cancer Hospital) For New Histology\MiDas Dr. Homs V 3.2 Cancer\Source\Units\Packages\Clinical Pathology\Unit_ClinicalPathFindingNew.dfm=</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="Clinical Pathology New"/>
+    <File Path="Clinical Pathology New\UnitEditFindAlternate.pas"/>
+    <File Path="Clinical Pathology New\UnitEditFindAlternate.dfm"/>
+    <File Path="Clinical Pathology New\UnitEditFindingAnalysis.pas"/>
+    <File Path="Clinical Pathology New\UnitEditFindingAnalysis.dfm"/>
+    <File Path="Clinical Pathology New\Unit_ClinicalPathFindingNew.pas"/>
+    <File Path="Clinical Pathology New\Unit_ClinicalPathFindingNew.dfm"/>
+    <File Path="Clinical Pathology New\Unit_QrBNBHistoPathInvestigativeResult.pas"/>
+    <File Path="Clinical Pathology New\Unit_QrBNBHistoPathInvestigativeResult.dfm"/>
+    <File Path="Unit_ClinicalFindingSetUp.pas"/>
+    <File Path="Unit_ClinicalFindingSetUp.dfm"/>
+    <File Path="Unit_ClinicalPathDep.pas"/>
+    <File Path="Unit_ClinicalPathDep.dfm"/>
+    <File Path="Unit_ClinicalPathFinding.pas"/>
+    <File Path="Unit_ClinicalPathFinding.dfm"/>
+    <File Path="Unit_ClinicalPathSetup.pas"/>
+    <File Path="Unit_ClinicalPathSetup.dfm"/>
+    <File Path="Unit_ClinicalReportType.pas"/>
+    <File Path="Unit_ClinicalReportType.dfm"/>
+    <File Path="Unit_ClinicalSetup.pas"/>
+    <File Path="Unit_ClinicalSetup.dfm"/>
+    <File Path="Unit_QrMangalamHistoPathInvestigativeResult.pas"/>
+    <File Path="Unit_QrMangalamHistoPathInvestigativeResult.dfm"/>
+    <File Path="Unit_QrNeuroBrtHistoPathInvestigativeResult.pas"/>
+    <File Path="Unit_QrNeuroBrtHistoPathInvestigativeResult.dfm"/>
+    <File Path="Unit_QrPathInvestigativeResult.pas"/>
+    <File Path="Unit_QrPathInvestigativeResult.dfm"/>
+    <File Path="Unit_QrPathNepalCancerRadiology.pas"/>
+    <File Path="Unit_QrPathNepalCancerRadiology.dfm"/>
+    <File Path="Unit_QrPathologyReport.pas"/>
+    <File Path="Unit_QrPathologyReport.dfm"/>
+    <File Path="Unit_ReportReplication.pas"/>
+    <File Path="Unit_ReportReplication.dfm"/>
+    <File Path="Unit_SemenAnalysis.pas"/>
+    <File Path="Unit_SemenAnalysis.dfm"/>
+    <File Path="Unit_TestWiseReport.pas"/>
+    <File Path="Unit_TestWiseReport.dfm"/>
+    <File Path="BarcodeD10.dcp"/>
+    <File Path="Finding.dcp"/>
+    <File Path="Global.dcp"/>
+    <File Path="MidasFunction.dcp"/>
+    <File Path="QR5RunD2010.dcp"/>
+    <File Path="rtl.dcp"/>
+    <File Path="VclSmp.dcp"/>
+  </ProjectSortOrder>
+</BorlandProject>

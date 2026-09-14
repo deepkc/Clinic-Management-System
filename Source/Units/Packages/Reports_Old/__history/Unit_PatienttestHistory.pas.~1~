@@ -1,0 +1,216 @@
+unit Unit_PatienttestHistory;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, StdCtrls, Buttons, DBCtrls, OleCtrls, DateEditXControl_TLB,
+  DB, MemDS, DBAccess,Fxn,DM,ServerDate, Ora, Grids, DBGrids, TeEngine, Series,
+  TeeProcs, Chart, DBChart;
+
+type
+  TForm_PatienttestHistory = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    BitBtn_Ok: TBitBtn;
+    BitBtn_Close: TBitBtn;
+    Edit_PatientSearch: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label_PatientName: TLabel;
+    Label4: TLabel;
+    Label_AgeSex: TLabel;
+    Label6: TLabel;
+    DateEditX_From: TDateEditX;
+    DateEditX_To: TDateEditX;
+    Label7: TLabel;
+    Label8: TLabel;
+    DBLookupComboBox_Department: TDBLookupComboBox;
+    OraQuery_Department: TOraQuery;
+    DataSource_Department: TDataSource;
+    DBLookupComboBox_TestName: TDBLookupComboBox;
+    Label9: TLabel;
+    OraQuery_TestName: TOraQuery;
+    DataSource_TestName: TDataSource;
+    OraQuery_Patient: TOraQuery;
+    DBGrid1: TDBGrid;
+    DataSource_Grid: TDataSource;
+    DBChart_BarChart: TDBChart;
+    BitBtn_Search: TBitBtn;
+    procedure FormShow(Sender: TObject);
+    procedure BitBtn_CloseClick(Sender: TObject);
+    procedure Edit_PatientSearchKeyPress(Sender: TObject; var Key: Char);
+    procedure BitBtn_OkClick(Sender: TObject);
+    procedure DBLookupComboBox_DepartmentClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure BitBtn_SearchClick(Sender: TObject);
+    procedure DBLookupComboBox_DepartmentKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLookupComboBox_TestNameKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_PatienttestHistory: TForm_PatienttestHistory;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_PatienttestHistory.BitBtn_SearchClick(Sender: TObject);
+begin
+      if Edit_PatientSearch.Text='' then
+    begin
+        ShowMessage('Please input Patient No.');
+        Edit_PatientSearch.SetFocus;
+        exit;
+    end;
+    with OraQuery_Patient do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               sql.Add('select * from VW_Patienthistory where patientid='+Edit_PatientSearch.Text);
+               sql.Add('and testdate between '+QuotedStr(DateEditX_From.text)+'and'+QuotedStr(DateEditX_To.text));
+               if DBLookupComboBox_Department.KeyValue<>null then
+               SQL.Add('and depid='+IntToStr(DBLookupComboBox_Department.KeyValue));
+               if DBLookupComboBox_TestName.KeyValue<>null then
+               SQL.Add('and testnameid='+IntToStr(DBLookupComboBox_TestName.KeyValue));
+               SQL.Add('order by testdate,realsampleno,deporder,testdisplayorder');
+               Open;
+          end;
+          Label_PatientName.Caption:=OraQuery_Patient.FieldByName('patientname').AsString;
+          Label_AgeSex.Caption:=OraQuery_Patient.FieldByName('agesex').AsString;
+end;
+
+procedure TForm_PatienttestHistory.BitBtn_CloseClick(Sender: TObject);
+begin
+    close;
+end;
+
+procedure TForm_PatienttestHistory.BitBtn_OkClick(Sender: TObject);
+var
+OraQryData: TOraQuery;
+li_Count: integer;
+ListField: TStringList;
+
+begin
+    ListFIeld := TStringList.Create();
+    OraQryData := TOraQuery.Create(nil);
+    with OraQryData do
+    begin
+        Session:=DM_Hospital.DB;
+        //qryData.SQL.Add('select testdate,finding from vw_patienthistory where testid=14 and patientid=100 and finding is not null');
+        OraQryData.sql.Add('select testdate,replace(finding,'','')as finding from VW_Patienthistory where patientid='+OraQuery_Patient.FieldByName('patientid').AsString);
+        OraQryData.SQL.Add('and testid='+OraQuery_Patient.FieldByName('testid').AsString);
+        OraQryData.sql.Add('and testdate between '+QuotedStr(DateEditX_From.text)+'and'+QuotedStr(DateEditX_To.text));
+        OraQryData.sql.add('and finding is not null');
+        OraQryData.SQL.Add('order by testdate,realsampleno,deporder,testdisplayorder');
+        //oraqryData.SQL.SaveToFile('c:\graph.txt');
+        OraQryData.Active := True;
+    end;
+
+
+    DBChart_BarChart.Title.Text.Clear;
+    DBChart_BarChart.Title.Text.Add('Analysis of '+trim(OraQuery_Patient.FieldByName('testtype').AsString));
+    DBChart_BarChart.Title.Font.Size := 14;
+    DBChart_BarChart.LeftAxis.Title.Font.Size := 12;
+    DBChart_BarChart.LeftAxis.Title.Caption := 'Findings';
+    DBChart_BarChart.BottomAxis.Title.Font.Size := 12;
+    DBChart_BarChart.BottomAxis.Title.Caption := 'Test Date';
+
+    //Charting Series
+    //To Remove Old Series                                m
+    for li_Count := DBChart_BarChart.SeriesCount -1 downto 0 do
+        DBChart_BarChart.Series[li_Count].Free;
+        //To Add New Series
+    for li_Count := 1 to OraQryData.FieldCount - 1 do begin
+        ListField.Add(OraQryData.FieldList[li_Count].FieldName);
+        DBChart_BarChart.AddSeries(TBarSeries.Create(nil));
+    end;
+    //To set source for Series
+    for li_Count:= 0 to DBChart_BarChart.SeriesCount -1 do begin
+      with  DBChart_BarChart do begin
+        Series[li_Count].Clear;
+        Series[li_Count].Title := ListField[li_Count];
+        Series[li_Count].ParentChart := DBChart_BarChart;
+        Series[li_Count].DataSource := OraQryData;
+        Series[li_Count].XLabelsSource := 'testdate';
+        Series[li_Count].YValues.ValueSource := ListField[li_Count];
+      end;
+    end;
+end;
+
+
+procedure TForm_PatienttestHistory.DBGrid1DblClick(Sender: TObject);
+begin
+     BitBtn_OkClick(Sender);
+end;
+
+procedure TForm_PatienttestHistory.DBLookupComboBox_DepartmentClick(
+  Sender: TObject);
+begin
+      with OraQuery_TestName do
+      begin
+          Close;
+          Session:=DM_Hospital.DB;
+          SQL[1]:='and depid='+IntToStr(DBLookupComboBox_Department.KeyValue);
+          Open;
+      end;
+end;
+
+procedure TForm_PatienttestHistory.DBLookupComboBox_DepartmentKeyDown(
+  Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key=VK_DELETE then
+          DBLookupComboBox_Department.KeyValue:=null;
+end;
+
+procedure TForm_PatienttestHistory.DBLookupComboBox_TestNameKeyDown(
+  Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key=VK_DELETE then
+          DBLookupComboBox_TestName.KeyValue:=null;
+end;
+
+procedure TForm_PatienttestHistory.Edit_PatientSearchKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     {if Key=#13 then
+     begin
+
+     end;}
+end;
+
+procedure TForm_PatienttestHistory.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if Key=VK_ESCAPE then
+          Close;
+end;
+
+procedure TForm_PatienttestHistory.FormShow(Sender: TObject);
+begin
+     with OraQuery_Department do
+     begin
+          Close;
+          Session:= DM_Hospital.DB;
+          Open;
+     end;
+
+     with OraQuery_TestName do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          Open;
+     end;
+     DateEditX_From.text:=ServerDate.TodaysDateVS;
+     DateEditX_To.text:=ServerDate.TodaysDateVS;
+end;
+
+end.

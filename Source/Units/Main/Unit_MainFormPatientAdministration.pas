@@ -1,0 +1,3380 @@
+unit Unit_MainFormPatientAdministration;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     ServerDate,Fxn,Unit_Billing,
+     Dialogs, ExtCtrls,
+     Unit_TestNameSetup,
+     Unit_PatientAdministration_Gmenu, Unit_BillListFrame ,
+
+     Unit_FrameParent, Unit_NewPatient,DM,
+     StdCtrls, Buttons, OleCtrls, DateEditXControl_TLB, DB,
+     DBTables, DBAccess, Ora, OraSmart, MemDS, OraError,
+     Grids, DBGrids,Unit_CreditPayment,Unit_AgeUpdate;
+
+     //Unit_MemberFamily, Unit_MemberPackage, Unit_membership,Unit_membershipcard,Unit_BillListFrame;
+
+type
+     TForm_MainPatientAdministration = class(TForm)
+          Query_Blank: TOraQuery;
+          Panel_GuidedMenu: TPanel;
+          Panel_Main: TPanel;
+          Panel3: TPanel;
+    Panel_Footer: TPanel;
+          Panel2: TPanel;
+          BB_Close: TBitBtn;
+          BB_Save: TBitBtn;
+          BB_New: TBitBtn;
+    Label_DisplayInfo: TLabel;
+          Gb_color: TGroupBox;
+          Label8: TLabel;
+          Label9: TLabel;
+          Label10: TLabel;
+          Panel_PatientBasicInfo: TPanel;
+    Lbl_MemberNoCap: TLabel;
+          Label11: TLabel;
+    lbl_Patientname: TLabel;
+          Label12: TLabel;
+    Lbl_CurrentAgeGender: TLabel;
+          Label17: TLabel;
+          Lbl_Bg: TLabel;
+          Label15: TLabel;
+          Lbl_address: TLabel;
+          Lbl_Phoneno: TLabel;
+          Label13: TLabel;
+          QueryList: TOraQuery;
+          Label14: TLabel;
+          DS_ListPatient: TDataSource;
+          Edit4: TEdit;
+          Label2: TLabel;
+          Label3: TLabel;
+          Timer1: TTimer;
+          Shape1: TShape;
+          Shape2: TShape;
+          Shape3: TShape;
+          Shape4: TShape;
+          Panel5: TPanel;
+    Query_ListPatient: TOraQuery;
+    Lbl_HospitalNo: TLabel;
+    Lbl_InpatientNo: TLabel;
+    DBGrid1: TDBGrid;
+    RB_OPBILL: TRadioButton;
+    RB_IPBILL: TRadioButton;
+    RB_RefundBill: TRadioButton;
+    BitBtn_Admission: TBitBtn;
+    BitBtn_DischargeBilling: TBitBtn;
+    BitBtn_Deposit: TBitBtn;
+    Query_Process: TOraQuery;
+    OraQuery_LoadHosDocForFinalBilling: TOraQuery;
+          procedure FormShow(Sender: TObject);
+          procedure SPB_TodayDateClick(Sender: TObject);
+          procedure BB_SaveClick(Sender: TObject);
+          procedure BB_NewClick(Sender: TObject);
+          procedure BB_CloseClick(Sender: TObject);
+          procedure Lbl_HosNoKeyPress(Sender: TObject; var Key: Char);
+          procedure Lbl_MemberNoKeyPress(Sender: TObject; var Key: Char);
+          procedure Lbl_MemberNoExit(Sender: TObject);
+          procedure lbl_HosNoExit(Sender: TObject);
+          procedure FormKeyPress(Sender: TObject; var Key: Char);
+          Procedure LoadColor;
+          procedure Timer1Timer(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word;
+               Shift: TShiftState);
+    procedure RB_OPBILLClick(Sender: TObject);
+    procedure RB_IPBILLClick(Sender: TObject);
+    procedure BitBtn_DepositClick(Sender: TObject);
+    procedure BitBtn_AdmissionClick(Sender: TObject);
+    procedure BitBtn_DischargeBillingClick(Sender: TObject);
+     private
+          { Private declarations }
+
+          FrameCleared: Boolean;
+
+          // procedure loadTestName;
+     public
+          SaveBtn: TButton;
+          CloseBtn: TButton;
+          Ls_CalledGuidedMenu: String;
+          li_top: integer;
+          PbClose: Boolean;
+          Ps_Department, Ps_Doctor, Ps_PatientName, Ps_SearchField: String;
+
+          { Public declarations }
+          procedure ClearFrame(ParentPanel: TPanel);
+          procedure LogOff;
+          procedure LoadGuidedMenuInvestigation;
+          procedure LoadGuidedMenuPatientAdministration;
+          procedure LoadGuidedMenuWard;
+          procedure LoadGuidedMenuOT;
+          procedure LoadGuidedMenuOPD;
+          procedure LoadGuidedMenuMRD;
+          procedure LoadAdmittedPatient;
+          procedure LoadMedicine; // form_main.LoadMedicine;
+          procedure LoadSurgery;
+          procedure LoadGynae;
+          Procedure LoadDirectBilling;
+          procedure LoadAllergyDetail;
+          procedure LoadImmunization;
+          procedure LoadProvisionalDiagnosis;
+          procedure LoadDiagnosis;
+          procedure LoadOperationType;
+          procedure LoadOperationName;
+          procedure LoadOperationItems;
+          procedure LoadoperationProcedure;
+          procedure LoadImplantation;
+          procedure LoadOTMovement;
+          procedure LoadCommunity;
+          procedure LoadScheme;
+          procedure LoadPackageScheme;
+          procedure LoadPackage;
+          procedure LoadReportType;
+          procedure LoadFindingSetup;
+          procedure LoadClinicalSetup;
+          procedure loadTestNameSetUp;
+          procedure loadTestPackageDetail;
+          procedure LoadCommunityDetail;
+          procedure LoadBenefitPackageDetail;
+          Procedure LoadOTITems;
+          Procedure LoadSetOTProcedure;
+          Procedure LoadSetOTWiseItem;
+          Procedure LoadSetOTImplant;
+          procedure LoadMRDATAdmission;
+          procedure LoadMRDATHospital;
+          procedure LoadMRDATDischarge;
+          Procedure LoadNurseTriage;
+          Procedure LoadFrameParent;
+          procedure LoadFrameParentAdmission;
+          Procedure LoadInpMain;
+          Procedure LoadSampleCollection;
+          Procedure LoadInpOt;
+          procedure ReloadFrame;
+          procedure HidePanel;
+          procedure LoadMedicineSetup;
+          Procedure loadDoctorNote;
+          procedure LoadAdvice;
+          procedure LoadComplain;
+
+          Procedure LoadPatientDetail;
+
+          Procedure LoadPatientBasicInfo;
+
+          Procedure Databind;
+          Procedure RefreshSearch;
+          Procedure DistroyFrame(SelfName: string);
+
+          procedure LoadOperationPlan;
+          Procedure PatientSearch;
+          Procedure LoadOperation;
+          Procedure LoadMedicalTask;
+          procedure LoadDoctorSchedule;
+          procedure LoadDoc;
+          procedure LoadPatientGMenu;
+          procedure LoadLeaveSchedule;
+          procedure LoadNewPatient;
+          procedure LoadPatientAdmission;
+          procedure LoadSearch;
+          procedure LoadBilling;
+          Procedure LoadBillList;
+          Procedure LoadDeposit;
+          procedure LoadCancelledAppointments;
+          Procedure LoadMembership;
+          Procedure LoadNewMember;
+          Procedure LoadMemberFamily;
+          Procedure LoadMemberPAckage;
+          //Procedure LoadDirectBilling;
+          Procedure LoadAdmittedPatientList;
+          Procedure ChangeCaption;
+          Procedure LoadDepositRefund;
+          Procedure LoadPharmacyCashReceiveList;
+          Procedure LoadPharmacyCashReceive;
+          procedure LoadCreditClearance;
+          procedure LoadIndoorPatientSerach;
+
+          procedure LoadBedTransfer;
+          Function RefreshOutPatient:Boolean;
+          procedure LoadERForm;
+          procedure LoadGuidedMenuERPatient;
+          procedure LoadPatientInfoCorrection;
+
+     end;
+
+var
+
+     Form_MainPatientAdministration: TForm_MainPatientAdministration;
+
+
+     Frame_GMenuPatientAdministration: Unit_PatientAdministration_Gmenu.TFrame_GMenuPatientAdministration;
+
+     Frame_Parent: Unit_FrameParent.TFrame_Parent;
+
+     Frame_NewPatient: Unit_NewPatient.TFrame_NewPatient;
+
+     Frame_BillList:Unit_BillListFrame.TFrame_BillList;
+
+     Frame_CreditPayment:Unit_CreditPayment.TFrame_CreditPayment;
+
+     //Frame_Membership_Parents: Unit_membership_parents.TFrame_Membership_Parents;
+
+     //Frame_NewMember: Unit_membership.TFrame_NewMember;
+     //Frame_deposits: Unit_Deposits.TFrame_Deposits;
+     //Frame_BillList: Unit_BillListFrame.TFrame_BillList;
+
+     // Frame_billingD:Unit_BillingFrameD.TFrame_BillingD;
+     //Frame_DischargeBilling: Unit_DischargeBilling.TFrame_DischargeBilling;
+
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_MainPatientAdministration.BB_CloseClick(Sender: TObject);
+begin
+     Panel_Footer.Visible := True;
+     BB_New.Enabled:=True;
+     BB_Save.Enabled:=False;
+     if gs_CalledFrom = 'Doctor Appointment' then
+     Begin
+          // Frame_doc.btn_CloseClick(Sender);
+          // Gb_color.Visible:=True;
+          // LoadDoc;
+          // gs_CalledFrom:='Doctor Appointment';
+          Close;
+     End
+     else if gs_CalledFrom='FinalBilling' then
+     begin
+          // Form_Billing.Free;
+          // BB_Save.Caption :='Billing';
+
+          LoadFrameParent;
+          //Frame_Parent.Edit_Search.Text:=gs_PrevRegSearchData;
+          //gs_RegistrationType:='';
+          gs_CalledFrom := 'RegisteredPatientList';
+          //Frame_Parent.Edit_Search.SetFocus;
+         // Close;
+     end
+     else if gs_CalledFrom='NormalOPDBilling' then
+     begin
+         // Form_Billing.Free;
+          LoadFrameParent;
+          Frame_Parent.Edit_Search.Text:=gs_PrevRegSearchData;
+          gs_RegistrationType:='';
+          gs_CalledFrom := 'RegisteredPatientList';
+          Frame_Parent.Edit_Search.SetFocus;
+          //Close;
+     end
+     Else if gs_CalledFrom = 'Doctor Schedule' then
+     Begin
+         // Frame_LeaveSchedule.BB_CloseClick(Sender);
+          Gb_color.Visible := False;
+          LoadDoc;
+          gs_CalledFrom := 'Doctor Appointment';
+
+     End
+     Else if gs_CalledFrom = 'Doctor Schedule Plan' then
+     Begin
+         // frame_docschedule.BB_CloseClick(Sender);
+          Gb_color.Visible := False;
+          LoadDoc;
+          gs_CalledFrom := 'Doctor Appointment';
+     End
+    // Else if (gs_CalledFrom = 'RegisteredPatientList') or (gs_CalledFrom = 'DirectRegistration') or (gs_CalledFrom = 'SpecialOPDRegistration') then
+     Else if (gs_CalledFrom = 'DirectRegistration') or (gs_CalledFrom = 'SpecialOPDRegistration') then
+     Begin
+          LoadFrameParent;
+          Frame_Parent.Edit_Search.Text:=gs_PrevRegSearchData;
+          gs_RegistrationType:='';
+          gs_CalledFrom := 'RegisteredPatientList';
+          Frame_Parent.Edit_Search.SetFocus;
+     End
+     Else if gs_CalledFrom = 'NewPatient' then
+     Begin
+          LoadFrameParent;
+        //  Frame_Parent.Edit_Search.Text:=gs_PrevRegSearchData;
+          Frame_Parent.Edit_Search.SetFocus;
+          // Panel_Footer.Visible:=True;
+     End
+     Else if gs_CalledFrom = 'Members List' then
+     Begin
+          LoadMembership;
+          // Panel_Footer.Visible:=True;
+     End
+     Else if gs_CalledFrom = 'Appointment Log' then
+     Begin
+         // Frame_CancelledAppointments.Free;
+          LoadDoc;
+          gs_CalledFrom := 'Doctor Appointment';
+          // Panel_Footer.Visible:=True;
+     End
+     Else if gs_CalledFrom = 'Appointment list' then
+     Begin
+          LoadFrameParent;
+          // Panel_Footer.Visible:=True;
+     End
+     Else if gs_CalledFrom = 'Service Billing' then
+     Begin
+          gs_CalledFrom:='AdmittedPatientList';
+          Form_MainPatientAdministration.LoadAdmittedPatientList;
+          //gs_CalledFrom := 'Service Billing';
+          Panel_Footer.Visible:=False;
+     End
+     Else if gs_CalledFrom = 'New Member' then
+     Begin
+          // FreeAndNil(Frame_NewMember);
+          LoadMembership;
+          // Panel_Footer.Visible:=True;
+     End
+     Else if gs_CalledFrom = 'Member Deposit' then
+     Begin
+          LoadMembership;
+          Panel_Footer.Visible:=False;
+     End
+     Else if gs_CalledFrom = 'Deposit Billing' then
+     Begin
+          LoadBillList;
+          gs_CalledFrom := 'Deposit Billing';
+          Form_MainPatientAdministration.Label_DisplayInfo.Caption := 'Deposit Billing';
+          Panel_Footer.Visible:=False;
+     End
+     Else IF gs_CalledFrom = 'DischargeBilling' Then
+     Begin
+          gs_CalledFrom:='AdmittedPatientList';
+          LoadAdmittedPatientList
+     End
+     Else IF (gs_CalledFrom = 'BedTransfer') or (gs_CalledFrom = 'IPDeposit') Then
+     Begin
+          gs_CalledFrom:='AdmittedPatientList';
+          LoadAdmittedPatientList;
+     End
+     Else IF gs_CalledFrom = 'AdmittedPatientList' Then
+          Close
+          //LoadAdmittedPatientList
+          //LoadFrameParent
+     else if gs_CalledFrom = 'Member Family' then
+     begin
+          LoadMembership;
+     end
+     else if gs_CalledFrom = 'Member Package' then
+     begin
+          LoadMembership;
+     end
+     else if gs_CalledFrom = 'Final Billing' then
+     begin
+          LoadBillList;
+          Panel_Footer.Visible:=False;
+     end
+     else if gs_CalledFrom = 'Members List' then
+     begin
+          // FreeAndNil(Frame_Membership_Parents);
+     end
+     else if gs_CalledFrom = 'DirectBilling' then
+     begin
+          LoadBillList;
+          gs_CalledFrom := 'OPBillList';
+          gs_BillType:='OPBILL';
+          Form_MainPatientAdministration.Label_DisplayInfo.Caption := 'OP Billing';
+          (*Frame_BillingHome.BB_RePrintBill.Enabled:=True;
+          Frame_BillingHome.BB_ViewBill.Enabled:=True;
+          Frame_BillingHome.BB_RefundBill.Enabled:=True;
+          Frame_BillingHome.BB_CancelService.Enabled:=True;*)
+          //Panel_Footer.Visible:=False;
+     end
+     else if gs_CalledFrom = 'Discharge Billing' then
+     begin
+          LoadBillList;
+          gs_CalledFrom := 'Final Billing';
+          Form_MainPatientAdministration.Label_DisplayInfo.Caption := 'Final Billing';
+     end
+     else if gs_CalledFrom = 'BedTransfer' then
+     begin
+          LoadInpMain;
+          gs_CalledFrom := 'Discharge Billing';
+          Form_MainPatientAdministration.Label_DisplayInfo.Caption := 'Discharge Billing';
+     end
+     else if (gs_CalledFrom = 'Cancel Registration') then
+     Begin
+          LoadFrameParent;
+     End
+     else if (gs_CalledFrom = 'Admission') then
+     Begin
+          LoadFrameParentAdmission;
+     End
+     else if gs_CalledFrom='PharmacyCashReceipt' Then
+     Begin
+          if TBitBtn(Sender).Name<>'BitBtn_Save' then
+          if messagedlg('Confirm form close.',mtconfirmation,[mbyes,mbno],0)=mrno then exit;
+          //Frame_CreditReceiptBook.Table_Receipt.close;
+          //Frame_CreditReceiptBook.Query_List.close;
+          LoadPharmacyCashReceiveList;
+     End
+     else if (gs_CalledFrom = 'CreditClearance') then
+     Begin
+         { if Frame_CreditPayment.PageControlCredit.ActivePageIndex=1 then
+          Begin
+               Frame_CreditPayment.PageControlCredit.ActivePageIndex:=0;
+               BB_Save.Enabled:=True;
+               Exit;
+          End; }
+
+          LoadFrameParent;
+          gs_CalledFrom := 'Parent';
+     End
+     else if (gs_calledFrom='EmergencyRegistration') then
+     begin
+          Try
+               gs_calledFrom:='ERPatientList';
+               LoadERForm;
+          Except
+               gs_calledFrom:='EmergencyRegistration';
+          End;
+     end
+     else if (gs_CalledFrom='ERPatientList') then
+     begin
+         { if Form_Er.PageControl1.ActivePageIndex <>5 then
+               Form_Er.PageControl1.ActivePageIndex:=0
+          else if Form_Er.PageControl1.ActivePageIndex = 0 then
+               Close
+          else
+               LoadERForm;  }
+          BB_Save.Enabled:=True;
+
+     end
+     Else
+          Close;
+end;
+
+procedure TForm_MainPatientAdministration.BB_NewClick(Sender: TObject);
+begin
+     if gs_CalledFrom = 'Doctor Appointment' then
+     Begin
+         // Frame_doc.new;
+          Gb_color.Visible := True;
+     End
+     Else if gs_CalledFrom = 'Doctor Schedule' then
+     Begin
+
+//          Frame_LeaveSchedule.new;
+//          Gb_color.Visible := False;
+     End
+     Else if gs_CalledFrom = 'Doctor Schedule Plan' then
+     Begin
+        //  frame_docschedule.new;
+          Gb_color.Visible := False;
+     End
+     Else if (gs_CalledFrom = 'RegisteredPatientList') or (gs_CalledFrom = 'DirectRegistration')  then
+     Begin
+          gs_RegistrationType:='NEW';
+          //gs_CalledFrom := 'NewPatient';
+          gi_PatientId:=0;
+          gb_IsRegInfoModify:=False;
+          Panel_PatientBasicInfo.Visible:=False;
+          Label_DisplayInfo.Caption:='New Registration';
+
+          gs_BillType:='';
+          Gs_BillNo:='';
+          Gs_TempBillno:='';
+          gi_PatientID:=0;
+          gi_SchemeId:=0;
+          gi_CommunityId:=0;
+
+          gs_CalledFrom:='DirectRegistration';
+
+          BitBtn_Admission.Visible:=False;
+          BitBtn_DischargeBilling.Visible:=False;
+          BitBtn_Deposit.Visible:=False;
+
+          BB_New.Visible:=False;
+          BB_Save.Visible:=True;
+          Panel_Footer.Visible:=False;
+          DBGrid1.Visible:=False;
+          gs_Frame:='Direct';
+          gb_PatientDataLoaded:=False;
+          gs_RegistrationType:='NEW';
+          LoadNewPatient;
+          //Frame_Parent.RefreshList;
+     End
+     Else if gs_CalledFrom = 'PharmacyReceiptList' then
+          LoadPharmacyCashReceive
+     else if gs_CalledFrom = 'Member Family' then
+     begin
+         // Frame_MemberFamily.BB_NewClick(Sender);
+     end
+     else if gs_CalledFrom = 'Member Package' then
+     begin
+       //   Frame_MemberPackage.BB_NewClick(Sender);
+     end
+     else if gs_CalledFrom = 'Members List' then
+     begin
+          LoadNewMember;
+     end
+     else if gs_CalledFrom = 'Deposit Billing' then
+     begin
+          // if Frame_BillingHome.CB_BillType.ItemIndex=0 then
+          // LoadBilling
+          // else if Frame_BillingHome.CB_BillType.ItemIndex=1 then
+          // LoadBilling
+          // else if Frame_BillingHome.CB_BillType.ItemIndex=3 then
+          //
+          // gs_CalledFrom:='';
+          BB_Save.Enabled:=True;
+          LoadDeposit;
+     end
+     else if gs_CalledFrom = 'Service Billing' then
+     begin
+          gi_BillCase := 0;
+          Gs_BillNo:='';
+          gs_BillType:='IPBILL';
+          LoadBilling;
+          Label_DisplayInfo.Caption := 'IP Billing (Credit Billing)'
+     end
+     else if (gs_CalledFrom = 'DirectBilling') or (gs_CalledFrom = 'OPBillList') then
+     begin
+          gi_BillCase := 3;
+          gs_BillType:='OPBILL';
+          Gs_BillNo:='';
+          RB_OPBILL.Checked:=True;
+          LoadBilling;
+          Label_DisplayInfo.Caption := 'OP Billing'
+     end
+     else
+          Exit;
+
+end;
+
+procedure TForm_MainPatientAdministration.BB_SaveClick(Sender: TObject);
+VAR KEY:Char;
+begin
+     if gs_CalledFrom = 'CreditClearance' then
+     begin
+          Frame_CreditPayment.SaveCreditPayment;
+     end;
+
+
+     if gs_CalledFrom = 'Appointment' then
+     begin
+        //  Frame_AppointmentSearch.Frame_NewPatient.BB_SaveClick(Sender);
+          if Gb_SuccessfullySaved = True then
+               LoadSearch;
+     end
+     else if gs_CalledFrom = 'Doctor Appointment' then
+     begin
+         // Frame_doc.btn_SaveClick(Sender);
+          Gb_color.Visible := True;
+     end
+     else if gs_CalledFrom='NormalOPDBilling' then
+     begin
+          //Form_Billing := TForm_Billing.Create(nil);
+          Form_Billing.BB_SaveClick(Sender);
+          //Form_Billing.Free;
+     end
+     else if gs_CalledFrom='FinalBilling' then
+     begin
+          Form_Billing := TForm_Billing.Create(nil);
+         // BB_Save.Caption :='Save';
+          with Form_Billing do
+          begin
+             // gs_BillType:='OPBILL';
+             try
+                    Le_HosNo.Text :=IntToStr(gi_PatientID);
+                    gi_BillCase:=1;
+                    KEY:=#13;
+
+                    with OraQuery_LoadHosDocForFinalBilling do
+                    begin
+                         close;
+                         Session:=DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add('select refdocid,refhoscode from patienttest where patientid='+inttoStr(gi_PatientID)+' and billno='+quotedStr(Gs_BillNo));
+                         Open;
+                         Form_Billing.DBLCB_Hospital.KeyValue:=OraQuery_LoadHosDocForFinalBilling.FieldByName('refhoscode').AsString;
+                         Form_Billing.DBLCB_RefDocCode.KeyValue:=OraQuery_LoadHosDocForFinalBilling.FieldByName('refdocid').asInteger;;
+                    end;
+                    Le_HosNoKeyPress(Sender ,Key);
+
+                    ShowModal;
+             finally
+                    Frame_BillList.BB_RefreshClick(sender);
+                    free;
+             end;
+          end;
+          //Form_Billing.ShowModal;
+          //Form_Billing.Free;
+     end
+     else if (gs_CalledFrom = 'DirectRegistration') or (gs_CalledFrom = 'NewPatient')
+          or (gs_CalledFrom = 'SpecialOPDRegistration') or (gs_CalledFrom = 'EmergencyRegistration') then
+     begin
+          Frame_NewPatient.BB_SaveClick(Sender);
+          if gs_RegistrationType='MODIFYDATA' then
+          Begin
+               LoadFrameParent;
+               Frame_Parent.Edit_Search.Text:=gs_PrevRegSearchData;
+               gs_RegistrationType:='';
+               gs_CalledFrom := 'RegisteredPatientList';
+               Frame_Parent.Edit_Search.SetFocus;
+               With Frame_Parent do
+               Begin
+                    if Trim(Edit_Search.Text)<>'' then
+                    Begin
+                         with QueryList do
+                         begin
+                              Close;
+                              SQL.Clear;
+                              SQL.Add(' SELECT PM.*,Trim(PM.VdcName||'' ''||PM.wardNo||'' ''||PM.Address) as FullAddress');
+                              SQL.Add(' ,(Select Count(INRE_InpatientId) From HS_INRE_InpatientReg where INRE_PatientId=PM.PatientId) as NoOfAdmittedTime');
+                              sql.add(',Nvl((Select Max(PAVI_VISITCOUNT) from HS_PAVI_PATIENTVISIT Where Pavi_PatientId=Pm.PatientId ANd PAVI_VISITDATE=to_Char(Sysdate,''YYYY/MM/DD'')),1)FollowUpCount');
+                              SQL.Add(' FROM VW_HS_PATIENTMAIN PM');
+                              if IsStrANumber(Edit_Search.Text) then
+                              SQL.Add('  Where PatientId=' + trim(Edit_Search.Text))
+                              else
+                              SQL.Add('  Where Upper(PatientName) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                              SQL.Add(' ORDER BY REGDATE DESC,REGTIME DESC');
+                              sql.savetofile('C:\mangalm.txt');
+                              Open;
+                         end;
+                    End;
+               End;
+          End;
+     end
+     (*else if gs_CalledFrom = 'BedTransfer' then
+     begin
+          Frame_BedTransfer.SaveBedTransfer;
+     end*)
+     else if gs_CalledFrom = 'Doctor Schedule' then
+     begin
+          // Frame_LeaveSchedule.BB_SaveClick(Sender);
+          Gb_color.Visible := False;
+     end
+     else if gs_CalledFrom = 'Doctor Schedule Plan' then
+     begin
+         // Frame_DocSchedulePlanSimple.BB_SaveClick(Sender);
+          Gb_color.Visible := False;
+     end
+     else if gs_CalledFrom = 'Members List' then
+     begin
+          //Frame_NewMember.BB_SaveClick(Sender);
+          if Gb_SuccessfullySaved = True then
+               LoadMembership;
+     end
+     (*else if (gs_CalledFrom = 'Member Deposit') or
+       (gs_CalledFrom = 'Deposit Billing') or (gs_CalledFrom = 'IPDeposit') then
+     begin
+          Frame_deposits.BB_SaveClick(Sender);
+     end*)
+     else if gs_CalledFrom = 'Member Family' then
+     begin
+         // Frame_MemberFamily.BB_SaveClick(Sender);
+     end
+     else if gs_CalledFrom = 'Member Package' then
+     begin
+         // Frame_MemberPackage.BB_SaveClick(Sender);
+     end
+     else if gs_CalledFrom = 'Service Billing' then
+     begin
+          //Frame_Billing.BB_SaveClick(Sender);
+     end
+     else if (gs_CalledFrom = 'DirectBilling') or ((gi_BillCase= 6) and (gs_CalledFrom='OPBillList')) then
+     begin
+          //if Frame_Billing.SaveBill then
+          //LoadBillList;
+     end
+     else if gs_CalledFrom = 'Final Billing' then
+     begin
+         // if Frame_Billing.SaveBill then
+          LoadBillList;
+     end
+     (*else if gs_CalledFrom = 'DischargeBilling' then
+     begin
+          Frame_DischargeBilling.btn_SaveClick(Sender);
+     end*)
+     (*else if gs_CalledFrom = 'Admission' then
+     begin
+          Frame_PatientAdmission.Btn_SaveClick(Sender);
+     end*)
+     else if gs_CalledFrom = 'Cancel Registration' then
+     begin
+          //Frame_Billing.BB_SaveClick(Sender);
+     end
+     Else if gs_CalledFrom = 'PharmacyCashReceipt' then
+         // Frame_CreditReceipt.SaveCashReceipt
+     Else if gs_CalledFrom = 'CreditClearance' then
+        //  Frame_CreditPayment.SaveCreditPayment
+     else if gs_CalledFrom = 'RegistrationThroughApp' then
+     begin
+        //  Frame_AppointmentSearch.Frame_NewPatient.BB_SaveClick(Sender);
+//          if Gb_SuccessfullySaved = True then
+//               LoadFrameParent;
+          if Gb_RegThroughApp then
+          begin
+               loadsearch;
+               Label_DisplayInfo.Caption:='Registration Through Appointment';
+               Gb_RegThroughApp:=False;
+          end;
+     end
+     else if gs_CalledFrom ='ERPatientList' then
+     begin
+        //  if Form_Er.PageControl1.ActivePageIndex>=1 then
+         // Form_Er.BB_SaveClick(Sender);
+     end
+     else
+          Exit;
+
+end;
+
+procedure TForm_MainPatientAdministration.BitBtn_AdmissionClick(Sender: TObject);
+begin
+   {  Try
+          Form_PatientAdmission:=TForm_PatientAdmission.Create(Nil);
+          Form_PatientAdmission.ShowModal;
+     finally
+          Form_PatientAdmission.Free;
+     End;
+             }
+     if (gs_BillType='OPBILL') or (gs_BillType='IPBILL') then
+     Begin
+          (*Frame_Billing.ResetAllHistoryForNextNewBill;
+          Frame_Billing.Le_HosNo.SetFocus;*)
+     End;
+
+
+end;
+
+procedure TForm_MainPatientAdministration.BitBtn_DepositClick(Sender: TObject);
+begin
+//     Try
+//          Form_Deposits:=TForm_Deposits.Create(Nil);
+//          With Form_Deposits do
+//          Begin
+//               //gi_PatientId:=Query_InpatientList.FieldByName('PatientId').AsInteger;
+//               Form_Deposits.ShowModal;
+//          End;
+//     Finally
+//          Form_Deposits.Free;
+//     End;
+
+     if (gs_BillType='OPBILL') or (gs_BillType='IPBILL') then
+     Begin
+          (*Frame_Billing.ResetAllHistoryForNextNewBill;
+          Frame_Billing.Le_HosNo.SetFocus;*)
+     End;
+end;
+
+procedure TForm_MainPatientAdministration.BitBtn_DischargeBillingClick(Sender: TObject);
+begin
+    { Try
+          Form_DischargeBilling:=TForm_DischargeBilling.Create(Nil);
+          With Form_DischargeBilling do
+          Begin
+               //gi_PatientId:=Query_InpatientList.FieldByName('PatientId').AsInteger;
+               Form_DischargeBilling.ShowModal;
+          End;
+     Finally
+          Form_DischargeBilling.Free;
+     End;   }
+
+     if (gs_BillType='OPBILL') or (gs_BillType='IPBILL') then
+     Begin
+          (*Frame_Billing.ResetAllHistoryForNextNewBill;
+          Frame_Billing.Le_HosNo.SetFocus;*)
+     End;
+end;
+
+procedure TForm_MainPatientAdministration.ChangeCaption;
+begin
+     if (gs_CalledFrom = 'Final Billing') Or
+       (gs_CalledFrom = 'Service Billing') or
+       (gs_CalledFrom = 'Deposit Billing') or
+       (gs_CalledFrom = 'Discharge Billing') or
+       (gs_CalledFrom = 'DirectBilling') or (gs_CalledFrom = 'Refunded Bills')
+       then
+     begin
+          Lbl_MemberNoCap.Caption := 'Inpatient No.';
+          Lbl_HospitalNo.Caption := 'None';
+          Lbl_InpatientNo.Caption := 'None';
+          lbl_patientname.Caption := 'None';
+          Lbl_address.Caption := 'None';
+          Lbl_CurrentAgeGender.Caption := 'None';
+          Lbl_Bg.Caption := 'None';
+          Lbl_Phoneno.Caption := 'None';
+     end
+     else
+     begin
+          Lbl_MemberNoCap.Caption := 'Member No.';
+     end;
+
+end;
+
+procedure TForm_MainPatientAdministration.ClearFrame(ParentPanel: TPanel);
+var
+     i: integer;
+begin
+     try
+          for i := 0 to ParentPanel.ControlCount - 2 do
+          begin
+               if ParentPanel.Controls[i] is Tframe then
+               begin
+                    Tframe(ParentPanel.Controls[i]).Free;
+                    FrameCleared := True;
+               end;
+          end;
+          ParentPanel.BringToFront;
+     except
+          Self.Close;
+     end;
+
+end;
+
+procedure TForm_MainPatientAdministration.Databind;
+begin
+     // with Query_Blank do
+     // begin
+     // Close;
+     // DatabaseName := gs_DatabaseName;
+     // SQL.Clear;
+     // SQL.Add('select * from VW_HS_PatientMain where PatientId=' + Lbl_HospitalNo.Caption);
+     // Open;
+     // end;
+     // if Query_Blank.FieldByName('PatientId').AsInteger > 0 then
+     // Begin
+     // Form_MainOTGuided.Lbl_Department.Caption := Query_Blank.FieldByName('Dename').AsString;
+     // Form_MainOTGuided.Lbl_Doctor.Caption := Query_Blank.FieldByName('DocName').AsString;
+     // Form_MainOTGuided.Lbl_CurrentAgeGender.Caption := Query_Blank.FieldByName('Currentage')
+     // .AsString + '/' + Query_Blank.FieldByName('Gender').AsString;
+     // Form_MainOTGuided.Lbl_VisitNo.Caption := Query_Blank.FieldByName('VisitID').AsString;
+     //
+     // End;
+
+end;
+
+procedure TForm_MainPatientAdministration.DistroyFrame(SelfName: string);
+begin
+    { if SelfName = 'Nurse Triage' then
+     begin
+          FreeAndNil(Frame_AllergyDetail);
+          FreeAndNil(Frame_NurseTriage);
+          FreeAndNil(Frame_PatientComplain);
+          FreeAndNil(Frame_PatientHistory);
+     end
+     else if SelfName = 'Doctor Template' then
+     begin
+          FreeAndNil(Frame_ProvisionalDiagnosis);
+          FreeAndNil(Frame_PatientHistory);
+          FreeAndNil(Frame_PatientComplain);
+     end
+     else if SelfName = 'Prescription' then
+     begin
+          FreeAndNil(frame_advice);
+          FreeAndNil(Frame_MedicineSetup);
+     end; }
+end;
+
+procedure TForm_MainPatientAdministration.LoadPackage;
+begin
+     // ClearFrame;
+     // Form_MemberPackage:=TForm_MemberPackage.Create(nil);
+     // With Form_MemberPackage do
+     // begin
+     // //Parent := Panel_Main;
+     // //Align := alLeft;
+     //
+     // // Panel_Loginbox.Visible:=True;
+     // showmodal;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadCancelledAppointments;
+begin
+     //
+  {   ClearFrame(Panel_Main);
+
+     Frame_CancelledAppointments := TFrame_CancelledAppointments.Create(nil);
+
+     With Frame_CancelledAppointments do
+     Begin
+          Parent := Panel_Main;
+          Align := alClient;
+          show;
+     End;
+
+     Panel_Footer.Visible := True;
+     Gb_color.Visible := False;}
+end;
+
+procedure TForm_MainPatientAdministration.LoadClinicalSetup;
+begin
+     // ClearFrame;
+     // Form_ClinicalTest:=TForm_ClinicalTest.Create(nil);
+     // With Form_ClinicalTest do
+     // begin
+     // try
+     // showmodal;
+     // finally
+     // Form_ClinicalTest.free;
+     // end;
+     //
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadColor;
+begin
+     Shape1.Brush.Color := strtoint(Arr_ColorCode[0, 1]);
+     Shape2.Brush.Color := strtoint(Arr_ColorCode[1, 1]);
+     Shape3.Brush.Color := strtoint(Arr_ColorCode[2, 1]);
+     Shape4.Brush.Color := strtoint(Arr_ColorCode[3, 1]);
+end;
+
+procedure TForm_MainPatientAdministration.LoadCommunity;
+begin
+     // ClearFrame;
+     // Form_Community:=TForm_Community.Create(nil);
+     // With Form_Community do
+     // begin
+     // //Parent := Panel_Main;
+     // //Align := alLeft;
+     //
+     // // Panel_Loginbox.Visible:=True;
+     // showmodal;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadCommunityDetail;
+begin
+     // ClearFrame;
+     // Form_CommunityDetail:=TForm_CommunityDetail.Create(nil);
+     // With Form_CommunityDetail do
+     // begin
+     // //Parent := Panel_Main;
+     // // Align := alLeft;
+     //
+     // // Panel_Loginbox.Visible:=True;
+     // showmodal;
+     // end;
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadComplain;
+begin
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadPackageScheme;
+begin
+     // ClearFrame;
+     // Form_PackageScheme:=TForm_PackageScheme.Create(nil);
+     // With Form_PackageScheme do
+     // begin
+     // //Parent := Panel_Main;
+     // // Align := alLeft;
+     //
+     // // Panel_Loginbox.Visible:=True;
+     // showmodal;
+     // end;
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadPatientBasicInfo;
+begin
+     LoadPatientData(gi_PatientId);
+     Lbl_HospitalNo.Caption:=IntToStr(gi_PatientId);
+
+     IF gs_ModuleName='Administration' Then
+     Begin
+          Lbl_InpatientNo.Caption:=IntToStr(gi_InPatientId);
+          Lbl_MemberNoCap.Caption:='Inpatient No.:';
+     End
+     Else
+     Begin
+          Lbl_InpatientNo.Caption:=Gs_MemberNo;
+          Lbl_MemberNoCap.Caption:='Member No:';
+     End;
+
+     lbl_Patientname.Caption:=Gs_PatientName;
+     Lbl_address.Caption:=Gs_Address;
+     Lbl_CurrentAgeGender.Caption:=Gs_CurrentAgeGender;
+
+     if Trim(Gs_PhoneNo)<>'' then
+     Lbl_Phoneno.Caption:=Gs_PhoneNo
+     Else
+     Lbl_Phoneno.Caption:='N/A';
+
+     if Trim(Gs_BloodGroup)<>'' then
+     Lbl_Bg.Caption:=Gs_BloodGroup
+     Else
+     Lbl_Bg.Caption:='N/A';
+end;
+
+procedure TForm_MainPatientAdministration.LoadPatientDetail;
+begin
+     // with Query_Blank do
+     // begin
+     // Close;
+     // DatabaseName := gs_DatabaseName;
+     // SQL.Clear;
+     // SQL.Add('select OperationactualId,OperationactualId As OperationPlanId from OperationActual where isfordirectot=''Y'' and patientId=' + IntToStr(gi_PatientID));
+     // Open;
+     // end;
+     // with Query_ListPatient do
+     // begin
+     // Close;
+     // DatabaseName := gs_DatabaseName;
+     // if Query_Blank.FieldByName('OperationActualId').AsInteger > 0 then
+     // SQL[4] := 'from OperationActual Op '
+     // else
+     // SQL[4] := 'from OperationPlan Op ';
+     // SQL[5] := 'where Op.PatientId=' + IntToStr(gi_PatientID);
+     // Open;
+     // Pi_OperationPlanId := Query_ListPatient.FieldByName('OperationPlanId').AsInteger;
+     // Pi_OperationActualId := Query_ListPatient.FieldByName('OperationActualId').AsInteger;
+     // end;
+     // if Lbl_Doctor.Caption<>'' then
+     // begin
+     // with Query_Blank do
+     // begin
+     // Close;
+     // DatabaseName := gs_DatabaseName;
+     // SQL.Clear;
+     // SQL.Add('select DocId from Doctor where DocName='+#39+Lbl_Doctor.Caption+#39);
+     // Open;
+     // end;
+     // Pi_DoctorID := Query_Blank.FieldByName('DocId').AsInteger;
+     // end;
+     with Query_ListPatient do
+     begin
+          Close;
+          Session := DM_Hospital.DB;
+          SQL[4] := ' where PAVI_PatientId=' + IntToStr(gi_PatientID);
+          Open;
+     end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadPatientGMenu;
+begin
+     Panel_GuidedMenu.Visible := True;
+     Frame_GMenuPatientAdministration :=
+       TFrame_GMenuPatientAdministration.Create(nil);
+     with Frame_GMenuPatientAdministration do
+     begin
+          Ls_CalledGuidedMenu := 'Frame_GMenuInvestigation';
+          Parent := Panel_GuidedMenu;
+          Align := alLeft;
+          show;
+     end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadGuidedMenuInvestigation;
+begin
+     Panel_GuidedMenu.Visible := True;
+     (*Frame_GmenuInvestigation := TFrame_GMenuInvestigation.Create(nil);
+     with Frame_GmenuInvestigation do
+     begin
+          Ls_CalledGuidedMenu := 'Frame_GMenuInvestigation';
+          Parent := Panel_GuidedMenu;
+          Align := alLeft;
+          show;
+     end;*)
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadGuidedMenuMRD;
+begin
+     Panel_GuidedMenu.Visible := True;
+     (*Frame_GmenuMRD := TFrame_GMenuMRD.Create(nil);
+     with Frame_GmenuMRD do
+     begin
+          Ls_CalledGuidedMenu := 'Frame_GMenuMRD';
+          Parent := Panel_GuidedMenu;
+          Align := alLeft;
+          show;
+     end;*)
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadGuidedMenuOPD;
+begin
+     Panel_GuidedMenu.Visible := True;
+  {   Frame_GmenuOPD := TFrame_GMenuOPD.Create(nil);
+     with Frame_GmenuOPD do
+     begin
+          Ls_CalledGuidedMenu := 'Frame_GMenuOPD';
+          Parent := Panel_GuidedMenu;
+          Align := alLeft;
+          show;
+     end;  }
+end;
+
+procedure TForm_MainPatientAdministration.LoadGuidedMenuOT;
+begin
+     Panel_GuidedMenu.Visible := True;
+    { Frame_GmenuOT := TFrame_GMenuOT.Create(nil);
+     with Frame_GmenuOT do
+     begin
+          Ls_CalledGuidedMenu := 'Frame_GMenuOT';
+          Parent := Panel_GuidedMenu;
+          Align := alLeft;
+          show;
+     end;  }
+end;
+
+procedure TForm_MainPatientAdministration.LoadGuidedMenuPatientAdministration;
+begin
+     Panel_GuidedMenu.Visible := True;
+     Frame_GMenuPatientAdministration :=TFrame_GMenuPatientAdministration.Create(nil);
+     with Frame_GMenuPatientAdministration do
+     begin
+          Ls_CalledGuidedMenu := 'Frame_GMenuPatientAdministration';
+          Parent := Panel_GuidedMenu;
+          Align := alLeft;
+          show;
+     end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadGuidedMenuWard;
+begin
+     Panel_GuidedMenu.Visible := True;
+     (*Frame_GmenuWard := TFrame_GMenuWard.Create(nil);
+     with Frame_GmenuWard do
+     begin
+          Ls_CalledGuidedMenu := 'Frame_GMenuWard';
+          Parent := Panel_GuidedMenu;
+          Align := alLeft;
+          show;
+     end;*)
+end;
+
+procedure TForm_MainPatientAdministration.LoadGynae;
+begin
+     // Frame_Gynae := tframe_gynae.Create(nil);
+     // with Frame_Gynae do
+     // begin
+     // Parent := Panel_Main;
+     // Align := alLeft;
+     // show;
+     // end;
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadImmunization;
+begin
+   {  Frame_Immunization := TFrame_Immunization.Create(nil);
+     with Frame_Immunization do
+     begin
+          // gs_CalledFrom := 'Frame_Immunization';
+          Form_MainOTGuided.Panel_Main.BringToFront;
+          Parent := Form_MainOTGuided.Panel_Main;
+          Align := alClient;
+          Frame_Immunization.Panel1.Visible := False;
+          show;
+     end;}
+end;
+
+procedure TForm_MainPatientAdministration.LoadMedicalTask;
+begin
+     ClearFrame(Panel_Main);
+   {  frame_MedicalTask := Tframe_MedicalTask.Create(nil);
+     With frame_MedicalTask do
+     begin
+          Form_MainOTGuided.Panel_Main.BringToFront;
+          Parent := Form_MainOTGuided.Panel_Main;
+          Align := alClient;
+          frame_MedicalTask.Panel2.Visible := False;
+          show;
+     end; }
+end;
+
+procedure TForm_MainPatientAdministration.LoadMedicine;
+begin
+     // Frame_Medicine := TFrame_Medicine.Create(nil);
+     // with Frame_Medicine do
+     // begin
+     // Parent := Panel_Main;
+     // Align := alLeft;
+     // show;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadMRDATAdmission;
+begin
+     ClearFrame(Panel_Main);
+
+   {  Frame_MRDAtAdmission := TFrame_MRDAtAdmission.Create(nil);
+     with Frame_MRDAtAdmission do
+     begin
+          // gs_CalledFrom := 'Frame_MRDATAdmission';
+          Form_MainOTGuided.Panel_Main.BringToFront;
+          Parent := Form_MainOTGuided.Panel_Main;
+          Align := alClient;
+          pb_new := True;
+          Frame_MRDAtAdmission.Panel1.Visible := False;
+          // BB_New.Enabled:=false;
+          // BB_Save.Enabled:=true;
+          // LoadedFrameName:=Frame_MRDAtAdmission;
+          // SaveBtn:=Frame_MRDATAdmission.BB_SaveClick(sender);
+          // NewBtn:=Frame_MRDATAdmission.BB_New;
+
+          show;
+     end;   }
+end;
+
+procedure TForm_MainPatientAdministration.LoadMRDATDischarge;
+begin
+     ClearFrame(Panel_Main);
+   {  Frame_MRDATHospital := TFrame_MRDATHospital.Create(nil);
+     with Frame_MRDATHospital do
+     begin
+          // gs_CalledFrom := 'Frame_MRDATHospital';
+          Form_MainOTGuided.Panel_Main.BringToFront;
+          Parent := Form_MainOTGuided.Panel_Main;
+          Align := alClient;
+          pb_new := True;
+          // BB_New.Enabled:=false;
+          // BB_Save.Enabled:=true;
+          Frame_MRDATHospital.Panel1.Visible := False;
+          show;
+     end;  }
+end;
+
+procedure TForm_MainPatientAdministration.LoadMRDATHospital;
+begin
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadNewMember;
+begin
+     ClearFrame(Panel_Main);
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption := 'New Member';
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible := False;
+     Panel_Main.BringToFront;
+     {Frame_NewMember := TFrame_NewMember.Create(nil);
+     with Frame_NewMember do
+     begin
+          Parent := Self.Panel_Main;
+          Align := alClient;
+          show;
+          Frame_NewMember.BB_Save.Enabled := False;
+          FrameCleared := False;
+     end; }
+end;
+
+procedure TForm_MainPatientAdministration.LoadNewPatient;
+//Var  MyAutoComplete: TAutoComplete;
+
+begin
+    // ClearFrame(Panel_Main);
+     gb_FrameParent := False;
+
+     IF gs_CalledFrom='DirectRegistration' Then
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='New Registration'
+     else if gs_calledFrom='SpecialOPDRegistration' then
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Special OPD Registration'
+     else if gs_CalledFrom='EmergencyRegistration' then
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Emergency Registration';
+
+
+     //Form_MainPatientAdministration.BB_New.Enabled:=False;
+     //Form_MainPatientAdministration.BB_Save.Enabled:=True;
+     //MyAutoComplete := TAutoComplete.Create(True);
+
+     {Try
+          FreeAndNil(Frame_NewPatient);
+     Except
+
+     End;}
+
+     //gb_PatientDataLoaded:=True;
+     if gi_compileValue in [1,14,21,22,23,24,25,26,27,28] then
+     begin
+          BB_Save.caption:='&Save (F12)';
+          Frame_NewPatient := TFrame_NewPatient.Create(nil);
+          with Frame_NewPatient do
+          Begin
+               pb_isnew:=True;
+               Parent := Form_MainPatientAdministration.Panel_Main;
+               //MyAutoComplete.Start;
+               Align := alClient;
+
+               if (Form_MainPatientAdministration.Label_DisplayInfo.Caption = 'Direct Registration') or
+                    (Form_MainPatientAdministration.Label_DisplayInfo.Caption = 'Special OPD Registration') or
+                    (Form_MainPatientAdministration.Label_DisplayInfo.Caption = 'Emergency Registration') then
+               Begin
+                    PageControl1.Pages[0].TabVisible := True;
+                    PageControl1.Pages[1].TabVisible := False
+               End
+               Else if Form_MainPatientAdministration.Label_DisplayInfo.Caption = 'List Of Patients' then
+               Begin
+                    PageControl1.Pages[1].TabVisible := True;
+                    PageControl1.Pages[0].TabVisible := False
+               End;
+               Frame_NewPatient.BB_Save.Enabled := False;
+
+
+               if (gs_RegistrationType='FOLLOWUP') or (gb_IsRegInfoModify=True) then
+               LoadPatientMainInfo;
+
+               if gs_RegistrationType='NEW' Then
+               Begin
+                    Form_MainPatientAdministration.Label_DisplayInfo.Caption:='New Registration';
+                    //Form_MainPatientAdministration.BB_New.Enabled:=True;
+                    Frame_NewPatient.DBLCB_title.SetFocus;
+                    if (gi_compileValue=24) and (gb_isppl = True) then
+                     DBLCB_District.keyvalue:=25
+                    else if (gi_compileValue=24) and (gb_isppl = False) then
+                    DBLCB_District.keyvalue:=35
+                     else if gi_compileValue=25  then
+                    DBLCB_District.keyvalue:=27
+                    else
+                    DBLCB_District.keyvalue:=27;
+                    if gi_compileValue=22 then
+                    Le_MobileNo.Text:='0';
+                    //Frame_NewPatient.CB_Patientcategory.SetFocus;
+               End
+               else if gs_RegistrationType='FOLLOWUP' Then
+               Begin
+                    Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Old Registration';
+                    Form_MainPatientAdministration.BB_New.Enabled:=False;
+                    //Frame_NewPatient.BB_Save.Enabled := True;
+                    PatientLastVisitInfo;
+                    MeidcareNo;
+                    Edit_HospitalNo.SetFocus;
+                   // Frame_OpdVisit.DBLCB_Department.SetFocus;
+               End;
+                    Form_MainPatientAdministration.BB_Save.Enabled := True;
+               //if gb_IsERAlreadyLoaded=True then Exit;
+               show;
+          End;
+          Gb_color.Visible := False;
+     end
+     else
+     begin
+          Frame_NewPatient := TFrame_NewPatient.Create(nil);
+          with Frame_NewPatient do
+          Begin
+               pb_isnew:=True;
+               Parent := Form_MainPatientAdministration.Panel_Main;
+               //MyAutoComplete.Start;
+               Align := alClient;
+
+               if (Form_MainPatientAdministration.Label_DisplayInfo.Caption = 'Direct Registration') or
+                    (Form_MainPatientAdministration.Label_DisplayInfo.Caption = 'Special OPD Registration') or
+                    (Form_MainPatientAdministration.Label_DisplayInfo.Caption = 'Emergency Registration') then
+               Begin
+                    PageControl1.Pages[0].TabVisible := True;
+                    PageControl1.Pages[1].TabVisible := False
+               End
+               Else if Form_MainPatientAdministration.Label_DisplayInfo.Caption = 'List Of Patients' then
+               Begin
+                    PageControl1.Pages[1].TabVisible := True;
+                    PageControl1.Pages[0].TabVisible := False
+               End;
+               Frame_NewPatient.BB_Save.Enabled := False;
+
+
+               if (gs_RegistrationType='FOLLOWUP') or (gb_IsRegInfoModify=True) then
+               LoadPatientMainInfo;
+
+               if gs_RegistrationType='NEW' Then
+               Begin
+                    Form_MainPatientAdministration.Label_DisplayInfo.Caption:='New Registration';
+                    //Form_MainPatientAdministration.BB_New.Enabled:=True;
+                    Frame_NewPatient.DBLCB_title.SetFocus;
+                    //Frame_NewPatient.CB_Patientcategory.SetFocus;
+
+
+               End
+               else if gs_RegistrationType='FOLLOWUP' Then
+               Begin
+                    Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Old Registration';
+                    Form_MainPatientAdministration.BB_New.Enabled:=False;
+                    //Frame_NewPatient.BB_Save.Enabled := True;
+                    PatientLastVisitInfo;
+                    MeidcareNo;
+                    Edit_HospitalNo.SetFocus;
+                   // Frame_OpdVisit.DBLCB_Department.SetFocus;
+               End;
+                    Form_MainPatientAdministration.BB_Save.Enabled := True;
+               //if gb_IsERAlreadyLoaded=True then Exit;
+               show;
+          End;
+          Gb_color.Visible := False;
+     end;
+
+     Gb_color.Visible := False;
+end;
+
+procedure TForm_MainPatientAdministration.LoadNurseTriage;
+begin
+     // HidePanel;
+     // Frame_NurseTriage := TFrame_NurseTriage.Create(nil);
+     // with Frame_NurseTriage do
+     // begin
+     // if Lbl_HospitalNo.Caption = '' then
+     // gi_PatientID := 0;
+     // Panel_ProvisionalDiagonosis.Visible := true;
+     // Form_MainOTGuided.Panel_Main.SendToBack;
+     // Parent := Form_MainOTGuided.Panel_ProvisionalDiagonosis;
+     // Align := alClient;
+     // dateeditx_date.SystemOfDate := gi_datesystem;
+     // dateeditx_date.Text := TodaysDate;
+     // maskedit_time.Text := copy(TodaysTime, 0, 5);
+     // pb_new := true;
+     // // BB_New.Enabled:=false;
+     // // BB_Save.Enabled:=true;
+     // Frame_NurseTriage.Panel1.Visible := false;
+     // show;
+     // end;
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadSampleCollection;
+begin
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadScheme;
+begin
+     // ClearFrame;
+     // Form_Schemes:=TForm_Schemes.Create(nil);
+     // With Form_Schemes do
+     // begin
+     // //Parent := Panel_Main;
+     // //Align := alLeft;
+     //
+     // // Panel_Loginbox.Visible:=True;
+     // showmodal;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadSearch;
+begin
+     BB_Save.Visible:=True;
+     BB_Save.Enabled:=True;
+    // ClearFrame(Panel_Main);
+//     if Frame_AppointmentSearch<>Nil then
+//     FreeAndNil(Frame_AppointmentSearch);
+//     if Frame_doc<>Nil then
+//     FreeAndNil(Frame_doc);
+     {if Frame_AppointmentSearch<>nil then
+     FreeAndNil(Frame_AppointmentSearch);
+     Frame_AppointmentSearch := TFrame_AppointmentSearch.Create(nil);
+     With Frame_AppointmentSearch do
+     Begin
+          Parent := self.Panel_Main;
+          Align := alClient;
+          show;
+     End;
+     Panel_Footer.Visible := True;
+     Gb_color.Visible := True;   }
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadSetOTImplant;
+begin
+     // ClearFrame();
+     {Form_OTImplant := TForm_OTImplant.Create(nil);
+     with Form_OTImplant do
+     begin
+          try
+               ShowModal;
+          finally
+               Free;
+          end;
+     end;  }
+end;
+
+procedure TForm_MainPatientAdministration.LoadSetOTProcedure;
+begin
+     // ClearFrame;
+     {Form_Set_OTProcedure := TForm_Set_OTProcedure.Create(nil);
+     with Form_Set_OTProcedure do
+     begin
+          try
+               ShowModal;
+          finally
+               Free;
+          end;
+     end; }
+end;
+
+procedure TForm_MainPatientAdministration.LoadSetOTWiseItem;
+begin
+     // ClearFrame;
+     {Form_Set_OTWiseItem := TForm_Set_OTWiseItem.Create(nil);
+     with Form_Set_OTWiseItem do
+     begin
+          try
+               ShowModal;
+          finally
+               Free;
+          end;
+     end; }
+end;
+
+// procedure TForm_Main.LoadCommunityScheme;
+// begin
+// ClearFrame;
+// Form_CommunityScheme:=TForm_CommunityScheme.Create(nil);
+// With Form_CommunityScheme do
+// begin
+// Parent := Panel_Main;
+// Align := alLeft;
+//
+// // Panel_Loginbox.Visible:=True;
+// showmodal;
+// end;
+// end;
+
+procedure TForm_MainPatientAdministration.LoadProvisionalDiagnosis;
+begin
+     // Frame_ProvisionalDiagnosis := Tframe_ProvisionalDiagnosis.Create(nil);
+     // with Frame_ProvisionalDiagnosis do
+     // begin
+     // // gs_CalledFrom := 'Frame_ProvisionalDiagnosis';
+     // Form_MainOTGuided.Panel_Main.SendToBack;
+     // if gs_CalledFrom = 'Doctor Template' then
+     // begin
+     // Panel_ProvisionalDiagonosis.Visible := true;
+     // Parent := Form_MainOTGuided.Panel_ProvisionalDiagonosis;
+     // Align := alRight;
+     // end
+     // else
+     // begin
+     // Panel_Diagonosis.Visible := true;
+     // Parent := Form_MainOTGuided.Panel_ProvisionalDiagonosis;
+     // Align := alClient;
+     // end;
+     // Frame_ProvisionalDiagnosis.Panel1.Visible := false;
+     // show;
+     // end;
+
+     // Panel_ProvisionalDiagonosis.BringToFront;
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadReportType;
+begin
+     // ClearFrame;
+     // Form_ReportType:=TForm_ReportType.Create(nil);
+     // With Form_ReportType do
+     // begin
+     // //Parent := Panel_Main;
+     // //Align := alLeft;
+     //
+     // // Panel_Loginbox.Visible:=True;
+     // showmodal;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadSurgery;
+begin
+     // Frame_surgery := TFrame_surgery.Create(nil);
+     // with Frame_surgery do
+     // begin
+     // Parent := Panel_Main;
+     // Align := alLeft;
+     // show;
+     // end;
+
+end;
+
+procedure TForm_MainPatientAdministration.loadTestNameSetUp;
+begin
+
+     form_TestNameSetup := tform_testNameSetup.Create(nil);
+
+     with form_TestNameSetup do
+     begin
+          ShowModal;
+
+     end;
+end;
+
+procedure TForm_MainPatientAdministration.loadTestPackageDetail;
+begin
+     // ClearFrame;
+     // Form_TestPackageDetail:=TForm_TestPackageDetail.Create(nil);
+     // With Form_TestPackageDetail do
+     // begin
+     // //Parent := Panel_Main;
+     // //Align := alLeft;
+     //
+     // // Panel_Loginbox.Visible:=True;
+     // showmodal;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LogOff;
+begin
+
+     // ClearFrame(Panel_Main);
+     // ClearFrame(Panel_ProvisionalDiagonosis);
+     // ClearFrame(Panel_Diagonosis);
+     // if Ls_CalledGuidedMenu = 'Frame_GMenuInvestigation' then
+     // Frame_GmenuInvestigation.Free
+     // else if Ls_CalledGuidedMenu = 'Frame_GMenuMRD' then
+     // Frame_GmenuMRD.Free
+     //
+     // else if Ls_CalledGuidedMenu = 'Frame_GMenuOPD' then
+     // Frame_GmenuOPD.Free
+     // else if Ls_CalledGuidedMenu = 'Frame_GMenuOT' then
+     // Frame_GmenuOT.Free
+     // else if Ls_CalledGuidedMenu = 'Frame_GMenuPatientAdministration' then
+     // Frame_GMenuPatientAdministration.Free
+     // else if Ls_CalledGuidedMenu = 'Frame_GMenuWard' then
+     // Frame_GmenuWard.Free;
+     // Panel_GuidedMenu.Visible := false;
+     // Panel_Main.Visible := false;
+     // Panel_ProvisionalDiagonosis.Visible := false;
+     // Panel_Diagonosis.Visible := false;
+     // Form_MainOTGuided.Free;
+     // Frame_Login.EditUsername.Clear;
+     // Frame_Login.EditPassword.Clear;
+     // Frame_Login.cb_usertype.ItemIndex := -1;
+     // Frame_Login.CB_Mode.ItemIndex := -1;
+     // AnimateWindow(Panel_Login.Handle, 200,
+     // AW_VER_POSITIVE OR AW_SLIDE OR AW_ACTIVATE);
+     // Frame_Login.EditUsername.SetFocus;
+
+end;
+
+procedure TForm_MainPatientAdministration.PatientSearch;
+begin
+     {Form_PatientSearch := TForm_PatientSearch.Create(Nil);
+     with Form_PatientSearch do
+     begin
+          try
+
+               ShowModal;
+          finally
+               Free;
+          end;
+     end; }
+end;
+
+procedure TForm_MainPatientAdministration.LoadMedicineSetup;
+begin
+     // Panel_ProvisionalDiagonosis.Visible := true;
+     // Frame_MedicineSetup := TFrame_MedicineSetup.Create(nil);
+     // with Frame_MedicineSetup do
+     // begin
+     // // gs_CalledFrom := 'Frame_MedicineSetup';
+     // Form_MainOTGuided.Panel_Main.SendToBack;
+     // Parent := Form_MainOTGuided.Panel_ProvisionalDiagonosis;
+     // Align := alClient;
+     // Frame_MedicineSetup.Panel1.Visible := false;
+     // show;
+     // end
+end;
+
+procedure TForm_MainPatientAdministration.LoadMemberFamily;
+begin
+     ClearFrame(Panel_Main);
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption := 'Member Family';
+     {Frame_MemberFamily := TFrame_MemberFamily.Create(nil);
+     With Frame_MemberFamily do
+     begin
+          Panel_Main.BringToFront;
+          Parent := Panel_Main;
+          Align := alClient;
+          show;
+          Panel2.Visible := False;
+     end; }
+end;
+
+procedure TForm_MainPatientAdministration.LoadMemberPAckage;
+begin
+     ClearFrame(Panel_Main);
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption := 'Member Package';
+     {Frame_MemberPackage := TFrame_MemberPackage.Create(nil);
+     With Frame_MemberPackage do
+     begin
+          Panel_Main.BringToFront;
+          Parent := Panel_Main;
+          Align := alClient;
+          show;
+          Panel2.Visible := False;
+     end;  }
+end;
+
+procedure TForm_MainPatientAdministration.LoadMembership;
+begin
+     ClearFrame(Panel_Main);
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible := True;
+     (*Frame_Membership_Parents := TFrame_Membership_Parents.Create(nil);
+     With Frame_Membership_Parents do
+     begin
+          Form_MainPatientAdministration.Panel_Main.BringToFront;
+          Parent := Form_MainPatientAdministration.Panel_Main;
+          Align := alClient;
+          // frame_operation.Panel1.Visible := false;
+          show;
+          Form_MainPatientAdministration.Label_DisplayInfo.Caption := 'Members List';
+          gs_CalledFrom := 'Members List';
+     end;*)
+
+end;
+
+procedure TForm_MainPatientAdministration.RB_IPBILLClick(Sender: TObject);
+begin
+     (*gi_BillCase:=0;
+     gs_BillType:='IPBILL';
+
+     with Frame_Billing do
+     Begin
+          ResetAllHistoryForNextNewBill;
+          if Not FileExists(gs_temppath+'\TempBilling.db') then
+          Frame_Billing.CreateTableTempBilling;
+
+          with Table_TempBilling do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'TempBilling.db';
+               EmptyTable;
+               Open;
+          end;
+          Query_TempBilling.Close;
+          Query_TempBilling.DatabaseName:=gs_TempPath;
+          Query_TempBilling.Open;
+          DBGrid1.DataSource := DS_Tempbilling;
+          Le_HosNo.SetFocus;
+     End;
+     Label_DisplayInfo.Caption:='IP BILLING';
+     RB_IPBIll.Checked:=True;*)
+end;
+
+procedure TForm_MainPatientAdministration.RB_OPBILLClick(Sender: TObject);
+begin
+     (*gi_BillCase:=3;
+     gs_BillType:='OPBILL';
+     with Frame_Billing do
+     Begin
+          ResetAllHistoryForNextNewBill;
+          if Not FileExists(gs_temppath+'\FinalBill.db') then
+          CreateTableFinalBill;
+
+          with Table_FinalBill do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'FinalBill.db';
+               EmptyTable;
+               Open;
+          end;
+          Query_FinalBill.Close;
+          Query_FinalBill.DatabaseName:=gs_TempPath;
+          Query_FinalBill.Open;
+          DBGrid1.DataSource := DS_FinalBill;
+
+          CB_BILLTYPE.KeyValue:='GEN';
+          Le_HosNo.SetFocus;
+     End;
+     Label_DisplayInfo.Caption:='OP BILLING';
+     RB_OPBIll.Checked:=True;*)
+end;
+
+procedure TForm_MainPatientAdministration.RefreshSearch;
+begin
+     if gs_CalledFrom = 'DischargeBilling' then
+     Begin
+          QueryList.Close;
+          if Ps_SearchField = 'HosNo' then
+               QueryList.SQL[2] := 'and Patientid=' + Lbl_HospitalNo.Caption
+          Else if Ps_SearchField = 'InptNo' then
+          Begin
+               //GetCurrentIPInfo(0, strtoint(Edit_InpatientNo.Text));
+               QueryList.SQL[2] := 'and Patientid=' + IntToStr(gi_PatientID);
+          End
+          Else
+               QueryList.SQL[2] := 'and MemberNo=' + #39 + Lbl_InpatientNo.Caption +
+                 #39;
+          QueryList.Open;
+
+          if QueryList.FieldByName('PatientId').AsInteger > 0 then
+          Begin
+               //GetCurrentIPInfo(QueryList.FieldByName('PatientId').AsInteger,0);
+               if gi_InPatientID > 0 then
+               Begin
+                    gi_PatientID := QueryList.FieldByName('patientid')
+                      .AsInteger;
+                    Lbl_HospitalNo.Caption := IntToStr(gi_PatientID);
+                    lbl_patientname.Caption := QueryList.FieldByName
+                      ('patientname').AsString;
+                    Lbl_CurrentAgeGender.Caption := QueryList.FieldByName('AgeGender')
+                      .AsString;
+                    Lbl_Bg.Caption := QueryList.FieldByName('Bloodgroup')
+                      .AsString;
+                    Lbl_address.Caption := QueryList.FieldByName('Address')
+                      .AsString;
+                    Lbl_Phoneno.Caption := QueryList.FieldByName('Phoneno')
+                      .AsString;
+                    ReloadFrame;
+                    Exit;
+               End
+               Else
+               Begin
+                    MessageDlg('Admitted Patient Not Found.', mtWarning,
+                         [mbok], 0);
+                    Exit;
+               End;
+          End
+          Else
+          Begin
+               MessageDlg('Patient Not Found !', mtWarning, [mbok], 0);
+               Exit;
+          End;
+     End
+     Else if Lbl_InpatientNo.Caption <> '' then
+     begin
+          QueryList.Close;
+          if (gs_CalledFrom = 'Final Billing') Or
+            (gs_CalledFrom = 'Service Billing') or
+            (gs_CalledFrom = 'Billing Deposit') or
+            (gs_CalledFrom = 'Discharge Billing') or
+            (gs_CalledFrom = 'Refunded Bills') or
+            (gs_CalledFrom = 'DirectBilling') or (gs_CalledFrom = 'Advance')
+            then
+          begin
+               with Query_Blank do
+               begin
+                    Close;
+                    Session := DM_Hospital.DB;
+                    SQL.Clear;
+                    SQL.Add
+                      ('select patientid from patientmain where patientid=' +
+                           IntToStr(gi_PatientID));
+                    Open
+               end;
+               QueryList.SQL[2] := 'and Patientid=' + IntToStr
+                 (Query_Blank.FieldByName('PatientId').AsInteger);
+          end;
+          QueryList.Open;
+          gi_PatientID := QueryList.FieldByName('patientid').AsInteger;
+          Lbl_HospitalNo.Caption := IntToStr(gi_PatientID);
+          lbl_patientname.Caption := QueryList.FieldByName('patientname')
+            .AsString;
+          Lbl_CurrentAgeGender.Caption := QueryList.FieldByName('AgeGender').AsString;
+          Lbl_Bg.Caption := QueryList.FieldByName('Bloodgroup').AsString;
+          Lbl_address.Caption := QueryList.FieldByName('Address').AsString;
+          Lbl_Phoneno.Caption := QueryList.FieldByName('Phoneno').AsString;
+     end
+     else if Lbl_HospitalNo.Caption <> '' then
+     begin
+          QueryList.Close;
+          QueryList.SQL[2] := 'and PatientId=' + IntToStr(gi_PatientID);
+          QueryList.Open;
+          if (gs_CalledFrom = 'Final Billing') Or
+            (gs_CalledFrom = 'Service Billing') or
+            (gs_CalledFrom = 'Billing Deposit') or
+            (gs_CalledFrom = 'Refunded Bills') or (gs_CalledFrom = 'Advance')
+            or (gs_CalledFrom = 'Discharge Billing') Then
+          begin
+               with Query_Blank do
+               begin
+                    Close;
+                    Session := DM_Hospital.DB;
+                    SQL.Clear;
+                    SQL.Add(
+                         'select max(inpatientid) as Inpatientid from inpatientreg where patientid=' + IntToStr(gi_PatientID));
+                    Open;
+               end;
+               gi_InPatientID := Query_Blank.FieldByName('InpatientId')
+                 .AsInteger;
+               Lbl_InpatientNo.Caption := IntToStr(gi_InPatientID);
+          end
+          else
+          begin
+               Gi_MemberID := QueryList.FieldByName('Memberid').AsInteger;
+               Lbl_InpatientNo.Caption := IntToStr(Gi_MemberID);
+          end;
+          lbl_patientname.Caption := QueryList.FieldByName('patientname')
+            .AsString;
+          Lbl_CurrentAgeGender.Caption := QueryList.FieldByName('AgeGender').AsString;
+          Lbl_Bg.Caption := QueryList.FieldByName('Bloodgroup').AsString;
+          Lbl_address.Caption := QueryList.FieldByName('Address').AsString;
+          Lbl_Phoneno.Caption := QueryList.FieldByName('Phoneno').AsString;
+     end
+     else
+     begin
+          {Form_MainOTGuided.Lbl_Department.Caption := '';
+          Form_MainOTGuided.Lbl_Doctor.Caption := '';
+          Form_MainOTGuided.Lbl_CurrentAgeGender.Caption := '';
+          Form_MainOTGuided.Lbl_VisitNo.Caption := '';
+          lbl_patientname.Caption := ''; }
+     end;
+
+     // if trim(Lbl_HospitalNo.Caption) <> '' then
+     // gi_PatientID := StrToInt(trim((Lbl_HospitalNo.Caption)))
+     // else
+     // gi_PatientID := 0;
+
+     LoadPatientDetail;
+     ReloadFrame;
+end;
+
+procedure TForm_MainPatientAdministration.ReloadFrame;
+begin
+     if gs_CalledFrom = 'Member Family' then
+     begin
+          //Frame_MemberFamily.LoadData;
+     end
+     else if gs_CalledFrom = 'Member Package' then
+     begin
+          //Frame_MemberPackage.LoadData;
+     end
+     (*else if (gs_CalledFrom = 'Member Deposit') or
+       (gs_CalledFrom = 'Deposit Billing') then
+     begin
+          Frame_deposits.LoadData;
+     end*)
+     else if (gs_CalledFrom = 'Final Billing') then
+     begin
+          // Frame_FinalBillHome.PbIsFromPatientId:=True;
+          // Frame_FinalBillHome.LoadData;
+     end;
+     (*else if (gs_CalledFrom = 'DischargeBilling') then
+     begin
+          Frame_DischargeBilling.LoadInpatientTransaction;
+     end;*)
+
+end;
+
+procedure TForm_MainPatientAdministration.SPB_TodayDateClick(Sender: TObject);
+begin
+     // ChangeDateSystem(Dex_Today, SPB_TodayDate);
+end;
+
+procedure TForm_MainPatientAdministration.Timer1Timer(Sender: TObject);
+Var
+     Qry:TOraQuery;
+begin
+     if IntToStr(gi_PatientID)<>'0' then
+     Begin
+          Lbl_HospitalNo.Caption := IntToStr(gi_PatientID);
+          Lbl_InpatientNo.Caption:=inttostr(gi_Inpatientid);
+          lbl_patientname.Caption := gs_patientname;
+          Lbl_address.Caption := gs_address;
+          Lbl_CurrentAgeGender.Caption := Gs_CurrentAge+' / '+Copy(Gs_Gender,1,1);
+          Lbl_Phoneno.Caption := gs_phoneno+' '+gs_Mobileno;
+     End
+     else
+     Begin
+          Lbl_HospitalNo.Caption := 'None';
+          Lbl_InpatientNo.Caption:='None';
+          lbl_patientname.Caption := 'None';
+          Lbl_address.Caption := 'None';
+          Lbl_CurrentAgeGender.Caption := 'None';
+          Lbl_Phoneno.Caption := 'None';
+     End;
+end;
+
+procedure TForm_MainPatientAdministration.LoadOperation;
+begin
+     ClearFrame(Panel_Main);
+     {frame_operation := TFrame_Operation.Create(nil);
+     With frame_operation do
+     begin
+          Form_MainOTGuided.Panel_Main.BringToFront;
+          Parent := Form_MainOTGuided.Panel_Main;
+          Align := alClient;
+          //frame_operation.Panel1.Visible := False;
+          show;
+     end;    }
+end;
+
+procedure TForm_MainPatientAdministration.LoadOperationItems;
+begin
+     // ClearFrame;
+     // Frame_OperationItems := Tframe_OperationItems.Create(nil);
+     // with Frame_OperationItems do
+     // begin
+     // Parent := Panel_Main;
+     // Align := alLeft;
+     // show;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadOperationName;
+begin
+     // ClearFrame;
+     // Frame_OperationName := Tframe_OperationName.Create(nil);
+     // with Frame_OperationName do
+     // begin
+     // Parent := Panel_Main;
+     // Align := alLeft;
+     // show;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadDoctorSchedule;
+begin
+     //ClearFrame(Panel_Main);
+     {Try
+          if Frame_DocSchedulePlanSimple <> Nil then
+               FreeAndNil(Frame_DocSchedulePlanSimple);
+     Except
+
+     End;
+
+     BB_Save.Enabled:=True;
+
+     Frame_DocSchedulePlanSimple := TFrame_DocSchedulePlanSimple.Create(nil);
+     With Frame_DocSchedulePlanSimple do
+     Begin
+          // Panel_Main.Visible:=true;
+          // panel_main.BringToFront;
+          Parent := Panel_Main;
+          Align := alClient;
+          show;
+     End; }
+
+     Panel_Footer.Visible := True;
+     Gb_color.Visible := False;
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadOperationPlan;
+begin
+     ClearFrame(Panel_Main);
+     {Frame_OperationPlan := Tframe_OperationPlan.Create(nil);
+     With Frame_OperationPlan do
+     begin
+          Form_MainOTGuided.Panel_Main.BringToFront;
+          Parent := Form_MainOTGuided.Panel_Main;
+          Align := alClient;
+          //Frame_OperationPlan.Panel1.Visible := False;
+          show;
+     end;  }
+end;
+
+procedure TForm_MainPatientAdministration.LoadoperationProcedure;
+begin
+     // ClearFrame;
+     // Frame_OperationProcedure := TFrame_OperationProcedure.Create(nil);
+     // with Frame_OperationProcedure do
+     // begin
+     // Parent := Panel_Main;
+     // Align := alLeft;
+     // show;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadOperationType;
+begin
+     // ClearFrame;
+     // Frame_OperationType := Tframe_OperationType.Create(nil);
+     // with Frame_OperationType do
+     // begin
+     // Parent := Panel_Main;
+     // Align := alLeft;
+     // show;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadOTITems;
+begin
+     // ClearFrame;
+     {Form_Set_OTItem := TForm_Set_OTItem.Create(nil);
+     with Form_Set_OTItem do
+     begin
+          try
+               ShowModal;
+          finally
+               Free;
+          end;
+     end; }
+end;
+
+procedure TForm_MainPatientAdministration.LoadOTMovement;
+begin
+     ClearFrame(Panel_Main);
+     {Frame_OTMovement := Tframe_OTMovement.Create(nil);
+     With Frame_OTMovement do
+     begin
+          // gs_CalledFrom := 'Frame_OTMovement';
+          Form_MainOTGuided.Panel_Main.BringToFront;
+          Parent := Form_MainOTGuided.Panel_Main;
+          Align := alClient;
+          // Panel_Loginbox.Visible:=True;
+          Frame_OTMovement.Panel1.Visible := False;
+          show;
+     end; }
+end;
+
+procedure TForm_MainPatientAdministration.FormKeyDown
+  (Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = VK_F12 then
+     BB_SaveClick(Sender);
+
+     if (gs_BillType='OPBILL') or (gs_BillType='IPBILL') then
+     Begin
+          (*IF key=VK_F1 Then
+          Frame_Billing.Le_Payment.SetFocus;
+
+          if key=VK_F2 then
+          Begin
+               gi_BillCase:=3;
+               gs_BillType:='OPBILL';
+               with Frame_Billing do
+               Begin
+                    ResetAllHistoryForNextNewBill;
+                    if Not FileExists(gs_temppath+'\FinalBill.db') then
+                    CreateTableFinalBill;
+
+                    with Table_FinalBill do
+                    begin
+                         Close;
+                         DatabaseName := gs_temppath;
+                         TableName := 'FinalBill.db';
+                         EmptyTable;
+                         Open;
+                    end;
+                    Query_FinalBill.Close;
+                    Query_FinalBill.DatabaseName:=gs_TempPath;
+                    Query_FinalBill.Open;
+                    DBGrid1.DataSource := DS_FinalBill;
+                    CB_BILLTYPE.KeyValue:='GEN';
+                    Le_HosNo.SetFocus;
+               End;
+               Label_DisplayInfo.Caption:='OP BILLING';
+               RB_OPBIll.Checked:=True;
+          End;
+
+          if key=VK_F3 then
+          Begin
+               gi_BillCase:=0;
+               gs_BillType:='IPBILL';
+
+               with Frame_Billing do
+               Begin
+                    ResetAllHistoryForNextNewBill;
+                    if Not FileExists(gs_temppath+'\TempBilling.db') then
+                    Frame_Billing.CreateTableTempBilling;
+
+                    with Table_TempBilling do
+                    begin
+                         Close;
+                         DatabaseName := gs_temppath;
+                         TableName := 'TempBilling.db';
+                         EmptyTable;
+                         Open;
+                    end;
+                    Query_TempBilling.Close;
+                    Query_TempBilling.DatabaseName:=gs_TempPath;
+                    Query_TempBilling.Open;
+                    DBGrid1.DataSource := DS_Tempbilling;
+                    Le_HosNo.SetFocus;
+               End;
+               Label_DisplayInfo.Caption:='IP BILLING';
+               RB_IPBIll.Checked:=True;
+          End;
+          *)
+
+
+          if Key=VK_F7 then
+          BitBtn_AdmissionClick(Sender);
+
+          if Key=VK_F8 then
+          BitBtn_DischargeBillingClick(Sender);
+
+          if Key=VK_F9 then
+          BitBtn_DepositClick(Sender);
+     End;
+
+
+     (*if UpperCase(gs_CalledFrom)='DISCHARGEBILLING' then
+     Begin
+          if Key=VK_F1 then
+          Frame_DischargeBilling.SPB_InvestigationChargeClick(Sender);
+
+          if Key=VK_F2 then
+          Frame_DischargeBilling.SpeedButtonBedChargeClick(Sender);
+
+          //if Key=VK_F3 then
+          //Frame_InpMain.BitBtn_BedExchangeClick(Sender);
+
+          if Key=VK_F4 then
+          Frame_DischargeBilling.BitBtn_DepositAddReturnClick(Sender);
+
+          if Key=VK_F5 then
+          Frame_DischargeBilling.BB_RefreshClick(Sender);
+
+          if Key=VK_F12 then
+          Frame_DischargeBilling.Btn_SaveClick(Sender);
+     End;*)
+
+
+     if UPPERCASE(gs_CalledFrom)='ADMITTEDPATIENTLIST' then
+     begin
+          if Key=VK_F1 then
+          //Frame_InpMain.SPB_CreditBillingClick(Sender);
+
+          if Key=VK_F2 then
+          //Frame_InpMain.BitBtn_DischargeBillClick(Sender);
+
+          if Key=VK_F3 then
+          //Frame_InpMain.BitBtn_BedExchangeClick(Sender);
+
+          if Key=VK_F4 then
+          //Frame_InpMain.BitBtn_DepositClick(Sender);
+
+          if Key=VK_F5 then
+          //Frame_InpMain.BB_RefreshClick(Sender);
+
+          if Key=27 then Close;
+     end;
+
+     IF key=VK_F6 Then
+     begin
+          {With FormCalculator Do
+          Begin
+               Try
+                    FormCalculator := TFormCalculator.Create(Application);
+                    Showmodal;
+               Finally
+                    Free;
+               End;
+          End; }
+     end;
+
+     IF key=VK_F7 Then // Admission
+     begin
+          (*if QueryList.FieldByName('PatientId').AsInteger <= 0 then
+          Begin
+               MessageDlg('Please first select patient.',mtInformation,[mbok],0);
+               Edit_Search.SetFocus;
+               Exit;
+          End;
+
+          gi_patientid := QueryList.FieldByName('PatientId').AsInteger;
+          LoadPatientData(gi_patientid);*)
+
+          Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible := false;
+          Form_MainPatientAdministration.Label_DisplayInfo.Caption := 'Patient Admission';
+          gs_CalledFrom := 'Admission';
+          Form_MainPatientAdministration.Panel_Footer.Visible := false;
+          Form_MainPatientAdministration.DBGrid1.Visible := false;
+          Form_MainPatientAdministration.LoadPatientAdmission;
+     end;
+
+
+     IF key=VK_F6 Then // Discharged
+     begin
+         { With FormCalculator Do
+          Begin
+               Try
+                    FormCalculator := TFormCalculator.Create(Application);
+                    Showmodal;
+               Finally
+                    Free;
+               End;
+          End; }
+     end;
+
+     if Key = 27 then
+     Begin
+          if gs_CalledFrom = 'DischargeBilling' then
+               LoadAdmittedPatientList;
+     End;
+
+     if (gs_RegistrationType='NEW') or (gs_RegistrationType='FOLLOWUP') then
+     Begin
+         { if (key=VK_F3) then
+          Begin
+               Frame_OPDVisit.CB_BlueBookChrg.Checked:=Not(Frame_OPDVisit.CB_BlueBookChrg.Checked);
+               Exit;
+          End;
+
+          if (key=VK_F4) then
+          Begin
+               Frame_OPDVisit.CB_CardCharge.Checked:=Not(Frame_OPDVisit.CB_CardCharge.Checked);
+               Exit;
+          End; }
+     End;
+
+
+     if (gs_CalledFrom = 'RegisteredPatientList') or (gs_CalledFrom = 'DirectRegistration') or (gs_CalledFrom = 'NewPatient') then
+     Begin
+          if (gs_RegistrationType<>'MODIFYDATA') and (gs_RegistrationType<>'FOLLOWUP') then
+          Begin
+               (*if (key=VK_F1) then
+               Begin
+                    BB_NewClick(Sender);
+               End;
+               //Frame_NewPatient.CB_IsRealDOB.Checked:=Not(Frame_NewPatient.CB_IsRealDOB.Checked);
+
+               if (key=VK_F2) then
+               Begin
+                    Frame_Parent.SB_HospitalVisitClick(Sender);
+               End;
+
+               if (key=VK_F3) then
+               Frame_Parent.BitBtnOutPtClick(Sender);
+
+               if (key=VK_F4) then
+               Frame_Parent.BitBtnInpatientClick(Sender);
+
+               if (key=VK_F5) then
+               Frame_Parent.BB_RefreshClick(Sender);
+
+               if Key=VK_F8 then
+               Frame_Parent.BitBtnRefundClick(Sender);
+
+               if Key=VK_F9 then
+               Frame_Parent.SB_ChangeDepartmentClick(Sender);
+
+               if Key=VK_F10 then
+               Frame_Parent.SPB_VisitDetailClick(Sender); *)
+               if (key=VK_F1) then
+               Begin
+                    BB_NewClick(Sender);
+               End;
+               //Frame_NewPatient.CB_IsRealDOB.Checked:=Not(Frame_NewPatient.CB_IsRealDOB.Checked);
+
+               if (key=VK_F2) and ((gs_RegistrationType='') or (gs_RegistrationType='RegisteredPatientList')) then
+               Begin
+                    Frame_Parent.SB_HospitalVisitClick(Sender);
+               End;
+
+               if (key=VK_F3) and ((gs_RegistrationType='') or (gs_RegistrationType='RegisteredPatientList')) then
+               Frame_Parent.BitBtnOutPtClick(Sender);
+
+               if (key=VK_F4) and ((gs_RegistrationType='') or (gs_RegistrationType='RegisteredPatientList')) then
+               Frame_Parent.BitBtnInpatientClick(Sender);
+
+               if (key=VK_F5) and ((gs_RegistrationType='') or (gs_RegistrationType='RegisteredPatientList')) then
+               Frame_Parent.BB_RefreshClick(Sender);
+
+               if (Key=VK_F8) and ((gs_RegistrationType='') or (gs_RegistrationType='RegisteredPatientList')) then
+               Frame_Parent.BitBtnRefundClick(Sender);
+
+               if (Key=VK_F9) and ((gs_RegistrationType='') or (gs_RegistrationType='RegisteredPatientList')) then
+               Frame_Parent.SB_ChangeDepartmentClick(Sender);
+
+               if (Key=VK_F10) and ((gs_RegistrationType='') or (gs_RegistrationType='RegisteredPatientList')) then
+               Frame_Parent.SPB_VisitDetailClick(Sender);
+          End;
+
+
+          if Key=27 then
+          Begin
+               if gs_RegistrationType='' then
+               Begin
+                    IF RefreshOutPatient=True Then
+                    if MessageDlg('Are You Sure to Close ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+                    Close;
+               end
+               Else
+               Begin
+                    if gs_RegistrationType<>'' then
+                    Begin
+                         gs_RegistrationType:='';
+                         LoadFrameParent;
+                         Frame_Parent.Edit_Search.SetFocus;
+                         gs_CalledFrom := 'RegisteredPatientList';
+                         if Trim(gs_PrevRegSearchData)<>'' then
+                         Begin
+                              Frame_Parent.Edit_Search.Text:=gs_PrevRegSearchData;
+                              With Frame_Parent do
+                              Begin
+                                   with QueryList do
+                                   begin
+                                        Close;
+                                        SQL.Clear;
+                                        SQL.Add(' SELECT PM.*,Trim(PM.VdcName||'' ''||PM.wardNo||'' ''||PM.Address) as FullAddress');
+                                        SQL.Add(' ,(Select Count(InpatientId) From InpatientReg where PatientId=PM.PatientId) as NoOfAdmittedTime');
+                                        SQL.Add(' FROM VW_HS_PATIENTMAIN PM');
+                                        if IsStrANumber(Edit_Search.Text) then
+                                        SQL.Add('  Where PatientId=' + trim(Edit_Search.Text))
+                                        else
+                                        SQL.Add('  Where Upper(PatientName) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                                        SQL.Add(' ORDER BY REGDATE DESC,REGTIME DESC');
+                                        Open;
+                                   end;
+                              End;
+                         End;
+                         //if gs_RegistrationType<>'MODIFYDATA' then
+                         //LoadFrameParent;
+                    End;
+               End;
+          End;
+     End;
+
+     if key=VK_F5 then
+     IF Not DM_Hospital.DB.Connected Then DM_Hospital.DB.Connected:=True;
+end;
+
+
+Function TForm_MainPatientAdministration.RefreshOutPatient:Boolean;
+Var ls_TodaysDate : string;
+Begin
+     if (gs_RegistrationType='') Then
+     begin
+          With Frame_Parent Do
+          Begin
+               ls_TodaysDate:=TodaysDate;
+               if (Trim(Edit_Search.Text)<>'') or (Trim(Edit_FirstName.Text)<>'') or (Trim(Edit_LastName.Text)<>'')
+               or (Trim(Edit_AgeSex.Text)<>'') or (Trim(Edit_DepCode.Text)<>'') or (Trim(Edit_LastVisitDate.Text)<>'')
+               or (Trim(Edit_VisitTime.Text)<>'') or (Trim(Edit_Address.Text)<>'') or (Trim(Edit_District.Text)<>'')
+               or (Trim(Edit_CareOf.Text)<>'') or (Trim(Edit_MobileNo.Text)<>'') or (se_days.Text<>'0')
+               or (DEX_From.Text<>ls_TodaysDate) or (DEX_To.Text<>ls_TodaysDate) or (CB_GlobalSearch.Checked=True) then
+               begin
+                    Edit_Search.Text:='';
+                    Edit_FirstName.Text:='';
+                    Edit_LastName.Text:='';
+                    Edit_AgeSex.Text:='';
+                    Edit_DepCode.Text:='';
+                    Edit_LastVisitDate.Text:='';
+                    Edit_VisitTime.Text:='';
+                    Edit_Address.Text:='';
+                    Edit_District.Text:='';
+                    Edit_CareOf.Text:='';
+                    Edit_MobileNo.Text:='';
+                    se_days.Text:='0';
+                    DEX_From.Text:=ls_TodaysDate;
+                    DEX_To.Text:=ls_TodaysDate;
+                    CB_GlobalSearch.Checked:=False;
+                    Result:=False;
+               end
+               else
+               Result:=True;
+          End;
+     end;
+End;
+
+procedure TForm_MainPatientAdministration.FormKeyPress
+  (Sender: TObject; var Key: Char);
+begin
+     Key := UpCase(Key);
+end;
+
+procedure TForm_MainPatientAdministration.FormShow(Sender: TObject);
+begin
+     // // GlobalVariable;
+     // ClearFrame;
+     // Frame_Login := TFrame_Login.Create(nil);
+     // Panel_Login.Visible := true;
+     //
+     // With Frame_Login do
+     // begin
+     // Parent := Panel_Login;
+     // Align := alClient;
+     //
+     // // Panel_Loginbox.Visible:=True;
+     // show;
+     // end;
+     // // Panel_login.BringToFront;
+
+     // Dex_Today.SystemOfDate := gi_datesystem;
+     // Dex_Today.Text := TodaysDate;
+     // Lbl_HospitalNo.Caption := IntToStr(gi_PatientID);
+     // lbl_patientname.Caption := Gs_PatientName;
+     // LoadPatientDetail;
+     // Panel_ProvisionalDiagonosis.Visible:=false;
+     // Panel_Diagonosis.Visible:=false;
+     // PbClose:=false;
+     // with Query_Blank do
+     // begin
+     // close;
+     // databasename:=gs_DatabaseName;
+     // sql.Clear;
+     // sql.Add('select doctorid,nurseid from usermain where userid='+IntTOstr(gi_UserID));
+     // Open;
+     // end;
+     // if Query_Blank.FieldByName('doctorid').AsInteger>0 then
+     // gi_DoctorId:=Query_Blank.FieldByName('doctorid').AsInteger;
+
+     Label_DisplayInfo.Caption := 'Registered Patient List';//'Doctor Appointment';
+     // if Gi_MemberID>0 then
+     // Lbl_MemberNoKeyPress(sender,key)
+     // else
+     // Lbl_HosNoKeyPress(sender);
+     //LoadColor;
+     if gs_CalledFrom='ERPatientList' then
+     Begin
+          BB_New.Enabled:=False;
+          BB_Save.Enabled:=True;
+     End
+     Else
+     Begin
+          BB_New.Enabled:=True;
+          BB_Save.Enabled:=False;
+          //BB_Save.Visible:=False;
+     End;
+end;
+
+procedure TForm_MainPatientAdministration.HidePanel;
+begin
+     // Panel_ProvisionalDiagonosis.Visible := false;
+     // Panel_Diagonosis.Visible := false;
+end;
+
+procedure TForm_MainPatientAdministration.lbl_HosNoExit(Sender: TObject);
+begin
+     if Lbl_HospitalNo.Caption <> '' then
+     begin
+          gi_PatientID := strtoint(Lbl_HospitalNo.Caption);
+          Lbl_InpatientNo.Caption := '';
+          RefreshSearch;
+     end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadFrameParent;
+begin
+     //ClearFrame(Panel_Main);
+     Panel_Main.Visible := True;
+     HidePanel;
+     BB_New.Enabled:=True;
+     BB_New.Visible :=True;
+     BB_Save.Visible:=True;
+     BB_Save.Enabled:=False;
+     Label_DisplayInfo.Caption := 'Registered Patient List';
+     gs_CalledFrom := 'RegisteredPatientList';
+     Frame_Parent := TFrame_Parent.Create(nil);
+     with Frame_Parent do
+     begin
+          Form_MainPatientAdministration.Panel_Main.BringToFront;
+          Parent := Form_MainPatientAdministration.Panel_Main;
+          Align := alClient;
+          //Edit_Search.SetFocus;
+          show;
+     end;
+     Panel_Footer.Visible := False;
+     Gb_color.Visible := False;
+     DBGrid1.Visible := False;
+end;
+
+
+procedure TForm_MainPatientAdministration.LoadFrameParentAdmission;
+begin
+     //ClearFrame(Panel_Main);
+     Panel_Main.Visible := True;
+     HidePanel;
+     BB_New.Enabled:=True;
+     BB_Save.Enabled:=False;
+     Label_DisplayInfo.Caption := 'Patient Admission';
+     gs_CalledFrom := 'PatientAdmission';
+     Frame_Parent := TFrame_Parent.Create(nil);
+     with Frame_Parent do
+     begin
+          Form_MainPatientAdministration.Panel_Main.BringToFront;
+          Parent := Form_MainPatientAdministration.Panel_Main;
+          Align := alClient;
+
+          SB_HospitalVisit.Visible:=False;
+          SB_ChangeDepartment.Visible:=False;
+          SPB_Investigation.Visible:=False;
+          SB_CancelReg.Visible:=False;
+          Sb_Queuelist.Visible:=False;
+          SPB_OPDCount.Visible:=False;
+          BtnDoctorVisit.Visible:=False;
+          BtnServiceComplete.Visible:=False;
+          SPBPatientInOut.Visible:=False;
+          SPBServiceBillDetail.Visible:=False;
+          SPB_ServiceAcknowledge.Visible:=False;
+          SPB_EmrDutyDocConsultant.Visible:=False;
+          SPBUndoDischarge.Visible:=False;
+          SPBUploadPrescription.Visible:=False;
+          SPBRegisteredPateintFromFrontDesk.Visible:=False;
+          SPB_PatientAdmn.Visible:=True;
+          SPB_PatientAdmn.Enabled:=True;
+          GB_PatientAdmission.Visible:=True;
+          BitBtnRefund.Visible:=False;
+          SB_ChangeDepartment.Visible:=False;
+          SPB_VisitDetail.Visible:=False;
+          BB_New.Visible:=True;
+          BitBtn_DocVisit.visible:=False;
+          show;
+     end;
+end;
+
+
+procedure TForm_MainPatientAdministration.LoadImplantation;
+begin
+     // ClearFrame;
+     // Frame_Implantation := Tframe_Implantation.Create(nil);
+     // with Frame_Implantation do
+     // begin
+     // Parent := Panel_Main;
+     // Align := alLeft;
+     // show;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadInpMain;
+begin
+     Panel_Main.Visible := True;
+     // ClearFrame(Panel_Main);
+     HidePanel;
+     {Frame_Inpmain := TFrame_Inpmain.Create(nil);
+     with Frame_Inpmain do
+     begin
+          gs_CalledFrom := 'Frame_InpMain';
+          Form_MainOTGuided.Panel_Main.BringToFront;
+          Parent := Form_MainOTGuided.Panel_Main;
+          Align := alClient;
+          show;
+     end;}
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadInpOt;
+begin
+     ClearFrame(Panel_Main);
+     HidePanel;
+     {Frame_InpOT := TFrame_InpOT.Create(nil);
+     with Frame_InpOT do
+     begin
+          gs_CalledFrom := 'Frame_InpOt';
+          Form_MainOTGuided.Panel_Main.BringToFront;
+          Parent := Form_MainOTGuided.Panel_Main;
+          Align := alClient;
+
+          // BB_New.Enabled:=false;
+          // BB_Save.Enabled:=true;
+          // Frame_InpOt.Panel1.Visible:=false;
+          show;
+     end;   }
+end;
+
+procedure TForm_MainPatientAdministration.LoadLeaveSchedule;
+begin
+     BB_Save.Enabled:=True;
+     //ClearFrame(Panel_Main);
+
+     {Try
+          if Frame_DocSchedulePlanSimple <> Nil then
+               FreeAndNil(Frame_DocSchedulePlanSimple);
+     Except
+
+     End;
+
+     Try
+          if Frame_LeaveScheduleSimple <> Nil then
+               FreeAndNil(Frame_LeaveScheduleSimple);
+     Except
+
+     End;
+
+     Frame_LeaveScheduleSimple := TFrame_LeaveScheduleSimple.Create(nil);
+     With Frame_LeaveScheduleSimple do
+     Begin
+          Parent := Panel_Main;
+          Align := alClient;
+          show;
+     End; }
+
+     Panel_Footer.Visible := True;
+     Gb_color.Visible := False;
+
+end;
+
+procedure TForm_MainPatientAdministration.Lbl_HosNoKeyPress
+  (Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+     begin
+          if (Label_DisplayInfo.Caption = 'Final Billing') Or
+            (Label_DisplayInfo.Caption = 'Service Billing') or
+            (Label_DisplayInfo.Caption = 'Billing Deposit') then
+          begin
+               gi_PatientID := strtoint(Lbl_HospitalNo.Caption);
+               Lbl_InpatientNo.Caption := '';
+               RefreshSearch;
+          end
+          Else if gs_CalledFrom = 'DischargeBilling' Then
+          Begin
+               RefreshSearch;
+          End
+          else
+          begin
+               if Lbl_HospitalNo.Caption <> '' then
+               begin
+                    gi_PatientID := strtoint(Lbl_HospitalNo.Caption);
+                    Lbl_InpatientNo.Caption := '';
+                    RefreshSearch;
+               end;
+          end;
+     end;
+end;
+
+procedure TForm_MainPatientAdministration.Lbl_MemberNoExit(Sender: TObject);
+begin
+     if Lbl_InpatientNo.Caption <> '' then
+     begin
+          if (gs_CalledFrom = 'Final Billing') Or
+            (gs_CalledFrom = 'Service Billing') or
+            (gs_CalledFrom = 'Billing Deposit') or (gs_CalledFrom = 'Advance')
+            or (gs_CalledFrom = 'Refunded Bills') then
+               gi_InPatientID := strtoint(Lbl_InpatientNo.Caption)
+          else
+               Gi_MemberID := strtoint(Lbl_InpatientNo.Caption);
+          Lbl_HospitalNo.Caption := '';
+          RefreshSearch;
+     end;
+end;
+
+procedure TForm_MainPatientAdministration.Lbl_MemberNoKeyPress
+  (Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+     begin
+          if Lbl_InpatientNo.Caption <> '' then
+          begin
+               if (gs_CalledFrom = 'Final Billing') Or
+                 (gs_CalledFrom = 'Service Billing') or
+                 (gs_CalledFrom = 'Discharge Billing') or
+                 (gs_CalledFrom = 'Refunded Bills') or
+                 (gs_CalledFrom = 'Advance') then
+                    gi_InPatientID := strtoint(Lbl_InpatientNo.Caption)
+               else
+                    Gi_MemberID := strtoint(Lbl_InpatientNo.Caption);
+               Lbl_HospitalNo.Caption := '';
+               RefreshSearch;
+          end;
+     end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadAdmittedPatient;
+begin
+     // Panel_Main.Visible:=True;
+     // ClearFrame;
+     // Frame_AdmittedPatient := TFrame_AdmittedPatient.Create(nil);
+     // with Frame_AdmittedPatient do
+     // begin
+     // Parent := Panel_Main;
+     // Align := alLeft;
+     // show;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadAdvice;
+begin
+
+     // Panel_Diagonosis.Visible := true;
+     // frame_advice := TFrame_Advice.Create(nil);
+     // with frame_advice do
+     // begin
+     // Form_MainOTGuided.Panel_Main.SendToBack;
+     // Parent := Form_MainOTGuided.Panel_Diagonosis;
+     // Align := alClient;
+     // frame_advice.Panel2.Visible := false;
+     // show;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadAllergyDetail;
+
+begin
+
+     // Panel_Diagonosis.Visible := true;
+     // if Frame_AllergyDetail=nil then
+     // begin
+     // Frame_AllergyDetail := TFrame_AllergyDetail.Create(nil);
+     // with Frame_AllergyDetail do
+     // begin
+     // if Lbl_HospitalNo.Caption = '' then
+     // gi_PatientID := 0;
+     // // gs_CalledFrom := 'Frame_AllergyDetail';
+     // Form_MainOTGuided.Panel_Main.SendToBack;
+     // Parent := Form_MainOTGuided.Panel_Diagonosis;
+     // Align := alRight;
+     // Frame_AllergyDetail.Panel1.Visible := false;
+     // show;
+     // end;
+     // end;
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadBenefitPackageDetail;
+begin
+     // ClearFrame;
+     // Form_BenefitPackageDetail:=TForm_BenefitPackageDetail.Create(nil);
+     // With Form_BenefitPackageDetail do
+     // begin
+     // try
+     // showmodal;
+     // finally
+     // free;
+     // end;
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadBilling;
+begin
+     if gi_BillCase in [0,1,2,3,6] then
+          BB_Save.Enabled:=true
+     else
+          BB_Save.Enabled:=False;
+
+     //ClearFrame(Panel_Main);
+     (*Try
+          FreeAndNil(Frame_Billing);
+     Except
+
+     End;*)
+
+     if gs_BillType='OPBILL' then
+     Begin
+          Form_MainPatientAdministration.Label_DisplayInfo.Caption := 'OP Billing';
+          //RB_OPBILL.Checked:=True;
+     End
+     Else
+     Begin
+          Form_MainPatientAdministration.Label_DisplayInfo.Caption := 'IP Billing(Credit Billing)';
+          //RB_IPBILL.Checked:=True;
+     End;
+
+     (*Frame_Billing := TFrame_Billing.Create(Nil);
+     With Frame_Billing do
+     begin
+          Panel_Main.BringToFront;
+          Align := alClient;
+          Parent := Panel_Main;
+          if gi_BillCase in [0] then
+          begin
+               //Le_HosNo.Clear;
+               Le_HosNo.SetFocus;
+          end;
+
+
+          Form_MainPatientAdministration.RB_OPBILL.Visible:=True;
+          Form_MainPatientAdministration.RB_IPBILL.Visible:=True;
+          if gs_BillType='OPBILL' then
+          Form_MainPatientAdministration.RB_OPBILL.Checked:=True
+          Else
+          Begin
+               if gi_BillCase=1 then
+               Begin
+                    RB_OPBILL.Visible:=False;
+                    RB_IPBILL.Visible:=False;
+               End
+               Else
+               Form_MainPatientAdministration.RB_IPBILL.Checked:=True;
+          End;
+          GB_PaymentInfo.BringToFront;
+          GB_PaymentInfo.Visible:=True;
+          //Le_HosNo.Text:='';
+          Le_HosNo.SetFocus;
+          show;
+     end;*)
+end;
+
+procedure TForm_MainPatientAdministration.LoadBillList;
+begin
+     if gi_BillCase in [0] then
+     begin
+          BB_New.Enabled:=True;
+     end;
+     //ClearFrame(Panel_Main);
+     if gs_CalledFormName='Discharge Billing' then
+     //FreeAndNil(Frame_Inpmain);
+
+
+     RB_RefundBill.Visible:=False;
+     RB_IPBILL.Visible:=False;
+     RB_OPBILL.Visible:=False;
+
+     BB_Save.Visible:=True;
+     BB_New.Visible:=False;
+     BitBtn_Deposit.Visible:=False;
+     BitBtn_DischargeBilling.Visible:=False;
+     BitBtn_Admission.Visible:=False;
+     BB_Save.Enabled:=True;
+     BB_Save.Caption :='Billing';
+     gs_CalledFrom:='FinalBilling';
+     gs_BillType:='TPBILL';
+
+
+
+     Frame_BillList := TFrame_BillList.Create(Nil);
+     with Frame_BillList do
+     begin
+          Parent := Panel_Main;
+          Align := alClient;
+          //BB_CancelService.Visible:=False;
+          //BB_FinalBill.Visible:=False;
+          //BB_RefundBill.Visible:=False;
+          //BB_ViewBill.Visible:=False;
+          show;
+          // gs_CalledFrom:='Billing Home';
+          // Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Billing';
+     end;
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadDeposit;
+begin
+     //ClearFrame(Panel_Main);
+
+(*     Try
+          FreeAndNil(Frame_deposits);
+     Except
+
+     End;
+
+     Frame_deposits := TFrame_Deposits.Create(Nil);
+     with Frame_deposits do
+     begin
+          Parent := Panel_Main;
+          Align := alClient;
+          Le_HosNo.Text:=IntToStr(gi_PatientId);
+          Le_HosNo.SetFocus;
+          show;
+          Panel2.Visible := False;
+     end; *)
+end;
+
+procedure TForm_MainPatientAdministration.LoadDepositRefund;
+begin
+(*     ClearFrame(Panel_Main);
+     Frame_deposits := TFrame_Deposits.Create(Nil);
+     with Frame_deposits do
+     begin
+          Cb_Mode.ItemIndex := 1;
+          Parent := Panel_Main;
+          Align := alClient;
+          show;
+          Panel2.Visible := False;
+     end;   *)
+end;
+
+procedure TForm_MainPatientAdministration.LoadDiagnosis;
+begin
+
+     // Panel_Diagonosis.Visible := true;
+     // Panel_ProvisionalDiagonosis.Visible := true;
+     //
+     // if Frame_Diagnosis = nil then
+     // begin
+     // // Frame_Diagnosis := Tframe_diagnosis.Create(nil);
+     // // with Frame_Diagnosis do
+     // begin
+     // // gs_CalledFrom := 'Frame_Diagnosis';
+     // Form_MainOTGuided.Panel_Main.SendToBack;
+     // if gs_CalledFrom = 'Diagonosis' then
+     // begin
+     // Parent := Form_MainOTGuided.Panel_Diagonosis;
+     // end
+     // else
+     // Parent := Form_MainOTGuided.Panel_Diagonosis;
+     // Align := alClient;
+     // Frame_Diagnosis.Panel1.Visible := false;
+     // show;
+     // end;
+     //
+     // end;
+end;
+
+procedure TForm_MainPatientAdministration.LoadDirectBilling;
+  var
+     NewDemo:TForm;
+     NewDemoClass:TFormClass;
+     bsnone:TFormBorderStyle;
+     ScrollBox:TScrollBox;
+begin
+     //NewDemoClass := TForm_Billing;
+     //ScrollBox:=TScrollBox.Create(nil);
+     {Form_Billing := TForm_Billing.Create(nil);
+     Label_DisplayInfo.Caption:='Direct Billing';
+     //ScrollBox.Parent:=Panel_Main;
+     Form_Billing.Parent:= Panel_Main;
+     Form_Billing.Align:= alClient;
+     Form_Billing.BorderStyle:=bsNone;
+     gs_calledfrom:='NormalOPDBilling';
+     gs_BillType:='OPBILL';
+     BB_Save.Enabled:=True;
+     BB_New.Visible:=False;
+     Form_Billing.Show; }
+     {if Assigned(NewDemoClass) then
+     begin
+          NewDemo := NewDemoClass.Create(Self);
+          NewDemo.Hide;
+          NewDemo.BorderStyle:=bsNone;
+          NewDemo.Parent := Panel_Main;
+          NewDemo.Align:=alClient;
+          gs_calledfrom:='NormalOPDBilling';
+          gs_BillType:='OPBILL';
+          BB_Save.Enabled:=True;
+          BB_New.Visible:=False;
+          //wDemo.BB_Close.Visible:=False;
+          NewDemo.Show;
+     end; }
+
+     // ClearFrame(Panel_Main);
+     // Frame_BillingD:=TFrame_BillingD.Create(nil);
+     // With Frame_BillingD do
+     // Begin
+     // //          Panel_Main.Visible:=true;
+     // //          panel_main.BringToFront;
+     // Parent:=Panel_main;
+     // Align:=alClient;
+     // show;
+     // Form_MainPatientAdministration.Label_DisplayInfo.Caption:='DirectBilling';
+     // End;
+end;
+
+procedure TForm_MainPatientAdministration.LoadAdmittedPatientList;
+begin
+     //Label_DisplayInfo.Caption:='Inpatient List';
+
+     if gs_BillType='DISCHARGEBILL' then
+     Label_DisplayInfo.Caption:='Inpatient List'
+     Else
+     Label_DisplayInfo.Caption:='Emergency(Med. Pt.) List';
+
+     Panel_PatientBasicInfo.Height:=50;
+     Panel_PatientBasicInfo.Visible:=True;
+     Panel_Footer.Visible:=false;
+
+    { Frame_Inpmain := TFrame_Inpmain.Create(nil);
+     with Frame_Inpmain do
+     begin
+          Align := alClient;
+          gs_CalledFrom := 'AdmittedPatientList';
+          //RefreshSearchCriteria;
+          Parent := Form_MainPatientAdministration.Panel_Main;
+          show;
+          Edit_HospitalNo.SetFocus;
+     end; }
+
+     RB_OPBILL.Visible:=False;
+     RB_IPBILL.Visible:=False;
+
+     BitBtn_Deposit.Enabled:=False;
+     BitBtn_Deposit.Visible:=False;
+
+     BitBtn_DischargeBilling.Enabled:=False;
+     BitBtn_DischargeBilling.Visible:=False;
+
+     BitBtn_Admission.Enabled:=False;
+     BitBtn_Admission.Visible:=False;
+
+     BB_New.Visible:=False;
+     BB_New.Enabled:=False;
+     BB_Save.Enabled:=True;
+end;
+
+
+procedure TForm_MainPatientAdministration.LoadBedTransfer;
+begin
+     Label_DisplayInfo.Caption:='Bed Exchange(Bed Transfer)';
+
+     Label_DisplayInfo.Caption:='Bed Exchange(Bed Transfer)';
+
+     Panel_PatientBasicInfo.Height:=50;
+
+     Panel_PatientBasicInfo.Visible:=True;
+     Panel_Footer.Visible:=false;
+
+(*     Try
+          FreeAndNil(Frame_BedTransfer);
+     Except
+
+     End;
+
+     //ClearFrame(Panel_Main);
+     Frame_BedTransfer := TFrame_BedTransfer.Create(nil);
+     with Frame_BedTransfer do
+     begin
+          Align := alClient;
+          gs_CalledFrom := 'BedTransfer';
+          //RefreshSearchCriteria;
+          Parent := Form_MainPatientAdministration.Panel_Main;
+          Edit_HospitalNo.Text:=IntToStr(gi_PatientId);
+          Edit_HospitalNo.SetFocus;
+          show;
+          //Edit_HospitalNo.Text:=IntToStr(gi_PatientId);
+     end;
+     BB_New.Enabled:=False;
+     BB_Save.Enabled:=True;*)
+end;
+
+
+
+procedure TForm_MainPatientAdministration.LoadIndoorPatientSerach;
+begin
+     Label_DisplayInfo.Caption:='Indoor Patient Serach';
+
+     Panel_PatientBasicInfo.Height:=50;
+     //Lbl_IPNoCap.Visible:=True;
+     //Edit_InpatientNo.Visible:=True;
+
+     //Form_MainPatientAdministration.ChangeCaption;
+     Panel_PatientBasicInfo.Visible:=True;
+     Panel_Footer.Visible:=false;
+
+     //ClearFrame(Panel_Main);
+     {Frame_Inpmain := TFrame_Inpmain.Create(nil);
+     with Frame_Inpmain do
+     begin
+          Align := alClient;
+          gs_CalledFrom := 'AdmittedPatientList';
+          //RefreshSearchCriteria;
+          Panel1.Enabled:=False;
+          Panel1.Visible:=False;
+          BitBtn_DischargeBill.Visible:=False;
+          EditFName.Top:=82;
+          EditLName.Top:=82;
+          EditAgeSex.Top:=82;
+          EditPatientId.Top:=82;
+          EditInpatientId.Top:=82;
+          EditIPDate.Top:=82;
+          Edit1.Top:=82;
+          EditDisDate.Top:=82;
+          EditWardRoom.Top:=82;
+          EditDoctor.Top:=82;
+          EditAddress.Top:=82;
+          DBGridMain.Top:=105;
+          Parent := Form_MainPatientAdministration.Panel_Main;
+          show;
+          Edit_HospitalNo.SetFocus;
+     end;  }
+     BB_New.Enabled:=False;
+     //BB_Save.Enabled:=True;
+end;
+
+
+procedure TForm_MainPatientAdministration.LoadPharmacyCashReceiveList;
+begin
+     Label_DisplayInfo.Caption:='Pharmacy Cash Transaction';
+     Panel_PatientBasicInfo.Visible:=False;
+     Panel_Footer.Visible:=false;
+     //ClearFrame(Panel_Main);
+     {Frame_CreditReceiptBook := TFrame_CreditReceiptBook.Create(nil);
+     with Frame_CreditReceiptBook do
+     begin
+          Align := alClient;
+          gs_CalledFrom := 'PharmacyReceiptList';
+          Parent := Form_MainPatientAdministration.Panel_Main;
+          show;
+     end; }
+     Panel_Footer.Visible:=False;
+     BB_New.Enabled:=True;
+     BB_Save.Enabled:=False;
+end;
+
+
+procedure TForm_MainPatientAdministration.LoadPharmacyCashReceive;
+begin
+     Label_DisplayInfo.Caption:='Pharmacy Cash Transaction';
+     Panel_PatientBasicInfo.Visible:=False;
+     Panel_Footer.Visible:=false;
+     //ClearFrame(Panel_Main);
+     {Try
+          FreeAndNil(Frame_CreditReceipt);
+     Except
+
+     End;
+
+     Frame_CreditReceipt := TFrame_CreditReceipt.Create(nil);
+     with Frame_CreditReceipt do
+     begin
+          Align := alClient;
+          gs_CalledFrom := 'PharmacyCashReceipt';
+          Parent := Form_MainPatientAdministration.Panel_Main;
+          Initialize;
+          Edit_receivedBy.Text:=gs_UserName;
+          show;
+     end;   }
+     Panel_Footer.Visible:=False;
+     BB_New.Enabled:=False;
+     BB_Save.Enabled:=True;
+end;
+
+
+procedure TForm_MainPatientAdministration.LoadCreditClearance;
+begin
+     Label_DisplayInfo.Caption:='Credit Clearance';
+     Panel_PatientBasicInfo.Visible:=False;
+     Panel_Footer.Visible:=false;
+
+     if gs_CalledFrom = 'CreditClearance' then  Exit;
+
+     Try
+          FreeAndNil(Frame_CreditPayment);
+     Except
+
+     End;
+     Frame_CreditPayment := TFrame_CreditPayment.Create(nil);
+     with Frame_CreditPayment do
+     begin
+          Align := alClient;
+          gs_CalledFrom := 'CreditClearance';
+          Parent := Form_MainPatientAdministration.Panel_Main;
+          show;
+     end;
+     Panel_Footer.Visible:=False;
+     BB_New.Enabled:=False;
+     BB_Save.Enabled:=True;
+end;
+
+procedure TForm_MainPatientAdministration.LoadDoc;
+begin
+     //ClearFrame(Panel_Main);
+     //if Frame_AppointmentSearch<>Nil then
+     //FreeAndNil(Frame_AppointmentSearch);
+//     if Frame_doc<>Nil then
+//     FreeAndNil(Frame_doc);
+//     if Frame_DocSchedulePlanSimple<>Nil then
+//     FreeAndNil(Frame_DocSchedulePlanSimple);
+//
+//     if Frame_LeaveScheduleSimple<>Nil then
+//     FreeAndNil(Frame_LeaveScheduleSimple);
+
+     (*Try
+          if Frame_doc<>Nil then
+          FreeAndNil(Frame_doc);
+     Except
+
+     End;
+
+     Frame_doc := TFrame_Doc.Create(nil);
+     With Frame_doc do
+     Begin
+          // Panel_Main.Visible:=true;
+          // panel_main.BringToFront;
+          Parent := Form_MainPatientAdministration.Panel_Main;
+          Align := alClient;
+          show;
+     End;*)
+
+     Try
+          if Frame_Parent<>Nil then
+          FreeAndNil(Frame_Parent);
+     Except
+
+     End;
+
+     Frame_Parent := TFrame_Parent.Create(nil);
+     With Frame_Parent do
+     Begin
+          // Panel_Main.Visible:=true;
+          // panel_main.BringToFront;
+          Parent := Form_MainPatientAdministration.Panel_Main;
+          Align := alClient;
+          show;
+     End;
+     Panel_Footer.Visible := False;
+     Gb_color.Visible := False;
+     DBGrid1.Visible := False;
+end;
+
+procedure TForm_MainPatientAdministration.loadDoctorNote;
+begin
+     //
+
+     // Frame_PatientHistory := TFrame_PatientHistory.Create(nil);
+     // with Frame_PatientHistory do
+     // begin
+     // Form_MainOTGuided.Panel_Main.BringToFront;
+     // if gs_CalledFrom = 'Doctor Template' then
+     // begin
+     // Panel_ProvisionalDiagonosis.Visible := true;
+     // Parent := Form_MainOTGuided.Panel_ProvisionalDiagonosis;
+     // Align := alLeft;
+     // end
+     // else
+     // begin
+     // Panel_Diagonosis.Visible := true;
+     // Parent := Form_MainOTGuided.Panel_Diagonosis;
+     // Align := alLeft;
+     // end;
+     // Panel1.Visible := false;
+     // show;
+     // end;
+
+end;
+
+procedure TForm_MainPatientAdministration.LoadPatientAdmission;
+begin
+//     ClearFrame(Panel_Main);
+
+     Form_MainPatientAdministration.BB_Save.Enabled:=True;
+     Form_MainPatientAdministration.BB_New.Enabled:=False;
+
+     (*Frame_PatientAdmission := TFrame_PatientAdmission.Create(nil);
+     With Frame_PatientAdmission do
+     Begin
+          Parent := Panel_Main;
+          Align := alClient;
+          DBLCB_PatientType.SetFocus;
+          show;
+     End;*)
+
+     Panel_Footer.Visible := False;
+     Gb_color.Visible := False;
+end;
+
+procedure TForm_MainPatientAdministration.LoadFindingSetup;
+begin
+     // ClearFrame;
+     // Form_FindingSetup := TForm_FindingSetup.Create(nil);
+     // With Form_FindingSetup do
+     // begin
+     // // Parent := Panel_Main;
+     // // Align := alLeft;
+     //
+     // // Panel_Loginbox.Visible:=True;
+     // ShowModal;
+     // end;
+end;
+
+
+procedure TForm_MainPatientAdministration.LoadERForm;
+var
+Sender: TObject;
+begin
+     ClearFrame(Panel_Main);
+     //if gb_IsERAlreadyLoaded=True then Exit;
+
+
+     {Form_Er := TForm_Er.Create(nil);
+     if gs_CalledFrom='ERPatientList' then
+     begin
+          //Form_Er.FormCreate(Sender);
+          Form_Er.FormShow(Sender);
+     end;
+
+     With Form_Er.PageControl1 do
+     begin
+          Form_MainPatientAdministration.Panel_Main.BringToFront;
+          Form_MainPatientAdministration.BB_New.Visible:=False;
+          Form_MainPatientAdministration.BB_Save.Visible:=True;
+          Form_MainPatientAdministration.BB_Save.Enabled:=True;
+          Form_MainPatientAdministration.Panel_Footer.Visible:=False;
+          Form_MainPatientAdministration.DBGrid1.Visible:=False;
+          Parent := Form_MainPatientAdministration.Panel_Main;
+          Align := alClient;
+          //frame_operation.Panel1.Visible := False;
+          show;
+     end; }
+end;
+
+procedure TForm_MainPatientAdministration.LoadGuidedMenuERPatient;
+Begin
+     Panel_GuidedMenu.Visible := True;
+     Frame_GMenuPatientAdministration :=TFrame_GMenuPatientAdministration.Create(nil);
+     with Frame_GMenuPatientAdministration do
+     begin
+          Ls_CalledGuidedMenu := 'Frame_GMenuERPatient';
+          Parent := Panel_GuidedMenu;
+          Align := alLeft;
+          show;
+     end;
+End;
+
+
+procedure TForm_MainPatientAdministration.LoadPatientInfoCorrection;
+begin
+     Form_AgeUpdate := TForm_AgeUpdate.Create(nil);
+     with Form_AgeUpdate do
+     begin
+          try
+               ShowModal;
+          finally
+               Free;
+          end;
+     end;
+end;
+
+end.

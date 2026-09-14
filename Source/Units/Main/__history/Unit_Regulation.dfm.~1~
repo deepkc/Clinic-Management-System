@@ -1,0 +1,455 @@
+object Form_Regulation: TForm_Regulation
+  Left = 0
+  Top = 0
+  AutoSize = True
+  Caption = 'Laboratory Regulation'
+  ClientHeight = 403
+  ClientWidth = 573
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object pnl_top: TPanel
+    Left = 0
+    Top = 0
+    Width = 573
+    Height = 35
+    Align = alTop
+    TabOrder = 0
+    object btn_Save: TBitBtn
+      Left = 416
+      Top = 1
+      Width = 78
+      Height = 33
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alRight
+      Caption = '&Save'
+      DoubleBuffered = True
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        1800000000000003000001000000010000000000000000000000000000975233
+        9A55359954349652339652339652339652339652339652339652339A55359B55
+        359853349451320000009451369D5534BD5A22BB5A24B75926C7B0A4C8B5ACC8
+        B5ACC8B5ACC8B5ACC8B5ACC9B5ABBF6532B759269B55358040408F5030A05633
+        C46127C46127C46127D3CDCBD4D4D5D4D4D5D4D4D5CB9373C7784AD3CFCDC66F
+        3BC461279D56348F50308F5030A15734CB672CCB672CCB672CDED8D5DFDFE0DF
+        DFE0DFDFE0D18A61CB672CDED8D5CD7541CB672C9E56348F50308F5030A15834
+        D26E30D26E30D26E30EAE5E1ECECECECECECECECECDA9367D26E30EAE5E1D57D
+        46D26E309E56358F50308F5030A25835D67233D67233D67233F3E7E0F7F7F7F7
+        F7F7F7F7F7F2E4DBF0DCD0F7F5F5DA824AD672339E57358F50308F5030A35935
+        DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB76
+        36DB76369F57358F50308F5030A35935DF7A39F2ECE8FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFDDCBBFDF7A399F57358F50308F5030A45A36
+        E4803EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE7DB
+        D3E4803E9F58368F50308F5030A45B37E98746FCFCFCFCFCFCFCFCFCFCFCFCFC
+        FCFCFCFCFCFCFCFCFCFCFCFCFCFCE5D9D1E98746A058368F50308F5030A55C38
+        EE9150F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3DED3
+        CCEE9150A059378F5030945231A55D3AF49C5DE5E5E5E5E5E5E5E5E5E5E5E5E5
+        E5E5E5E5E5E5E5E5E5E5E5E5E5E5DAD4CFF49C5DA059378F5030945231A65F3B
+        F8A668D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3CCC7
+        C3F8A668A05A389955339F5535A45D3BF9AC6FD0CECDD3D3D3D3D3D3D3D3D3D3
+        D3D3D3D3D3D3D3D3D3D3D3D3D3D3CCC7C4F9AC6F9E58378E55390000009C5534
+        9B55359B55359B55359B55359B55359B55359B55359B55359B55359B55359B55
+        359B55359C553400000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000}
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = btn_SaveClick
+    end
+    object btnBB_Close: TBitBtn
+      Left = 494
+      Top = 1
+      Width = 78
+      Height = 33
+      Margins.Left = 0
+      Margins.Top = 6
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = '&Close'
+      DoubleBuffered = True
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        18000000000000030000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFF6569BA717FE06B6EBEFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFDFEFFFFFFFFFFFFB9BADD7A83E6
+        6A80FF273CD9EBECF6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7677
+        C58788D9FFFFFFFFFFFFA0A1D34D54DE2536EB0B20D9E3E3F3FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFDCDCEE0E16C0B1B2DEFFFFFFFFFFFFE9E9F41519BF
+        060EDB0412D87B7DC3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2C34BA1822
+        C1FFFFFFFFFFFFFFFFFFFFFFFF5A5BBA0002CF0309D8080FC1DADAECFFFFFFFF
+        FFFFFFFFFFFFFFFF7A7CC50C21DF9C9DD2FFFFFFFFFFFFFFFFFFFFFFFFFDFDFE
+        1E1FB00001D00106D52326B1FFFFFFFFFFFFFFFFFFA9AAD30C28E52733BEFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE8E9F41112B50000D10103CE5A5CB9FF
+        FFFFB1B2D90B1FD40C26DFD2D1E7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFE2E3F21516B50000D20101C44D4EB8070EC30514E16F70BEFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F5FA2D2DB00001CC00
+        00CC0103D13639B3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFE2E2F23236B70207CF0103D20001C97777C2FFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7174CA0F1ED10717E40510DE0E
+        13BA0507C10608CC6162BEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9B9BD2
+        4F58D23D57F71D3CFA0D26F01921BFEBEBF6C4C4E5191BBE2325D44A4ABBF9F9
+        FCFFFFFFFFFFFFFFFFFF8487D0A2ABF78D9DFF6A7FFF3A55F9313BC1EFEFF7FF
+        FFFFFFFFFFFDFDFE5B5CBF4041D1494AC4A2A2D5FFFFFFFFFFFF8788CCB6BBF5
+        A3ACFB6973E17678C8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC8C8E65555
+        C16061CC5A5ABDADAED9DFDFEF9192D29A9DE29596D2FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFEDEDF77C7DC96162C58383CB}
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = btnBB_CloseClick
+    end
+    object btn_MasterReportPrevilage: TBitBtn
+      Left = 318
+      Top = 1
+      Width = 99
+      Height = 33
+      Caption = 'Report Previlage'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = btn_MasterReportPrevilageClick
+    end
+  end
+  object pnl_body: TPanel
+    Left = 0
+    Top = 35
+    Width = 573
+    Height = 368
+    Align = alClient
+    TabOrder = 1
+    object grp_reportfooter: TGroupBox
+      Left = 10
+      Top = 5
+      Width = 551
+      Height = 272
+      Caption = 'Report Footer :'
+      Color = clBtnFace
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentBackground = False
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 0
+      object lbl_setup: TLabel
+        Left = 32
+        Top = 43
+        Width = 237
+        Height = 13
+        Caption = 'Report Footer according to Manual Footer Setup.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl1: TLabel
+        Left = 32
+        Top = 61
+        Width = 16
+        Height = 13
+        Caption = 'Ex:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl2: TLabel
+        Left = 105
+        Top = 77
+        Width = 54
+        Height = 13
+        Caption = 'Footer Left'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl3: TLabel
+        Left = 249
+        Top = 77
+        Width = 68
+        Height = 13
+        Caption = 'Footer Center'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl4: TLabel
+        Left = 385
+        Top = 77
+        Width = 60
+        Height = 13
+        Caption = 'Footer Right'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl5: TLabel
+        Left = 32
+        Top = 94
+        Width = 68
+        Height = 13
+        Caption = 'Status           :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl6: TLabel
+        Left = 32
+        Top = 119
+        Width = 69
+        Height = 13
+        Caption = 'Footer Name :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl7: TLabel
+        Left = 32
+        Top = 167
+        Width = 243
+        Height = 13
+        Caption = 'Report Footer according to Selection of Checkbox.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl8: TLabel
+        Left = 32
+        Top = 186
+        Width = 16
+        Height = 13
+        Caption = 'Ex:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl9: TLabel
+        Left = 32
+        Top = 250
+        Width = 159
+        Height = 13
+        Caption = 'Report Footer according to User.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rb_Setup: TRadioButton
+        Left = 16
+        Top = 24
+        Width = 172
+        Height = 17
+        Caption = 'Setup Wise Regulation.'
+        TabOrder = 0
+        OnClick = rb_SetupClick
+      end
+      object rb_checkbox: TRadioButton
+        Left = 16
+        Top = 145
+        Width = 168
+        Height = 17
+        Caption = 'CheckBox Wise Regulation.'
+        TabOrder = 1
+        OnClick = rb_checkboxClick
+      end
+      object rb_user: TRadioButton
+        Left = 16
+        Top = 229
+        Width = 144
+        Height = 20
+        Caption = 'User Wise Regulation.'
+        TabOrder = 2
+        OnClick = rb_userClick
+      end
+      object edt1: TEdit
+        Left = 104
+        Top = 116
+        Width = 121
+        Height = 21
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 3
+        Text = 'Dr. .......'
+      end
+      object edt2: TEdit
+        Left = 248
+        Top = 116
+        Width = 121
+        Height = 21
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 4
+        Text = 'Dr. .......'
+      end
+      object edt3: TEdit
+        Left = 384
+        Top = 116
+        Width = 121
+        Height = 21
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 5
+        Text = 'Dr. .......'
+      end
+      object chklst_checkbox: TCheckListBox
+        Left = 104
+        Top = 186
+        Width = 121
+        Height = 36
+        Enabled = False
+        ItemHeight = 13
+        Items.Strings = (
+          'Dr. ........'
+          'Dr. ........')
+        TabOrder = 6
+      end
+      object edt4: TEdit
+        Left = 105
+        Top = 94
+        Width = 121
+        Height = 21
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 7
+        Text = 'Verified by'
+      end
+      object edt5: TEdit
+        Left = 249
+        Top = 94
+        Width = 121
+        Height = 21
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 8
+        Text = 'Performed by'
+      end
+      object edt6: TEdit
+        Left = 385
+        Top = 94
+        Width = 121
+        Height = 21
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 9
+        Text = 'Checked by'
+      end
+    end
+    object grp_AutoCal: TGroupBox
+      Left = 10
+      Top = 295
+      Width = 551
+      Height = 64
+      Caption = 'Auto Calculation :'
+      TabOrder = 1
+      object lbl_AutoCal: TLabel
+        Left = 16
+        Top = 27
+        Width = 85
+        Height = 13
+        Caption = 'Auto Calculation :'
+      end
+      object lbl_note: TLabel
+        Left = 240
+        Top = 27
+        Width = 299
+        Height = 13
+        Caption = '(Auto Calculation of several test finding according to formula.)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGrayText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object chk_AutoCal: TCheckBox
+        Left = 132
+        Top = 26
+        Width = 68
+        Height = 17
+        Caption = 'Inactive'
+        TabOrder = 0
+        OnClick = chk_AutoCalClick
+      end
+    end
+  end
+  object OraQuery_RepFooter: TOraQuery
+    Left = 352
+    Top = 40
+  end
+  object OraQuery_Cal: TOraQuery
+    Left = 464
+    Top = 48
+  end
+end

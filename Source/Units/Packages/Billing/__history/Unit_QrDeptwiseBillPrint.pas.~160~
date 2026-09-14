@@ -1,0 +1,619 @@
+unit Unit_QrDeptwiseBillPrint;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,fxn,
+  Dialogs, QRCtrls, QuickRpt, DB, DBTables, ExtCtrls, qrBarcode,Serverdate,
+  MemDS, DBAccess, Ora,DM,Unit_Master;
+
+type
+  TForm_QrDepWiseBill = class(TForm)
+    Query_Data: TQuery;
+    QrBill: TQuickRep;
+    QRSubDetail1: TQRSubDetail;
+    lbl_contd: TQRLabel;
+    GroupFooterBand1: TQRBand;
+    QRLabel48: TQRLabel;
+    QRLabel34: TQRLabel;
+    lbl_DepositFooter: TQRLabel;
+    QRLabel36: TQRLabel;
+    QRLabel41: TQRLabel;
+    QRLabel47: TQRLabel;
+    PageFooterBand1: TQRBand;
+    QRLabel5: TQRLabel;
+    QRLabel13: TQRLabel;
+    lbl_pagetotal: TQRLabel;
+    QRLabel14: TQRLabel;
+    QRLabel15: TQRLabel;
+    lbl_totpage: TQRLabel;
+    QRSysData1: TQRSysData;
+    QRShape3: TQRShape;
+    Table_QrBill: TTable;
+    Query_DepName: TOraQuery;
+    Query_TestName: TOraQuery;
+    QueryFooter: TOraQuery;
+    QueryBill: TQuery;
+    QRLabel22: TQRLabel;
+    lbl_Date: TQRLabel;
+    QRLabel30: TQRLabel;
+    lbl_user: TQRLabel;
+    OraQuery_TestName1: TOraQuery;
+    QRBand1: TQRBand;
+    QRBand2: TQRBand;
+    QRLabel6: TQRLabel;
+    QRLabel11: TQRLabel;
+    QRLabel17: TQRLabel;
+    QRLabel20: TQRLabel;
+    QRLabel10: TQRLabel;
+    QRLabel18: TQRLabel;
+    lbl_Name: TQRLabel;
+    QRLabel16: TQRLabel;
+    QRLabel21: TQRLabel;
+    lbl_Addres: TQRLabel;
+    QRLabel2: TQRLabel;
+    QRLabel3: TQRLabel;
+    lbl_agesex: TQRLabel;
+    lbl_billtype: TQRLabel;
+    QRLabel7: TQRLabel;
+    lbl_InvoiceNo: TQRLabel;
+    QRLabel24: TQRLabel;
+    QRLabel26: TQRLabel;
+    lbl_InvoiceDate: TQRLabel;
+    QRLabel49: TQRLabel;
+    QRLabel50: TQRLabel;
+    lbl_Scheme: TQRLabel;
+    QRLabel23: TQRLabel;
+    QRLabel25: TQRLabel;
+    lbl_Refundno: TQRLabel;
+    QRLabel29: TQRLabel;
+    QRLabel32: TQRLabel;
+    lbl_RefundBills: TQRLabel;
+    QRLabel12: TQRLabel;
+    QRLabel19: TQRLabel;
+    Lbl_HosNo: TQRLabel;
+    QRLabel8: TQRLabel;
+    QRLabel9: TQRLabel;
+    lbl_contactno: TQRLabel;
+    QrBarcode: TQRAsBarcode;
+    QRDBText4: TQRDBText;
+    QRShape4: TQRShape;
+    QRLabel1: TQRLabel;
+    QRLabel4: TQRLabel;
+    QRLabel27: TQRLabel;
+    QueryMain: TQuery;
+    DS_QueryMain: TDataSource;
+    QRShape2: TQRShape;
+    QRShape1: TQRShape;
+    QRDBText3: TQRDBText;
+    QRDBText2: TQRDBText;
+    QRDBText1: TQRDBText;
+    procedure FormCreate(Sender: TObject);
+    procedure QrBillBeforePrint(Sender: TCustomQuickRep;
+      var PrintReport: Boolean);
+    procedure QRLabel31Print(sender: TObject; var Value: string);
+    procedure QRLabel27Print(sender: TObject; var Value: string);
+    procedure QRLabel37Print(sender: TObject; var Value: string);
+    procedure QRLabel28Print(sender: TObject; var Value: string);
+    procedure QRSubDetail1AfterPrint(Sender: TQRCustomBand;
+      BandPrinted: Boolean);
+    procedure QRDBText2Print(sender: TObject; var Value: string);
+    procedure QRDBText1Print(sender: TObject; var Value: string);
+    procedure QRDBText3Print(sender: TObject; var Value: string);
+    procedure QRSubDetail1BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+  private
+    { Private declarations }
+  public
+   i,pi_sno1:integer;
+   Ps_DepartmentName:String;
+    { Public declarations }
+
+    Procedure CreateTemp;
+  end;
+
+var
+  Form_QrDepWiseBill: TForm_QrDepWiseBill;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_QrDepWiseBill.CreateTemp;
+begin
+     if FileExists(gs_temppath + '\QrBillDept.db') then
+     begin
+          with Table_QrBill do
+          begin
+               close;
+               databasename := gs_temppath;
+               TableName := 'QrBillDept.db';
+               DeleteTable;
+          end;
+     end;
+     with Table_QrBill do
+     begin
+          close;
+          databasename := gs_temppath;
+          TableType:= ttDefault;
+          TableName:= 'QrBillDept.db';
+          FieldDefs.Clear;
+          FieldDefs.Add('DepartmentName', ftString, 100);
+          FieldDefs.Add('DepName', ftString, 100);
+          FieldDefs.Add('TestName', ftString, 100);
+          FieldDefs.Add('IsPackageTest', ftString, 3);
+          FieldDefs.Add('PackageData', ftString, 900);
+
+          CreateTable;
+          Open;
+     end;
+end;
+
+procedure TForm_QrDepWiseBill.FormCreate(Sender: TObject);
+var
+I,J:Integer;
+ls_depname,ls_docHosName:string;
+ Qry,Qry1:TOraQuery;
+begin
+    CreateTemp;
+    pi_sno1:=0;
+    i:=0;
+    j:=0;
+    Qry:=TOraQuery.Create(nil);
+    Qry1:=TOraQuery.Create(nil);
+    QrBarcode.Text:=Gs_BillNo;
+    QrBarcode.Text:=inttostr(gi_PatientID);
+//     lbl_Password.Caption:=GetUPassword(Gs_BillNo);
+     QRLabel12.Caption := 'Patient Id.';
+     LoadPatientData(gi_PatientID);
+     lbl_Name.Caption := Gs_PatientName;
+     Lbl_HosNo.Caption := IntToStr(gi_PatientID);
+     lbl_Addres.Caption := Gs_Address;
+     lbl_agesex.Caption := Gs_Age + ' ' + copy(Gs_agetype, 1, 1) + '-' + Gs_Gender;
+     lbl_contactno.Caption := Gs_MobileNo;
+     lbl_Date.Caption := TodaysDate + ' AD - ' + TodaysDateVS + ' BS' + ' ' + TodaysTime;
+     lbl_InvoiceNo.Caption := Gs_BillNo;
+     lbl_InvoiceDate.Caption:=GetBillDate(Gs_BillNo);
+     lbl_Scheme.Caption:=GetScheme(Gs_BillNo);
+     GroupFooterBand1.Height := 90;
+     if GB_isDepositBill or (gi_BillCase = 5) then
+     begin
+//          QRLabel1.Enabled := true;
+//          QRLabel6.Enabled := true;
+//          QRLabel4.Enabled := true;
+//          QRLabel11.Enabled := true;
+//          lbl_depositamount.Enabled := true;
+//          lbl_balanceamt.Enabled := true;
+          //lbl_headName.Caption := 'Deposit Slip';
+          lbl_billtype.Caption := 'Deposit No.';
+          GroupFooterBand1.Height := 125;
+          lbl_DepositFooter.Enabled := true;
+          //lbl_refundedtest.Enabled:=false;
+     end;
+     if gi_BillCase in [6,7] then
+     begin
+          //lbl_headName.Caption := 'Tax Invoice [Refund]';
+          lbl_Refundno.Enabled := true;
+          QRLabel23.Enabled := true;
+          QRLabel25.Enabled := true;
+          lbl_Refundno.Caption := Gs_BillNo;
+          lbl_InvoiceNo.Caption := GetBillNoofRefundBill(Gs_BillNo);
+          //lbl_refundedtest.Enabled:=false;
+     end;
+     if (gi_BillCase in [2,4]) and (RefundBillExists(Gs_BillNo)) then
+     begin
+          lbl_Refundno.Enabled := true;
+          QRLabel23.Enabled := true;
+          QRLabel25.Enabled := true;
+          lbl_RefundBills.Enabled:=true;
+          QRLabel29.Enabled:=true;
+          QRLabel32.Enabled:=true;
+//          QRLabel4.Enabled := true;
+//          QRLabel11.Enabled := true;
+          lbl_Refundno.Caption := Copy(GetRefundBillofBill(Gs_billNO),1,15);
+          lbl_RefundBills.Caption:=Copy(GetRefundBillofBill(Gs_billNO),17,20);
+//          QRLabel1.Enabled:=true;
+//          QRLabel6.Enabled:=true;
+//          lbl_depositamount.Enabled:=true;
+//          lbl_balanceamt.Enabled:=true;
+//          QRLabel1.Caption := 'REFUND AMOUNT';
+//          QRLabel6.Caption := 'NET AMOUNT';
+//          pf_RefundTotal:=GetTotalRefundAmt(Gs_billNO);
+//          lbl_depositamount.Caption := FormatFloat('#0,0.00',pf_RefundTotal);
+//          lbl_refundedtest.Enabled:=true;
+     end;
+     with Qry do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.Add('Select * from VW_PATIENTBILL');
+          sql.Add('WHERE 99=99');
+
+          if GB_isDepositBill or (gi_BillCase = 5) then
+          begin
+               SQL[0] := 'SELECT ROWNUM AS SN,VWP.* FROM VW_PATIENTSERVICEBILL VWP';
+               SQL[1] :=
+                 'WHERE VWP.BILLNO IN (SELECT DEPO_REFERENCENO FROM HS_DEPO_DEPOSIT WHERE DEPO_REFERENCENO=' + #39 + Gs_BillNo + #39 + ')';
+          end
+          else if gi_BillCase in  [6,7] then
+          begin
+               SQL[0] := 'SELECT ROWNUM AS SN,VWP.* FROM VW_REFUNDBILL VWP';
+               SQL[1] := 'Where VWP.billno=' + #39 + Gs_BillNo + #39;
+          end
+          else
+          begin
+               SQL[0] := 'SELECT ROWNUM AS SN,VWP.* FROM VW_PATIENTBILL VWP';
+               SQL[1] := 'Where VWP.billno=' + #39 + Gs_BillNo + #39;
+          end;
+         // SQL.SaveToFile('c:\newtext.txt');
+          Open;
+    end;
+
+
+    if Gb_IsPackageTest=True then
+    BEGIN
+         WITH Query_TestName DO
+         begin
+              Close;
+              Session:=DM_Hospital.DB;
+              SQL.Clear;
+              SQL.Add(' SELECT TN.TENA_DEPID as DEPID,TN.TENA_TESTNAME AS SERVICETYPE,TP.TEPD_TESTPACKAGEID as TESTPACKAGEID,');
+              SQL.ADD('(SELECT DEPT_DEPNAME FROM HS_DEPT_DEPARTMENT WHERE DEPT_DEPID=TN.TENA_DEPID)DEPARTMENT,');
+              SQL.Add('TP.TEPD_TESTNAMEID as TESTNAMEID FROM HS_TEPD_TESTPACKAGEDETAIL TP,HS_TENA_TESTNAME TN WHERE TN.TENA_TESTNAMEID=TP.TEPD_TESTNAMEID AND TEPD_TESTPACKAGEID='+IntTostr(Gi_PACKID)+ 'AND TENA_DEPID='+IntTostr(Gi_DepID));
+             // SQL.SaveToFile('C:\\NEWTEST.TXT');
+         end;
+      //Query_TestName.SQL[1]:='WHERE bd.serviceTYPE=tn.testname'
+     //Query_TestName.SQL[2]:='and TN.ISPACKAGETEST=''Y'''
+    end
+    else
+    BEGIN
+          {if (gs_BillType <> 'TPBILL') then
+          begin
+            //  Query_TestName.SQL[2]:='and TN.tena_ISPACKAGETEST=''N'''; {and bd.bide_depid='+IntTostr(Gi_DepID);}
+             { Query_TestName.sql[3]:= 'and bide_billno=' + #39 + Gs_BillNo + #39; }
+              //Query_TestName.SQL.SaveToFile('C:\savetofilenot.txt');
+         { end
+          else
+          begin
+             //  OraQuery_TestName1.SQL[2]:='and TN.tena_ISPACKAGETEST=''N'' '; {and sd.sebd_depid='+IntTostr(Gi_DepID); }
+               { OraQuery_TestName1.sql[3]:= 'and sebd_billno=' + #39 + Gs_BillNo + #39;
+              // OraQuery_TestName1.SQL.SaveToFile('C:\savetofileService.txt');
+          end;}
+    END;
+
+    if (gs_BillType <> 'TPBILL') then
+    begin
+          Query_TestName.Close;
+          Query_TestName.Session:=DM_Hospital.DB;
+          Query_TestName.sql[3]:= 'and bide_billno=' + #39 + Gs_BillNo + #39;
+        //  Query_TestName.SQL.savetofile('C:\abc555.txt');
+          Query_TestName.Open;
+    end
+    else
+    begin
+          OraQuery_TestName1.Close;
+          OraQuery_TestName1.Session:=DM_Hospital.DB;
+          OraQuery_TestName1.sql[3]:= 'and sebd_billno=' + #39 + Gs_BillNo + #39;
+          OraQuery_TestName1.Open;
+
+    end;
+
+    Table_QrBill.Close;
+    Table_QrBill.EmptyTable;
+    Table_QrBill.Open;
+
+     if Gb_IsPackageTest=true  then
+     begin
+          while not Query_TestName.Eof do
+          begin
+               Table_QrBill.Append;
+               Table_QrBill.FieldByName('DepartmentName').AsString:=gs_DepartmentName+'('+gs_packagename+')';
+               Table_QrBill.FieldByName('TestName').AsString:=Query_TestName.FieldByName('SERVICETYPE').AsString;
+               Table_QrBill.FieldByName('IsPackageTest').AsString := Query_TestName.FieldByName('ISPACKAGETEST').AsString;
+               Table_QrBill.FieldByName('PackageData').AsString := Query_TestName.FieldByName('PACKAGETEST').AsString;
+               Table_QrBill.Post;
+               Query_TestName.Next;
+          end;
+
+        while not OraQuery_TestName1.Eof do
+        begin
+            Table_QrBill.Append;
+            Table_QrBill.FieldByName('DepartmentName').AsString:=OraQuery_TestName1.FieldByName('depname').AsString;    //gs_DepartmentName;
+            Table_QrBill.FieldByName('TestName').AsString:=OraQuery_TestName1.FieldByName('servicetype').AsString;
+            Table_QrBill.Post;
+            OraQuery_TestName1.Next;
+        end;
+     end
+     else
+     begin
+
+        while not Query_TestName.Eof do
+        begin
+            Table_QrBill.Append;
+            Table_QrBill.FieldByName('DepartmentName').AsString:=Query_TestName.FieldByName('depname').AsString; //gs_DepartmentName;
+            Table_QrBill.FieldByName('TestName').AsString:=Query_TestName.FieldByName('servicetype').AsString;
+            Table_QrBill.FieldByName('IsPackageTest').AsString := Query_TestName.FieldByName('ISPACKAGETEST').AsString;
+            Table_QrBill.FieldByName('PackageData').AsString := Query_TestName.FieldByName('PACKAGETEST').AsString;
+            Table_QrBill.Post;
+            Query_TestName.Next;
+        end;
+        while not OraQuery_TestName1.Eof do
+        begin
+            Table_QrBill.Append;
+            Table_QrBill.FieldByName('DepartmentName').AsString:=OraQuery_TestName1.FieldByName('depname').AsString;    //gs_DepartmentName;
+            Table_QrBill.FieldByName('TestName').AsString:=OraQuery_TestName1.FieldByName('servicetype').AsString;
+            Table_QrBill.FieldByName('IsPackageTest').AsString := OraQuery_TestName1.FieldByName('ISPACKAGETEST').AsString;
+            Table_QrBill.FieldByName('PackageData').AsString := OraQuery_TestName1.FieldByName('PACKAGETEST').AsString;
+            Table_QrBill.Post;
+            OraQuery_TestName1.Next;
+        end;
+
+     end;
+
+
+     if (gs_BillType = 'TPBILL') then
+     begin
+          OraQuery_TestName1.first;
+          while not OraQuery_TestName1.Eof do
+          begin
+               if OraQuery_TestName1.FieldByName('ISPACKAGETEST').AsString='Y' then
+               begin
+                    Gb_IsPackageTest := True;
+                    QRDBText2.Enabled:=False;
+                    QRDBText1.Font.Style:=[fsUnderline];
+                    QRDBText1.Font.Style:=[fsBold];
+               end;
+               OraQuery_TestName1.Next;
+          end;
+     end;
+
+     if (gs_BillType <> 'TPBILL') then
+     begin
+          Query_TestName.first;
+           while not Query_TestName.Eof do
+          begin
+               if Query_TestName.FieldByName('ISPACKAGETEST').AsString='Y' then
+               begin
+                    Gb_IsPackageTest := True;
+                    QRDBText3.Enabled:=False;
+                    QRDBText2.Enabled := True;
+                    QRDBText1.Font.Style:=[fsUnderline];
+                    QRDBText1.Font.Style:=[fsBold];
+               end ;
+
+               Query_TestName.Next;
+          end;
+     end;
+
+
+     if Gb_IsPackageTest=True then
+     begin
+          //QRSubDetail1.Height := 39;
+     end
+     else
+     begin
+          QRSubDetail1.Height :=20; //20
+     end;
+     Gb_IsPackageTest:=false;
+
+     with QueryMain do
+     begin
+         Close;
+         DatabaseName:=gs_temppath;
+         SQL.Clear;
+         SQL.Add('select distinct DepartmentName  from QrBillDept');
+         Open;
+          if RecordCount>10 then
+          begin
+               QrBill.Height:=QrBill.Height+(RecordCount-10)*30;
+          end;
+     end;
+
+
+     with QueryBill do
+     begin
+         Close;
+         DatabaseName:=gs_temppath;
+         SQL.Clear;
+         SQL.Add('select * from QrBillDept');
+         sql.Add(' where DepartmentName=:DepartmentName');
+        // sql.SaveToFile('c://querybill.txt');
+         Open;
+          if RecordCount>10 then
+          begin
+               QrBill.Height:=QrBill.Height+(RecordCount-10)*30;
+          end;
+     end;
+
+     ls_docHosName:=GetRefHosDoctFromPatientTest(gi_patientid,Gs_BillNo);
+
+     if Trim(ls_docHosName)<>'' then
+          Begin
+               QRLabel6.Enabled:=True;
+               QRLabel20.Enabled:=True;
+               QRLabel20.Caption:=ls_docHosName;
+          End
+     Else
+     Begin
+          QRLabel6.Enabled:=False;
+          QRLabel20.Enabled:=False;
+     End;
+
+
+
+     {with QueryBill do
+     begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          if GB_isDepositBill or (gi_BillCase = 5) then
+          begin
+               SQL[0] := 'SELECT ROWNUM AS SN,VWP.* FROM VW_PATIENTSERVICEBILL VWP';
+               SQL[1] :=
+                 'WHERE VWP.BILLNO IN (SELECT REFERENCENO FROM DEPOSIT WHERE DEPOSITNO=' + #39 + Gs_BillNo + #39 + ')';
+          end
+          else if gi_BillCase in  [6,7] then
+          begin
+               SQL[0] := 'SELECT ROWNUM AS SN,VWP.* FROM VW_REFUNDBILL VWP';
+               SQL[1] := 'Where VWP.billno=' + #39 + Gs_BillNo + #39;
+          end
+          else
+          begin
+               SQL[0] := 'SELECT ROWNUM AS SN,VWP.* FROM VW_PATIENTBILL VWP';
+               SQL[1] := 'Where VWP.billno=' + #39 + Gs_BillNo + #39;
+          end;
+          Open;
+          if RecordCount>10 then
+          begin
+               QrBill.Height:=QrBill.Height+(RecordCount-10)*30;
+          end;
+     end;  }
+
+     with QueryFooter do
+     begin
+          Close;
+         // DatabaseName := gs_DatabaseName;
+          if GB_isDepositBill or (gi_BillCase = 5) then
+          begin
+               SQL[0] := 'SELECT * FROM VW_PATIENTSERVICEBILL_SUMMARY';
+               SQL[1] :=
+                 'WHERE BILLNO IN (SELECT REFERENCENO FROM DEPOSIT WHERE DEPOSITNO=' + #39 + Gs_BillNo + #39 + ')';
+          end
+          else if gi_BillCase in [6,7] then
+          begin
+               SQL[0] := 'SELECT * FROM VW_REFUNDBILL_SUMMARY';
+               SQL[1] := 'Where billno=' + #39 + Gs_BillNo + #39;
+          end;
+          if (gs_BillType <> 'TPBILL') then
+          begin
+               SQL[0] := 'SELECT * FROM VW_PATIENTBILL_SUMMARY';
+               SQL[1] := 'Where billno=' + #39 + Gs_BillNo + #39;
+          end
+          else
+          begin
+               SQL[0]:='select * from VW_PATIENTSERVICEBILL_SUMMARY';
+               SQL[1] := 'Where billno=' + #39 + Gs_BillNo + #39;
+          end;
+          Open;
+//          lbl_GrossAmount.Caption := FormatFloat('#0,0.00', FieldByName('GrossAmount').AsFloat);
+//          lbl_Discount.Caption := FormatFloat('#0,0.00', FieldByName('Discount').AsFloat);
+//          lbl_Subtotal.Caption := FormatFloat('#0,0.00', FieldByName('Subtotal').AsFloat);
+//          lbl_Svrtax.Caption := FormatFloat('#0,0.00', FieldByName('Svrtax').AsFloat);
+//          lbl_Total.Caption := FormatFloat('#0,0.00', FieldByName('TotalAmount').AsFloat);
+//          pf_Total := FieldByName('TotalAmount').AsFloat;
+          lbl_user.Caption := FieldByName('Username').AsString;
+          if GB_isDepositBill or (gi_BillCase = 5) then
+          begin
+//               lbl_depositamount.Caption := FormatFloat('#0,0.00', FieldByName('Deposit').AsFloat);
+//               lbl_balanceamt.Caption := FormatFloat
+               // ('#0,0.00', (FieldByName('TotalAmount').AsFloat - FieldByName('Deposit').AsFloat));
+               lbl_InvoiceNo.Caption := Gs_BillNo;
+          end;
+          if (gi_BillCase in [2,4]) and (RefundBillExists(Gs_BillNo)) then
+          begin
+//              lbl_balanceamt.Caption := FormatFloat
+//            ('#0,0.00', (pf_Total - pf_RefundTotal));
+          end;
+
+          if FieldByName('Discount').AsFloat=0 then
+          begin
+//               QRLabel31.Enabled:=false;
+//               QRLabel43.Enabled:=false;
+//               lbl_Discount.Enabled:=false;
+          end;
+
+     end;
+end;
+
+procedure TForm_QrDepWiseBill.QrBillBeforePrint(Sender: TCustomQuickRep;
+  var PrintReport: Boolean);
+begin
+    QRLabel2.Caption:='Age/Sex';
+
+
+end;
+
+procedure TForm_QrDepWiseBill.QRDBText1Print(sender: TObject;
+  var Value: string);
+begin
+//     if QueryBill.FieldByName('IsPackageTest').AsString = 'N'  then
+//     begin
+//          QRDBText2.Enabled := False;
+//     end;
+     if QueryBill.FieldByName('PackageData').AsString = '' then
+     begin
+
+          QRSubDetail1.Height := 21;
+     end;
+
+
+end;
+
+procedure TForm_QrDepWiseBill.QRDBText2Print(sender: TObject;
+  var Value: string);
+begin
+     //{$Optimization off}
+//     if (Query_TestName.FieldByName('ISPACKAGETEST').AsString = 'N' ) then
+//     begin
+//          Value := '';
+//     end;
+
+     {*else if Query_TestName.FieldByName('ISPACKAGETEST').AsString= 'Y' then
+     begin
+          QRDBText2.Enabled := True;
+     end;   *}
+end;
+
+procedure TForm_QrDepWiseBill.QRDBText3Print(sender: TObject;
+  var Value: string);
+begin
+     //
+end;
+
+procedure TForm_QrDepWiseBill.QRLabel27Print(sender: TObject;
+  var Value: string);
+begin
+     value:='Member No';
+end;
+
+procedure TForm_QrDepWiseBill.QRLabel28Print(sender: TObject;
+  var Value: string);
+begin
+     value:=IntToStr(pi_sno1);
+end;
+
+procedure TForm_QrDepWiseBill.QRLabel31Print(sender: TObject;
+  var Value: string);
+begin
+     value:=inttostr(Gi_MemberID);
+end;
+
+procedure TForm_QrDepWiseBill.QRLabel37Print(sender: TObject;
+  var Value: string);
+begin
+     value:=inttostr(Gi_MemberID);
+end;
+
+procedure TForm_QrDepWiseBill.QRSubDetail1AfterPrint(Sender: TQRCustomBand;
+  BandPrinted: Boolean);
+begin
+     pi_sno1:=pi_sno1+1;
+
+
+end;
+
+procedure TForm_QrDepWiseBill.QRSubDetail1BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if QueryBill.FieldByName('PackageData').AsString = '' then
+     begin
+          QRDBText1.Font.Style := [];
+     end
+     else if QueryBill.FieldByName('PackageData').AsString <> '' then
+     begin
+          QRDBText1.Font.Style := [fsBold];
+     end;
+
+end;
+
+end.

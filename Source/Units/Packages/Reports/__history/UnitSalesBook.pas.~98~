@@ -1,0 +1,722 @@
+unit UnitSalesBook;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm, serverdate,UnitSendToExcel,
+     Dialogs, StdCtrls, Buttons, ExtCtrls, ComCtrls, OleCtrls, DateEditXControl_TLB, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError;
+
+type
+     TForm_SalesBook = class(TForm)
+          Panel1: TPanel;
+          BitBtnPreview: TBitBtn;
+          BitBtnCancel: TBitBtn;
+          Panel2: TPanel;
+          Bevel1: TBevel;
+          Label1: TLabel;
+          Label2: TLabel;
+          DateEditX_FromDate: TDateEditX;
+          DateEditX_ToDate: TDateEditX;
+          BitBtn_FromDate: TBitBtn;
+          BitBtn_ToDate: TBitBtn;
+          CBTaxOffice: TCheckBox;
+          GroupBox_SalesBook: TGroupBox;
+          RB_Detail: TRadioButton;
+          RB_Summary: TRadioButton;
+          StatusBar1: TStatusBar;
+          Query_RefundSummary: TOraQuery;
+          Query_SummaryCash: TOraQuery;
+    BitBtn1: TBitBtn;
+    CHKB_KPL: TCheckBox;
+    Query_Process: TOraQuery;
+    Query_Subprocess: TOraQuery;
+    RG: TRadioGroup;
+    Query_cashsales: TQuery;
+    Query_SalesRefund: TQuery;
+    Table_SalesBookKpl: TTable;
+    Table_TaxSummaryReport: TTable;
+    Table1: TTable;
+    Query1: TQuery;
+          procedure CBTaxOfficeClick(Sender: TObject);
+          procedure BitBtnPreviewClick(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure FormDestroy(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure FormShow(Sender: TObject);
+          procedure Govt_Service_Tax_Report_Medicare;
+          Procedure CreateTable_TaxSummaryReport;
+          procedure BitBtnCancelClick(Sender: TObject);
+          procedure BitBtn_FromDateClick(Sender: TObject);
+          procedure BitBtn_ToDateClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+     private
+          { Private declarations }
+     public
+          pb_ToXl:Boolean;
+          { Public declarations }
+          Procedure CreateTempTableKPL;
+
+     end;
+
+var
+     Form_SalesBook: TForm_SalesBook;
+
+implementation
+
+uses Unit_Medicare_GovtSvrTaxReportSummary, Unit_Medicare_GovtSvrTaxReport;
+{$R *.dfm}
+
+procedure TForm_SalesBook.BitBtn1Click(Sender: TObject);
+begin
+     pb_ToXl:=True;
+     BitBtnPreviewClick(Sender);
+     pb_ToXl:=False;
+end;
+
+procedure TForm_SalesBook.BitBtnCancelClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_SalesBook.BitBtnPreviewClick(Sender: TObject);
+var
+     New_Query: TOraQuery;
+     i: Integer;
+     ReportForm: TForm;
+     ls_ReportTitle,Ls_particulars: String;
+     lf_Tot: Double;
+begin
+     // IF CheckProperDateRange(DateEditX_FromDate,DateEditX_ToDate)=False Then
+     // Begin
+     // MessageDlg('Incorrect Date ! '+Char(10)+Char(10)+'       Clue -> Either From Date or To Date.',mtWarning,[mbok],0);
+     // Exit;
+     // End;
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     BitBtn_FromDate.Caption := gs_DateCaption;
+     BitBtn_ToDate.Caption := gs_DateCaption;
+     gs_From := DateEditX_FromDate.text;
+     gs_to := DateEditX_ToDate.text;
+     //DateEditX_FromDate.SystemOfDate := 0;
+     //DateEditX_ToDate.SystemOfDate := 0;
+     //BitBtn_FromDate.Caption := 'BS';
+     //BitBtn_ToDate.Caption := 'BS';
+     if CHKB_KPL.Checked then
+     Begin
+          CreateTempTableKPL;
+          with Table_SalesBookKpl do
+          Begin
+               close;
+               DatabaseName:=gs_temppath;
+               EmptyTable;
+               Open;
+          End;
+
+          With Query_Process do
+          Begin
+               close;
+               Session:=DM_Hospital.DB;
+               sql.Clear;
+               Sql.Add('Select Rownum as sn,a.* from (');
+               sql.Add('Select BIDE_BILLNO billno,(Select BSDATE from NEPALIEQUIVALENTENGLISHDATE where ADDATE=BD.BIDE_billdate)nepalibilldate,');
+               sql.Add('BIDE_BILLDATE billdate,BIDE_PATIENTID patientid,(select PAMA_fname||'' ''||PAMA_Lname from HS_PAMA_patientmain where PAMA_patientid=BD.BIDE_patientid)patientname');
+               sql.Add(',(select COMM_COMMUNITY from HS_COMM_COMMUNITY where COMM_COMMUNITYid=BD.BIDE_communityid)community,');
+               sql.Add('(select SCHE_SCHEME from HS_SCHE_scheme where SCHE_schemeid=BD.BIDE_schemeid)scheme,');
+               sql.Add('BIDE_paytype PAYTYPE,BIDE_disper DISPER,sum(BIDE_amount*BIDE_qty*BIDE_disper/100)discount,sum(BIDE_amount*BIDE_qty)subtotal,sum(BIDE_vatamt*BIDE_qty)Tax,');
+               sql.Add('sum((BIDE_amount*BIDE_qty-BIDE_amount*BIDE_qty*BIDE_disper/100)+BIDE_vatamt*BIDE_qty)grandtotal,(select redo_DOCNAME from HS_redo_referaldoctor where redo_docid in (select refdocid from patienttest where billno=BD.bide_billno and rownum=1))ReferBy,');
+               sql.Add('(select username from LAB_USERMAIN where userid=BD.BIDE_BILLBY)entryby,');
+               sql.Add('case when BIDE_paytype=''CASH'' then ''Y'' when BIDE_paytype=''CREDIT'' then nvl(BIDE_iscrpaid,''N'') end ISCRPAID,');
+               SQL.Add('NVL((Select sum(CRPM_RECEIPTDISCOUNT) from HS_CRPM_CREDITPAYMENTMASTER where CRPM_CRBILLNODETAIL=BD.BIDE_BillNo and BIDE_billno like ''CP%''),0)receiptdiscount');
+               sql.Add('from HS_BIDE_billdetail BD');
+               sql.Add('where BIDE_billdate between '+Quotedstr(gs_From)+' and '+Quotedstr(gs_to));
+               if rg.ItemIndex = 0 then
+               sql.Add('and BIDE_paytype=''CASH''')
+               else if rg.ItemIndex = 1 then
+               sql.Add('and BIDE_paytype=''CREDIT''');
+               sql.Add('group by BIDE_billno,BIDE_billdate,BIDE_patientid,BIDE_communityid,BIDE_schemeid,BIDE_paytype,BIDE_billby,BIDE_disper,BIDE_REFDOCCODE,BIDE_iscrpaid');
+               sql.Add('order by BIDE_billdate');
+               sql.Add(')a');
+              // sql.SaveToFile('C:\check.txt');
+               Open;
+          End;
+          Query_Process.First;
+          while not Query_Process.Eof do
+          Begin
+               Ls_particulars:='';
+               Table_SalesBookKpl.Append;
+               Table_SalesBookKpl.FieldByName('Sno').AsInteger:=Query_Process.FieldByName('Sn').AsInteger;
+               Table_SalesBookKpl.FieldByName('LabNo').AsInteger:=Query_Process.FieldByName('patientid').AsInteger;
+               Table_SalesBookKpl.FieldByName('BillNo').AsString:=Query_Process.FieldByName('Billno').AsString;
+               Table_SalesBookKpl.FieldByName('Nepalibilldate').AsString:=Query_Process.FieldByName('nepalibilldate').AsString;
+               Table_SalesBookKpl.FieldByName('BillDate').AsString:=Query_Process.FieldByName('BillDate').AsString;
+               Table_SalesBookKpl.FieldByName('PatientName').AsString:=Query_Process.FieldByName('patientname').AsString;
+               Table_SalesBookKpl.FieldByName('Paytype').AsString:=Query_Process.FieldByName('Paytype').AsString;
+               Table_SalesBookKpl.FieldByName('Scheme').AsString:=Query_Process.FieldByName('Scheme').AsString;
+               Table_SalesBookKpl.FieldByName('Community').AsString:=Query_Process.FieldByName('Community').AsString;
+               Table_SalesBookKpl.FieldByName('EntryBy').AsString:=Query_Process.FieldByName('EntryBy').AsString;
+               Table_SalesBookKpl.FieldByName('ReferedBy').AsString:=Query_Process.FieldByName('ReferBy').AsString;
+               Table_SalesBookKpl.FieldByName('SubTotal').AsFloat:=Query_Process.FieldByName('SubTotal').AsFloat;
+               Table_SalesBookKpl.FieldByName('Disper').AsFloat:=Query_Process.FieldByName('disper').AsFloat;
+               Table_SalesBookKpl.FieldByName('Discount').AsFloat:=Query_Process.FieldByName('Discount').AsFloat;
+               Table_SalesBookKpl.FieldByName('Tax').AsFloat:=Query_Process.FieldByName('Tax').AsFloat;
+               Table_SalesBookKpl.FieldByName('ReceiptDis').AsFloat:=Query_Process.FieldByName('receiptdiscount').AsFloat;
+               Table_SalesBookKpl.FieldByName('NetAmount').AsFloat:=Query_Process.FieldByName('grandtotal').AsFloat;
+               Table_SalesBookKpl.FieldByName('Billtype').AsString:='CASH';
+               Table_SalesBookKpl.FieldByName('IsCreditPaid').AsString:=Query_Process.FieldByName('iscrpaid').AsString;
+               With Query_Subprocess do
+               Begin
+                    close;
+                    Sql.Clear;
+                    Session:=DM_Hospital.DB;
+                    sql.Add('Select BIDE_service SERVICE,BIDE_servicetype SERVICETYPE,BIDE_disper DISPER from HS_BIDE_billdetail');
+                    sql.Add('Where BIDE_billno='+quotedstr(Query_Process.FieldByName('Billno').AsString));
+                    sql.Add(' and BIDE_disper='+Query_Process.FieldByName('disper').AsString);
+                    Open;
+                    First;
+                    while not eof  do
+                    Begin
+                         {if Ls_particulars='' then
+                              Ls_particulars:= Query_Subprocess.FieldByName('Servicetype').AsString
+                                                  +'('+Query_Subprocess.FieldByName('disper').AsString+'%)'
+                         Else
+                              Ls_particulars:=Ls_particulars+','+Query_Subprocess.FieldByName('Servicetype').AsString
+                                             +'('+Query_Subprocess.FieldByName('disper').AsString+'%)'; }
+                         if Ls_particulars='' then
+                              Ls_particulars:= Query_Subprocess.FieldByName('Servicetype').AsString
+                         Else
+                              Ls_particulars:=Ls_particulars+','+Query_Subprocess.FieldByName('Servicetype').AsString;
+                         Next;
+                    End;
+               End;
+               Table_SalesBookKpl.FieldByName('Particulars').AsString:=Ls_particulars;
+               Table_SalesBookKpl.Post;
+               Query_Process.Next;
+          End;
+
+          with Query_Process do
+          Begin
+               close;
+               Session:=DM_Hospital.DB;
+               sql.Clear;
+               Sql.Add('Select Rownum as sn,a.* from (');
+               sql.Add('Select REDE_Refundbillno REFUNDBILLNO,(Select BSDATE from NEPALIEQUIVALENTENGLISHDATE where ADDATE=rd.REDE_REFUNDDATE)nepalibilldate,');
+               sql.Add('REDE_REFUNDDATE as billdate,REDE_patientid PATIENTID,(select PAMA_fname||'' ''||PAMA_Lname from HS_PAMA_patientmain where PAMA_patientid=RD.REDE_patientid)patientname');
+               sql.Add(',(select COMM_COMMUNITY from HS_COMM_COMMUNITY where COMM_COMMUNITYid=RD.REDE_communityid)community,');
+               sql.Add('(select SCHE_SCHEME from HS_SCHE_scheme where SCHE_schemeid=RD.REDE_schemeid)scheme,');
+               sql.Add('REDE_paytype PAYTYPE,REDE_disper DISPER,sum(REDE_amount*REDE_qty*REDE_disper/100)discount,sum(REDE_amount*REDE_qty)subtotal,sum(REDE_vatamt*REDE_qty)Tax,');
+               sql.Add('sum((REDE_amount*REDE_qty-REDE_amount*REDE_qty*REDE_disper/100)+REDE_vatamt*REDE_qty)grandtotal,(select redo_DOCNAME from HS_redo_referaldoctor where redo_docid=RD.REDE_REFDOCID)ReferBy,');
+               sql.Add('(select username from LAB_USERMAIN where userid=RD.REDE_REFUNDBY)entryby from HS_REDE_refunddetail RD');
+               sql.Add('where REDE_REFUNDDATE between '+Quotedstr(gs_From)+' and '+Quotedstr(gs_to));
+               sql.Add('group by REDE_RefundBillno,REDE_REFUNDDATE,REDE_patientid,REDE_communityid,REDE_schemeid,REDE_paytype,REDE_disper,REDE_REFUNDBY,REDE_REFDOCID');
+               sql.Add('order by REDE_REFUNDDATE');
+               sql.Add(')a');
+              // sql.savetofile('C:\33t.txt');
+               Open;
+          End;
+          Query_Process.First;
+          while not Query_Process.Eof do
+          Begin
+               Ls_particulars:='';
+               Table_SalesBookKpl.Append;
+               Table_SalesBookKpl.FieldByName('Sno').AsInteger:=Query_Process.FieldByName('Sn').AsInteger;
+               Table_SalesBookKpl.FieldByName('LabNo').AsInteger:=Query_Process.FieldByName('patientid').AsInteger;
+               Table_SalesBookKpl.FieldByName('BillNo').AsString:=Query_Process.FieldByName('REFUNDBILLNO').AsString;
+               Table_SalesBookKpl.FieldByName('Nepalibilldate').AsString:=Query_Process.FieldByName('nepalibilldate').AsString;
+               Table_SalesBookKpl.FieldByName('BillDate').AsString:=Query_Process.FieldByName('BillDate').AsString;
+               Table_SalesBookKpl.FieldByName('PatientName').AsString:=Query_Process.FieldByName('patientname').AsString;
+               Table_SalesBookKpl.FieldByName('Paytype').AsString:=Query_Process.FieldByName('Paytype').AsString;
+               Table_SalesBookKpl.FieldByName('Scheme').AsString:=Query_Process.FieldByName('Scheme').AsString;
+               Table_SalesBookKpl.FieldByName('Community').AsString:=Query_Process.FieldByName('Community').AsString;
+               Table_SalesBookKpl.FieldByName('EntryBy').AsString:=Query_Process.FieldByName('EntryBy').AsString;
+               Table_SalesBookKpl.FieldByName('ReferedBy').AsString:=Query_Process.FieldByName('ReferBy').AsString;
+               Table_SalesBookKpl.FieldByName('SubTotal').AsFloat:=Query_Process.FieldByName('SubTotal').AsFloat;
+               Table_SalesBookKpl.FieldByName('Disper').AsFloat:=Query_Process.FieldByName('disper').AsFloat;
+               Table_SalesBookKpl.FieldByName('Discount').AsFloat:=Query_Process.FieldByName('Discount').AsFloat;
+               Table_SalesBookKpl.FieldByName('Tax').AsFloat:=Query_Process.FieldByName('Tax').AsFloat;
+               Table_SalesBookKpl.FieldByName('NetAmount').AsFloat:=Query_Process.FieldByName('grandtotal').AsFloat;
+               Table_SalesBookKpl.FieldByName('Billtype').AsString:='REFUND';
+               With Query_Subprocess do
+               Begin
+                    close;
+                    Sql.Clear;
+                    Session:=DM_Hospital.DB;
+                    sql.Add('Select (Select BIDE_billno from HS_BIDE_billdetail where BIDE_billdetailid=RD.rede_BILLDETAILID)refundbill,');
+                    sql.Add('rede_servicetype SERVICETYPE,rede_DISPER DISPER from HS_REDE_refunddetail rd ');
+                    sql.Add('Where REDE_RefundBillno='+quotedstr(Query_Process.FieldByName('REFUNDBILLNO').AsString));
+                    sql.Add(' and REDE_DISPER='+Query_Process.FieldByName('disper').AsString);
+                  //  sql.savetofile('c:\abc55.txt');
+                    Open;
+                    First;
+                    while not eof  do
+                    Begin
+                         if Ls_particulars='' then
+                              Ls_particulars:= Query_Subprocess.FieldByName('Servicetype').AsString
+                         Else
+                              Ls_particulars:=Ls_particulars+','+Query_Subprocess.FieldByName('Servicetype').AsString;
+                         Next;
+                    End;
+               End;
+               Table_SalesBookKpl.FieldByName('RefBillno').AsString:=Query_Subprocess.FieldByName('refundbill').AsString;
+               Table_SalesBookKpl.FieldByName('Particulars').AsString:=Ls_particulars;
+               Table_SalesBookKpl.Post;
+               Query_Process.Next;
+          End;
+          With Query_cashsales do
+          Begin
+               close;
+               sql.Clear;
+               DatabaseName:=gs_temppath;
+               //sql.Add('select Sno,BillNo,nepalibilldate,billdate,LabNo,patientName,paytype,particulars,subtotal,Disper,subtotal-discount as nettotal,tax,ReceiptDis,');
+               sql.Add('select Sno,BillNo,nepalibilldate,billdate,LabNo,patientName,paytype,particulars,subtotal,Disper,subtotal-discount as nettotal,tax,');
+               sql.Add('NetAmount-ReceiptDis as grandtotal,scheme,community,ReferedBy,entryby,IsCreditPaid from SalesBookKpl.db ');
+               sql.Add('Where Billtype=''CASH''');
+               Open;
+          End;
+          With Query_SalesRefund Do
+          Begin
+               close;
+               sql.Clear;
+               DatabaseName:=gs_temppath;
+               sql.Add('select Sno,billno,nepalibilldate,billdate,LabNo,patientName,paytype,particulars,subtotal,Discount,tax,');
+               sql.Add('NetAmount as grandtotal,scheme,community,ReferedBy,entryby,RefBillno as RefundBillno from SalesBookKpl.db ');
+               sql.Add('Where Billtype=''REFUND''');
+               Open;
+          End;
+
+          SendToExcelsMultiQuerykpl(Query_cashsales,Query_SalesRefund,nil,nil,nil,nil,'SALES BOOK','REFUND','','','','',
+               Serverdate.TodaysDate,'',gs_hospitalname,gs_hospitaladdress, 2, 10);
+          Exit;
+     End;
+
+     Govt_Service_Tax_Report_Medicare;
+
+end;
+
+procedure TForm_SalesBook.BitBtn_FromDateClick(Sender: TObject);
+begin
+     // ChangeDateSystem(DateEditX_FromDate,BitBtn_FromDate);
+     if DateEditX_FromDate.SystemOfDate = 0 then
+     begin
+          BitBtn_FromDate.Caption := 'AD';
+          DateEditX_FromDate.SystemOfDate := 1;
+     end
+     else if DateEditX_FromDate.SystemOfDate = 1 then
+     begin
+          BitBtn_FromDate.Caption := 'BS';
+          DateEditX_FromDate.SystemOfDate := 0;
+     end;
+end;
+
+procedure TForm_SalesBook.BitBtn_ToDateClick(Sender: TObject);
+begin
+     // ChangeDateSystem(DateEditX_ToDate,BitBtn_ToDate);
+     if DateEditX_ToDate.SystemOfDate = 0 then
+     begin
+          BitBtn_ToDate.Caption := 'AD';
+          DateEditX_ToDate.SystemOfDate := 1;
+     end
+     else if DateEditX_ToDate.SystemOfDate = 1 then
+     begin
+          BitBtn_ToDate.Caption := 'BS';
+          DateEditX_ToDate.SystemOfDate := 0;
+     end;
+end;
+
+procedure TForm_SalesBook.CBTaxOfficeClick(Sender: TObject);
+begin
+     IF CBTaxOffice.Checked = True Then
+     Begin
+
+          GroupBox_SalesBook.Visible := True;
+          RB_Detail.Checked := True;
+     End
+     Else
+          GroupBox_SalesBook.Visible := False;
+end;
+
+procedure TForm_SalesBook.CreateTable_TaxSummaryReport;
+begin
+     With Table_TaxSummaryReport do
+     Begin
+          DatabaseName := gs_TempPath;
+          Close;
+          TableName := 'TaxSummaryReport.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('PayType', ftString, 7);
+          FieldDefs.Add('BillDate', ftString, 10);
+          FieldDefs.Add('StartBillNo', ftString, 17);
+          FieldDefs.Add('EndBillNo', ftString, 17);
+          FieldDefs.Add('Gross', ftFloat);
+          FieldDefs.Add('Discount', ftFloat);
+          FieldDefs.Add('SubTotal', ftFloat);
+          FieldDefs.Add('TaxableTotal', ftFloat);
+          FieldDefs.Add('NonTaxableTotal', ftFloat);
+          FieldDefs.Add('5%HST', ftFloat);
+          FieldDefs.Add('NetAmount', ftFloat);
+          IndexDefs.Clear;
+          CreateTable;
+     End;
+
+     
+    
+end;
+
+procedure TForm_SalesBook.CreateTempTableKPL;
+begin
+     With Table_SalesBookKpl do
+     Begin
+          DatabaseName := gs_TempPath;
+          Close;
+          TableName := 'SalesBookKpl.db';
+          TableType := ttParadox;
+          FieldDefs.Clear;
+          FieldDefs.Add('Sno',ftinteger);
+          FieldDefs.Add('LabNo',ftinteger);
+          FieldDefs.Add('BillNo', ftString,20);
+          FieldDefs.Add('Nepalibilldate', ftString,10);
+          FieldDefs.Add('BillDate', ftString, 10);
+          FieldDefs.Add('PatientName', ftString, 100);
+          FieldDefs.Add('Paytype', ftString, 10);
+          FieldDefs.Add('Scheme', ftstring,50);
+          FieldDefs.Add('Community', ftstring,50);
+          FieldDefs.Add('EntryBy', ftstring,50);
+          FieldDefs.Add('ReferedBy', ftstring,50);
+          FieldDefs.Add('Particulars', ftstring,4000);
+          FieldDefs.Add('SubTotal', ftFloat);
+          FieldDefs.Add('Discount', ftFloat);
+          FieldDefs.Add('Disper', ftFloat);
+          FieldDefs.Add('Tax', ftFloat);
+          FieldDefs.Add('ReceiptDis', ftFloat);
+          FieldDefs.Add('NetAmount', ftFloat);
+          FieldDefs.Add('RefBillno', Ftstring,20);
+          FieldDefs.Add('Billtype', Ftstring,20);
+          FieldDefs.Add('IsCreditPaid',Ftstring,10);
+          IndexDefs.Clear;
+          CreateTable;
+     End;
+end;
+
+procedure TForm_SalesBook.FormCreate(Sender: TObject);
+begin
+
+     Application.CreateForm(TForm_Medicare_GovtSvrTaxReportSummary, Form_Medicare_GovtSvrTaxReportSummary);
+     Application.CreateForm(TForm_Medicare_GovtSvrTaxReport, Form_Medicare_GovtSvrTaxReport);
+
+end;
+
+procedure TForm_SalesBook.FormDestroy(Sender: TObject);
+begin
+     //
+     // Form_Medicare_GovtSvrTaxReportSummary.Free;
+     // Form_Medicare_GovtSvrTaxReport.Free;
+
+end;
+
+procedure TForm_SalesBook.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = 27 Then
+          Close;
+     IF Key = VK_F1 Then
+          BitBtnPreviewClick(Sender);
+
+     If Key = 13 then
+          keybd_event(9, 13, 0, 0);
+end;
+
+procedure TForm_SalesBook.FormShow(Sender: TObject);
+begin
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_FromDate.text := TodaysDate;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.text := TodaysDate;
+     //DateEditX_FromDate.SystemOfDate := 0;
+     //DateEditX_ToDate.SystemOfDate := 0;
+     BitBtn_FromDate.Caption :=gs_DateCaption;// 'BS';
+     BitBtn_ToDate.Caption :=gs_DateCaption;// 'BS';
+
+     rg.ItemIndex:=2;
+     //CreateTable_TaxSummaryReport;
+
+end;
+
+procedure TForm_SalesBook.Govt_Service_Tax_Report_Medicare;
+Var
+     ls_ReportTitle: String;
+     b_isselected: Boolean;
+     Arr_Dataset:Array of TDataset;
+begin
+     b_isselected := True;
+     if (CBTaxOffice.Checked = False) then
+          b_isselected := False;
+
+     IF (RB_Detail.Checked = True) or (b_isselected = False) Then
+     Begin
+          try
+               Form_Medicare_GovtSvrTaxReport := TForm_Medicare_GovtSvrTaxReport.Create(nil);
+               With Form_Medicare_GovtSvrTaxReport Do
+               Begin
+                    Try
+                         With Query_Cash Do
+                         Begin
+                              Close;
+                              Session:=DM_Hospital.DB;
+
+                              SQL[1] := 'where SB.billdate>=' + #39 + gs_From + #39 + 'and SB.billdate<=' + #39 + gs_to + #39;
+                              // SQL[2] := 'order by billno';
+                              SQL.SAVETOFILE('C:/CASH.TXT');
+                              Open;
+
+                         End;
+
+                         with Query_Refund do
+                         Begin
+                              Close;
+
+                              SQL[1] := 'where Sb.refunddate>=' + #39 + gs_from + #39 + 'and SB.refunddate<=' + #39 +
+                                gs_to + #39;
+                              //SQL[2] := 'order by billno';
+                              SQL.savetofile('D:\ref.txt');
+                              Open;
+                         End;
+
+                         if pb_ToXl then
+                         begin
+                              SetLength(Arr_Dataset,2);
+                              Arr_Dataset[0]:=Query_Cash;
+                              Arr_Dataset[1]:=Query_Refund;
+
+                              SendToExcelsNew(Arr_Dataset,nil,'Sales Book',DateEditX_FromDate.VSDateAsText+'-'+DateEditX_ToDate.VSDateAsText,'',
+                                gs_HospitalName,gs_HospitalAddress,0);
+
+                              Exit;
+                         end;
+
+
+                         ls_ReportTitle := 'HEALTH SERVICE TAX REPORT';
+
+                         CRSno := 0;
+                         CSSno := 0;
+                         RFSno := 0;
+
+                         If gi_datesystem = 0 Then
+                         Begin
+                              QRLabelFrom.Caption := DateEditX_FromDate.VSDateAsText + ' BS(' + DateEditX_FromDate.ADDateAsText + ' AD)';
+                              QRLabelTo.Caption := DateEditX_ToDate.VSDateAsText + ' BS(' + DateEditX_ToDate.ADDateAsText + ' AD)';
+                         End
+                         Else
+                         Begin
+                              QRLabelFrom.Caption := DateEditX_FromDate.ADDateAsText + ' AD(' + DateEditX_FromDate.VSDateAsText + ' BS)';
+                              QRLabelTo.Caption := DateEditX_ToDate.ADDateAsText + ' AD(' + DateEditX_ToDate.VSDateAsText + ' BS)';
+                         End;
+                         QRLabelToday.Caption := TodaysDate;
+
+                         QRLabelReportTitle.Caption := ls_ReportTitle;
+
+                         if (b_isselected = False) then
+                         begin
+                              QRLabel9.Font.Color := clBlack;
+                              QRLabel11.Font.Color := clBlack;
+                              QRLabel38.Enabled := True;
+                              QRDBText8.Enabled := True;
+                              QRExpr10.Enabled := True;
+                              QRDBText28.Enabled := True;
+                              QRExpr16.Enabled := True;
+                              QRExpr5.Enabled := True;
+
+                              QRLabel28.Enabled := True;
+                              QRDBText4.Enabled := True;
+                              QRExpr2.Enabled := True;
+                              QRDBText26.Enabled := True;
+                              QRExpr11.Enabled := True;
+                              QRExpr3.Enabled := True;
+
+                              QRShape5.Enabled := True;
+                              QRShape6.Enabled := True;
+                              QRShape14.Enabled := True;
+                              QRShape15.Enabled := True;
+                              QRShape22.Enabled := True;
+                              QRShape23.Enabled := True;
+
+                         end
+
+                         else
+                         begin
+                              QRLabel9.Font.Color := clWhite;
+                              QRLabel11.Font.Color := clWhite;
+                              QRLabel38.Enabled := False;
+                              QRDBText8.Enabled := False;
+                              QRExpr10.Enabled := False;
+                              QRDBText28.Enabled := False;
+                              QRExpr16.Enabled := False;
+                              QRExpr5.Enabled := False;
+
+                              QRLabel28.Enabled := False;
+                              QRDBText4.Enabled := False;
+                              QRExpr2.Enabled := False;
+                              QRDBText26.Enabled := False;
+                              QRExpr11.Enabled := False;
+                              QRExpr3.Enabled := False;
+
+                              QRShape5.Enabled := False;
+                              QRShape6.Enabled := False;
+                              QRShape14.Enabled := False;
+                              QRShape15.Enabled := False;
+                              QRShape22.Enabled := False;
+                              QRShape23.Enabled := False;
+
+                              { QRShape4.Width:=835;
+                                QRShape28.Visible:=False;
+                                QRShape27.Width:=835;
+                                QRShape29.Width:=835; }
+                         end;
+
+                         QuickRep1.Preview;
+
+                         Query_Cash.Close;
+                         Query_Refund.Close;
+
+                    Finally
+                         // QuickRep1.Free;
+                    End;
+               End;
+          finally
+               Form_Medicare_GovtSvrTaxReport.Free;
+          end;
+     End
+     Else if RB_Summary.Checked = True then
+     Begin
+         { CreateTable_TaxSummaryReport;
+
+          Table_TaxSummaryReport.Close;
+          Table_TaxSummaryReport.DatabaseName := gs_TempPath;
+          Table_TaxSummaryReport.EmptyTable;
+          Table_TaxSummaryReport.Open;  }
+
+          try
+               Form_Medicare_GovtSvrTaxReportSummary := TForm_Medicare_GovtSvrTaxReportSummary.Create(nil);
+               With Form_Medicare_GovtSvrTaxReportSummary Do
+               Begin
+                    try
+                         Form_Medicare_GovtSvrTaxReportSummary.CreateTable_TaxSummaryReport;
+
+                         Table_TaxSummaryReport.Close;
+                         Table_TaxSummaryReport.DatabaseName := gs_TempPath;
+                         Table_TaxSummaryReport.EmptyTable;
+                         Table_TaxSummaryReport.Open;
+
+
+                         With Query_SummaryCash1 do
+                         Begin
+                              Close;
+                              // ParamByName('fdate').AsString:=DateEditX_FromDate.Text;
+                              // ParamByName('tdate').AsString:=DateEditX_ToDate.Text;
+                              SQL[1] := 'where billdate>=' + #39 + gs_From + #39 + 'and BILLDATE<=' + #39 + gs_to + #39;
+                              // sql[2]:='order by billno';
+                             // SQL.SaveToFile('C:\1122abc.txt');
+                              Open;
+                            //  First;
+
+                         End;
+                         While Not Query_SummaryCash1.EOF Do
+                         Begin
+                              Table_TaxSummaryReport.Append;
+                              Table_TaxSummaryReport.FieldBYName('PayType').AsString := 'CASH';
+                              Table_TaxSummaryReport.FieldBYName('BillDate').AsString := Query_SummaryCash1.FieldBYName('BillDate').AsString;
+                              Table_TaxSummaryReport.FieldBYName('StartBillNo').AsString := Query_SummaryCash1.FieldBYName('StartBillNo').AsString;
+                              Table_TaxSummaryReport.FieldBYName('EndBillNo').AsString := Query_SummaryCash1.FieldBYName('EndBillNo').AsString;
+                              Table_TaxSummaryReport.FieldBYName('Gross').AsFloat := Query_SummaryCash1.FieldBYName('Gross').AsFloat;
+                              Table_TaxSummaryReport.FieldBYName('Discount').AsFloat := Query_SummaryCash1.FieldBYName('Discount').AsFloat;
+                              Table_TaxSummaryReport.FieldBYName('SubTotal').AsFloat := Query_SummaryCash1.FieldBYName('SubTotal').AsFloat;
+                              Table_TaxSummaryReport.FieldBYName('TaxableTotal').AsFloat := Query_SummaryCash1.FieldBYName('Taxable').AsFloat;
+                              Table_TaxSummaryReport.FieldBYName('NonTaxableTotal').AsFloat := Query_SummaryCash1.FieldBYName('NonTaxable').AsFloat;
+                              Table_TaxSummaryReport.FieldBYName('5%HST').AsFloat := Query_SummaryCash1.FieldBYName('HST').AsFloat;
+                              Table_TaxSummaryReport.FieldBYName('NetAmount').AsFloat := Query_SummaryCash1.FieldBYName('NetTotal').AsFloat;
+                              Table_TaxSummaryReport.Post;
+                              Query_SummaryCash1.Next;
+                         End;
+
+                         With Query_RefundSummary1 do
+                         Begin
+                              Close;
+                              // ParamByName('fdate').AsString:=DateEditX_FromDate.Text;
+                              // ParamByName('tdate').AsString:=DateEditX_ToDate.Text;
+                              SQL[1] := 'where refunddate>=' + #39 + gs_From + #39 + 'and refunddate<=' + #39 + gs_to + #39;
+                              // sql[2]:='order by billno';
+                             // SQL.SaveToFile('C:\11abc.txt');
+                              Open;
+                              First;
+                              While Not EOF Do
+                              Begin
+                                   Table_TaxSummaryReport.Append;
+                                   Table_TaxSummaryReport.FieldBYName('PayType').AsString := 'REFUND';
+                                   Table_TaxSummaryReport.FieldBYName('BillDate').AsString := Query_RefundSummary1.FieldBYName('Refunddate').AsString;
+                                   Table_TaxSummaryReport.FieldBYName('StartBillNo').AsString := Query_RefundSummary1.FieldBYName('StartBillNo').AsString;
+                                   Table_TaxSummaryReport.FieldBYName('EndBillNo').AsString := Query_RefundSummary1.FieldBYName('EndBillNo').AsString;
+                                   Table_TaxSummaryReport.FieldBYName('Gross').AsFloat := Query_RefundSummary1.FieldBYName('Gross').AsFloat;
+                                   Table_TaxSummaryReport.FieldBYName('Discount').AsFloat := Query_RefundSummary1.FieldBYName('Discount').AsFloat;
+                                   Table_TaxSummaryReport.FieldBYName('SubTotal').AsFloat := Query_RefundSummary1.FieldBYName('SubTotal').AsFloat;
+                                   Table_TaxSummaryReport.FieldBYName('TaxableTotal').AsFloat := Query_RefundSummary1.FieldBYName('Taxable').AsFloat;
+                                   Table_TaxSummaryReport.FieldBYName('NonTaxableTotal').AsFloat := Query_RefundSummary1.FieldBYName('NonTaxable').AsFloat;
+                                   Table_TaxSummaryReport.FieldBYName('5%HST').AsFloat := Query_RefundSummary1.FieldBYName('HST').AsFloat;
+                                   Table_TaxSummaryReport.FieldBYName('NetAmount').AsFloat := Query_RefundSummary1.FieldBYName('NetTotal').AsFloat;
+                                   Table_TaxSummaryReport.Post;
+                                   Table_TaxSummaryReport.Next;
+                                   Query_RefundSummary1.Next;
+                              End;
+                         End;
+
+
+
+                         With Query_Master Do
+                         Begin
+                              Close;
+                              DatabaseName := gs_TempPath;
+                              Open;
+                         End;
+
+                         With Query_Detail Do
+                         begin
+                              Close;
+                              DatabaseName := gs_TempPath;
+                              Open;
+                         End;
+
+
+
+
+                         ls_ReportTitle := 'HEALTH SERVICE TAX REPORT --> SUMMARY';
+
+                         CRSno := 0;
+                         CSSno := 0;
+                         RFSno := 0;
+
+                         If (DateEditX_FromDate.SystemOfDate = 0) and (DateEditX_ToDate.SystemOfDate = 0) Then
+                         Begin
+                              QRLabelFrom.Caption := DateEditX_FromDate.VSDateAsText + ' BS(' + DateEditX_FromDate.ADDateAsText + ' AD)';
+                              QRLabelTo.Caption := DateEditX_ToDate.VSDateAsText + ' BS(' + DateEditX_ToDate.ADDateAsText + ' AD)';
+                         End
+                         Else If (DateEditX_FromDate.SystemOfDate = 1) and (DateEditX_ToDate.SystemOfDate = 1) Then
+                         Begin
+                              QRLabelFrom.Caption := DateEditX_FromDate.ADDateAsText + ' AD(' + DateEditX_FromDate.VSDateAsText + ' BS)';
+                              QRLabelTo.Caption := DateEditX_ToDate.ADDateAsText + ' AD(' + DateEditX_ToDate.VSDateAsText + ' BS)';
+                         End;
+                         QRLabelToday.Caption := serverdate.TodaysDate;
+
+                         QRLabelReportTitle.Caption := ls_ReportTitle;
+                         Form_Medicare_GovtSvrTaxReportSummary.QuickRep1.Preview;
+
+                         Query_Detail.Close;
+                         Query_Master.Close;
+                    finally
+                         QuickRep1.Free;
+                    end;
+               End;
+          finally
+               Form_Medicare_GovtSvrTaxReportSummary.Free;
+          end;
+     End;
+end;
+
+end.

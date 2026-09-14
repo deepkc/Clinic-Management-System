@@ -1,0 +1,5 @@
+select row_number() over(order by billno)sn,refunddate,billno,refundtime,refundby,servicetype,referaldoc,patientid,patientname,gross,discount,subtotal,hst,nettotal from VW_SERVICEREFUNDDETAIL SD
+where 39=39
+and 39=39
+and 39=39
+order by sn

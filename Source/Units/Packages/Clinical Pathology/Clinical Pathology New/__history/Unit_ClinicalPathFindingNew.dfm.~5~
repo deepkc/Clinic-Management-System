@@ -1,0 +1,1385 @@
+object Frame_ClinicalPathFindingNew: TFrame_ClinicalPathFindingNew
+  Left = 0
+  Top = 0
+  Width = 1211
+  Height = 614
+  TabOrder = 0
+  object Panel2: TPanel
+    Left = 0
+    Top = 34
+    Width = 1211
+    Height = 120
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 1
+    object Label14: TLabel
+      Left = 8
+      Top = 28
+      Width = 27
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Name'
+    end
+    object lbl_Name: TLabel
+      Left = 79
+      Top = 28
+      Width = 72
+      Height = 13
+      Caption = '########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label18: TLabel
+      Left = 880
+      Top = 29
+      Width = 39
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Doctor :'
+      Visible = False
+    end
+    object SpeedButton2: TSpeedButton
+      Left = 988
+      Top = 46
+      Width = 87
+      Height = 22
+      Caption = 'Change Date'
+      Visible = False
+    end
+    object Label1: TLabel
+      Left = 8
+      Top = 44
+      Width = 65
+      Height = 13
+      Caption = 'Hospital No. :'
+    end
+    object Lbl_Hosno: TLabel
+      Left = 79
+      Top = 44
+      Width = 72
+      Height = 13
+      Caption = '########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 8
+      Top = 60
+      Width = 65
+      Height = 13
+      Caption = 'Age/Gender :'
+    end
+    object Lbl_AgeGender: TLabel
+      Left = 79
+      Top = 60
+      Width = 72
+      Height = 13
+      Caption = '########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label5: TLabel
+      Left = 853
+      Top = 49
+      Width = 66
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Report Date :'
+      Visible = False
+    end
+    object Label6: TLabel
+      Left = 562
+      Top = 28
+      Width = 118
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Sample Rec. Date/Time :'
+    end
+    object Label2: TLabel
+      Left = 8
+      Top = 76
+      Width = 64
+      Height = 13
+      Caption = 'Sample No.  :'
+    end
+    object lbl_SampleNo: TLabel
+      Left = 79
+      Top = 76
+      Width = 72
+      Height = 13
+      Caption = '########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label4: TLabel
+      Left = 69
+      Top = 28
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label7: TLabel
+      Left = 69
+      Top = 42
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object SpeedButton17: TSpeedButton
+      Left = 5
+      Top = 92
+      Width = 70
+      Height = 16
+      Caption = 'Remarks      :'
+      Flat = True
+      OnMouseEnter = SpeedButton17MouseEnter
+      OnMouseLeave = SpeedButton17MouseLeave
+    end
+    object Label8: TLabel
+      Left = 631
+      Top = 50
+      Width = 48
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Ref. No. :'
+    end
+    object Label9: TLabel
+      Left = 625
+      Top = 72
+      Width = 54
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'CPT Code :'
+    end
+    object SpeedButton5: TSpeedButton
+      Left = 456
+      Top = 80
+      Width = 102
+      Height = 34
+      Caption = 'Footnote'
+      OnClick = SpeedButton5Click
+    end
+    object DBLCB_RefDoc: TDBLookupComboBox
+      Left = 922
+      Top = 24
+      Width = 152
+      Height = 21
+      KeyField = 'Docid'
+      ListField = 'DocName'
+      ListSource = DS_RefDoccode
+      TabOrder = 0
+      Visible = False
+      OnKeyDown = DBLCB_RefDocKeyDown
+    end
+    object Dex_RptDate: TDateEditX
+      Left = 922
+      Top = 46
+      Width = 0
+      Height = 21
+      TabOrder = 1
+      ControlData = {
+        545046300A5444617465456469745200044C656674039A0303546F70022E0577
+        6964746802000B4461746541442E5965617203DB070C4461746541442E4D6F6E
+        7468020C0A4461746541442E44617902020B4461746556532E59656172031408
+        0C4461746556532E4D6F6E746802080A4461746556532E446179021007456E61
+        626C6564080000}
+    end
+    object Dex_SampleDate: TDateEditX
+      Left = 682
+      Top = 23
+      Width = 65
+      Height = 21
+      TabOrder = 2
+      ControlData = {
+        545046300A5444617465456469745200044C65667403AA0203546F7002170B44
+        61746541442E5965617203DB070C4461746541442E4D6F6E7468020C0A446174
+        6541442E44617902020B4461746556532E596561720314080C4461746556532E
+        4D6F6E746802080A4461746556532E44617902100000}
+    end
+    object Me_Time: TMaskEdit
+      Left = 749
+      Top = 23
+      Width = 85
+      Height = 21
+      EditMask = '!90:00;1;_'
+      MaxLength = 5
+      TabOrder = 3
+      Text = '  :  '
+    end
+    object Clb_ReportFooter: TCheckListBox
+      Left = 303
+      Top = 26
+      Width = 147
+      Height = 88
+      ItemHeight = 13
+      TabOrder = 4
+    end
+    object Edit_RefNo: TEdit
+      Left = 682
+      Top = 47
+      Width = 152
+      Height = 21
+      TabOrder = 5
+    end
+    object Edit_CptCode: TEdit
+      Left = 682
+      Top = 69
+      Width = 152
+      Height = 21
+      TabOrder = 6
+    end
+  end
+  object Memo_Remarks: TMemo
+    Left = 716
+    Top = 386
+    Width = 330
+    Height = 133
+    Color = 13565951
+    TabOrder = 2
+    Visible = False
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1211
+    Height = 34
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 0
+    object BB_Save: TBitBtn
+      Left = 0
+      Top = 0
+      Width = 100
+      Height = 34
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alLeft
+      Caption = '&Save'
+      DoubleBuffered = True
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        1800000000000003000001000000010000000000000000000000000000975233
+        9A55359954349652339652339652339652339652339652339652339A55359B55
+        359853349451320000009451369D5534BD5A22BB5A24B75926C7B0A4C8B5ACC8
+        B5ACC8B5ACC8B5ACC8B5ACC9B5ABBF6532B759269B55358040408F5030A05633
+        C46127C46127C46127D3CDCBD4D4D5D4D4D5D4D4D5CB9373C7784AD3CFCDC66F
+        3BC461279D56348F50308F5030A15734CB672CCB672CCB672CDED8D5DFDFE0DF
+        DFE0DFDFE0D18A61CB672CDED8D5CD7541CB672C9E56348F50308F5030A15834
+        D26E30D26E30D26E30EAE5E1ECECECECECECECECECDA9367D26E30EAE5E1D57D
+        46D26E309E56358F50308F5030A25835D67233D67233D67233F3E7E0F7F7F7F7
+        F7F7F7F7F7F2E4DBF0DCD0F7F5F5DA824AD672339E57358F50308F5030A35935
+        DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB76
+        36DB76369F57358F50308F5030A35935DF7A39F2ECE8FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFDDCBBFDF7A399F57358F50308F5030A45A36
+        E4803EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE7DB
+        D3E4803E9F58368F50308F5030A45B37E98746FCFCFCFCFCFCFCFCFCFCFCFCFC
+        FCFCFCFCFCFCFCFCFCFCFCFCFCFCE5D9D1E98746A058368F50308F5030A55C38
+        EE9150F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3DED3
+        CCEE9150A059378F5030945231A55D3AF49C5DE5E5E5E5E5E5E5E5E5E5E5E5E5
+        E5E5E5E5E5E5E5E5E5E5E5E5E5E5DAD4CFF49C5DA059378F5030945231A65F3B
+        F8A668D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3CCC7
+        C3F8A668A05A389955339F5535A45D3BF9AC6FD0CECDD3D3D3D3D3D3D3D3D3D3
+        D3D3D3D3D3D3D3D3D3D3D3D3D3D3CCC7C4F9AC6F9E58378E55390000009C5534
+        9B55359B55359B55359B55359B55359B55359B55359B55359B55359B55359B55
+        359B55359C553400000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000}
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BB_SaveClick
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 154
+    Width = 1211
+    Height = 474
+    Align = alTop
+    TabOrder = 3
+    DesignSize = (
+      1211
+      474)
+    object Label13: TLabel
+      Left = 101
+      Top = 36
+      Width = 60
+      Height = 13
+      Caption = 'Report Type'
+    end
+    object Memo: TMemo
+      Left = 771
+      Top = 15
+      Width = 54
+      Height = 22
+      Lines.Strings = (
+        'Memo1')
+      TabOrder = 0
+      Visible = False
+    end
+    object ToolBar1: TToolBar
+      AlignWithMargins = True
+      Left = 4
+      Top = 4
+      Width = 1203
+      Height = 21
+      AutoSize = True
+      ButtonHeight = 19
+      ButtonWidth = 45
+      Caption = 'ToolBar1'
+      DrawingStyle = dsGradient
+      EdgeInner = esNone
+      Flat = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      List = True
+      ParentFont = False
+      ShowCaptions = True
+      TabOrder = 1
+      Wrapable = False
+      object ToolButton1: TToolButton
+        Left = 0
+        Top = 0
+        AutoSize = True
+        Caption = 'B'
+        ImageIndex = 0
+        Style = tbsCheck
+        OnClick = ToolButton1Click
+      end
+      object ToolButton6: TToolButton
+        Left = 22
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton6'
+        ImageIndex = 4
+        Style = tbsSeparator
+      end
+      object ToolButton2: TToolButton
+        Left = 30
+        Top = 0
+        AutoSize = True
+        Caption = 'I'
+        ImageIndex = 1
+        Style = tbsCheck
+        OnClick = ToolButton2Click
+      end
+      object ToolButton4: TToolButton
+        Left = 50
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton4'
+        ImageIndex = 3
+        Style = tbsSeparator
+      end
+      object ToolButton3: TToolButton
+        Left = 58
+        Top = 0
+        AutoSize = True
+        Caption = 'U'
+        ImageIndex = 4
+        Style = tbsCheck
+        OnClick = ToolButton3Click
+      end
+      object ToolButton5: TToolButton
+        Left = 81
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton5'
+        ImageIndex = 3
+        Style = tbsSeparator
+      end
+      object ToolButton7: TToolButton
+        Left = 89
+        Top = 0
+        AutoSize = True
+        Caption = 'ST'
+        ImageIndex = 3
+        Style = tbsCheck
+        OnClick = ToolButton7Click
+      end
+      object ToolButton12: TToolButton
+        Left = 117
+        Top = 0
+        Width = 3
+        Caption = 'ToolButton12'
+        ImageIndex = 6
+        Style = tbsSeparator
+      end
+      object ToolButton9: TToolButton
+        Left = 120
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton9'
+        ImageIndex = 5
+        Style = tbsSeparator
+      end
+      object Tbtn_Font: TToolButton
+        Left = 128
+        Top = 0
+        AutoSize = True
+        Caption = 'Font'
+        ImageIndex = 4
+        Style = tbsCheck
+        OnClick = Tbtn_FontClick
+      end
+      object ToolButton16: TToolButton
+        Left = 166
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton16'
+        ImageIndex = 8
+        Style = tbsSeparator
+      end
+      object ToolButton10: TToolButton
+        Left = 174
+        Top = 0
+        AutoSize = True
+        Caption = 'Left'
+        ImageIndex = 9
+        OnClick = ToolButton10Click
+      end
+      object ToolButton8: TToolButton
+        Left = 209
+        Top = 0
+        AutoSize = True
+        Caption = 'Center'
+        ImageIndex = 8
+        OnClick = ToolButton8Click
+      end
+      object ToolButton11: TToolButton
+        Left = 258
+        Top = 0
+        AutoSize = True
+        Caption = 'Right'
+        ImageIndex = 10
+        OnClick = ToolButton11Click
+      end
+      object ComboBox2: TComboBox
+        Left = 299
+        Top = 0
+        Width = 120
+        Height = 21
+        TabOrder = 2
+        OnChange = ComboBox2Change
+      end
+      object ComboBox1: TComboBox
+        Left = 419
+        Top = 0
+        Width = 39
+        Height = 21
+        TabOrder = 0
+        OnChange = ComboBox1Change
+      end
+      object ButtonColor1: TButtonColor
+        Left = 458
+        Top = 0
+        Height = 19
+        Caption = 'Color'
+        TabOrder = 1
+      end
+    end
+    object PanelTextEditAlternate: TPanel
+      Left = 0
+      Top = 55
+      Width = 994
+      Height = 343
+      BevelOuter = bvNone
+      TabOrder = 2
+      object LabelTitleThree: TLabel
+        Left = 98
+        Top = 40
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleTwo: TLabel
+        Left = 98
+        Top = 21
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleOne: TLabel
+        Left = 98
+        Top = 2
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleFour: TLabel
+        Left = 97
+        Top = 59
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleSeven: TLabel
+        Left = 98
+        Top = 120
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleSix: TLabel
+        Left = 98
+        Top = 101
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleFive: TLabel
+        Left = 98
+        Top = 80
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleEight: TLabel
+        Left = 98
+        Top = 141
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleEleven: TLabel
+        Left = 98
+        Top = 204
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleTen: TLabel
+        Left = 98
+        Top = 182
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleNine: TLabel
+        Left = 98
+        Top = 161
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleTwelve: TLabel
+        Left = 98
+        Top = 224
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleFifteen: TLabel
+        Left = 98
+        Top = 285
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleFourteen: TLabel
+        Left = 98
+        Top = 265
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleThirteen: TLabel
+        Left = 98
+        Top = 244
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object LabelTitleSixteen: TLabel
+        Left = 98
+        Top = 307
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object Label19: TLabel
+        Left = 20
+        Top = 387
+        Width = 75
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Text Preview'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object Label20: TLabel
+        Left = 690
+        Top = -1
+        Width = 82
+        Height = 13
+        Caption = 'Clinical Diagnosis'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label21: TLabel
+        Left = 690
+        Top = 35
+        Width = 112
+        Height = 13
+        Caption = 'Examination Requested'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object SpeedButton10: TSpeedButton
+        Left = 690
+        Top = 74
+        Width = 124
+        Height = 25
+        Caption = 'Report Analysis'
+        OnClick = SpeedButton10Click
+      end
+      object LabelTitleSeventeen: TLabel
+        Left = 98
+        Top = 327
+        Width = 63
+        Height = 13
+        Alignment = taRightJustify
+        BiDiMode = bdLeftToRight
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+        Visible = False
+      end
+      object EditClinicalDiagnosis: TEdit
+        Left = 690
+        Top = 14
+        Width = 176
+        Height = 21
+        MaxLength = 100
+        TabOrder = 0
+      end
+      object EditExaminationRequested: TEdit
+        Left = 690
+        Top = 50
+        Width = 176
+        Height = 21
+        MaxLength = 100
+        TabOrder = 1
+      end
+      object MemoResultOne: TRichEdit
+        Left = 164
+        Top = -1
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 2
+        OnChange = MemoResultOneChange
+        OnClick = MemoResultOneClick
+        OnEnter = MemoResultOneEnter
+        OnExit = MemoResultOneExit
+        OnSelectionChange = MemoResultOneSelectionChange
+      end
+      object MemoResultTwo: TRichEdit
+        Left = 164
+        Top = 19
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 3
+        OnChange = MemoResultTwoChange
+        OnClick = MemoResultTwoClick
+        OnEnter = MemoResultTwoEnter
+        OnExit = MemoResultTwoExit
+        OnSelectionChange = MemoResultTwoSelectionChange
+      end
+      object MemoResultThree: TRichEdit
+        Left = 164
+        Top = 40
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 4
+        OnChange = MemoResultThreeChange
+        OnClick = MemoResultThreeClick
+        OnEnter = MemoResultThreeEnter
+        OnExit = MemoResultThreeExit
+        OnSelectionChange = MemoResultThreeSelectionChange
+      end
+      object MemoResultFour: TRichEdit
+        Left = 164
+        Top = 59
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 5
+        OnChange = MemoResultFourChange
+        OnClick = MemoResultFourClick
+        OnEnter = MemoResultFourEnter
+        OnExit = MemoResultFourExit
+        OnSelectionChange = MemoResultFourSelectionChange
+      end
+      object MemoResultFive: TRichEdit
+        Left = 164
+        Top = 77
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 6
+        OnChange = MemoResultFiveChange
+        OnClick = MemoResultFiveClick
+        OnEnter = MemoResultFiveEnter
+        OnExit = MemoResultFiveExit
+        OnSelectionChange = MemoResultFiveSelectionChange
+      end
+      object MemoResultSix: TRichEdit
+        Left = 164
+        Top = 98
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 7
+        OnChange = MemoResultSixChange
+        OnClick = MemoResultSixClick
+        OnEnter = MemoResultSixEnter
+        OnExit = MemoResultSixExit
+        OnSelectionChange = MemoResultSixSelectionChange
+      end
+      object MemoResultSeven: TRichEdit
+        Left = 164
+        Top = 119
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 8
+        OnChange = MemoResultSevenChange
+        OnClick = MemoResultSevenClick
+        OnEnter = MemoResultSevenEnter
+        OnExit = MemoResultSevenExit
+        OnSelectionChange = MemoResultSevenSelectionChange
+      end
+      object MemoResultEight: TRichEdit
+        Left = 164
+        Top = 140
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 9
+        OnChange = MemoResultEightChange
+        OnClick = MemoResultEightClick
+        OnEnter = MemoResultEightEnter
+        OnExit = MemoResultEightExit
+        OnSelectionChange = MemoResultEightSelectionChange
+      end
+      object MemoResultNine: TRichEdit
+        Left = 164
+        Top = 161
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 10
+        OnChange = MemoResultNineChange
+        OnClick = MemoResultNineClick
+        OnEnter = MemoResultNineEnter
+        OnExit = MemoResultNineExit
+        OnSelectionChange = MemoResultNineSelectionChange
+      end
+      object MemoResultTen: TRichEdit
+        Left = 164
+        Top = 182
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 11
+        OnChange = MemoResultTenChange
+        OnClick = MemoResultTenClick
+        OnEnter = MemoResultTenEnter
+        OnExit = MemoResultTenExit
+        OnSelectionChange = MemoResultTenSelectionChange
+      end
+      object MemoResultEleven: TRichEdit
+        Left = 164
+        Top = 203
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 12
+        OnChange = MemoResultElevenChange
+        OnClick = MemoResultElevenClick
+        OnEnter = MemoResultElevenEnter
+        OnExit = MemoResultElevenExit
+        OnSelectionChange = MemoResultElevenSelectionChange
+      end
+      object MemoResultTwelve: TRichEdit
+        Left = 164
+        Top = 224
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 13
+        OnChange = MemoResultTwelveChange
+        OnClick = MemoResultTwelveClick
+        OnEnter = MemoResultTwelveEnter
+        OnExit = MemoResultTwelveExit
+        OnSelectionChange = MemoResultTwelveSelectionChange
+      end
+      object MemoResultThirteen: TRichEdit
+        Left = 164
+        Top = 245
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 14
+        OnChange = MemoResultThirteenChange
+        OnClick = MemoResultThirteenClick
+        OnEnter = MemoResultThirteenEnter
+        OnExit = MemoResultThirteenExit
+        OnSelectionChange = MemoResultThirteenSelectionChange
+      end
+      object MemoResultFourteen: TRichEdit
+        Left = 164
+        Top = 266
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 15
+        OnChange = MemoResultFourteenChange
+        OnClick = MemoResultFourteenClick
+        OnEnter = MemoResultFourteenEnter
+        OnExit = MemoResultFourteenExit
+        OnSelectionChange = MemoResultFourteenSelectionChange
+      end
+      object MemoResultFifteen: TRichEdit
+        Left = 164
+        Top = 285
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 16
+        OnChange = MemoResultFifteenChange
+        OnClick = MemoResultFifteenClick
+        OnEnter = MemoResultFifteenEnter
+        OnExit = MemoResultFifteenExit
+        OnSelectionChange = MemoResultFifteenSelectionChange
+      end
+      object MemoResultSixteen: TRichEdit
+        Left = 164
+        Top = 305
+        Width = 500
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 17
+        OnChange = MemoResultSixteenChange
+        OnClick = MemoResultSixteenClick
+        OnEnter = MemoResultSixteenEnter
+        OnExit = MemoResultSixteenExit
+        OnSelectionChange = MemoResultSixteenSelectionChange
+      end
+      object MemoResultSeventeen: TRichEdit
+        Left = 164
+        Top = 326
+        Width = 500
+        Height = 24
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 18
+        OnChange = MemoResultSeventeenChange
+        OnClick = MemoResultSeventeenClick
+        OnEnter = MemoResultSeventeenEnter
+        OnExit = MemoResultSeventeenExit
+        OnSelectionChange = MemoResultSeventeenSelectionChange
+      end
+    end
+    object PanelImpression: TPanel
+      Left = 0
+      Top = 399
+      Width = 1211
+      Height = 98
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 3
+      object SpeedButton6: TSpeedButton
+        Left = 752
+        Top = 14
+        Width = 98
+        Height = 21
+        Caption = 'Load Text(F12)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        OnClick = SpeedButton6Click
+      end
+      object SpeedButton7: TSpeedButton
+        Left = 696
+        Top = 15
+        Width = 52
+        Height = 20
+        Caption = 'Show'
+      end
+      object CBShowNote: TCheckBox
+        Left = 697
+        Top = -2
+        Width = 137
+        Height = 17
+        Caption = 'Display On Report'
+        TabOrder = 0
+      end
+      object Memo2: TMemo
+        Left = 163
+        Top = 3
+        Width = 501
+        Height = 61
+        Lines.Strings = (
+          '')
+        ScrollBars = ssVertical
+        TabOrder = 1
+      end
+      object MemoRemarks: TMemo
+        Left = 163
+        Top = 33
+        Width = 673
+        Height = 37
+        TabOrder = 2
+        Visible = False
+      end
+      object EditImpression: TEdit
+        Left = 101
+        Top = 70
+        Width = 662
+        Height = 21
+        TabOrder = 3
+        Visible = False
+      end
+    end
+    object DBLC_TestNameID: TDBLookupComboBox
+      Left = 164
+      Top = 33
+      Width = 293
+      Height = 21
+      DropDownWidth = 180
+      KeyField = 'EDITFINDINGID'
+      ListField = 'REPORTTYPE'
+      ListSource = DS_TestNameID
+      TabOrder = 4
+      OnClick = DBLC_TestNameIDClick
+    end
+  end
+  object DS_RefDoccode: TDataSource
+    DataSet = Query_RefDoccode
+    Left = 888
+    Top = 248
+  end
+  object Query_RefDoccode: TOraQuery
+    SQL.Strings = (
+      
+        'select doccode,TRIM(REPLACE(REPLACE(REPLACE((F_name||'#39' '#39'||L_name' +
+        '),'#39'PROF'#39'),'#39'.'#39'),'#39'(MRS)'#39'))/*||'#39' - '#39'||Nvl(referralcount,0)*/DOCNAME' +
+        ' from doctor'
+      'order by Nvl(referralcount,0) desc')
+    Left = 904
+    Top = 352
+  end
+  object Ds_ReportType: TDataSource
+    DataSet = Query_ReportType
+    Left = 880
+    Top = 192
+  end
+  object Query_ReportType: TOraQuery
+    SQL.Strings = (
+      'select * from clinical_reporttype'
+      'where testnameid=:id')
+    Left = 840
+    Top = 192
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'id'
+      end>
+  end
+  object Query_Listing: TOraQuery
+    SQL.Strings = (
+      
+        'select ts.*,td.* from clinical_testSetup ts,clinical_testSetupDe' +
+        'tail td'
+      'where TS.CLINICAL_TESTSETUPID=TD.CLINICAL_TESTSETUPID'
+      'and 1=1')
+    Left = 816
+    Top = 240
+  end
+  object DS_Listing: TDataSource
+    DataSet = Query_List
+    Left = 744
+    Top = 424
+  end
+  object FontDialog1: TFontDialog
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    Left = 376
+  end
+  object ColorDialog1: TColorDialog
+    Left = 408
+  end
+  object Table_ClinicalFinding: TTable
+    Left = 352
+  end
+  object Query_List: TQuery
+    SQL.Strings = (
+      'Select * from ClinicalFindings')
+    Left = 864
+    Top = 280
+  end
+  object DS_TestNameID: TDataSource
+    DataSet = Query_TestNameId
+    Left = 510
+    Top = 1
+  end
+  object Query_TestNameId: TOraQuery
+    SQL.Strings = (
+      'Select * from TestEditFinding_NEW'
+      'Where TestNameId=:TNID'
+      'Order BY DefFind Desc')
+    Left = 552
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'TNID'
+      end>
+  end
+  object QryANid: TOraQuery
+    SQL.Strings = (
+      
+        'select doccode,TRIM(REPLACE(REPLACE(REPLACE(REPLACE((docname),'#39'D' +
+        'R'#39'),'#39'PROF'#39'),'#39'.'#39'),'#39'(MRS)'#39'))/*||'#39' - '#39'||Nvl(referralcount,0)*/DOCNA' +
+        'ME from doctor'
+      'order by Nvl(referralcount,0) desc')
+    Left = 880
+    Top = 432
+  end
+  object Query_Process: TOraQuery
+    SQL.Strings = (
+      
+        'select doccode,TRIM(REPLACE(REPLACE(REPLACE((F_name||'#39' '#39'||L_name' +
+        '),'#39'PROF'#39'),'#39'.'#39'),'#39'(MRS)'#39'))/*||'#39' - '#39'||Nvl(referralcount,0)*/DOCNAME' +
+        ' from doctor'
+      'order by Nvl(referralcount,0) desc')
+    Left = 824
+    Top = 328
+  end
+  object QuerySpecial: TOraQuery
+    SQL.Strings = (
+      
+        'select ts.*,td.* from clinical_testSetup ts,clinical_testSetupDe' +
+        'tail td'
+      'where TS.CLINICAL_TESTSETUPID=TD.CLINICAL_TESTSETUPID'
+      'and 1=1')
+    Left = 1016
+    Top = 272
+  end
+  object Query_Data: TOraQuery
+    Session = DM_Hospital.DB
+    SQL.Strings = (
+      'SELECT SC.*'
+      
+        ',(Select Footerid from footer where testnameid=sc.testnameid and' +
+        ' isactive='#39'Y'#39' and rownum=1)footerid'
+      
+        ',(Select DisplayOrder from testname where testnameid=sc.testname' +
+        'id)dispalyorder'
+      'FROM VW_SAMPLE_COLLECTED SC,DEPARTMENT D'
+      'where sc.depid=d.depid(+)'
+      'And 99=99'
+      'and 99=99'
+      'And 99=99'
+      'and 99=99'
+      'and 99=99'
+      'and 1=1 '
+      'ORDER BY D.Deporder,TestDate,TestTime,dispalyorder')
+    ObjectView = True
+    Left = 1070
+    Top = 202
+  end
+end

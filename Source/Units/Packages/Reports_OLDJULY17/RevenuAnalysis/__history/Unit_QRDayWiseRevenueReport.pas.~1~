@@ -1,0 +1,319 @@
+unit Unit_QRDayWiseRevenueReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Qrctrls, QuickRpt, ExtCtrls, Db, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Grids, DBGrids, Fxn, DM;
+
+type
+  TForm_QRDayWiseRevenueReport = class(TForm)
+    QuickRep1: TQuickRep;
+    QRSubDetail1: TQRSubDetail;
+    SummaryBand2: TQRBand;
+    QRLabel11: TQRLabel;
+    QRExpr3: TQRExpr;
+    QRDBText1: TQRDBText;
+    QRLabel1: TQRLabel;
+    QueryDeposit: TOraQuery;
+    TitleBand1: TQRBand;
+    QRLabelTo: TQRLabel;
+    QRLabel4: TQRLabel;
+    QRLabelFrom: TQRLabel;                                                      
+    QRLabel7: TQRLabel;
+    QRLabel20: TQRLabel;
+    QuickRep3: TQuickRep;
+    QRBand5: TQRBand;
+    QRLabel35: TQRLabel;
+    QRLabel36: TQRLabel;
+    QRLabel37: TQRLabel;
+    QRLabel38: TQRLabel;
+    QRLabel39: TQRLabel;
+    QRLabel40: TQRLabel;
+    QRLabel41: TQRLabel;
+    QRLabel42: TQRLabel;
+    QRLabel43: TQRLabel;
+    QRBand6: TQRBand;
+    QRExpr11: TQRExpr;
+    QRExpr12: TQRExpr;
+    QRLabel44: TQRLabel;
+    QRExpr13: TQRExpr;
+    QRBand7: TQRBand;
+    QRLabel45: TQRLabel;
+    QRLabel46: TQRLabel;
+    QRSubDetail3: TQRSubDetail;
+    QRDBText12: TQRDBText;
+    QRDBText13: TQRDBText;
+    QRBand8: TQRBand;
+    QRLabel47: TQRLabel;
+    QRExpr14: TQRExpr;
+    QRLabel48: TQRLabel;
+    QRDBText14: TQRDBText;
+    QRLabel49: TQRLabel;
+    QRSysData3: TQRSysData;
+    QRLabel50: TQRLabel;
+    QRLabel51: TQRLabel;
+    QRDBText15: TQRDBText;
+    QRDBText16: TQRDBText;
+    QRLabel52: TQRLabel;
+    QRExpr15: TQRExpr;
+    QRLabel53: TQRLabel;
+    QRDBText17: TQRDBText;
+    QRGroup3: TQRGroup;
+    QRLabel8: TQRLabel;
+    QRLabel_HosSloganTitle: TQRLabel;
+    QRDBText21: TQRDBText;
+    QRLabel_HosAddress: TQRLabel;
+    QRDBText3: TQRDBText;
+    QRDBText7: TQRDBText;
+    Query_RevenueCollection: TOraQuery;
+    QRDBText2: TQRDBText;
+    QRDBText8: TQRDBText;
+    QRLabel24: TQRLabel;
+    QRLabel25: TQRLabel;
+    QRExpr23: TQRExpr;
+    QRExpr24: TQRExpr;
+    QRExpr26: TQRExpr;
+    QRLabel26: TQRLabel;
+    QRLabel27: TQRLabel;
+    QRLabelSno: TQRLabel;
+    QRLabel31: TQRLabel;
+    QRExpr27: TQRExpr;
+    QRLabel32: TQRLabel;
+    Query_CommunityRefund: TOraQuery;
+    Query_CommunityRefundREFUNDTOTAL: TFloatField;
+    PageFooterBand1: TQRBand;
+    QRLabel13: TQRLabel;
+    QRSysData1: TQRSysData;
+    QRDBText4: TQRDBText;
+    QRLabel30: TQRLabel;
+    QRLabel6: TQRLabel;
+    QRLabel58: TQRLabel;
+    QRLabel17: TQRLabel;
+    QRLabel3: TQRLabel;
+    QRLabel28: TQRLabel;
+    QRLabel19: TQRLabel;
+    QRLabel_SvrTaxCap: TQRLabel;
+    QRLabel21: TQRLabel;
+    QRLabel18: TQRLabel;
+    QRLabel_RefundTaxCap: TQRLabel;
+    QRLabel34: TQRLabel;
+    QRLabel15: TQRLabel;
+    QRShape1: TQRShape;
+    QRShape2: TQRShape;
+    QRLabel2: TQRLabel;
+    QRLabel55: TQRLabel;
+    QRLabel57: TQRLabel;
+    Query_TotalSummary: TOraQuery;
+    QRExpr31: TQRExpr;
+    QRExpr32: TQRExpr;
+    QRBand1: TQRBand;
+    QRLabel56: TQRLabel;
+    QRExpr2: TQRExpr;
+    QRExpr4: TQRExpr;
+    QRExpr17: TQRExpr;
+    QRExpr6: TQRExpr;
+    QRExpr5: TQRExpr;
+    QRExpr20: TQRExpr;
+    QRExpr29: TQRExpr;
+    QRExpr21: TQRExpr;
+    QRExpr19: TQRExpr;
+    QRExpr9: TQRExpr;
+    QRShape3: TQRShape;
+    QRLabel5: TQRLabel;
+    QRLabel12: TQRLabel;
+    QRExpr1: TQRExpr;
+    QRLabel10: TQRLabel;
+    QRExpr7: TQRExpr;
+    QRLabel23: TQRLabel;
+    QRExpr22: TQRExpr;
+    QRExpr25: TQRExpr;
+    QRLabel59: TQRLabel;
+    QRLabel60: TQRLabel;
+    QRExpr30: TQRExpr;
+    QRLabel61: TQRLabel;
+    QRExpr33: TQRExpr;
+    QRLabel62: TQRLabel;
+    Query_RevenueCollectionCASHTOTAL: TFloatField;
+    Query_RevenueCollectionCREDITTOTAL: TFloatField;
+    Query_RevenueCollectionTOTAL: TFloatField;
+    Query_RevenueCollectionDISCOUNT: TFloatField;
+    Query_RevenueCollectionCASHSVRTAX: TFloatField;
+    Query_RevenueCollectionCREDITSVRTAX: TFloatField;
+    Query_RevenueCollectionREFUNDTOTAL: TFloatField;
+    Query_RevenueCollectionREFUNDDISCOUNT: TFloatField;
+    Query_RevenueCollectionREFUNDSVRTAX: TFloatField;
+    Query_RevenueCollectionNETTOTAL: TFloatField;
+    QRDBText5: TQRDBText;
+    QRDBText6: TQRDBText;
+    QRDBText9: TQRDBText;
+    QRDBText10: TQRDBText;
+    QRLabel9: TQRLabel;
+    QRLabel_PrintDate: TQRLabel;
+    Query_RevenueCollectionBILLDATE: TStringField;
+    procedure QRLabel8Print(sender: TObject; var Value: String);
+    procedure QRLabel_HosSloganTitlePrint(sender: TObject; var Value: String);
+    procedure QRLabel_HosAddressPrint(sender: TObject; var Value: String);
+    procedure QRLabel16Print(sender: TObject; var Value: String);
+    procedure Query_RevenueCollectionAfterScroll(DataSet: TDataSet);
+    procedure Query_RevenueCollectionBeforeScroll(DataSet: TDataSet);
+    procedure QuickRep1EndPage(Sender: TCustomQuickRep);
+    procedure QuickRep1BeforePrint(Sender: TCustomQuickRep;
+      var PrintReport: Boolean);
+    procedure QRExpr23Print(sender: TObject; var Value: String);
+    procedure QRExpr24Print(sender: TObject; var Value: String);
+    procedure QRExpr31Print(sender: TObject; var Value: String);
+    procedure QRExpr32Print(sender: TObject; var Value: String);
+    procedure QRExpr30Print(sender: TObject; var Value: String);
+    procedure QRExpr33Print(sender: TObject; var Value: String);
+    procedure QRExpr27Print(sender: TObject; var Value: string);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+      pi_Sno:Integer;
+      Net_Amount:Double;
+      pf_CommunityRefund, pf_NetTotRev,pf_CSDiscount,pf_Deposit,pf_AdjDeposit:Double;
+      pf_NetCreditRefund : Double;
+    { Public declarations }
+  end;
+
+var
+  Form_QRDayWiseRevenueReport: TForm_QRDayWiseRevenueReport;
+
+implementation
+
+{$R *.DFM}
+
+procedure TForm_QRDayWiseRevenueReport.QRLabel8Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HospitalName;
+     if gs_TaxSystem='VAT' then
+     Begin
+          QRLabel_SvrTaxCap.Left:=685;
+          QRLabel_SvrTaxCap.Caption:='VAT';
+          QRLabel_RefundTaxCap.Caption:='RF VAT';
+     End
+     Else
+     Begin
+          QRLabel_SvrTaxCap.Left:=672;
+          QRLabel_SvrTaxCap.Caption:='SVR Tax';
+          QRLabel_RefundTaxCap.Caption:='RF SVR Tax';
+     End;
+end;
+
+procedure TForm_QRDayWiseRevenueReport.QRLabel_HosSloganTitlePrint(sender: TObject;
+  var Value: String);
+begin
+     value:=gs_HosSloganTitle;
+     if gs_HosSloganTitle='' then
+     Begin
+          QRLabel_HosAddress.BringToFront;
+          QRLabel_HosAddress.Top:=QRLabel_HosSloganTitle.Top;
+     End;
+end;
+
+procedure TForm_QRDayWiseRevenueReport.QRLabel_HosAddressPrint(sender: TObject; var Value: String);
+begin
+   Value:=gs_HospitalAddress;
+end;
+
+procedure TForm_QRDayWiseRevenueReport.QRLabel16Print(sender: TObject;
+  var Value: String);
+begin
+   Value:=gs_HospitalPhone;
+end;
+
+procedure TForm_QRDayWiseRevenueReport.Query_RevenueCollectionAfterScroll(
+  DataSet: TDataSet);
+begin
+   Inc(pi_Sno);
+end;
+
+procedure TForm_QRDayWiseRevenueReport.Query_RevenueCollectionBeforeScroll(
+  DataSet: TDataSet);
+begin
+   QRLabelSno.Caption:=IntToStr(pi_Sno);
+end;
+
+procedure TForm_QRDayWiseRevenueReport.QuickRep1EndPage(
+  Sender: TCustomQuickRep);
+begin
+//   pi_Sno:=1;
+end;
+
+procedure TForm_QRDayWiseRevenueReport.QuickRep1BeforePrint(
+  Sender: TCustomQuickRep; var PrintReport: Boolean);
+begin
+    pi_Sno:=1;
+    pf_NetTotRev:=0;
+    pf_CommunityRefund:=0;
+    pf_CSDiscount:=0;
+    pf_NetCreditRefund:=0;
+    pf_Deposit:=0;
+    pf_AdjDeposit:=0;
+end;
+
+procedure TForm_QRDayWiseRevenueReport.FormShow(Sender: TObject);
+begin
+     if gs_TaxSystem='VAT' then
+     Begin
+          QRLabel_SvrTaxCap.Caption:='VAT';
+          QRLabel_RefundTaxCap.Caption:='RF VAT';
+     End
+     Else
+     Begin
+          QRLabel_SvrTaxCap.Caption:='SVR Tax';
+          QRLabel_RefundTaxCap.Caption:='RF SVR Tax';
+     End;
+end;
+
+procedure TForm_QRDayWiseRevenueReport.QRExpr23Print(
+  sender: TObject; var Value: String);
+begin
+    pf_NetTotRev:=StrToFloat(Value);
+    Value:=FormatFloat('#,##0.00',pf_NetTotRev-pf_CommunityRefund);
+end;
+
+procedure TForm_QRDayWiseRevenueReport.QRExpr24Print(
+  sender: TObject; var Value: String);
+begin
+     pf_CSDiscount:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_CSDiscount);
+end;
+
+procedure TForm_QRDayWiseRevenueReport.QRExpr27Print(sender: TObject; var Value: string);
+begin
+     pf_CommunityRefund:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_CommunityRefund);
+end;
+
+procedure TForm_QRDayWiseRevenueReport.QRExpr31Print(
+  sender: TObject; var Value: String);
+begin
+     pf_NetCreditRefund:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_NetCreditRefund);
+end;
+
+procedure TForm_QRDayWiseRevenueReport.QRExpr32Print(
+  sender: TObject; var Value: String);
+begin
+    Value:=FormatFloat('#,##0.00',(pf_NetTotRev+pf_Deposit) - (pf_CommunityRefund+pf_NetCreditRefund+pf_CSDiscount+pf_AdjDeposit));
+end;
+
+procedure TForm_QRDayWiseRevenueReport.QRExpr30Print(
+  sender: TObject; var Value: String);
+begin
+     pf_Deposit:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_Deposit);
+end;
+
+procedure TForm_QRDayWiseRevenueReport.QRExpr33Print(
+  sender: TObject; var Value: String);
+begin
+     pf_AdjDeposit:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_AdjDeposit);
+end;
+
+end.

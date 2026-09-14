@@ -1,0 +1,12 @@
+select distinct  t.tena_testname as testname,pt.depid,pt.patienttestid,pt.patientid,pr.labno,
+(select (pama_fname || ' ' || pama_mname || ' ' || pama_lname) from hs_pama_patientmain where pama_patientid=pt.patientid)as patientname,
+(select pama_regtime from hs_pama_patientmain where pama_patientid=pt.patientid)as modifytime from patienttest pt,hs_tena_testname t,samplecollection pr
+where PT.TESTNAMEID=t.tena_testnameid and pt.patienttestid=pr.patienttestid
+  --and T.tena_LINEEDIT='T'
+AND 1=1
+  and pt.patientid=pr.patientid
+  and pt.testdate>='2072/05/01' and pt.testdate<='2072/06/24'
+and  2=2
+and 1=1
+and 1=1
+order by patientname

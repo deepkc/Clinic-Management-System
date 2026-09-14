@@ -1,0 +1,261 @@
+unit Unit_FunctionSetup;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Dialogs, StdCtrls, Buttons, ExtCtrls, Grids, DBGrids, DB, DBTables, fxn,
+     Unit_master, DBCtrls, Spin;
+
+type
+     TForm_FunctionSetup = class(TForm)
+          Panel_Main: TPanel;
+          StaticText1: TStaticText;
+          DBGrid1: TDBGrid;
+          DS_Mainmenu: TDataSource;
+          Query_Mainmenu: TQuery;
+          Query_List: TQuery;
+          DS_Module: TDataSource;
+          Query_Module: TQuery;
+          DBLCB_ModuleName: TDBLookupComboBox;
+          Panel1: TPanel;
+          BtnCancel: TBitBtn;
+          BtnSave: TBitBtn;
+          BtnNew: TBitBtn;
+          Edit_FunctionName: TEdit;
+          Menu: TStaticText;
+          StaticText3: TStaticText;
+          Dblcb_MainMenu: TDBLookupComboBox;
+          DS_List: TDataSource;
+          DBLCB_Submenu: TDBLookupComboBox;
+          Query_Submenu: TQuery;
+          DS_Submenu: TDataSource;
+          StaticText4: TStaticText;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Panel2: TPanel;
+    BitBtn1: TBitBtn;
+    BB_Close: TBitBtn;
+    BB_New: TBitBtn;
+          procedure BtnSaveClick(Sender: TObject);
+          procedure FormShow(Sender: TObject);
+
+          procedure BtnCancelClick(Sender: TObject);
+          procedure BtnNewClick(Sender: TObject);
+          procedure DBGrid1DblClick(Sender: TObject);
+          procedure FormKeyPress(Sender: TObject; var Key: Char);
+          procedure DBLCB_ModuleNameClick(Sender: TObject);
+          procedure Dblcb_MainMenuClick(Sender: TObject);
+    procedure BB_NewClick(Sender: TObject);
+    procedure BB_CloseClick(Sender: TObject);
+     private
+          { Private declarations }
+          pb_isNew: Boolean;
+          pi_Moduleid: integer;
+          pi_Priorityid: integer;
+          pi_Functionid: integer;
+     public
+          { Public declarations }
+     end;
+
+var
+     Form_FunctionSetup: TForm_FunctionSetup;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_FunctionSetup.BB_CloseClick(Sender: TObject);
+begin
+       close;
+end;
+
+procedure TForm_FunctionSetup.BB_NewClick(Sender: TObject);
+begin
+     pb_isNew := True;
+     DBLCB_ModuleName.KeyValue:='';
+     Dblcb_MainMenu.KeyValue:='';
+     DBLCB_Submenu.KeyValue:='';
+     Edit_FunctionName.Clear;
+end;
+
+procedure TForm_FunctionSetup.BtnCancelClick(Sender: TObject);
+begin
+     close;
+end;
+
+procedure TForm_FunctionSetup.BtnNewClick(Sender: TObject);
+begin
+     pb_isNew := True;
+     DBLCB_ModuleName.KeyValue:='';
+     Dblcb_MainMenu.KeyValue:='';
+     DBLCB_Submenu.KeyValue:='';
+     Edit_FunctionName.Clear;
+
+end;
+
+procedure TForm_FunctionSetup.BtnSaveClick(Sender: TObject);
+var
+     Qry: TQuery;
+begin
+     if DBLCB_ModuleName.KeyValue<=0 then
+     begin
+               MessageDlg('Missing Module Name', mtInformation, [mbOK], 0);
+               Dblcb_MainMenu.SetFocus;
+               exit;
+
+     end;
+     if DBLCB_Mainmenu.KeyValue<=0 then
+     begin
+               MessageDlg('Missing Mainmenu Name', mtInformation, [mbOK], 0);
+               DBLCB_Submenu.SetFocus;
+               exit;
+
+     end;
+     if DBLCB_Submenu.KeyValue<=0 then
+     begin
+               MessageDlg('Missing Submenu Name', mtInformation, [mbOK], 0);
+               Edit_FunctionName.Text;
+               exit;
+
+     end;
+     if Edit_FunctionName.Text='' then
+     begin
+               MessageDlg('Missing Function Name', mtInformation, [mbOK], 0);
+               exit;
+
+     end;
+     Qry := TQuery.Create(nil);
+     if pb_isNew = True then
+     begin
+          with Qry do
+          begin
+               pi_Functionid := GetMaxID('systemfunction', 'Functionid');
+               close;
+               sql.Clear;
+               DatabaseName := gs_DatabaseName;
+               sql.Add(
+                    'Insert into systemfunction(FUNCTIONID,MAINMENUID,SUBMENUID,FUNCTIONNAME)');
+               sql.Add('Values(' + IntToStr(pi_Functionid) + ',' + IntToStr
+                      (Dblcb_MainMenu.keyValue));
+               sql.Add(',' + IntToStr(DBLCB_Submenu.keyValue));
+               sql.Add(',' + #39 + Edit_FunctionName.Text + #39);
+               sql.Add(')');
+               ExecSQL;
+               ShowDoneMessage;
+          end;
+     end
+     else
+     begin
+          with Qry do
+          begin
+               close;
+               DatabaseName := gs_DatabaseName;
+               sql.Clear;
+               sql.Add('Update  systemfunction set FUNCTIONNAME=' + #39 +
+                      Edit_FunctionName.Text + #39);
+               sql.Add(',mainmenuid=' + IntToStr(Dblcb_MainMenu.keyValue));
+               sql.Add(',submenuid=' + IntToStr(DBLCB_Submenu.keyValue));
+               sql.Add('where functionid=' + IntToStr(pi_Functionid));
+               // sql.Add(')'); 
+               ExecSQL;
+               ShowDoneMessage;
+          end;
+     end;
+     with Query_List do
+     begin
+          close;
+          DatabaseName := gs_DatabaseName;
+          Open;
+     end;
+
+     DBLCB_ModuleName.keyValue := null;
+     DblCb_MainMenu.keyValue := null;
+     DBLCB_Submenu.keyValue := null;
+     Edit_FunctionName.Clear;
+end;
+
+procedure TForm_FunctionSetup.DBGrid1DblClick(Sender: TObject);
+begin
+     with Query_Mainmenu do
+     begin
+          close;
+          DatabaseName := gs_DatabaseName;
+          sql[1] := 'where 1=1';
+          Open;
+     end;
+     with Query_Submenu do
+     begin
+          close;
+          DatabaseName := gs_DatabaseName;
+          sql[1] := 'where 1=1';
+          Open;
+     end;
+     pb_isNew := false;
+     pi_Functionid := Query_List.FieldByName('FUNCTIONID').AsInteger;
+     DBLCB_Submenu.keyValue := Query_List.FieldByName('SUBMENUID').AsInteger;
+     DBLCB_ModuleName.keyValue := Query_List.FieldByName('moduleid').AsInteger;
+     Dblcb_MainMenu.keyValue := Query_List.FieldByName('mainmenuid').AsInteger;
+     Edit_FunctionName.Text := Query_List.FieldByName('FUNCTIONNAME').AsString;
+end;
+
+procedure TForm_FunctionSetup.Dblcb_MainMenuClick(Sender: TObject);
+begin
+     if Dblcb_MainMenu.keyValue > 0 then
+     begin
+          with Query_Submenu do
+          begin
+               close;
+               DatabaseName := gs_DatabaseName;
+               sql[1] := 'where mainmenuid=' + IntToStr
+                 (Dblcb_MainMenu.keyValue);
+               Open;
+          end;
+     end;
+
+end;
+
+procedure TForm_FunctionSetup.DBLCB_ModuleNameClick(Sender: TObject);
+begin
+     if DBLCB_ModuleName.keyValue > 0 then
+     begin
+          with Query_Mainmenu do
+          begin
+               close;
+               DatabaseName := gs_DatabaseName;
+               sql[1] := 'where moduleid=' + IntToStr
+                 (DBLCB_ModuleName.keyValue);
+               Open;
+          end;
+     end;
+end;
+
+procedure TForm_FunctionSetup.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #27 then
+     begin
+          close;
+     end;
+end;
+
+procedure TForm_FunctionSetup.FormShow(Sender: TObject);
+begin
+     pb_isNew := True;
+     with Query_List do
+     begin
+          close;
+          DatabaseName := gs_DatabaseName;
+          Open;
+     end;
+     with Query_Module do
+     begin
+          close;
+          DatabaseName := gs_DatabaseName;
+          Open;
+     end;
+end;
+
+end.

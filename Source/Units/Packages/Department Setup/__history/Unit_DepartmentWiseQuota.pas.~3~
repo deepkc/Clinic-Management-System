@@ -1,0 +1,401 @@
+unit Unit_DepartmentWiseQuota;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, DM,
+  Dialogs, StdCtrls, Buttons, ExtCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError,Fxn,ServerDate;
+
+type
+  TForm_DepartmentWiseQuota = class(TForm)
+    Panel2: TPanel;
+    Bb_Save: TBitBtn;
+    Bb_Cancel: TBitBtn;
+    Panel1: TPanel;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label20: TLabel;
+    Label21: TLabel;
+    Label16: TLabel;
+    Label19: TLabel;
+    Label22: TLabel;
+    EditMRSun: TEdit;
+    EditARSun: TEdit;
+    EditMFSun: TEdit;
+    EditAFSun: TEdit;
+    EditMRMon: TEdit;
+    EditARMon: TEdit;
+    EditMFMon: TEdit;
+    EditAFMon: TEdit;
+    EditMRTue: TEdit;
+    EditARTue: TEdit;
+    EditMFTue: TEdit;
+    EditAFTue: TEdit;
+    EditMRWed: TEdit;
+    EditARWed: TEdit;
+    EditMFWed: TEdit;
+    EditAFWed: TEdit;
+    EditMRThurs: TEdit;
+    EditARThurs: TEdit;
+    EditMFThurs: TEdit;
+    EditAFThurs: TEdit;
+    EditMRFri: TEdit;
+    EditARFri: TEdit;
+    EditMFFri: TEdit;
+    EditAFFri: TEdit;
+    EditMRSat: TEdit;
+    EditARSat: TEdit;
+    EditMFSat: TEdit;
+    EditAFSat: TEdit;
+    CheckBoxSun: TCheckBox;
+    CheckBoxMon: TCheckBox;
+    CheckBoxTue: TCheckBox;
+    CheckBoxWed: TCheckBox;
+    CheckBoxThurs: TCheckBox;
+    CheckBoxFri: TCheckBox;
+    CheckBoxSat: TCheckBox;
+    Query1: TOraQuery;
+    procedure Bb_CancelClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure Bb_SaveClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+     Ps_PatientType,Ps_DepCode:string;
+     Pi_Dewq_Depwisequotaid,pi_DepID:Integer;
+     pb_isNew:Boolean;
+    { Public declarations }
+
+    procedure LoadOldData;
+  end;
+
+var
+  Form_DepartmentWiseQuota: TForm_DepartmentWiseQuota;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_DepartmentWiseQuota.Bb_CancelClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_DepartmentWiseQuota.Bb_SaveClick(Sender: TObject);
+var
+Query:TOraQuery;
+Dewq_Issaturdaycheckup,Dewq_Issundaycheckup,Dewq_Depcode,Dewq_Patienttypecode,Dewq_Iswednesdaycheckup,Dewq_Ismondaycheckup,Dewq_Isthursdaycheckup,
+Dewq_Isfridaycheckup,Dewq_Istuesdaycheckup:String;Dewq_Fmrtuequota,Dewq_Faftuequota,Dewq_Nmrwedquota,Dewq_Nafwedquota,Dewq_Fmrwedquota,Dewq_Fafwedquota,
+Dewq_Nmrthuquota,Dewq_Nafthuquota,Dewq_Fmrthuquota,Dewq_Fafthuquota,Dewq_Nmrfriquota,Dewq_Naffriquota,Dewq_Fmrfriquota,Dewq_Faffriquota,Dewq_Nmrsatquota,
+Dewq_Nafsatquota,Dewq_Fmrsatquota,Dewq_Fafsatquota,Dewq_Datapostby,Dewq_Orgid,Dewq_Naftuequota,Dewq_Nmrtuequota,
+Dewq_Fafmonquota,Dewq_Fmrmonquota,Dewq_Nafmonquota,Dewq_Nmrmonquota,Dewq_Fafsunquota,Dewq_Fmrsunquota,
+Dewq_Nmrsunquota,Dewq_Nafsunquota:Integer;
+begin
+    Query := TOraQuery.Create(nil);
+    //gs_orgid='50'
+    //DEWQ_ORGID:=StrToInt(gs_OrgId);
+    if CheckBoxSun.Checked=true then
+    begin
+         Dewq_Issundaycheckup:='Y';
+         Dewq_Nmrsunquota:=StrToInt(EditMRSun.Text);
+         DEWQ_NAFSunQuota:=StrToInt(EditARSun.Text);
+         Dewq_Fmrsunquota:=StrToInt(EditMFSun.Text);
+         Dewq_Fafsunquota:=StrToInt(EditAFSun.Text);
+    end
+    else
+    begin
+         Dewq_Issundaycheckup:='N';
+         Dewq_Nmrsunquota:=StrToInt(EditMRSun.Text);
+         DEWQ_NAFSunQuota:=StrToInt(EditARSun.Text);
+         Dewq_Fmrsunquota:=StrToInt(EditMFSun.Text);
+         Dewq_Fafsunquota:=StrToInt(EditAFSun.Text);
+    end;
+
+
+    if CheckBoxMon.Checked=true then
+    begin
+         Dewq_Ismondaycheckup:='Y';
+         Dewq_Nmrmonquota:=StrToInt(EditMRMon.Text);
+         DEWQ_NAFMonQuota:=StrToInt(EditARMon.Text);
+         Dewq_FmrMonquota:=StrToInt(EditMFMon.Text);
+         Dewq_FafMonquota:=StrToInt(EditAFMon.Text);
+    end
+    else
+    begin
+         Dewq_Ismondaycheckup:='N';
+         Dewq_Nmrmonquota:=StrToInt(EditMRMon.Text);
+         DEWQ_NAFMonQuota:=StrToInt(EditARMon.Text);
+         Dewq_FmrMonquota:=StrToInt(EditMFMon.Text);
+         Dewq_FafMonquota:=StrToInt(EditAFMon.Text);
+    end;
+
+    if CheckBoxTue.Checked=true then
+    begin
+         Dewq_Istuesdaycheckup:='Y';
+         Dewq_Nmrtuequota:=StrToInt(EditMRTue.Text);
+         DEWQ_NAFTueQuota:=StrToInt(EditARTue.Text);
+         Dewq_FmrTuequota:=StrToInt(EditMFTue.Text);
+         Dewq_FafTuequota:=StrToInt(EditAFTue.Text);
+    end
+    else
+    begin
+         Dewq_Istuesdaycheckup:='N';
+         Dewq_Nmrtuequota:=StrToInt(EditMRTue.Text);
+         DEWQ_NAFTueQuota:=StrToInt(EditARTue.Text);
+         Dewq_FmrTuequota:=StrToInt(EditMFTue.Text);
+         Dewq_FafTuequota:=StrToInt(EditAFTue.Text);
+    end;
+    if CheckBoxWed.Checked=true then
+    begin
+         Dewq_Iswednesdaycheckup:='Y';
+         Dewq_NmrWedquota:=StrToInt(EditMRWed.Text);
+         DEWQ_NAFWedQuota:=StrToInt(EditARWed.Text);
+         Dewq_FmrWedquota:=StrToInt(EditMFWed.Text);
+         Dewq_FafWedquota:=StrToInt(EditAFWed.Text);
+    end
+    else
+    begin
+         Dewq_Iswednesdaycheckup:='N';
+         Dewq_NmrWedquota:=StrToInt(EditMRWed.Text);
+         DEWQ_NAFWedQuota:=StrToInt(EditARWed.Text);
+         Dewq_FmrWedquota:=StrToInt(EditMFWed.Text);
+         Dewq_FafWedquota:=StrToInt(EditAFWed.Text);
+    end;
+
+    if CheckBoxThurs.Checked=true then
+    begin
+         Dewq_Isthursdaycheckup:='Y';
+         Dewq_NmrThuquota:=StrToInt(EditMRThurs.Text);
+         DEWQ_NAFThuQuota:=StrToInt(EditARThurs.Text);
+         Dewq_FmrThuquota:=StrToInt(EditMFThurs.Text);
+         Dewq_FafThuquota:=StrToInt(EditAFThurs.Text);
+    end
+    else
+    begin
+         Dewq_Isthursdaycheckup:='N';
+         Dewq_NmrThuquota:=StrToInt(EditMRThurs.Text);
+         DEWQ_NAFThuQuota:=StrToInt(EditARThurs.Text);
+         Dewq_FmrThuquota:=StrToInt(EditMFThurs.Text);
+         Dewq_FafThuquota:=StrToInt(EditAFThurs.Text);
+    end;
+
+    if CheckBoxFri.Checked=true then
+    begin
+         Dewq_Isfridaycheckup:='Y';
+         Dewq_NmrFriquota:=StrToInt(EditMRFri.Text);
+         DEWQ_NAFFriQuota:=StrToInt(EditARFri.Text);
+         Dewq_FmrFriquota:=StrToInt(EditMFFri.Text);
+         Dewq_FafFriquota:=StrToInt(EditAFFri.Text);
+    end
+    else
+    begin
+         Dewq_Isfridaycheckup:='N';
+         Dewq_NmrFriquota:=StrToInt(EditMRFri.Text);
+         DEWQ_NAFFriQuota:=StrToInt(EditARFri.Text);
+         Dewq_FmrFriquota:=StrToInt(EditMFFri.Text);
+         Dewq_FafFriquota:=StrToInt(EditAFFri.Text);
+    end;
+    if CheckBoxSat.Checked=true then
+    begin
+         Dewq_Issaturdaycheckup:='Y';
+         Dewq_NmrSatquota:=StrToInt(EditMRSat.Text);
+         DEWQ_NAFSatQuota:=StrToInt(EditARSat.Text);
+         Dewq_FmrSatquota:=StrToInt(EditMFSat.Text);
+         Dewq_FafSatquota:=StrToInt(EditAFSat.Text);
+    end
+    else
+    begin
+         Dewq_Issaturdaycheckup:='N';
+         Dewq_NmrSatquota:=StrToInt(EditMRSat.Text);
+         DEWQ_NAFSatQuota:=StrToInt(EditARSat.Text);
+         Dewq_FmrSatquota:=StrToInt(EditMFSat.Text);
+         Dewq_FafSatquota:=StrToInt(EditAFSat.Text);
+    end;
+
+    if pb_isNew=true then
+    begin
+        With Query do
+        Begin
+            Close;
+            Session := DM_Hospital.DB;
+            SQL.Clear;
+            SQL.Add(' Insert Into Dewq_Departmentwisequota(');
+            SQL.Add('Dewq_Issaturdaycheckup,Dewq_Issundaycheckup,Dewq_Depcode,Dewq_Patienttypecode,Dewq_Iswednesdaycheckup,');
+            SQL.Add('Dewq_Ismondaycheckup,Dewq_Isthursdaycheckup,Dewq_Isfridaycheckup,Dewq_Istuesdaycheckup,Dewq_Datapostdate,Dewq_Dataposttime');
+            SQL.Add(',Dewq_Fmrtuequota,Dewq_Faftuequota,Dewq_Nmrwedquota,Dewq_Nafwedquota,Dewq_Fmrwedquota,');
+            SQL.Add('Dewq_Fafwedquota,Dewq_Nmrthuquota,Dewq_Nafthuquota,Dewq_Fmrthuquota,Dewq_Fafthuquota,Dewq_Nmrfriquota,Dewq_Naffriquota,Dewq_Fmrfriquota,Dewq_Faffriquota,');
+            SQL.Add('Dewq_Nmrsatquota,Dewq_Nafsatquota,Dewq_Fmrsatquota,Dewq_Fafsatquota,Dewq_Datapostby,Dewq_Orgid,Dewq_Depwisequotaid,Dewq_Naftuequota,Dewq_Nmrtuequota,');
+            SQL.Add('Dewq_Fafmonquota,Dewq_Fmrmonquota,Dewq_Nafmonquota,Dewq_Nmrmonquota,Dewq_Fafsunquota,Dewq_Fmrsunquota,Dewq_Nmrsunquota,Dewq_Nafsunquota)');
+            SQL.Add(' Values ( ');
+            SQL.Add(#39+Dewq_Issaturdaycheckup+#39 +','+#39+Dewq_Issundaycheckup+#39 +','+#39+ps_Depcode+#39 +','+#39+Ps_PatientType+#39);
+            SQL.Add(','+#39+Dewq_Iswednesdaycheckup+#39 +','+#39+Dewq_Ismondaycheckup+#39 +','+#39+Dewq_Isthursdaycheckup+#39 +','+#39+Dewq_Isfridaycheckup+#39 +','+#39+Dewq_Istuesdaycheckup+#39 +','+#39+Todaysdate+#39 +','+#39+TodaysTime+#39);
+            SQL.Add(','+IntToStr(Dewq_Fmrtuequota) +','+IntToStr(Dewq_Faftuequota) +','+IntToStr(Dewq_Nmrwedquota) +','+IntToStr(Dewq_Nafwedquota));
+            SQL.Add(','+IntToStr(Dewq_Fmrwedquota) +','+IntToStr(Dewq_Fafwedquota) +','+IntToStr(Dewq_Nmrthuquota) +','+IntToStr(Dewq_Nafthuquota));
+            SQL.Add(','+IntToStr(Dewq_Fmrthuquota) +','+IntToStr(Dewq_Fafthuquota) +','+IntToStr(Dewq_Nmrfriquota) +','+IntToStr(Dewq_Naffriquota));
+            SQL.Add(','+IntToStr(Dewq_Fmrfriquota) +','+IntToStr(Dewq_Faffriquota) +','+IntToStr(Dewq_Nmrsatquota) +','+IntToStr(Dewq_Nafsatquota));
+            SQL.Add(','+IntToStr(Dewq_Fmrsatquota) +','+IntToStr(Dewq_Fafsatquota) +','+IntToStr(Dewq_Datapostby) +','+IntToStr(Dewq_Orgid));
+            SQL.Add(','+IntToStr(GetMaxId('DEWQ_DepartmentWiseQuota','DEWQ_DepWiseQuotaID')) +','+IntToStr(Dewq_Naftuequota) +','+IntToStr(Dewq_Nmrtuequota));
+            SQL.Add(','+IntToStr(Dewq_Fafmonquota) +','+IntToStr(Dewq_Fmrmonquota) +','+IntToStr(Dewq_Nafmonquota) +','+IntToStr(Dewq_Nmrmonquota));
+            SQL.Add(','+IntToStr(Dewq_Fafsunquota) +','+IntToStr(Dewq_Fmrsunquota) +','+IntToStr(Dewq_Nmrsunquota) +','+IntToStr(Dewq_Nafsunquota));
+            SQL.Add(' ) ');
+            SQL.SaveToFile('tt.txt');
+            ExecSQL;
+        End;
+    end
+    else
+    begin
+        With Query do
+        Begin
+            Close;
+            DatabaseName := gs_DatabaseName;
+            SQL.Clear;
+            SQL.Add(' Update Dewq_Departmentwisequota Set');
+            SQL.Add('Dewq_Issaturdaycheckup='+#39+Dewq_Issaturdaycheckup+#39 +',Dewq_Issundaycheckup = '+#39 + Dewq_Issundaycheckup + #39);
+            SQL.Add(',Dewq_Depcode = '#39 + Ps_DepCode + #39 +',Dewq_Patienttypecode = '#39 + Ps_PatientType + #39);
+            SQL.Add(',Dewq_Iswednesdaycheckup = '#39 + Dewq_Iswednesdaycheckup + #39 +',Dewq_Ismondaycheckup = '+#39 + Dewq_Ismondaycheckup + #39);
+            SQL.Add(',Dewq_Isthursdaycheckup = '#39 + Dewq_Isthursdaycheckup + #39 +',Dewq_Isfridaycheckup = '+#39 + Dewq_Isfridaycheckup + #39);
+            SQL.Add(',Dewq_Istuesdaycheckup = '#39 + Dewq_Istuesdaycheckup + #39 +',Dewq_Datapostdate = '+#39 + TodaysDate + #39 +',Dewq_Dataposttime = '+#39 + TodaysTime + #39);
+            SQL.Add(',Dewq_Fmrtuequota='+IntToStr(Dewq_Fmrtuequota) +', Dewq_Faftuequota='+IntToStr(Dewq_Faftuequota) +', Dewq_Nmrwedquota='+IntToStr(Dewq_Nmrwedquota));
+            SQL.Add(', Dewq_Nafwedquota='+IntToStr(Dewq_Nafwedquota) +', Dewq_Fmrwedquota='+IntToStr(Dewq_Fmrwedquota) +', Dewq_Fafwedquota='+IntToStr(Dewq_Fafwedquota));
+            SQL.Add(', Dewq_Nmrthuquota='+IntToStr(Dewq_Nmrthuquota) +', Dewq_Nafthuquota='+IntToStr(Dewq_Nafthuquota) +', Dewq_Fmrthuquota='+IntToStr(Dewq_Fmrthuquota));
+            SQL.Add(', Dewq_Fafthuquota='+IntToStr(Dewq_Fafthuquota) +', Dewq_Nmrfriquota='+IntToStr(Dewq_Nmrfriquota) +', Dewq_Naffriquota='+IntToStr(Dewq_Naffriquota));
+            SQL.Add(', Dewq_Fmrfriquota='+IntToStr(Dewq_Fmrfriquota));
+            SQL.Add(', Dewq_Faffriquota='+IntToStr(Dewq_Faffriquota) +', Dewq_Nmrsatquota='+IntToStr(Dewq_Nmrsatquota) );
+            SQL.Add(', Dewq_Nafsatquota='+IntToStr(Dewq_Nafsatquota) +', Dewq_Fmrsatquota='+IntToStr(Dewq_Fmrsatquota));
+            SQL.Add(', Dewq_Fafsatquota='+IntToStr(Dewq_Fafsatquota) +', Dewq_Datapostby='+IntToStr(GI_userId) +', Dewq_Orgid='+IntToStr(Dewq_Orgid));
+            SQL.Add(', Dewq_Naftuequota='+IntToStr(Dewq_Naftuequota) +', Dewq_Nmrtuequota='+IntToStr(Dewq_Nmrtuequota));
+            SQL.Add(', Dewq_Fafmonquota='+IntToStr(Dewq_Fafmonquota) +', Dewq_Fmrmonquota='+IntToStr(Dewq_Fmrmonquota));
+            SQL.Add(', Dewq_Nafmonquota='+IntToStr(Dewq_Nafmonquota) +', Dewq_Nmrmonquota='+IntToStr(Dewq_Nmrmonquota));
+            SQL.Add(', Dewq_Fafsunquota='+IntToStr(Dewq_Fafsunquota) +', Dewq_Fmrsunquota='+IntToStr(Dewq_Fmrsunquota));
+            SQL.Add(', Dewq_Nmrsunquota='+IntToStr(Dewq_Nmrsunquota) +', Dewq_Nafsunquota='+IntToStr(Dewq_Nafsunquota));
+            SQL.Add(' Where Dewq_Depwisequotaid='+IntToStr(Pi_Dewq_Depwisequotaid));
+            SQL.SaveToFile('tt.txt');
+            ExecSQL;
+        End;
+    end;
+    Query.Free;
+    ShowDoneMessage;
+    LoadOldData;
+end;
+
+procedure TForm_DepartmentWiseQuota.FormKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if Key=#13 then
+     keybd_event(9,13,0,0);
+end;
+
+procedure TForm_DepartmentWiseQuota.FormShow(Sender: TObject);
+begin
+     LoadOldData;
+end;
+
+procedure TForm_DepartmentWiseQuota.LoadOldData;
+var
+Qry:TOraQuery;
+begin
+    Qry:=TOraQuery.create(nil) ;
+     with Qry do
+     begin
+          Close;
+          DatabaseName:=gs_databasename;
+          SQL.Clear;
+          SQL.Add('select * from DEWQ_DepartmentWiseQuota where DEWQ_DEPCODE='+#39+Ps_DepCode+#39);
+          Open;
+     end;
+     if Qry.FieldByName('DEWQ_DEPWISEQUOTAID').AsInteger>0 then
+     begin
+          pb_isNew:=False;
+          Pi_Dewq_Depwisequotaid:=Qry.FieldByName('DEWQ_DEPWISEQUOTAID').AsInteger;
+          If Qry.FieldByName('DEWQ_IsSundayCheckup').AsString <> '' Then CheckBoxSun.Checked := True;
+          If Qry.FieldByName('DEWQ_IsMondayCheckup').AsString <> '' Then CheckBoxMon.Checked := True;
+          If Qry.FieldByName('DEWQ_IsTuesdayCheckup').AsString <> '' Then CheckBoxTue.Checked := True;
+          If Qry.FieldByName('DEWQ_IsWednesdayCheckup').AsString <> '' Then CheckBoxWed.Checked := True;
+          If Qry.FieldByName('DEWQ_IsThursdayCheckup').AsString <> '' Then CheckBoxThurs.Checked := True;
+          If Qry.FieldByName('DEWQ_IsFridayCheckup').AsString <> '' Then CheckBoxFri.Checked := True;
+          If Qry.FieldByName('DEWQ_IsSaturdayCheckup').AsString <> '' Then CheckBoxSat.Checked := True;
+
+          EditMRSun.Text := Qry.FieldByName('DEWQ_NMRSunQuota').asstring;
+          EditMRMon.Text :=Qry. FieldByName('DEWQ_NMRMonQuota').asstring;
+          EditMRTue.Text :=Qry. FieldByName('DEWQ_NMRTueQuota').asstring;
+          EditMRWed.Text :=Qry. FieldByName('DEWQ_NMRWedQuota').asstring;
+          EditMRThurs.Text :=Qry. FieldByName('DEWQ_NMRThuQuota').asstring;
+          EditMRFri.Text :=Qry. FieldByName('DEWQ_NMRFriQuota').asstring;
+          EditMRSat.Text :=Qry. FieldByName('DEWQ_NMRSatQuota').asstring;
+
+          EditARSun.Text :=Qry. FieldByName('DEWQ_NAFSunQuota').asstring;
+          EditARMon.Text :=Qry. FieldByName('DEWQ_NAFMonQuota').asstring;
+          EditARTue.Text :=Qry. FieldByName('DEWQ_NAFTueQuota').asstring;
+          EditARWed.Text :=Qry. FieldByName('DEWQ_NAFWedQuota').asstring;
+          EditARThurs.Text :=Qry. FieldByName('DEWQ_NAFThuQuota').asstring;
+          EditARFri.Text :=Qry. FieldByName('DEWQ_NAFFriQuota').asstring;
+          EditARSat.Text :=Qry. FieldByName('DEWQ_NAFSatQuota').asstring;
+
+          EditMFSun.Text :=Qry. FieldByName('DEWQ_FMRSunQuota').asstring;
+          EditMFMon.Text :=Qry. FieldByName('DEWQ_FMRMonQuota').asstring;
+          EditMFTue.Text :=Qry. FieldByName('DEWQ_FMRTueQuota').asstring;
+          EditMFWed.Text :=Qry. FieldByName('DEWQ_FMRWedQuota').asstring;
+          EditMFThurs.Text :=Qry. FieldByName('DEWQ_FMRThuQuota').asstring;
+          EditMFFri.Text :=Qry. FieldByName('DEWQ_FMRFriQuota').asstring;
+          EditMFSat.Text :=Qry. FieldByName('DEWQ_FMRSatQuota').asstring;
+
+          EditAFSun.Text :=Qry. FieldByName('DEWQ_FAFSunQuota').asstring;
+          EditAFMon.Text :=Qry. FieldByName('DEWQ_FAFMonQuota').asstring;
+          EditAFTue.Text :=Qry. FieldByName('DEWQ_FAFTueQuota').asstring;
+          EditAFWed.Text :=Qry. FieldByName('DEWQ_FAFWedQuota').asstring;
+          EditAFThurs.Text :=Qry. FieldByName('DEWQ_FAFThuQuota').asstring;
+          EditAFFri.Text :=Qry. FieldByName('DEWQ_FAFFriQuota').asstring;
+          EditAFSat.Text :=Qry. FieldByName('DEWQ_FAFSatQuota').asstring;
+
+     end
+     else
+     begin
+          pb_isNew:=True;
+          If EditMRSun.Text = '' Then EditMRSun.Text := IntToStr(0);
+          If EditMRMon.Text = '' Then EditMRMon.Text := IntToStr(0);
+          If EditMRTue.Text = '' Then EditMRTue.Text := IntToStr(0);
+          If EditMRWed.Text = '' Then EditMRWed.Text := IntToStr(0);
+          If EditMRThurs.Text = '' Then EditMRThurs.Text := IntToStr(0);
+          If EditMRFri.Text = '' Then EditMRFri.Text := IntToStr(0);
+          If EditMRSat.Text = '' Then EditMRSat.Text := IntToStr(0);
+
+          If EditARSun.Text = '' Then EditARSun.Text := IntToStr(0);
+          If EditARMon.Text = '' Then EditARMon.Text := IntToStr(0);
+          If EditARTue.Text = '' Then EditARTue.Text := IntToStr(0);
+          If EditARWed.Text = '' Then EditARWed.Text := IntToStr(0);
+          If EditARThurs.Text = '' Then EditARThurs.Text := IntToStr(0);
+          If EditARFri.Text = '' Then EditARFri.Text := IntToStr(0);
+          If EditARSat.Text = '' Then EditARSat.Text := IntToStr(0);
+
+          If EditMFSun.Text = '' Then EditMFSun.Text := IntToStr(0);
+          If EditMFMon.Text = '' Then EditMFMon.Text := IntToStr(0);
+          If EditMFTue.Text = '' Then EditMFTue.Text := IntToStr(0);
+          If EditMFWed.Text = '' Then EditMFWed.Text := IntToStr(0);
+          If EditMFThurs.Text = '' Then EditMFThurs.Text := IntToStr(0);
+          If EditMFFri.Text = '' Then EditMFFri.Text := IntToStr(0);
+          If EditMFSat.Text = '' Then EditMFSat.Text := IntToStr(0);
+
+          If EditAFSun.Text = '' Then EditAFSun.Text := IntToStr(0);
+          If EditAFMon.Text = '' Then EditAFMon.Text := IntToStr(0);
+          If EditAFTue.Text = '' Then EditAFTue.Text := IntToStr(0);
+          If EditAFWed.Text = '' Then EditAFWed.Text := IntToStr(0);
+          If EditAFThurs.Text = '' Then EditAFThurs.Text := IntToStr(0);
+          If EditAFFri.Text = '' Then EditAFFri.Text := IntToStr(0);
+          If EditAFSat.Text = '' Then EditAFSat.Text := IntToStr(0);
+
+          CheckBoxSun.Checked:=False;
+          CheckBoxMon.Checked:=False;
+          CheckBoxTue.Checked:=False;
+          CheckBoxWed.Checked:=False;
+          CheckBoxThurs.Checked:=False;
+          CheckBoxFri.Checked:= False;
+          CheckBoxSat.Checked:= False;
+     end;
+
+     Qry.free;
+
+  ///
+end;
+
+end.

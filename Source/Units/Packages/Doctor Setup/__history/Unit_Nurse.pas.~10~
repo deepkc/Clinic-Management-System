@@ -1,0 +1,348 @@
+unit Unit_Nurse;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,DM,
+  Db, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, ExtCtrls, StdCtrls, Grids, DBGrids, ComCtrls, Buttons,
+  OleCtrls, DateEditXControl_TLB,ServerDate;
+
+type
+  TForm_Nurse = class(TForm)
+    Panel1: TPanel;
+    BtnNew: TBitBtn;
+    BitBtnSave: TBitBtn;
+    BitBtnCancel: TBitBtn;
+    PageControl_Nurse: TPageControl;
+    TabSheetList: TTabSheet;
+    Label9: TLabel;
+    DBGrid1: TDBGrid;
+    EditSearch: TEdit;
+    GroupBox2: TGroupBox;
+    GroupBox1: TGroupBox;
+    Button1: TButton;
+    TabSheetEntry: TTabSheet;
+    LabelMedicine: TLabel;
+    Bevel1: TBevel;
+    Bevel2: TBevel;
+    Edit_Name: TEdit;
+    Query_Nurse: TOraQuery;
+    DS_Nurse: TDataSource;
+    QueryProcess: TOraQuery;
+    Label1: TLabel;
+    Edit_Address: TEdit;
+    Label2: TLabel;
+    Edit_PhoneNo: TEdit;
+    Label3: TLabel;
+    Edit_MobileNo: TEdit;
+    Label4: TLabel;
+    DateEditX_HosJoinDate: TDateEditX;
+    CB_InactiveNurse: TCheckBox;
+    CB_Active: TCheckBox;
+    Query_SubProcess: TOraQuery;
+    grp1: TGroupBox;
+    CB_Circular: TCheckBox;
+    CB_Scrub: TCheckBox;
+    BitBtn_JoinDate: TSpeedButton;
+    procedure BtnNewClick(Sender: TObject);
+    procedure BitBtnSaveClick(Sender: TObject);
+    procedure BitBtnCancelClick(Sender: TObject);
+    procedure PageControl_NurseChanging(Sender: TObject;
+      var AllowChange: Boolean);
+    procedure Button1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EditSearchKeyPress(Sender: TObject; var Key: Char);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure BitBtn_JoinDateClick(Sender: TObject);
+    procedure CB_InactiveNurseClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+      pi_NewPrimaryId,pi_OldPrimaryId:LongInt;
+      lToAppend:Boolean;    
+    { Public declarations }
+  end;
+
+var
+  Form_Nurse: TForm_Nurse;
+
+implementation
+
+uses Fxn;
+
+{$R *.DFM}
+
+procedure TForm_Nurse.BtnNewClick(Sender: TObject);
+begin
+     IF PageControl_Nurse.ActivePageIndex=1 Then
+     Begin
+          PageControl_Nurse.ActivePageIndex:=0;
+     End
+     Else
+     Begin
+          PageControl_Nurse.ActivePageIndex:=1;
+          TabSheetList.TabVisible:=False;
+          TabSheetEntry.TabVisible:=True;
+
+          DateEditX_HosJoinDate.SystemOfDate:=gi_DateSystem;
+          //ChangeCaption(BitBtn_JoinDate,gi_DateSystem);
+          DateEditX_HosJoinDate.Text:=ServerDate.TodaysDate;
+
+          Edit_Name.SetFocus;
+          Edit_Name.Text:='';
+          Edit_Address.Text:='';
+          Edit_PhoneNo.Text:='';
+          Edit_MobileNo.Text:='';
+          BitBtnSave.Enabled:=True;
+          BtnNew.Enabled:=False;
+          lToAppend:=True;
+          CB_Circular.Checked := False;
+          CB_Scrub.Checked := False;
+     End;
+end;
+
+procedure TForm_Nurse.BitBtnSaveClick(Sender: TObject);
+Var ls_Code : String;
+begin
+     If Trim(Edit_Name.Text)=''Then
+     Begin
+          Messagedlg('Name Compulsory !',mtWarning,[mbOk],0);
+          Edit_Name.SetFocus;
+          Exit;
+     End;
+     
+     IF ltoappend then
+     begin
+          with QueryProcess Do
+          Begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.add(' Select * From HS_NURS_NURSE where NURS_NAME='+#39+Edit_Name.Text+#39);
+               sql.add(' and nurs_isActive=''Y'' ');
+               open;
+          End;
+
+          IF QueryProcess.RecordCount > 0 Then
+          Begin
+               IF Not (MessageDlg(' Already Exist Name  " '+UpperCase(QueryProcess.FieldByName('nurs_Name').AsString)+' ". Despite This Do You Want To Save Again.', mtInformation,[mbYes,mbNo],0)=mrYes) Then
+               Exit;
+          End;
+
+          with QueryProcess Do
+          Begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.add('Select NVL(Max(Cast(Trim(SubStr(NURS_nursecode,4,10)) As Integer)),0) NurseCode From HS_NURS_nurse');
+               Open;
+          End;
+
+          ls_Code:=IntToStr(QueryProcess.FieldByName('NurseCode').AsInteger+1);
+
+          with Query_SubProcess Do
+          Begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.add(' Select NURS_nurseid,NURS_nursecode From HS_NURS_nurse where NURS_nursecode='+#39+'NRS'+ls_Code+#39);
+               Open;
+          End;
+
+          IF Query_SubProcess.FieldByName('NURS_nurseid').AsInteger > 0 Then
+          ls_Code:=IntToStr(QueryProcess.FieldByName('NURS_NurseCode').AsInteger+2);
+
+
+          pi_NewPrimaryId:=GetMaxId('HS_NURS_nurse','NURS_nurseid');
+          with QueryProcess do
+          Begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.add(' Insert Into HS_NURS_NURSE(NURS_nurseid,NURS_nursecode,NURS_ISActive,NURS_Name,NURS_Address,NURS_PhoneNo,NURS_MobileNo,NURS_HosJoiningDate');
+               sql.Add(',NURS_ISCIRCULARNURSE,NURS_ISSCRUBNURSE) Values');
+               sql.add(' ('+IntToStr(pi_NewPrimaryId)+','+#39+'NRS'+ls_Code+#39);
+               IF CB_Active.Checked=True Then
+               sql.add(' ,''Y''') Else sql.add(' ,''N''');
+               sql.add(' ,'+#39+Trim(Edit_Name.Text)+#39+','+#39+Edit_Address.Text+#39+','+#39+Edit_PhoneNo.Text+#39);
+               sql.add(' ,'+#39+Edit_MobileNo.Text+#39+' ,'+#39+DateEditX_HosJoinDate.Text+#39);
+               if CB_Circular.Checked then
+               sql.Add(',''Y''') else sql.Add(',''N''');
+               if CB_Scrub.Checked then
+               SQL.Add(',''Y''') else sql.Add(',''N''');
+               sql.Add(')');
+               //sql.SaveToFile('C:\Nurse.Txt');
+               ExecSQL;
+          End;
+     end
+     else
+     Begin
+          with QueryProcess do
+          Begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.add(' Update HS_NURS_NURSE Set ');
+               sql.add(' NURS_Name='+#39+Edit_Name.Text+#39+',NURS_Address='+#39+Edit_Address.Text+#39+',NURS_PhoneNo='+#39+Edit_PhoneNo.Text+#39);
+               IF CB_Active.Checked=True Then
+               sql.add(' ,NURS_ISActive=''Y''') Else sql.add(' ,NURS_ISActive=''N''');
+               sql.add(' ,NURS_MobileNo='+#39+Edit_MobileNo.Text+#39+' ,NURS_HosJoiningDate='+#39+DateEditX_HosJoinDate.Text+#39);
+               if CB_Circular.Checked=true then
+               sql.Add(',NURS_ISCIRCULARNURSE=''Y''') else sql.Add('NURS_ISCIRCULARNURSE=''N''');
+               if CB_Scrub.Checked=True then
+               sql.Add(',NURS_ISSCRUBNURSE=''Y''') else sql.Add('NURS_ISSCRUBNURSE=''N''');
+               sql.add(' where NURS_nurseid='+IntToStr(pi_OldPrimaryId));
+               ExecSQL;
+          End;
+     End;
+     ShowDoneMessage;
+
+     PageControl_Nurse.ActivePageIndex:=0;
+
+     TabSheetList.TabVisible:=True;
+     TabSheetEntry.TabVisible:=False;
+
+     BitBtnSave.Enabled:=False;
+     BtnNew.Enabled:=True;
+     With Query_Nurse do
+     begin
+          close;
+          open;
+     end;
+end;
+
+procedure TForm_Nurse.BitBtnCancelClick(Sender: TObject);
+begin
+     IF PageControl_Nurse.ActivePageIndex=0 Then
+     Close
+     Else
+     Begin
+          TabSheetList.TabVisible:=True;
+          TabSheetEntry.TabVisible:=False;
+          PageControl_Nurse.ActivePageIndex:=0;
+          BtnNew.Enabled:=True;
+          BitBtnSave.Enabled:=False;
+          EditSearch.SetFocus;
+     End;
+end;
+
+procedure TForm_Nurse.PageControl_NurseChanging(Sender: TObject;
+  var AllowChange: Boolean);
+begin
+   IF PageControl_Nurse.ActivePageIndex=1 Then
+   Begin
+      PageControl_Nurse.ActivePageIndex:=0;
+      BtnNew.Enabled:=True;
+      BitBtnSave.Enabled:=False;
+   End
+   Else
+   Begin
+      BtnNewClick(Sender);
+   End;
+end;
+
+procedure TForm_Nurse.Button1Click(Sender: TObject);
+begin
+   //ExtendedSearch('Doctor',Query_Nurse,EditSearch);
+end;
+
+procedure TForm_Nurse.FormShow(Sender: TObject);
+begin
+
+     Query_Nurse.Open;
+     PageControl_Nurse.ActivePageIndex:=0;
+     TabSheetEntry.TabVisible:=False;
+     EditSearch.SetFocus;
+end;
+
+procedure TForm_Nurse.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  IF key=13 Then
+  Keybd_Event(9,13,0,0);
+  IF key=27 Then
+  BitBtnCancelClick(Sender);
+end;
+
+procedure TForm_Nurse.EditSearchKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   IF key=#13 Then
+   Button1Click(Sender);
+end;
+
+procedure TForm_Nurse.DBGrid1DblClick(Sender: TObject);
+begin
+     ltoappend:=False;
+
+     PageControl_Nurse.ActivePageIndex:=1;
+     TabSheetList.TabVisible:=False;
+     TabSheetEntry.TabVisible:=True;
+
+     pi_OldPrimaryId:=Query_Nurse.FieldbyName('nurs_nurseid').AsInteger;
+
+     IF Query_Nurse.FieldbyName('nurs_isActive').AsString='Y' Then
+     CB_Active.Checked:=True
+     Else
+     CB_Active.Checked:=False;
+
+     if Query_Nurse.FieldByName('NURS_ISCIRCULARNURSE').AsString='Y' then
+     CB_Circular.Checked := True
+     else
+     CB_Circular.Checked := False;
+
+     if Query_Nurse.FieldByName('NURS_ISSCRUBNURSE').AsString='Y' then
+     CB_Scrub.Checked := True
+     else
+     CB_Scrub.Checked := False;
+
+
+     Edit_Name.Text:=Query_Nurse.FieldbyName('NURS_Name').AsString;
+     Edit_Address.Text:=Query_Nurse.FieldbyName('NURS_Address').AsString;
+     Edit_PhoneNo.Text:=Query_Nurse.FieldbyName('NURS_PhoneNo').AsString;
+     Edit_MobileNo.Text:=Query_Nurse.FieldbyName('NURS_MobileNo').AsString;
+
+     DateEditX_HosJoinDate.SystemOfDate:=gi_DateSystem;
+//     ChangeCaption(BitBtn_JoinDate,gi_DateSystem);
+     DateEditX_HosJoinDate.Text:=Query_Nurse.FieldbyName('NURS_HosJoiningDate').AsString;
+
+     BtnNew.Enabled:=False;
+     BitBtnSave.Enabled:=True;
+end;
+
+procedure TForm_Nurse.BitBtn_JoinDateClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX_HosJoinDate,BitBtn_JoinDate);
+end;
+
+procedure TForm_Nurse.CB_InactiveNurseClick(Sender: TObject);
+begin
+     IF CB_InactiveNurse.Checked=True Then
+     Begin
+          With Query_Nurse do
+          Begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.add(' Select NURS_nurseid,NURS_NURSECODE,NURS_ISActive,NURS_Name,NURS_Address,NURS_PhoneNo,NURS_MobileNo,NURS_HosJoiningDate ');
+               sql.add(' From HS_NURS_Nurse where Order by NURS_Name');
+               Open;
+          End;
+     End
+     Else
+     Begin
+          With Query_Nurse do
+          Begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.add(' Select NURS_nurseid,NURS_NURSECODE,NURS_ISActive,NURS_Name,NURS_Address,NURS_PhoneNo,NURS_MobileNo,NURS_HosJoiningDate ');
+               sql.add(' From HS_NURS_Nurse where NURS_ISActive=''Y'' Order by NURS_Name');
+               Open;
+          End;
+     End;
+end;
+
+end.

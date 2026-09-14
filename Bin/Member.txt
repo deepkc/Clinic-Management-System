@@ -1,0 +1,4 @@
+SELECT memb_MemberId,memb_FName||' '||memb_Lname Name,memb_MemberNo,memb_PatientId,memb_ISDEPENDENT,memb_schemeid,memb_employeeno,
+MEMB_COMMUNITYID,memb_PatientId  as PatientIdS,Nls_InitCap(memb_Pcity) Address,(Select memb_fname||' '||memb_fname
+From hs_memb_member where memb_memberid=m.memb_memberno) as Employee,Nls_InitCap(memb_Sex) Gender,memb_memberid as employeeid
+From hs_memb_member M where memb_IsActive='Y'

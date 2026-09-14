@@ -1,0 +1,203 @@
+unit Unit_SubmenuSetup;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Dialogs, StdCtrls, Buttons, ExtCtrls, Grids, DBGrids, DB, DBTables, fxn,
+     Unit_master, DBCtrls, Spin;
+
+type
+     TForm_SubmenuSetup = class(TForm)
+          Panel_Main: TPanel;
+          StaticText1: TStaticText;
+          DBGrid1: TDBGrid;
+          DS_Mainmenu: TDataSource;
+          Query_Mainmenu: TQuery;
+    Query_List: TQuery;
+          DS_Module: TDataSource;
+          Query_Module: TQuery;
+          DBLCB_ModuleName: TDBLookupComboBox;
+          Panel1: TPanel;
+          BtnCancel: TBitBtn;
+          BtnSave: TBitBtn;
+          BtnNew: TBitBtn;
+          SpinEdit_Priority: TSpinEdit;
+    Edit_SubMenuName: TEdit;
+          Menu: TStaticText;
+          StaticText2: TStaticText;
+    StaticText3: TStaticText;
+    Dblcb_MainMenu: TDBLookupComboBox;
+    DS_List: TDataSource;
+          procedure BtnSaveClick(Sender: TObject);
+          procedure FormShow(Sender: TObject);
+
+          procedure BtnCancelClick(Sender: TObject);
+          procedure BtnNewClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure SpinEdit_PriorityChange(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_ModuleNameClick(Sender: TObject);
+    private
+          { Private declarations }
+          pb_isNew: Boolean;
+          pi_Moduleid: integer;
+          pi_Priorityid: integer;
+          pi_SubMenuid: integer;
+     public
+          { Public declarations }
+     end;
+
+var
+     Form_SubmenuSetup: TForm_SubmenuSetup;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_SubmenuSetup.BtnCancelClick(Sender: TObject);
+begin
+     close;
+end;
+
+procedure TForm_SubmenuSetup.BtnNewClick(Sender: TObject);
+begin
+     pb_isNew:= True;
+     Edit_SubMenuName.Clear;
+
+end;
+
+procedure TForm_SubmenuSetup.BtnSaveClick(Sender: TObject);
+var
+Qry:Tquery;
+begin
+     if DBLCB_ModuleName.KeyValue<=0 then
+     begin
+               MessageDlg('Missing Module Name', mtInformation, [mbOK], 0);
+               Dblcb_MainMenu.SetFocus
+               exit;
+
+     end;
+     if DBLCB_Mainmenu.KeyValue<=0 then
+     begin
+               MessageDlg('Missing Mainmenu Name', mtInformation, [mbOK], 0);
+               exit;
+
+     end;
+     if Edit_SubMenuName.Text='' then
+     begin
+               MessageDlg('Missing Submenu Name', mtInformation, [mbOK], 0);
+               exit;
+
+     end;
+     Qry:=TQuery.Create(nil);
+     if pb_isNew = True then
+     begin
+          with Qry do
+          begin
+               pi_SubMenuid := GetMaxID('submenu', 'Submenuid');
+               close;
+               sql.Clear;
+               DatabaseName := gs_DatabaseName;
+               sql.Add(
+                    'Insert into Submenu(Submenuid,MAINMENUId,submenu,PRIORITY)');
+               sql.Add('Values(' + IntToStr(pi_SubMenuid)+ ',' +inttostr( Dblcb_MainMenu.keyValue));
+               sql.Add(',' + #39 + Edit_SubMenuName.Text + #39 + ',' + #39 +SpinEdit_Priority.Text +#39);
+               sql.Add(')');
+               ExecSQL;
+               ShowDoneMessage;
+          end;
+     end
+     else
+     begin
+          with Qry do
+          begin
+               close;
+               DatabaseName := gs_DatabaseName;
+               sql.Clear;
+               sql.Add
+                    ('Update submenu set submenu=' + #39 +Edit_SubMenuName.Text + #39);
+               sql.Add(',mainmenuid='+IntToStr(Dblcb_MainMenu.KeyValue));
+               sql.Add(',Priority='+SpinEdit_Priority.Text);
+               sql.Add('where submenuid=' + IntToStr(pi_SubMenuid));
+               //sql.Add(')');
+               ExecSQL;
+               ShowDoneMessage;
+          end;
+     end;
+     with Query_List do
+          begin
+               close;
+               DatabaseName := gs_DatabaseName;
+               Open;
+          end;
+
+          DBLCB_ModuleName.KeyValue:=null;
+          Dblcb_MainMenu.KeyValue:=null;
+          Edit_SubMenuName.Clear;
+          SpinEdit_Priority.Text:='0';
+end;
+
+procedure TForm_SubmenuSetup.DBGrid1DblClick(Sender: TObject);
+begin
+     with Query_Mainmenu do
+     begin
+          close;
+          DatabaseName:=gs_DatabaseName;
+          sql[1]:='where 1=1';
+          Open;
+     end;
+      pb_isNew := false;
+      pi_SubMenuid:=Query_list.FieldByName('submenuid').AsInteger;
+      DBLCB_ModuleName.KeyValue := Query_list.FieldByName('moduleid').AsInteger;
+      Dblcb_MainMenu.KeyValue := Query_list.FieldByName('mainmenuid').AsInteger;
+      SpinEdit_Priority.Text := Query_list.FieldByName('PRIORITY').AsString;
+      Edit_SubMenuName.Text := Query_list.FieldByName('submenu').AsString;
+end;
+
+procedure TForm_SubmenuSetup.DBLCB_ModuleNameClick(Sender: TObject);
+begin
+     if DBLCB_ModuleName.KeyValue>0 then
+     begin
+          with Query_Mainmenu do
+          begin
+               close;
+               DatabaseName:=gs_DatabaseName;
+               sql[1]:='where moduleid='+inttostr(DBLCB_ModuleName.KeyValue);
+               Open;
+          end;
+     end;
+end;
+
+procedure TForm_SubmenuSetup.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#27 then
+     begin
+          close;
+     end;
+end;
+
+procedure TForm_SubmenuSetup.FormShow(Sender: TObject);
+begin
+     Pb_IsNew:=True;
+     with Query_list do
+     begin
+          close;
+          DatabaseName := gs_DatabaseName;
+          Open;
+     end;
+     with Query_Module do
+     begin
+          close;
+          DatabaseName := gs_DatabaseName;
+          Open;
+     end;
+end;
+
+procedure TForm_SubmenuSetup.SpinEdit_PriorityChange(Sender: TObject);
+begin
+     if StrToInt(SpinEdit_Priority.Text)<=0 then
+     SpinEdit_Priority.Text:='0';
+end;
+
+end.

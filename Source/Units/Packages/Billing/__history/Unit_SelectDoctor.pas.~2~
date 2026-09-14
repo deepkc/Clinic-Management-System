@@ -1,0 +1,188 @@
+unit Unit_SelectDoctor;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Grids, DBGrids, StdCtrls, ExtCtrls,dm, Db, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Fxn;
+
+type
+  TForm_SelectDoctor = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Edit_Search: TEdit;
+    DBGrid1: TDBGrid;
+    Query_Doctor: TOraQuery;
+    DS_Doctor: TDataSource;
+    Query_VariableComm: TOraQuery;
+    Table_Operation: TOraTable;
+    Query_TempProcess: TQuery;
+    procedure Edit_SearchChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
+    procedure FormDblClick(Sender: TObject);
+    Procedure Postdata;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    ps_AccessFrom,DepCode:String;
+    pi_TestNameId,pi_PositionWiseCommId,pi_PositionId,pi_Sno:Integer;
+    pb_New:Boolean;
+    pf_UnitTestCost,pf_StdTestPrice:Double;
+
+  end;
+
+var
+  Form_SelectDoctor: TForm_SelectDoctor;
+
+implementation
+
+
+{$R *.DFM}
+
+procedure TForm_SelectDoctor.Edit_SearchChange(Sender: TObject);
+begin
+     With Query_Doctor Do
+     Begin
+          Filtered:=False;
+          If Trim(Edit_Search.Text)<>'' Then
+          Begin
+               Filter:=' DocCode='+#39+Edit_Search.Text+'*'+#39+' OR '+
+                       ' DocName='+#39+Edit_Search.Text+'*'+#39;
+               Filtered:=True;
+          End;
+     End;
+end;
+
+procedure TForm_SelectDoctor.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+     Action:=caFree;
+end;
+
+procedure TForm_SelectDoctor.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     If (key=27) THEN  close;
+     If (key=40) AND  (ActiveControl<>DBGrid1) then  Query_Doctor.Next;
+     If (key=38) AND  (ActiveControl<>DBGrid1) then  Query_Doctor.Prior;
+     IF pb_New=False Then
+     Begin
+          Key:=0;
+          pb_New:=True;
+     End;
+
+     If (key=13) AND  (Query_Doctor.RecordCount > 0) then
+     Postdata;
+end;
+
+procedure TForm_SelectDoctor.FormShow(Sender: TObject);
+begin
+     Edit_Search.SetFocus;
+     IF ps_AccessFrom='Discharge_RoundChrg' then
+     Begin                                                  
+          With Query_Doctor Do
+          Begin
+               Close;
+               ParamByName('DepCode') .AsString:=DepCode;
+               Open;
+          End;
+     End
+     Else If (ps_AccessFrom ='Billing_DocSelection') or (ps_AccessFrom ='Discharge_OperationChrg') then
+     Begin
+          With Query_Doctor Do
+          Begin
+               Close;
+               Session:=DM_Hospital.DB;
+               (*Sql.Clear;
+               Sql.Add(' Select D.DocID,D.DOCCODE,D.DepCode,D.F_NAME||'' ''||D.L_NAME AS DocNAME,D.Salarybaserate From Doctor D ');
+               Sql.Add(' Where D.DActive=''Y''');
+               IF pi_PositionId=1 Then // 1 -ANAESTHESIA
+               Sql.Add(' and DepCode In (Select DepCode From Department where DepId=78)')
+               Else
+               Sql.Add(' and DepCode Not In (Select DepCode From Department where DepId=78)');
+               Sql.Add(' Order By D.F_Name ');*)
+               Open;
+          End;
+          //DBGrid1.Columns[2].Visible:=True;
+          //DBGrid1.Columns[1].Width:=240;
+     End;
+     pb_New:=False;
+     Edit_Search.SetFocus;
+end;
+
+procedure TForm_SelectDoctor.FormDblClick(Sender: TObject);
+begin
+     //If Query_Doctor.RecordCount > 0 then
+     //Postdata;
+end;
+
+Procedure TForm_SelectDoctor.Postdata;
+Var li_Sno:Integer;
+Begin
+     with Query_VariableComm do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select POWF_ISFIXEDPERSONFORFRACTION,POWF_FRACTIONRATE,POWF_FRACTIONAMOUNT From HS_POWF_PositionWiseFraction where');
+          sql.add(' POWF_ISFIXEDPERSONFORFRACTION=''N'' and POWF_POSITIONWISEFRACTIONID='+IntToStr(pi_PositionWiseCommId));
+          Open;
+     End;
+
+     IF Query_VariableComm.FieldByName('POWF_ISFIXEDPERSONFORFRACTION').AsString='Y' Then
+     Begin
+          MessageDlg('Sorry ! You Cannot Change This Fixed Person. Who Get Share.'+Char(10)+Char(10)+
+          'Suggestion ->  If you have to change person you must remove fixed '+Char(10)+'    person status in setup for this Investigation.'
+          ,mtwarning,[mbok],0);
+          Exit;
+     End;
+
+     IF ps_AccessFrom='Billing_DocSelection' then
+     Begin
+          With Query_TempProcess do
+          Begin
+               Close;
+               DatabaseName:=gs_TempPath;
+               sql.Clear;
+               sql.add(' Update ServiceWiseFraction.db Set Doccode='+#39+Query_Doctor.FieldbyName('Doccode') .AsString+#39);
+               sql.add(' ,DocID='+IntToStr(Query_Doctor.FieldbyName('DocID') .AsInteger));
+               sql.add(' ,DocName='+#39+Query_Doctor.FieldbyName('DocName') .AsString+#39);
+               sql.add(' where POSITIONWISEFRACTIONID='+IntToStr(pi_PositionWiseCommId));
+               //sql.add(' ,IsFixedPersonForFraction='+#39+Query_VariableComm.FieldbyName('POWF_ISFIXEDPERSONFORFRACTION') .AsString+#39);
+               //sql.add(' ,DocRatePer='+Query_VariableComm.FieldByName('CommRateA').AsString);
+               // Check it is not posting amount  By Amrit
+               {IF pf_StdTestPrice > 0 Then
+               sql.add(' ,DocAmount='+Query_VariableComm.FieldByName('CommAmtA').AsString);
+               }
+               //sql.add(' ,UnitTestCost='+FloatToStr(pf_UnitTestCost));
+               //sql.add(' ,Salarybaserate='+Floattostr(Query_Doctor.FieldbyName('Salarybaserate').AsFloat));
+               //sql.add(' where Sno='+IntToStr(pi_Sno));
+               ExecSQL;
+          End;
+     End
+     Else IF ps_AccessFrom='Discharge_OperationChrg' Then
+     Begin
+          With Query_TempProcess do
+          Begin
+               Close;
+               DatabaseName:=gs_TempPath;
+               sql.Clear;
+               sql.add(' Update FractionBreakUp.db Set DrCode='+#39+Query_Doctor.FieldbyName('DocCode').AsString+#39);
+               sql.add(' ,DrName='+#39+Query_Doctor.FieldbyName('DocName').AsString+#39);
+               sql.add(' ,IsFixedPersonForComm='+#39+Query_VariableComm.FieldbyName('IsFixedPersonForComm').AsString+#39);
+               sql.add(' ,DocRatePer='+Query_VariableComm.FieldByName('CommRateA').AsString);
+               IF pf_StdTestPrice > 0 Then
+               sql.add(' ,DocAmount='+Query_VariableComm.FieldByName('CommAmtA').AsString);
+               sql.add(' ,UnitTestCost='+FloatToStr(pf_UnitTestCost));
+               sql.add(' ,Salarybaserate='+Floattostr(Query_Doctor.FieldbyName('Salarybaserate').AsFloat));
+               sql.add(' where Sno='+IntToStr(pi_Sno));
+               ExecSQL;
+          End;
+     End;
+     Close;
+End;
+
+END.

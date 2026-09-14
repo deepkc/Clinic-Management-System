@@ -1,0 +1,119 @@
+Insert into TESTEDITFINDING(EDITFINDINGID,TESTNAMEID,DEFFIND,TITLEONE,TITLETWO, 
+TITLETHREE,TITLEFOUR,TITLEFIVE,TITLESIX,TITLESEVEN,TITLEEIGHT,TITLENINE,TITLETEN,
+TITLEELEVEN,TITLETWELVE,TITLETHIRTEEN,TITLEFOURTEEN,TITLEFIFTEEN,TITLESIXTEEN,TITLESEVENTEEN,
+RESONEDESC,RESTWODESC,RESTHREEDESC,RESFOURDESC,RESFIVEDESC,RESSIXDESC,RESSEVENDESC,
+RESEIGHTDESC,RESNINEDESC,RESTENDESC,RESELEVENDESC,RESTWELVEDESC,RESTHIRTEENDESC
+,RESFOURTEENDESC,RESFIFTEENDESC,RESSIXTEENDESC,RESSEVENTEENDESC,DESCRIPTION,ReportNote,ReportType,IsReportHead1,IsReportHead2,
+IsReportHead3,IsReportHead4,IsReportHead5,IsReportHead6,IsReportHead7,IsReportHead8,
+IsReportHead9,IsReportHead10,IsReportHead11,IsReportHead12,IsReportHead13,IsReportHead14,
+IsReportHead15,IsReportHead16) VALUES (
+19
+,437
+,'T'
+,'nkhininibiubni'
+,'bibibibibiii'
+,'ibibibibibibib'
+,'bibibibibibibibib'
+,'ibibibuibuibin'
+,'inknknbkknknknknnkn'
+,''
+,''
+,''
+,''
+,''
+,''
+,''
+,''
+,''
+,''
+,''
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16 ihigigighggighih\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16 ihi\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16 gihg\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16 igi\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16 hgih\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16 ihi\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16\par
+}
+'
+,'{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16\par
+}
+'
+,'bjbjbjbbiknojmokmj','{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\f0\fs16\par
+}
+'
+,'wqdwqdfwqdfwqf'
+,'N'
+,'N'
+,'N'
+,'N'
+,'N'
+,'N'
+,'N'
+,'N'
+,'N'
+,'N'
+,'N'
+,'N'
+,'N'
+,'N'
+,'N'
+,'N'
+)

@@ -1,0 +1,45 @@
+package ClinicalHistology;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  Global,
+  MidasFunction,
+  ClinicalPathology,
+  vcldbx,
+  tmsd2010,
+  tmsexd2010;
+
+contains
+  Unit_DefaultHistoSetup in 'Setup\Unit_DefaultHistoSetup.pas' {Form_DefaultSetup},
+  Unit_ClinicalPathFindingCentralNew in 'Unit_ClinicalPathFindingCentralNew.pas' {Frame_ClinicalPathFindingCentralNew: TFrame},
+  Unit_ClinicalPathFindingReport in 'Unit_ClinicalPathFindingReport.pas' {Form_Report},
+  Unit_ClinicalMasterSetup in 'Unit_ClinicalMasterSetup.pas' {Form_MasterSetup},
+  Unit_ClinicalMasterwiseTestSetup in 'Unit_ClinicalMasterwiseTestSetup.pas' {Form_ClinicalMasterwiseTestSetup},
+  Unit_LogReportClinicalPathFinding in 'Log Report\Unit_LogReportClinicalPathFinding.pas' {Form_LogReportClinicalPathFinding},
+  Unit_LogReportClinicalSetUp in 'Log Report\Unit_LogReportClinicalSetUp.pas' {Form_LogReportClinicalSetup};
+
+end.

@@ -1,0 +1,1772 @@
+unit Unit_GlobalFxnVar;
+
+
+interface
+
+uses
+  DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, SysUtils,Dialogs,Windows, Messages, Classes, Graphics, Controls, Forms, StdCtrls,
+  Registry,DM, ComCtrls, Db, DBGrids, vdateutils, Buttons, NB30, DateEditXControl_TLB, FileCtrl, ShellApi;
+
+
+
+  Function  CheckProperDateRange(DEX_FromDate,DEX_ToDate:TDateEditX):Boolean;
+  Function  ChangePassword(const sInput: string): string;
+  Function  Crypt(sInput: string; nPass:word): string;
+  Procedure ChangeDateSystem(DateControl:TDateEditX; Btn:TButton);
+  Procedure ChangeCaption(btn:Tbutton; DateSysetm:integer);
+  Function  GetDateTime() : TDateTime ;
+  Function  Get_DocName(DocCode:String):String;
+  Function  GetFromDateBySubNoOfDays(DateControl:TDateEditX; NoOfDays:Integer):String;
+  Function  GetNetMedicineCharge(InpatientId:Integer):Double;
+  Function  GetADDate(aDate : String) : TDate ;
+  procedure AvoidMultipleDecimal(Edit_Text:TEdit; var Key:char);
+  Function  RoundingFloatValue(FloatNumber:Double):Double;
+  Function  RoundingAfterSecondPlace(FloatNumber:Double):Double;
+  Function  GetNewLongIntKeyValue(Const RealTableName,KeyFieldName:String):LongInt;
+  Function  GetNextHospitalNo(Const RealTableName,KeyFieldName:String):LongInt;
+  Function  GetNextLOGID(Const RealTableName,KeyFieldName:String):LongInt;
+  Function  GetNextHospitalNoLabTest(Const RealTableName,KeyFieldName:String):LongInt;
+  Function  GetNextBillNo(Const RealTableName,KeyFieldName,BillType,SystemType,TodaysDate:String):String;
+  Function  GetNextFileNo(Const RealTableName,KeyFieldName,PatientType:String):LongInt;
+  Procedure ChangeToDefaultDate(DEX_FromDate,DEX_ToDate:TDateEditX);
+  Function  RetriveBedcharge(RoomTypeCode:String):Double;
+  Function  RetriveBedVat(RoomTypeCode:String):Double;
+  Function  SetTextWidth(sName: String; iLength: Integer): String;
+  Function  IsExistsInTable( TableName, ChkString : String ) : Integer ;
+  Function  IsActiveMedicareNo(PatientId : Integer) : String;
+  Function  DischargeModeChecking(InpatientId : Integer; DischargeType : String ):Boolean;
+  Function  GetNewEmergencyNo(Const RealTableName,KeyFieldName:String):LongInt;
+  Procedure InitializeHospitalInfo;
+  Function  ChangeDate_ADTOVS_VSTOAD(Date:String):String;
+  Function  GetMeEnglishDate(NepDate:String):String;
+  Function  GetNoOfDecimalPartOfFloatNum(FloatNum:Double;NoOfDecPart:Integer):Double;
+  Function SetRightAlignment(MaxWidth: Integer;FloatValue:Double): String;
+  function GetMeExactVatAmount(Amount,VatAmount:Double):Double;
+  Function  GetTotalDays(InptDate,OutDate,OutTime,IsDischargePoint:String):Integer;
+  Procedure Room_Type_Wise_SvrChrg_Posting(PatientId,InpatientId,CommunityId,SchemeId:Integer;
+                    MemberNo,RoomTypeCode,RateType :String; DollarExRate:Double); // Sp. Case of Medicare Hospital
+  Function  GetCurrentDepIdOfInpatient(InpatientId:Integer):Integer;
+  Procedure UpdateStringFieldInTable(TableName,FieldName,ConditionKeyField,ConditionKeyValue,DataStr:String);
+
+  Function GetMACAddress: string;
+  function GetAdapterInfo(Lana: AnsiChar): String;
+
+  Function Get_Reg_Quota_DocWise(DocCode,DepCode : String):Integer;
+  Function Get_Reg_QueueNo_DocWise(VisitDate,DocCode,DepCode,SystemType : String):Integer;
+  Function IsValid_Quota_Queue_ForDoctor(VisitDate,DocCode,DepCode,SystemType:String) : Boolean;
+
+  procedure VersionCheck;
+  Procedure GetTempPath(SystemType :String);
+  Procedure Remove_Old_TempDirectroy;
+  Function DelTree(DirName : string): Boolean;
+  Function  GetFiscalYear:String;
+
+  Function GetNewPrimaryId(TableName:String; TableId:String):Longint;
+  Function GetNewPrimaryimageId(TableName:String; TableId:String):Longint;
+
+  Function Get_QueueNo(VisitDate,DocCode,DepCode,SystemType : String):Integer;
+  Function Get_DepVisitTime(Depcode: String):string;
+  Function Get_NextVisitTime(VisitDate,DocCode:String):string;
+  Function GetPostPonedTime(VisitTime:String):string;
+  Function CheckTime(visittime:String):Double;
+  Function Get_MaxBilldate:String;
+  Function GetMaxId(TableName, FieldName: String): Integer;
+  function GetKeyValueTemp(RealTableName, KeyFieldName, DName: string): Longint;
+  function IsBipannaNagarik(Patientid:Integer):Boolean;
+
+
+  Var
+
+     gs_DataBackupPath              :String;
+     gs_TempPath                    :String;
+     gs_UserName                    :String;
+     gs_Time                        :String;
+     gs_DataEntryDateBS             :String;
+     gs_DataEntryDateAD             :String;
+     gs_RegistrationType            :String;
+     gs_TodaysDate                  :String;
+     gs_TodaysTime                  :String;
+     gs_Year                        :String;
+     gs_Month                       :String;
+     gs_ISINTEGRATEDPHARMACY        :string;
+     gs_MonthName                   :String;
+     gs_UserLoginTime               :String;
+     gs_EditPathReport              :String;
+     gs_UserLoginDate               :String;
+     gs_Usertype                    :String;
+
+     gs_MaxBilldate                 :String;
+     
+     gi_UserId                      :Integer;
+     gi_InchargeId                  :Integer;
+     gi_BillDetailId                :Integer;
+
+     gs_Service                     :String;
+     gs_picpath                     :String;
+     gs_HosPhEPS                    :String;
+     gs_PtType                      :String;
+     gs_DischargeSystem             :String;
+     gs_IsInptPharmacyService       :String;
+     gs_IsDoctorCompForBilling      :String;
+     gs_IsDoctorComForRegFollowup   :String;
+     gs_IsDoctorFractionActive      :String;
+     gs_IsMakeNillDischargeAmt      :String;
+     gs_ChangeTestPrice             :String;
+     gs_CounterUser                 :String;
+     gs_IsBooking                   :String;
+     gs_DischargeCancel             :string;
+     gs_IsDocCompAtAdmn             :string;
+     gs_OnlyViewInvReport           :String;
+     gs_PrintInBlankPaper           :String;
+     gs_HosNameBill                 :String;
+     gs_HosAddressBill              :String;
+     gs_HosPhoneBill                :String;
+     gs_HosPhoneExt                 :String;
+     gs_HosEmailBill                :String;
+
+
+     gs_PhotoDB_Password            :String;
+     gs_PhotoDB_UserName            :String;
+
+     // Hospital Wise Initilizing Variable
+
+
+     gs_SystemType                  :String;
+     gf_TDSPer                      :Double;
+     gf_EMRProcPercent              :Double;
+     gs_IsChrgInDollarForFrg        :String;
+
+     gs_TaxOfficeStatus             :String;
+
+     gf_VatPer                      :Double;
+     gs_HosName                     :String;
+     gs_HosSloganTitle              :String;
+     gs_HosRegistered               :String;
+     gs_HosAddress                  :String;
+     gs_HosPhone                    :String;
+     gs_HosEmail                    :String;
+     gs_HosWebSite                  :String;
+     gs_HosTPIN                     :String;
+     gs_DateFormat                  :String;
+     gs_GovtTaxRule                 :String;
+     gi_DateSystem                  :Integer;
+     gs_DMUserName                  :String;
+     gs_DMPassword                  :String;
+     gs_IsBillInDollarForFrg        :String;
+     gs_IsIncharge                  :String;
+     gs_IsNameModify                :String;
+     gs_IsDepositRefund             :String;
+     gs_OPAdvanceSystem             :String;
+     gs_Sigpath                     :String;
+     gf_TDS                         :Double;
+     gf_SvrChrgBilling              :Double;
+
+     gs_MacId                       :String;
+     gb_IsCreditBill                :Boolean;
+     gs_IsDollarBillForFrgInDischarge:String;
+     gb_HasAutoChargeItem           :Boolean;
+
+     gs_IsRegRefund                 :string;
+
+     gb_ShowDocName                 :Boolean;
+
+     gs_DocLoginCode                :String;
+
+     gb_Frct_Realize_On_Final_Bill  :Boolean;
+
+     gs_IsFileMgmtActive            :string;
+
+     gi_Patientid                   :Integer;
+     gi_inpatientid                 :Integer;
+     GI_VISITID                     :Integer;
+
+
+
+     DEX_Control                    :TDateEditX;
+     DEX_ControlTem                 :TDateEditX;
+
+
+     DateTimePicker                 :TDateTimePicker;
+     b_InchVerified                 :Boolean;
+     Query_GetNextNo                :TOraQuery;
+     Query_DataPost                 :TOraQuery;
+
+     gs_LogInDateForTempPath    :String;
+     gs_LogInTimeForTempPath    :String;
+
+     gs_IsFileNoGenerateInNewReg : String;
+     gs_IsEncounterIDGenerate : String;
+
+      {******* User Define Error message**********}
+const std_CloseMessage='Are you sure to close ?';
+      std_SaveMessage='Data has been save';
+      std_DeleteMessage='Are you sure to delete data?';
+      std_SortColor=$009FDBFF;
+      std_ExportToExcel='Are you sure to export in Excel ?';
+
+      gi_SQNoAtTheSystemStart=1500000;
+      gs_DatabaseName='Hospital';
+      gs_DB_MidasImageUser='MidasImage';
+      //gs_DB_MidasImageUser='Midas_Image';
+      gs_DiscountForTaxable=True; //Allow  for Discount on Taxable Items
+
+      // gi_HospitalID = 1; // NMC
+      //gi_HospitalID = 2; // Monomohan Memorial Hospital
+      //gi_HospitalID = 3; // Dhulikhel Hospital
+      //gi_HospitalID = 4; // Manipal
+      //gi_HospitalID = 5; // OM Nurshing Home
+      //gi_HospitalID = 6; // JMC
+      //gi_HospitalID = 7; // CMC
+      //gi_HospitalID = 8; // Birat
+      //gi_HospitalID = 9; // Nobel
+      gi_HospitalID = 10;//Civil Service Hospital
+
+      //gi_HospitalID = 18;//National Public Health Laboratory
+
+      b_ShowCaption=True;  //show the vs/ad change icon
+      //b_ShowCaption:=False; //doesnot show the vs/ad change icon
+
+      gb_SchemeWiseDiscount=False;
+      gs_IsMannual=False;
+      gs_ExeVersion='5.1.0.1';
+
+implementation
+Uses ServerDate;
+
+
+Procedure InitializeHospitalInfo;
+Begin
+    gs_MacId:=GetMACAddress;
+    IF gi_HospitalID=1 Then // NMC
+    Begin
+         gf_VatPer:=5; { Vat Percentage }
+
+         {gs_HosName:='Om Hospital And Reserch Centre';
+         gs_HosSloganTitle:='';
+         gs_HosAddress:='Chabail, Kathmandu';}
+
+
+         //gs_HosName:='Om Hospital And Research Centre Pvt. Ltd.';
+         gs_HosName:='NEPAL MEDICAL COLLEGE';
+         gs_HosSloganTitle:='';
+         gs_HosRegistered:='';
+         gs_HosAddress:='ATTARKHEL,JORPATI-KTM';
+
+         gs_HosPhone:='PH. NO.: 01-4486008';
+         gs_HosEmail:='nmc@nmcth.edu';
+         gs_HosWebSite:='www.nmcth.edu';
+         gs_HosTPIN:='--------';
+
+         gs_DMUserName:='NMC';
+         gs_DMPassword:='NMC';
+
+         gs_GovtTaxRule:='TBD'; //Tax Before Discount;
+         //gs_GovtTaxRule:='TAD'; //Tax After Discount;
+
+         gi_DateSystem:=0;//0 for VS
+         //gi_DateSystem:=1;// 1 for AD
+
+         gs_DateFormat:='MM/DD/YYYY';
+         //gs_DateFormat:='YYYY/MM/DD';
+    End
+    Else IF gi_HospitalID=2 Then // MONOMOHAN
+    Begin
+         gf_VatPer:=0; { Vat Percentage }
+         gs_HosName:='MANMOHAN MEMORIAL COMMUNITY HOSPITAL';
+         gs_HosRegistered:='';
+         gs_HosSloganTitle:='';
+         gs_HosAddress:='LEKHNATH MARG, THAMEL, KATHMANDU';
+         gs_HosPhone:='4411605,4420823,4411587';
+         gs_HosEmail:='';
+         gs_HosWebSite:='';
+         gs_HosTPIN:='--------';
+
+         gs_DMUserName:='Manamohan';
+         gs_DMPassword:='Manamohan';
+
+         gs_GovtTaxRule:='TBD'; //Tax Before Discount;
+         //gs_GovtTaxRule:='TAD'; //Tax After Discount;
+
+         gi_DateSystem:=0;//0 for VS
+         //gi_DateSystem:=1;// 1 for AD
+
+         gs_DateFormat:='MM/DD/YYYY';
+         //gs_DateFormat:='YYYY/MM/DD';
+
+         gs_IsBillInDollarForFrg:='N';
+
+    End
+    Else IF gi_HospitalID=3 Then // DHULIKHEL
+    Begin
+         gf_VatPer:=0; { Vat Percentage }
+         gs_HosName:='DHULIKHEL HOSPITAL';
+         gs_HosSloganTitle:='KATHMANDU UNIVERSITY TEACHING HOSPITAL';
+         gs_HosAddress:='DHULIKHEL, KAVREPALANCHWOK';
+         gs_HosRegistered:='';
+         gs_HosPhone:='Phone :-11-490497';
+         gs_HosEmail:='';
+         gs_HosWebSite:='www.dhulikhelhospital.org';
+         gs_HosTPIN:='--------';
+
+         gs_DMUserName:='Dhulikhel';
+         gs_DMPassword:='Dhulikhel';
+
+         gs_GovtTaxRule:='TBD'; //Tax Before Discount;
+         //gs_GovtTaxRule:='TAD'; //Tax After Discount;
+
+         gs_GovtTaxRule:='TBD'; //Tax Before Discount;
+         //gs_GovtTaxRule:='TAD'; //Tax After Discount;
+
+         //gi_DateSystem:=0;//0 for VS
+         gi_DateSystem:=1;// 1 for AD
+
+         gs_DateFormat:='MM/DD/YYYY';
+         //gs_DateFormat:='YYYY/MM/DD';
+    End
+    Else IF gi_HospitalID=4 Then // Manipal
+    Begin
+
+    End
+    Else IF gi_HospitalID=5 Then // OM Nursing Home
+    Begin
+         gf_VatPer:=5; { Vat Percentage }
+         gs_HosName:='Om Hospital And Research Centre Pvt. Ltd.';
+         gs_HosSloganTitle:='';
+         gs_HosAddress:='Chabahil, Kathmandu';
+         gs_HosRegistered:='';
+         gs_HosPhone:='';
+         gs_HosEmail:='';
+         gs_HosWebSite:='';
+         gs_HosTPIN:='--------';
+
+         gs_DMUserName:='OmHos1';
+         gs_DMPassword:='OmHos1';
+
+         //gs_GovtTaxRule:='TBD'; //Tax Before Discount;
+         gs_GovtTaxRule:='TAD'; //Tax After Discount;
+
+         //gi_DateSystem:=0;//0 for VS
+         gi_DateSystem:=1;// 1 for AD
+
+         gs_DateFormat:='MM/DD/YYYY';
+         //gs_DateFormat:='YYYY/MM/DD';
+
+         gi_DateSystem:=0;//0 for VS
+         //gi_DateSystem:=1;// 1 for AD
+    End
+    Else IF gi_HospitalID=6 Then // Janki Medical College
+    Begin
+
+    End
+    Else IF gi_HospitalID=7 Then // Chitwan Medical College
+    Begin
+
+    End
+    Else IF gi_HospitalID=8 Then // Birat
+    Begin
+
+    End
+    Else IF gi_HospitalID=9 Then // Nobel
+    Begin
+
+    End
+    Else IF gi_HospitalID=10 Then // CIVIL
+    Begin
+         gf_VatPer:=0; { Vat Percentage }
+         gs_HosName:='CIVIL SERVICE HOSPITAL';
+         gs_HosSloganTitle:='Nepal Government';
+         gs_HosAddress:='MinBhawan, Kathmandu, Nepal';
+         gs_HosRegistered:='';
+         gs_HosPhone:='Phone :- 4107000, 4107002, 4107003';
+         gs_HosPhEPS:='Phone No: 4107000   Fax No: 4107003';
+         gs_HosEmail:='';
+         gs_HosWebSite:='www.civilhospital.org';
+         gs_HosTPIN:='--------';
+
+         gs_DMUserName:='civil';
+         gs_DMPassword:='civil';
+
+         //gs_GovtTaxRule:='TBD'; //Tax Before Discount;
+         gs_GovtTaxRule:='TAD'; //Tax After Discount;
+
+         gi_DateSystem:=0;//0 for VS
+         //gi_DateSystem:=1;// 1 for AD
+
+         gs_DateFormat:='MM/DD/YYYY';
+         gs_Sigpath:='C:\Hospital\Bin\Data';
+
+         gs_IsBillInDollarForFrg:='N';
+         //gs_DateFormat:='YYYY/MM/DD';
+         gs_IsFileNoGenerateInNewReg:='N';
+         gs_IsEncounterIDGenerate:='N';
+
+         gb_Frct_Realize_On_Final_Bill:=True;
+
+          gs_PhotoDB_Password:='Image';
+          gs_PhotoDB_UserName:='Midas_Image';
+         gs_ISINTEGRATEDPHARMACY:='Y';
+
+    End
+    Else IF gi_HospitalID=18 Then // National Public Health Laboratory
+    Begin
+         gf_VatPer:=0; { Vat Percentage }
+         gs_HosName:='National Public Health Laboratory';
+         gs_HosSloganTitle:='Government of Nepal';
+         gs_HosAddress:='Teku, Kathmandu, Nepal';
+         gs_HosRegistered:='';
+         gs_HosPhone:='Phone :- 01-4252421, 4218652';
+         gs_HosEmail:='';
+         gs_HosWebSite:='';
+         gs_HosTPIN:='--------';
+
+         gs_DMUserName:='NPHL';
+         gs_DMPassword:='NPHL';
+
+         //gs_GovtTaxRule:='TBD'; //Tax Before Discount;
+         gs_GovtTaxRule:='TAD'; //Tax After Discount;
+
+         gi_DateSystem:=0;//0 for VS
+         //gi_DateSystem:=1;// 1 for AD
+
+         //gs_DateFormat:='MM/DD/YYYY';
+         gs_DateFormat:='YYYY/MM/DD';
+    End;
+End;
+
+Function GetMeEnglishDate(NepDate:String):String;
+Var  DateEditx_Hidden:TDateEditX;
+begin
+     DateEditx_Hidden:=TDateEditX.Create(Application);
+     DateEditx_Hidden.SystemOfDate:=0;
+     DateEditx_Hidden.Text:=NepDate;
+     DateEditx_Hidden.SystemOfDate:=1;
+     Result:=DateEditx_Hidden.Text;
+end;
+
+Function GetNextBillNo(Const RealTableName,KeyFieldName,BillType,SystemType,TodaysDate:String):String;
+Var
+   Cur_F_Year,Tem_Str,ls_ExtStr,ls_FiscalYearStartBS,ls_FiscalYearStart:String;
+   S_FDate,E_FDate:Integer;
+   DateEditx_Hidden:TDateEditX;
+begin
+     ls_ExtStr:='';
+     DateEditx_Hidden:=TDateEditX.Create(Application);
+     DateEditx_Hidden.SystemOfDate:=gi_DateSystem;
+     DateEditx_Hidden.text:=TodaysDate;
+     Tem_Str:=DateEditx_Hidden.VSDateAsText;
+     IF StrToInt(Copy(Tem_Str,6,2))>=4 Then
+     Begin
+          S_FDate:=StrToInt(Copy(Tem_Str,3,2));
+          E_FDate:=S_FDate+1;
+     End
+     Else
+     Begin
+          E_FDate:=StrToInt(Copy(Tem_Str,3,2));
+          S_FDate:=E_FDate-1;
+     End;
+
+     ls_FiscalYearStartBS:='20'+IntToStr(S_FDate)+'/04/01';
+     DateEditx_Hidden.SystemOfDate:=0;
+     DateEditx_Hidden.text:=ls_FiscalYearStartBS;
+
+     IF gi_DateSystem=1 Then
+     Begin
+        DateEditx_Hidden.SystemOfDate:=1;
+        ls_FiscalYearStart:=DateEditx_Hidden.text;
+     End
+     Else
+     ls_FiscalYearStart:=ls_FiscalYearStartBS;
+
+     Try
+          With Query_GetNextNo do
+          Begin
+               close;
+               //DatabaseName:=gs_DatabaseName;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               IF (SystemType='GEN') or (BillType='TP') Then
+               Begin
+                    sql.add(' Select SubStr(Max('+KeyFieldName+'),9,15) as nMax From '+RealTableName+' where SystemType=''GEN''');
+                    sql.add(' and BillNo Like '+#39+BillType+FormatFloat('00',S_FDate)+'/'+FormatFloat('00',E_FDate)+'%'+#39);
+                    sql.add(' and BillDate >='+#39+ls_FiscalYearStart+#39);
+                    //sql.add('and billdate>='+Quotedstr(gs_maxbilldate));
+               End
+               Else
+               Begin
+                    sql.add(' Select SubStr(Max('+KeyFieldName+'),10,15) as nMax From '+RealTableName+' where SystemType=''EHS''');
+                    sql.add(' and BillNo Like '+#39+'E'+BillType+FormatFloat('00',S_FDate)+'/'+FormatFloat('00',E_FDate)+'%'+#39);
+                    //sql.add(' and BillDate >='+#39+ls_FiscalYearStart+#39);
+                    sql.add('and billdate>='+Quotedstr(ls_FiscalYearStart));
+               End;
+               //sql.saveToFile('C:\EHSQuery.Txt');
+               Open;
+
+               IF (SystemType='GEN') or (BillType='TP') Then
+               Result:=BillType+FormatFloat('00',S_FDate)+'/'+FormatFloat('00',E_FDate)+'-'+FormatFloat('0000000',Query_GetNextNo.FieldByName('nMax').AsInteger+1)
+               Else
+               Result:='E'+BillType+FormatFloat('00',S_FDate)+'/'+FormatFloat('00',E_FDate)+'-'+FormatFloat('000000',Query_GetNextNo.FieldByName('nMax').AsInteger+1);
+               Close;
+          End;
+     Except
+          IF (SystemType='GEN') or (BillType='TP') Then
+          Result:=BillType+FormatFloat('00',S_FDate)+'/'+FormatFloat('00',E_FDate)+'-'+FormatFloat('0000000',1)
+          Else
+          Result:='E'+BillType+FormatFloat('00',S_FDate)+'/'+FormatFloat('00',E_FDate)+'-'+FormatFloat('000000',1);
+     End;
+     DateEditx_Hidden.Free;
+End;
+
+
+{Function GetNextBillNo(Const RealTableName,KeyFieldName,BillType,TodaysDate:String):String;
+Var
+   Cur_F_Year,Tem_Str:String;
+   S_FDate,E_FDate:Integer;
+begin
+   //Tem_Str:=Serverdate.TodaysDate;
+   //S_FDate:=StrToInt(Copy(Tem_Str,3,2));
+   //E_FDate:=S_FDate+1;
+
+   {*** think for fiscal year change...}
+{   Try
+      With Query_GetNextNo do
+      begin
+         close;
+         DatabaseName:=gs_DatabaseName;
+         sql.Clear;
+         sql.add(' Select SubStr(Max('+KeyFieldName+'),9,15) as nMax From '+RealTableName);
+         sql.add(' where  BillNo Like '+#39+BillType+'%'+#39);
+         Open;
+         //Result:=BillType+IntToStr(S_FDate)+'/'+IntToStr(E_FDate)+'-'+FormatFloat('0000000',FieldByName('nMax').AsInteger+1);
+         Result:=BillType+'64/65-'+FormatFloat('0000000',FieldByName('nMax').AsInteger+1);
+         close;
+      end;
+   Except
+      //Result:=BillType+IntToStr(S_FDate)+'/'+IntToStr(E_FDate)+'-'+FormatFloat('0000000',1);
+      Result:=BillType+'64/65-'+FormatFloat('0000000',1);
+      //result:=1; {}
+{   End;
+end;}
+
+procedure VersionCheck;
+Var
+     qry:TOraQuery;
+     ls_OldVersion,ls_old,ls_new:String;
+begin
+     //gs_ExeVersion :=GetVersionNumber;
+     ls_new:=StringReplace(gs_ExeVersion,'.','',[rfReplaceAll]);
+     qry :=TOraQuery.Create(Nil);
+     with Qry do
+     begin
+          Close;
+//          DatabaseName := gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add('Select * from gb_sove_softwareversion');
+          Open;
+          ls_OldVersion := FieldByName('sove_versionno').AsString;
+     end;
+     ls_old := StringReplace(ls_OldVersion,'.','',[rfReplaceAll]);
+     if ls_OldVersion='' then
+     with qry do
+     begin
+          Close;
+          //DatabaseName := gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add('Insert into gb_sove_softwareversion(sove_versionno) values('+QuotedStr(gs_ExeVersion)+')');
+          ExecSQL;
+     end
+     else if ls_new=ls_old then
+     begin
+        //
+     end
+     else if ls_old<ls_new then
+     begin
+          with qry do
+          begin
+               Close;
+               //DatabaseName := gs_DatabaseName;
+               Session := DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('Update gb_sove_softwareversion set sove_versionno='+ QuotedStr(gs_ExeVersion));
+               ExecSQL;
+          end
+     end
+     else if ls_old> ls_new then
+     begin
+          ShowMessage('Currently you are using old version of Midas Dr Homs.!! Please contact Administrator for latest version of Midas Dr Homs !! Thank You');
+     end;
+     qry.Free;
+End;
+
+
+
+Function GetNextFileNo(Const RealTableName,KeyFieldName,PatientType:String):LongInt;
+begin
+   With Query_GetNextNo do
+   begin
+      close;
+      //DatabaseName:=gs_DatabaseName;
+      Session := DM_Hospital.DB;
+      sql.Clear;
+      sql.add(' Select Max('+KeyFieldName+') as nMax From '+RealTableName);
+      sql.add(' where PatientType='+#39+PatientType+#39);
+      open;
+      result:=fieldByName('nMax').AsInteger+1;
+      close;
+   end;
+end;
+
+
+Function  GetNewEmergencyNo(Const RealTableName,KeyFieldName:String):LongInt;
+Begin
+   With Query_GetNextNo do
+   begin
+      close;
+      //DatabaseName:=gs_DatabaseName;
+      Session := DM_Hospital.DB;
+      sql.Clear;
+      sql.add(' Select Max('+KeyFieldName+') as nMax From '+RealTableName);
+      sql.add(' where RegDate >=''2064/12/01'''); //2064/12/01- From this point reset emergency no from 1.
+      open;
+      result:=fieldByName('nMax').AsInteger+1;
+      close;
+   end;
+End;
+
+
+Function GetNextHospitalNo(Const RealTableName,KeyFieldName:String):LongInt;
+begin
+  With Query_GetNextNo do
+  begin                { regular patient }
+    close;
+    //DatabaseName:=gs_DatabaseName;
+    Session := DM_Hospital.DB;
+    sql.Clear;
+    sql.add(' Select max('+KeyFieldName+') AS nMax from '+RealTableName);
+    sql.add(' Where PatientId < 9999900');
+    open;
+    result:=fieldByName('nMax').AsInteger+1;
+    close;
+  end;
+end;
+
+Function  GetNextLOGID(Const RealTableName,KeyFieldName:String):LongInt;
+begin
+  With Query_GetNextNo do
+  begin
+    close;
+    //DatabaseName:=gs_DatabaseName;
+    Session := DM_Hospital.DB;
+    sql.Clear;
+    sql.add(' Select max('+KeyFieldName+') AS nMax from '+RealTableName);
+    open;
+    result:=fieldByName('nMax').AsInteger+1;
+    close;
+  end;
+end;
+
+Function GetNextHospitalNoLabTest(Const RealTableName,KeyFieldName:String):LongInt;
+begin
+  With Query_GetNextNo do
+  begin                      { only for patient who have only lab test }
+    close;
+    //DatabaseName:=gs_DatabaseName;
+    sql.Clear;
+    sql.add(' Select max('+KeyFieldName+') AS nMax from '+RealTableName);
+    sql.add(' Where PatientId > 9999900');
+    open;
+    If FieldbyName('nMax') .AsInteger=0 then
+      Result:=9999901
+    Else
+     Result:=fieldByName('nMax').AsInteger+1;
+    close;
+  end;
+end;
+
+
+Function GetNewLongIntKeyValue(Const RealTableName,KeyFieldName:String):LongInt;
+begin
+     With Query_GetNextNo do
+     begin
+          close;
+          //DatabaseName:=gs_DatabaseName;
+          sql.Clear;
+          sql.add('Select max('+KeyFieldName+') AS nMax from '+RealTableName);
+          //sql.savetofile('C:\1.txt');
+          open;
+          result:=fieldByName('nMax').AsInteger+1;
+          close;
+     end;
+end;
+
+
+Function RetriveBedcharge(RoomTypeCode:String):Double;
+Begin
+   With Query_GetNextNo Do
+   Begin
+      //DatabaseName:=gs_DatabaseName;
+      Session := DM_Hospital.DB;
+      Close;
+      sql.Clear;
+      sql.ADD('SELECT Bedcharge from RoomType');
+      sql.ADD('Where RoomTypeCode='+Chr(39)+RoomTypeCode+Chr(39));
+      Open;
+      Result:=FieldByName('BedCharge').AsFloat;
+   End;
+End;
+
+Function  RetriveBedVat(RoomTypeCode:String):Double;
+Begin
+   With Query_GetNextNo Do
+   Begin
+      //DatabaseName:=gs_DatabaseName;
+      Session := DM_Hospital.DB;
+      Close;
+      sql.Clear;
+      sql.ADD('SELECT VatAmt from RoomType');
+      sql.ADD('Where RoomTypeCode='+Chr(39)+RoomTypeCode+Chr(39));
+      Open;
+      Result:=FieldByName('VatAmt').AsFloat;
+   End;
+End;
+
+
+
+
+Function Crypt(sInput: string;nPass:word): string;
+var nLen,x,n:word;
+begin
+   if sInput='' then
+   begin
+      result:='';
+      exit;
+   end;
+   nLen:=length(sInput);
+   n:=nLen;
+   setlength(result,nLen);
+   for x:=nLen downto 1 do
+   begin
+      result[x]:=chr(ord(sInput[n]) XOR nPass);
+      dec(n);
+   end;
+end;
+
+Procedure ChangeToDefaultDate(DEX_FromDate,DEX_ToDate:TDateEditX);
+Begin
+   DEX_FromDate.SystemOfDate:=gi_DateSystem;
+   DEX_ToDate.SystemOfDate:=gi_DateSystem;
+End;
+
+Function ChangePassword(const sInput: string): string;
+Begin
+  ChangePassword:=Crypt(sInput,1010);
+  //ChangePassword:=sInput;
+End;
+
+Procedure ChangeDateSystem(DateControl:TDateEditX; Btn:TButton);
+begin
+   if DateControl.SystemOfDate=0 Then
+   begin
+      DateControl.SystemOfDate:=1;
+      Btn.Caption:='AD';
+   end else if DateControl.SystemOfDate=1 Then
+   begin
+      DateControl.SystemOfDate:=0;
+      Btn.Caption:='BS';
+   end;
+end;
+
+Procedure ChangeCaption(btn:Tbutton; DateSysetm:integer);
+begin
+   if DateSysetm=1 Then
+      btn.Caption:='AD'
+   Else if DateSysetm=0 Then
+      btn.Caption:='BS'
+end;
+
+Function GetFromDateBySubNoOfDays(DateControl:TDateEditX; NoOfDays:Integer):String;
+Begin
+   IF gi_DateSystem=0 Then
+   Result:=ADTOVSS(formatDateTime('YYYY/MM/DD',DateControl.ADDateAsDate-NoOfDays))
+   Else//IF gi_DateSystem=1 Then
+   Result:=formatDateTime('YYYY/MM/DD',DateControl.ADDateAsDate-NoOfDays);
+End;
+
+Function GetDateTime() : TDateTime ;
+begin
+     //DateTimePicker.Date := Date;
+     DateTimePicker.Time := Now ;
+     Result := DateTimePicker.DateTime ;
+end;
+
+procedure AvoidMultipleDecimal(Edit_Text:TEdit; var Key:char);
+var Position,DecPos:Integer;  {*** while typing float amount to control multiple decimal eg 22.32.1 just do only 22.321...}
+    DecimalNum,Weight:String;
+begin
+  Weight:=Edit_Text.Text+Key;
+  if (Key in['.']) or (Key in['0'..'9'])  then
+  begin
+    Position:=Pos('.',Edit_Text.Text);
+    if Position<>0 then
+    begin
+      DecimalNum:=Copy(Weight,Position+1,Length(Weight));
+      DecPos:=Pos('.',DecimalNum);
+      if DecPos<>0 then
+      begin
+        Key:=#0;
+      end;
+    end;
+  end
+  else
+  Key:=#0;
+end;
+
+Function RoundingFloatValue(FloatNumber:Double):Double;
+var ls_FirstPartValue,ls_SecondPartValue:String;
+    li_RoundedValue:Integer;
+    ls_FloatNumber:String;
+begin {*** This function round the 2 digit after decimal place eg. 467.78 -> takes 78 and make 7.8 then Use Round fxn}
+   ls_FloatNumber:=FloatToStr(FloatNumber);
+   IF Pos('.',ls_FloatNumber) > 0 Then
+   Begin
+      ls_FirstPartValue:=copy(ls_FloatNumber,1,Pos('.',ls_FloatNumber)-1);
+      ls_SecondPartValue:=copy(ls_FloatNumber,Pos('.',ls_FloatNumber)+1,1)+'.'+copy(ls_FloatNumber,Pos('.',ls_FloatNumber)+3,1);
+      li_RoundedValue:=Round(StrToFloat(ls_SecondPartValue));
+      IF ls_FirstPartValue='' Then
+      ls_FirstPartValue:='0';
+      if li_RoundedValue=10 then
+      Result:=StrToFloat(ls_FirstPartValue)+1
+      else
+      begin
+         if li_RoundedValue=0 then
+         Result:=StrToFloat(ls_FirstPartValue)
+         else
+         Result:=StrToFloat(ls_FirstPartValue+'.'+IntToStr(li_RoundedValue));
+      end;
+   End
+   Else
+   Result:=FloatNumber;
+end;
+
+
+Function RoundingAfterSecondPlace(FloatNumber:Double):Double;
+var ls_FirstPartValue,ls_SecondPartValue,ls_ThirdValue:String;
+    li_RoundedValue:Integer;
+    ls_FloatNumber:String;
+begin {*** This function round the 2 digit after decimal place eg. 467.789 -> keeps 7 as it is
+         after . then only takes 89 as  8.9 then Use Round fxn and result would be 467.79 }
+    ls_FloatNumber:=FloatToStr(FloatNumber);
+    IF Pos('.',ls_FloatNumber) > 0 Then
+    Begin
+         ls_FirstPartValue:=copy(ls_FloatNumber,1,Pos('.',ls_FloatNumber)-1);
+         ls_SecondPartValue:=copy(ls_FloatNumber,Pos('.',ls_FloatNumber)+1,1);
+         ls_ThirdValue:=copy(ls_FloatNumber,Pos('.',ls_FloatNumber)+2,1)+'.'+copy(ls_FloatNumber,Pos('.',ls_FloatNumber)+3,1);
+
+         //ls_SecondPartValue:=copy(ls_FloatNumber,Pos('.',ls_FloatNumber)+1,1)+'.'+copy(ls_FloatNumber,Pos('.',ls_FloatNumber)+2,1);
+         li_RoundedValue:=Round(StrToFloat(ls_ThirdValue));
+         IF ls_FirstPartValue='' Then
+         ls_FirstPartValue:='0';
+         IF li_RoundedValue=10 then
+         Begin
+            IF StrToFloat(ls_SecondPartValue)+1=10 Then
+            Result:=StrToInt(ls_FirstPartValue)+1
+            Else
+            Result:=StrToFloat(ls_FirstPartValue+'.'+IntToStr(StrToInt(ls_SecondPartValue)+1));
+         End
+         else
+         begin
+            if li_RoundedValue=0 then
+            Result:=StrToFloat(ls_FirstPartValue+'.'+ls_SecondPartValue)
+            else
+            Result:=StrToFloat(ls_FirstPartValue+'.'+ls_SecondPartValue+IntToStr(li_RoundedValue));
+         end;
+    End
+    Else
+    Result:=FloatNumber;
+end;
+
+
+
+Function  RoundingFloat(FloatNumber:Double):Double;
+Begin
+   //
+End;
+
+
+
+function GetADDate(aDate : String) : TDate;
+var sDays, sMonth, syear : string ;
+   iCnt, iMonth : Integer ;
+begin
+   if aDate = '' then Exit ;
+   iCnt := 0 ;
+   sMonth := copy(aDate,1,3);
+   sYear := '20'+Copy(aDate,5,2);
+   repeat
+      iCnt := iCnt + 1 ;
+      iMonth := iCnt ;
+   until UpperCase(ShortMonthNames[iCnt]) = UpperCase(sMonth) ;
+   sMonth := IntToStr(iMonth) ;
+   while Length(sMonth) < 2 do
+   begin
+      sMonth := '0' + sMonth;
+   end ;
+   DEX_Control.SystemOfDate := 1 ;
+   DEX_Control.Text := sYear+'/'+sMonth+'/'+'01' ;
+   sDays := IntToStr(DEX_Control.DaysInThisMonth);
+   DEX_Control.Text := sYear+'/'+sMonth+'/'+sDays ;
+   Result := DEX_Control.ADDateAsDate;
+end;
+
+
+Function SetTextWidth(sName: String; iLength: Integer): String;
+var
+    whitespace  :String;
+    iLoop       :Integer;
+begin
+    Whitespace:='';
+    For iLoop:=1 To iLength do
+        Whitespace:= Whitespace+' ';
+    Result:= whitespace + sName ;
+end;
+
+
+
+Function IsExistsInTable( TableName, ChkString : String ) : Integer ;
+var QueryBin : TOraQuery ;
+begin
+     QueryBin := TOraQuery.Create(Nil) ;
+     with QueryBin do
+     begin
+          //DatabaseName := gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          Close ;
+          SQL.Clear ;
+          SQL.Add('SELECT * FROM ' + TableName );
+          SQL.Add(ChkString);
+          if Not Prepared then Prepare ;
+          ExecSQL ;
+          Open ;
+
+          if QueryBin.RecordCount > 0 then
+             Result := 1
+          else if QueryBin.RecordCount = 0 then
+              Result := 0
+          else Result := -1 ;
+     end ;
+     QueryBin.Free ;
+end ;
+
+
+Function IsActiveMedicareNo(PatientId : Integer) : String;
+Begin
+   with Query_GetNextNo do
+   Begin
+      Close;
+      //DatabaseName:=gs_DatabaseName;
+      Session := DM_Hospital.DB;
+      sql.Clear;
+      sql.add(' Select IsActiveMember From Member where PatientId='+IntToStr(PatientId));
+      Open;
+   End;
+   
+   IF (Query_GetNextNo.FieldByName('IsActiveMember').AsString='Y') Then
+   Result:='Y'
+   Else
+   Result:='N';
+End;
+
+Function DischargeModeChecking(InpatientId : Integer; DischargeType : String ):Boolean;
+Begin
+     //Query_GetNextNo.DatabaseName:=gs_DatabaseName;
+     IF DischargeType='FD' Then // FD-Financial Discharge
+     Begin
+          With Query_GetNextNo do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select InpatientId From IPDischarge Where InpatientId='+IntToStr(InpatientId));
+               Open;          
+          End;
+          IF Query_GetNextNo.RecordCount > 0 Then
+          Result:=True
+          Else
+          Result:=False;
+     End
+     Else // MD - Medical Discharge
+     Begin
+          With Query_GetNextNo do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select Discharged From InpatientReg Where InpatientId='+IntToStr(InpatientId));
+               Open;
+          End;
+          IF Query_GetNextNo.FieldByName('Discharged').AsString='YES' Then
+          Result:=True
+          Else
+          Result:=False;
+     End;
+End;
+
+
+Function GetNetMedicineCharge(InpatientId:Integer):Double;
+Var ls_InptDate,ls_DisDate,ls_IsDischarged:String;
+    lf_TotMedCharge,lf_TotMedRefund:Double;
+    li_PatientId:Integer;
+Begin
+     With Query_GetNextNo do
+     Begin
+          Close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Select InptDate,DisDate,PatientId,Discharged From InpatientReg where InpatientId='+IntToStr(InpatientId));
+          Open;
+     End;
+     ls_DisDate:='';
+     li_PatientId:=Query_GetNextNo.FieldByName('PatientId').AsInteger;
+     ls_InptDate:=Query_GetNextNo.FieldByName('InptDate').AsString;
+     ls_DisDate:=Query_GetNextNo.FieldByName('DisDate').AsString;
+     ls_IsDischarged:=Query_GetNextNo.FieldByName('Discharged').AsString;
+     
+     with Query_GetNextNo do
+     Begin
+          Close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' select Sum(Round((SD.Qty*SD.UnitRate),5)-Round(((SD.Qty*SD.UnitRate) * SD.Discount/100),5)) as NetTotal');
+          sql.add(' From SaleMaster SM,SaleDetail SD,ItemsList IL where (SM.SaleMasterId=SD.SaleMasterId)');
+          sql.add(' and (SD.itemsid=IL.itemsid) and (SM.ST=''N'') and (SM.STATUS1=1) and');  {*** N for credit bill...  Status1= 0 -cash , status1= 1 -Credit}
+          sql.add(' (SD.PatientId < 9999900) And');
+          sql.add(' (SD.InPatientId='+IntToStr(InpatientId)+')');
+          Open;
+     End;
+     lf_TotMedCharge:=Query_GetNextNo.FieldByName('NetTotal').AsFloat;
+
+
+     IF Trim(ls_DisDate)='' Then
+     ls_DisDate:=ServerDate.TodaysDate;
+
+     { Medicine Refund }
+     with Query_GetNextNo do
+     Begin
+          Close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Select Sum( Round((RD.Qty*RD.UnitPrice),5)-Round(((RD.Qty*RD.UnitPrice) * RD.Discount/100),5)) as NetTotal');
+          sql.add(' From ReturnMaster RM,ReturnDetail RD where RM.CustomerId='+IntToStr(li_PatientId));
+          sql.add(' and RM.Credit1=1 and RM.ST=''N'' and RM.ReturnMasterId=RD.ReturnMasterId(+)and ');
+          sql.add(' RM.ReturnDate>='+#39+ls_InptDate+#39+' and RM.ReturnDate<='+#39+ls_DisDate+#39);
+
+          IF ls_IsDischarged='YES' Then
+          Begin
+               Sql.add(' And RM.CustomerID In(Select PatientID From InpatientReg Where PatientID=RM.CustomerId And ');
+               Sql.Add(' ((RM.Returndate>=Inptdate And RM.Returndate < Disdate)) ');
+               Sql.Add(' OR (RM.Returndate=DisDate And RM.Rettime<=(Select OutTime From InpatientDetail ');
+               sql.add(' Where InPatientId=InpatientReg.InPatientId and DisBillDate=InpatientReg.DisDate))) ');
+          End;
+          Open;
+     End;
+     lf_TotMedRefund:=Query_GetNextNo.FieldByName('NetTotal').AsFloat;
+     Result:=lf_TotMedCharge - lf_TotMedRefund;
+End;
+
+Function ChangeDate_ADTOVS_VSTOAD(Date:String):String;
+Var ls_Date,ls_DateType:String;
+begin
+     DEX_ControlTem.SystemOfDate:=gi_DateSystem;
+     DEX_ControlTem.Text:=Date;
+     IF gi_DateSystem=1 Then
+     Begin
+          DEX_ControlTem.SystemOfDate:=0;
+          ls_DateType:='BS';
+     End
+     Else
+     Begin
+          DEX_ControlTem.SystemOfDate:=1;
+          ls_DateType:='AD';
+     End;
+     Result:=Date+' ( '+DEX_ControlTem.Text+' '+ls_DateType+'  )';
+End;
+
+Function GetNoOfDecimalPartOfFloatNum(FloatNum:Double;NoOfDecPart:Integer):Double;
+Var ls_FloatNumber:String;
+Begin
+     ls_FloatNumber:=FloatToStr(FloatNum);
+     IF Pos('.',ls_FloatNumber) > 0 Then
+     Result:=StrToFloat(copy(ls_FloatNumber,1,Pos('.',ls_FloatNumber)-1)+'.'+copy(ls_FloatNumber,Pos('.',ls_FloatNumber)+1,NoOfDecPart))
+     Else
+     Result:=FloatNum;
+End;
+
+Function SetRightAlignment(MaxWidth: Integer;FloatValue:Double): String;
+Var  LengthOfFloatValue:Integer;
+     FloatStr,FormatStr:String;
+begin
+     FloatStr:=Format('%.2f',[FloatValue]);
+     FormatStr:=FloatStr;
+     LengthOfFloatValue:=Length(FloatStr);
+     While LengthOfFloatValue<MaxWidth Do
+     Begin
+          FormatStr:='  '+FormatStr;
+          LengthOfFloatValue:=LengthOfFloatValue+1;
+     End;
+     //If LengthOfFloatValue<=4 Then
+     //Result:=Format('%10.2f',[FloatValue])
+     //Else
+     //Begin
+          //FormatStr:='%'+IntToStr(MaxWidth)+'.2f';
+          Result:=Format(FormatStr,[FloatValue]);
+     //End;
+end;
+
+function GetMeExactVatAmount(Amount,VatAmount:Double):Double;
+Var  DecimalStr,PassStr:String;
+     DecimalAmount:Double;
+     DotPos,AniD:Integer;
+begin
+     //This function returns Exact TestPrice Of the Test, Avoids less or greater of between 0.2 Paisa
+     PassStr:=FloatToStr(Amount+VatAmount);
+     DotPos:=Pos('.',PassStr);
+     If DotPos=0 Then
+     Result:=VatAmount
+     Else
+     Begin
+          DecimalStr:=Copy(PassStr,DotPos,3);
+          DecimalAmount:=StrToFloat(DecimalStr);
+          If DecimalAmount>=0.51 Then
+          Result:=RoundingAfterSecondPlace(VatAmount+(1-DecimalAmount))
+          Else If DecimalAmount<=0.49 Then
+          Result:=RoundingAfterSecondPlace(VatAmount-DecimalAmount)
+          Else Result:=VatAmount;
+     End;
+end;
+
+function GetMACAddress: string;
+var
+     AdapterList: TLanaEnum;
+     NCB: TNCB;
+begin
+     FillChar(NCB, SizeOf(NCB), 0);
+     NCB.ncb_command := Char(NCBENUM);
+     NCB.ncb_buffer := @AdapterList;
+     NCB.ncb_length := SizeOf(AdapterList);
+     Netbios(@NCB);
+     if Byte(AdapterList.length) > 0 then
+          Result := GetAdapterInfo(AdapterList.Lana[0])
+     else
+          Result := 'mac not found';
+end;
+
+function GetAdapterInfo(Lana: AnsiChar): String;
+var
+     Adapter: TAdapterStatus;
+     NCB: TNCB;
+begin
+     FillChar(NCB, SizeOf(NCB), 0);
+     NCB.ncb_command := Char(NCBRESET);
+     NCB.ncb_lana_num := Lana;
+     if Netbios(@NCB) <> Char(NRC_GOODRET) then
+     begin
+          Result := 'mac not found';
+          Exit;
+     end;
+
+     FillChar(NCB, SizeOf(NCB), 0);
+     NCB.ncb_command := Char(NCBASTAT);
+     NCB.ncb_lana_num := Lana;
+     NCB.ncb_callname := '*';
+
+     FillChar(Adapter, SizeOf(Adapter), 0);
+     NCB.ncb_buffer := @Adapter;
+     NCB.ncb_length := SizeOf(Adapter);
+     if Netbios(@NCB) <> Char(NRC_GOODRET) then
+     begin
+          Result := 'mac not found';
+          Exit;
+     end;
+     Result := IntToHex(Byte(Adapter.adapter_address[0]), 2) + '-' + IntToHex(Byte(Adapter.adapter_address[1]), 2)
+       + '-' + IntToHex(Byte(Adapter.adapter_address[2]), 2) + '-' + IntToHex(Byte(Adapter.adapter_address[3]), 2)
+       + '-' + IntToHex(Byte(Adapter.adapter_address[4]), 2) + '-' + IntToHex(Byte(Adapter.adapter_address[5]), 2);
+end;
+
+Function CheckProperDateRange(DEX_FromDate,DEX_ToDate:TDateEditX):Boolean;
+Begin
+     IF (Length(Trim(DEX_FromDate.Text))=10) and (Length(Trim(DEX_ToDate.Text))=10) Then
+     Result:=True
+     Else
+     Result:=False;
+End;
+
+Function GetTotalDays(InptDate,OutDate,OutTime,IsDischargePoint:String):Integer;
+Var li_NoOfDays:Integer;
+    ls_CurrentTime:String;
+    DateEditX_In,DateEditX_Out:TDateEditX;
+Begin
+     DateEditX_In:=TDateEditX.Create(nil);
+     DateEditX_Out:=TDateEditX.Create(nil);
+     
+     DateEditX_In.SystemOfDate:=gi_DateSystem;
+     DateEditX_In.text:=InptDate;
+     DateEditX_Out.SystemOfDate:=gi_DateSystem;
+     DateEditX_Out.text:=OutDate;
+     li_NoOfDays:=DateEditX_Out.VSDateAsDays-DateEditX_In.VSDateAsDays;
+
+     IF gi_HospitalID=2 Then // 2 - Manamohan
+     Begin
+          IF OutTime='C' Then
+          ls_CurrentTime:=ServerDate.TodaysTime
+          Else
+          ls_CurrentTime:=OutTime;
+          //IF (ls_CurrentTime > '12:00:00') and (pi_NoOfDays > 0) Then
+          IF (ls_CurrentTime > '16:00:00') and (li_NoOfDays > 0) and (OutTime='C') Then
+          li_NoOfDays:=li_NoOfDays+1
+          Else IF (ls_CurrentTime > '16:00:00') and (li_NoOfDays > 0) and (OutTime<>'C') and (IsDischargePoint='Y') Then
+          li_NoOfDays:=li_NoOfDays+1;
+          Result:=li_NoOfDays;
+     End
+     Else
+     Result:=li_NoOfDays;
+
+End;
+
+Procedure Room_Type_Wise_SvrChrg_Posting(PatientId,InpatientId,CommunityId,SchemeId:Integer;
+                    MemberNo,RoomTypeCode,RateType :String; DollarExRate:Double); // Sp. Case of Medicare Hospital
+Var lf_SvrChrg:Double;
+    li_DepId,li_ClinicalDepId:Integer;
+    ls_TPBillNo,ls_RateType:String;
+    ls_TodaysDate,ls_TodaysTime:String;
+    Query_IsSvrChrgExist,Query_SvrChrgPosting:TOraQuery;
+Begin
+     Query_SvrChrgPosting:=TOraQuery.Create(nil);
+     Query_IsSvrChrgExist:=TOraQuery.Create(nil);
+     With Query_IsSvrChrgExist do
+     Begin
+          Close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Select SvrChrg From RoomType where RoomTypeCode='+#39+RoomTypeCode+#39);
+          Open;
+
+          lf_SvrChrg:=Query_IsSvrChrgExist.FieldByName('SvrChrg').AsFloat;
+
+
+          Close;
+          sql.Clear;
+          sql.add(' Select PatientId,InpatientId,Service,ServiceType From BillDetail where CancelStatus=''N''');
+          sql.add(' and InpatientId='+IntToStr(InPatientId));
+          sql.add(' and Service=''SVRCHRG''');
+          Open;
+
+          IF Query_IsSvrChrgExist.RecordCount > 0 Then
+          Begin
+               With Query_SvrChrgPosting do
+               Begin
+                    Close;
+                    //DatabaseName:=gs_DatabaseName;
+                    Session := DM_Hospital.DB;
+                    sql.Clear;
+                    sql.add(' Update BillDetail Set Amount='+FloatToStr(lf_SvrChrg));
+                    sql.add(' ,VatAmt='+FloatToStr(lf_SvrChrg*gf_VatPer/100));
+                    sql.add(' ,TotalAmount='+FloatToStr(lf_SvrChrg+(lf_SvrChrg*gf_VatPer/100)));
+                    sql.add(' where InpatientId='+IntToStr(InPatientId)+' and CancelRemarks=''AUTO ITEM''');
+                    sql.add(' and Service=''SVRCHRG''');
+                    ExecSQL;
+               End;
+          End
+          Else
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select DepId,TestName From TestName where TestNameCode=''SVRCHRG''');
+               Open;
+
+               li_DepId:=Query_IsSvrChrgExist.FieldByName('DepId').AsInteger;
+
+               ls_TodaysDate:=ServerDate.TodaysDate;
+               ls_TodaysTime:=ServerDate.TodaysTime;
+               li_ClinicalDepId:=GetCurrentDepIdOfInpatient(InPatientId);
+
+               IF RateType='FRG' Then
+               ls_RateType:='FRG'
+               Else
+               ls_RateType:='GEN';
+
+               Try
+                    ls_TPBillNo:=GetNextBillNo('BillMaster','BillNo','TP',gs_SystemType,ls_TodaysDate);
+{                    SaveBillMaster(
+                              PatientId,gi_UserId,0,0,0,lf_SvrChrg,lf_SvrChrg+(lf_SvrChrg*gf_VatPer/100),
+                              (lf_SvrChrg*gf_VatPer/100),ls_TPBillNo,ls_RateType,ls_TodaysDate,ls_TodaysTime,'CREDIT','IP',gs_MacID);  }
+
+               Except
+                    ls_TPBillNo:=GetNextBillNo('BillMaster','BillNo','TP',gs_SystemType,ls_TodaysDate);
+{                    SaveBillMaster(
+                              PatientId,gi_UserId,0,0,0,lf_SvrChrg,lf_SvrChrg+(lf_SvrChrg*gf_VatPer/100),
+                              (lf_SvrChrg*gf_VatPer/100),ls_TPBillNo,ls_RateType,ls_TodaysDate,ls_TodaysTime,'CREDIT','IP',gs_MacID  );}
+
+               End;
+
+
+
+               {    SaveBillDetail(PatientId,InPatientId,SchemeId,CommunityId,PatientTestId,DepID,ClinicalDepId,UserId:Integer;
+                         BillNo,RateType,DepCode,TestNameCode,MemberNo,PayType,BillType,BillDate,BillTime:String;
+                         Quatity,CurQty,VatAmt,CurVatAmt,Amount,TotalAmount,Dis:Double;DocCode,RefDocCode,LabNo,IsOT:String); }
+               IF (RateType<>'FRG') or (gs_IsChrgInDollarForFrg='N') Then
+               Begin
+                    Try
+{                         SaveBillDetail(
+                              PatientId,InPatientId,SchemeId,CommunityId,0,li_DepId,li_ClinicalDepId,
+                              gi_UserId,ls_TPBillNo,ls_RateType,'SVRCHRG',Query_IsSvrChrgExist.FieldByName('TestName').AsString,
+                              MemberNo,'CREDIT','IP',ls_TodaysDate,ls_TodaysTime,1,1,lf_SvrChrg*gf_VatPer/100,
+                              lf_SvrChrg*gf_VatPer/100,lf_SvrChrg,(lf_SvrChrg+(lf_SvrChrg*gf_VatPer/100)),0,'HOS01','HOS01','','N',gs_MacID);}
+                    Except
+{                         SaveBillDetail(
+                              PatientId,InPatientId,SchemeId,CommunityId,0,li_DepId,li_ClinicalDepId,
+                              gi_UserId,ls_TPBillNo,ls_RateType,'SVRCHRG',Query_IsSvrChrgExist.FieldByName('TestName').AsString,
+                              MemberNo,'CREDIT','IP',ls_TodaysDate,ls_TodaysTime,1,1,lf_SvrChrg*gf_VatPer/100,
+                              lf_SvrChrg*gf_VatPer/100,lf_SvrChrg,(lf_SvrChrg+(lf_SvrChrg*gf_VatPer/100)),0,'HOS01','HOS01','','N',gs_MacID);}
+                    End;
+               End
+               Else
+               Begin
+
+                    {SaveBillDetailFRG(PatientId,InPatientId,SchemeId,CommunityId,PatientTestId,DepID,ClinicalDepId,UserId:Integer;
+                         BillNo,RateType,DepCode,TestNameCode,MemberNo,PayType,BillType,BillDate,BillTime:String;
+                         Quatity,CurQty,VatAmt,CurVatAmt,Amount,TotalAmount,Dis,DollarAmount,DollarVatAmt,DCurVatAmt,
+                         DollarTotalAmount,ExchangeRate:Double;DocCode,RefDocCode,LabNo,IsOT:String);}
+                    Try
+{                         SaveBillDetailFRG(
+                              PatientId,InPatientId,SchemeId,CommunityId,0,li_DepId,li_ClinicalDepId,
+                              gi_UserId,ls_TPBillNo,ls_RateType,'SVRCHRG',Query_IsSvrChrgExist.FieldByName('TestName').AsString,
+                              MemberNo,'CREDIT','IP',ls_TodaysDate,ls_TodaysTime,1,1,lf_SvrChrg*gf_VatPer/100,
+                              lf_SvrChrg*gf_VatPer/100,lf_SvrChrg,(lf_SvrChrg+(lf_SvrChrg*gf_VatPer/100)),0,lf_SvrChrg*gf_VatPer/100,
+                              lf_SvrChrg*gf_VatPer/100,lf_SvrChrg,(lf_SvrChrg+(lf_SvrChrg*gf_VatPer/100)),DollarExRate,'HOS01','HOS01','','N',gs_MacID);}
+                    Except
+{                         SaveBillDetailFRG(
+                              PatientId,InPatientId,SchemeId,CommunityId,0,li_DepId,li_ClinicalDepId,
+                              gi_UserId,ls_TPBillNo,ls_RateType,'SVRCHRG',Query_IsSvrChrgExist.FieldByName('TestName').AsString,
+                              MemberNo,'CREDIT','IP',ls_TodaysDate,ls_TodaysTime,1,1,lf_SvrChrg*gf_VatPer/100,
+                              lf_SvrChrg*gf_VatPer/100,lf_SvrChrg,(lf_SvrChrg+(lf_SvrChrg*gf_VatPer/100)),0,lf_SvrChrg*gf_VatPer/100,
+                              lf_SvrChrg*gf_VatPer/100,lf_SvrChrg,(lf_SvrChrg+(lf_SvrChrg*gf_VatPer/100)),DollarExRate,'HOS01','HOS01','','N',gs_MacID);}
+                    End;
+               End;
+          End;
+     End;
+     Query_SvrChrgPosting.Free;
+     Query_IsSvrChrgExist.Free;
+End;
+
+Function GetCurrentDepIdOfInpatient(InpatientId:Integer):Integer;
+Begin
+     With Query_GetNextNo do
+     Begin
+          Close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.Add(' Select DepId From Department where DepCode In (Select DepCode From InPatientDetail ');
+          sql.Add(' where InPatientDID In (Select Max(InPatientDID) as InPatientDID From InPatientDetail');
+          sql.Add(' where InpatientId='+IntToStr(InpatientId)+'))');
+          Open;
+     End;
+
+     Result:=Query_GetNextNo.FieldByName('DepId').AsInteger;
+End;
+
+procedure UpdateStringFieldInTable(TableName,FieldName,ConditionKeyField,ConditionKeyValue,DataStr:String);
+begin
+     With Query_GetNextNo do
+     begin
+          close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Update '+TableName+' Set '+FieldName+'='+Chr(39)+DataStr+Chr(39));
+          sql.add(' where '+ConditionKeyField+'='+#39+ConditionKeyValue+#39);
+          ExecSQL;
+          close;
+     end;
+end;
+
+Function Get_Reg_Quota_DocWise(DocCode,DepCode : String):Integer;
+Var i : Integer;
+    Const days: array[1..7] of string=('SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY');
+Begin
+     i:=DayOfWeek(ServerDate.SystemDate);
+     With Query_GetNextNo do
+     begin
+          close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Select  NVL(Quota'+days[i]+',0) as Quota From DocRoutine ');
+          sql.add(' where DocCode='+#39+DocCode+#39+' and SystemType='+#39+gs_SystemType+#39);
+          sql.add(' and DepCode='+#39+DepCode+#39);
+          sql.savetofile('C:\docvisitquote.txt');
+          open;
+          Result:=Query_GetNextNo.FieldByName('Quota').AsInteger;
+          close;
+     end; 
+End;
+
+
+Function Get_Reg_QueueNo_DocWise(VisitDate,DocCode,DepCode,SystemType : String):Integer;
+Begin
+     With Query_GetNextNo do
+     begin
+          close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Select NVL(Max(QueNo),0)+1 as MaxQueueNo From PatientVisit');
+          sql.add(' where LastVisitDate='+#39+VisitDate+#39+' and DocCode='+#39+DocCode+#39);
+          sql.add(' and SystemType='+#39+SystemType+#39);
+          sql.Add(' and DepCode='+#39+DepCode+#39);
+          open;
+          Result:=FieldByName('MaxQueueNo').AsInteger;
+     end;
+End;
+
+Function IsValid_Quota_Queue_ForDoctor(VisitDate,DocCode,DepCode,SystemType :String) : Boolean;
+Var li_Quota, li_QueueNo : Integer;
+Begin
+     li_Quota:=Get_Reg_Quota_DocWise(DocCode,DepCode);
+     li_QueueNo:=Get_Reg_QueueNo_DocWise(VisitDate,DocCode,DepCode,SystemType);
+
+     IF li_Quota=0 Then
+     Begin
+          MessageDlg('Doctor Visit Quota is Zero(0) for Today.',mtWarning,[mbok],0);
+          Result:=False;
+          Exit;
+     End;
+
+     IF li_QueueNo > li_Quota Then
+     Begin
+          MessageDlg('Doctor Visit Quota Is Finished for Today.',mtWarning,[mbok],0);
+          Result:=False;
+          Exit;
+     End
+     Else
+     Result:=True;
+End;
+
+Function Get_DocName(DocCode:String):String;
+Begin
+     With Query_GetNextNo do
+     Begin
+          Close;
+          //DatabaseName:=gs_DatabaseName;
+          sql.Clear;
+          sql.Add(' Select F_Name||'' ''||L_Name As Name From Doctor Where DocCode='+Chr(39)+DocCode+Chr(39));
+          Open;
+     End;
+
+     Result:=Query_GetNextNo.FieldByName('Name').AsString;
+End;
+
+Procedure GetTempPath(SystemType :String);
+Begin
+     { Creating folder for temp data table where exe file exist }
+     gs_TempPath:=ExtractFilePath(Application.ExeName);
+
+     IF Trim(SystemType)='' Then
+     SystemType:='GEN';
+
+     IF Not DirectoryExists(gs_TempPath+'Data\'+'Temp') Then
+     ForceDirectories(gs_TempPath+'Data\'+'Temp');
+
+     gs_TempPath:=gs_TempPath+'Data\'+'Temp';
+End;
+
+
+Procedure Remove_Old_TempDirectroy;
+Var i,j : Integer;
+    ls_PrevDate,SystemType : String;
+Begin
+     DEX_Control.SystemOfDate:=gi_DateSystem;
+     DEX_Control.Text:=ServerDate.TodaysDate;
+
+     For j:=0 To 1 Do
+     Begin
+          IF j=0 Then
+          SystemType:='GEN'
+          Else
+          SystemType:='EHS';
+
+          For i:=0 To 7 do
+          Begin
+               DEX_Control.ADDateAsDate:=DEX_Control.ADDateAsDate -(i+2);
+               ls_PrevDate:=DEX_Control.Text;
+               ls_PrevDate:=Copy(ls_PrevDate,3,2)+Copy(ls_PrevDate,6,2)+Copy(ls_PrevDate,9,2);
+               IF DirectoryExists(gs_TempPath+'Data\'+SystemType+'\'+ls_PrevDate) Then
+               Begin
+                    Try
+                         DelTree(gs_TempPath+'Data\'+SystemType+'\'+ls_PrevDate);
+                    Except
+
+                    End;
+               End;
+          End;
+     End;
+End;
+
+Function DelTree(DirName : string): Boolean;
+var
+     SHFileOpStruct : TSHFileOpStruct;
+     DirBuf : array [0..255] of char;
+begin
+     try
+          Fillchar(SHFileOpStruct,Sizeof(SHFileOpStruct),0) ;
+          FillChar(DirBuf, Sizeof(DirBuf), 0 ) ;
+          StrPCopy(DirBuf, DirName) ;
+          with SHFileOpStruct do
+          begin
+               Wnd := 0;
+               pFrom := @DirBuf;
+               wFunc := FO_DELETE;
+               fFlags := FOF_ALLOWUNDO;
+               fFlags := fFlags or FOF_NOCONFIRMATION;
+               fFlags := fFlags or FOF_SILENT;
+          end;
+          Result := (SHFileOperation(SHFileOpStruct) = 0) ;
+     except
+          Result := False;
+     end;
+end;
+
+Function GetNewPrimaryId(TableName:String; TableId:String):Longint;
+begin
+    with Query_GetNextNo do
+    begin
+          Close;
+        //DatabaseName:=gs_DatabaseName;
+        Session := DM_Hospital.DB;
+        sql.Clear;
+        sql.add('Select Max('+TableId+') as MaxId From '+TableName);
+        open;
+    end;
+    Result:=Query_GetNextNo.fieldbyname('MaxId').AsInteger+1;
+end;
+
+Function GetNewPrimaryimageId(TableName:String; TableId:String):Longint;
+begin
+    with Query_GetNextNo do
+    begin
+         Close;
+        //DatabaseName:='midasimage';
+        //Session := DM_Hospital.DB;
+    //    Close;
+        sql.Clear;
+        sql.add('Select Max('+TableId+') as MaxId From '+TableName);
+        open;
+    end;
+    Result:=Query_GetNextNo.fieldbyname('MaxId').AsInteger+1;
+end;
+
+Function Get_QueueNo(VisitDate,DocCode,DepCode,SystemType : String):Integer;
+Begin
+     With Query_GetNextNo do
+     begin
+          close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Select NVL(Max(QNO),0)+1 as MaxQueueNo From QueueNo');
+          sql.add(' where DATAPOSTDATE='+#39+VisitDate+#39+' and DocCode='+#39+DocCode+#39);
+          sql.add(' and SystemType='+#39+SystemType+#39);
+          sql.add(' and DepCode='+#39+DepCode+#39);
+
+          open;
+          Result:=FieldByName('MaxQueueNo').AsInteger;
+     end;
+End;
+
+Function Get_DepVisitTime(Depcode: String):string;
+Begin
+     With Query_GetNextNo do
+     begin
+          close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Select VisitStartTime From Department');
+          sql.add(' where DepCode='+#39+Depcode+#39);
+          open;
+          Result:=FieldByName('VisitStartTime').AsString;
+     end;
+End;
+
+Function Get_NextVisitTime(VisitDate,DocCode:String):string;
+Begin
+     With Query_GetNextNo do
+     begin
+          close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' SELECT to_char(TO_DATE (max(visittime), ''hh24:mi'') +');
+          sql.add('interval ''10'' minute,''hh24:mi'') as next_time');
+          SQL.Add('from queueno where DATAPOSTDATE='+#39+VisitDate+#39+'and DocCode='+#39+DocCode+#39);
+          open;
+          Result:=FieldByName('next_time').AsString;
+     end;
+End;
+
+Function GetPostPonedTime(VisitTime:String):string;
+Begin
+     With Query_GetNextNo do
+     begin
+          close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' SELECT to_char(TO_DATE ('+QuotedStr(VisitTime)+', ''hh24:mi'') +');
+          sql.add('interval ''10'' minute,''hh24:mi'') as postpone_time');
+          SQL.Add('from dual');
+          open;
+          Result:=FieldByName('postpone_time').AsString;
+     end;
+End;
+
+
+Function CheckTime(visittime:String):Double;
+Begin
+     With Query_GetNextNo do
+     begin
+          close;
+          //DatabaseName:=gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' SELECT (TO_DATE (''11:50'', ''hh24:mi'') - TO_DATE ('+QuotedStr(visittime)+', ''hh24:mi''))*60*24');//converting date into numeric value minute
+          sql.add(' as timeinterval');
+          SQL.Add('from dual');
+          open;
+          Result:=FieldByName('timeinterval').AsFloat;
+     end;
+End;
+
+
+
+Function  GetFiscalYear:String;
+Var
+   Cur_F_Year,Tem_Str:String;
+   S_FDate,E_FDate:Integer;
+   DateEditx_Hidden:TDateEditX;
+Begin
+     DateEditx_Hidden:=TDateEditX.Create(Application);
+     DateEditx_Hidden.SystemOfDate:=gi_DateSystem;
+     DateEditx_Hidden.text:=TodaysDate;
+     //DateEditx_Hidden.text:=Serverdate.TodaysDate;
+     Tem_Str:=DateEditx_Hidden.VSDateAsText;
+     IF StrToInt(Copy(Tem_Str,6,2))>=4 Then
+     Begin
+          S_FDate:=StrToInt(Copy(Tem_Str,3,2));
+          E_FDate:=S_FDate+1;
+     End
+     Else
+     Begin
+          E_FDate:=StrToInt(Copy(Tem_Str,3,2));
+          S_FDate:=E_FDate-1;
+     End;
+     Result:=FormatFloat('00',S_FDate)+'/'+FormatFloat('00',E_FDate);
+     gs_Month:=Copy(Tem_Str,6,2);
+     gs_Year:=Copy(Tem_Str,1,4);
+     If gs_Month='01' then gs_MonthName:='Baisakh'
+     Else If gs_Month='02' then gs_MonthName:='Jestha'
+     Else If gs_Month='03' then gs_MonthName:='Asadh'
+     Else If gs_Month='04' then gs_MonthName:='Shrawan'
+     Else If gs_Month='05' then gs_MonthName:='Bhadra'
+     Else If gs_Month='06' then gs_MonthName:='Ashwin'
+     Else If gs_Month='07' then gs_MonthName:='Kartik'
+     Else If gs_Month='08' then gs_MonthName:='Mangsir'
+     Else If gs_Month='09' then gs_MonthName:='Poush'
+     Else If gs_Month='10' then gs_MonthName:='Magh'
+     Else If gs_Month='11' then gs_MonthName:='Falgun'
+     Else If gs_Month='12' then gs_MonthName:='Chaitra';
+     DateEditx_Hidden.Free;
+End;
+
+Function Get_MaxBilldate:String;
+Var
+   DateEditx_Hidden:TDateEditX;
+Begin
+     DateEditx_Hidden:=TDateEditX.Create(Application);
+     DateEditx_Hidden.SystemOfDate:=gi_DateSystem;
+
+     With Query_GetNextNo do
+     Begin
+          close;
+          //Databasename:=gs_databasename;
+          Session := DM_Hospital.DB;
+          sql.clear;
+          sql.Add('Select max(billdate)billdate from billmaster ');
+          Open;
+     End;
+     DateEditx_Hidden.text:=Query_GetNextNo.fieldbyname('Billdate').AsString;
+     DateEditx_Hidden.VSDateAsDays:=DateEditx_Hidden.VSDateAsDays-2;
+     Result:=DateEditx_Hidden.text;
+     DateEditx_Hidden.free;
+End;
+
+Function GetMaxId(TableName, FieldName: String): Integer;
+Var
+     Qry: TOraQuery;
+Begin
+     Qry := TOraQuery.Create(nil);
+     With Qry do
+     Begin
+          Close;
+          //DatabaseName := gs_DatabaseName;
+          Session := DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add(' Select NVL(Max(' + FieldName + '),0) as MaxVal From ' + TableName);
+          Open;
+          RESULT := Qry.FieldByName('MaxVal').AsInteger + 1;
+     End;
+     Qry.Free;
+End;
+
+function GetKeyValuetemp(RealTableName, KeyFieldName, DName: string): Longint;
+var
+     query_key: TOraQuery;
+begin
+     query_key := TOraQuery.Create(nil);
+     with query_key do
+     Begin
+          close;
+          DatabaseName := gs_temppath;
+          sql.Clear;
+          sql.Add('select max(' + KeyFieldName + ') as nMax from  ' +
+                 RealTableName);
+          open;
+          Result := fieldbyname('nMax').AsInteger + 1;
+     End;
+     query_key.free;
+end;
+
+function IsBipannaNagarik(Patientid:Integer):Boolean;
+var query:TOraQuery;
+begin
+     query:=TOraQuery.create(nil);
+     with query do
+     begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add(' select patientid from bn_member where ISACTIVEMEMBER=''T''');
+          SQL.Add(' and patientid='+inttostr(patientid));
+          Open;
+          if query.RecordCount>0 then
+               Result:=True
+          else
+               Result:=False;
+     end;
+end;
+
+
+end.

@@ -1,0 +1,111 @@
+package Reports;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+{$DEFINE DEBUG}
+
+requires
+  rtl,
+  vcl,
+  vclimg,
+  dbrtl,
+  vcldb,
+  bdertl,
+  Global,
+  dex,
+  BarcodeD10,
+  TeeDB;
+
+contains
+  Unit1 in 'Unit1.pas' {Form1},
+  UnitUserWiseCollection in 'UnitUserWiseCollection.pas' {FormUserWiseCollection},
+  UnitRepUserWiseCollection in 'UnitRepUserWiseCollection.pas' {FormRepUserWiseCollection},
+  UnitRepUserWiseDetail in 'UnitRepUserWiseDetail.pas' {FormRepUserWiseDetail},
+  UnitDeptWiseReport in 'UnitDeptWiseReport.pas' {FormDeptwiseCollection},
+  UnitRepDeptWiseCollection in 'UnitRepDeptWiseCollection.pas' {FormRepDeptWiseSum},
+  UnitRepDetailUserWise in 'UnitRepDetailUserWise.pas' {FormRepDetailUserWise},
+  UnitNoofTestDone in 'UnitNoofTestDone.pas' {FormNoofTestDone},
+  UnitRepNoofTestDone in 'UnitRepNoofTestDone.pas' {FormRepNoofTestDone},
+  Unit_QrPatientTestList in 'Unit_QrPatientTestList.pas' {Form_QrPatientTesList},
+  Unit_QrWorkList in 'Unit_QrWorkList.pas' {Form_QrWorkList},
+  Unit_Medicare_GovtSvrTaxReport in 'Unit_Medicare_GovtSvrTaxReport.pas' {Form_Medicare_GovtSvrTaxReport},
+  Unit_Medicare_GovtSvrTaxReportSummary in 'Unit_Medicare_GovtSvrTaxReportSummary.pas' {Form_Medicare_GovtSvrTaxReportSummary},
+  UnitSalesBook in 'UnitSalesBook.pas' {Form_SalesBook},
+  Unit_TaxReport in 'Unit_TaxReport.pas' {Form_TaxReport},
+  Unit_QrTaxReport in 'Unit_QrTaxReport.pas' {Form_QrTaxReport},
+  Unit_QrReffWiseRevenueDetail in 'Unit_QrReffWiseRevenueDetail.pas' {Form_QRReffWiseRevenueDetail},
+  Unit_ReffWiseRevenue in 'Unit_ReffWiseRevenue.pas' {Form_ReffWiseRevenue},
+  Unit_QrReffWiseRevenueSummary in 'Unit_QrReffWiseRevenueSummary.pas' {Form_QrReffWiseRevenueSummary},
+  Unit_QrCollectionCenterDetail in 'Collection Center Report\Unit_QrCollectionCenterDetail.pas' {Form_QRCollectionCenterDetail},
+  Unit_QrCollectionCenterSummary in 'Collection Center Report\Unit_QrCollectionCenterSummary.pas' {Form_QrCollectionCenterSummary},
+  Unit_CollectionCenterReport in 'Collection Center Report\Unit_CollectionCenterReport.pas' {Form_CollectionCenterReport},
+  Unit_QrSchemeWiseRevenueDetail in 'Scheme Wise Revenue\Unit_QrSchemeWiseRevenueDetail.pas' {Form_QRSchemeWiseRevenueDetail},
+  Unit_QrSchemeWiseRevenueSummary in 'Scheme Wise Revenue\Unit_QrSchemeWiseRevenueSummary.pas' {Form_QrSchemeWiseRevenueSummary},
+  Unit_SchemeWiseRevenue in 'Scheme Wise Revenue\Unit_SchemeWiseRevenue.pas' {Form_SchemeWiseRevenue},
+  Unit_QrSampleWiseRep in 'Unit_QrSampleWiseRep.pas' {Form_SampleWise},
+  Unit_SampleWise in 'Unit_SampleWise.pas' {Form_SampleWiseReport},
+  Unit_Testsetupdetail in 'Unit_Testsetupdetail.pas' {Form_testdetail},
+  Unit_PatientTestDetail in 'Unit_PatientTestDetail.pas' {Form_PatienttestDetail},
+  Unit_AllPatientTest in 'Unit_AllPatientTest.pas' {Form_AllPatientTest},
+  Unit_QrPatientFindingDetail in 'Unit_QrPatientFindingDetail.pas' {Form_PatientFindingDetail},
+  Qr_WorkList in 'Qr_WorkList.pas' {Form_QrreportWorkList},
+  Unit_WorkList in 'Unit_WorkList.pas' {Form_WorkList},
+  Unit_Doctorwisepatientcase in 'Unit_Doctorwisepatientcase.pas' {Form_DoctorwisePatientcase},
+  Unit_QRDoctorWisePatientSummary in 'Unit_QRDoctorWisePatientSummary.pas' {Form_QrDoctorWisePatientSummary},
+  Unit_QrDoctorwiseCaseDetail in 'Unit_QrDoctorwiseCaseDetail.pas' {Form_QrDoctorwisePatientDetail},
+  Unit_ReportTree in 'Unit_ReportTree.pas' {Form_ReportTree},
+  Unit_PendingSampleCollectionReport in 'Unit_PendingSampleCollectionReport.pas' {Form_PendingSampleCollectionReport},
+  Unit_qrPendingSampleCollectionReport in 'Unit_qrPendingSampleCollectionReport.pas' {Form_qrPendingSampleCollectionReport},
+  Unit_qrSampleCollectedReport in 'Unit_qrSampleCollectedReport.pas' {Form_qrSampleCollectedReport},
+  Unit_SampleCollectedReport in 'Unit_SampleCollectedReport.pas' {Form_SampleCollectedReport},
+  Unit_FindingCompletedReport in 'Unit_FindingCompletedReport.pas' {Form_FindingCompletedReport},
+  Unit_qrFindingCompletedReport in 'Unit_qrFindingCompletedReport.pas' {Form_qrFindingCompletedReport},
+  Unit_qrVerifiedSampleReport in 'Unit_qrVerifiedSampleReport.pas' {Form_qrVerifiedSampleReport},
+  Unit_VerifiedSampleReport in 'Unit_VerifiedSampleReport.pas' {Form_VerifiedSampleReport},
+  Unit_MicrobiologySensitivityReport in 'Unit_MicrobiologySensitivityReport.pas' {Form_MicrobiologySensitivityResult},
+  Unit_PatienttestHistory in 'Unit_PatienttestHistory.pas' {Form_PatienttestHistory},
+  Unit_qrReportToBeDispatched in 'Unit_qrReportToBeDispatched.pas' {Form_qrReportToBeDispatched},
+  Unit_ReportToBeDispatched in 'Unit_ReportToBeDispatched.pas' {Form_ReportToBeDispatched},
+  Unit_qrReportPrinted in 'Unit_qrReportPrinted.pas' {Form_qrReportPrinted},
+  Unit_ReportPrinted in 'Unit_ReportPrinted.pas' {Form_ReportPrinted},
+  Unit_PendingForReultEntry in 'Unit_PendingForReultEntry.pas' {Form_PendingForResultEntry},
+  Unit_qrPendingForResultEntry in 'Unit_qrPendingForResultEntry.pas' {Form_qrPendingForResultEntry},
+  Unit_PendingForAuthentication in 'Unit_PendingForAuthentication.pas' {Form_PendingForAuthentication},
+  Unit_qrPendingForAuthentication in 'Unit_qrPendingForAuthentication.pas' {Form_qrPendingForAuthentication},
+  Unit_UserWiseCollection in 'Unit_UserWiseCollection.pas' {Form_UserWiseCollection},
+  Unit_QRUserWiseColnDetail in 'Unit_QRUserWiseColnDetail.pas' {Form_QRUserWiseCollnDetail},
+  Unit_QRRegBillwiseUserColn in 'Unit_QRRegBillwiseUserColn.pas' {Form_QRRegBillwiseUserColn},
+  Unit_QRUserWiseColnSummaryManipal in 'Unit_QRUserWiseColnSummaryManipal.pas' {Form_QRUserWiseColnSummaryManipal},
+  Unit_QRUserWiseColnDetail_Manipal in 'Unit_QRUserWiseColnDetail_Manipal.pas' {Form_QRUserWiseCollnDetail_Manipal},
+  Unit_DepartmentWiseSummary in 'RevenuAnalysis\Unit_DepartmentWiseSummary.pas' {Form_DepartmentWiseSummary},
+  UnitReportBillDepWiseSumary in 'RevenuAnalysis\UnitReportBillDepWiseSumary.pas' {FormReportBillDepWiseSumary},
+  UnitReportBillDepWiseSumaryIP in 'RevenuAnalysis\UnitReportBillDepWiseSumaryIP.pas' {FormReportBillDepWiseSumaryIP},
+  UnitReportBillDepWiseSumaryIPLandscape in 'RevenuAnalysis\UnitReportBillDepWiseSumaryIPLandscape.pas' {FormReportBillDepWiseSumaryIPLandScape},
+  UnitReportBillDepWiseSumaryIPOP in 'RevenuAnalysis\UnitReportBillDepWiseSumaryIPOP.pas' {FormReportBillDepWiseSumaryIPOP: TQuickRep},
+  Unit_QRBillDepWiseRevDID in 'RevenuAnalysis\Unit_QRBillDepWiseRevDID.pas' {FormQRBillDepWiseRevDID},
+  Unit_QRDayWiseRevenueReport in 'RevenuAnalysis\Unit_QRDayWiseRevenueReport.pas' {Form_QRDayWiseRevenueReport},
+  Unit_QRDepWiseSumaryLandScape in 'RevenuAnalysis\Unit_QRDepWiseSumaryLandScape.pas' {Form_QRDepWiseSumaryLandScape},
+  Unit_ReportDepWiseSumaryIPBoth in 'RevenuAnalysis\Unit_ReportDepWiseSumaryIPBoth.pas' {Form_ReportDepWiseSumaryIPBOTH};
+
+end.

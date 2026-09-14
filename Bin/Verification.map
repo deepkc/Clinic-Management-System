@@ -1,0 +1,2357 @@
+
+ Start         Length     Name                   Class
+ 0001:00401000 00019058H .text                   CODE
+ 0002:0041B000 00000528H .itext                  ICODE
+ 0003:0041C000 00000120H .data                   DATA
+ 0004:0041D000 00000064H .bss                    BSS
+ 0005:00000000 00000000H .tls                    TLS
+
+
+Detailed map of segments
+
+ 0001:00000000 0000010E C=CODE     S=.text    G=(none)   M=System   ACBP=A9
+ 0001:00000110 000001C3 C=CODE     S=.text    G=(none)   M=SysInit  ACBP=A9
+ 0001:000002D4 00000006 C=CODE     S=.text    G=(none)   M=pngimage ACBP=A9
+ 0001:000002DC 0000003E C=CODE     S=.text    G=(none)   M=Classes  ACBP=A9
+ 0001:0000031C 00000081 C=CODE     S=.text    G=(none)   M=Windows  ACBP=A9
+ 0001:000003A0 00000006 C=CODE     S=.text    G=(none)   M=TypInfo  ACBP=A9
+ 0001:000003A8 00000076 C=CODE     S=.text    G=(none)   M=SysUtils ACBP=A9
+ 0001:00000420 00000016 C=CODE     S=.text    G=(none)   M=Variants ACBP=A9
+ 0001:00000438 00000006 C=CODE     S=.text    G=(none)   M=VarUtils ACBP=A9
+ 0001:00000440 00000016 C=CODE     S=.text    G=(none)   M=Graphics ACBP=A9
+ 0001:00000458 00000006 C=CODE     S=.text    G=(none)   M=Registry ACBP=A9
+ 0001:00000460 00000006 C=CODE     S=.text    G=(none)   M=IniFiles ACBP=A9
+ 0001:00000468 0000000E C=CODE     S=.text    G=(none)   M=IOUtils  ACBP=A9
+ 0001:00000478 0000001E C=CODE     S=.text    G=(none)   M=Ora      ACBP=A9
+ 0001:00000498 0000000E C=CODE     S=.text    G=(none)   M=DBAccess ACBP=A9
+ 0001:000004A8 00000006 C=CODE     S=.text    G=(none)   M=CLRClasses ACBP=A9
+ 0001:000004B0 00000006 C=CODE     S=.text    G=(none)   M=MemUtils ACBP=A9
+ 0001:000004B8 00000006 C=CODE     S=.text    G=(none)   M=CRParser ACBP=A9
+ 0001:000004C0 00000006 C=CODE     S=.text    G=(none)   M=MemData  ACBP=A9
+ 0001:000004C8 00000006 C=CODE     S=.text    G=(none)   M=AnsiStrings ACBP=A9
+ 0001:000004D0 00000006 C=CODE     S=.text    G=(none)   M=SqlTimSt ACBP=A9
+ 0001:000004D8 00000006 C=CODE     S=.text    G=(none)   M=FMTBcd   ACBP=A9
+ 0001:000004E0 00000006 C=CODE     S=.text    G=(none)   M=SyncObjs ACBP=A9
+ 0001:000004E8 00000006 C=CODE     S=.text    G=(none)   M=TimeSpan ACBP=A9
+ 0001:000004F0 00000006 C=CODE     S=.text    G=(none)   M=MTSCall  ACBP=A9
+ 0001:000004F8 00000006 C=CODE     S=.text    G=(none)   M=DASQLMonitor ACBP=A9
+ 0001:00000500 00000006 C=CODE     S=.text    G=(none)   M=CRVioTcp ACBP=A9
+ 0001:00000508 00000006 C=CODE     S=.text    G=(none)   M=DBMonitorClient ACBP=A9
+ 0001:00000510 00000006 C=CODE     S=.text    G=(none)   M=CRXml    ACBP=A9
+ 0001:00000518 00000056 C=CODE     S=.text    G=(none)   M=DB       ACBP=A9
+ 0001:00000570 00000006 C=CODE     S=.text    G=(none)   M=WideStrings ACBP=A9
+ 0001:00000578 00000006 C=CODE     S=.text    G=(none)   M=ComObj   ACBP=A9
+ 0001:00000580 00000006 C=CODE     S=.text    G=(none)   M=OraParser ACBP=A9
+ 0001:00000588 00000006 C=CODE     S=.text    G=(none)   M=OraClasses ACBP=A9
+ 0001:00000590 00000006 C=CODE     S=.text    G=(none)   M=OraCall  ACBP=A9
+ 0001:00000598 00000006 C=CODE     S=.text    G=(none)   M=OraObjects ACBP=A9
+ 0001:000005A0 00000006 C=CODE     S=.text    G=(none)   M=OraNet   ACBP=A9
+ 0001:000005A8 00000006 C=CODE     S=.text    G=(none)   M=OraConnectionPool ACBP=A9
+ 0001:000005B0 00000006 C=CODE     S=.text    G=(none)   M=OraSQLMonitor ACBP=A9
+ 0001:000005B8 0000000E C=CODE     S=.text    G=(none)   M=QRPDFFilt ACBP=A9
+ 0001:000005C8 00000006 C=CODE     S=.text    G=(none)   M=pdfconst ACBP=A9
+ 0001:000005D0 0000001E C=CODE     S=.text    G=(none)   M=QuickRpt ACBP=A9
+ 0001:000005F0 0000003E C=CODE     S=.text    G=(none)   M=DBTables ACBP=A9
+ 0001:00000630 00000006 C=CODE     S=.text    G=(none)   M=OleCtnrs ACBP=A9
+ 0001:00000638 00000006 C=CODE     S=.text    G=(none)   M=Menus    ACBP=A9
+ 0001:00000640 00000006 C=CODE     S=.text    G=(none)   M=ActnList ACBP=A9
+ 0001:00000648 00000006 C=CODE     S=.text    G=(none)   M=Themes   ACBP=A9
+ 0001:00000650 00000146 C=CODE     S=.text    G=(none)   M=Controls ACBP=A9
+ 0001:00000798 00000006 C=CODE     S=.text    G=(none)   M=UxTheme  ACBP=A9
+ 0001:000007A0 00000006 C=CODE     S=.text    G=(none)   M=MultiMon ACBP=A9
+ 0001:000007A8 00000146 C=CODE     S=.text    G=(none)   M=Forms    ACBP=A9
+ 0001:000008F0 00000006 C=CODE     S=.text    G=(none)   M=HelpIntfs ACBP=A9
+ 0001:000008F8 00000026 C=CODE     S=.text    G=(none)   M=Dialogs  ACBP=A9
+ 0001:00000920 00000016 C=CODE     S=.text    G=(none)   M=ComCtrls ACBP=A9
+ 0001:00000938 00000006 C=CODE     S=.text    G=(none)   M=GraphUtil ACBP=A9
+ 0001:00000940 00000006 C=CODE     S=.text    G=(none)   M=ExtCtrls ACBP=A9
+ 0001:00000948 00000006 C=CODE     S=.text    G=(none)   M=Printers ACBP=A9
+ 0001:00000950 00000006 C=CODE     S=.text    G=(none)   M=Clipbrd  ACBP=A9
+ 0001:00000958 00000006 C=CODE     S=.text    G=(none)   M=FlatSB   ACBP=A9
+ 0001:00000960 00000006 C=CODE     S=.text    G=(none)   M=QRExpr   ACBP=A9
+ 0001:00000968 00000006 C=CODE     S=.text    G=(none)   M=Buttons  ACBP=A9
+ 0001:00000970 00000006 C=CODE     S=.text    G=(none)   M=QRExtra  ACBP=A9
+ 0001:00000978 00000036 C=CODE     S=.text    G=(none)   M=OleCtrls ACBP=A9
+ 0001:000009B0 00000006 C=CODE     S=.text    G=(none)   M=AxCtrls  ACBP=A9
+ 0001:000009B8 00000016 C=CODE     S=.text    G=(none)   M=QRPrntr  ACBP=A9
+ 0001:000009D0 00000006 C=CODE     S=.text    G=(none)   M=OleServer ACBP=A9
+ 0001:000009D8 0000000E C=CODE     S=.text    G=(none)   M=QRCtrls  ACBP=A9
+ 0001:000009E8 00000006 C=CODE     S=.text    G=(none)   M=QRExport ACBP=A9
+ 0001:000009F0 00000006 C=CODE     S=.text    G=(none)   M=jpeg     ACBP=A9
+ 0001:000009F8 00000006 C=CODE     S=.text    G=(none)   M=QRWebFilt ACBP=A9
+ 0001:00000A00 00000006 C=CODE     S=.text    G=(none)   M=QRPrev   ACBP=A9
+ 0001:00000A08 00000006 C=CODE     S=.text    G=(none)   M=QRXMLSFilt ACBP=A9
+ 0001:00000A10 00000006 C=CODE     S=.text    G=(none)   M=QRPrnSu  ACBP=A9
+ 0001:00000A18 00000006 C=CODE     S=.text    G=(none)   M=Barcode  ACBP=A9
+ 0001:00000A20 0000000E C=CODE     S=.text    G=(none)   M=DBCtrls  ACBP=A9
+ 0001:00000A30 00000006 C=CODE     S=.text    G=(none)   M=DBPWDlg  ACBP=A9
+ 0001:00000A38 00000006 C=CODE     S=.text    G=(none)   M=DBLogDlg ACBP=A9
+ 0001:00000A40 00000046 C=CODE     S=.text    G=(none)   M=Unit_Master ACBP=A9
+ 0001:00000A88 00000006 C=CODE     S=.text    G=(none)   M=OraSmart ACBP=A9
+ 0001:00000A90 00000006 C=CODE     S=.text    G=(none)   M=OraAlerter ACBP=A9
+ 0001:00000A98 00000026 C=CODE     S=.text    G=(none)   M=ServerDate ACBP=A9
+ 0001:00000AC0 00000016 C=CODE     S=.text    G=(none)   M=DBGrids  ACBP=A9
+ 0001:00000AD8 00000096 C=CODE     S=.text    G=(none)   M=Fxn      ACBP=A9
+ 0001:00000B70 00000006 C=CODE     S=.text    G=(none)   M=ADODB    ACBP=A9
+ 0001:00000B78 00000006 C=CODE     S=.text    G=(none)   M=TeCanvas ACBP=A9
+ 0001:00000B80 00000006 C=CODE     S=.text    G=(none)   M=TeeConst ACBP=A9
+ 0001:00000B88 00000006 C=CODE     S=.text    G=(none)   M=TeeHtml  ACBP=A9
+ 0001:00000B90 00000026 C=CODE     S=.text    G=(none)   M=CheckLst ACBP=A9
+ 0001:00000BB8 00000006 C=CODE     S=.text    G=(none)   M=Unit_Message ACBP=A9
+ 0001:00000BC0 00000006 C=CODE     S=.text    G=(none)   M=Unit_SampleCollectionFrame ACBP=A9
+ 0001:00000BC8 00000006 C=CODE     S=.text    G=(none)   M=Preview  ACBP=A9
+ 0001:00000BD0 00000006 C=CODE     S=.text    G=(none)   M=ActnMan  ACBP=A9
+ 0001:00000BD8 00000006 C=CODE     S=.text    G=(none)   M=ActnMenus ACBP=A9
+ 0001:00000BE0 00000006 C=CODE     S=.text    G=(none)   M=ExtActns ACBP=A9
+ 0001:00000BE8 00000006 C=CODE     S=.text    G=(none)   M=ExtDlgs  ACBP=A9
+ 0001:00000BF0 00000006 C=CODE     S=.text    G=(none)   M=Mapi     ACBP=A9
+ 0001:00000BF8 00000006 C=CODE     S=.text    G=(none)   M=TeeProcs ACBP=A9
+ 0001:00000C00 00000006 C=CODE     S=.text    G=(none)   M=TeeFilters ACBP=A9
+ 0001:00000C08 00000006 C=CODE     S=.text    G=(none)   M=SMDBGrid ACBP=A9
+ 0001:00000C10 00000006 C=CODE     S=.text    G=(none)   M=SMCnst   ACBP=A9
+ 0001:00000C18 00000006 C=CODE     S=.text    G=(none)   M=UnitSendToExcel ACBP=A9
+ 0001:00000C20 00000006 C=CODE     S=.text    G=(none)   M=acPNG    ACBP=A9
+ 0001:00000C28 00000006 C=CODE     S=.text    G=(none)   M=sConst   ACBP=A9
+ 0001:00000C30 00000006 C=CODE     S=.text    G=(none)   M=sDefaults ACBP=A9
+ 0001:00000C38 00000006 C=CODE     S=.text    G=(none)   M=sLabel   ACBP=A9
+ 0001:00000C40 00000006 C=CODE     S=.text    G=(none)   M=sSkinManager ACBP=A9
+ 0001:00000C48 00000006 C=CODE     S=.text    G=(none)   M=acntUtils ACBP=A9
+ 0001:00000C50 00000006 C=CODE     S=.text    G=(none)   M=sSkinProvider ACBP=A9
+ 0001:00000C58 00000006 C=CODE     S=.text    G=(none)   M=sStyleSimply ACBP=A9
+ 0001:00000C60 00000006 C=CODE     S=.text    G=(none)   M=sSkinProps ACBP=A9
+ 0001:00000C68 00000006 C=CODE     S=.text    G=(none)   M=acDials  ACBP=A9
+ 0001:00000C70 00000006 C=CODE     S=.text    G=(none)   M=sSkinMenus ACBP=A9
+ 0001:00000C78 00000006 C=CODE     S=.text    G=(none)   M=sHtmlParse ACBP=A9
+ 0001:00000C80 00000006 C=CODE     S=.text    G=(none)   M=acGlow   ACBP=A9
+ 0001:00000C88 00000006 C=CODE     S=.text    G=(none)   M=sVclUtils ACBP=A9
+ 0001:00000C90 00000006 C=CODE     S=.text    G=(none)   M=sGraphUtils ACBP=A9
+ 0001:00000C98 00000006 C=CODE     S=.text    G=(none)   M=acgpUtils ACBP=A9
+ 0001:00000CA0 00000006 C=CODE     S=.text    G=(none)   M=sGradient ACBP=A9
+ 0001:00000CA8 00000006 C=CODE     S=.text    G=(none)   M=acSBUtils ACBP=A9
+ 0001:00000CB0 00000006 C=CODE     S=.text    G=(none)   M=acAlphaImageList ACBP=A9
+ 0001:00000CB8 00000006 C=CODE     S=.text    G=(none)   M=sThirdParty ACBP=A9
+ 0001:00000CC0 00000006 C=CODE     S=.text    G=(none)   M=acAlphaHints ACBP=A9
+ 0001:00000CC8 00000006 C=CODE     S=.text    G=(none)   M=acPopupController ACBP=A9
+ 0001:00000CD0 00000006 C=CODE     S=.text    G=(none)   M=sComboBoxes ACBP=A9
+ 0001:00000CD8 00000006 C=CODE     S=.text    G=(none)   M=sColorDialog ACBP=A9
+ 0001:00000CE0 00000006 C=CODE     S=.text    G=(none)   M=sGlyphUtils ACBP=A9
+ 0001:00000CE8 00000006 C=CODE     S=.text    G=(none)   M=sMonthCalendar ACBP=A9
+ 0001:00000CF0 00000006 C=CODE     S=.text    G=(none)   M=sDateUtils ACBP=A9
+ 0001:00000CF8 00000006 C=CODE     S=.text    G=(none)   M=sDialogs ACBP=A9
+ 0001:00000D00 00000006 C=CODE     S=.text    G=(none)   M=sCalcUnit ACBP=A9
+ 0001:00000D08 00000006 C=CODE     S=.text    G=(none)   M=acShellCtrls ACBP=A9
+ 0001:00000D10 00000006 C=CODE     S=.text    G=(none)   M=IdHTTP   ACBP=A9
+ 0001:00000D18 00000006 C=CODE     S=.text    G=(none)   M=IdComponent ACBP=A9
+ 0001:00000D20 00000006 C=CODE     S=.text    G=(none)   M=IdStack  ACBP=A9
+ 0001:00000D28 00000006 C=CODE     S=.text    G=(none)   M=IdGlobal ACBP=A9
+ 0001:00000D30 00000006 C=CODE     S=.text    G=(none)   M=IdWinsock2 ACBP=A9
+ 0001:00000D38 00000006 C=CODE     S=.text    G=(none)   M=IdWship6 ACBP=A9
+ 0001:00000D40 00000006 C=CODE     S=.text    G=(none)   M=IdStackWindows ACBP=A9
+ 0001:00000D48 00000006 C=CODE     S=.text    G=(none)   M=IdIOHandlerStack ACBP=A9
+ 0001:00000D50 00000006 C=CODE     S=.text    G=(none)   M=IdIOHandler ACBP=A9
+ 0001:00000D58 00000006 C=CODE     S=.text    G=(none)   M=IdGlobalProtocols ACBP=A9
+ 0001:00000D60 00000006 C=CODE     S=.text    G=(none)   M=IdCharsets ACBP=A9
+ 0001:00000D68 00000006 C=CODE     S=.text    G=(none)   M=IdAuthentication ACBP=A9
+ 0001:00000D70 00000006 C=CODE     S=.text    G=(none)   M=IdCoderMIME ACBP=A9
+ 0001:00000D78 00000006 C=CODE     S=.text    G=(none)   M=IdSSL    ACBP=A9
+ 0001:00000D80 00000006 C=CODE     S=.text    G=(none)   M=IdThread ACBP=A9
+ 0001:00000D88 00000006 C=CODE     S=.text    G=(none)   M=IdAuthenticationDigest ACBP=A9
+ 0001:00000D90 00000006 C=CODE     S=.text    G=(none)   M=IdAuthenticationNTLM ACBP=A9
+ 0001:00000D98 00000006 C=CODE     S=.text    G=(none)   M=IdNTLM   ACBP=A9
+ 0001:00000DA0 00000006 C=CODE     S=.text    G=(none)   M=IdSSLOpenSSLHeaders ACBP=A9
+ 0001:00000DA8 00000006 C=CODE     S=.text    G=(none)   M=IdSSLOpenSSL ACBP=A9
+ 0001:00000DB0 00000006 C=CODE     S=.text    G=(none)   M=CustomizeDlg ACBP=A9
+ 0001:00000DB8 0000158B C=CODE     S=.text    G=(none)   M=Unit_TestCancel ACBP=A9
+ 0001:00002344 00000006 C=CODE     S=.text    G=(none)   M=Unit_ClinicalPathFindingNew ACBP=A9
+ 0001:0000234C 00000006 C=CODE     S=.text    G=(none)   M=Unit_FindingFrame ACBP=A9
+ 0001:00002354 000015EB C=CODE     S=.text    G=(none)   M=Unit_PatientSearch ACBP=A9
+ 0001:00003940 000015DF C=CODE     S=.text    G=(none)   M=Unit_TestCancelNew ACBP=A9
+ 0001:00004F20 00000603 C=CODE     S=.text    G=(none)   M=Unit_QrInvestigationPreview ACBP=A9
+ 0001:00005524 000021BB C=CODE     S=.text    G=(none)   M=Unit_BroadcastStatus ACBP=A9
+ 0001:000076E0 000019BB C=CODE     S=.text    G=(none)   M=Unit_Broadcastpopup ACBP=A9
+ 0001:0000909C 0000E0DF C=CODE     S=.text    G=(none)   M=Unit_Verification ACBP=A9
+ 0001:0001717C 00000F7B C=CODE     S=.text    G=(none)   M=unit_SaveEmailAddress ACBP=A9
+ 0001:000180F8 00000F5F C=CODE     S=.text    G=(none)   M=.Verification ACBP=A9
+ 0002:00000000 00000006 C=ICODE    S=.itext   G=(none)   M=System   ACBP=A9
+ 0002:00000008 00000006 C=ICODE    S=.itext   G=(none)   M=pngimage ACBP=A9
+ 0002:00000010 0000000E C=ICODE    S=.itext   G=(none)   M=Classes  ACBP=A9
+ 0002:00000020 00000016 C=ICODE    S=.itext   G=(none)   M=Windows  ACBP=A9
+ 0002:00000038 00000006 C=ICODE    S=.itext   G=(none)   M=TypInfo  ACBP=A9
+ 0002:00000040 0000001E C=ICODE    S=.itext   G=(none)   M=SysUtils ACBP=A9
+ 0002:00000060 00000006 C=ICODE    S=.itext   G=(none)   M=Variants ACBP=A9
+ 0002:00000068 00000006 C=ICODE    S=.itext   G=(none)   M=VarUtils ACBP=A9
+ 0002:00000070 00000006 C=ICODE    S=.itext   G=(none)   M=Graphics ACBP=A9
+ 0002:00000078 00000006 C=ICODE    S=.itext   G=(none)   M=Registry ACBP=A9
+ 0002:00000080 00000006 C=ICODE    S=.itext   G=(none)   M=IniFiles ACBP=A9
+ 0002:00000088 0000000E C=ICODE    S=.itext   G=(none)   M=IOUtils  ACBP=A9
+ 0002:00000098 00000006 C=ICODE    S=.itext   G=(none)   M=Ora      ACBP=A9
+ 0002:000000A0 00000006 C=ICODE    S=.itext   G=(none)   M=DBAccess ACBP=A9
+ 0002:000000A8 00000006 C=ICODE    S=.itext   G=(none)   M=CLRClasses ACBP=A9
+ 0002:000000B0 00000006 C=ICODE    S=.itext   G=(none)   M=MemUtils ACBP=A9
+ 0002:000000B8 00000006 C=ICODE    S=.itext   G=(none)   M=CRParser ACBP=A9
+ 0002:000000C0 00000006 C=ICODE    S=.itext   G=(none)   M=MemData  ACBP=A9
+ 0002:000000C8 00000006 C=ICODE    S=.itext   G=(none)   M=AnsiStrings ACBP=A9
+ 0002:000000D0 00000006 C=ICODE    S=.itext   G=(none)   M=SqlTimSt ACBP=A9
+ 0002:000000D8 00000006 C=ICODE    S=.itext   G=(none)   M=FMTBcd   ACBP=A9
+ 0002:000000E0 00000006 C=ICODE    S=.itext   G=(none)   M=SyncObjs ACBP=A9
+ 0002:000000E8 00000006 C=ICODE    S=.itext   G=(none)   M=TimeSpan ACBP=A9
+ 0002:000000F0 00000006 C=ICODE    S=.itext   G=(none)   M=MTSCall  ACBP=A9
+ 0002:000000F8 00000006 C=ICODE    S=.itext   G=(none)   M=DASQLMonitor ACBP=A9
+ 0002:00000100 00000006 C=ICODE    S=.itext   G=(none)   M=CRVioTcp ACBP=A9
+ 0002:00000108 00000006 C=ICODE    S=.itext   G=(none)   M=DBMonitorClient ACBP=A9
+ 0002:00000110 00000006 C=ICODE    S=.itext   G=(none)   M=CRXml    ACBP=A9
+ 0002:00000118 00000006 C=ICODE    S=.itext   G=(none)   M=DB       ACBP=A9
+ 0002:00000120 00000006 C=ICODE    S=.itext   G=(none)   M=WideStrings ACBP=A9
+ 0002:00000128 00000006 C=ICODE    S=.itext   G=(none)   M=ComObj   ACBP=A9
+ 0002:00000130 00000006 C=ICODE    S=.itext   G=(none)   M=OraParser ACBP=A9
+ 0002:00000138 00000006 C=ICODE    S=.itext   G=(none)   M=OraClasses ACBP=A9
+ 0002:00000140 00000006 C=ICODE    S=.itext   G=(none)   M=OraCall  ACBP=A9
+ 0002:00000148 00000006 C=ICODE    S=.itext   G=(none)   M=OraObjects ACBP=A9
+ 0002:00000150 00000006 C=ICODE    S=.itext   G=(none)   M=OraNet   ACBP=A9
+ 0002:00000158 00000006 C=ICODE    S=.itext   G=(none)   M=OraConnectionPool ACBP=A9
+ 0002:00000160 00000006 C=ICODE    S=.itext   G=(none)   M=OraSQLMonitor ACBP=A9
+ 0002:00000168 00000006 C=ICODE    S=.itext   G=(none)   M=QRPDFFilt ACBP=A9
+ 0002:00000170 00000006 C=ICODE    S=.itext   G=(none)   M=pdfconst ACBP=A9
+ 0002:00000178 00000006 C=ICODE    S=.itext   G=(none)   M=QuickRpt ACBP=A9
+ 0002:00000180 00000006 C=ICODE    S=.itext   G=(none)   M=DBTables ACBP=A9
+ 0002:00000188 00000006 C=ICODE    S=.itext   G=(none)   M=OleCtnrs ACBP=A9
+ 0002:00000190 00000006 C=ICODE    S=.itext   G=(none)   M=Menus    ACBP=A9
+ 0002:00000198 00000006 C=ICODE    S=.itext   G=(none)   M=ActnList ACBP=A9
+ 0002:000001A0 00000006 C=ICODE    S=.itext   G=(none)   M=Themes   ACBP=A9
+ 0002:000001A8 00000006 C=ICODE    S=.itext   G=(none)   M=Controls ACBP=A9
+ 0002:000001B0 00000006 C=ICODE    S=.itext   G=(none)   M=UxTheme  ACBP=A9
+ 0002:000001B8 00000006 C=ICODE    S=.itext   G=(none)   M=MultiMon ACBP=A9
+ 0002:000001C0 00000006 C=ICODE    S=.itext   G=(none)   M=Forms    ACBP=A9
+ 0002:000001C8 00000006 C=ICODE    S=.itext   G=(none)   M=HelpIntfs ACBP=A9
+ 0002:000001D0 00000006 C=ICODE    S=.itext   G=(none)   M=Dialogs  ACBP=A9
+ 0002:000001D8 00000006 C=ICODE    S=.itext   G=(none)   M=ComCtrls ACBP=A9
+ 0002:000001E0 00000006 C=ICODE    S=.itext   G=(none)   M=GraphUtil ACBP=A9
+ 0002:000001E8 00000006 C=ICODE    S=.itext   G=(none)   M=ExtCtrls ACBP=A9
+ 0002:000001F0 00000006 C=ICODE    S=.itext   G=(none)   M=Printers ACBP=A9
+ 0002:000001F8 00000006 C=ICODE    S=.itext   G=(none)   M=Clipbrd  ACBP=A9
+ 0002:00000200 00000006 C=ICODE    S=.itext   G=(none)   M=FlatSB   ACBP=A9
+ 0002:00000208 00000006 C=ICODE    S=.itext   G=(none)   M=QRExpr   ACBP=A9
+ 0002:00000210 00000006 C=ICODE    S=.itext   G=(none)   M=Buttons  ACBP=A9
+ 0002:00000218 00000006 C=ICODE    S=.itext   G=(none)   M=QRExtra  ACBP=A9
+ 0002:00000220 00000006 C=ICODE    S=.itext   G=(none)   M=OleCtrls ACBP=A9
+ 0002:00000228 00000006 C=ICODE    S=.itext   G=(none)   M=AxCtrls  ACBP=A9
+ 0002:00000230 00000006 C=ICODE    S=.itext   G=(none)   M=QRPrntr  ACBP=A9
+ 0002:00000238 00000006 C=ICODE    S=.itext   G=(none)   M=OleServer ACBP=A9
+ 0002:00000240 00000006 C=ICODE    S=.itext   G=(none)   M=QRCtrls  ACBP=A9
+ 0002:00000248 00000006 C=ICODE    S=.itext   G=(none)   M=QRExport ACBP=A9
+ 0002:00000250 00000006 C=ICODE    S=.itext   G=(none)   M=jpeg     ACBP=A9
+ 0002:00000258 00000006 C=ICODE    S=.itext   G=(none)   M=QRWebFilt ACBP=A9
+ 0002:00000260 00000006 C=ICODE    S=.itext   G=(none)   M=QRPrev   ACBP=A9
+ 0002:00000268 00000006 C=ICODE    S=.itext   G=(none)   M=QRXMLSFilt ACBP=A9
+ 0002:00000270 00000006 C=ICODE    S=.itext   G=(none)   M=QRPrnSu  ACBP=A9
+ 0002:00000278 00000006 C=ICODE    S=.itext   G=(none)   M=Barcode  ACBP=A9
+ 0002:00000280 00000006 C=ICODE    S=.itext   G=(none)   M=DBCtrls  ACBP=A9
+ 0002:00000288 00000006 C=ICODE    S=.itext   G=(none)   M=DBPWDlg  ACBP=A9
+ 0002:00000290 00000006 C=ICODE    S=.itext   G=(none)   M=DBLogDlg ACBP=A9
+ 0002:00000298 00000006 C=ICODE    S=.itext   G=(none)   M=OraSmart ACBP=A9
+ 0002:000002A0 00000006 C=ICODE    S=.itext   G=(none)   M=OraAlerter ACBP=A9
+ 0002:000002A8 00000006 C=ICODE    S=.itext   G=(none)   M=ServerDate ACBP=A9
+ 0002:000002B0 00000006 C=ICODE    S=.itext   G=(none)   M=Fxn      ACBP=A9
+ 0002:000002B8 00000006 C=ICODE    S=.itext   G=(none)   M=ADODB    ACBP=A9
+ 0002:000002C0 00000006 C=ICODE    S=.itext   G=(none)   M=TeCanvas ACBP=A9
+ 0002:000002C8 00000006 C=ICODE    S=.itext   G=(none)   M=TeeConst ACBP=A9
+ 0002:000002D0 00000006 C=ICODE    S=.itext   G=(none)   M=TeeHtml  ACBP=A9
+ 0002:000002D8 00000006 C=ICODE    S=.itext   G=(none)   M=CheckLst ACBP=A9
+ 0002:000002E0 00000006 C=ICODE    S=.itext   G=(none)   M=Unit_Message ACBP=A9
+ 0002:000002E8 00000006 C=ICODE    S=.itext   G=(none)   M=Unit_SampleCollectionFrame ACBP=A9
+ 0002:000002F0 00000006 C=ICODE    S=.itext   G=(none)   M=Preview  ACBP=A9
+ 0002:000002F8 00000006 C=ICODE    S=.itext   G=(none)   M=ActnMan  ACBP=A9
+ 0002:00000300 00000006 C=ICODE    S=.itext   G=(none)   M=ActnMenus ACBP=A9
+ 0002:00000308 00000006 C=ICODE    S=.itext   G=(none)   M=ExtActns ACBP=A9
+ 0002:00000310 00000006 C=ICODE    S=.itext   G=(none)   M=ExtDlgs  ACBP=A9
+ 0002:00000318 00000006 C=ICODE    S=.itext   G=(none)   M=Mapi     ACBP=A9
+ 0002:00000320 00000006 C=ICODE    S=.itext   G=(none)   M=TeeProcs ACBP=A9
+ 0002:00000328 00000006 C=ICODE    S=.itext   G=(none)   M=TeeFilters ACBP=A9
+ 0002:00000330 00000006 C=ICODE    S=.itext   G=(none)   M=SMDBGrid ACBP=A9
+ 0002:00000338 00000006 C=ICODE    S=.itext   G=(none)   M=SMCnst   ACBP=A9
+ 0002:00000340 00000006 C=ICODE    S=.itext   G=(none)   M=UnitSendToExcel ACBP=A9
+ 0002:00000348 00000006 C=ICODE    S=.itext   G=(none)   M=acPNG    ACBP=A9
+ 0002:00000350 00000006 C=ICODE    S=.itext   G=(none)   M=sConst   ACBP=A9
+ 0002:00000358 00000006 C=ICODE    S=.itext   G=(none)   M=sDefaults ACBP=A9
+ 0002:00000360 00000006 C=ICODE    S=.itext   G=(none)   M=sLabel   ACBP=A9
+ 0002:00000368 00000006 C=ICODE    S=.itext   G=(none)   M=sSkinManager ACBP=A9
+ 0002:00000370 00000006 C=ICODE    S=.itext   G=(none)   M=acntUtils ACBP=A9
+ 0002:00000378 00000006 C=ICODE    S=.itext   G=(none)   M=sSkinProvider ACBP=A9
+ 0002:00000380 00000006 C=ICODE    S=.itext   G=(none)   M=sStyleSimply ACBP=A9
+ 0002:00000388 00000006 C=ICODE    S=.itext   G=(none)   M=sSkinProps ACBP=A9
+ 0002:00000390 00000006 C=ICODE    S=.itext   G=(none)   M=acDials  ACBP=A9
+ 0002:00000398 00000006 C=ICODE    S=.itext   G=(none)   M=sSkinMenus ACBP=A9
+ 0002:000003A0 00000006 C=ICODE    S=.itext   G=(none)   M=sHtmlParse ACBP=A9
+ 0002:000003A8 00000006 C=ICODE    S=.itext   G=(none)   M=acGlow   ACBP=A9
+ 0002:000003B0 00000006 C=ICODE    S=.itext   G=(none)   M=sVclUtils ACBP=A9
+ 0002:000003B8 00000006 C=ICODE    S=.itext   G=(none)   M=sGraphUtils ACBP=A9
+ 0002:000003C0 00000006 C=ICODE    S=.itext   G=(none)   M=acgpUtils ACBP=A9
+ 0002:000003C8 00000006 C=ICODE    S=.itext   G=(none)   M=sGradient ACBP=A9
+ 0002:000003D0 00000006 C=ICODE    S=.itext   G=(none)   M=acSBUtils ACBP=A9
+ 0002:000003D8 00000006 C=ICODE    S=.itext   G=(none)   M=acAlphaImageList ACBP=A9
+ 0002:000003E0 00000006 C=ICODE    S=.itext   G=(none)   M=sThirdParty ACBP=A9
+ 0002:000003E8 00000006 C=ICODE    S=.itext   G=(none)   M=acAlphaHints ACBP=A9
+ 0002:000003F0 00000006 C=ICODE    S=.itext   G=(none)   M=acPopupController ACBP=A9
+ 0002:000003F8 00000006 C=ICODE    S=.itext   G=(none)   M=sComboBoxes ACBP=A9
+ 0002:00000400 00000006 C=ICODE    S=.itext   G=(none)   M=sColorDialog ACBP=A9
+ 0002:00000408 00000006 C=ICODE    S=.itext   G=(none)   M=sGlyphUtils ACBP=A9
+ 0002:00000410 00000006 C=ICODE    S=.itext   G=(none)   M=sMonthCalendar ACBP=A9
+ 0002:00000418 00000006 C=ICODE    S=.itext   G=(none)   M=sDateUtils ACBP=A9
+ 0002:00000420 00000006 C=ICODE    S=.itext   G=(none)   M=sDialogs ACBP=A9
+ 0002:00000428 00000006 C=ICODE    S=.itext   G=(none)   M=sCalcUnit ACBP=A9
+ 0002:00000430 00000006 C=ICODE    S=.itext   G=(none)   M=acShellCtrls ACBP=A9
+ 0002:00000438 00000006 C=ICODE    S=.itext   G=(none)   M=IdHTTP   ACBP=A9
+ 0002:00000440 00000006 C=ICODE    S=.itext   G=(none)   M=IdComponent ACBP=A9
+ 0002:00000448 00000006 C=ICODE    S=.itext   G=(none)   M=IdStack  ACBP=A9
+ 0002:00000450 00000006 C=ICODE    S=.itext   G=(none)   M=IdGlobal ACBP=A9
+ 0002:00000458 00000006 C=ICODE    S=.itext   G=(none)   M=IdWinsock2 ACBP=A9
+ 0002:00000460 00000006 C=ICODE    S=.itext   G=(none)   M=IdWship6 ACBP=A9
+ 0002:00000468 00000006 C=ICODE    S=.itext   G=(none)   M=IdStackWindows ACBP=A9
+ 0002:00000470 00000006 C=ICODE    S=.itext   G=(none)   M=IdIOHandlerStack ACBP=A9
+ 0002:00000478 00000006 C=ICODE    S=.itext   G=(none)   M=IdIOHandler ACBP=A9
+ 0002:00000480 00000006 C=ICODE    S=.itext   G=(none)   M=IdGlobalProtocols ACBP=A9
+ 0002:00000488 00000006 C=ICODE    S=.itext   G=(none)   M=IdCharsets ACBP=A9
+ 0002:00000490 00000006 C=ICODE    S=.itext   G=(none)   M=IdAuthentication ACBP=A9
+ 0002:00000498 00000006 C=ICODE    S=.itext   G=(none)   M=IdCoderMIME ACBP=A9
+ 0002:000004A0 00000006 C=ICODE    S=.itext   G=(none)   M=IdSSL    ACBP=A9
+ 0002:000004A8 00000006 C=ICODE    S=.itext   G=(none)   M=IdThread ACBP=A9
+ 0002:000004B0 00000006 C=ICODE    S=.itext   G=(none)   M=IdAuthenticationDigest ACBP=A9
+ 0002:000004B8 00000006 C=ICODE    S=.itext   G=(none)   M=IdAuthenticationNTLM ACBP=A9
+ 0002:000004C0 00000006 C=ICODE    S=.itext   G=(none)   M=IdNTLM   ACBP=A9
+ 0002:000004C8 00000006 C=ICODE    S=.itext   G=(none)   M=IdSSLOpenSSLHeaders ACBP=A9
+ 0002:000004D0 00000006 C=ICODE    S=.itext   G=(none)   M=IdSSLOpenSSL ACBP=A9
+ 0002:000004D8 00000006 C=ICODE    S=.itext   G=(none)   M=CustomizeDlg ACBP=A9
+ 0002:000004E0 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_TestCancel ACBP=A9
+ 0002:000004E8 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_PatientSearch ACBP=A9
+ 0002:000004F0 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_TestCancelNew ACBP=A9
+ 0002:000004F8 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrInvestigationPreview ACBP=A9
+ 0002:00000500 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_BroadcastStatus ACBP=A9
+ 0002:00000508 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_Broadcastpopup ACBP=A9
+ 0002:00000510 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_Verification ACBP=A9
+ 0002:00000518 00000008 C=ICODE    S=.itext   G=(none)   M=unit_SaveEmailAddress ACBP=A9
+ 0002:00000520 00000005 C=ICODE    S=.itext   G=(none)   M=.Verification ACBP=A9
+ 0003:00000000 00000030 C=DATA     S=.data    G=DGROUP   M=SysInit  ACBP=A9
+ 0003:00000030 0000000C C=DATA     S=.data    G=DGROUP   M=Windows  ACBP=A9
+ 0004:00000000 0000000C C=BSS      S=.bss     G=DGROUP   M=SysInit  ACBP=A9
+ 0004:0000000C 00000008 C=BSS      S=.bss     G=DGROUP   M=Windows  ACBP=A9
+ 0004:00000014 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_TestCancel ACBP=A9
+ 0004:0000001C 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_PatientSearch ACBP=A9
+ 0004:00000024 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_TestCancelNew ACBP=A9
+ 0004:0000002C 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrInvestigationPreview ACBP=A9
+ 0004:00000034 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_BroadcastStatus ACBP=A9
+ 0004:0000003C 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_Broadcastpopup ACBP=A9
+ 0004:00000044 00000018 C=BSS      S=.bss     G=DGROUP   M=Unit_Verification ACBP=A9
+ 0004:0000005C 00000008 C=BSS      S=.bss     G=DGROUP   M=unit_SaveEmailAddress ACBP=A9
+
+
+  Address             Publics by Name
+
+ 0002:00000520       .Verification..Verification
+ 0001:00019038       .Verification.@GetPackageInfoTable
+ 0001:00019040       .Verification.@PackageLoad
+ 0001:0001904C       .Verification.@PackageUnload
+ 0002:000003E8       acAlphaHints.acAlphaHints
+ 0001:00000CC0       acAlphaHints.Finalization
+ 0002:000003D8       acAlphaImageList.acAlphaImageList
+ 0001:00000CB0       acAlphaImageList.Finalization
+ 0002:00000390       acDials.acDials
+ 0001:00000C68       acDials.Finalization
+ 0002:000003A8       acGlow.acGlow
+ 0001:00000C80       acGlow.Finalization
+ 0002:000003C0       acgpUtils.acgpUtils
+ 0001:00000C98       acgpUtils.Finalization
+ 0002:00000370       acntUtils.acntUtils
+ 0001:00000C48       acntUtils.Finalization
+ 0002:00000348       acPNG.acPNG
+ 0001:00000C20       acPNG.Finalization
+ 0002:000003F0       acPopupController.acPopupController
+ 0001:00000CC8       acPopupController.Finalization
+ 0002:000003D0       acSBUtils.acSBUtils
+ 0001:00000CA8       acSBUtils.Finalization
+ 0002:00000430       acShellCtrls.acShellCtrls
+ 0001:00000D08       acShellCtrls.Finalization
+ 0002:00000198       ActnList.ActnList
+ 0001:00000640       ActnList.Finalization
+ 0002:000002F8       ActnMan.ActnMan
+ 0001:00000BD0       ActnMan.Finalization
+ 0002:00000300       ActnMenus.ActnMenus
+ 0001:00000BD8       ActnMenus.Finalization
+ 0002:000002B8       ADODB.ADODB
+ 0001:00000B70       ADODB.Finalization
+ 0002:000000C8       AnsiStrings.AnsiStrings
+ 0001:000004C8       AnsiStrings.Finalization
+ 0002:00000228       AxCtrls.AxCtrls
+ 0001:000009B0       AxCtrls.Finalization
+ 0002:00000278       Barcode.Barcode
+ 0001:00000A18       Barcode.Finalization
+ 0002:00000210       Buttons.Buttons
+ 0001:00000968       Buttons.Finalization
+ 0002:000002D8       CheckLst.CheckLst
+ 0001:00000BB0       CheckLst.Finalization
+ 0001:00000BA0       CheckLst.TCheckListBox.GetChecked
+ 0001:00000BA8       CheckLst.TCheckListBox.GetState
+ 0001:00000B90       CheckLst.TCheckListBox.SetChecked
+ 0001:00000B98       CheckLst.TCheckListBox.SetState
+ 0002:00000018       Classes.Classes
+ 0001:00000314       Classes.Finalization
+ 0001:000002E4       Classes.TCollection.Clear
+ 0001:00000304       Classes.TComponent.SafeCallException
+ 0001:000002FC       Classes.TComponent.UpdateAction
+ 0001:0000030C       Classes.TComponent.UpdateRegistry
+ 0001:000002F4       Classes.TComponent.WriteState
+ 0001:000002DC       Classes.TPersistent.Assign
+ 0002:00000010       Classes.TThread.Create@
+ 0001:000002EC       Classes.TThread.Destroy@
+ 0002:000001F8       Clipbrd.Clipbrd
+ 0001:00000950       Clipbrd.Finalization
+ 0002:000000A8       CLRClasses.CLRClasses
+ 0001:000004A8       CLRClasses.Finalization
+ 0002:000001D8       ComCtrls.ComCtrls
+ 0001:00000930       ComCtrls.Finalization
+ 0001:00000920       ComCtrls.TPageControl.GetActivePageIndex
+ 0001:00000928       ComCtrls.TPageControl.SetActivePageIndex
+ 0002:00000128       ComObj.ComObj
+ 0001:00000578       ComObj.Finalization
+ 0002:000001A8       Controls.Controls
+ 0001:00000790       Controls.Finalization
+ 0001:000006C0       Controls.TControl.BringToFront
+ 0001:000006D8       Controls.TControl.CreateTouchManager
+ 0001:00000660       Controls.TControl.GetAction
+ 0001:00000650       Controls.TControl.GetDragImages
+ 0001:00000658       Controls.TControl.GetEnabled
+ 0001:000006E0       Controls.TControl.GetFloatingDockSiteClass
+ 0001:000006A8       Controls.TControl.GetText
+ 0001:000006E8       Controls.TControl.InitiateAction
+ 0001:000006C8       Controls.TControl.SendToBack
+ 0001:00000670       Controls.TControl.SetAlign
+ 0001:00000688       Controls.TControl.SetAutoSize
+ 0001:000006B8       Controls.TControl.SetBiDiMode
+ 0001:00000668       Controls.TControl.SetDragMode
+ 0001:000006A0       Controls.TControl.SetEnabled
+ 0001:00000678       Controls.TControl.SetLeft
+ 0001:00000690       Controls.TControl.SetName
+ 0001:000006B0       Controls.TControl.SetText
+ 0001:00000698       Controls.TControl.SetVisible
+ 0001:00000680       Controls.TControl.SetWidth
+ 0001:000006D0       Controls.TControl.Show
+ 0001:00000768       Controls.TWinControl.AssignTo
+ 0001:00000770       Controls.TWinControl.CanAutoSize
+ 0001:00000758       Controls.TWinControl.CanResize
+ 0001:00000760       Controls.TWinControl.ConstrainedResize
+ 0001:000006F8       Controls.TWinControl.CreateHandle
+ 0001:00000700       Controls.TWinControl.CustomAlignInsertBefore
+ 0001:00000708       Controls.TWinControl.CustomAlignPosition
+ 0001:000006F0       Controls.TWinControl.DestroyWnd
+ 0001:00000780       Controls.TWinControl.DockReplaceDockClient
+ 0001:00000750       Controls.TWinControl.GetClientOrigin
+ 0001:00000748       Controls.TWinControl.GetControlExtents
+ 0001:00000728       Controls.TWinControl.GetDeviceContext
+ 0001:00000730       Controls.TWinControl.Invalidate
+ 0001:00000740       Controls.TWinControl.Repaint
+ 0001:00000718       Controls.TWinControl.SetBounds
+ 0001:00000778       Controls.TWinControl.SetParentBackground
+ 0001:00000710       Controls.TWinControl.SetParentDoubleBuffered
+ 0001:00000720       Controls.TWinControl.ShowControl
+ 0001:00000738       Controls.TWinControl.Update
+ 0001:00000788       Controls.TWinControl.UpdateControlOriginalParentSize
+ 0002:000000B8       CRParser.CRParser
+ 0001:000004B8       CRParser.Finalization
+ 0002:00000100       CRVioTcp.CRVioTcp
+ 0001:00000500       CRVioTcp.Finalization
+ 0002:00000110       CRXml.CRXml
+ 0001:00000510       CRXml.Finalization
+ 0002:000004D8       CustomizeDlg.CustomizeDlg
+ 0001:00000DB0       CustomizeDlg.Finalization
+ 0002:000000F8       DASQLMonitor.DASQLMonitor
+ 0001:000004F8       DASQLMonitor.Finalization
+ 0002:00000118       DB.DB
+ 0001:00000568       DB.Finalization
+ 0001:00000560       DB.TDataSet.Append
+ 0001:00000528       DB.TDataSet.Close
+ 0001:00000538       DB.TDataSet.DisableControls
+ 0001:00000540       DB.TDataSet.EnableControls
+ 0001:00000530       DB.TDataSet.FieldByName
+ 0001:00000548       DB.TDataSet.First
+ 0001:00000550       DB.TDataSet.Next
+ 0001:00000520       DB.TDataSet.Open
+ 0001:00000558       DB.TDataSet.Prior
+ 0001:00000518       DB.TFieldDefs.Add
+ 0002:000000A0       DBAccess.DBAccess
+ 0001:000004A0       DBAccess.Finalization
+ 0001:00000498       DBAccess.TCustomDADataSet.GetSQL
+ 0002:00000280       DBCtrls.DBCtrls
+ 0001:00000A28       DBCtrls.Finalization
+ 0001:00000A20       DBCtrls.TDBLookupControl.SetKeyValue
+ 0001:00000AC8       DBGrids.TCustomDBGrid.DefaultDrawColumnCell
+ 0001:00000AD0       DBGrids.TCustomDBGrid.SetSelectedIndex
+ 0001:00000AC0       DBGrids.TDBGridColumns.GetColumn
+ 0002:00000290       DBLogDlg.DBLogDlg
+ 0001:00000A38       DBLogDlg.Finalization
+ 0002:00000108       DBMonitorClient.DBMonitorClient
+ 0001:00000508       DBMonitorClient.Finalization
+ 0002:00000288       DBPWDlg.DBPWDlg
+ 0001:00000A30       DBPWDlg.Finalization
+ 0002:00000180       DBTables.DBTables
+ 0001:00000628       DBTables.Finalization
+ 0001:000005F0       DBTables.TDBDataSet.SetDatabaseName
+ 0001:00000620       DBTables.TQuery.Create
+ 0001:000005F8       DBTables.TTable.CreateTable
+ 0001:00000600       DBTables.TTable.DeleteTable
+ 0001:00000608       DBTables.TTable.EmptyTable
+ 0001:00000610       DBTables.TTable.SetTableName
+ 0001:00000618       DBTables.TTable.SetTableType
+ 0002:000001D0       Dialogs.Dialogs
+ 0001:00000918       Dialogs.Finalization
+ 0001:00000908       Dialogs.MessageDlg
+ 0001:00000910       Dialogs.ShowMessage
+ 0001:000008F8       Dialogs.TOpenDialog.GetFileName
+ 0001:00000900       Dialogs.TOpenDialog.SetFileName
+ 0002:00000308       ExtActns.ExtActns
+ 0001:00000BE0       ExtActns.Finalization
+ 0002:000001E8       ExtCtrls.ExtCtrls
+ 0001:00000940       ExtCtrls.Finalization
+ 0002:00000310       ExtDlgs.ExtDlgs
+ 0001:00000BE8       ExtDlgs.Finalization
+ 0001:00000958       FlatSB.Finalization
+ 0002:00000200       FlatSB.FlatSB
+ 0001:000004D8       FMTBcd.Finalization
+ 0002:000000D8       FMTBcd.FMTBcd
+ 0001:000008E8       Forms.Finalization
+ 0002:000001C0       Forms.Forms
+ 0001:000007D8       Forms.TCustomForm.AfterConstruction
+ 0001:00000860       Forms.TCustomForm.AlignControls
+ 0001:000007E8       Forms.TCustomForm.BeforeDestruction
+ 0001:000008B0       Forms.TCustomForm.Close
+ 0001:000008B8       Forms.TCustomForm.CloseQuery
+ 0001:000007D0       Forms.TCustomForm.Create
+ 0001:000007E0       Forms.TCustomForm.CreateNew
+ 0001:00000868       Forms.TCustomForm.CreateParams
+ 0001:00000878       Forms.TCustomForm.CreateWindowHandle
+ 0001:00000870       Forms.TCustomForm.CreateWnd
+ 0001:00000890       Forms.TCustomForm.DefaultHandler
+ 0001:00000820       Forms.TCustomForm.DefineProperties
+ 0001:000007F0       Forms.TCustomForm.Destroy
+ 0001:00000880       Forms.TCustomForm.DestroyHandle
+ 0001:00000888       Forms.TCustomForm.DestroyWindowHandle
+ 0001:000007F8       Forms.TCustomForm.DoCreate
+ 0001:00000800       Forms.TCustomForm.DoDestroy
+ 0001:00000828       Forms.TCustomForm.GetClientRect
+ 0001:00000830       Forms.TCustomForm.GetFloating
+ 0001:00000808       Forms.TCustomForm.Loaded
+ 0001:00000810       Forms.TCustomForm.Notification
+ 0001:000008A0       Forms.TCustomForm.PaintWindow
+ 0001:000008E0       Forms.TCustomForm.QueryInterface
+ 0001:00000818       Forms.TCustomForm.ReadState
+ 0001:000008D8       Forms.TCustomForm.RequestAlign
+ 0001:000008A8       Forms.TCustomForm.Resizing
+ 0001:000008C0       Forms.TCustomForm.SetFocus
+ 0001:00000898       Forms.TCustomForm.SetFocusedControl
+ 0001:00000848       Forms.TCustomForm.SetParent
+ 0001:00000838       Forms.TCustomForm.SetParentBiDiMode
+ 0001:000008C8       Forms.TCustomForm.ShowModal
+ 0001:000008D0       Forms.TCustomForm.UpdateActions
+ 0001:00000850       Forms.TCustomForm.ValidateRename
+ 0001:00000840       Forms.TCustomForm.WantChildKey
+ 0001:00000858       Forms.TCustomForm.WndProc
+ 0001:000007C8       Forms.TScrollingWinControl.AdjustClientRect
+ 0001:000007A8       Forms.TScrollingWinControl.AutoScrollEnabled
+ 0001:000007C0       Forms.TScrollingWinControl.AutoScrollInView
+ 0001:000007B0       Forms.TScrollingWinControl.DoGesture
+ 0001:000007B8       Forms.TScrollingWinControl.DoGetGestureOptions
+ 0001:00000B18       Fxn.BMPtoJPG
+ 0001:00000AE8       Fxn.CheckAccess
+ 0001:00000B68       Fxn.Finalization
+ 0002:000002B0       Fxn.Fxn
+ 0001:00000B30       Fxn.GetFromDateBySubNoOfDays
+ 0001:00000B60       Fxn.getsampleremarks
+ 0001:00000B28       Fxn.GetTestProgressStatus
+ 0001:00000B38       Fxn.IsClinicalDep
+ 0001:00000B58       Fxn.IsHistoCytoUser
+ 0001:00000AD8       Fxn.IsStrANumber
+ 0001:00000B08       Fxn.LoadDepartmentINCheckListBox
+ 0001:00000B00       Fxn.LoadPatientData
+ 0001:00000AE0       Fxn.LoadRefDocEmail
+ 0001:00000B40       Fxn.LoadSmsMessage
+ 0001:00000B20       Fxn.MailInvResult
+ 0001:00000AF8       Fxn.MsgBox
+ 0001:00000B48       Fxn.RefreshTable
+ 0001:00000B10       Fxn.SaveQrAsBmp
+ 0001:00000AF0       Fxn.ShowDoneMessage
+ 0001:00000B50       Fxn.ToogleCheckState
+ 0001:00000450       Graphics.Finalization
+ 0002:00000070       Graphics.Graphics
+ 0001:00000448       Graphics.TBrush.SetColor
+ 0001:00000440       Graphics.TFont.SetColor
+ 0001:00000938       GraphUtil.Finalization
+ 0002:000001E0       GraphUtil.GraphUtil
+ 0001:000008F0       HelpIntfs.Finalization
+ 0002:000001C8       HelpIntfs.HelpIntfs
+ 0001:00000D68       IdAuthentication.Finalization
+ 0002:00000490       IdAuthentication.IdAuthentication
+ 0001:00000D88       IdAuthenticationDigest.Finalization
+ 0002:000004B0       IdAuthenticationDigest.IdAuthenticationDigest
+ 0001:00000D90       IdAuthenticationNTLM.Finalization
+ 0002:000004B8       IdAuthenticationNTLM.IdAuthenticationNTLM
+ 0001:00000D60       IdCharsets.Finalization
+ 0002:00000488       IdCharsets.IdCharsets
+ 0001:00000D70       IdCoderMIME.Finalization
+ 0002:00000498       IdCoderMIME.IdCoderMIME
+ 0001:00000D18       IdComponent.Finalization
+ 0002:00000440       IdComponent.IdComponent
+ 0001:00000D28       IdGlobal.Finalization
+ 0002:00000450       IdGlobal.IdGlobal
+ 0001:00000D58       IdGlobalProtocols.Finalization
+ 0002:00000480       IdGlobalProtocols.IdGlobalProtocols
+ 0001:00000D10       IdHTTP.Finalization
+ 0002:00000438       IdHTTP.IdHTTP
+ 0001:00000D50       IdIOHandler.Finalization
+ 0002:00000478       IdIOHandler.IdIOHandler
+ 0001:00000D48       IdIOHandlerStack.Finalization
+ 0002:00000470       IdIOHandlerStack.IdIOHandlerStack
+ 0001:00000D98       IdNTLM.Finalization
+ 0002:000004C0       IdNTLM.IdNTLM
+ 0001:00000D78       IdSSL.Finalization
+ 0002:000004A0       IdSSL.IdSSL
+ 0001:00000DA8       IdSSLOpenSSL.Finalization
+ 0002:000004D0       IdSSLOpenSSL.IdSSLOpenSSL
+ 0001:00000DA0       IdSSLOpenSSLHeaders.Finalization
+ 0002:000004C8       IdSSLOpenSSLHeaders.IdSSLOpenSSLHeaders
+ 0001:00000D20       IdStack.Finalization
+ 0002:00000448       IdStack.IdStack
+ 0001:00000D40       IdStackWindows.Finalization
+ 0002:00000468       IdStackWindows.IdStackWindows
+ 0001:00000D80       IdThread.Finalization
+ 0002:000004A8       IdThread.IdThread
+ 0001:00000D30       IdWinsock2.Finalization
+ 0002:00000458       IdWinsock2.IdWinsock2
+ 0001:00000D38       IdWship6.Finalization
+ 0002:00000460       IdWship6.IdWship6
+ 0001:00000460       IniFiles.Finalization
+ 0002:00000080       IniFiles.IniFiles
+ 0001:00000470       IOUtils.Finalization
+ 0002:00000090       IOUtils.IOUtils
+ 0002:00000088       IOUtils.TPath.Create@
+ 0001:00000468       IOUtils.TPath.Destroy@
+ 0001:000009F0       jpeg.Finalization
+ 0002:00000250       jpeg.jpeg
+ 0001:00000BF0       Mapi.Finalization
+ 0002:00000318       Mapi.Mapi
+ 0001:000004C0       MemData.Finalization
+ 0002:000000C0       MemData.MemData
+ 0001:000004B0       MemUtils.Finalization
+ 0002:000000B0       MemUtils.MemUtils
+ 0001:00000638       Menus.Finalization
+ 0002:00000190       Menus.Menus
+ 0001:000004F0       MTSCall.Finalization
+ 0002:000000F0       MTSCall.MTSCall
+ 0001:000007A0       MultiMon.Finalization
+ 0002:000001B8       MultiMon.MultiMon
+ 0001:00000630       OleCtnrs.Finalization
+ 0002:00000188       OleCtnrs.OleCtnrs
+ 0001:000009A8       OleCtrls.Finalization
+ 0002:00000220       OleCtrls.OleCtrls
+ 0001:00000978       OleCtrls.TOleControl.Create
+ 0001:00000980       OleCtrls.TOleControl.GetIntegerProp
+ 0001:00000988       OleCtrls.TOleControl.GetWideStringProp
+ 0001:00000990       OleCtrls.TOleControl.SetIntegerProp
+ 0001:00000998       OleCtrls.TOleControl.SetTOleEnumProp
+ 0001:000009A0       OleCtrls.TOleControl.SetWideStringProp
+ 0001:000009D0       OleServer.Finalization
+ 0002:00000238       OleServer.OleServer
+ 0001:00000490       Ora.Finalization
+ 0002:00000098       Ora.Ora
+ 0001:00000478       Ora.TOraDataSet.Create
+ 0001:00000480       Ora.TOraDataSet.ExecSQL
+ 0001:00000488       Ora.TOraDataSet.SetSession
+ 0001:00000A90       OraAlerter.Finalization
+ 0002:000002A0       OraAlerter.OraAlerter
+ 0001:00000590       OraCall.Finalization
+ 0002:00000140       OraCall.OraCall
+ 0001:00000588       OraClasses.Finalization
+ 0002:00000138       OraClasses.OraClasses
+ 0001:000005A8       OraConnectionPool.Finalization
+ 0002:00000158       OraConnectionPool.OraConnectionPool
+ 0001:000005A0       OraNet.Finalization
+ 0002:00000150       OraNet.OraNet
+ 0001:00000598       OraObjects.Finalization
+ 0002:00000148       OraObjects.OraObjects
+ 0001:00000580       OraParser.Finalization
+ 0002:00000130       OraParser.OraParser
+ 0001:00000A88       OraSmart.Finalization
+ 0002:00000298       OraSmart.OraSmart
+ 0001:000005B0       OraSQLMonitor.Finalization
+ 0002:00000160       OraSQLMonitor.OraSQLMonitor
+ 0001:000005C8       pdfconst.Finalization
+ 0002:00000170       pdfconst.pdfconst
+ 0001:000002D4       pngimage.Finalization
+ 0002:00000008       pngimage.pngimage
+ 0001:00000BC8       Preview.Finalization
+ 0002:000002F0       Preview.Preview
+ 0001:00000948       Printers.Finalization
+ 0002:000001F0       Printers.Printers
+ 0001:000009E0       QRCtrls.Finalization
+ 0002:00000240       QRCtrls.QRCtrls
+ 0001:000009D8       QRCtrls.TQRCustomLabel.SetCaption
+ 0001:000009E8       QRExport.Finalization
+ 0002:00000248       QRExport.QRExport
+ 0001:00000960       QRExpr.Finalization
+ 0002:00000208       QRExpr.QRExpr
+ 0001:00000970       QRExtra.Finalization
+ 0002:00000218       QRExtra.QRExtra
+ 0001:000005C0       QRPDFFilt.Finalization
+ 0002:00000168       QRPDFFilt.QRPDFFilt
+ 0001:000005B8       QRPDFFilt.TQRPDFDocumentFilter.Create
+ 0001:00000A00       QRPrev.Finalization
+ 0002:00000260       QRPrev.QRPrev
+ 0001:00000A10       QRPrnSu.Finalization
+ 0002:00000270       QRPrnSu.QRPrnSu
+ 0001:000009C8       QRPrntr.Finalization
+ 0002:00000230       QRPrntr.QRPrntr
+ 0001:000009B8       QRPrntr.TQRPreview.SetQRPrinter
+ 0001:000009C0       QRPrntr.TQRPreview.SetZoom
+ 0001:000009F8       QRWebFilt.Finalization
+ 0002:00000258       QRWebFilt.QRWebFilt
+ 0001:00000A08       QRXMLSFilt.Finalization
+ 0002:00000268       QRXMLSFilt.QRXMLSFilt
+ 0001:000005E8       QuickRpt.Finalization
+ 0002:00000178       QuickRpt.QuickRpt
+ 0001:000005E0       QuickRpt.TCustomQuickRep.ExportToFilter
+ 0001:000005D0       QuickRpt.TCustomQuickRep.Prepare
+ 0001:000005D8       QuickRpt.TCustomQuickRep.Preview
+ 0001:00000458       Registry.Finalization
+ 0002:00000078       Registry.Registry
+ 0001:00000D00       sCalcUnit.Finalization
+ 0002:00000428       sCalcUnit.sCalcUnit
+ 0001:00000CD8       sColorDialog.Finalization
+ 0002:00000400       sColorDialog.sColorDialog
+ 0001:00000CD0       sComboBoxes.Finalization
+ 0002:000003F8       sComboBoxes.sComboBoxes
+ 0001:00000C28       sConst.Finalization
+ 0002:00000350       sConst.sConst
+ 0001:00000CF0       sDateUtils.Finalization
+ 0002:00000418       sDateUtils.sDateUtils
+ 0001:00000C30       sDefaults.Finalization
+ 0002:00000358       sDefaults.sDefaults
+ 0001:00000CF8       sDialogs.Finalization
+ 0002:00000420       sDialogs.sDialogs
+ 0001:00000A98       ServerDate.CreateQuery
+ 0001:00000AB8       ServerDate.Finalization
+ 0002:000002A8       ServerDate.ServerDate
+ 0001:00000AA8       ServerDate.TodaysDate
+ 0001:00000AB0       ServerDate.TodaysDateVS
+ 0001:00000AA0       ServerDate.TodaysTime
+ 0001:00000CE0       sGlyphUtils.Finalization
+ 0002:00000408       sGlyphUtils.sGlyphUtils
+ 0001:00000CA0       sGradient.Finalization
+ 0002:000003C8       sGradient.sGradient
+ 0001:00000C90       sGraphUtils.Finalization
+ 0002:000003B8       sGraphUtils.sGraphUtils
+ 0001:00000C78       sHtmlParse.Finalization
+ 0002:000003A0       sHtmlParse.sHtmlParse
+ 0001:00000C38       sLabel.Finalization
+ 0002:00000360       sLabel.sLabel
+ 0001:00000C10       SMCnst.Finalization
+ 0002:00000338       SMCnst.SMCnst
+ 0001:00000C08       SMDBGrid.Finalization
+ 0002:00000330       SMDBGrid.SMDBGrid
+ 0001:00000CE8       sMonthCalendar.Finalization
+ 0002:00000410       sMonthCalendar.sMonthCalendar
+ 0001:000004D0       SqlTimSt.Finalization
+ 0002:000000D0       SqlTimSt.SqlTimSt
+ 0001:00000C40       sSkinManager.Finalization
+ 0002:00000368       sSkinManager.sSkinManager
+ 0001:00000C70       sSkinMenus.Finalization
+ 0002:00000398       sSkinMenus.sSkinMenus
+ 0001:00000C60       sSkinProps.Finalization
+ 0002:00000388       sSkinProps.sSkinProps
+ 0001:00000C50       sSkinProvider.Finalization
+ 0002:00000378       sSkinProvider.sSkinProvider
+ 0001:00000C58       sStyleSimply.Finalization
+ 0002:00000380       sStyleSimply.sStyleSimply
+ 0001:00000CB8       sThirdParty.Finalization
+ 0002:000003E0       sThirdParty.sThirdParty
+ 0001:00000C88       sVclUtils.Finalization
+ 0002:000003B0       sVclUtils.sVclUtils
+ 0001:000004E0       SyncObjs.Finalization
+ 0002:000000E0       SyncObjs.SyncObjs
+ 0001:00000258       SysInit.@InitPkg
+ 0001:000002BC       SysInit.@PackageLoad
+ 0001:000002C8       SysInit.@PackageUnload
+ 0001:00000148       SysInit.AllocTlsBuffer
+ 0001:00000204       SysInit.ExitProcessTLS
+ 0001:000001CC       SysInit.ExitThreadTLS
+ 0001:00000110       SysInit.FreeLibrary
+ 0001:00000154       SysInit.GetTlsSize
+ 0004:00000004       SysInit.HInstance
+ 0001:00000228       SysInit.InitializeModule
+ 0001:000001A0       SysInit.InitProcessTLS
+ 0001:0000015C       SysInit.InitThreadTLS
+ 0001:00000118       SysInit.LocalAlloc
+ 0001:00000120       SysInit.LocalFree
+ 0003:00000004       SysInit.Module
+ 0004:00000000       SysInit.ModuleIsLib
+ 0004:00000001       SysInit.ModuleIsPackage
+ 0001:00000128       SysInit.TlsAlloc
+ 0004:00000008       SysInit.tlsBuffer
+ 0001:00000130       SysInit.TlsFree
+ 0001:00000138       SysInit.TlsGetValue
+ 0003:00000000       SysInit.TlsIndex
+ 0005:00000000       SysInit.TlsLast
+ 0003:00000020       SysInit.TlsProc
+ 0001:00000140       SysInit.TlsSetValue
+ 0001:00000234       SysInit.UninitializeModule
+ 0001:00000048       System.@DoneExcept
+ 0001:000000F0       System.@DynArraySetLength
+ 0001:000000E8       System.@FinalizeArray
+ 0001:00000038       System.@HandleAnyException
+ 0001:00000040       System.@HandleFinally
+ 0001:000000E0       System.@InitializeArray
+ 0001:00000050       System.@PackageLoad
+ 0001:00000058       System.@PackageUnload
+ 0001:00000060       System.@RunError
+ 0001:00000088       System.@UStrArrayClr
+ 0001:00000090       System.@UStrAsg
+ 0001:000000B8       System.@UStrCat
+ 0001:000000C0       System.@UStrCat3
+ 0001:000000C8       System.@UStrCatN
+ 0001:00000080       System.@UStrClr
+ 0001:000000D8       System.@UStrCopy
+ 0001:000000D0       System.@UStrEqual
+ 0001:000000A0       System.@UStrFromWStr
+ 0001:00000098       System.@UStrLAsg
+ 0001:000000B0       System.@UStrLen
+ 0001:00000070       System.@WStrArrayClr
+ 0001:00000078       System.@WStrCatN
+ 0001:00000068       System.@WStrClr
+ 0001:000000A8       System.@WStrFromUStr
+ 0001:00000108       System.Finalization
+ 0001:000000F8       System.RegisterModule
+ 0002:00000000       System.System
+ 0001:00000030       System.TObject.Dispatch
+ 0001:00000018       System.TObject.Equals
+ 0001:00000010       System.TObject.Free
+ 0001:00000008       System.TObject.FreeInstance
+ 0001:00000020       System.TObject.GetHashCode
+ 0001:00000000       System.TObject.NewInstance
+ 0001:00000028       System.TObject.ToString
+ 0001:00000100       System.UnregisterModule
+ 0001:000003E0       SysUtils.CreateDir
+ 0001:000003D8       SysUtils.DeleteFile
+ 0001:000003D0       SysUtils.DirectoryExists
+ 0002:00000050       SysUtils.Exception.Create@
+ 0001:000003F0       SysUtils.Exception.Destroy@
+ 0001:000003C8       SysUtils.FileExists
+ 0001:00000418       SysUtils.Finalization
+ 0001:000003E8       SysUtils.FloatToStr
+ 0001:00000400       SysUtils.FreeAndNil
+ 0001:000003B8       SysUtils.IntToStr
+ 0001:000003B0       SysUtils.QuotedStr
+ 0001:000003F8       SysUtils.StringReplace
+ 0001:000003C0       SysUtils.StrToInt
+ 0002:00000058       SysUtils.SysUtils
+ 0002:00000048       SysUtils.TEncoding.Create@
+ 0001:00000410       SysUtils.TEncoding.Destroy@
+ 0002:00000040       SysUtils.TLanguages.Create@
+ 0001:00000408       SysUtils.TLanguages.Destroy@
+ 0001:000003A8       SysUtils.Trim
+ 0001:00000B78       TeCanvas.Finalization
+ 0002:000002C0       TeCanvas.TeCanvas
+ 0001:00000B80       TeeConst.Finalization
+ 0002:000002C8       TeeConst.TeeConst
+ 0001:00000C00       TeeFilters.Finalization
+ 0002:00000328       TeeFilters.TeeFilters
+ 0001:00000B88       TeeHtml.Finalization
+ 0002:000002D0       TeeHtml.TeeHtml
+ 0001:00000BF8       TeeProcs.Finalization
+ 0002:00000320       TeeProcs.TeeProcs
+ 0001:00000648       Themes.Finalization
+ 0002:000001A0       Themes.Themes
+ 0002:000000E8       TimeSpan.TTimeSpan.Create@
+ 0001:000004E8       TimeSpan.TTimeSpan.Destroy@
+ 0001:000003A0       TypInfo.Finalization
+ 0002:00000038       TypInfo.TypInfo
+ 0001:00000C18       UnitSendToExcel.Finalization
+ 0002:00000340       UnitSendToExcel.UnitSendToExcel
+ 0004:00000040       Unit_Broadcastpopup..2
+ 0001:000076E0       Unit_Broadcastpopup..TForm_Broadcastpopup
+ 0001:00009094       Unit_Broadcastpopup.Finalization
+ 0004:0000003C       Unit_Broadcastpopup.Form_Broadcastpopup
+ 0001:0000806C       Unit_Broadcastpopup.TForm_Broadcastpopup.bb_cancelClick
+ 0001:00008074       Unit_Broadcastpopup.TForm_Broadcastpopup.bb_okClick
+ 0001:000080CC       Unit_Broadcastpopup.TForm_Broadcastpopup.BB_SendSmsClick
+ 0001:00008194       Unit_Broadcastpopup.TForm_Broadcastpopup.bb_updateClick
+ 0001:000081B0       Unit_Broadcastpopup.TForm_Broadcastpopup.BroadCast
+ 0001:0000831C       Unit_Broadcastpopup.TForm_Broadcastpopup.CB_emailnameClick
+ 0001:000083BC       Unit_Broadcastpopup.TForm_Broadcastpopup.CB_REFDOCClick
+ 0001:0000851C       Unit_Broadcastpopup.TForm_Broadcastpopup.dblcb_emailnameClick
+ 0001:00008534       Unit_Broadcastpopup.TForm_Broadcastpopup.FormCreate
+ 0001:00008600       Unit_Broadcastpopup.TForm_Broadcastpopup.FormKeyDown
+ 0001:00008614       Unit_Broadcastpopup.TForm_Broadcastpopup.Loaddata
+ 0001:00008898       Unit_Broadcastpopup.TForm_Broadcastpopup.Memo_MessageChange
+ 0001:00008978       Unit_Broadcastpopup.TForm_Broadcastpopup.SendMail
+ 0001:00008F54       Unit_Broadcastpopup.TForm_Broadcastpopup.Updatedata
+ 0002:00000508       Unit_Broadcastpopup.Unit_Broadcastpopup
+ 0004:00000038       Unit_BroadcastStatus..2
+ 0001:00005524       Unit_BroadcastStatus..TForm_BroadcastStatus
+ 0001:000076D8       Unit_BroadcastStatus.Finalization
+ 0004:00000034       Unit_BroadcastStatus.Form_BroadcastStatus
+ 0001:00005D44       Unit_BroadcastStatus.TForm_BroadcastStatus.BB_CloseClick
+ 0001:00005D4C       Unit_BroadcastStatus.TForm_BroadcastStatus.BB_RefreshClick
+ 0001:00005D6C       Unit_BroadcastStatus.TForm_BroadcastStatus.CreateTable
+ 0001:00006068       Unit_BroadcastStatus.TForm_BroadcastStatus.DBGrid1DrawColumnCell
+ 0001:0000650C       Unit_BroadcastStatus.TForm_BroadcastStatus.Dex_CLFromEnter
+ 0001:00006520       Unit_BroadcastStatus.TForm_BroadcastStatus.Edit_SearchCollectedListChange
+ 0001:00006620       Unit_BroadcastStatus.TForm_BroadcastStatus.FormCreate
+ 0001:00006708       Unit_BroadcastStatus.TForm_BroadcastStatus.FormKeyDown
+ 0001:0000671C       Unit_BroadcastStatus.TForm_BroadcastStatus.LoadData
+ 0002:00000500       Unit_BroadcastStatus.Unit_BroadcastStatus
+ 0001:00002344       Unit_ClinicalPathFindingNew.TFrame_ClinicalPathFindingNew.Create
+ 0001:0000234C       Unit_FindingFrame.TFrame_Finding.Create
+ 0001:00000A40       Unit_Master.GetMaxId
+ 0001:00000A48       Unit_Master.GetNextBillNo1
+ 0001:00000A70       Unit_Master.LoadBroadcastdata
+ 0001:00000A68       Unit_Master.SaveBroadcastdata
+ 0001:00000A78       Unit_Master.SaveBroadcastdetail
+ 0001:00000A80       Unit_Master.SendSmsQueryCollection
+ 0001:00000A50       Unit_Master.UndoSampleCollection
+ 0001:00000A58       Unit_Master.UpdateTestProgressStatus
+ 0001:00000A60       Unit_Master.UpdateVerifiedBy
+ 0001:00000BB8       Unit_Message.Finalization
+ 0002:000002E0       Unit_Message.Unit_Message
+ 0004:00000020       Unit_PatientSearch..2
+ 0001:00002354       Unit_PatientSearch..TForm_PatientSearch
+ 0001:00003938       Unit_PatientSearch.Finalization
+ 0004:0000001C       Unit_PatientSearch.Form_PatientSearch
+ 0001:00002D60       Unit_PatientSearch.TForm_PatientSearch.BB_CloseClick
+ 0001:00002D68       Unit_PatientSearch.TForm_PatientSearch.BB_RefreshClick
+ 0001:000031E0       Unit_PatientSearch.TForm_PatientSearch.CB_GlobalSearchClick
+ 0001:000031F4       Unit_PatientSearch.TForm_PatientSearch.Edit_FirstNameKeyDown
+ 0001:000031FC       Unit_PatientSearch.TForm_PatientSearch.FormClose
+ 0001:00003248       Unit_PatientSearch.TForm_PatientSearch.FormKeyDown
+ 0001:00003278       Unit_PatientSearch.TForm_PatientSearch.FormShow
+ 0001:00003380       Unit_PatientSearch.TForm_PatientSearch.Se_CLDaysChange
+ 0001:00003430       Unit_PatientSearch.TForm_PatientSearch.SMDBGrid1DblClick
+ 0001:000035CC       Unit_PatientSearch.TForm_PatientSearch.SMDBGrid1KeyDown
+ 0001:000037A8       Unit_PatientSearch.TForm_PatientSearch.SPB_FromClick
+ 0001:00003870       Unit_PatientSearch.TForm_PatientSearch.SPB_ToClick
+ 0002:000004E8       Unit_PatientSearch.Unit_PatientSearch
+ 0004:00000030       Unit_QrInvestigationPreview..2
+ 0001:00004F20       Unit_QrInvestigationPreview..TForm_QrInvestigationPreview
+ 0001:0000551C       Unit_QrInvestigationPreview.Finalization
+ 0004:0000002C       Unit_QrInvestigationPreview.Form_QrInvestigationPreview
+ 0001:00005304       Unit_QrInvestigationPreview.TForm_QrInvestigationPreview.BB_CloseClick
+ 0001:0000530C       Unit_QrInvestigationPreview.TForm_QrInvestigationPreview.BitBtn1Click
+ 0001:00005508       Unit_QrInvestigationPreview.TForm_QrInvestigationPreview.FormKeyDown
+ 0002:000004F8       Unit_QrInvestigationPreview.Unit_QrInvestigationPreview
+ 0001:00000BC0       Unit_SampleCollectionFrame.Finalization
+ 0002:000002E8       Unit_SampleCollectionFrame.Unit_SampleCollectionFrame
+ 0004:00000060       unit_SaveEmailAddress..2
+ 0001:0001717C       unit_SaveEmailAddress..TForm_SaveEmailAddress
+ 0001:000180F0       unit_SaveEmailAddress.Finalization
+ 0004:0000005C       unit_SaveEmailAddress.Form_SaveEmailAddress
+ 0001:00017904       unit_SaveEmailAddress.TForm_SaveEmailAddress.BBtnBB_CloseClick
+ 0001:00017958       unit_SaveEmailAddress.TForm_SaveEmailAddress.BBtnBB_NewClick
+ 0001:00017990       unit_SaveEmailAddress.TForm_SaveEmailAddress.BBtnBB_SaveClick
+ 0001:00017D90       unit_SaveEmailAddress.TForm_SaveEmailAddress.DbGrid2CellClick
+ 0001:00017DA4       unit_SaveEmailAddress.TForm_SaveEmailAddress.DbGrid2DblClick
+ 0001:00017E4C       unit_SaveEmailAddress.TForm_SaveEmailAddress.DbGrid2KeyDown
+ 0001:00017FEC       unit_SaveEmailAddress.TForm_SaveEmailAddress.FormKeyDown
+ 0001:00018000       unit_SaveEmailAddress.TForm_SaveEmailAddress.FormShow
+ 0001:000180BC       unit_SaveEmailAddress.TForm_SaveEmailAddress.PageControl1Change
+ 0002:00000518       unit_SaveEmailAddress.unit_SaveEmailAddress
+ 0004:00000018       Unit_TestCancel..2
+ 0001:00000E38       Unit_TestCancel..TForm_TestCancel
+ 0001:0000233C       Unit_TestCancel.Finalization
+ 0004:00000014       Unit_TestCancel.Form_TestCancel
+ 0001:0000179C       Unit_TestCancel.TForm_TestCancel.BB_CloseClick
+ 0001:000017A4       Unit_TestCancel.TForm_TestCancel.BB_SaveClick
+ 0001:00001D74       Unit_TestCancel.TForm_TestCancel.chklst_testnameClickCheck
+ 0001:00001D9C       Unit_TestCancel.TForm_TestCancel.chk_allClick
+ 0001:00001E10       Unit_TestCancel.TForm_TestCancel.FormKeyDown
+ 0001:00001E24       Unit_TestCancel.TForm_TestCancel.FormShow
+ 0001:00001E2C       Unit_TestCancel.TForm_TestCancel.LoadCanceltest
+ 0002:000004E0       Unit_TestCancel.Unit_TestCancel
+ 0004:00000028       Unit_TestCancelNew..2
+ 0001:000039D0       Unit_TestCancelNew..TForm_TestCancelNew
+ 0001:00004F18       Unit_TestCancelNew.Finalization
+ 0004:00000024       Unit_TestCancelNew.Form_TestCancelNew
+ 0001:0000435C       Unit_TestCancelNew.TForm_TestCancelNew.BB_CloseClick
+ 0001:00004364       Unit_TestCancelNew.TForm_TestCancelNew.BB_SaveClick
+ 0001:00004948       Unit_TestCancelNew.TForm_TestCancelNew.chklst_testnameClickCheck
+ 0001:00004970       Unit_TestCancelNew.TForm_TestCancelNew.chk_allClick
+ 0001:000049E4       Unit_TestCancelNew.TForm_TestCancelNew.FormKeyDown
+ 0001:000049F8       Unit_TestCancelNew.TForm_TestCancelNew.FormShow
+ 0001:00004A00       Unit_TestCancelNew.TForm_TestCancelNew.LoadCanceltest
+ 0002:000004F0       Unit_TestCancelNew.Unit_TestCancelNew
+ 0004:00000058       Unit_Verification..2
+ 0001:0000909C       Unit_Verification..TForm_Verification
+ 0001:00017174       Unit_Verification.Finalization
+ 0004:00000044       Unit_Verification.Form_Verification
+ 0004:0000004C       Unit_Verification.Frame_ClinicalPathFinding
+ 0004:00000054       Unit_Verification.Frame_ClinicalPathFindingCentralNew
+ 0004:00000050       Unit_Verification.Frame_ClinicalPathFindingNew
+ 0004:00000048       Unit_Verification.Frame_Finding
+ 0001:0000C514       Unit_Verification.TForm_Verification.BB_CloseClick
+ 0001:0000E530       Unit_Verification.TForm_Verification.BB_FullScreenClick
+ 0001:0000E520       Unit_Verification.TForm_Verification.BB_HideClick
+ 0001:0000C5A8       Unit_Verification.TForm_Verification.BB_RefreshClick
+ 0001:0000DAE0       Unit_Verification.TForm_Verification.BitBtn1Click
+ 0001:0000DB08       Unit_Verification.TForm_Verification.BitBtn2Click
+ 0001:0000DB30       Unit_Verification.TForm_Verification.BitBtn3Click
+ 0001:0000E16C       Unit_Verification.TForm_Verification.BitBtn_ResultVerificationClick
+ 0001:0000E1C8       Unit_Verification.TForm_Verification.btn_SpecialTestCancelClick
+ 0001:0000E780       Unit_Verification.TForm_Verification.Cb_AllClick
+ 0001:0000E6B8       Unit_Verification.TForm_Verification.CB_DeptypeCheckChange
+ 0001:0000E7B4       Unit_Verification.TForm_Verification.CB_EmergencyReportingClick
+ 0001:0000E558       Unit_Verification.TForm_Verification.Cb_HalfpageClick
+ 0001:0000E584       Unit_Verification.TForm_Verification.Cb_hideallClick
+ 0001:0000E588       Unit_Verification.TForm_Verification.Cb_HideIndicationClick
+ 0001:0000E5B4       Unit_Verification.TForm_Verification.Cb_HideRangeClick
+ 0001:0000E5E0       Unit_Verification.TForm_Verification.Cb_ModeChange
+ 0001:0000E5E8       Unit_Verification.TForm_Verification.Cb_NoResultClick
+ 0001:0000E5F0       Unit_Verification.TForm_Verification.Cb_SampleSourceClick
+ 0001:0000E61C       Unit_Verification.TForm_Verification.CB_SearchPatientClick
+ 0001:0000E68C       Unit_Verification.TForm_Verification.Cb_SignatureClick
+ 0001:0000E7E0       Unit_Verification.TForm_Verification.CheckBoxGrid1DrawColumnCell
+ 0001:0000BE00       Unit_Verification.TForm_Verification.CreateFindingsTable
+ 0001:0000EAF0       Unit_Verification.TForm_Verification.CreateTable
+ 0001:0001349C       Unit_Verification.TForm_Verification.CRTemp_Query_samplecollectedrightAfterSmartRefresh
+ 0001:0000F08C       Unit_Verification.TForm_Verification.DBGrid1CellClick
+ 0001:0000FAAC       Unit_Verification.TForm_Verification.DBGrid1KeyDown
+ 0001:00010390       Unit_Verification.TForm_Verification.Dex_CLFromEnter
+ 0001:000103A4       Unit_Verification.TForm_Verification.Edit10Change
+ 0001:000104B8       Unit_Verification.TForm_Verification.Edit11Change
+ 0001:000105C8       Unit_Verification.TForm_Verification.Edit12Change
+ 0001:000106DC       Unit_Verification.TForm_Verification.Edit14Change
+ 0001:000107F0       Unit_Verification.TForm_Verification.Edit15Change
+ 0001:00010904       Unit_Verification.TForm_Verification.Edit8Change
+ 0001:000109F4       Unit_Verification.TForm_Verification.Edit9Change
+ 0001:00010B10       Unit_Verification.TForm_Verification.Edit_SearchCollectedListChange
+ 0001:00010B14       Unit_Verification.TForm_Verification.Edit_SearchCollectedListKeyPress
+ 0001:00010D38       Unit_Verification.TForm_Verification.edt_GlobalSearchKeyPress
+ 0001:00012384       Unit_Verification.TForm_Verification.FormCreate
+ 0001:000127A0       Unit_Verification.TForm_Verification.FormKeyDown
+ 0001:00012818       Unit_Verification.TForm_Verification.FormShow
+ 0001:00013A14       Unit_Verification.TForm_Verification.GetSelectedPatientTestId
+ 0001:0001296C       Unit_Verification.TForm_Verification.LocateSampleNo
+ 0001:00012BCC       Unit_Verification.TForm_Verification.Query_SampleCollectedAfterScroll
+ 0001:00012BD0       Unit_Verification.TForm_Verification.Query_samplecollectedrightAfterScroll
+ 0001:000134A4       Unit_Verification.TForm_Verification.Rb_AllClick
+ 0001:000134A8       Unit_Verification.TForm_Verification.Rb_NonVerifiedClick
+ 0001:000134AC       Unit_Verification.TForm_Verification.Rb_VerifiedClick
+ 0001:00013ECC       Unit_Verification.TForm_Verification.SB_AddBlockTestClick
+ 0001:00015ADC       Unit_Verification.TForm_Verification.Sb_PreviewClick
+ 0001:000163D8       Unit_Verification.TForm_Verification.Sb_ResultVerificationClick
+ 0001:000134B4       Unit_Verification.TForm_Verification.Se_CLDaysKeyDown
+ 0001:000134D0       Unit_Verification.TForm_Verification.SPB_From1Click
+ 0001:00013884       Unit_Verification.TForm_Verification.SPB_FromClick
+ 0001:0001394C       Unit_Verification.TForm_Verification.SPB_ToClick
+ 0001:000163B4       Unit_Verification.TForm_Verification.SpeedButton12Click
+ 0001:00016434       Unit_Verification.TForm_Verification.SpeedButton2Click
+ 0001:00016A74       Unit_Verification.TForm_Verification.SpeedButton3Click
+ 0001:00016D30       Unit_Verification.TForm_Verification.SpeedButton4Click
+ 0001:00017040       Unit_Verification.TForm_Verification.SpeedButton5Click
+ 0001:0001709C       Unit_Verification.TForm_Verification.SpeedButton8Click
+ 0001:00017164       Unit_Verification.TForm_Verification.Timer1Timer
+ 0002:00000510       Unit_Verification.Unit_Verification
+ 0001:00000798       UxTheme.Finalization
+ 0002:000001B0       UxTheme.UxTheme
+ 0001:00000420       Variants.@VarClr
+ 0001:00000428       Variants.@VarFromInt
+ 0001:00000430       Variants.Finalization
+ 0002:00000060       Variants.Variants
+ 0001:00000438       VarUtils.Finalization
+ 0002:00000068       VarUtils.VarUtils
+ 0001:00000570       WideStrings.Finalization
+ 0002:00000120       WideStrings.WideStrings
+ 0004:0000000C       Windows..2
+ 0001:00000380       Windows.Finalization
+ 0001:0000031C       Windows.FreeLibrary
+ 0001:0000032C       Windows.GetKeyboardState
+ 0001:00000324       Windows.GetVersionEx
+ 0004:00000010       Windows.HtmlHelpModule
+ 0001:00000344       Windows.InitVersionInfo
+ 0001:0000033C       Windows.keybd_event
+ 0001:00000334       Windows.MessageBeep
+ 0003:00000030       Windows.Win32MajorVersion
+ 0003:00000034       Windows.Win32MinorVersion
+ 0003:00000038       Windows.Win32Platform
+ 0002:00000020       Windows.Windows
+
+
+  Address             Publics by Value
+
+ 0001:00000000       System.TObject.NewInstance
+ 0001:00000008       System.TObject.FreeInstance
+ 0001:00000010       System.TObject.Free
+ 0001:00000018       System.TObject.Equals
+ 0001:00000020       System.TObject.GetHashCode
+ 0001:00000028       System.TObject.ToString
+ 0001:00000030       System.TObject.Dispatch
+ 0001:00000038       System.@HandleAnyException
+ 0001:00000040       System.@HandleFinally
+ 0001:00000048       System.@DoneExcept
+ 0001:00000050       System.@PackageLoad
+ 0001:00000058       System.@PackageUnload
+ 0001:00000060       System.@RunError
+ 0001:00000068       System.@WStrClr
+ 0001:00000070       System.@WStrArrayClr
+ 0001:00000078       System.@WStrCatN
+ 0001:00000080       System.@UStrClr
+ 0001:00000088       System.@UStrArrayClr
+ 0001:00000090       System.@UStrAsg
+ 0001:00000098       System.@UStrLAsg
+ 0001:000000A0       System.@UStrFromWStr
+ 0001:000000A8       System.@WStrFromUStr
+ 0001:000000B0       System.@UStrLen
+ 0001:000000B8       System.@UStrCat
+ 0001:000000C0       System.@UStrCat3
+ 0001:000000C8       System.@UStrCatN
+ 0001:000000D0       System.@UStrEqual
+ 0001:000000D8       System.@UStrCopy
+ 0001:000000E0       System.@InitializeArray
+ 0001:000000E8       System.@FinalizeArray
+ 0001:000000F0       System.@DynArraySetLength
+ 0001:000000F8       System.RegisterModule
+ 0001:00000100       System.UnregisterModule
+ 0001:00000108       System.Finalization
+ 0001:00000110       SysInit.FreeLibrary
+ 0001:00000118       SysInit.LocalAlloc
+ 0001:00000120       SysInit.LocalFree
+ 0001:00000128       SysInit.TlsAlloc
+ 0001:00000130       SysInit.TlsFree
+ 0001:00000138       SysInit.TlsGetValue
+ 0001:00000140       SysInit.TlsSetValue
+ 0001:00000148       SysInit.AllocTlsBuffer
+ 0001:00000154       SysInit.GetTlsSize
+ 0001:0000015C       SysInit.InitThreadTLS
+ 0001:000001A0       SysInit.InitProcessTLS
+ 0001:000001CC       SysInit.ExitThreadTLS
+ 0001:00000204       SysInit.ExitProcessTLS
+ 0001:00000228       SysInit.InitializeModule
+ 0001:00000234       SysInit.UninitializeModule
+ 0001:00000258       SysInit.@InitPkg
+ 0001:000002BC       SysInit.@PackageLoad
+ 0001:000002C8       SysInit.@PackageUnload
+ 0001:000002D4       pngimage.Finalization
+ 0001:000002DC       Classes.TPersistent.Assign
+ 0001:000002E4       Classes.TCollection.Clear
+ 0001:000002EC       Classes.TThread.Destroy@
+ 0001:000002F4       Classes.TComponent.WriteState
+ 0001:000002FC       Classes.TComponent.UpdateAction
+ 0001:00000304       Classes.TComponent.SafeCallException
+ 0001:0000030C       Classes.TComponent.UpdateRegistry
+ 0001:00000314       Classes.Finalization
+ 0001:0000031C       Windows.FreeLibrary
+ 0001:00000324       Windows.GetVersionEx
+ 0001:0000032C       Windows.GetKeyboardState
+ 0001:00000334       Windows.MessageBeep
+ 0001:0000033C       Windows.keybd_event
+ 0001:00000344       Windows.InitVersionInfo
+ 0001:00000380       Windows.Finalization
+ 0001:000003A0       TypInfo.Finalization
+ 0001:000003A8       SysUtils.Trim
+ 0001:000003B0       SysUtils.QuotedStr
+ 0001:000003B8       SysUtils.IntToStr
+ 0001:000003C0       SysUtils.StrToInt
+ 0001:000003C8       SysUtils.FileExists
+ 0001:000003D0       SysUtils.DirectoryExists
+ 0001:000003D8       SysUtils.DeleteFile
+ 0001:000003E0       SysUtils.CreateDir
+ 0001:000003E8       SysUtils.FloatToStr
+ 0001:000003F0       SysUtils.Exception.Destroy@
+ 0001:000003F8       SysUtils.StringReplace
+ 0001:00000400       SysUtils.FreeAndNil
+ 0001:00000408       SysUtils.TLanguages.Destroy@
+ 0001:00000410       SysUtils.TEncoding.Destroy@
+ 0001:00000418       SysUtils.Finalization
+ 0001:00000420       Variants.@VarClr
+ 0001:00000428       Variants.@VarFromInt
+ 0001:00000430       Variants.Finalization
+ 0001:00000438       VarUtils.Finalization
+ 0001:00000440       Graphics.TFont.SetColor
+ 0001:00000448       Graphics.TBrush.SetColor
+ 0001:00000450       Graphics.Finalization
+ 0001:00000458       Registry.Finalization
+ 0001:00000460       IniFiles.Finalization
+ 0001:00000468       IOUtils.TPath.Destroy@
+ 0001:00000470       IOUtils.Finalization
+ 0001:00000478       Ora.TOraDataSet.Create
+ 0001:00000480       Ora.TOraDataSet.ExecSQL
+ 0001:00000488       Ora.TOraDataSet.SetSession
+ 0001:00000490       Ora.Finalization
+ 0001:00000498       DBAccess.TCustomDADataSet.GetSQL
+ 0001:000004A0       DBAccess.Finalization
+ 0001:000004A8       CLRClasses.Finalization
+ 0001:000004B0       MemUtils.Finalization
+ 0001:000004B8       CRParser.Finalization
+ 0001:000004C0       MemData.Finalization
+ 0001:000004C8       AnsiStrings.Finalization
+ 0001:000004D0       SqlTimSt.Finalization
+ 0001:000004D8       FMTBcd.Finalization
+ 0001:000004E0       SyncObjs.Finalization
+ 0001:000004E8       TimeSpan.TTimeSpan.Destroy@
+ 0001:000004F0       MTSCall.Finalization
+ 0001:000004F8       DASQLMonitor.Finalization
+ 0001:00000500       CRVioTcp.Finalization
+ 0001:00000508       DBMonitorClient.Finalization
+ 0001:00000510       CRXml.Finalization
+ 0001:00000518       DB.TFieldDefs.Add
+ 0001:00000520       DB.TDataSet.Open
+ 0001:00000528       DB.TDataSet.Close
+ 0001:00000530       DB.TDataSet.FieldByName
+ 0001:00000538       DB.TDataSet.DisableControls
+ 0001:00000540       DB.TDataSet.EnableControls
+ 0001:00000548       DB.TDataSet.First
+ 0001:00000550       DB.TDataSet.Next
+ 0001:00000558       DB.TDataSet.Prior
+ 0001:00000560       DB.TDataSet.Append
+ 0001:00000568       DB.Finalization
+ 0001:00000570       WideStrings.Finalization
+ 0001:00000578       ComObj.Finalization
+ 0001:00000580       OraParser.Finalization
+ 0001:00000588       OraClasses.Finalization
+ 0001:00000590       OraCall.Finalization
+ 0001:00000598       OraObjects.Finalization
+ 0001:000005A0       OraNet.Finalization
+ 0001:000005A8       OraConnectionPool.Finalization
+ 0001:000005B0       OraSQLMonitor.Finalization
+ 0001:000005B8       QRPDFFilt.TQRPDFDocumentFilter.Create
+ 0001:000005C0       QRPDFFilt.Finalization
+ 0001:000005C8       pdfconst.Finalization
+ 0001:000005D0       QuickRpt.TCustomQuickRep.Prepare
+ 0001:000005D8       QuickRpt.TCustomQuickRep.Preview
+ 0001:000005E0       QuickRpt.TCustomQuickRep.ExportToFilter
+ 0001:000005E8       QuickRpt.Finalization
+ 0001:000005F0       DBTables.TDBDataSet.SetDatabaseName
+ 0001:000005F8       DBTables.TTable.CreateTable
+ 0001:00000600       DBTables.TTable.DeleteTable
+ 0001:00000608       DBTables.TTable.EmptyTable
+ 0001:00000610       DBTables.TTable.SetTableName
+ 0001:00000618       DBTables.TTable.SetTableType
+ 0001:00000620       DBTables.TQuery.Create
+ 0001:00000628       DBTables.Finalization
+ 0001:00000630       OleCtnrs.Finalization
+ 0001:00000638       Menus.Finalization
+ 0001:00000640       ActnList.Finalization
+ 0001:00000648       Themes.Finalization
+ 0001:00000650       Controls.TControl.GetDragImages
+ 0001:00000658       Controls.TControl.GetEnabled
+ 0001:00000660       Controls.TControl.GetAction
+ 0001:00000668       Controls.TControl.SetDragMode
+ 0001:00000670       Controls.TControl.SetAlign
+ 0001:00000678       Controls.TControl.SetLeft
+ 0001:00000680       Controls.TControl.SetWidth
+ 0001:00000688       Controls.TControl.SetAutoSize
+ 0001:00000690       Controls.TControl.SetName
+ 0001:00000698       Controls.TControl.SetVisible
+ 0001:000006A0       Controls.TControl.SetEnabled
+ 0001:000006A8       Controls.TControl.GetText
+ 0001:000006B0       Controls.TControl.SetText
+ 0001:000006B8       Controls.TControl.SetBiDiMode
+ 0001:000006C0       Controls.TControl.BringToFront
+ 0001:000006C8       Controls.TControl.SendToBack
+ 0001:000006D0       Controls.TControl.Show
+ 0001:000006D8       Controls.TControl.CreateTouchManager
+ 0001:000006E0       Controls.TControl.GetFloatingDockSiteClass
+ 0001:000006E8       Controls.TControl.InitiateAction
+ 0001:000006F0       Controls.TWinControl.DestroyWnd
+ 0001:000006F8       Controls.TWinControl.CreateHandle
+ 0001:00000700       Controls.TWinControl.CustomAlignInsertBefore
+ 0001:00000708       Controls.TWinControl.CustomAlignPosition
+ 0001:00000710       Controls.TWinControl.SetParentDoubleBuffered
+ 0001:00000718       Controls.TWinControl.SetBounds
+ 0001:00000720       Controls.TWinControl.ShowControl
+ 0001:00000728       Controls.TWinControl.GetDeviceContext
+ 0001:00000730       Controls.TWinControl.Invalidate
+ 0001:00000738       Controls.TWinControl.Update
+ 0001:00000740       Controls.TWinControl.Repaint
+ 0001:00000748       Controls.TWinControl.GetControlExtents
+ 0001:00000750       Controls.TWinControl.GetClientOrigin
+ 0001:00000758       Controls.TWinControl.CanResize
+ 0001:00000760       Controls.TWinControl.ConstrainedResize
+ 0001:00000768       Controls.TWinControl.AssignTo
+ 0001:00000770       Controls.TWinControl.CanAutoSize
+ 0001:00000778       Controls.TWinControl.SetParentBackground
+ 0001:00000780       Controls.TWinControl.DockReplaceDockClient
+ 0001:00000788       Controls.TWinControl.UpdateControlOriginalParentSize
+ 0001:00000790       Controls.Finalization
+ 0001:00000798       UxTheme.Finalization
+ 0001:000007A0       MultiMon.Finalization
+ 0001:000007A8       Forms.TScrollingWinControl.AutoScrollEnabled
+ 0001:000007B0       Forms.TScrollingWinControl.DoGesture
+ 0001:000007B8       Forms.TScrollingWinControl.DoGetGestureOptions
+ 0001:000007C0       Forms.TScrollingWinControl.AutoScrollInView
+ 0001:000007C8       Forms.TScrollingWinControl.AdjustClientRect
+ 0001:000007D0       Forms.TCustomForm.Create
+ 0001:000007D8       Forms.TCustomForm.AfterConstruction
+ 0001:000007E0       Forms.TCustomForm.CreateNew
+ 0001:000007E8       Forms.TCustomForm.BeforeDestruction
+ 0001:000007F0       Forms.TCustomForm.Destroy
+ 0001:000007F8       Forms.TCustomForm.DoCreate
+ 0001:00000800       Forms.TCustomForm.DoDestroy
+ 0001:00000808       Forms.TCustomForm.Loaded
+ 0001:00000810       Forms.TCustomForm.Notification
+ 0001:00000818       Forms.TCustomForm.ReadState
+ 0001:00000820       Forms.TCustomForm.DefineProperties
+ 0001:00000828       Forms.TCustomForm.GetClientRect
+ 0001:00000830       Forms.TCustomForm.GetFloating
+ 0001:00000838       Forms.TCustomForm.SetParentBiDiMode
+ 0001:00000840       Forms.TCustomForm.WantChildKey
+ 0001:00000848       Forms.TCustomForm.SetParent
+ 0001:00000850       Forms.TCustomForm.ValidateRename
+ 0001:00000858       Forms.TCustomForm.WndProc
+ 0001:00000860       Forms.TCustomForm.AlignControls
+ 0001:00000868       Forms.TCustomForm.CreateParams
+ 0001:00000870       Forms.TCustomForm.CreateWnd
+ 0001:00000878       Forms.TCustomForm.CreateWindowHandle
+ 0001:00000880       Forms.TCustomForm.DestroyHandle
+ 0001:00000888       Forms.TCustomForm.DestroyWindowHandle
+ 0001:00000890       Forms.TCustomForm.DefaultHandler
+ 0001:00000898       Forms.TCustomForm.SetFocusedControl
+ 0001:000008A0       Forms.TCustomForm.PaintWindow
+ 0001:000008A8       Forms.TCustomForm.Resizing
+ 0001:000008B0       Forms.TCustomForm.Close
+ 0001:000008B8       Forms.TCustomForm.CloseQuery
+ 0001:000008C0       Forms.TCustomForm.SetFocus
+ 0001:000008C8       Forms.TCustomForm.ShowModal
+ 0001:000008D0       Forms.TCustomForm.UpdateActions
+ 0001:000008D8       Forms.TCustomForm.RequestAlign
+ 0001:000008E0       Forms.TCustomForm.QueryInterface
+ 0001:000008E8       Forms.Finalization
+ 0001:000008F0       HelpIntfs.Finalization
+ 0001:000008F8       Dialogs.TOpenDialog.GetFileName
+ 0001:00000900       Dialogs.TOpenDialog.SetFileName
+ 0001:00000908       Dialogs.MessageDlg
+ 0001:00000910       Dialogs.ShowMessage
+ 0001:00000918       Dialogs.Finalization
+ 0001:00000920       ComCtrls.TPageControl.GetActivePageIndex
+ 0001:00000928       ComCtrls.TPageControl.SetActivePageIndex
+ 0001:00000930       ComCtrls.Finalization
+ 0001:00000938       GraphUtil.Finalization
+ 0001:00000940       ExtCtrls.Finalization
+ 0001:00000948       Printers.Finalization
+ 0001:00000950       Clipbrd.Finalization
+ 0001:00000958       FlatSB.Finalization
+ 0001:00000960       QRExpr.Finalization
+ 0001:00000968       Buttons.Finalization
+ 0001:00000970       QRExtra.Finalization
+ 0001:00000978       OleCtrls.TOleControl.Create
+ 0001:00000980       OleCtrls.TOleControl.GetIntegerProp
+ 0001:00000988       OleCtrls.TOleControl.GetWideStringProp
+ 0001:00000990       OleCtrls.TOleControl.SetIntegerProp
+ 0001:00000998       OleCtrls.TOleControl.SetTOleEnumProp
+ 0001:000009A0       OleCtrls.TOleControl.SetWideStringProp
+ 0001:000009A8       OleCtrls.Finalization
+ 0001:000009B0       AxCtrls.Finalization
+ 0001:000009B8       QRPrntr.TQRPreview.SetQRPrinter
+ 0001:000009C0       QRPrntr.TQRPreview.SetZoom
+ 0001:000009C8       QRPrntr.Finalization
+ 0001:000009D0       OleServer.Finalization
+ 0001:000009D8       QRCtrls.TQRCustomLabel.SetCaption
+ 0001:000009E0       QRCtrls.Finalization
+ 0001:000009E8       QRExport.Finalization
+ 0001:000009F0       jpeg.Finalization
+ 0001:000009F8       QRWebFilt.Finalization
+ 0001:00000A00       QRPrev.Finalization
+ 0001:00000A08       QRXMLSFilt.Finalization
+ 0001:00000A10       QRPrnSu.Finalization
+ 0001:00000A18       Barcode.Finalization
+ 0001:00000A20       DBCtrls.TDBLookupControl.SetKeyValue
+ 0001:00000A28       DBCtrls.Finalization
+ 0001:00000A30       DBPWDlg.Finalization
+ 0001:00000A38       DBLogDlg.Finalization
+ 0001:00000A40       Unit_Master.GetMaxId
+ 0001:00000A48       Unit_Master.GetNextBillNo1
+ 0001:00000A50       Unit_Master.UndoSampleCollection
+ 0001:00000A58       Unit_Master.UpdateTestProgressStatus
+ 0001:00000A60       Unit_Master.UpdateVerifiedBy
+ 0001:00000A68       Unit_Master.SaveBroadcastdata
+ 0001:00000A70       Unit_Master.LoadBroadcastdata
+ 0001:00000A78       Unit_Master.SaveBroadcastdetail
+ 0001:00000A80       Unit_Master.SendSmsQueryCollection
+ 0001:00000A88       OraSmart.Finalization
+ 0001:00000A90       OraAlerter.Finalization
+ 0001:00000A98       ServerDate.CreateQuery
+ 0001:00000AA0       ServerDate.TodaysTime
+ 0001:00000AA8       ServerDate.TodaysDate
+ 0001:00000AB0       ServerDate.TodaysDateVS
+ 0001:00000AB8       ServerDate.Finalization
+ 0001:00000AC0       DBGrids.TDBGridColumns.GetColumn
+ 0001:00000AC8       DBGrids.TCustomDBGrid.DefaultDrawColumnCell
+ 0001:00000AD0       DBGrids.TCustomDBGrid.SetSelectedIndex
+ 0001:00000AD8       Fxn.IsStrANumber
+ 0001:00000AE0       Fxn.LoadRefDocEmail
+ 0001:00000AE8       Fxn.CheckAccess
+ 0001:00000AF0       Fxn.ShowDoneMessage
+ 0001:00000AF8       Fxn.MsgBox
+ 0001:00000B00       Fxn.LoadPatientData
+ 0001:00000B08       Fxn.LoadDepartmentINCheckListBox
+ 0001:00000B10       Fxn.SaveQrAsBmp
+ 0001:00000B18       Fxn.BMPtoJPG
+ 0001:00000B20       Fxn.MailInvResult
+ 0001:00000B28       Fxn.GetTestProgressStatus
+ 0001:00000B30       Fxn.GetFromDateBySubNoOfDays
+ 0001:00000B38       Fxn.IsClinicalDep
+ 0001:00000B40       Fxn.LoadSmsMessage
+ 0001:00000B48       Fxn.RefreshTable
+ 0001:00000B50       Fxn.ToogleCheckState
+ 0001:00000B58       Fxn.IsHistoCytoUser
+ 0001:00000B60       Fxn.getsampleremarks
+ 0001:00000B68       Fxn.Finalization
+ 0001:00000B70       ADODB.Finalization
+ 0001:00000B78       TeCanvas.Finalization
+ 0001:00000B80       TeeConst.Finalization
+ 0001:00000B88       TeeHtml.Finalization
+ 0001:00000B90       CheckLst.TCheckListBox.SetChecked
+ 0001:00000B98       CheckLst.TCheckListBox.SetState
+ 0001:00000BA0       CheckLst.TCheckListBox.GetChecked
+ 0001:00000BA8       CheckLst.TCheckListBox.GetState
+ 0001:00000BB0       CheckLst.Finalization
+ 0001:00000BB8       Unit_Message.Finalization
+ 0001:00000BC0       Unit_SampleCollectionFrame.Finalization
+ 0001:00000BC8       Preview.Finalization
+ 0001:00000BD0       ActnMan.Finalization
+ 0001:00000BD8       ActnMenus.Finalization
+ 0001:00000BE0       ExtActns.Finalization
+ 0001:00000BE8       ExtDlgs.Finalization
+ 0001:00000BF0       Mapi.Finalization
+ 0001:00000BF8       TeeProcs.Finalization
+ 0001:00000C00       TeeFilters.Finalization
+ 0001:00000C08       SMDBGrid.Finalization
+ 0001:00000C10       SMCnst.Finalization
+ 0001:00000C18       UnitSendToExcel.Finalization
+ 0001:00000C20       acPNG.Finalization
+ 0001:00000C28       sConst.Finalization
+ 0001:00000C30       sDefaults.Finalization
+ 0001:00000C38       sLabel.Finalization
+ 0001:00000C40       sSkinManager.Finalization
+ 0001:00000C48       acntUtils.Finalization
+ 0001:00000C50       sSkinProvider.Finalization
+ 0001:00000C58       sStyleSimply.Finalization
+ 0001:00000C60       sSkinProps.Finalization
+ 0001:00000C68       acDials.Finalization
+ 0001:00000C70       sSkinMenus.Finalization
+ 0001:00000C78       sHtmlParse.Finalization
+ 0001:00000C80       acGlow.Finalization
+ 0001:00000C88       sVclUtils.Finalization
+ 0001:00000C90       sGraphUtils.Finalization
+ 0001:00000C98       acgpUtils.Finalization
+ 0001:00000CA0       sGradient.Finalization
+ 0001:00000CA8       acSBUtils.Finalization
+ 0001:00000CB0       acAlphaImageList.Finalization
+ 0001:00000CB8       sThirdParty.Finalization
+ 0001:00000CC0       acAlphaHints.Finalization
+ 0001:00000CC8       acPopupController.Finalization
+ 0001:00000CD0       sComboBoxes.Finalization
+ 0001:00000CD8       sColorDialog.Finalization
+ 0001:00000CE0       sGlyphUtils.Finalization
+ 0001:00000CE8       sMonthCalendar.Finalization
+ 0001:00000CF0       sDateUtils.Finalization
+ 0001:00000CF8       sDialogs.Finalization
+ 0001:00000D00       sCalcUnit.Finalization
+ 0001:00000D08       acShellCtrls.Finalization
+ 0001:00000D10       IdHTTP.Finalization
+ 0001:00000D18       IdComponent.Finalization
+ 0001:00000D20       IdStack.Finalization
+ 0001:00000D28       IdGlobal.Finalization
+ 0001:00000D30       IdWinsock2.Finalization
+ 0001:00000D38       IdWship6.Finalization
+ 0001:00000D40       IdStackWindows.Finalization
+ 0001:00000D48       IdIOHandlerStack.Finalization
+ 0001:00000D50       IdIOHandler.Finalization
+ 0001:00000D58       IdGlobalProtocols.Finalization
+ 0001:00000D60       IdCharsets.Finalization
+ 0001:00000D68       IdAuthentication.Finalization
+ 0001:00000D70       IdCoderMIME.Finalization
+ 0001:00000D78       IdSSL.Finalization
+ 0001:00000D80       IdThread.Finalization
+ 0001:00000D88       IdAuthenticationDigest.Finalization
+ 0001:00000D90       IdAuthenticationNTLM.Finalization
+ 0001:00000D98       IdNTLM.Finalization
+ 0001:00000DA0       IdSSLOpenSSLHeaders.Finalization
+ 0001:00000DA8       IdSSLOpenSSL.Finalization
+ 0001:00000DB0       CustomizeDlg.Finalization
+ 0001:00000E38       Unit_TestCancel..TForm_TestCancel
+ 0001:0000179C       Unit_TestCancel.TForm_TestCancel.BB_CloseClick
+ 0001:000017A4       Unit_TestCancel.TForm_TestCancel.BB_SaveClick
+ 0001:00001D74       Unit_TestCancel.TForm_TestCancel.chklst_testnameClickCheck
+ 0001:00001D9C       Unit_TestCancel.TForm_TestCancel.chk_allClick
+ 0001:00001E10       Unit_TestCancel.TForm_TestCancel.FormKeyDown
+ 0001:00001E24       Unit_TestCancel.TForm_TestCancel.FormShow
+ 0001:00001E2C       Unit_TestCancel.TForm_TestCancel.LoadCanceltest
+ 0001:0000233C       Unit_TestCancel.Finalization
+ 0001:00002344       Unit_ClinicalPathFindingNew.TFrame_ClinicalPathFindingNew.Create
+ 0001:0000234C       Unit_FindingFrame.TFrame_Finding.Create
+ 0001:00002354       Unit_PatientSearch..TForm_PatientSearch
+ 0001:00002D60       Unit_PatientSearch.TForm_PatientSearch.BB_CloseClick
+ 0001:00002D68       Unit_PatientSearch.TForm_PatientSearch.BB_RefreshClick
+ 0001:000031E0       Unit_PatientSearch.TForm_PatientSearch.CB_GlobalSearchClick
+ 0001:000031F4       Unit_PatientSearch.TForm_PatientSearch.Edit_FirstNameKeyDown
+ 0001:000031FC       Unit_PatientSearch.TForm_PatientSearch.FormClose
+ 0001:00003248       Unit_PatientSearch.TForm_PatientSearch.FormKeyDown
+ 0001:00003278       Unit_PatientSearch.TForm_PatientSearch.FormShow
+ 0001:00003380       Unit_PatientSearch.TForm_PatientSearch.Se_CLDaysChange
+ 0001:00003430       Unit_PatientSearch.TForm_PatientSearch.SMDBGrid1DblClick
+ 0001:000035CC       Unit_PatientSearch.TForm_PatientSearch.SMDBGrid1KeyDown
+ 0001:000037A8       Unit_PatientSearch.TForm_PatientSearch.SPB_FromClick
+ 0001:00003870       Unit_PatientSearch.TForm_PatientSearch.SPB_ToClick
+ 0001:00003938       Unit_PatientSearch.Finalization
+ 0001:000039D0       Unit_TestCancelNew..TForm_TestCancelNew
+ 0001:0000435C       Unit_TestCancelNew.TForm_TestCancelNew.BB_CloseClick
+ 0001:00004364       Unit_TestCancelNew.TForm_TestCancelNew.BB_SaveClick
+ 0001:00004948       Unit_TestCancelNew.TForm_TestCancelNew.chklst_testnameClickCheck
+ 0001:00004970       Unit_TestCancelNew.TForm_TestCancelNew.chk_allClick
+ 0001:000049E4       Unit_TestCancelNew.TForm_TestCancelNew.FormKeyDown
+ 0001:000049F8       Unit_TestCancelNew.TForm_TestCancelNew.FormShow
+ 0001:00004A00       Unit_TestCancelNew.TForm_TestCancelNew.LoadCanceltest
+ 0001:00004F18       Unit_TestCancelNew.Finalization
+ 0001:00004F20       Unit_QrInvestigationPreview..TForm_QrInvestigationPreview
+ 0001:00005304       Unit_QrInvestigationPreview.TForm_QrInvestigationPreview.BB_CloseClick
+ 0001:0000530C       Unit_QrInvestigationPreview.TForm_QrInvestigationPreview.BitBtn1Click
+ 0001:00005508       Unit_QrInvestigationPreview.TForm_QrInvestigationPreview.FormKeyDown
+ 0001:0000551C       Unit_QrInvestigationPreview.Finalization
+ 0001:00005524       Unit_BroadcastStatus..TForm_BroadcastStatus
+ 0001:00005D44       Unit_BroadcastStatus.TForm_BroadcastStatus.BB_CloseClick
+ 0001:00005D4C       Unit_BroadcastStatus.TForm_BroadcastStatus.BB_RefreshClick
+ 0001:00005D6C       Unit_BroadcastStatus.TForm_BroadcastStatus.CreateTable
+ 0001:00006068       Unit_BroadcastStatus.TForm_BroadcastStatus.DBGrid1DrawColumnCell
+ 0001:0000650C       Unit_BroadcastStatus.TForm_BroadcastStatus.Dex_CLFromEnter
+ 0001:00006520       Unit_BroadcastStatus.TForm_BroadcastStatus.Edit_SearchCollectedListChange
+ 0001:00006620       Unit_BroadcastStatus.TForm_BroadcastStatus.FormCreate
+ 0001:00006708       Unit_BroadcastStatus.TForm_BroadcastStatus.FormKeyDown
+ 0001:0000671C       Unit_BroadcastStatus.TForm_BroadcastStatus.LoadData
+ 0001:000076D8       Unit_BroadcastStatus.Finalization
+ 0001:000076E0       Unit_Broadcastpopup..TForm_Broadcastpopup
+ 0001:0000806C       Unit_Broadcastpopup.TForm_Broadcastpopup.bb_cancelClick
+ 0001:00008074       Unit_Broadcastpopup.TForm_Broadcastpopup.bb_okClick
+ 0001:000080CC       Unit_Broadcastpopup.TForm_Broadcastpopup.BB_SendSmsClick
+ 0001:00008194       Unit_Broadcastpopup.TForm_Broadcastpopup.bb_updateClick
+ 0001:000081B0       Unit_Broadcastpopup.TForm_Broadcastpopup.BroadCast
+ 0001:0000831C       Unit_Broadcastpopup.TForm_Broadcastpopup.CB_emailnameClick
+ 0001:000083BC       Unit_Broadcastpopup.TForm_Broadcastpopup.CB_REFDOCClick
+ 0001:0000851C       Unit_Broadcastpopup.TForm_Broadcastpopup.dblcb_emailnameClick
+ 0001:00008534       Unit_Broadcastpopup.TForm_Broadcastpopup.FormCreate
+ 0001:00008600       Unit_Broadcastpopup.TForm_Broadcastpopup.FormKeyDown
+ 0001:00008614       Unit_Broadcastpopup.TForm_Broadcastpopup.Loaddata
+ 0001:00008898       Unit_Broadcastpopup.TForm_Broadcastpopup.Memo_MessageChange
+ 0001:00008978       Unit_Broadcastpopup.TForm_Broadcastpopup.SendMail
+ 0001:00008F54       Unit_Broadcastpopup.TForm_Broadcastpopup.Updatedata
+ 0001:00009094       Unit_Broadcastpopup.Finalization
+ 0001:0000909C       Unit_Verification..TForm_Verification
+ 0001:0000BE00       Unit_Verification.TForm_Verification.CreateFindingsTable
+ 0001:0000C514       Unit_Verification.TForm_Verification.BB_CloseClick
+ 0001:0000C5A8       Unit_Verification.TForm_Verification.BB_RefreshClick
+ 0001:0000DAE0       Unit_Verification.TForm_Verification.BitBtn1Click
+ 0001:0000DB08       Unit_Verification.TForm_Verification.BitBtn2Click
+ 0001:0000DB30       Unit_Verification.TForm_Verification.BitBtn3Click
+ 0001:0000E16C       Unit_Verification.TForm_Verification.BitBtn_ResultVerificationClick
+ 0001:0000E1C8       Unit_Verification.TForm_Verification.btn_SpecialTestCancelClick
+ 0001:0000E520       Unit_Verification.TForm_Verification.BB_HideClick
+ 0001:0000E530       Unit_Verification.TForm_Verification.BB_FullScreenClick
+ 0001:0000E558       Unit_Verification.TForm_Verification.Cb_HalfpageClick
+ 0001:0000E584       Unit_Verification.TForm_Verification.Cb_hideallClick
+ 0001:0000E588       Unit_Verification.TForm_Verification.Cb_HideIndicationClick
+ 0001:0000E5B4       Unit_Verification.TForm_Verification.Cb_HideRangeClick
+ 0001:0000E5E0       Unit_Verification.TForm_Verification.Cb_ModeChange
+ 0001:0000E5E8       Unit_Verification.TForm_Verification.Cb_NoResultClick
+ 0001:0000E5F0       Unit_Verification.TForm_Verification.Cb_SampleSourceClick
+ 0001:0000E61C       Unit_Verification.TForm_Verification.CB_SearchPatientClick
+ 0001:0000E68C       Unit_Verification.TForm_Verification.Cb_SignatureClick
+ 0001:0000E6B8       Unit_Verification.TForm_Verification.CB_DeptypeCheckChange
+ 0001:0000E780       Unit_Verification.TForm_Verification.Cb_AllClick
+ 0001:0000E7B4       Unit_Verification.TForm_Verification.CB_EmergencyReportingClick
+ 0001:0000E7E0       Unit_Verification.TForm_Verification.CheckBoxGrid1DrawColumnCell
+ 0001:0000EAF0       Unit_Verification.TForm_Verification.CreateTable
+ 0001:0000F08C       Unit_Verification.TForm_Verification.DBGrid1CellClick
+ 0001:0000FAAC       Unit_Verification.TForm_Verification.DBGrid1KeyDown
+ 0001:00010390       Unit_Verification.TForm_Verification.Dex_CLFromEnter
+ 0001:000103A4       Unit_Verification.TForm_Verification.Edit10Change
+ 0001:000104B8       Unit_Verification.TForm_Verification.Edit11Change
+ 0001:000105C8       Unit_Verification.TForm_Verification.Edit12Change
+ 0001:000106DC       Unit_Verification.TForm_Verification.Edit14Change
+ 0001:000107F0       Unit_Verification.TForm_Verification.Edit15Change
+ 0001:00010904       Unit_Verification.TForm_Verification.Edit8Change
+ 0001:000109F4       Unit_Verification.TForm_Verification.Edit9Change
+ 0001:00010B10       Unit_Verification.TForm_Verification.Edit_SearchCollectedListChange
+ 0001:00010B14       Unit_Verification.TForm_Verification.Edit_SearchCollectedListKeyPress
+ 0001:00010D38       Unit_Verification.TForm_Verification.edt_GlobalSearchKeyPress
+ 0001:00012384       Unit_Verification.TForm_Verification.FormCreate
+ 0001:000127A0       Unit_Verification.TForm_Verification.FormKeyDown
+ 0001:00012818       Unit_Verification.TForm_Verification.FormShow
+ 0001:0001296C       Unit_Verification.TForm_Verification.LocateSampleNo
+ 0001:00012BCC       Unit_Verification.TForm_Verification.Query_SampleCollectedAfterScroll
+ 0001:00012BD0       Unit_Verification.TForm_Verification.Query_samplecollectedrightAfterScroll
+ 0001:0001349C       Unit_Verification.TForm_Verification.CRTemp_Query_samplecollectedrightAfterSmartRefresh
+ 0001:000134A4       Unit_Verification.TForm_Verification.Rb_AllClick
+ 0001:000134A8       Unit_Verification.TForm_Verification.Rb_NonVerifiedClick
+ 0001:000134AC       Unit_Verification.TForm_Verification.Rb_VerifiedClick
+ 0001:000134B4       Unit_Verification.TForm_Verification.Se_CLDaysKeyDown
+ 0001:000134D0       Unit_Verification.TForm_Verification.SPB_From1Click
+ 0001:00013884       Unit_Verification.TForm_Verification.SPB_FromClick
+ 0001:0001394C       Unit_Verification.TForm_Verification.SPB_ToClick
+ 0001:00013A14       Unit_Verification.TForm_Verification.GetSelectedPatientTestId
+ 0001:00013ECC       Unit_Verification.TForm_Verification.SB_AddBlockTestClick
+ 0001:00015ADC       Unit_Verification.TForm_Verification.Sb_PreviewClick
+ 0001:000163B4       Unit_Verification.TForm_Verification.SpeedButton12Click
+ 0001:000163D8       Unit_Verification.TForm_Verification.Sb_ResultVerificationClick
+ 0001:00016434       Unit_Verification.TForm_Verification.SpeedButton2Click
+ 0001:00016A74       Unit_Verification.TForm_Verification.SpeedButton3Click
+ 0001:00016D30       Unit_Verification.TForm_Verification.SpeedButton4Click
+ 0001:00017040       Unit_Verification.TForm_Verification.SpeedButton5Click
+ 0001:0001709C       Unit_Verification.TForm_Verification.SpeedButton8Click
+ 0001:00017164       Unit_Verification.TForm_Verification.Timer1Timer
+ 0001:00017174       Unit_Verification.Finalization
+ 0001:0001717C       unit_SaveEmailAddress..TForm_SaveEmailAddress
+ 0001:00017904       unit_SaveEmailAddress.TForm_SaveEmailAddress.BBtnBB_CloseClick
+ 0001:00017958       unit_SaveEmailAddress.TForm_SaveEmailAddress.BBtnBB_NewClick
+ 0001:00017990       unit_SaveEmailAddress.TForm_SaveEmailAddress.BBtnBB_SaveClick
+ 0001:00017D90       unit_SaveEmailAddress.TForm_SaveEmailAddress.DbGrid2CellClick
+ 0001:00017DA4       unit_SaveEmailAddress.TForm_SaveEmailAddress.DbGrid2DblClick
+ 0001:00017E4C       unit_SaveEmailAddress.TForm_SaveEmailAddress.DbGrid2KeyDown
+ 0001:00017FEC       unit_SaveEmailAddress.TForm_SaveEmailAddress.FormKeyDown
+ 0001:00018000       unit_SaveEmailAddress.TForm_SaveEmailAddress.FormShow
+ 0001:000180BC       unit_SaveEmailAddress.TForm_SaveEmailAddress.PageControl1Change
+ 0001:000180F0       unit_SaveEmailAddress.Finalization
+ 0001:00019038       .Verification.@GetPackageInfoTable
+ 0001:00019040       .Verification.@PackageLoad
+ 0001:0001904C       .Verification.@PackageUnload
+ 0002:00000000       System.System
+ 0002:00000008       pngimage.pngimage
+ 0002:00000010       Classes.TThread.Create@
+ 0002:00000018       Classes.Classes
+ 0002:00000020       Windows.Windows
+ 0002:00000038       TypInfo.TypInfo
+ 0002:00000040       SysUtils.TLanguages.Create@
+ 0002:00000048       SysUtils.TEncoding.Create@
+ 0002:00000050       SysUtils.Exception.Create@
+ 0002:00000058       SysUtils.SysUtils
+ 0002:00000060       Variants.Variants
+ 0002:00000068       VarUtils.VarUtils
+ 0002:00000070       Graphics.Graphics
+ 0002:00000078       Registry.Registry
+ 0002:00000080       IniFiles.IniFiles
+ 0002:00000088       IOUtils.TPath.Create@
+ 0002:00000090       IOUtils.IOUtils
+ 0002:00000098       Ora.Ora
+ 0002:000000A0       DBAccess.DBAccess
+ 0002:000000A8       CLRClasses.CLRClasses
+ 0002:000000B0       MemUtils.MemUtils
+ 0002:000000B8       CRParser.CRParser
+ 0002:000000C0       MemData.MemData
+ 0002:000000C8       AnsiStrings.AnsiStrings
+ 0002:000000D0       SqlTimSt.SqlTimSt
+ 0002:000000D8       FMTBcd.FMTBcd
+ 0002:000000E0       SyncObjs.SyncObjs
+ 0002:000000E8       TimeSpan.TTimeSpan.Create@
+ 0002:000000F0       MTSCall.MTSCall
+ 0002:000000F8       DASQLMonitor.DASQLMonitor
+ 0002:00000100       CRVioTcp.CRVioTcp
+ 0002:00000108       DBMonitorClient.DBMonitorClient
+ 0002:00000110       CRXml.CRXml
+ 0002:00000118       DB.DB
+ 0002:00000120       WideStrings.WideStrings
+ 0002:00000128       ComObj.ComObj
+ 0002:00000130       OraParser.OraParser
+ 0002:00000138       OraClasses.OraClasses
+ 0002:00000140       OraCall.OraCall
+ 0002:00000148       OraObjects.OraObjects
+ 0002:00000150       OraNet.OraNet
+ 0002:00000158       OraConnectionPool.OraConnectionPool
+ 0002:00000160       OraSQLMonitor.OraSQLMonitor
+ 0002:00000168       QRPDFFilt.QRPDFFilt
+ 0002:00000170       pdfconst.pdfconst
+ 0002:00000178       QuickRpt.QuickRpt
+ 0002:00000180       DBTables.DBTables
+ 0002:00000188       OleCtnrs.OleCtnrs
+ 0002:00000190       Menus.Menus
+ 0002:00000198       ActnList.ActnList
+ 0002:000001A0       Themes.Themes
+ 0002:000001A8       Controls.Controls
+ 0002:000001B0       UxTheme.UxTheme
+ 0002:000001B8       MultiMon.MultiMon
+ 0002:000001C0       Forms.Forms
+ 0002:000001C8       HelpIntfs.HelpIntfs
+ 0002:000001D0       Dialogs.Dialogs
+ 0002:000001D8       ComCtrls.ComCtrls
+ 0002:000001E0       GraphUtil.GraphUtil
+ 0002:000001E8       ExtCtrls.ExtCtrls
+ 0002:000001F0       Printers.Printers
+ 0002:000001F8       Clipbrd.Clipbrd
+ 0002:00000200       FlatSB.FlatSB
+ 0002:00000208       QRExpr.QRExpr
+ 0002:00000210       Buttons.Buttons
+ 0002:00000218       QRExtra.QRExtra
+ 0002:00000220       OleCtrls.OleCtrls
+ 0002:00000228       AxCtrls.AxCtrls
+ 0002:00000230       QRPrntr.QRPrntr
+ 0002:00000238       OleServer.OleServer
+ 0002:00000240       QRCtrls.QRCtrls
+ 0002:00000248       QRExport.QRExport
+ 0002:00000250       jpeg.jpeg
+ 0002:00000258       QRWebFilt.QRWebFilt
+ 0002:00000260       QRPrev.QRPrev
+ 0002:00000268       QRXMLSFilt.QRXMLSFilt
+ 0002:00000270       QRPrnSu.QRPrnSu
+ 0002:00000278       Barcode.Barcode
+ 0002:00000280       DBCtrls.DBCtrls
+ 0002:00000288       DBPWDlg.DBPWDlg
+ 0002:00000290       DBLogDlg.DBLogDlg
+ 0002:00000298       OraSmart.OraSmart
+ 0002:000002A0       OraAlerter.OraAlerter
+ 0002:000002A8       ServerDate.ServerDate
+ 0002:000002B0       Fxn.Fxn
+ 0002:000002B8       ADODB.ADODB
+ 0002:000002C0       TeCanvas.TeCanvas
+ 0002:000002C8       TeeConst.TeeConst
+ 0002:000002D0       TeeHtml.TeeHtml
+ 0002:000002D8       CheckLst.CheckLst
+ 0002:000002E0       Unit_Message.Unit_Message
+ 0002:000002E8       Unit_SampleCollectionFrame.Unit_SampleCollectionFrame
+ 0002:000002F0       Preview.Preview
+ 0002:000002F8       ActnMan.ActnMan
+ 0002:00000300       ActnMenus.ActnMenus
+ 0002:00000308       ExtActns.ExtActns
+ 0002:00000310       ExtDlgs.ExtDlgs
+ 0002:00000318       Mapi.Mapi
+ 0002:00000320       TeeProcs.TeeProcs
+ 0002:00000328       TeeFilters.TeeFilters
+ 0002:00000330       SMDBGrid.SMDBGrid
+ 0002:00000338       SMCnst.SMCnst
+ 0002:00000340       UnitSendToExcel.UnitSendToExcel
+ 0002:00000348       acPNG.acPNG
+ 0002:00000350       sConst.sConst
+ 0002:00000358       sDefaults.sDefaults
+ 0002:00000360       sLabel.sLabel
+ 0002:00000368       sSkinManager.sSkinManager
+ 0002:00000370       acntUtils.acntUtils
+ 0002:00000378       sSkinProvider.sSkinProvider
+ 0002:00000380       sStyleSimply.sStyleSimply
+ 0002:00000388       sSkinProps.sSkinProps
+ 0002:00000390       acDials.acDials
+ 0002:00000398       sSkinMenus.sSkinMenus
+ 0002:000003A0       sHtmlParse.sHtmlParse
+ 0002:000003A8       acGlow.acGlow
+ 0002:000003B0       sVclUtils.sVclUtils
+ 0002:000003B8       sGraphUtils.sGraphUtils
+ 0002:000003C0       acgpUtils.acgpUtils
+ 0002:000003C8       sGradient.sGradient
+ 0002:000003D0       acSBUtils.acSBUtils
+ 0002:000003D8       acAlphaImageList.acAlphaImageList
+ 0002:000003E0       sThirdParty.sThirdParty
+ 0002:000003E8       acAlphaHints.acAlphaHints
+ 0002:000003F0       acPopupController.acPopupController
+ 0002:000003F8       sComboBoxes.sComboBoxes
+ 0002:00000400       sColorDialog.sColorDialog
+ 0002:00000408       sGlyphUtils.sGlyphUtils
+ 0002:00000410       sMonthCalendar.sMonthCalendar
+ 0002:00000418       sDateUtils.sDateUtils
+ 0002:00000420       sDialogs.sDialogs
+ 0002:00000428       sCalcUnit.sCalcUnit
+ 0002:00000430       acShellCtrls.acShellCtrls
+ 0002:00000438       IdHTTP.IdHTTP
+ 0002:00000440       IdComponent.IdComponent
+ 0002:00000448       IdStack.IdStack
+ 0002:00000450       IdGlobal.IdGlobal
+ 0002:00000458       IdWinsock2.IdWinsock2
+ 0002:00000460       IdWship6.IdWship6
+ 0002:00000468       IdStackWindows.IdStackWindows
+ 0002:00000470       IdIOHandlerStack.IdIOHandlerStack
+ 0002:00000478       IdIOHandler.IdIOHandler
+ 0002:00000480       IdGlobalProtocols.IdGlobalProtocols
+ 0002:00000488       IdCharsets.IdCharsets
+ 0002:00000490       IdAuthentication.IdAuthentication
+ 0002:00000498       IdCoderMIME.IdCoderMIME
+ 0002:000004A0       IdSSL.IdSSL
+ 0002:000004A8       IdThread.IdThread
+ 0002:000004B0       IdAuthenticationDigest.IdAuthenticationDigest
+ 0002:000004B8       IdAuthenticationNTLM.IdAuthenticationNTLM
+ 0002:000004C0       IdNTLM.IdNTLM
+ 0002:000004C8       IdSSLOpenSSLHeaders.IdSSLOpenSSLHeaders
+ 0002:000004D0       IdSSLOpenSSL.IdSSLOpenSSL
+ 0002:000004D8       CustomizeDlg.CustomizeDlg
+ 0002:000004E0       Unit_TestCancel.Unit_TestCancel
+ 0002:000004E8       Unit_PatientSearch.Unit_PatientSearch
+ 0002:000004F0       Unit_TestCancelNew.Unit_TestCancelNew
+ 0002:000004F8       Unit_QrInvestigationPreview.Unit_QrInvestigationPreview
+ 0002:00000500       Unit_BroadcastStatus.Unit_BroadcastStatus
+ 0002:00000508       Unit_Broadcastpopup.Unit_Broadcastpopup
+ 0002:00000510       Unit_Verification.Unit_Verification
+ 0002:00000518       unit_SaveEmailAddress.unit_SaveEmailAddress
+ 0002:00000520       .Verification..Verification
+ 0003:00000000       SysInit.TlsIndex
+ 0003:00000004       SysInit.Module
+ 0003:00000020       SysInit.TlsProc
+ 0003:00000030       Windows.Win32MajorVersion
+ 0003:00000034       Windows.Win32MinorVersion
+ 0003:00000038       Windows.Win32Platform
+ 0004:00000000       SysInit.ModuleIsLib
+ 0004:00000001       SysInit.ModuleIsPackage
+ 0004:00000004       SysInit.HInstance
+ 0004:00000008       SysInit.tlsBuffer
+ 0004:0000000C       Windows..2
+ 0004:00000010       Windows.HtmlHelpModule
+ 0004:00000014       Unit_TestCancel.Form_TestCancel
+ 0004:00000018       Unit_TestCancel..2
+ 0004:0000001C       Unit_PatientSearch.Form_PatientSearch
+ 0004:00000020       Unit_PatientSearch..2
+ 0004:00000024       Unit_TestCancelNew.Form_TestCancelNew
+ 0004:00000028       Unit_TestCancelNew..2
+ 0004:0000002C       Unit_QrInvestigationPreview.Form_QrInvestigationPreview
+ 0004:00000030       Unit_QrInvestigationPreview..2
+ 0004:00000034       Unit_BroadcastStatus.Form_BroadcastStatus
+ 0004:00000038       Unit_BroadcastStatus..2
+ 0004:0000003C       Unit_Broadcastpopup.Form_Broadcastpopup
+ 0004:00000040       Unit_Broadcastpopup..2
+ 0004:00000044       Unit_Verification.Form_Verification
+ 0004:00000048       Unit_Verification.Frame_Finding
+ 0004:0000004C       Unit_Verification.Frame_ClinicalPathFinding
+ 0004:00000050       Unit_Verification.Frame_ClinicalPathFindingNew
+ 0004:00000054       Unit_Verification.Frame_ClinicalPathFindingCentralNew
+ 0004:00000058       Unit_Verification..2
+ 0004:0000005C       unit_SaveEmailAddress.Form_SaveEmailAddress
+ 0004:00000060       unit_SaveEmailAddress..2
+ 0005:00000000       SysInit.TlsLast
+
+
+Line numbers for Unit_TestCancel(Unit_TestCancel.pas) segment .text
+
+    70 0001:0000179C    71 0001:000017A1    76 0001:000017A4    78 0001:000017C7
+    79 0001:000017C9    81 0001:000017E9    83 0001:000017FB    85 0001:000017FC
+    79 0001:000017FF    86 0001:00001802    88 0001:00001817    89 0001:0000182C
+    93 0001:00001831    95 0001:00001850    96 0001:00001865    99 0001:0000186A
+   102 0001:00001888   104 0001:000018AC   106 0001:000018C2   107 0001:000018DD
+   109 0001:000018E7   110 0001:000018F9   112 0001:000018FE   114 0001:00001907
+   115 0001:0000190F   116 0001:0000191C   117 0001:00001974   118 0001:00001986
+   119 0001:000019BB   120 0001:000019F0   121 0001:00001A21   122 0001:00001A33
+   123 0001:00001A63   126 0001:00001A6B   102 0001:00001A6E   127 0001:00001A75
+   132 0001:00001A7A   135 0001:00001D74   136 0001:00001D77   137 0001:00001D89
+   139 0001:00001D99   144 0001:00001D9C   145 0001:00001DA0   146 0001:00001DA2
+   150 0001:00001DB6   151 0001:00001DC5   148 0001:00001DC6   158 0001:00001DD1
+   160 0001:00001DE2   164 0001:00001DF3   166 0001:00001E02   156 0001:00001E03
+   169 0001:00001E0B   173 0001:00001E10   174 0001:00001E13   175 0001:00001E19
+   176 0001:00001E1E   180 0001:00001E24   181 0001:00001E29   186 0001:00001E2C
+   187 0001:00001E4A   189 0001:00001E50   190 0001:00001E57   191 0001:00001E63
+   192 0001:00001E74   193 0001:00001E85   194 0001:00001E96   195 0001:00001EC4
+   196 0001:00001ECB   197 0001:00001ED6   198 0001:00001EF8   199 0001:00001F1A
+   200 0001:00001F3C   203 0001:00001F66   205 0001:00001FA8   201 0001:00001FB3
+   209 0001:00001FC2
+
+Line numbers for Unit_TestCancel(Unit_TestCancel.pas) segment .itext
+
+   211 0002:000004E0
+
+Line numbers for Unit_PatientSearch(Unit_PatientSearch.pas) segment .text
+
+    67 0001:00002D60    68 0001:00002D65    72 0001:00002D68    73 0001:00002D8A
+    75 0001:00002DB9    76 0001:00002DCB    78 0001:00002E22    80 0001:00002E28
+    81 0001:00002E2F    82 0001:00002E40    83 0001:00002E4C    84 0001:00002E5D
+    86 0001:00002E89    87 0001:00002EF4    89 0001:00002F5B    91 0001:00002F71
+    92 0001:00002FD3    95 0001:00003035    99 0001:0000303C   100 0001:00003048
+   102 0001:00003051   104 0001:0000305E   107 0001:0000306B   112 0001:000031E0
+   113 0001:000031F0   117 0001:000031F4   135 0001:000031F7   141 0001:000031FC
+   142 0001:00003202   143 0001:00003219   144 0001:0000321F   146 0001:00003226
+   147 0001:00003233   149 0001:00003240   153 0001:00003248   154 0001:0000324E
+   156 0001:00003254   157 0001:0000326B   159 0001:00003272   162 0001:00003278
+   163 0001:00003295   164 0001:000032BC   165 0001:000032D4   166 0001:000032E7
+   167 0001:0000330E   168 0001:00003326   169 0001:00003339   171 0001:00003342
+   174 0001:00003380   175 0001:0000339A   176 0001:000033AE   177 0001:000033F3
+   182 0001:00003430   184 0001:0000344F   187 0001:00003472   188 0001:0000349F
+   189 0001:000034CC   191 0001:000034F9   192 0001:000034FF   193 0001:00003516
+   194 0001:0000352D   195 0001:00003544   196 0001:0000354D   197 0001:0000355E
+   201 0001:0000356C   208 0001:000035CC   224 0001:000035F4   225 0001:000035FA
+   226 0001:00003607   227 0001:0000360D   229 0001:00003618   234 0001:00003622
+   237 0001:00003645   238 0001:00003672   239 0001:0000369F   240 0001:000036CC
+   241 0001:000036EF   242 0001:000036F5   243 0001:00003706   244 0001:0000371D
+   245 0001:00003734   250 0001:0000373B   254 0001:000037A8   255 0001:000037BE
+   257 0001:000037DB   258 0001:000037F0   262 0001:00003802   263 0001:00003814
+   265 0001:00003824   268 0001:00003870   269 0001:00003886   271 0001:000038A3
+   272 0001:000038B8   276 0001:000038CA   277 0001:000038DC   279 0001:000038EC
+
+Line numbers for Unit_PatientSearch(Unit_PatientSearch.pas) segment .itext
+
+   281 0002:000004E8
+
+Line numbers for Unit_TestCancelNew(Unit_TestCancelNew.pas) segment .text
+
+    71 0001:0000435C    72 0001:00004361    77 0001:00004364    79 0001:00004387
+    80 0001:00004389    82 0001:000043A9    84 0001:000043BB    86 0001:000043BC
+    80 0001:000043BF    87 0001:000043C2    89 0001:000043D7    90 0001:000043EC
+    94 0001:000043F1    96 0001:00004410    97 0001:00004425   100 0001:0000442A
+   103 0001:00004448   105 0001:0000446C   107 0001:00004482   109 0001:0000449D
+   111 0001:000044A6   113 0001:000044B0   114 0001:000044C2   126 0001:000044C7
+   128 0001:000044D0   129 0001:000044D8   130 0001:000044E5   131 0001:0000453D
+   132 0001:0000454F   133 0001:00004584   134 0001:000045B9   135 0001:000045EA
+   136 0001:000045F3   137 0001:00004605   138 0001:00004635   141 0001:0000463D
+   103 0001:00004640   142 0001:00004647   147 0001:0000464C   150 0001:00004948
+   151 0001:0000494B   152 0001:0000495D   154 0001:0000496D   159 0001:00004970
+   160 0001:00004974   161 0001:00004976   165 0001:0000498A   166 0001:00004999
+   163 0001:0000499A   173 0001:000049A5   175 0001:000049B6   179 0001:000049C7
+   181 0001:000049D6   171 0001:000049D7   184 0001:000049DF   188 0001:000049E4
+   189 0001:000049E7   190 0001:000049ED   191 0001:000049F2   195 0001:000049F8
+   196 0001:000049FD   201 0001:00004A00   202 0001:00004A1E   204 0001:00004A24
+   205 0001:00004A2B   206 0001:00004A37   207 0001:00004A48   208 0001:00004A59
+   209 0001:00004A6A   211 0001:00004A98   212 0001:00004A9F   213 0001:00004AAA
+   214 0001:00004ACC   215 0001:00004AEE   216 0001:00004B10   219 0001:00004B3A
+   221 0001:00004B7C   217 0001:00004B87   225 0001:00004B96
+
+Line numbers for Unit_TestCancelNew(Unit_TestCancelNew.pas) segment .itext
+
+   227 0002:000004F0
+
+Line numbers for Unit_QrInvestigationPreview(Unit_QrInvestigationPreview.pas) segment .text
+
+    37 0001:00005304    38 0001:00005309    43 0001:0000530C    44 0001:0000532B
+    45 0001:00005338    46 0001:00005341    47 0001:00005360    48 0001:0000537F
+    49 0001:000053A6    50 0001:000053CD    52 0001:000053F4    53 0001:00005406
+    54 0001:00005418    56 0001:0000543B    59 0001:00005508    60 0001:0000550B
+    61 0001:00005511    62 0001:00005516
+
+Line numbers for Unit_QrInvestigationPreview(Unit_QrInvestigationPreview.pas) segment .itext
+
+    64 0002:000004F8
+
+Line numbers for Unit_BroadcastStatus(Unit_BroadcastStatus.pas) segment .text
+
+    61 0001:00005D44    62 0001:00005D49    65 0001:00005D4C    66 0001:00005D4F
+    67 0001:00005D56    68 0001:00005D69    71 0001:00005D6C    72 0001:00005D83
+    74 0001:00005DA4    76 0001:00005DAA    77 0001:00005DB1    78 0001:00005DC0
+    79 0001:00005DCC    82 0001:00005DD3    84 0001:00005DD9    85 0001:00005DE0
+    86 0001:00005DEF    87 0001:00005DFB    88 0001:00005E04    89 0001:00005E0C
+    90 0001:00005E1F    91 0001:00005E32    92 0001:00005E45    93 0001:00005E58
+    94 0001:00005E6B    95 0001:00005E7E    96 0001:00005E91    97 0001:00005EA4
+    98 0001:00005EB7   100 0001:00005EBE   104 0001:00006068   105 0001:000060A0
+   107 0001:000060C7   109 0001:000060D6   110 0001:000060E6   112 0001:000060F6
+   113 0001:000060FD   116 0001:00006115   118 0001:0000613C   120 0001:0000614B
+   121 0001:0000615B   123 0001:0000616B   124 0001:00006172   127 0001:0000618A
+   129 0001:000061B1   131 0001:000061C0   132 0001:000061D0   134 0001:000061E0
+   135 0001:000061E7   138 0001:000061FF   140 0001:00006226   142 0001:00006235
+   143 0001:00006245   145 0001:00006255   146 0001:0000625C   149 0001:00006274
+   151 0001:0000629B   153 0001:000062AA   154 0001:000062BA   156 0001:000062CA
+   157 0001:000062D1   160 0001:000062E9   162 0001:00006310   164 0001:0000631F
+   165 0001:0000632F   167 0001:0000633F   168 0001:00006346   171 0001:0000635E
+   173 0001:00006385   175 0001:00006394   176 0001:000063A4   178 0001:000063B4
+   179 0001:000063BB   182 0001:000063D3   184 0001:000063FA   186 0001:00006409
+   187 0001:00006419   189 0001:00006429   190 0001:00006430   192 0001:00006448
+   196 0001:0000650C   197 0001:0000651C   202 0001:00006520   203 0001:0000653B
+   204 0001:00006549   206 0001:0000654F   211 0001:0000656E   212 0001:00006595
+   215 0001:000065A3   218 0001:000065AF   221 0001:00006620   222 0001:0000663D
+   223 0001:00006644   224 0001:0000666B   225 0001:00006683   226 0001:000066AA
+   227 0001:000066C2   228 0001:000066CB   231 0001:00006708   232 0001:0000670B
+   233 0001:00006711   234 0001:00006716   240 0001:0000671C   241 0001:0000673F
+   242 0001:0000674F   243 0001:0000675F   245 0001:00006770   247 0001:00006779
+   248 0001:00006780   249 0001:0000678F   250 0001:0000679B   251 0001:000067A2
+   256 0001:000067A9   257 0001:000067B0   258 0001:000067C1   259 0001:000067CD
+   260 0001:000067DE   261 0001:000067FB   262 0001:0000683C   263 0001:00006851
+   266 0001:000068C7   267 0001:000068FB   268 0001:0000690C   271 0001:00006918
+   273 0001:0000693D   274 0001:00006951   276 0001:0000695D   277 0001:00006965
+   278 0001:0000698D   279 0001:000069BB   280 0001:000069E9   281 0001:00006A43
+   286 0001:00006A71   287 0001:00006A78   288 0001:00006A89   289 0001:00006A95
+   290 0001:00006AA6   291 0001:00006AE5   292 0001:00006AF6   293 0001:00006AFD
+   295 0001:00006B1B   297 0001:00006B27   298 0001:00006B3C   299 0001:00006B5B
+   300 0001:00006B6F   301 0001:00006B8B   302 0001:00006BA1   306 0001:00006BBD
+   308 0001:00006BDD   309 0001:00006BE4   310 0001:00006BF5   311 0001:00006C01
+   312 0001:00006C12   313 0001:00006C51   314 0001:00006C62   315 0001:00006C69
+   317 0001:00006C87   319 0001:00006C93   320 0001:00006CA8   321 0001:00006CC7
+   322 0001:00006CDB   323 0001:00006CF7   324 0001:00006D0D   328 0001:00006D29
+   330 0001:00006D49   331 0001:00006D50   332 0001:00006D61   333 0001:00006D6D
+   334 0001:00006D7E   335 0001:00006DBD   336 0001:00006DC4   338 0001:00006DE8
+   340 0001:00006DF4   341 0001:00006E09   342 0001:00006E28   343 0001:00006E3C
+   344 0001:00006E58   345 0001:00006E6E   349 0001:00006E8A   351 0001:00006EAA
+   352 0001:00006EB1   353 0001:00006EC2   354 0001:00006ECE   355 0001:00006EDF
+   356 0001:00006F2A   357 0001:00006F31   359 0001:00006F55   361 0001:00006F61
+   362 0001:00006F81   363 0001:00006F9D   364 0001:00006FC6   367 0001:00006FE0
+   370 0001:00006FF1   269 0001:00006FF8   373 0001:00007005   374 0001:0000700C
+   375 0001:00007013   376 0001:0000701B
+
+Line numbers for Unit_BroadcastStatus(Unit_BroadcastStatus.pas) segment .itext
+
+   378 0002:00000500
+
+Line numbers for Unit_Broadcastpopup(Unit_Broadcastpopup.pas) segment .text
+
+    74 0001:0000806C    75 0001:00008071    79 0001:00008074    80 0001:0000807C
+    81 0001:0000808A    82 0001:00008091    84 0001:000080A7    85 0001:000080B9
+    88 0001:000080C5    91 0001:000080CC    92 0001:000080E4    93 0001:000080F2
+    95 0001:0000811D    96 0001:00008122    99 0001:00008138   102 0001:00008147
+   105 0001:00008194   106 0001:00008197   107 0001:0000819E   108 0001:000081AB
+   115 0001:000081B0   116 0001:000081CC   118 0001:000081D4   119 0001:000081E6
+   121 0001:000081EA   122 0001:000081EC   123 0001:000081FE   125 0001:00008204
+   126 0001:00008208   127 0001:0000821A   129 0001:00008220   130 0001:00008224
+   140 0001:00008234   142 0001:0000827E   143 0001:00008290   147 0001:00008292
+   148 0001:000082A7   149 0001:000082B9   150 0001:000082C0   153 0001:0000831C
+   154 0001:00008336   156 0001:00008348   157 0001:00008355   158 0001:00008362
+   162 0001:0000837E   163 0001:0000838B   167 0001:00008398   172 0001:000083BC
+   173 0001:000083EF   175 0001:00008405   176 0001:00008415   178 0001:0000841A
+   179 0001:0000842A   176 0001:0000844E   181 0001:00008451   182 0001:0000845F
+   183 0001:0000846D   184 0001:00008499   188 0001:000084A3   189 0001:000084B3
+   190 0001:000084C6   192 0001:000084CE   196 0001:0000851C   197 0001:00008533
+   200 0001:00008534   201 0001:00008537   202 0001:0000853E   203 0001:0000854B
+   204 0001:0000855E   207 0001:00008571   208 0001:0000858B   209 0001:0000859B
+   210 0001:000085AB   223 0001:000085BB   224 0001:000085C8   225 0001:000085D5
+   250 0001:000085E2   251 0001:000085EF   256 0001:000085FC   259 0001:00008600
+   260 0001:00008603   261 0001:00008609   262 0001:0000860E   267 0001:00008614
+   268 0001:0000862A   269 0001:00008643   270 0001:00008652   271 0001:00008667
+   272 0001:00008676   273 0001:0000868B   274 0001:0000869A   275 0001:000086AF
+   277 0001:000086BE   278 0001:000086CE   279 0001:000086DE   281 0001:000086F3
+   283 0001:00008702   284 0001:00008712   286 0001:00008724   288 0001:00008733
+   289 0001:00008743   291 0001:00008755   293 0001:00008764   294 0001:00008774
+   296 0001:00008784   297 0001:00008791   298 0001:000087A4   299 0001:000087B7
+   304 0001:00008898   305 0001:000088B3   307 0001:000088D0   309 0001:000088DA
+   310 0001:000088F7   311 0001:0000890F   317 0001:00008978   318 0001:000089A0
+   319 0001:000089BB   320 0001:000089D2   321 0001:000089F6   322 0001:00008A1A
+   323 0001:00008A46   324 0001:00008A9E   325 0001:00008AA6   326 0001:00008AB5
+   327 0001:00008ABD   374 0001:00008AD8  1436 0001:00008AE6  1439 0001:00008AFC
+  1440 0001:00008B30  1441 0001:00008B42  1442 0001:00008B75  1449 0001:00008BA8
+  1450 0001:00008BCE  1452 0001:00008BF1  1453 0001:00008C2E  1454 0001:00008C6B
+  1455 0001:00008C78  1456 0001:00008CBD  1450 0001:00008CBE  1457 0001:00008CC5
+  1458 0001:00008CCC  1460 0001:00008CE5  1462 0001:00008D04  1463 0001:00008D49
+  1460 0001:00008D4A  1464 0001:00008D4D  1468 0001:00008D5F  1469 0001:00008D6B
+  1470 0001:00008D7D  1475 0001:00008D97  1482 0001:00008F54  1483 0001:00008F70
+  1484 0001:00008F82  1486 0001:00008F86  1487 0001:00008F88  1488 0001:00008F9A
+  1490 0001:00008FA0  1491 0001:00008FA4  1492 0001:00008FB6  1494 0001:00008FBC
+  1495 0001:00008FC0  1496 0001:00008FD0  1498 0001:00008FDE  1499 0001:00008FF0
+  1501 0001:00009000  1503 0001:0000900E  1504 0001:00009015  1507 0001:00009023
+  1508 0001:00009040  1510 0001:00009054  1512 0001:0000906B
+
+Line numbers for Unit_Broadcastpopup(Unit_Broadcastpopup.pas) segment .itext
+
+  1514 0002:00000508
+
+Line numbers for Unit_Verification(Unit_Verification.pas) segment .text
+
+   223 0001:0000BE00   224 0001:0000BE22   226 0001:0000BE3D   228 0001:0000BE43
+   229 0001:0000BE4A   230 0001:0000BE53   231 0001:0000BE5F   234 0001:0000BE66
+   236 0001:0000BE6C   237 0001:0000BE73   238 0001:0000BE7C   239 0001:0000BE88
+   240 0001:0000BE91   241 0001:0000BE99   242 0001:0000BEAC   243 0001:0000BEBF
+   244 0001:0000BED2   245 0001:0000BEE5   246 0001:0000BEFB   247 0001:0000BF11
+   248 0001:0000BF24   249 0001:0000BF37   250 0001:0000BF4A   251 0001:0000BF5D
+   252 0001:0000BF70   253 0001:0000BF83   254 0001:0000BF96   255 0001:0000BFA9
+   256 0001:0000BFBC   259 0001:0000BFC3   261 0001:0000BFDE   263 0001:0000BFE4
+   264 0001:0000BFEB   265 0001:0000BFF4   266 0001:0000C000   269 0001:0000C007
+   271 0001:0000C00D   272 0001:0000C014   273 0001:0000C01D   274 0001:0000C029
+   275 0001:0000C032   276 0001:0000C03A   277 0001:0000C04D   278 0001:0000C060
+   279 0001:0000C073   280 0001:0000C086   281 0001:0000C099   282 0001:0000C0AC
+   285 0001:0000C0B3   287 0001:0000C0CE   289 0001:0000C0D4   290 0001:0000C0DB
+   291 0001:0000C0E4   292 0001:0000C0F0   295 0001:0000C0F7   297 0001:0000C0FD
+   298 0001:0000C104   299 0001:0000C10D   300 0001:0000C119   301 0001:0000C122
+   302 0001:0000C12A   303 0001:0000C13D   306 0001:0000C144   308 0001:0000C514
+   309 0001:0000C52D   311 0001:0000C537   312 0001:0000C554   313 0001:0000C55D
+   314 0001:0000C567   315 0001:0000C572   318 0001:0000C57C   319 0001:0000C583
+   329 0001:0000C5A8   330 0001:0000C5CB   335 0001:0000C5D0   336 0001:0000C5E3
+   337 0001:0000C5ED   339 0001:0000C608   340 0001:0000C621   341 0001:0000C644
+   343 0001:0000C667   345 0001:0000C675   346 0001:0000C683   348 0001:0000C694
+   349 0001:0000C6C0   350 0001:0000C6CF   352 0001:0000C6F7   357 0001:0000C707
+   359 0001:0000C725   361 0001:0000C739   362 0001:0000C73F   364 0001:0000C756
+   366 0001:0000C777   357 0001:0000C778   368 0001:0000C77B   370 0001:0000C790
+   372 0001:0000C7A5   375 0001:0000C7B8   383 0001:0000C7C1   384 0001:0000C7C8
+   385 0001:0000C7D9   387 0001:0000C7FA   388 0001:0000C804   390 0001:0000C84A
+   394 0001:0000C880   395 0001:0000C895   397 0001:0000C8E1   399 0001:0000C917
+   400 0001:0000C91D   402 0001:0000C94F   403 0001:0000C965   405 0001:0000C97E
+   407 0001:0000C997   408 0001:0000C9AC   409 0001:0000C9EE   410 0001:0000CA03
+   413 0001:0000CA45   415 0001:0000CA7D   416 0001:0000CA92   417 0001:0000CACA
+   418 0001:0000CADF   419 0001:0000CB17   420 0001:0000CB2C   422 0001:0000CB7E
+   424 0001:0000CB99   425 0001:0000CBAD   427 0001:0000CBF1   428 0001:0000CC07
+   430 0001:0000CC4B   431 0001:0000CC61   433 0001:0000CCA2   434 0001:0000CCB8
+   437 0001:0000CCF7   439 0001:0000CD42   441 0001:0000CD49   449 0001:0000CD52
+   450 0001:0000CD59   453 0001:0000CD6A   455 0001:0000CD91   456 0001:0000CD9B
+   458 0001:0000CDED   462 0001:0000CE2F   463 0001:0000CE44   465 0001:0000CE96
+   467 0001:0000CED2   468 0001:0000CED8   470 0001:0000CF10   472 0001:0000CF26
+   474 0001:0000CF3F   476 0001:0000CF58   477 0001:0000CF6D   478 0001:0000CFBB
+   479 0001:0000CFD0   482 0001:0000D01E   484 0001:0000D062   485 0001:0000D077
+   486 0001:0000D0BB   487 0001:0000D0D0   488 0001:0000D114   489 0001:0000D129
+   491 0001:0000D18D   493 0001:0000D1A8   494 0001:0000D1BC   496 0001:0000D200
+   497 0001:0000D216   499 0001:0000D25A   500 0001:0000D270   502 0001:0000D2B1
+   503 0001:0000D2C7   506 0001:0000D306   507 0001:0000D351   509 0001:0000D367
+   511 0001:0000D36E   512 0001:0000D379   517 0001:0000DAE0   520 0001:0000DAE7
+   521 0001:0000DAF2   522 0001:0000DAFB   523 0001:0000DB04   528 0001:0000DB08
+   529 0001:0000DB0F   530 0001:0000DB1A   531 0001:0000DB23   532 0001:0000DB2C
+   535 0001:0000DB30   537 0001:0000DB51   539 0001:0000DB72   540 0001:0000DB9F
+   544 0001:0000DBB5   545 0001:0000DBBA   547 0001:0000DBC2   557 0001:0000DBCA
+   558 0001:0000DBEA   559 0001:0000DC12   560 0001:0000DC32   561 0001:0000DC5A
+   562 0001:0000DC82   563 0001:0000DCAA   564 0001:0000DCCA   565 0001:0000DCF2
+   568 0001:0000DD12   569 0001:0000DD1A   572 0001:0000DD22   574 0001:0000DD30
+   575 0001:0000DD3E   576 0001:0000DD54   578 0001:0000DD66   579 0001:0000DD99
+   581 0001:0000DDCC   583 0001:0000DE0D   584 0001:0000DE19   585 0001:0000DE27
+   590 0001:0000DE3D   592 0001:0000DE4B   593 0001:0000DE61   594 0001:0000DE73
+   595 0001:0000DEA6   598 0001:0000DED9   600 0001:0000DF1A   601 0001:0000DF26
+   602 0001:0000DF34   610 0001:0000DF4A   614 0001:0000DF54   617 0001:0000E16C
+   618 0001:0000E16F   619 0001:0000E17D   620 0001:0000E193   622 0001:0000E1AF
+   630 0001:0000E1C3   635 0001:0000E1C8   637 0001:0000E1E5   638 0001:0000E1F3
+   641 0001:0000E209   642 0001:0000E217   643 0001:0000E23B   644 0001:0000E255
+   645 0001:0000E282   647 0001:0000E295   648 0001:0000E2AD   649 0001:0000E2AF
+   650 0001:0000E2DD   651 0001:0000E2F9   653 0001:0000E2FF   656 0001:0000E30B
+   657 0001:0000E330   658 0001:0000E35F   659 0001:0000E38B   661 0001:0000E3C5
+   662 0001:0000E3D5   664 0001:0000E3FB   665 0001:0000E435   666 0001:0000E436
+   654 0001:0000E43D   671 0001:0000E44A   673 0001:0000E466   675 0001:0000E47A
+   679 0001:0000E520   680 0001:0000E52D   683 0001:0000E530   684 0001:0000E533
+   686 0001:0000E53F   687 0001:0000E546   689 0001:0000E553   692 0001:0000E558
+   693 0001:0000E55B   694 0001:0000E56D   696 0001:0000E577   697 0001:0000E57F
+   710 0001:0000E584   713 0001:0000E588   723 0001:0000E58B   724 0001:0000E59D
+   726 0001:0000E5A7   729 0001:0000E5AF   732 0001:0000E5B4   737 0001:0000E5B7
+   738 0001:0000E5C9   740 0001:0000E5D3   742 0001:0000E5DB   746 0001:0000E5E0
+   747 0001:0000E5E5   753 0001:0000E5E8   754 0001:0000E5ED   757 0001:0000E5F0
+   758 0001:0000E5F3   759 0001:0000E605   761 0001:0000E60F   762 0001:0000E617
+   765 0001:0000E61C   766 0001:0000E622   768 0001:0000E634   769 0001:0000E642
+   771 0001:0000E658   773 0001:0000E674   776 0001:0000E688   779 0001:0000E68C
+   780 0001:0000E68F   781 0001:0000E6A1   783 0001:0000E6AB   784 0001:0000E6B3
+   787 0001:0000E6B8   788 0001:0000E6BE   790 0001:0000E6D0   791 0001:0000E6DF
+   793 0001:0000E6F0   794 0001:0000E701   795 0001:0000E712   796 0001:0000E725
+   798 0001:0000E734   802 0001:0000E73D   805 0001:0000E780   806 0001:0000E783
+   807 0001:0000E795   809 0001:0000E7A4   810 0001:0000E7B1   813 0001:0000E7B4
+   814 0001:0000E7B7   815 0001:0000E7C9   817 0001:0000E7D3   818 0001:0000E7DB
+   822 0001:0000E7E0   823 0001:0000E807   825 0001:0000E821   827 0001:0000E82D
+   828 0001:0000E83A   830 0001:0000E847   831 0001:0000E84E   833 0001:0000E867
+   835 0001:0000E881   837 0001:0000E88D   838 0001:0000E89A   840 0001:0000E8A7
+   841 0001:0000E8AE   843 0001:0000E8C7   845 0001:0000E8E1   847 0001:0000E8ED
+   848 0001:0000E8FA   850 0001:0000E907   851 0001:0000E90E   854 0001:0000E927
+   856 0001:0000E94E   858 0001:0000E95A   859 0001:0000E967   861 0001:0000E974
+   862 0001:0000E97B   865 0001:0000E994   867 0001:0000E9BB   869 0001:0000E9CE
+   871 0001:0000E9DA   872 0001:0000E9E7   874 0001:0000E9F4   875 0001:0000E9FB
+   879 0001:0000EA14   882 0001:0000EAF0   883 0001:0000EB07   885 0001:0000EB28
+   887 0001:0000EB2E   888 0001:0000EB35   889 0001:0000EB44   890 0001:0000EB50
+   893 0001:0000EB57   895 0001:0000EB5D   896 0001:0000EB64   897 0001:0000EB70
+   898 0001:0000EB79   899 0001:0000EB88   900 0001:0000EB90   901 0001:0000EBA3
+   902 0001:0000EBB6   903 0001:0000EBC9   904 0001:0000EBDC   905 0001:0000EBEF
+   906 0001:0000EC02   907 0001:0000EC15   908 0001:0000EC28   909 0001:0000EC3B
+   910 0001:0000EC4E   911 0001:0000EC64   912 0001:0000EC77   913 0001:0000EC8A
+   914 0001:0000ECA0   915 0001:0000ECB3   916 0001:0000ECC6   917 0001:0000ECD9
+   918 0001:0000ECEC   919 0001:0000ECFF   921 0001:0000ED12   922 0001:0000ED25
+   924 0001:0000ED2C   929 0001:0000F08C   930 0001:0000F0AD   932 0001:0000F0CB
+   933 0001:0000F0E8   934 0001:0000F10D   937 0001:0000F13C   938 0001:0000F145
+   940 0001:0000F14E   941 0001:0000F156   942 0001:0000F18C   953 0001:0000F1C1
+   954 0001:0000F1D3   956 0001:0000F1DB   957 0001:0000F1E2   959 0001:0000F1E8
+   960 0001:0000F1EF   961 0001:0000F1FE   962 0001:0000F205   966 0001:0000F211
+   968 0001:0000F217   969 0001:0000F21E   970 0001:0000F249   971 0001:0000F274
+   972 0001:0000F29F   973 0001:0000F2CA   974 0001:0000F2FB   975 0001:0000F326
+   976 0001:0000F357   977 0001:0000F388   978 0001:0000F3B9   979 0001:0000F3EA
+   980 0001:0000F41B   981 0001:0000F44C   982 0001:0000F47D   983 0001:0000F4AE
+   984 0001:0000F4DF   985 0001:0000F510   986 0001:0000F541   987 0001:0000F572
+   988 0001:0000F5A3   990 0001:0000F5D4   991 0001:0000F5ED   993 0001:0000F5F7
+   964 0001:0000F5FF   996 0001:0000F60F   998 0001:0000F635  1000 0001:0000F642
+  1002 0001:0000F657  1003 0001:0000F664  1006 0001:0000F693  1008 0001:0000F6A0
+  1014 0001:0000FAAC  1015 0001:0000FAD4  1017 0001:0000FAEA  1019 0001:0000FB08
+  1020 0001:0000FB25  1023 0001:0000FB4C  1024 0001:0000FB55  1026 0001:0000FB5E
+  1027 0001:0000FB66  1028 0001:0000FB9C  1039 0001:0000FBD1  1041 0001:0000FBD9
+  1043 0001:0000FBDF  1044 0001:0000FBE6  1045 0001:0000FBF5  1046 0001:0000FBFC
+  1050 0001:0000FC08  1052 0001:0000FC0E  1053 0001:0000FC15  1054 0001:0000FC40
+  1055 0001:0000FC6B  1056 0001:0000FC96  1057 0001:0000FCC1  1058 0001:0000FCF2
+  1059 0001:0000FD1D  1060 0001:0000FD4E  1061 0001:0000FD7F  1062 0001:0000FDB0
+  1063 0001:0000FDE1  1064 0001:0000FE12  1065 0001:0000FE43  1066 0001:0000FE74
+  1067 0001:0000FEA5  1068 0001:0000FED6  1069 0001:0000FF07  1070 0001:0000FF38
+  1071 0001:0000FF69  1072 0001:0000FF9A  1073 0001:0000FFB3  1075 0001:0000FFBD
+  1048 0001:0000FFC5  1078 0001:0000FFD5  1080 0001:0000FFFB  1084 0001:00010390
+  1085 0001:000103A0  1088 0001:000103A4  1089 0001:000103BF  1091 0001:000103C5
+  1093 0001:000103E4  1094 0001:0001041E  1097 0001:0001042C  1099 0001:00010438
+  1102 0001:000104B8  1103 0001:000104D3  1105 0001:000104D9  1107 0001:000104F8
+  1108 0001:00010532  1111 0001:00010540  1113 0001:0001054C  1116 0001:000105C8
+  1117 0001:000105E3  1119 0001:000105E9  1121 0001:00010608  1122 0001:00010642
+  1125 0001:00010650  1127 0001:0001065C  1130 0001:000106DC  1131 0001:000106F7
+  1133 0001:000106FD  1135 0001:0001071C  1136 0001:00010756  1139 0001:00010764
+  1141 0001:00010770  1144 0001:000107F0  1145 0001:0001080B  1147 0001:00010811
+  1149 0001:00010830  1150 0001:0001086A  1153 0001:00010878  1156 0001:00010884
+  1159 0001:00010904  1160 0001:0001091F  1162 0001:00010925  1164 0001:00010939
+  1165 0001:0001096E  1168 0001:0001097C  1171 0001:00010988  1174 0001:000109F4
+  1175 0001:00010A0F  1177 0001:00010A15  1179 0001:00010A34  1180 0001:00010A6E
+  1183 0001:00010A7C  1187 0001:00010A88  1207 0001:00010B10  1212 0001:00010B14
+  1213 0001:00010B39  1215 0001:00010B43  1216 0001:00010B7B  1218 0001:00010B81
+  1220 0001:00010BA4  1221 0001:00010BBF  1223 0001:00010BF6  1224 0001:00010C30
+  1227 0001:00010C3E  1231 0001:00010C4A  1242 0001:00010D38  1243 0001:00010D65
+  1245 0001:00010D73  1246 0001:00010D81  1247 0001:00010D92  1248 0001:00010DC4
+  1249 0001:00010DD3  1251 0001:00010DFB  1257 0001:00010E0B  1259 0001:00010E18
+  1261 0001:00010E25  1263 0001:00010E4B  1266 0001:00010E5C  1267 0001:00010E64
+  1268 0001:00010E76  1269 0001:00010E83  1270 0001:00010E95  1271 0001:00010EF0
+  1272 0001:00010F20  1273 0001:00010F5D  1274 0001:00010F65  1277 0001:00010F74
+  1278 0001:00010F7A  1280 0001:00010F91  1281 0001:00010FBE  1275 0001:00010FC6
+  1289 0001:00010FD7  1291 0001:00010FE4  1293 0001:0001100A  1297 0001:0001101B
+  1298 0001:00011023  1299 0001:00011035  1300 0001:00011042  1301 0001:00011072
+  1304 0001:00011087  1308 0001:000110F0  1311 0001:0001114B  1312 0001:00011164
+  1315 0001:0001120D  1316 0001:00011217  1318 0001:00011262  1321 0001:0001129B
+  1322 0001:000112B0  1323 0001:000112C4  1324 0001:000112D9  1325 0001:000112ED
+  1326 0001:00011302  1328 0001:00011314  1329 0001:0001131C  1332 0001:0001132B
+  1333 0001:00011331  1335 0001:00011348  1336 0001:0001137B  1330 0001:00011383
+  1342 0001:0001138F  1344 0001:0001139C  1346 0001:000113A5  1347 0001:000113AC
+  1349 0001:000113C7  1351 0001:000113E0  1352 0001:00011416  1353 0001:0001142B
+  1355 0001:000114A1  1357 0001:0001153E  1359 0001:00011557  1360 0001:0001158D
+  1361 0001:000115A2  1363 0001:00011618  1365 0001:000116B5  1367 0001:000116CE
+  1368 0001:00011704  1369 0001:00011719  1371 0001:0001178F  1375 0001:0001182C
+  1376 0001:00011862  1377 0001:00011877  1379 0001:000118ED  1384 0001:00011987
+  1385 0001:0001199D  1388 0001:000119B3  1389 0001:000119BA  1390 0001:000119C5
+  1392 0001:000119D0  1394 0001:000119D8  1397 0001:00012384  1398 0001:000123A3
+  1399 0001:000123A8  1400 0001:000123AF  1402 0001:000123BB  1404 0001:000123CB
+  1406 0001:000123E3  1407 0001:0001240A  1409 0001:0001241D  1432 0001:00012425
+  1434 0001:0001243C  1435 0001:0001244C  1438 0001:00012459  1441 0001:00012469
+  1442 0001:00012479  1443 0001:00012489  1444 0001:00012496  1445 0001:000124A3
+  1447 0001:000124B0  1448 0001:000124BD  1449 0001:000124CA  1450 0001:000124D7
+  1451 0001:000124E4  1452 0001:000124F1  1453 0001:000124FE  1456 0001:0001250B
+  1457 0001:00012518  1458 0001:00012525  1461 0001:0001253D  1466 0001:00012550
+  1467 0001:00012560  1468 0001:00012570  1470 0001:0001257D  1493 0001:0001258A
+  1494 0001:00012591  1495 0001:000125A7  1496 0001:000125BD  1497 0001:000125D3
+  1498 0001:000125E9  1499 0001:000125F1  1500 0001:000125FD  1501 0001:0001260D
+  1503 0001:00012625  1505 0001:0001264C  1506 0001:0001265F  1508 0001:00012677
+  1510 0001:0001269E  1511 0001:000126B1  1512 0001:000126D7  1513 0001:000126E0
+  1517 0001:000127A0  1518 0001:000127A6  1520 0001:000127AC  1521 0001:000127B1
+  1523 0001:000127B8  1525 0001:000127C5  1526 0001:000127D3  1530 0001:000127E1
+  1531 0001:000127EF  1532 0001:000127FF  1534 0001:0001280F  1537 0001:00012818
+  1538 0001:0001281B  1539 0001:00012829  1540 0001:00012839  1559 0001:00012849
+  1560 0001:00012856  1561 0001:00012863  1571 0001:00012871  1573 0001:0001287F
+  1585 0001:0001288C  1587 0001:0001289F  1604 0001:000128AF  1606 0001:000128C2
+  1625 0001:000128D1  1628 0001:0001296C  1629 0001:00012988  1631 0001:0001298E
+  1632 0001:00012995  1633 0001:000129A1  1634 0001:000129B2  1635 0001:000129C3
+  1636 0001:00012A08  1637 0001:00012A19  1639 0001:00012A20  1640 0001:00012A5F
+  1646 0001:00012BCC  1652 0001:00012BD0  1653 0001:00012BF2  1655 0001:00012C10
+  1656 0001:00012C2D  1659 0001:00012C54  1660 0001:00012C5D  1662 0001:00012C66
+  1663 0001:00012C6E  1664 0001:00012CA4  1675 0001:00012CD9  1677 0001:00012CE1
+  1678 0001:00012CE8  1680 0001:00012CEE  1681 0001:00012CF5  1682 0001:00012D04
+  1683 0001:00012D0B  1687 0001:00012D17  1689 0001:00012D1D  1690 0001:00012D24
+  1691 0001:00012D4F  1692 0001:00012D7A  1693 0001:00012DA5  1694 0001:00012DD0
+  1695 0001:00012E01  1696 0001:00012E2C  1697 0001:00012E5D  1698 0001:00012E8E
+  1699 0001:00012EBF  1700 0001:00012EF0  1701 0001:00012F21  1702 0001:00012F52
+  1703 0001:00012F83  1704 0001:00012FB4  1705 0001:00012FE5  1706 0001:00013016
+  1707 0001:00013047  1708 0001:00013078  1709 0001:000130A9  1710 0001:000130C2
+  1712 0001:000130CC  1685 0001:000130D4  1715 0001:000130E4  1716 0001:0001310A
+  1720 0001:0001349C  1721 0001:000134A3  1737 0001:000134A4  1753 0001:000134A8
+  1769 0001:000134AC  1771 0001:000134B1  1774 0001:000134B4  1775 0001:000134B7
+  1776 0001:000134BD  1777 0001:000134CB  1782 0001:000134D0  1783 0001:000134ED
+  1785 0001:000134FB  1786 0001:00013505  1788 0001:0001350A  1789 0001:00013518
+  1792 0001:0001352E  1793 0001:00013552  1794 0001:0001356C  1795 0001:00013599
+  1797 0001:000135AC  1798 0001:000135C4  1799 0001:000135C6  1800 0001:000135F4
+  1801 0001:00013610  1803 0001:00013616  1806 0001:00013622  1807 0001:00013647
+  1808 0001:00013676  1809 0001:000136A2  1811 0001:000136DC  1812 0001:000136EC
+  1814 0001:00013712  1815 0001:0001374C  1816 0001:0001374D  1804 0001:00013754
+  1821 0001:00013761  1823 0001:0001377D  1825 0001:00013791  1828 0001:00013884
+  1829 0001:0001389A  1831 0001:000138B7  1832 0001:000138CC  1836 0001:000138DE
+  1837 0001:000138F0  1839 0001:00013900  1842 0001:0001394C  1843 0001:00013962
+  1845 0001:0001397F  1846 0001:00013994  1850 0001:000139A6  1851 0001:000139B8
+  1853 0001:000139C8  1859 0001:00013A14  1860 0001:00013A36  1861 0001:00013A41
+  1862 0001:00013A59  1863 0001:00013A65  1864 0001:00013A6F  1866 0001:00013A75
+  1867 0001:00013A7C  1868 0001:00013A83  1869 0001:00013AB1  1871 0001:00013ADC
+  1873 0001:00013AE5  1874 0001:00013AED  1875 0001:00013AFF  1876 0001:00013B0C
+  1877 0001:00013B51  1878 0001:00013B59  1880 0001:00013B76  1881 0001:00013B7D
+  1882 0001:00013B88  1889 0001:00013B8D  1890 0001:00013B93  1892 0001:00013BA9
+  1893 0001:00013BD5  1895 0001:00013BEA  1896 0001:00013BF4  1898 0001:00013C17
+  1900 0001:00013C49  1887 0001:00013C50  1902 0001:00013C5D  1903 0001:00013C67
+  1904 0001:00013C74  1906 0001:00013C7B  1907 0001:00013C86  1910 0001:00013CB1
+  1912 0001:00013CC3  1915 0001:00013CD8  1922 0001:00013ECC  1923 0001:00013EF0
+  1924 0001:00013F00  1928 0001:00013F11  1929 0001:00013F18  1930 0001:00013F29
+  1931 0001:00013F35  1932 0001:00013F76  1936 0001:00013F7D  1938 0001:00013FA0
+  1939 0001:00013FAA  1942 0001:00013FAF  1944 0001:00013FD2  1945 0001:00013FDC
+  1948 0001:00013FE1  1950 0001:0001401E  1951 0001:00014028  1957 0001:0001402D
+  1958 0001:00014035  1959 0001:00014045  1960 0001:00014058  1962 0001:00014060
+  1964 0001:00014075  1965 0001:0001407F  1970 0001:00014084  1975 0001:000140A2
+  1976 0001:000140B0  1978 0001:000140C2  1979 0001:000140D3  1980 0001:000140E3
+  1983 0001:000140F4  1984 0001:0001410C  1988 0001:0001411E  1989 0001:00014125
+  1990 0001:00014136  1991 0001:00014142  1992 0001:0001418A  1993 0001:00014204
+  1996 0001:0001420B  2000 0001:0001421D  2001 0001:00014224  2002 0001:00014235
+  2003 0001:00014241  2004 0001:00014282  2009 0001:00014289  2010 0001:00014291
+  2011 0001:000142A3  2012 0001:000142B0  2013 0001:000142C2  2014 0001:00014393
+  2015 0001:0001448F  2016 0001:000144CC  2018 0001:000144DE  2024 0001:000144E6
+  2025 0001:000144EE  2026 0001:00014500  2027 0001:0001450D  2028 0001:0001451F
+  2029 0001:00014531  2030 0001:00014543  2031 0001:0001460B  2032 0001:000146B6
+  2033 0001:00014741  2034 0001:000147C7  2035 0001:0001484D  2036 0001:000148CE
+  2037 0001:000149D8  2039 0001:00014A38  2086 0001:00014A40  2087 0001:00014A52
+  2089 0001:00014A66  2090 0001:00014A78  2091 0001:00014A8D  2094 0001:00014A99
+  2095 0001:00014AA1  2096 0001:00014AA8  2097 0001:00014AAF  2098 0001:00014AB7
+  2099 0001:00014ABF  2104 0001:00015ADC  2105 0001:00015AFD  2106 0001:00015B02
+  2108 0001:00015B0A  2118 0001:00015B12  2119 0001:00015B32  2120 0001:00015B5A
+  2121 0001:00015B7A  2122 0001:00015BA2  2123 0001:00015BCA  2124 0001:00015BF2
+  2125 0001:00015C12  2126 0001:00015C3A  2129 0001:00015C5A  2130 0001:00015C62
+  2132 0001:00015C70  2137 0001:00015C85  2139 0001:00015C8E  2140 0001:00015C95
+  2141 0001:00015CA6  2142 0001:00015CB2  2143 0001:00015CC3  2145 0001:00015CF3
+  2147 0001:00015CFA  2151 0001:00015D12  2169 0001:00015D1A  2251 0001:00015D2E
+  2253 0001:00015D3C  2254 0001:00015D4A  2255 0001:00015D60  2257 0001:00015D72
+  2258 0001:00015DA5  2259 0001:00015DD8  2261 0001:00015DED  2262 0001:00015DFD
+  2263 0001:00015E0B  2265 0001:00015E2C  2268 0001:00015E41  2270 0001:00015E60
+  2271 0001:00015E6C  2272 0001:00015E7A  2277 0001:00015E90  2279 0001:00015E9E
+  2280 0001:00015EB4  2281 0001:00015EC6  2282 0001:00015EF9  2284 0001:00015F2C
+  2286 0001:00015F41  2287 0001:00015F51  2288 0001:00015F5F  2290 0001:00015F80
+  2293 0001:00015F95  2295 0001:00015FB4  2296 0001:00015FC0  2297 0001:00015FCE
+  3084 0001:00015FE4  3401 0001:00015FF2  3402 0001:00016008  3403 0001:0001601A
+  3404 0001:0001604D  3405 0001:00016080  3407 0001:00016095  3408 0001:000160A5
+  3409 0001:000160B3  3410 0001:000160D4  3413 0001:000160E9  3415 0001:00016108
+  3416 0001:00016114  3417 0001:00016122  3421 0001:00016138  3424 0001:000163B4
+  3425 0001:000163B7  3426 0001:000163C5  3427 0001:000163D3  3430 0001:000163D8
+  3431 0001:000163DB  3432 0001:000163E9  3433 0001:000163FF  3435 0001:0001641B
+  3437 0001:0001642F  3443 0001:00016434  3444 0001:0001645D  3445 0001:00016462
+  3447 0001:00016470  3448 0001:0001647A  3450 0001:0001647F  3461 0001:0001648E
+  3462 0001:000164AE  3463 0001:000164D6  3464 0001:000164F6  3465 0001:0001651E
+  3466 0001:00016546  3467 0001:0001656E  3468 0001:0001658E  3469 0001:000165B6
+  3471 0001:000165D6  3473 0001:000165E4  3474 0001:000165F2  3475 0001:0001660C
+  3476 0001:00016615  3478 0001:0001661F  3480 0001:00016628  3481 0001:0001662F
+  3484 0001:0001663B  3485 0001:00016641  3487 0001:00016657  3488 0001:00016683
+  3490 0001:00016698  3491 0001:0001669D  3493 0001:000166BD  3495 0001:000166E7
+  3482 0001:000166EE  3497 0001:000166FB  3498 0001:00016700  3500 0001:0001670A
+  3501 0001:00016718  3503 0001:00016745  3505 0001:00016759  3506 0001:00016767
+  3509 0001:00016780  3510 0001:00016785  3513 0001:00016798  3514 0001:000167AB
+  3515 0001:000167B7  3516 0001:000167C1  3517 0001:000167C9  3518 0001:000167DE
+  3526 0001:000167F3  3527 0001:00016801  3530 0001:0001681A  3534 0001:0001681F
+  3537 0001:00016832  3538 0001:00016845  3539 0001:00016851  3540 0001:0001685B
+  3598 0001:00016863  3599 0001:00016872  3610 0001:00016A74  3611 0001:00016A9B
+  3613 0001:00016AA9  3614 0001:00016AB3  3616 0001:00016AB8  3617 0001:00016AC2
+  3618 0001:00016AD0  3619 0001:00016ADE  3620 0001:00016AF9  3622 0001:00016B02
+  3623 0001:00016B09  3626 0001:00016B12  3627 0001:00016B25  3628 0001:00016B2D
+  3630 0001:00016B42  3632 0001:00016B47  3633 0001:00016B53  3636 0001:00016B5A
+  3624 0001:00016B61  3639 0001:00016B6A  3640 0001:00016B78  3758 0001:00016BA6
+  3760 0001:00016BBA  3762 0001:00016BD1  3763 0001:00016BDC  3764 0001:00016C0A
+  3766 0001:00016C15  3767 0001:00016C26  3770 0001:00016D30  3771 0001:00016D49
+  3772 0001:00016D6E  3773 0001:00016D8B  3774 0001:00016DB0  3776 0001:00016DCD
+  3778 0001:00016DD4  3780 0001:00016DDA  3781 0001:00016DE1  3782 0001:00016DF0
+  3783 0001:00016DFB  3784 0001:00016E0B  3786 0001:00016E12  3788 0001:00016E2B
+  3789 0001:00016E35  3793 0001:00016E37  3794 0001:00016E45  3795 0001:00016E5B
+  3797 0001:00016E77  3801 0001:00016E8B  3804 0001:00017040  3805 0001:00017043
+  3806 0001:00017051  3807 0001:00017067  3809 0001:00017083  3811 0001:00017097
+  3814 0001:0001709C  3815 0001:000170B2  3817 0001:000170CF  3818 0001:000170E4
+  3822 0001:000170F6  3823 0001:00017108  3825 0001:00017118  3829 0001:00017164
+  3830 0001:00017171
+
+Line numbers for Unit_Verification(Unit_Verification.pas) segment .itext
+
+  3832 0002:00000510
+
+Line numbers for unit_SaveEmailAddress(unit_SaveEmailAddress.pas) segment .text
+
+    51 0001:00017904    52 0001:00017907    54 0001:00017916    58 0001:0001791F
+    59 0001:0001792C    60 0001:00017939    61 0001:00017946    63 0001:00017953
+    66 0001:00017958    67 0001:0001795B    68 0001:0001796B    69 0001:00017978
+    70 0001:00017985    71 0001:0001798C    75 0001:00017990    76 0001:000179B3
+    78 0001:000179C4    79 0001:000179D2    81 0001:000179E1    83 0001:000179E7
+    84 0001:000179EE    85 0001:000179FF    86 0001:00017A0B    87 0001:00017A1C
+    88 0001:00017A72    91 0001:00017A7E    93 0001:00017A86    95 0001:00017A8C
+    96 0001:00017A93    97 0001:00017AA4    98 0001:00017AB0    99 0001:00017B1A
+   103 0001:00017B30   104 0001:00017B3A   107 0001:00017B46   108 0001:00017B53
+   109 0001:00017B60   110 0001:00017B6D   111 0001:00017B7A   112 0001:00017B85
+   113 0001:00017B90   114 0001:00017B95   118 0001:00017D90   120 0001:00017DA0
+   123 0001:00017DA4   124 0001:00017DBA   125 0001:00017DCA   126 0001:00017DD7
+   127 0001:00017DE4   128 0001:00017DEB   129 0001:00017E11   133 0001:00017E4C
+   134 0001:00017E65   136 0001:00017E6F   138 0001:00017E8D   140 0001:00017E93
+   141 0001:00017E9A   142 0001:00017EAB   143 0001:00017EB7   144 0001:00017EF0
+   146 0001:00017EF7   147 0001:00017F02   150 0001:00017F0D   154 0001:00017FEC
+   155 0001:00017FEF   157 0001:00017FF5   159 0001:00017FFA   162 0001:00018000
+   163 0001:00018003   164 0001:00018010   165 0001:0001801D   166 0001:0001802A
+   168 0001:00018030   169 0001:00018037   170 0001:00018048   171 0001:00018054
+   172 0001:00018065   174 0001:0001806C   177 0001:000180BC   178 0001:000180BF
+   179 0001:000180CE   181 0001:000180E0   182 0001:000180ED
+
+Line numbers for unit_SaveEmailAddress(unit_SaveEmailAddress.pas) segment .itext
+
+   184 0002:00000518
+
+Line numbers for .Verification(Verification.dpk) segment .itext
+
+    55 0002:00000520
+
+Bound resource files
+
+Unit_TestCancel.dfm
+Unit_PatientSearch.dfm
+Unit_TestCancelNew.dfm
+Unit_QrInvestigationPreview.dfm
+Unit_BroadcastStatus.dfm
+Unit_Broadcastpopup.dfm
+Unit_Verification.dfm
+unit_SaveEmailAddress.dfm
+Verification.res
+Verification.drf
+
+
+Program entry point at 0002:00000520

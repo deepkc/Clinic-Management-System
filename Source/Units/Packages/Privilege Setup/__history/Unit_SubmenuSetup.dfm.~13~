@@ -1,0 +1,295 @@
+object Form_SubmenuSetup: TForm_SubmenuSetup
+  Left = 0
+  Top = 0
+  Caption = 'Sub Menu setup'
+  ClientHeight = 387
+  ClientWidth = 455
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnKeyPress = FormKeyPress
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel_Main: TPanel
+    Left = 0
+    Top = 30
+    Width = 455
+    Height = 115
+    Align = alTop
+    TabOrder = 0
+    ExplicitWidth = 432
+    object StaticText1: TStaticText
+      Left = 0
+      Top = 6
+      Width = 69
+      Height = 17
+      Caption = 'ModuleName:'
+      TabOrder = 0
+    end
+    object DBLCB_ModuleName: TDBLookupComboBox
+      Left = 68
+      Top = 5
+      Width = 154
+      Height = 21
+      KeyField = 'MODULEID'
+      ListField = 'ModuleName'
+      ListSource = DS_Module
+      TabOrder = 1
+      OnClick = DBLCB_ModuleNameClick
+    end
+    object SpinEdit_Priority: TSpinEdit
+      Left = 68
+      Top = 70
+      Width = 154
+      Height = 22
+      MaxValue = 0
+      MinValue = 0
+      TabOrder = 2
+      Value = 0
+      OnChange = SpinEdit_PriorityChange
+    end
+    object Edit_SubMenuName: TEdit
+      Left = 67
+      Top = 49
+      Width = 155
+      Height = 21
+      TabOrder = 3
+    end
+    object Menu: TStaticText
+      Left = 14
+      Top = 50
+      Width = 55
+      Height = 17
+      Caption = 'Sub Menu:'
+      TabOrder = 4
+    end
+    object StaticText2: TStaticText
+      Left = 27
+      Top = 73
+      Width = 42
+      Height = 17
+      Caption = 'Priority:'
+      TabOrder = 5
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 145
+    Width = 455
+    Height = 242
+    Align = alClient
+    DataSource = DS_List
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    OnDblClick = DBGrid1DblClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ModuleName'
+        Title.Caption = 'Module Name'
+        Width = 112
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'MAINMENU'
+        Title.Caption = 'Mainmenu'
+        Width = 103
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'SUBMENU'
+        Title.Caption = 'Sub Menu'
+        Width = 73
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'priority'
+        Title.Caption = 'Priority'
+        Width = 107
+        Visible = True
+      end>
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 455
+    Height = 30
+    Align = alTop
+    TabOrder = 2
+    ExplicitWidth = 432
+    object BtnCancel: TBitBtn
+      Left = 365
+      Top = 1
+      Width = 89
+      Height = 28
+      Align = alRight
+      Caption = '&Cancel (ESC)'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        333333333333333333333333333333333333333FFF33FF333FFF339993370733
+        999333777FF37FF377733339993000399933333777F777F77733333399970799
+        93333333777F7377733333333999399933333333377737773333333333990993
+        3333333333737F73333333333331013333333333333777FF3333333333910193
+        333333333337773FF3333333399000993333333337377737FF33333399900099
+        93333333773777377FF333399930003999333337773777F777FF339993370733
+        9993337773337333777333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 0
+      OnClick = BtnCancelClick
+      ExplicitLeft = 342
+    end
+    object BtnSave: TBitBtn
+      Left = 281
+      Top = 1
+      Width = 84
+      Height = 28
+      Align = alRight
+      Caption = '&Save (F12)'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333330070
+        7700333333337777777733333333008088003333333377F73377333333330088
+        88003333333377FFFF7733333333000000003FFFFFFF77777777000000000000
+        000077777777777777770FFFFFFF0FFFFFF07F3333337F3333370FFFFFFF0FFF
+        FFF07F3FF3FF7FFFFFF70F00F0080CCC9CC07F773773777777770FFFFFFFF039
+        99337F3FFFF3F7F777F30F0000F0F09999937F7777373777777F0FFFFFFFF999
+        99997F3FF3FFF77777770F00F000003999337F773777773777F30FFFF0FF0339
+        99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
+        93337FFFF7737777733300000033333333337777773333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BtnSaveClick
+      ExplicitLeft = 275
+      ExplicitTop = -4
+    end
+    object BtnNew: TBitBtn
+      Left = 198
+      Top = 1
+      Width = 83
+      Height = 28
+      Hint = 'New Patient [F1]'
+      Align = alRight
+      Caption = '&New'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
+        333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
+        0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+        07333337F33333337F333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+        07333FF7F33333337FFFBBB0FFFFFFFF0BB37777F3333333777F3BB0FFFFFFFF
+        0BBB3777F3333FFF77773330FFFF000003333337F333777773333330FFFF0FF0
+        33333337F3337F37F3333330FFFF0F0B33333337F3337F77FF333330FFFF003B
+        B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
+        3BB33773333773333773B333333B3333333B7333333733333337}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 2
+      TabStop = False
+      OnClick = BtnNewClick
+      ExplicitLeft = 175
+    end
+  end
+  object StaticText3: TStaticText
+    Left = 0
+    Top = 59
+    Width = 62
+    Height = 17
+    Caption = 'Main Menu :'
+    TabOrder = 3
+  end
+  object Dblcb_MainMenu: TDBLookupComboBox
+    Left = 68
+    Top = 57
+    Width = 154
+    Height = 21
+    KeyField = 'MainMenuId'
+    ListField = 'MainMenu'
+    ListSource = DS_Mainmenu
+    TabOrder = 4
+  end
+  object DS_Mainmenu: TDataSource
+    DataSet = Query_Mainmenu
+    Left = 144
+    Top = 208
+  end
+  object Query_Mainmenu: TQuery
+    SQL.Strings = (
+      'select * from mainmenu'
+      'where 1=1')
+    Left = 368
+    Top = 80
+  end
+  object Query_List: TQuery
+    SQL.Strings = (
+      
+        'select submenuid,mainmenuid,submenu,priority,(select mainmenu fr' +
+        'om mainmenu where mainmenuid=submenu.mainmenuid)mainmenu,'
+      
+        '(select modulename from module where moduleid=(select moduleid f' +
+        'rom mainmenu where mainmenuid=submenu.mainmenuid))ModuleName,'
+      
+        '(select moduleid from mainmenu where mainmenuid=submenu.mainmenu' +
+        'id)ModuleId'
+      ' from submenu'
+      'order by modulename,mainmenu,submenu')
+    Left = 272
+    Top = 224
+  end
+  object DS_Module: TDataSource
+    DataSet = Query_Module
+    Left = 280
+    Top = 40
+  end
+  object Query_Module: TQuery
+    SQL.Strings = (
+      'select  * from Module')
+    Left = 280
+    Top = 96
+  end
+  object DS_List: TDataSource
+    DataSet = Query_List
+    Left = 216
+    Top = 184
+  end
+end

@@ -1,0 +1,476 @@
+unit Unit_MasterFxnFraction;
+
+
+interface
+
+Uses
+     DB,DBTables, DBAccess, Ora, OraSmart, MemDS, OraError,SysUtils,Fxn_Hos,dm;
+
+Var
+     gi_Fractiondetailid : Integer;
+     gi_RefundFractiondetailid : Integer;
+     gf_SCharge : Double;
+
+     gs_SchargePostedDataTime : String;
+
+Procedure SaveFractiondetail(PATIENTID,INPATIENTID,BILLDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY,Reffractiondetailid: Integer;
+          UNITTESTCOST,UNITTESTCOSTORG,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+          TESTNAMECODE,BILLNO,BILLDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+          ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME,IsRevSeparateHead :String);
+
+Procedure SaveRefundFractiondetail(FRACTIONDETAILID,PATIENTID,INPATIENTID,REFUNDDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY : Integer;
+          UNITTESTCOST,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+          TESTNAMECODE,REFUNDBILLNO,REFUNDDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+          ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME :String);
+
+Procedure SaveReferralFractionDetail(PATIENTID,INPATIENTID,BILLDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY : Integer;
+          UNITTESTCOST,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+          TESTNAMECODE,BILLNO,BILLDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+          ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME :String);
+
+Procedure SaveFractiondetail_Replicate(PATIENTID,INPATIENTID,BILLDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY,Reffractiondetailid: Integer;
+          UNITTESTCOST,UNITTESTCOSTORG,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER,SCHARGE:Double;
+          TESTNAMECODE,BILLNO,BILLDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+          ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME,IsRevSeparateHead,SCHARGEDATETIME,ISREPLICATEDFRAC :String);
+
+Procedure GetDocPositionWiseFraction(Query :TOraQuery; DocID : Integer; PositionWiseFractionId : Integer);
+Function GetExcludedDocId(UserId:Integer):String;
+
+Procedure SaveFractiondetailNew(TestNameCode,DocCode,Isoperation,Ischargedivide,Isaddlumpsum,Isfractionpropwithdisper,Iscancel:String;
+          Qty,Disper,Unittestcost,UnittestcostORG,FixedAmountDeductOnTestPrice,Tdsper,Fractionamount,Fractionrate,PrevFractionrate:Double;
+          RefFractionDetailId,Testnameid,Billdetailid,Depid,Patientid,Inpatientid,Docid,Datapostby,FrctModifyBy,Positionwisefractionid,Fractionid:Integer;
+          Billdate,Billno,Billtype,Paytype,Description,Disdate,Datapostdate,Dataposttime,FrctModifyDate,Remarks,Macid:String);
+
+//Function Mutually_Share_Fraction(DOCID: Integer; ServiceType: string):Boolean;
+
+
+Function GetMaxId(TableName, FieldName: String): Integer;
+
+implementation
+
+
+Function GetExcludedDocId(UserId:Integer):String;
+Var
+     Qry_GetDocID: TOraQuery;
+     ls_DociD:String;
+begin
+     ls_DociD:='';
+     Qry_GetDocID := TOraQuery.Create(nil);
+     with Qry_GetDocID do
+     begin
+          close;
+          Session := dm_Hospital.DB;
+          sql.Clear;
+          sql.Add(
+               ' Select EDFR_DOCID From HS_EDFR_ExcludeDocInFrctReport');
+          sql.Add(' where EDFR_UserId=' + IntToStr(Userid));
+          open;
+          First;
+          //Result := fieldbyname('EDST_DOCID').AsInteger;
+     end;
+     while not Qry_GetDocID.Eof do
+     begin
+          if ls_DociD='' then
+          ls_DociD:= IntToStr(Qry_GetDocID.fieldbyname('EDFR_DOCID').AsInteger)
+          else
+          ls_DociD:=ls_DociD+','+IntToStr(Qry_GetDocID.fieldbyname('EDFR_DOCID').AsInteger);
+          Qry_GetDocID.Next;
+     end;
+
+     Result := ls_DociD;
+     Qry_GetDocID.free;
+end;
+
+
+Function GetMaxId(TableName, FieldName: String): Integer;
+Var
+     Query: TOraQuery;
+Begin
+     Query := TOraQuery.Create(nil);
+     With Query do
+     Begin
+          Close;
+          Session := dm_Hospital.DB;
+          sql.Clear;
+          sql.Add(' Select NVL(Max(' + FieldName + '),0) as MaxVal From ' + TableName);
+          Open;
+          RESULT := FieldByName('MaxVal').AsInteger + 1;
+     End;
+     Query.Free;
+End;
+
+
+
+Procedure SaveFractiondetail(PATIENTID,INPATIENTID,BILLDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY,Reffractiondetailid : Integer;
+          UNITTESTCOST,UNITTESTCOSTORG,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+          TESTNAMECODE,BILLNO,BILLDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+          ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME,IsRevSeparateHead :String);
+Var Qry : TOraQuery;
+lf_TdsPer:Double;
+Begin
+     gi_Fractiondetailid:=GetMaxID('HS_FRDE_FRACTIONDETAIL','FRDE_FRACTIONDETAILID');
+
+     if gs_HospitalNameForCode='BNB' then
+     begin
+          (*IF TESTNAMECODE='REG' Then
+          lf_TdsPer:=0
+          Else
+          lf_TdsPer:=gf_TDSPercent;*)
+          lf_TdsPer:=gf_TDSPercent;
+     end
+     Else
+     lf_TdsPer:=gf_TDSPercent;
+
+	Qry := TOraQuery.Create(nil);
+     if gf_SCharge > 0 then
+     Begin
+     With Qry do
+	     Begin
+               Close;
+               Session := DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add(' Insert Into HS_FRDE_FRACTIONDETAIL(FRDE_FRACTIONDETAILID,FRDE_PATIENTID,FRDE_INPATIENTID,FRDE_BILLDETAILID,FRDE_SERVICEBILLDETAILID,');
+               SQL.Add(' FRDE_FRACTIONID,FRDE_POSITIONWISEFRACTIONID,FRDE_DEPID,FRDE_DOCID,FRDE_TESTNAMEID, FRDE_DATAPOSTBY,FRDE_ORGID,');
+               SQL.Add(' FRDE_UNITTESTCOST,FRDE_UNITTESTCOSTORG,FRDE_QTY,FRDE_FRACTIONAMOUNT,FRDE_FRACTIONRATE,FRDE_PREVFRACTIONRATE,FRDE_DISPER,FRDE_TDSPER,');
+               SQL.Add(' FRDE_TESTNAMECODE,FRDE_BILLNO,FRDE_BILLDATE,FRDE_BILLTYPE,FRDE_PAYTYPE,FRDE_ISFRACTIONPROPWITHDISPER,FRDE_DESCRIPTION,FRDE_ISADDLUMPSUM,');
+               SQL.Add(' FRDE_ISCHARGEDIVIDE,FRDE_REMARKS,FRDE_DATAPOSTDATE,FRDE_DATAPOSTTIME,FRDE_MACID,FRDE_REFFRACTIONDETAILID,frde_IsRevSeparatehead,');
+               SQL.Add(' FRDE_SCHARGE,FRDE_SChargeAddBy,FRDE_SchargePostDateTime)');
+               SQL.Add(' Values ( '+IntToStr(gi_Fractiondetailid)+' ,'+IntToStr(PATIENTID) +','+IntToStr(INPATIENTID) +','+IntToStr(BILLDETAILID));
+               SQL.Add(' ,'+IntToStr(SERVICEBILLDETAILID)+' ,'+IntToStr(FRACTIONID) +','+IntToStr(POSITIONWISEFRACTIONID) +','+IntToStr(DEPID));
+               SQL.Add(' ,'+IntToStr(DOCID)+','+IntToStr(TESTNAMEID)+','+IntToStr(DATAPOSTBY)+','+IntToStr(gi_HospitalId));
+               SQL.Add(' ,'+FloatToStr(UNITTESTCOST) +','+FloatToStr(UNITTESTCOSTORG) +','+FloatToStr(QTY)+','+FloatToStr(FRACTIONAMOUNT));
+               SQL.Add(' ,'+FloatToStr(FRACTIONRATE) +','+FloatToStr(FRACTIONRATE) +','+FloatToStr(DISPER)+','+FloatToStr(lf_TdsPer));
+               SQL.Add(' ,'+#39+TESTNAMECODE+#39+','+#39+BILLNO+#39 +','+#39+BILLDATE+#39 +','+#39+BILLTYPE+#39);
+               SQL.Add(' ,'+#39+PAYTYPE+#39+','+#39+ISFRACTIONPROPWITHDISPER+#39+','+#39+DESCRIPTION+#39 +','+#39+ISADDLUMPSUM+#39 +','+#39+ISCHARGEDIVIDE+#39);
+               SQL.Add(' ,'+#39+REMARKS+#39+','+#39+DATAPOSTDATE+#39+','+#39+DATAPOSTTIME+#39 +','+#39+gs_MacId+#39);
+               sql.add(' ,'+inttostr(Reffractiondetailid));
+               sql.Add(' ,'+quotedstr(IsRevSeparateHead));
+               SQL.Add(' ,'+FloatToStr(gf_SCharge)+','+IntToStr(gi_UserId)+','+#39+gs_SchargePostedDataTime+#39);
+               SQL.Add(' )');
+		     ExecSQL;
+     	End;
+     End
+     Else
+     Begin
+          With Qry do
+	     Begin
+               Close;
+               Session := DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add(' Insert Into HS_FRDE_FRACTIONDETAIL(FRDE_FRACTIONDETAILID,FRDE_PATIENTID,FRDE_INPATIENTID,FRDE_BILLDETAILID,FRDE_SERVICEBILLDETAILID,');
+               SQL.Add(' FRDE_FRACTIONID,FRDE_POSITIONWISEFRACTIONID,FRDE_DEPID,FRDE_DOCID,FRDE_TESTNAMEID, FRDE_DATAPOSTBY,FRDE_ORGID,');
+               SQL.Add(' FRDE_UNITTESTCOST,FRDE_UNITTESTCOSTORG,FRDE_QTY,FRDE_FRACTIONAMOUNT,FRDE_FRACTIONRATE,FRDE_PREVFRACTIONRATE,FRDE_DISPER,FRDE_TDSPER,');
+               SQL.Add(' FRDE_TESTNAMECODE,FRDE_BILLNO,FRDE_BILLDATE,FRDE_BILLTYPE,FRDE_PAYTYPE,FRDE_ISFRACTIONPROPWITHDISPER,FRDE_DESCRIPTION,FRDE_ISADDLUMPSUM,');
+               SQL.Add(' FRDE_ISCHARGEDIVIDE,FRDE_REMARKS,FRDE_DATAPOSTDATE,FRDE_DATAPOSTTIME,FRDE_MACID,FRDE_REFFRACTIONDETAILID,frde_IsRevSeparatehead)');
+               SQL.Add(' Values ( '+IntToStr(gi_Fractiondetailid)+' ,'+IntToStr(PATIENTID) +','+IntToStr(INPATIENTID) +','+IntToStr(BILLDETAILID));
+               SQL.Add(' ,'+IntToStr(SERVICEBILLDETAILID)+' ,'+IntToStr(FRACTIONID) +','+IntToStr(POSITIONWISEFRACTIONID) +','+IntToStr(DEPID));
+               SQL.Add(' ,'+IntToStr(DOCID)+','+IntToStr(TESTNAMEID)+','+IntToStr(DATAPOSTBY)+','+IntToStr(gi_HospitalId));
+               SQL.Add(' ,'+FloatToStr(UNITTESTCOST) +','+FloatToStr(UNITTESTCOSTORG) +','+FloatToStr(QTY)+','+FloatToStr(FRACTIONAMOUNT));
+               SQL.Add(' ,'+FloatToStr(FRACTIONRATE) +','+FloatToStr(FRACTIONRATE) +','+FloatToStr(DISPER)+','+FloatToStr(lf_TdsPer));
+               SQL.Add(' ,'+#39+TESTNAMECODE+#39+','+#39+BILLNO+#39 +','+#39+BILLDATE+#39 +','+#39+BILLTYPE+#39);
+               SQL.Add(' ,'+#39+PAYTYPE+#39+','+#39+ISFRACTIONPROPWITHDISPER+#39+','+#39+DESCRIPTION+#39 +','+#39+ISADDLUMPSUM+#39 +','+#39+ISCHARGEDIVIDE+#39);
+               SQL.Add(' ,'+#39+REMARKS+#39+','+#39+DATAPOSTDATE+#39+','+#39+DATAPOSTTIME+#39 +','+#39+gs_MacId+#39);
+               sql.add(' ,'+inttostr(Reffractiondetailid));
+               sql.Add(' ,'+quotedstr(IsRevSeparateHead));
+               SQL.Add(' )');
+               //sql.savetofile('D:\Fraction.txt');
+		     ExecSQL;
+     	End;
+     End;
+     Qry.Free;
+End;
+
+
+Procedure SaveReferralFractionDetail(PATIENTID,INPATIENTID,BILLDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY : Integer;
+          UNITTESTCOST,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+          TESTNAMECODE,BILLNO,BILLDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+          ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME :String);
+Var Qry : TOraQuery;
+lf_TdsPer:Double;
+Begin
+     gi_Fractiondetailid:=GetMaxID('HS_FRDE_FRACTIONDETAIL','FRDE_FRACTIONDETAILID');
+     if gs_HospitalNameForCode='BNB' then
+     begin
+          IF TESTNAMECODE='REG' Then
+          lf_TdsPer:=0
+          Else
+          lf_TdsPer:=gf_TDSPercent;
+     end
+     Else
+     lf_TdsPer:=gf_TDSPercent;
+	Qry := TOraQuery.Create(nil);
+	With Qry do
+	Begin
+		Close;
+		Session := DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add(' Insert Into HS_FRDE_FRACTIONDETAIL(FRDE_FRACTIONDETAILID,FRDE_PATIENTID,FRDE_INPATIENTID,FRDE_BILLDETAILID,FRDE_SERVICEBILLDETAILID,');
+          SQL.Add(' FRDE_FRACTIONID,FRDE_POSITIONWISEFRACTIONID,FRDE_DEPID,FRDE_DOCID,FRDE_TESTNAMEID, FRDE_DATAPOSTBY,FRDE_ORGID,');
+          SQL.Add(' FRDE_UNITTESTCOST,FRDE_UNITTESTCOSTORG,FRDE_QTY,FRDE_FRACTIONAMOUNT,FRDE_FRACTIONRATE,FRDE_PREVFRACTIONRATE,FRDE_DISPER,FRDE_TDSPER,');
+          SQL.Add(' FRDE_TESTNAMECODE,FRDE_BILLNO,FRDE_BILLDATE,FRDE_BILLTYPE,FRDE_PAYTYPE,FRDE_ISFRACTIONPROPWITHDISPER,');
+          SQL.Add(' FRDE_DESCRIPTION,FRDE_ISADDLUMPSUM,FRDE_ISCHARGEDIVIDE,FRDE_REMARKS,FRDE_DATAPOSTDATE,FRDE_DATAPOSTTIME,FRDE_MACID)');
+		      SQL.Add(' Values ( '+IntToStr(gi_Fractiondetailid)+' ,'+IntToStr(PATIENTID) +','+IntToStr(INPATIENTID) +','+IntToStr(BILLDETAILID));
+          SQL.Add(' ,'+IntToStr(SERVICEBILLDETAILID)+' ,'+IntToStr(FRACTIONID) +','+IntToStr(POSITIONWISEFRACTIONID) +','+IntToStr(DEPID));
+          SQL.Add(' ,'+IntToStr(DOCID)+','+IntToStr(TESTNAMEID)+','+IntToStr(DATAPOSTBY)+','+IntToStr(gi_HospitalId));
+          SQL.Add(' ,'+FloatToStr(UNITTESTCOST) +','+FloatToStr(UNITTESTCOST) +','+FloatToStr(QTY)+','+FloatToStr(FRACTIONAMOUNT));
+          SQL.Add(' ,'+FloatToStr(FRACTIONRATE) +','+FloatToStr(FRACTIONRATE) +','+FloatToStr(DISPER)+','+FloatToStr(lf_TdsPer));
+		      SQL.Add(' ,'+#39+TESTNAMECODE+#39+','+#39+BILLNO+#39 +','+#39+BILLDATE+#39 +','+#39+BILLTYPE+#39);
+          SQL.Add(' ,'+#39+PAYTYPE+#39+','+#39+ISFRACTIONPROPWITHDISPER+#39+','+QuotedStr('MARKETING REFERRAL') +','+#39+ISADDLUMPSUM+#39 +','+#39+ISCHARGEDIVIDE+#39);
+          SQL.Add(' ,'+#39+REMARKS+#39+','+#39+DATAPOSTDATE+#39+','+#39+DATAPOSTTIME+#39 +','+#39+gs_MacId+#39);
+          SQL.Add(' )');
+		ExecSQL;
+	End;
+     Qry.Free;
+End;
+
+Procedure SaveRefundFractiondetail(FRACTIONDETAILID,PATIENTID,INPATIENTID,REFUNDDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY : Integer;
+          UNITTESTCOST,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+          TESTNAMECODE,REFUNDBILLNO,REFUNDDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+          ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME :String);
+Var Qry : TOraQuery;
+lf_TdsPer:Double;
+Begin
+     gi_RefundFractiondetailid:=GetMaxID('HS_FRRD_FRACTIONREFUNDDETAIL','FRRD_FRACTIONREFUNDDETAILID');
+     if gs_HospitalNameForCode='BNB' then
+     begin
+          IF TESTNAMECODE='REG' Then
+          lf_TdsPer:=0
+          Else
+          lf_TdsPer:=gf_TDSPercent;
+     end
+     Else
+     lf_TdsPer:=gf_TDSPercent;
+	Qry := TOraQuery.Create(nil);
+	With Qry do
+	Begin
+		Close;
+		Session := DM_Hospital.DB;
+		SQL.Clear;
+          SQL.Add(' Insert Into HS_FRRD_FRACTIONREFUNDDETAIL(FRRD_FRACTIONREFUNDDETAILID,FRRD_FRACTIONDETAILID,FRRD_PATIENTID,FRRD_INPATIENTID,');
+          SQL.Add(' FRRD_REFUNDDETAILID,FRRD_SERVICEBILLDETAILID,FRRD_FRACTIONID,FRRD_POSITIONWISEFRACTIONID,FRRD_DEPID,FRRD_DOCID,FRRD_DATAPOSTBY,FRRD_ORGID,');
+          SQL.Add(' FRRD_UNITTESTCOST,FRRD_UNITTESTCOSTORG,FRRD_QTY,FRRD_FRACTIONAMOUNT,FRRD_FRACTIONRATE,FRRD_PREVFRACTIONRATE,FRRD_DISPER,FRRD_TDSPER,');
+          SQL.Add(' FRRD_TESTNAMECODE,FRRD_REFUNDBILLNO,FRRD_REFUNDDATE,FRRD_BILLTYPE,FRRD_PAYTYPE,FRRD_ISFRACTIONPROPWITHDISPER,');
+          SQL.Add(' FRRD_DESCRIPTION,FRRD_ISADDLUMPSUM,FRRD_ISCHARGEDIVIDE,FRRD_REMARKS,FRRD_DATAPOSTDATE,FRRD_DATAPOSTTIME,FRRD_MACID)');
+		SQL.Add(' Values ( '+IntToStr(gi_RefundFractiondetailid)+','+IntToStr(FRACTIONDETAILID)+' ,'+IntToStr(PATIENTID) +','+IntToStr(INPATIENTID));
+          SQL.Add(' ,'+IntToStr(REFUNDDETAILID)+','+IntToStr(SERVICEBILLDETAILID)+' ,'+IntToStr(FRACTIONID) +','+IntToStr(POSITIONWISEFRACTIONID) +','+IntToStr(DEPID));
+          SQL.Add(' ,'+IntToStr(DOCID)+','+IntToStr(DATAPOSTBY)+','+IntToStr(gi_HospitalId));
+          SQL.Add(' ,'+FloatToStr(UNITTESTCOST) +','+FloatToStr(UNITTESTCOST) +','+FloatToStr(QTY)+','+FloatToStr(FRACTIONAMOUNT));
+          SQL.Add(' ,'+FloatToStr(FRACTIONRATE) +','+FloatToStr(FRACTIONRATE) +','+FloatToStr(DISPER)+','+FloatToStr(lf_TdsPer));
+		SQL.Add(' ,'+#39+TESTNAMECODE+#39+','+#39+REFUNDBILLNO+#39 +','+#39+REFUNDDATE+#39 +','+#39+BILLTYPE+#39);
+          SQL.Add(' ,'+#39+PAYTYPE+#39+','+#39+ISFRACTIONPROPWITHDISPER+#39+','+#39+DESCRIPTION+#39 +','+#39+ISADDLUMPSUM+#39 +','+#39+ISCHARGEDIVIDE+#39);
+          SQL.Add(' ,'+#39+REMARKS+#39+','+#39+DATAPOSTDATE+#39+','+#39+DATAPOSTTIME+#39 +','+#39+gs_MacId+#39);
+          SQL.Add(' )');
+          //sql.SaveToFile('C:\FractionRefund.Txt');
+		ExecSQL;
+	End;
+     Qry.Free;
+End;
+
+Procedure GetDocPositionWiseFraction(Query :TOraQuery; DocId : Integer; PositionWiseFractionId : Integer);
+Begin
+     With Query do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Select DOWF_PositionWiseFractionId PositionWiseFractionId,DOWF_FractionRate FractionRate,DOWF_FractionAmount FractionAmount,DOWF_IsFractionPropWithDisPer IsFractionPropWithDisPer From HS_DOWF_DoctorWiseFraction where DOWF_PositionWiseFractionId='+IntToStr(PositionWiseFractionId));
+          sql.add(' and DOWF_DocID='+IntToStr(DocId)+' and DOWF_IsActive=''Y''');
+          Open;
+          IF Query.FieldByName('PositionWiseFractionId').AsInteger = 0 Then
+          Begin
+               Close;
+               Session:=DM_Hospital.DB;
+               sql.Clear;
+               sql.add(' Select POWF_PositionWiseFractionId PositionWiseFractionId,POWF_FractionRate FractionRate,POWF_FractionAmount FractionAmount,POWF_IsFractionPropWithDisPer IsFractionPropWithDisPer From HS_POWF_POSITIONWISEFRACTION  where POWF_PositionWiseFractionId='+IntToStr(PositionWiseFractionId));
+               Open;
+          End;
+     End;
+End;
+
+Procedure SaveFractiondetailNew(TestNameCode,DocCode,Isoperation,Ischargedivide,Isaddlumpsum,Isfractionpropwithdisper,Iscancel:String;
+          Qty,Disper,Unittestcost,UnittestcostORG,FixedAmountDeductOnTestPrice,Tdsper,Fractionamount,Fractionrate,PrevFractionrate:Double;
+          RefFractionDetailId,Testnameid,Billdetailid,Depid,Patientid,Inpatientid,Docid,Datapostby,FrctModifyBy,Positionwisefractionid,Fractionid:Integer;
+          Billdate,Billno,Billtype,Paytype,Description,Disdate,Datapostdate,Dataposttime,FrctModifyDate,Remarks,Macid:String);
+Var Qry : TQuery;
+Begin
+     gi_Fractiondetailid:=GetMaxID('Fractiondetail','Fractiondetailid');
+	Qry := ToraQuery.Create(nil);
+	With Qry do
+	Begin
+		Close;
+		Session:=DM_hospital.DB;
+		SQL.Clear;
+		SQL.Add(' Insert Into Fractiondetail(Fractiondetailid,RefFractionDetailId,Testnameid,Billdetailid,Depid,');
+          SQL.Add(' Patientid,Inpatientid,Docid,DataPostby,FrctModifyBy,Positionwisefractionid,Fractionid,');
+		SQL.Add(' TestNameCode,DocCode,Isoperation,Ischargedivide,Isaddlumpsum,Isfractionpropwithdisper,');
+          SQL.Add(' Iscancel,Dataposttime,Datapostdate,Remarks,');
+          SQL.Add(' FrctModifyDate,Disdate,Description,Macid,Paytype,Billtype,Billdate,Billno');
+		SQL.Add(' ,Qty,Disper,Fractionrate,PrevFractionrate,Unittestcost,UnittestcostORG,FixedAmountDeductOnTestPrice,Tdsper,Fractionamount,ORGID,SUBORGID) ');
+		SQL.Add(' Values ( '+IntToStr(gi_Fractiondetailid));
+          SQL.Add(' ,'+IntToStr(RefFractionDetailId) +','+IntToStr(Testnameid) +','+IntToStr(Billdetailid) +','+IntToStr(Depid));
+          SQL.Add(' ,'+IntToStr(Patientid) +','+IntToStr(Inpatientid) +','+IntToStr(Docid));
+          SQL.Add(' ,'+IntToStr(Datapostby) +','+IntToStr(FrctModifyBy) +','+IntToStr(Positionwisefractionid) +','+IntToStr(Fractionid));
+		SQL.Add(' ,'+#39+TestNameCode+#39+','+#39+DocCode+#39+','+#39+Isoperation+#39 +','+#39+Ischargedivide+#39 +','+#39+Isaddlumpsum+#39);
+          SQL.Add(' ,'+#39+Isfractionpropwithdisper+#39+','+#39+Iscancel+#39);
+          SQL.Add(' ,'+#39+Dataposttime+#39 +','+#39+Datapostdate+#39+','+#39+FrctModifyDate+#39);
+          SQL.Add(' ,'+#39+Remarks+#39 +','+#39+Disdate+#39 +','+#39+Description+#39 +','+#39+Macid+#39);
+          SQL.Add(' ,'+#39+Paytype+#39 +','+#39+Billtype+#39 +','+#39+Billdate+#39 +','+#39+Billno+#39);
+		SQL.Add(' ,'+FloatToStr(Qty) +','+FloatToStr(Disper) +','+FloatToStr(Fractionrate)+','+FloatToStr(PrevFractionrate));
+          SQL.Add(' ,'+FloatToStr(Unittestcost) +','+FloatToStr(UnittestcostORG) +','+FloatToStr(FixedAmountDeductOnTestPrice));
+          SQL.Add(' ,'+FloatToStr(Tdsper) +','+FloatToStr(Fractionamount));
+    SQL.Add(','+IntToStr(gi_OrgiD)+','+IntToStr(gi_SubOrgId));
+		SQL.Add(' ) ');
+//    sql.SaveToFile('C:\Fraction.Txt');
+		ExecSQL;
+	End;
+     Qry.Free;
+End;
+
+
+
+(*Function Mutually_Share_Fraction(DOCID: Integer; ServiceType: string);
+Var Qry : TOraQuery;
+begin
+     Qry := TOraQuery.Create(nil);
+	With Qry do
+	Begin
+          Close;
+          SQL.Clear;
+          SQL.Add(' select DSBD_DOCSHAREBREAKDOWNID,DSBD_DOCID DOCID,DSBD_DOCRATE DOCRATE,DSBD_ISREFCHRGDIVIDE ISREFCHRGDIVIDE');
+          SQL.Add(' From HS_DSBD_DOCSHAREBREAKDOWN where DSBD_DOCSHAREBREAKDOWNID=(select DSBD_DOCSHAREBREAKDOWNID From HS_DSBD_DOCSHAREBREAKDOWN ');
+          SQL.Add(' Where DSBD_DOCID=' + IntToStr(DOCID)+ ' and DSBD_SERVICETYPE=' + #39 + ServiceType + #39 + ')');
+          SQL.Add(' and DSBD_SERVICETYPE=' + #39 + ServiceType + #39 +' Order by DSBD_DOCRATE Desc');
+          Open;
+     end;
+
+     IF Qry.FieldByName('DSBD_DOCSHAREBREAKDOWNID').AsInteger >= 1 Then
+     Result := True
+     else
+     Result := False;
+     Qry.Free;
+end;*)
+
+(*Procedure SaveFractionRefunddetail(TestNameCode,DocCode,Isoperation,Ischargedivide,Isaddlumpsum,Isfractionpropwithdisper,Iscancel:String;
+          Qty,Disper,Unittestcost,UnittestcostORG,FixedAmountDeductOnTestPrice,Tdsper,Fractionamount,Fractionrate,PrevFractionrate:Double;
+          RefFractionDetailId,Testnameid,Billdetailid,Depid,Patientid,Inpatientid,Docid,Datapostby,FrctModifyBy,Positionwisefractionid,
+          Fractionid,FractionDetailId:Integer;
+          Billdate,Billno,Billtype,Paytype,Description,Disdate,Datapostdate,Dataposttime,FrctModifyDate,Remarks,Macid:String);
+
+Var Qry : TOraQuery;
+li_FractionRefundDetailId :integer;
+Begin
+      li_FractionRefundDetailId:=GetMaxID('FRACTIONREFUNDDETAIL','FRACTIONREFUNDDETAILID');
+      Qry := TOraQuery.Create(nil);
+      With Qry do
+      Begin
+        Close;
+        Session := DM_Hospital.DB;
+        SQL.Clear;
+        SQL.Add(' Insert Into FRACTIONREFUNDDETAIL(FRACTIONREFUNDDETAILID,RefFractionDetailId,Testnameid,RefundBillDetailId,Depid,');
+              SQL.Add(' Patientid,Inpatientid,Docid,DataPostby,FrctModifyBy,Positionwisefractionid,Fractionid,');
+        SQL.Add(' TestNameCode,DocCode,Isoperation,Ischargedivide,Isaddlumpsum,Isfractionpropwithdisper,');
+              SQL.Add(' Iscancel,Dataposttime,Datapostdate,Remarks,');
+              SQL.Add(' FrctModifyDate,Disdate,Description,Macid,Paytype,Billtype,RefundBilldate,Billno');
+        SQL.Add(' ,Qty,Disper,Fractionrate,PrevFractionrate,Unittestcost,UnittestcostORG,FixedAmountDeductOnTestPrice,Tdsper,Fractionamount,Fractiondetailid)');
+
+        SQL.Add(' Values ( '+IntToStr(li_FractionRefundDetailId));
+              SQL.Add(' ,'+IntToStr(RefFractionDetailId) +','+IntToStr(Testnameid) +','+IntToStr(Billdetailid) +','+IntToStr(Depid));
+              SQL.Add(' ,'+IntToStr(Patientid) +','+IntToStr(Inpatientid) +','+IntToStr(Docid));
+              SQL.Add(' ,'+IntToStr(Datapostby) +','+IntToStr(FrctModifyBy) +','+IntToStr(Positionwisefractionid) +','+IntToStr(Fractionid));
+        SQL.Add(' ,'+#39+TestNameCode+#39+','+#39+DocCode+#39+','+#39+Isoperation+#39 +','+#39+Ischargedivide+#39 +','+#39+Isaddlumpsum+#39);
+              SQL.Add(' ,'+#39+Isfractionpropwithdisper+#39+','+#39+Iscancel+#39);
+              SQL.Add(' ,'+#39+Dataposttime+#39 +','+#39+Datapostdate+#39+','+#39+FrctModifyDate+#39);
+              SQL.Add(' ,'+#39+Remarks+#39 +','+#39+Disdate+#39 +','+#39+Description+#39 +','+#39+Macid+#39);
+              SQL.Add(' ,'+#39+Paytype+#39 +','+#39+Billtype+#39 +','+#39+Billdate+#39 +','+#39+Billno+#39);
+        SQL.Add(' ,'+FloatToStr(Qty) +','+FloatToStr(Disper) +','+FloatToStr(Fractionrate)+','+FloatToStr(PrevFractionrate));
+              SQL.Add(' ,'+FloatToStr(Unittestcost) +','+FloatToStr(UnittestcostORG) +','+FloatToStr(FixedAmountDeductOnTestPrice));
+              SQL.Add(' ,'+FloatToStr(Tdsper) +','+FloatToStr(Fractionamount)+','+IntToStr(FractionDetailId));
+
+        SQL.Add(' ) ');
+        sql.SaveToFile('C:\Fraction.Txt');
+        ExecSQL;
+      End;
+     Qry.Free;
+End;*)
+
+
+Procedure SaveFractiondetail_Replicate(PATIENTID,INPATIENTID,BILLDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY,Reffractiondetailid: Integer;
+          UNITTESTCOST,UNITTESTCOSTORG,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER,SCHARGE:Double;
+          TESTNAMECODE,BILLNO,BILLDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+          ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME,IsRevSeparateHead,SCHARGEDATETIME,ISREPLICATEDFRAC :String);
+Var Qry : TOraQuery;
+lf_TdsPer:Double;
+Begin
+     gi_Fractiondetailid:=GetMaxID('HS_FRDE_FRACTIONDETAIL','FRDE_FRACTIONDETAILID');
+
+     if gs_HospitalNameForCode='BNB' then
+     begin
+          IF TESTNAMECODE='REG' Then
+          lf_TdsPer:=0
+          Else
+          lf_TdsPer:=gf_TDSPercent;
+     end
+     Else
+     lf_TdsPer:=gf_TDSPercent;
+
+	Qry := TOraQuery.Create(nil);
+     if SCHARGE> 0 then
+     Begin
+     With Qry do
+	     Begin
+               Close;
+               Session := DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add(' Insert Into HS_FRDE_FRACTIONDETAIL(FRDE_FRACTIONDETAILID,FRDE_PATIENTID,FRDE_INPATIENTID,FRDE_BILLDETAILID,FRDE_SERVICEBILLDETAILID,');
+               SQL.Add(' FRDE_FRACTIONID,FRDE_POSITIONWISEFRACTIONID,FRDE_DEPID,FRDE_DOCID,FRDE_TESTNAMEID, FRDE_DATAPOSTBY,FRDE_ORGID,');
+               SQL.Add(' FRDE_UNITTESTCOST,FRDE_UNITTESTCOSTORG,FRDE_QTY,FRDE_FRACTIONAMOUNT,FRDE_FRACTIONRATE,FRDE_PREVFRACTIONRATE,FRDE_DISPER,FRDE_TDSPER,');
+               SQL.Add(' FRDE_TESTNAMECODE,FRDE_BILLNO,FRDE_BILLDATE,FRDE_BILLTYPE,FRDE_PAYTYPE,FRDE_ISFRACTIONPROPWITHDISPER,FRDE_DESCRIPTION,FRDE_ISADDLUMPSUM,');
+               SQL.Add(' FRDE_ISCHARGEDIVIDE,FRDE_REMARKS,FRDE_DATAPOSTDATE,FRDE_DATAPOSTTIME,FRDE_MACID,FRDE_REFFRACTIONDETAILID,frde_IsRevSeparatehead,');
+               SQL.Add(' FRDE_SCHARGE,FRDE_SChargeAddBy,FRDE_SchargePostDateTime,FRDE_ISREPLICATEDFRAC)');
+               SQL.Add(' Values ( '+IntToStr(gi_Fractiondetailid)+' ,'+IntToStr(PATIENTID) +','+IntToStr(INPATIENTID) +','+IntToStr(BILLDETAILID));
+               SQL.Add(' ,'+IntToStr(SERVICEBILLDETAILID)+' ,'+IntToStr(FRACTIONID) +','+IntToStr(POSITIONWISEFRACTIONID) +','+IntToStr(DEPID));
+               SQL.Add(' ,'+IntToStr(DOCID)+','+IntToStr(TESTNAMEID)+','+IntToStr(DATAPOSTBY)+','+IntToStr(gi_HospitalId));
+               SQL.Add(' ,'+FloatToStr(UNITTESTCOST) +','+FloatToStr(UNITTESTCOSTORG) +','+FloatToStr(QTY)+','+FloatToStr(FRACTIONAMOUNT));
+               SQL.Add(' ,'+FloatToStr(FRACTIONRATE) +','+FloatToStr(FRACTIONRATE) +','+FloatToStr(DISPER)+','+FloatToStr(lf_TdsPer));
+               SQL.Add(' ,'+#39+TESTNAMECODE+#39+','+#39+BILLNO+#39 +','+#39+BILLDATE+#39 +','+#39+BILLTYPE+#39);
+               SQL.Add(' ,'+#39+PAYTYPE+#39+','+#39+ISFRACTIONPROPWITHDISPER+#39+','+#39+DESCRIPTION+#39 +','+#39+ISADDLUMPSUM+#39 +','+#39+ISCHARGEDIVIDE+#39);
+               SQL.Add(' ,'+#39+REMARKS+#39+','+#39+DATAPOSTDATE+#39+','+#39+DATAPOSTTIME+#39 +','+#39+gs_MacId+#39);
+               sql.add(' ,'+inttostr(Reffractiondetailid));
+               sql.Add(' ,'+quotedstr(IsRevSeparateHead));
+               SQL.Add(' ,'+FloatToStr(SCHARGE)+','+IntToStr(gi_UserId)+','+#39+SCHARGEDATETIME+#39+','+#39+ISREPLICATEDFRAC+#39);
+               SQL.Add(' )');
+		     ExecSQL;
+     	End;
+     End
+     Else
+     Begin
+          With Qry do
+	     Begin
+               Close;
+               Session := DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add(' Insert Into HS_FRDE_FRACTIONDETAIL(FRDE_FRACTIONDETAILID,FRDE_PATIENTID,FRDE_INPATIENTID,FRDE_BILLDETAILID,FRDE_SERVICEBILLDETAILID,');
+               SQL.Add(' FRDE_FRACTIONID,FRDE_POSITIONWISEFRACTIONID,FRDE_DEPID,FRDE_DOCID,FRDE_TESTNAMEID, FRDE_DATAPOSTBY,FRDE_ORGID,');
+               SQL.Add(' FRDE_UNITTESTCOST,FRDE_UNITTESTCOSTORG,FRDE_QTY,FRDE_FRACTIONAMOUNT,FRDE_FRACTIONRATE,FRDE_PREVFRACTIONRATE,FRDE_DISPER,FRDE_TDSPER,');
+               SQL.Add(' FRDE_TESTNAMECODE,FRDE_BILLNO,FRDE_BILLDATE,FRDE_BILLTYPE,FRDE_PAYTYPE,FRDE_ISFRACTIONPROPWITHDISPER,FRDE_DESCRIPTION,FRDE_ISADDLUMPSUM,');
+               SQL.Add(' FRDE_ISCHARGEDIVIDE,FRDE_REMARKS,FRDE_DATAPOSTDATE,FRDE_DATAPOSTTIME,FRDE_MACID,FRDE_REFFRACTIONDETAILID,frde_IsRevSeparatehead)');
+               SQL.Add(' Values ( '+IntToStr(gi_Fractiondetailid)+' ,'+IntToStr(PATIENTID) +','+IntToStr(INPATIENTID) +','+IntToStr(BILLDETAILID));
+               SQL.Add(' ,'+IntToStr(SERVICEBILLDETAILID)+' ,'+IntToStr(FRACTIONID) +','+IntToStr(POSITIONWISEFRACTIONID) +','+IntToStr(DEPID));
+               SQL.Add(' ,'+IntToStr(DOCID)+','+IntToStr(TESTNAMEID)+','+IntToStr(DATAPOSTBY)+','+IntToStr(gi_HospitalId));
+               SQL.Add(' ,'+FloatToStr(UNITTESTCOST) +','+FloatToStr(UNITTESTCOSTORG) +','+FloatToStr(QTY)+','+FloatToStr(FRACTIONAMOUNT));
+               SQL.Add(' ,'+FloatToStr(FRACTIONRATE) +','+FloatToStr(FRACTIONRATE) +','+FloatToStr(DISPER)+','+FloatToStr(lf_TdsPer));
+               SQL.Add(' ,'+#39+TESTNAMECODE+#39+','+#39+BILLNO+#39 +','+#39+BILLDATE+#39 +','+#39+BILLTYPE+#39);
+               SQL.Add(' ,'+#39+PAYTYPE+#39+','+#39+ISFRACTIONPROPWITHDISPER+#39+','+#39+DESCRIPTION+#39 +','+#39+ISADDLUMPSUM+#39 +','+#39+ISCHARGEDIVIDE+#39);
+               SQL.Add(' ,'+#39+REMARKS+#39+','+#39+DATAPOSTDATE+#39+','+#39+DATAPOSTTIME+#39 +','+#39+gs_MacId+#39);
+               sql.add(' ,'+inttostr(Reffractiondetailid));
+               sql.Add(' ,'+quotedstr(IsRevSeparateHead));
+               SQL.Add(' )');
+               //sql.savetofile('D:\Fraction.txt');
+		     ExecSQL;
+     	End;
+     End;
+     Qry.Free;
+End;
+
+
+end.

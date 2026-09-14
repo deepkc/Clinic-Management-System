@@ -1,0 +1,587 @@
+unit Unit_VMenuPrevilage;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, VirtualTrees, StdCtrls, Buttons, ExtCtrls, DB, DBTables,FXN,dm;
+
+type
+  TForm_VirtualMenuPrevilage = class(TForm)
+    VST_MenuPrevilage: TVirtualStringTree;
+    Panel5: TPanel;
+    Label1: TLabel;
+    Label_UserName: TLabel;
+    BB_OK: TBitBtn;
+    BB_Exit: TBitBtn;
+    Query_ModuleNode: TQuery;
+    Query_MainMenu: TQuery;
+    Query_SubMainMenu: TQuery;
+    Query_check: TQuery;
+    BitBtn_edit: TBitBtn;
+    Table_Previlage: TTable;
+    Query_update: TQuery;
+    Query_check2: TQuery;
+    BitBtn_logReport: TBitBtn;
+    procedure FormShow(Sender: TObject);
+     procedure VST2GetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
+      var CellText: UnicodeString);
+    procedure VST_MenuPrevilageInitChildren(Sender: TBaseVirtualTree;
+      Node: PVirtualNode; var ChildCount: Cardinal);
+    procedure VST_MenuPrevilageInitNode(Sender: TBaseVirtualTree; ParentNode,
+      Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
+    procedure VST_MenuPrevilageGetNodeDataSize(Sender: TBaseVirtualTree;
+      var NodeDataSize: Integer);
+    procedure BB_ExitClick(Sender: TObject);
+    procedure BB_OKClick(Sender: TObject);
+    procedure VST_MenuPrevilagePaintText(Sender: TBaseVirtualTree;
+      const TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
+      TextType: TVSTTextType);
+    procedure VST_MenuPrevilageNodeClick(Sender: TBaseVirtualTree;
+      const HitInfo: THitInfo);
+    procedure VST_MenuPrevilageChecked(Sender: TBaseVirtualTree;
+      Node: PVirtualNode);
+    procedure BitBtn_editClick(Sender: TObject);
+    procedure createtemptable;
+
+  private
+    { Private declarations }
+  public
+  pi_userid:Integer;
+  ps_username:string;
+  pb_change:Boolean;
+    { Public declarations }
+  end;
+
+var
+  Form_VirtualMenuPrevilage: TForm_VirtualMenuPrevilage;
+
+implementation
+
+{$R *.dfm}
+type
+ PNodeData2 = ^TNodeData2;
+ TNodeData2 = record
+    Caption:string;
+    id,
+    Level: Integer;
+    cstate,
+    accesstype,
+    nodetext:string;
+  end;
+  Tmenuid=record
+  moduleid,menuid,submenuid :integer;
+  end;
+function getmenuid(id:integer; accesstype:string):Tmenuid;
+var qry:TQuery;
+begin
+     qry:=TQuery.Create(nil);
+    if accesstype='MODULE' then
+    begin
+         result.moduleid:=id;
+         Result.menuid:=0;
+         result.submenuid:=0;
+    end
+    else if accesstype='SUBMENU' then
+    begin
+           with qry do
+           begin
+                Close;
+                sql.Clear;
+                databasename:=gs_databasename;
+                SQL.Add('select sume_submenuid,sume_mainmenuid,mame_moduleid from hs_sume_submenu ,hs_mame_mainmenu');
+                sql.Add('where sume_mainmenuid=mame_mainmenuid and sume_submenuid='+inttostr(id));
+                Open;
+           end;
+          result.moduleid:=qry.FieldByName('mame_moduleid').AsInteger;
+          Result.menuid:=qry.FieldByName('sume_mainmenuid').AsInteger;
+          result.submenuid:=id;
+    end
+    else if accesstype='MAINMENU' then
+    begin
+           with qry do
+           begin
+                Close;
+                sql.Clear;
+                databasename:=gs_databasename;
+                SQL.Add('select mame_mainmenuid,mame_moduleid from hs_mame_mainmenu ');
+                sql.Add('where mame_mainmenuid='+inttostr(id));
+                Open;
+           end;
+          result.moduleid:=qry.FieldByName('mame_moduleid').AsInteger;
+          Result.menuid:=id;
+          result.submenuid:=0;
+    end;
+    qry.Free;
+
+end;
+
+
+procedure TForm_VirtualMenuPrevilage.BB_ExitClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_VirtualMenuPrevilage.BB_OKClick(Sender: TObject);
+var Data: PNodeData2;
+begin
+   //  VST_MenuPrevilage.GetFirstSelected(true);
+    try
+          DM_Hospital.DB.StartTransaction;
+          with Query_check do
+          begin
+              Close;
+              SQL.Clear;
+              databasename:=gs_temppath;
+              sql.Add('select * from tbl_previlage.db');
+              Open;
+              First;
+          end;
+          while not  Query_check.Eof  do
+          begin
+               if Query_check.FieldByName('cstate').asstring='F' then
+               begin
+                    with Query_update do
+                    begin
+                         close;
+                         databasename:=gs_databasename;
+                         sql.Clear;
+                         sql.Add('Delete from HS_MEPR_MENUPREVILAGE ');
+                         Sql.Add('where MEPR_USERID='+inttostr(Query_check.FieldByName('userid').asinteger));
+                        sql.Add('and mepr_accesstype='+quotedstr(Query_check.FieldByName('accesstype').asstring));
+                         if Query_check.FieldByName('accesstype').asstring='MODULE' then
+                             sql.Add('and mepr_moduleid='+inttostr(Query_check.FieldByName('id').asinteger))
+                         ELSE if Query_check.FieldByName('accesstype').asstring='SUBMENU' then
+                             sql.Add('and mepr_SUBMENUid='+inttostr(Query_check.FieldByName('id').asinteger))
+                         ELSE if Query_check.FieldByName('accesstype').asstring='MAINMENU' then
+                             sql.Add('and mepr_MENUid='+inttostr(Query_check.FieldByName('id').asinteger));
+                         ExecSQL;
+                    end;
+               end
+               else
+               begin
+                    with Query_check2 do
+                    begin
+                       close;
+                         databasename:=gs_databasename;
+                         sql.Clear;
+                         sql.Add('select * from  HS_MEPR_MENUPREVILAGE ');
+                         Sql.Add('where MEPR_USERID='+inttostr(Query_check.FieldByName('userid').asinteger));
+                        sql.Add('and mepr_accesstype='+quotedstr(Query_check.FieldByName('accesstype').asstring));
+                         if Query_check.FieldByName('accesstype').asstring='MODULE' then
+                             sql.Add('and mepr_moduleid='+inttostr(Query_check.FieldByName('id').asinteger))
+                         ELSE if Query_check.FieldByName('accesstype').asstring='SUBMENU' then
+                             sql.Add('and mepr_SUBMENUid='+inttostr(Query_check.FieldByName('id').asinteger))
+                         ELSE if Query_check.FieldByName('accesstype').asstring='MAINMENU' then
+                             sql.Add('and mepr_MENUid='+inttostr(Query_check.FieldByName('id').asinteger));
+                         Open;
+                    end;
+                    if Query_check2.RecordCount=0 then
+                    begin
+                         with Query_update do
+                         begin
+                                close;
+                                DatabaseName:=gs_DatabaseName;
+                                sql.Clear;
+                                sql.Add('Insert into HS_MEPR_MENUPREVILAGE(MEPR_PREVILAGEID,MEPR_USERID,MEPR_SUBMENUID,MEPR_MENUID,MEPR_MODULEID,MEPR_ROOTID,MEPR_NODETEXT,MEPR_CAPTIONNAME,MEPR_AccessType) ');
+                                sql.Add('values('+inttostr(GetMaxID('HS_MEPR_MENUPREVILAGE', 'MEPR_PREVILAGEID'))+
+                                ','+inttostr(Query_check.FieldByName('userid').asinteger));
+                                if Query_check.FieldByName('accesstype').asstring='MODULE' then
+                                   sql.Add(','+IntToStr(0)+','+IntToStr(0)+','+inttostr(Query_check.FieldByName('id').asinteger))
+                                ELSE if Query_check.FieldByName('accesstype').asstring='SUBMENU' then
+                                   sql.Add(','+IntToStr((getmenuid(Query_check.FieldByName('id').asinteger,'SUBMENU').submenuid))+','+IntToStr(getmenuid(Query_check.FieldByName('id').asinteger,'SUBMENU').menuid)+','+inttostr(getmenuid(Query_check.FieldByName('id').asinteger,'SUBMENU').moduleid))
+                                ELSE if Query_check.FieldByName('accesstype').asstring='MAINMENU' then
+                                   sql.Add(','+IntToStr(0)+','+IntToStr(getmenuid(Query_check.FieldByName('id').asinteger,'MAINMENU').menuid)+','+inttostr(getmenuid(Query_check.FieldByName('id').asinteger,'MAINMENU').moduleid));
+                                sql.Add(','+inttostr(0)+','
+                                +Quotedstr(Query_check.FieldByName('nodetext').asstring)+','
+                                +QuotedStr(Query_check.FieldByName('caption').asstring)+','
+                                +QuotedStr(Query_check.FieldByName('accesstype').asstring)+ ')');
+                                //sql.SaveToFile('d:\ok.txt');
+                                ExecSQL;
+                         end;
+                    end;
+               end;
+               Query_check.Next;
+          end;
+           DM_Hospital.DB.Commit;
+           ShowDoneMessage;
+    except
+          DM_Hospital.DB.Rollback;
+          MessageDlg('Failure to save previlage. Plz Try again.',mtWarning,[mbok],0);
+    end;
+    VST_MenuPrevilage.Enabled:=False;
+    pb_change:=False;
+end;
+
+procedure TForm_VirtualMenuPrevilage.BitBtn_editClick(Sender: TObject);
+begin
+     VST_MenuPrevilage.Enabled:=True;
+      pb_change:=True;
+end;
+
+procedure TForm_VirtualMenuPrevilage.createtemptable;
+begin
+  if FileExists(gs_temppath+'\'+'tbl_previlage.db') then
+  begin
+       DeleteFile(gs_temppath+'\'+'tbl_previlage.db');
+  end;
+  with Table_Previlage do
+  begin
+    Close;
+    DatabaseName := gs_temppath;
+    TableType := ttdefault;
+    TableName := 'tbl_previlage.db';
+    FieldDefs.Clear;
+    FieldDefs.Add('id', ftinteger);
+    FieldDefs.Add('userid', ftinteger);
+    FieldDefs.Add('nodetext', ftString, 50);
+    FieldDefs.Add('caption', ftString, 50);
+    FieldDefs.Add('accesstype', ftString, 50);
+    FieldDefs.Add('cstate', ftString, 1);
+    IndexDefs.Clear;
+    CreateTable;
+  end;
+end;
+
+procedure TForm_VirtualMenuPrevilage.FormShow(Sender: TObject);
+begin
+     VST_MenuPrevilage.RootNodeCount:=1;
+     VST_MenuPrevilage.OnGetText := VST2GetText;
+     VST_MenuPrevilage.CheckImageKind := ckSystemDefault;
+     VST_MenuPrevilage.Enabled:=False;
+     pb_change:=False;
+     createtemptable;
+
+
+end;
+
+procedure TForm_VirtualMenuPrevilage.VST2GetText(Sender: TBaseVirtualTree;
+  Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
+  var CellText: UnicodeString);
+var
+  Data: PNodeData2;
+
+begin
+       Data := Sender.GetNodeData(Node);
+       CellText := '';
+       case Column of
+         0: // main column (has two different captions)
+           case TextType of
+             ttNormal:
+               CellText := Data.nodetext;
+           end;
+         1: // no text in the image column
+           ;
+       end;
+end;
+
+procedure TForm_VirtualMenuPrevilage.VST_MenuPrevilageChecked(
+  Sender: TBaseVirtualTree; Node: PVirtualNode);
+  var
+  Data: PNodeData2;
+begin
+     if pb_change then
+     begin
+          data:=sender.GetNodeData(node);
+           with data^ do
+           begin
+                if cstate='T' then
+                begin
+                    cstate:='F';
+                end
+                else
+                begin
+                    cstate:='T';
+                end;
+           end;
+           with Query_update do
+           begin
+                Close;
+                SQL.Clear;
+                databasename:=gs_temppath;
+                sql.Add('update tbl_previlage.db set cstate='+quotedstr(Data.cstate));
+                sql.Add('where id='+inttostr(Data.id));
+                sql.Add('and accesstype='+quotedstr(Data.accesstype));
+                ExecSQL;
+           end;
+          // ShowMessage(data.Caption+','+inttostr(data.id)+''+data.cstate);
+     end;
+end;
+
+procedure TForm_VirtualMenuPrevilage.VST_MenuPrevilageGetNodeDataSize(
+  Sender: TBaseVirtualTree; var NodeDataSize: Integer);
+begin
+          NodeDataSize := SizeOf(TNodeData2);
+end;
+
+procedure TForm_VirtualMenuPrevilage.VST_MenuPrevilageInitChildren(
+  Sender: TBaseVirtualTree; Node: PVirtualNode; var ChildCount: Cardinal);
+var
+  Data: PNodeData2;
+
+begin
+  Data := Sender.GetNodeData(Node);
+  if Data.Level =0 then
+  begin
+      with Query_ModuleNode do
+     begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          sql.Clear;
+          sql.Add(' Select * from HS_MODU_Module order by MODU_MODULEID ');
+          Open;
+          First;
+     end;
+     ChildCount := Query_ModuleNode.RecordCount;
+  end
+  else if data.level=1 then
+  begin
+      with Query_MainMenu do
+      begin
+           Close;
+           databasename:=gs_databasename;
+           sql.Clear;
+           sql.Add (' SELECT * FROM HS_MAME_MainMenu WHERE MAME_ModuleId = '+ IntToStr(Data.id));
+           SQL.Add(' order by MAME_MAINMENUID');
+           Open;
+           First;
+      end;
+      ChildCount := Query_MainMenu.RecordCount;
+  end
+  else if data.level=2 then
+  begin
+      with Query_SubMainMenu do
+      begin
+            Close;
+            databasename:=gs_databasename;
+            sql.Clear;
+            sql.Add (' SELECT * FROM HS_SUME_SUBMENU WHERE SUME_MainMenuid = '+ IntToStr(Data.id));
+            SQL.Add(' order by SUME_SUBMENUID');
+            Open;
+            First;
+      end;
+      ChildCount := Query_SubMainMenu.RecordCount;
+  end;
+end;
+procedure TForm_VirtualMenuPrevilage.VST_MenuPrevilageInitNode(
+  Sender: TBaseVirtualTree; ParentNode, Node: PVirtualNode;
+  var InitialStates: TVirtualNodeInitStates);
+const
+  LevelToCheckType: array[0..5] of TCheckType = (
+    ctTriStateCheckBox, ctTriStateCheckBox, ctTriStateCheckBox, ctTriStateCheckBox, ctTriStateCheckBox, ctTriStateCheckBox
+  );
+
+var
+  Data: PNodeData2;
+
+begin
+  with Table_Previlage do
+  begin
+       Close;
+       tablename:='tbl_previlage.db';
+       Open;
+  end;
+  Data := Sender.GetNodeData(Node);
+  with Data^ do
+  begin
+    Level := Sender.GetNodeLevel(Node);
+    if Level=0 then
+    begin
+         nodetext:='0.0- Guided Menu'  ;
+         caption:='Guided Menu'  ;
+         Include(InitialStates, ivsHasChildren);
+          Include(InitialStates, ivsExpanded);
+           Node.CheckType := LevelToCheckType[Data.Level];
+          Sender.CheckState[Node] := csCheckedNormal;
+    end
+    else if Level=1 then
+    begin
+          nodetext := Format('%d.%d- %S', [Level, Query_ModuleNode.FieldByName('MODU_MODULEID')
+                           .ASINTEGER,Query_ModuleNode.FieldByName('MODU_MODULENAME').AsString]);
+          caption:= Query_ModuleNode.FieldByName('MODU_MODULENAME').AsString;
+          Data.id:=Query_ModuleNode.FieldByName('MODU_MODULEID')
+                           .ASINTEGER;
+          Data.accesstype:='MODULE';
+          Include(InitialStates, ivsHasChildren);
+          Include(InitialStates, ivsExpanded);
+
+          Node.CheckType := LevelToCheckType[Data.Level];
+          with Query_check do
+          begin
+               close;
+               databasename:=gs_databasename;
+               sql.Clear;
+               sql.Add('select * from HS_MEPR_MENUPREVILAGE');
+               Sql.Add('where mepr_userid='+inttostr(pi_userid)+' and MEPR_ACCESSTYPE=''MODULE''');
+               SQL.Add('and MEPR_moduleid='+inttostr(Data.id));
+               open;
+               first;
+          end;
+          if Query_check.RecordCount>0 then
+          begin
+               Sender.CheckState[Node] := csCheckedNormal ;
+               Data.cstate:='T';
+          end
+          else
+          begin
+              Sender.CheckState[Node] := csUncheckedNormal;
+              Data.cstate:='F';
+          end;
+          with Table_Previlage do
+          begin
+               Append;
+               FieldByName('id').AsInteger:=Data.id;
+               FieldByName('userid').AsInteger:=gi_UserID;
+               FieldByName('nodetext').asstring:=Data.nodetext;
+               FieldByName('caption').asstring:=Data.caption;
+               fieldByName('accesstype').asstring:=Data.accesstype;
+               FieldByName('cstate').asstring:=Data.cstate;
+               Post;
+          end;
+           Query_ModuleNode.Next;
+
+    end
+    else if Level=2 then
+    begin
+          nodetext := Format('%d.%d- %S', [Level, Query_MainMenu.FieldByName('mame_mainmenuid')
+                           .ASINTEGER,Query_MainMenu.FieldByName('mame_mainmenu').AsString]);
+          caption:= Query_MainMenu.FieldByName('mame_mainmenu').AsString;
+          Data.id:=Query_MainMenu.FieldByName('mame_mainmenuid')
+                           .ASINTEGER;
+          Data.accesstype:='MAINMENU';
+          Include(InitialStates, ivsHasChildren);
+          Include(InitialStates, ivsExpanded);
+           Node.CheckType := LevelToCheckType[Data.Level];
+          with Query_check do
+          begin
+               close;
+               databasename:=gs_databasename;
+               sql.Clear;
+               sql.Add('select * from HS_MEPR_MENUPREVILAGE');
+               Sql.Add('where mepr_userid='+inttostr(pi_userid)+' and MEPR_ACCESSTYPE=''MAINMENU''');
+               SQL.Add('and MEPR_menuid='+inttostr(Data.id));
+               open;
+               first;
+          end;
+           if Query_check.RecordCount>0 then
+          begin
+               Sender.CheckState[Node] := csCheckedNormal ;
+               Data.cstate:='T';
+          end
+          else
+          begin
+              Sender.CheckState[Node] := csUncheckedNormal;
+              Data.cstate:='F';
+          end;
+           with Table_Previlage do
+          begin
+               Append;
+               FieldByName('id').AsInteger:=Data.id;
+               FieldByName('userid').AsInteger:=gi_UserID;
+               FieldByName('nodetext').asstring:=Data.nodetext;
+               FieldByName('caption').asstring:=Data.caption;
+               fieldByName('accesstype').asstring:=Data.accesstype;
+               FieldByName('cstate').asstring:=Data.cstate;
+               Post;
+          end;
+           Query_MainMenu.Next;
+    end
+    else if Level=3 then
+    begin
+          nodetext := Format('%d.%d- %S', [Level, Query_SubMainMenu.FieldByName('SUME_SUBMENUID')
+                           .ASINTEGER,Query_SubMainMenu.FieldByName('SUME_SUBMENU').AsString]);
+          caption:= Query_SubMainMenu.FieldByName('SUME_SUBMENU').AsString;
+          Data.id:=Query_SubMainMenu.FieldByName('SUME_SUBMENUID')
+                           .ASINTEGER;
+          Data.accesstype:='SUBMENU';
+          //Include(InitialStates, ivsHasChildren);
+          Include(InitialStates, ivsExpanded);
+           Node.CheckType := LevelToCheckType[Data.Level];
+          with Query_check do
+          begin
+               close;
+               databasename:=gs_databasename;
+               sql.Clear;
+               sql.Add('select * from HS_MEPR_MENUPREVILAGE');
+               Sql.Add('where mepr_userid='+inttostr(pi_userid)+' and MEPR_ACCESSTYPE=''SUBMENU''');
+               SQL.Add('and MEPR_submenuid='+inttostr(Data.id));
+               open;
+               first;
+          end;
+           if Query_check.RecordCount>0 then
+          begin
+               Sender.CheckState[Node] := csCheckedNormal ;
+               Data.cstate:='T';
+          end
+          else
+          begin
+              Sender.CheckState[Node] := csUncheckedNormal;
+              Data.cstate:='F';
+          end;
+          with Table_Previlage do
+          begin
+               Append;
+               FieldByName('id').AsInteger:=Data.id;
+               FieldByName('userid').AsInteger:=gi_UserID;
+               FieldByName('nodetext').asstring:=Data.nodetext;
+               FieldByName('caption').asstring:=Data.caption;
+               fieldByName('accesstype').asstring:=Data.accesstype;
+               FieldByName('cstate').asstring:=Data.cstate;
+               Post;
+          end;
+           Query_SubMainMenu.Next;
+    end
+    else
+          caption:= Format('Level %d, Index %d', [Level, Node.Index]);
+  end;
+end;
+
+procedure TForm_VirtualMenuPrevilage.VST_MenuPrevilageNodeClick(
+  Sender: TBaseVirtualTree; const HitInfo: THitInfo);
+  var
+  data:PNodeData2;
+begin
+
+end;
+
+procedure TForm_VirtualMenuPrevilage.VST_MenuPrevilagePaintText(
+  Sender: TBaseVirtualTree; const TargetCanvas: TCanvas; Node: PVirtualNode;
+  Column: TColumnIndex; TextType: TVSTTextType);
+var
+  Data: PNodeData2;
+begin
+  Data := Sender.GetNodeData(Node);
+  case Column of
+    0: // main column
+      case TextType of
+        ttNormal:
+          if Data.Level = 0 then
+          begin
+            TargetCanvas.Font.Size:=14;
+            TargetCanvas.Font.Style := TargetCanvas.Font.Style + [fsBold];
+          end
+          else  if Data.Level = 1 then
+          begin
+            TargetCanvas.Font.Size:=12;
+            TargetCanvas.Font.Style := TargetCanvas.Font.Style + [fsBold];
+          end
+          else  if Data.Level =2 then
+          begin
+            TargetCanvas.Font.Size:=10;
+            TargetCanvas.Font.Style := TargetCanvas.Font.Style + [fsBold];
+          end
+          else  if Data.Level = 3 then
+          begin
+            TargetCanvas.Font.Size:=9;
+            TargetCanvas.Font.Style := TargetCanvas.Font.Style + [fsBold];
+          end;
+      end;
+    1: // image column (there is no text)
+      ;
+    2: // language column (no customization)
+      ;
+  end;
+end;
+
+
+end.

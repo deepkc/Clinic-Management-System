@@ -1,0 +1,1473 @@
+unit unit_AppointmentSearch;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Dialogs, ExtCtrls, StdCtrls, Buttons, OleCtrls, DateEditXControl_TLB,Unit_Newpatient,
+     ComCtrls, serverdate,
+     DBCtrls, Grids, DBGrids, dblookup, CheckLst, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, jpeg, Fxn_hos,
+     Unit_Message, SMDBGrid, DBGridExportToExcel ;
+
+type
+     THackDbGrid = class(TDBGrid);
+
+     type
+          TFrame_AppointmentSearch = class(TFrame)
+               DS_Department: TDataSource;
+               DS_Doctor: TDataSource;
+               DS_Appoinment: TDataSource;
+               Panel_Main: TPanel;
+               Panel2: TPanel;
+               Label2: TLabel;
+               SpeedButton1: TSpeedButton;
+               Label3: TLabel;
+               Img: TImage;
+               Label6: TLabel;
+               Label7: TLabel;
+               DateEditX1: TDateEditX;
+               dblcb_department: TDBLookupComboBox;
+               BB_View: TBitBtn;
+               Chb_Doctor: TCheckListBox;
+               Chb_All: TCheckBox;
+               Panel3: TPanel;
+               Panel4: TPanel;
+               MonthCalendar1: TMonthCalendar;
+               DS_Shift: TDataSource;
+               Label_DocNote: TLabel;
+               RichEdit_DoctorNote: TRichEdit;
+               Label22: TLabel;
+               Label23: TLabel;
+               Edit_Doctor: TEdit;
+               DBGrid_DocList: TDBGrid;
+               SBP_Print: TSpeedButton;
+               DBGrid_Appoinment: TSMDBGrid;
+               Shape1: TShape;
+               Label9: TLabel;
+               Shape2: TShape;
+               Label10: TLabel;
+               Shape3: TShape;
+               Label11: TLabel;
+               Shape4: TShape;
+               Label12: TLabel;
+               Timer1: TTimer;
+               Label17: TLabel;
+               DBLCB_Shift: TDBLookupComboBox;
+               Label1: TLabel;
+               Cb_AllShift: TCheckBox;
+               Edit_Search: TEdit;
+               Label4: TLabel;
+               BitBtn1: TBitBtn;
+    Lbl_Dayofweek: TLabel;
+    TT_Noscheduleplanner: TOraTable;
+    Label_Dm: TLabel;
+    RichEdit_DM: TRichEdit;
+    TT_Appoinment: TOraTable;
+    Query_shift: TOraQuery;
+    Query_Temp: TOraQuery;
+    Query_department: TOraQuery;
+    Query_Appoinment: TOraQuery;
+    Query_Doctor: TOraQuery;
+               procedure dblcb_departmentClick(Sender: TObject);
+               procedure ImgClick(Sender: TObject);
+               procedure Chb_AllClick(Sender: TObject);
+               procedure SpeedButton1Click(Sender: TObject);
+               procedure MonthCalendar1DblClick(Sender: TObject);
+               procedure BB_ViewClick(Sender: TObject);
+               procedure btn_CloseClick(Sender: TObject);
+
+               procedure btn_SaveClick(Sender: TObject);
+               procedure new;
+
+               procedure DBGrid_AppoinmentMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+               procedure DBLCB_ShiftClick(Sender: TObject);
+
+               procedure Edit_DoctorChange(Sender: TObject);
+               procedure Edit_DoctorKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+               procedure Edit_DoctorKeyPress(Sender: TObject; var Key: Char);
+
+               procedure DBGrid_AppoinmentDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+               procedure Edit_DoctorEnter(Sender: TObject);
+               procedure Timer1Timer(Sender: TObject);
+               procedure Cb_AllShiftClick(Sender: TObject);
+               procedure Edit_SearchChange(Sender: TObject);
+
+               procedure Chb_DoctorClickCheck(Sender: TObject);
+               procedure DateEditX1Change(Sender: TObject);
+               procedure DBGrid_DocListDblClick(Sender: TObject);
+               procedure DateEditX1Exit(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+
+          private
+               { Private declarations }
+          public
+               Arr_CLB_DoctorID: Array of Array of String;
+               pi_Row: Integer;
+               Pi_chblength, dragdocid, Pi_Pid, Pi_NonPid: Integer;
+               Ps_DocName, ps_DocCode: String;
+               isdrag, Pb_isdrag: Boolean;
+               Ps_SerialOrderNo, Ps_AppId, Ps_Patienttype, Ps_Patientt, Ps_DocScDetailId, Ps_PatientId: String;
+               ps_PatientName, Ps_PatientPhone, Ps_Walkin, Ps_DocId: String;
+               Pb_Valid,Pb_Register,Pb_New: Boolean;
+               ps_Date: String;
+
+               Frame_NewPatient:Unit_Newpatient.TFrame_NewPatient;
+               
+               { Public declarations }
+               Constructor Create(Aowner: Tcomponent); Override;
+               Procedure LoadData;
+               Procedure RefreshAppointment;
+
+               Procedure LoadColor;
+               Procedure GetDoctorNote(DocID: Integer);
+          end;
+
+implementation
+
+
+{$R *.dfm}
+
+
+
+
+procedure TFrame_AppointmentSearch.BB_ViewClick(Sender: TObject);
+var
+     Li_check, Li_loop, Li_Serial, Li_Count, Li_num, Li_maxserial: Integer;
+     Ls_ColName, Ls_ColId, Ls_random, Ls_docname1, Ls_docname2, Ls_docname3, Ls_Walkin, Ls_Queue, Ls_DocId, Ls_AppId, Ls_Patientid, Ls_Patienttype,
+       Ls_Patientname, Ls_PatientPhone, Ls_DocScDetail, Ls_PT, Ls_AppNo, Ls_Communication, Ls_AppStatus, Ls_DocTime, Ls_DocEndTime, Ls_N, Ls_T, Ls_ET, Ls_Min,
+       ls_patientmobile, Ps_Name, ls_AppTakenBy: String;
+     Qry, Query, Qry_leave: TOraQuery;
+     Lb_next, Lb_IsRemarks: Boolean;
+     Li_Pointer: Integer;
+begin
+
+     LoadData;
+     exit;
+end;
+
+procedure TFrame_AppointmentSearch.BitBtn1Click(Sender: TObject);
+var
+     Li_arrcount, Li_arrcount1: Integer;
+     Ls_Docname, Ls_Walkin, Ls_QueueNo, Ls_DocId, Ls_Tablename, Ls_Patienttype, Ls_ColId, Ls_Patientid, Ls_Patientname, Ls_AppId, Ls_PatientPhone,
+       Ls_DocScDetail, Ls_Register, Ls_PName: String;
+     Qry, Query: TOraQuery;
+begin
+     gi_PatientID:=0;
+     gb_FrameParent := false;
+     if (DBGrid_Appoinment.SelectedField.FieldName = 'PatientName') then
+     Begin
+          Ls_Docname := 'DocName';
+          Ls_Walkin := 'WalkIn';
+          Ls_QueueNo := 'QueueNo';
+          Ls_DocId := 'DocID';
+          Ls_PName := 'PatientName';
+          // Form_PatientInfo.Ps_PatientFieldName:='PatientName1';
+          Ls_Patienttype := 'Patienttype';
+          Ls_Patientid := 'PatientID';
+          Ls_Patientname := TT_Appoinment.FieldByName('PatientName').AsString;
+
+          Ls_AppId := 'AppId';
+          Ls_PatientPhone := TT_Appoinment.FieldByName('PatientPhone').AsString;
+          gi_DoctorId := TT_Appoinment.FieldByName('DocID').AsInteger;
+          Ls_DocScDetail := 'DocScDetailId';
+          Ls_Register := 'Registered';
+     End
+     else if (DBGrid_Appoinment.SelectedField.FieldName = 'PatientName2') then
+     Begin
+          Ls_Docname := 'DocName2';
+          Ls_Walkin := 'WalkIn2';
+          Ls_QueueNo := 'QueueNo2';
+          Ls_DocId := 'DocID2';
+          Ls_PName := 'PatientName2';
+          // Form_PatientInfo.Ps_PatientFieldName:='PatientName2';
+          Ls_Patienttype := 'Patienttype2';
+          Ls_Patientid := 'PatientID2';
+          Ls_Patientname := TT_Appoinment.FieldByName('PatientName2').AsString;
+          Ls_AppId := 'AppId2';
+          gi_DoctorId := TT_Appoinment.FieldByName('DocID2').AsInteger;
+          Ls_PatientPhone := TT_Appoinment.FieldByName('PatientPhone2').AsString;
+          Ls_DocScDetail := 'DocScDetailId2';
+          Ls_Register := 'Registered2';
+     End
+     Else
+          Exit;
+
+     gi_DepartmentId := dblcb_department.KeyValue;
+     gi_DoctorId := TT_Appoinment.FieldByName(Ls_DocId).AsInteger;
+
+     if DBGrid_Appoinment.SelectedField.Value = NULL then
+     Begin
+          // MessageDlg('Please Select The Patient First', mtWarning, [mbOK], 0);
+          Exit;
+     End;
+
+     if TT_Appoinment.FieldByName(Ls_PName).Value = 'BREAK' then
+     Begin
+          Exit;
+     End;
+
+     Gb_PatientDataLoaded := True;
+
+     if TT_Appoinment.FieldByName(Ls_Register).asinteger = 1 then
+     Begin
+          // MessageDlg('Patient Already Registered !',mtWarning,[mbOK],0);
+          // Exit;
+     End;
+
+     Pb_Register := True;
+
+     gb_FrameParent := false;
+
+     Qry := TOraQuery.Create(nil);
+     Query := TOraQuery.Create(nil);
+
+     With Qry do
+     Begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          SQL.Clear;
+          if TT_Appoinment.FieldByName('IsNonPatient').AsString='Y' then
+          begin
+               SQL.Add('select (Select Titl_TitleId From Hs_Titl_Title where Titl_TitleName=Initcap(pm.Nopa_Title))TitleId,pm.* from Hs_Nopa_nonpatient Pm where nopa_nonpatientid in ');
+               Sql.Add('(Select Appo_NonPatientID from AP_APPO_Appointment Where APPO_APPID='+ inttostr(TT_Appoinment.FieldByName(Ls_AppId).AsInteger)+')');
+          end
+          Else if TT_Appoinment.FieldByName('IsNonPatient').AsString='N' then
+               SQL.Add('select (Select Titl_TitleId From Hs_Titl_Title where Titl_TitleName=pm.Pama_Title)TitleId ,pm.* from hs_pama_patientmain Pm where Pama_patientid=' + inttostr(TT_Appoinment.FieldByName(Ls_Patientid).AsInteger));
+          Open;
+     End;
+
+     if TT_Appoinment.FieldByName('IsNonPatient').AsString='Y' then
+     begin
+          gs_RegistrationType := 'NEW';
+          //gs_FollowUpStatus:='NEWPATIENT';
+     end
+     else
+     begin
+          gs_RegistrationType := 'FOLLOWUP';
+          //gs_FollowUpStatus:='FOLLOWUPPATIENT';
+     end;
+
+//     if TT_Appoinment.FieldByName(Ls_Patienttype).AsString <> 'New Patient' then
+//     Begin
+//          With Query do
+//          Begin
+//               Close;
+//               DatabaseName := gs_DatabaseName;
+//               SQL.Clear;
+//               SQL.Add('select * from patientcategory where patientcategoryname=' + #39 + Qry.FieldByName('patientcategoryname').AsString + #39);
+//               Open;
+//          End;
+//          gs_patientType := Query.FieldByName('patientcategoryid').AsString;
+//     End
+     if TT_Appoinment.FieldByName('IsNonPatient').AsString='Y' then
+          gs_patientType := '';
+
+     if TT_Appoinment.FieldByName('IsNonPatient').AsString='Y' then
+          gi_PatientID := TT_Appoinment.FieldByName(Ls_Patientid).AsInteger;
+
+     gs_CalledFrom := 'RegistrationThroughApp';
+     Gb_RegThroughApp := True;
+     Frame_NewPatient := TFrame_NewPatient.Create(Nil);
+     try
+          with Frame_NewPatient do
+          begin
+               Align := alClient;
+               Parent := Self.Parent;
+
+               FrameCleared := false;
+
+               GB_BasicInformation.Enabled := false;
+               GB_Address.Enabled := false;
+               GB_Others.Enabled := false;
+
+               if TT_Appoinment.FieldByName('IsNonPatient').AsString='Y' then
+               Begin
+                    gi_NonPatientID := TT_Appoinment.FieldByName(Ls_Patientid).AsInteger;
+                    DBLCB_Country.KeyValue := 1;
+                    pb_nonpatient := True;
+               End;
+               if gs_RegistrationType<>'NEW' then
+               begin
+                     CB_AgeType.Text := Qry.FieldByName('pama_agetype').AsString;
+                     Le_Fname.Text := Qry.FieldByName('pama_FNAME').AsString;
+                     Le_LName.Text := Qry.FieldByName('pama_LNAME').AsString;
+                     le_Age.Text := Qry.FieldByName('pama_Age').AsString;
+                     CB_AgeType.Text := Qry.FieldByName('pama_AgeType').AsString;
+                     if UpperCase(Qry.FieldByName('pama_Gender').AsString) = 'MALE' then
+                          CB_Gender.ItemIndex := 0
+                     else if UpperCase(Qry.FieldByName('pama_Gender').AsString) = 'FEMALE' then
+                          CB_Gender.ItemIndex := 1;
+
+                     if UpperCase(Qry.FieldByName('pama_MARITALSTATUS').AsString) = 'MARRIED' then
+                     CB_MaritalStatus.ItemIndex := 0
+                     Else if UpperCase(Qry.FieldByName('pama_MARITALSTATUS').AsString) = 'UNMARRIED' then
+                     CB_MaritalStatus.ItemIndex := 1;
+                     DBLCB_title.KeyValue := Qry.FieldByName('TitleId').AsInteger;
+                     DBLCB_Religion.KeyValue := Qry.FieldByName('pama_RELIGIONID').AsInteger;
+                     DBLCB_District.KeyValue := Qry.FieldByName('pama_DISTRICTID').AsInteger;
+                     DBLCB_VDC.KeyValue := Qry.FieldByName('PAMA_VDCMCPTID').AsInteger;
+                     le_Address.Text := Qry.FieldByName('pama_ADDRESS').AsString;
+                     Le_WardNo.Text := Qry.FieldByName('pama_WARDNO').AsString;
+                     Le_MobileNo.Text := Qry.FieldByName('pama_MOBILENO').AsString;
+                     Le_PhoneNo.Text := Qry.FieldByName('pama_PHONENO').AsString;
+                     le_Email.Text := Qry.FieldByName('pama_EMAIL').AsString;
+                     Memo_Remarks.Text := Qry.FieldByName('pama_REMARKS').AsString;
+                     DBLCB_Occupation.KeyValue := Qry.FieldByName('pama_OCCUPATIONID').AsInteger;
+                     DBLCB_Education.KeyValue := Qry.FieldByName('pama_EDUCATIONID').AsInteger;
+                     DBLCB_Relation.KeyValue := Qry.FieldByName('pama_RELATIONID').AsInteger;
+                     Le_Company.Text := Qry.FieldByName('pama_COMPANY').AsString;
+               end
+               else
+               begin
+                    CB_AgeType.Text := Qry.FieldByName('Nopa_agetype').AsString;
+                     Le_Fname.Text := Qry.FieldByName('Nopa_FNAME').AsString;
+                     Le_LName.Text := Qry.FieldByName('Nopa_LNAME').AsString;
+                     le_Age.Text := Qry.FieldByName('Nopa_Age').AsString;
+                     CB_AgeType.Text := Qry.FieldByName('Nopa_AgeType').AsString;
+                     if UpperCase(Qry.FieldByName('Nopa_Gender').AsString) = 'MALE' then
+                          CB_Gender.ItemIndex := 0
+                     else if UpperCase(Qry.FieldByName('Nopa_Gender').AsString) = 'FEMALE' then
+                          CB_Gender.ItemIndex := 1;
+                     if UpperCase(Qry.FieldByName('Nopa_MARITALSTATUS').AsString) = 'MARRIED' then
+                     CB_MaritalStatus.ItemIndex := 0
+                     Else if UpperCase(Qry.FieldByName('Nopa_MARITALSTATUS').AsString) = 'UNMARRIED' then
+                     CB_MaritalStatus.ItemIndex := 1;
+                     DBLCB_Religion.KeyValue := Qry.FieldByName('Nopa_RELIGIONID').AsInteger;
+                     DBLCB_District.KeyValue := Qry.FieldByName('Nopa_DISTRICTID').AsInteger;
+                     DBLCB_VDC.KeyValue := Qry.FieldByName('Nopa_VDCMCPTID').AsInteger;
+                     le_Address.Text := Qry.FieldByName('Nopa_ADDRESS').AsString;
+                     Le_WardNo.Text := Qry.FieldByName('Nopa_WARDNO').AsString;
+                     Le_MobileNo.Text := Qry.FieldByName('Nopa_MOBILENO').AsString;
+                     Le_PhoneNo.Text := Qry.FieldByName('Nopa_PHONENO').AsString;
+                     le_Email.Text := Qry.FieldByName('Nopa_EMAIL').AsString;
+                     Memo_Remarks.Text := Qry.FieldByName('Nopa_REMARKS').AsString;
+                     DBLCB_Occupation.KeyValue := Qry.FieldByName('Nopa_OCCUPATIONID').AsInteger;
+                     DBLCB_Education.KeyValue := Qry.FieldByName('Nopa_EDUCATIONID').AsInteger;
+                     DBLCB_Relation.KeyValue := Qry.FieldByName('Nopa_RELATIONID').AsInteger;
+                     Le_Company.Text := Qry.FieldByName('Nopa_COMPANY').AsString;
+                     DBLCB_title.KeyValue := Qry.FieldByName('TitleId').AsInteger;
+               end;
+               // Dex_Dob.text:=Qry.FieldByName('Gender').AsString;
+               if TT_Appoinment.FieldByName(Ls_Register).AsInteger = 1 then
+               Begin
+                    lbl_HosNo.Caption := TT_Appoinment.FieldByName(Ls_Patientid).AsString;
+                    Gb_PatientDataLoaded := True;
+               End;
+
+
+
+               if TT_Appoinment.FieldByName('IsNonPatient').AsString='N' then
+               Begin
+                    DBLCB_Country.KeyValue := Qry.FieldByName('pama_COUNTRYID').AsInteger;
+                    Le_Relative.Text := Qry.FieldByName('pama_nexttokin').AsString;
+                    Query.Free;
+               End
+               else
+               begin
+                    DBLCB_Country.KeyValue := Qry.FieldByName('Nopa_COUNTRYID').AsInteger;
+                    Le_Relative.Text := Qry.FieldByName('Nopa_nexttokin').AsString;
+                    Query.Free;
+               end;
+
+
+               Pi_DepartmentId := dblcb_department.KeyValue;
+               Pi_DoctorId := TT_Appoinment.FieldByName(Ls_DocId).AsInteger;
+
+               Le_MobileNo.Text := Ls_PatientPhone;
+               Frame_NewPatient.BB_Save.Visible := false;
+               lbl_Appintment.Caption := TT_Appoinment.FieldByName(Ls_AppId).AsString;
+
+               if TT_Appoinment.FieldByName('IsNonPatient').AsString='Y' then
+               Begin
+                    pb_isnew := True;
+                    pb_editMode := false;
+                    Frame_NewPatient.BB_EditModeClick(Sender);
+                    // BB_EditMode.Visible:=False;
+                    if gi_datesystem = 1 then
+                         Dex_Dob.ADDateAsText := Qry.FieldByName('Nopa_DOBAD').AsString
+                    Else
+                         Dex_Dob.ADDateAsText := Qry.FieldByName('Nopa_dobvs').AsString;
+                    pb_new := True;
+               end
+               else if TT_Appoinment.FieldByName('IsNonPatient').AsString='N' then
+               begin
+                    // pb_isnew:=False;
+                    // pb_editMode:=False;
+                    // BB_EditMode.Visible:=True;
+                    // pb_new:=False;
+                    // MessageDlg('Patient Already Registered !',mtWarning,[mbOK],0);
+                    // Exit;
+                    if gi_datesystem = 1 then
+                         Dex_Dob.ADDateAsText := Qry.FieldByName('PAMA_DOBAD').AsString
+                    Else
+                         Dex_Dob.ADDateAsText := Qry.FieldByName('pama_dobvs').AsString
+
+               end;
+               gi_PatientID := TT_Appoinment.FieldByName(Ls_Patientid).AsInteger;
+               Pi_PatientID:=gi_PatientID;
+               Qry.Free;
+               gb_visitsave := True;
+               show;
+
+          end;
+     except
+          Frame_NewPatient.Free;
+          //Self.Free;
+     end;
+
+     //Self.Free;
+
+     Exit;
+
+     With Qry do
+     Begin
+          Close;
+          DatabaseName := gs_temppath;
+          SQL.Clear;
+          SQL.Add('Select * from tbl_appoinment where ' + Ls_Docname + '=' + #39 + TT_Appoinment.FieldByName(Ls_Docname).AsString + #39);
+          SQL.Add(' and ' + Ls_Patientname + '=' + #39 + TT_Appoinment.FieldByName(Ls_Patientname).AsString + #39);
+          SQL.Add(' and ' + Ls_PatientPhone + '=' + #39 + TT_Appoinment.FieldByName(Ls_PatientPhone).AsString + #39);
+          Open;
+     End;
+end;
+
+procedure TFrame_AppointmentSearch.btn_CloseClick(Sender: TObject);
+begin
+     Self.Free;
+end;
+
+procedure TFrame_AppointmentSearch.btn_SaveClick(Sender: TObject);
+var
+     Qry, Qry_update: TOraQuery;
+     Ls_Doctorscheduledetailid: String;
+begin
+
+     Qry := TOraQuery.Create(nil);
+     Qry_update := TOraQuery.Create(nil);
+
+     // With Qry do
+     // Begin
+     // Close;
+     // DatabaseName := gs_temppath;
+     // SQL.Clear;
+     // SQL.Add('SELECT * FROM TBL_APPOINMENT');
+     // Open;
+     // End;
+     //
+     // while not Qry.Eof do
+     // Begin
+     // if Qry.FieldByName('AppId1').AsString <> '' then
+     // Begin
+     // With Qry_update do
+     // Begin
+     // Close;
+     // Session:=DM_Hospital.DB;
+     // SQL.Clear;
+     // SQL.Add(
+     // 'select doctorscheduledetailid from doctorscheduledetail where doctorscheduleid in ');
+     // SQL.Add('(select doctorscheduleid from doctorschedule where docid=' +
+     // #39 + Qry.FieldByName('DocId1').AsString + #39 + ')');
+     // SQL.Add('and starttime=' + #39 + Qry.FieldByName('DocName1')
+     // .AsString + #39);
+     // Open;
+     // End;
+     // Ls_Doctorscheduledetailid := Qry_update.FieldByName
+     // ('doctorscheduledetailid').AsString;
+     // With Qry_update do
+     // Begin
+     // Close;
+     // Session:=DM_Hospital.DB;
+     // SQL.Clear;
+     // SQL.Add('UPDATE DOCTORSCHEDULEDETAIL SET APPOINMENTID=' + #39 +
+     // Qry.FieldByName('AppId1').AsString + #39);
+     // SQL.Add(', ISWALKIN=' + #39 + Qry.FieldByName('WalkIn1')
+     // .AsString + #39 + ' where Doctorscheduledetailid=' + #39 +
+     // Ls_Doctorscheduledetailid + #39);
+     // ExecSQL;
+     // End;
+     // End;
+     // Qry.Next;
+     // End;
+     //
+     // Qry.Close;
+     // Qry.Open;
+     //
+     // while not Qry.Eof do
+     // Begin
+     // if Qry.FieldByName('AppId2').AsString <> '' then
+     // Begin
+     // With Qry_update do
+     // Begin
+     // Close;
+     // Session:=DM_Hospital.DB;
+     // SQL.Clear;
+     // SQL.Add(
+     // 'select doctorscheduledetailid from doctorscheduledetail where doctorscheduleid in ');
+     // SQL.Add('(select doctorscheduleid from doctorschedule where docid=' +
+     // #39 + Qry.FieldByName('DocId2').AsString + #39 + ')');
+     // SQL.Add('and starttime=' + #39 + Qry.FieldByName('DocName2')
+     // .AsString + #39);
+     // Open;
+     // End;
+     // Ls_Doctorscheduledetailid := Qry_update.FieldByName
+     // ('doctorscheduledetailid').AsString;
+     // With Qry_update do
+     // Begin
+     // Close;
+     // Session:=DM_Hospital.DB;
+     // SQL.Clear;
+     // SQL.Add('UPDATE DOCTORSCHEDULEDETAIL SET APPOINMENTID=' + #39 +
+     // Qry.FieldByName('AppId2').AsString + #39);
+     // SQL.Add(', ISWALKIN=' + #39 + Qry.FieldByName('WalkIn2')
+     // .AsString + #39 + ' where Doctorscheduledetailid=' + #39 +
+     // Ls_Doctorscheduledetailid + #39);
+     // ExecSQL;
+     // End;
+     // End;
+     // Qry.Next;
+     // End;
+
+
+     // With Qry_update do
+     // Begin
+     // Close;
+     // DatabaseName:=gs_DatabaseName;
+     // SQL.Clear;
+     // SQL.Add('Update doctorscheduledetail set appoinmentid='+#39+Form_PatientInfo.Ps_ValidAppId+#39+' where doctorscheduledetailid='+#39+Form_PatientInfo.Ps_DocScDetailId+#39);
+     // ExecSQL;
+     // End;
+
+     Qry.Close;
+     Qry_update.Close;
+     Qry.Free;
+     Qry_update.Free;
+
+     ShowMessage('Sorry..No Data to Save !!');
+     exit;
+
+     Frm_Message := TFrm_Message.Create(Self);
+     try
+          Frm_Message.showmodal;
+     finally
+          Frm_Message.Free;
+     end;
+end;
+
+procedure TFrame_AppointmentSearch.Cb_AllShiftClick(Sender: TObject);
+begin
+     if Cb_AllShift.Checked then
+     begin
+          DBLCB_Shift.KeyValue := NULL;
+          DBLCB_Shift.Enabled := False;
+     end
+     else
+     begin
+          DBLCB_Shift.Enabled := True;
+     end;
+
+end;
+
+procedure TFrame_AppointmentSearch.Chb_AllClick(Sender: TObject);
+var
+     Li_check: Integer;
+begin
+     Li_check := 0;
+     if Chb_All.Checked = True then
+     Begin
+          while Li_check < Pi_chblength do
+          Begin
+               Chb_Doctor.Checked[Li_check] := True;
+               inc(Li_check);
+          End;
+     End
+     else
+     Begin
+          while Li_check < Pi_chblength do
+          Begin
+               if Chb_Doctor.Checked[Li_check] = True then
+               begin
+                     Chb_Doctor.Checked[Li_check] := False;
+               end
+               else
+               begin
+                      Chb_Doctor.Checked[Li_check] := True;
+               end;
+               inc(Li_check);
+          End;
+     End;
+end;
+
+procedure TFrame_AppointmentSearch.Chb_DoctorClickCheck(Sender: TObject);
+begin
+     if Chb_All.Checked = True then
+          Chb_All.Checked := False;
+end;
+
+constructor TFrame_AppointmentSearch.Create(Aowner: Tcomponent);
+var
+     i: Integer;
+     Qry: TOraQuery;
+begin
+     inherited;
+
+     RichEdit_DoctorNote.Visible := False;
+     Label_DocNote.Visible := False;
+
+     RichEdit_DM.Visible:=False;
+     Label_dm.Visible := False;
+
+
+     Qry := TOraQuery.Create(Nil);
+
+     with Query_Department do
+     begin
+          close;
+         // sql.Add(' and orgid='+#39+Gs_OrgID+#39);
+         DatabaseName:=gs_DatabaseName;
+          open;
+     end;
+
+     with Query_Doctor do
+     begin
+          close;
+          DatabaseName:=gs_DatabaseName;
+          sql.Add('and DOCT_ORGID='+IntToSTr(gi_HospitalId)+' Order by DocName');
+          open;
+
+     end;
+          {
+     if FileExists(gs_temppath+'/tbl_appoinment.db') then
+     begin
+          With TT_Appoinment do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'tbl_appoinment.db';
+               TableType := ttDefault;
+               DeleteTable;
+          end;
+     end;}
+
+
+     With TT_Appoinment do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          TableName := 'tbl_appoinment.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('Serial', ftInteger);
+          FieldDefs.Add('DocID', ftString, 10);
+          FieldDefs.Add('AppDate', ftString, 10);
+          FieldDefs.Add('QueueNo', ftString, 10);
+          FieldDefs.Add('AppId', ftString, 10);
+          FieldDefs.Add('DocNameReal', ftString, 32);
+          FieldDefs.Add('DocName', ftString, 32);
+          FieldDefs.Add('DocTime', ftString, 32);
+          FieldDefs.Add('DocEndTime', ftString, 32);
+          FieldDefs.Add('TimeRange', ftString, 32);
+          FieldDefs.Add('TimeRangeOld', ftString, 32);
+          FieldDefs.Add('Patienttype', ftString, 32);
+          FieldDefs.Add('Patientt', ftString, 25);
+          FieldDefs.Add('DocScDetailID', ftString, 20);
+          FieldDefs.Add('PatientID', ftInteger);
+          FieldDefs.Add('PatientIDStr', ftString,10);
+          FieldDefs.Add('NonPatientID', ftInteger);
+          FieldDefs.Add('PatientName', ftString, 55);
+          FieldDefs.Add('PatientPhone', ftString, 30);
+          FieldDefs.Add('PatientMobile', ftString, 30);
+          FieldDefs.Add('WalkIn', ftString, 32);
+          FieldDefs.Add('AppStatus', ftString, 64);
+          FieldDefs.Add('CommunicationRemarks', ftString, 255);
+          FieldDefs.Add('DocN', ftString, 32);
+          FieldDefs.Add('DocET', ftString, 32);
+          FieldDefs.Add('DocT', ftString, 32);
+          FieldDefs.Add('AppTakenBy', ftString, 32);
+          FieldDefs.Add('AppTakenFrom', ftString, 10);
+          FieldDefs.Add('IsWebConform', ftString, 1);
+          FieldDefs.Add('Registered', ftInteger);
+          FieldDefs.Add('IsNonPatient', ftString, 1);
+         // EmptyTable;
+          CreateTable;
+//          Open;
+     end;
+
+     Pb_isdrag := False;
+
+     DateEditX1.SystemOfDate := gi_datesystem;
+     SpeedButton1.Caption := gs_DateCaption;
+     DateEditX1.Text := TodaysDate;
+     Lbl_Dayofweek.Caption := getday(DateEditX1.ADDateAsText);
+     MonthCalendar1.Date := DateEditX1.ADDateAsDate;
+     Pb_Valid := False;
+     ps_DocCode := '';
+     MonthCalendar1.Visible := False;
+     with Query_Shift do
+     begin
+          Close;
+          databasename:=gs_DatabaseName;
+          Open;
+     end;
+     LoadColor;
+end;
+
+procedure TFrame_AppointmentSearch.DateEditX1Change(Sender: TObject);
+begin
+     ShowMessage('a');
+
+
+end;
+
+procedure TFrame_AppointmentSearch.DateEditX1Exit(Sender: TObject);
+begin
+     Lbl_Dayofweek.Caption := getday(DateEditX1.ADDateAsText);
+end;
+
+
+
+procedure TFrame_AppointmentSearch.DBGrid_AppoinmentDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+     if TT_Appoinment.FieldByName('DocName').AsString <> '' then
+     begin
+          DBGrid_Appoinment.Canvas.Font.Color := clNavy;
+          DBGrid_Appoinment.Canvas.Font.Style := [fsBold];
+          if DataCol = 1 then
+               DBGrid_Appoinment.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     end;
+
+     if TT_Appoinment.FieldByName('PatientType').AsString = 'New Patient (NP)' then
+     begin
+          DBGrid_Appoinment.Canvas.Font.Color := clWhite;
+          DBGrid_Appoinment.Canvas.Brush.Color := Shape1.Brush.Color;
+          if DataCol in [2 .. 8] then
+               DBGrid_Appoinment.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     end;
+     if TT_Appoinment.FieldByName('PatientType').AsString = 'FollowUp Paid (FP)' then
+     begin
+          DBGrid_Appoinment.Canvas.Font.Color := clWhite;
+          DBGrid_Appoinment.Canvas.Brush.Color := Shape2.Brush.Color;
+          if DataCol in [2 .. 8] then
+               DBGrid_Appoinment.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     end;
+     if TT_Appoinment.FieldByName('PatientType').AsString = 'FollowUp Free (FF)' then
+     begin
+          DBGrid_Appoinment.Canvas.Font.Color := clWhite;
+          DBGrid_Appoinment.Canvas.Brush.Color := Shape3.Brush.Color;
+          if DataCol in [2 .. 8] then
+               DBGrid_Appoinment.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     end;
+     if TT_Appoinment.FieldByName('PatientType').AsString = 'Break' then
+     begin
+          DBGrid_Appoinment.Canvas.Font.Color := clWhite;
+          DBGrid_Appoinment.Canvas.Brush.Color := Shape4.Brush.Color;
+          if DataCol in [2 .. 8] then
+               DBGrid_Appoinment.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     end;
+
+end;
+
+procedure TFrame_AppointmentSearch.DBGrid_AppoinmentMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+var
+     Li_arrcount: Integer;
+     Ls_Docname, Ls_Walkin, Ls_QueueNo, Ls_DocId, Ls_Tablename, Ls_Patienttype, Ls_ColId, Ls_Patientid, Ls_Patientname, Ls_AppId, Ls_PT, Ls_PatientPhone,
+       Ls_docscdetailid, ls_AppTakenBy: String;
+begin
+
+     if ssLeft in Shift then
+     begin
+
+          if (DBGrid_Appoinment.SelectedField.FieldName = 'PatientName1') or (DBGrid_Appoinment.SelectedField.FieldName = 'DocName1') then
+          Begin
+               Ls_Docname := 'DocName1';
+               Ls_Walkin := 'WalkIn1';
+               Ls_QueueNo := 'QueueNo1';
+               Ls_DocId := 'DocID1';
+               // Form_PatientInfo.Ps_PatientFieldName := 'PatientName1';
+               Ls_Patienttype := 'Patienttype1';
+               Ls_Patientid := 'PatientID1';
+               Ls_Patientname := 'PatientName1';
+               Ls_PT := 'Patientt1';
+               Ls_AppId := 'AppId1';
+               Ls_PatientPhone := 'PatientPhone1';
+               Ls_docscdetailid := 'DocScDetailId1';
+               ls_AppTakenBy := 'AppTakenBy1';
+          End
+          else if (DBGrid_Appoinment.SelectedField.FieldName = 'PatientName2') or (DBGrid_Appoinment.SelectedField.FieldName = 'DocName2') then
+          Begin
+               Ls_Docname := 'DocName2';
+               Ls_Walkin := 'WalkIn2';
+               Ls_QueueNo := 'QueueNo2';
+               Ls_DocId := 'DocID2';
+               // Form_PatientInfo.Ps_PatientFieldName := 'PatientName2';
+               Ls_Patienttype := 'Patienttype2';
+               Ls_Patientid := 'PatientID2';
+               Ls_Patientname := 'PatientName2';
+               Ls_PT := 'Patientt2';
+               Ls_AppId := 'AppId2';
+               Ls_PatientPhone := 'PatientPhone2';
+               Ls_docscdetailid := 'DocScDetailId2';
+               ls_AppTakenBy := 'AppTakenBy2';
+          End
+          Else
+               exit;
+
+          if (TT_Appoinment.FieldByName(Ls_Patientname).AsString = '') or (TT_Appoinment.FieldByName(Ls_Patientname).AsString = 'BREAK') then
+               exit;
+
+          if TT_Appoinment.FieldByName(Ls_Patienttype).AsString = 'Ex' then
+          Begin
+               Pi_Pid := TT_Appoinment.FieldByName(Ls_Patientid).AsInteger;
+               Pi_NonPid := 0;
+          End;
+
+          if TT_Appoinment.FieldByName(Ls_Patienttype).AsString = 'Non' then
+          Begin
+               Pi_Pid := 0;
+               Pi_NonPid := TT_Appoinment.FieldByName(Ls_Patientid).AsInteger;
+          End;
+
+          with TT_Appoinment do
+          Begin
+               Ps_DocId := FieldByName(Ls_DocId).AsString;
+               Ps_SerialOrderNo := FieldByName(Ls_QueueNo).AsString;
+               Ps_AppId := FieldByName(Ls_AppId).AsString;
+               Ps_DocName := FieldByName(Ls_Docname).AsString;
+               Ps_Patienttype := FieldByName(Ls_Patienttype).AsString;
+               Ps_Patientt := FieldByName(Ls_PT).AsString;
+               Ps_DocScDetailId := FieldByName(Ls_docscdetailid).AsString;
+               Ps_PatientId := FieldByName(Ls_Patientid).AsString;
+               ps_PatientName := FieldByName(Ls_Patientname).AsString;
+               Ps_PatientPhone := FieldByName(Ls_PatientPhone).AsString;
+               Ps_Walkin := FieldByName(Ls_Walkin).AsString;
+          End;
+
+          Pb_isdrag := True;
+          DBGrid_Appoinment.BeginDrag(True);
+     end;
+
+end;
+
+procedure TFrame_AppointmentSearch.DBGrid_DocListDblClick(Sender: TObject);
+begin
+     IF (Query_Doctor.FieldByName('DOCT_DOCID').AsInteger > 0) and (DBGrid_DocList.Visible = True) Then
+          Begin
+               Edit_Doctor.Text := Query_Doctor.FieldByName('DocName').AsString;
+               ps_DocCode := Query_Doctor.FieldByName('DOCT_DOCCODE').AsString;
+               dblcb_department.KeyValue := Query_Doctor.FieldByName('DOCT_DEPT_DEPID').AsInteger;
+               dblcb_departmentClick(Sender);
+               DBGrid_DocList.Visible := False;
+               BB_ViewClick(Sender);
+          End
+     Else if Trim(Edit_Doctor.Text) = '' then
+     Begin
+           ps_DocCode := '';
+           Label_DocNote.Visible := False;
+           RichEdit_DoctorNote.Visible := False;
+           RichEdit_DM.Visible:=False;
+            Label_dm.Visible := False;
+           dblcb_departmentClick(Sender);
+     End;
+          BB_ViewClick(Sender);
+          Edit_Doctor.Clear;
+end;
+
+procedure TFrame_AppointmentSearch.dblcb_departmentClick(Sender: TObject);
+var
+     Qry: TOraQuery;
+     i: Integer;
+begin
+     if dblcb_department.KeyValue = NULL then
+          exit;
+
+     TT_Appoinment.Close;
+     TT_Appoinment.EmptyTable;
+
+     if Chb_All.Checked = True then
+          Chb_All.Checked := False;
+
+     Qry := TOraQuery.Create(Nil);
+     with Qry do
+     begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add(' Select initcap(DOCT_DOCNAME)DOCT_DOCNAME,DOCT_DOCID from Hs_Doct_Doctor where DOCT_DEPID=' + inttostr(dblcb_department.KeyValue)+'and DOCT_ORGID='+IntToStr(gi_HospitalId));
+          if Trim(ps_DocCode) <> '' then
+               SQL.Add(' and DOCT_DOCCODE=' + #39 + ps_DocCode + #39);
+          SQL.Add(' Order by DOCT_DOCNAME');
+          //sql.SaveToFile('c:\savedoctor.txt');
+          Open;
+          Chb_Doctor.Items.Clear;
+          i := 0;
+          SetLength(Arr_CLB_DoctorID, RecordCount);
+          Pi_chblength := 0;
+          while not Eof do
+          begin
+               SetLength(Arr_CLB_DoctorID[i], 2);
+               Chb_Doctor.Items.Add(FieldByName('DOCT_DOCNAME').AsString);
+               Arr_CLB_DoctorID[i, 0] := FieldByName('DOCT_DOCID').AsString;
+               Arr_CLB_DoctorID[i, 1] := FieldByName('DOCT_DOCNAME').AsString;
+               inc(i);
+               Next;
+               inc(Pi_chblength);
+          end;
+     end;
+     Qry.Free;
+     Chb_All.Checked := True;
+end;
+
+Procedure TFrame_AppointmentSearch.DBLCB_ShiftClick(Sender: TObject);
+var
+     Li_check, Li_loop, Li_Serial, Li_Count, Li_num, Li_maxserial: Integer;
+     Ls_ColName, Ls_ColId, Ls_random, Ls_docname1, Ls_docname2, Ls_docname3, Ls_Walkin, Ls_Queue, Ls_DocId, Ls_AppId, Ls_Patientid, Ls_Patienttype,
+       Ls_Patientname, Ls_PatientPhone, Ls_DocScDetail, Ls_PT, Ls_AppNo, Ls_AppStatus, Ls_DocTime, Ls_DocEndTime, Ls_N, Ls_T, Ls_ET, Ls_Min,
+       ls_AppTakenBy: String;
+     Qry, Query, Qry_leave: TOraQuery;
+     Lb_next: Boolean;
+begin
+     if (DBLCB_Shift.KeyValue = 'ALL') or (DBLCB_Shift.KeyValue = 'MORNING SHIFT') or (DBLCB_Shift.KeyValue = 'EVENING SHIFT') or
+       (DBLCB_Shift.KeyValue = 'DAY SHIFT') or (DBLCB_Shift.KeyValue = 'NIGHT SHIFT') then
+     Begin
+         // BB_ViewClick(Sender);
+         LoadData;
+          exit;
+     End;
+end;
+
+procedure TFrame_AppointmentSearch.Edit_DoctorChange(Sender: TObject);
+begin
+     DBGrid_DocList.Visible := True;
+     DBGrid_DocList.Top := 104;
+     DBGrid_DocList.Left := 75;
+     DBGrid_DocList.Height := 219;
+     DBGrid_DocList.Width := 971;
+
+     if Edit_Doctor.Text = '' then
+     Begin
+          ps_DocCode := '';
+          Query_Doctor.Filtered := False;
+          DBGrid_DocList.Visible := False;
+          exit;
+     End;
+     With Query_Doctor do
+     Begin
+          Filter := 'DocName=' + #39 + UpperCase(Edit_Doctor.Text) + '*'#39;
+          Filtered := True;
+     End;
+end;
+
+procedure TFrame_AppointmentSearch.Edit_DoctorEnter(Sender: TObject);
+begin
+     RefreshQuery(Query_Doctor,gs_DatabaseName);
+end;
+
+procedure TFrame_AppointmentSearch.Edit_DoctorKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = VK_UP then
+          Query_Doctor.Prior;
+
+     if Key = VK_Down then
+          Query_Doctor.Next;
+end;
+
+procedure TFrame_AppointmentSearch.Edit_DoctorKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+     Begin
+          IF (Query_Doctor.FieldByName('DOCT_DOCID').AsInteger > 0) and (DBGrid_DocList.Visible = True) Then
+          Begin
+               Edit_Doctor.Text := Query_Doctor.FieldByName('DocName').AsString;
+               ps_DocCode := Query_Doctor.FieldByName('DOCT_DOCCODE').AsString;
+               dblcb_department.KeyValue := Query_Doctor.FieldByName('DOCT_DEPT_DEPID').AsInteger;
+               dblcb_departmentClick(Sender);
+               DBGrid_DocList.Visible := False;
+               BB_ViewClick(Sender);
+          End
+          Else if Trim(Edit_Doctor.Text) = '' then
+          Begin
+               ps_DocCode := '';
+               Label_DocNote.Visible := False;
+               RichEdit_DoctorNote.Visible := False;
+               RichEdit_DM.Visible:=False;
+               Label_dm.Visible := False;
+               dblcb_departmentClick(Sender);
+          End;
+          BB_ViewClick(Sender);
+          Edit_Doctor.Clear;
+     End;
+end;
+
+procedure TFrame_AppointmentSearch.Edit_SearchChange(Sender: TObject);
+begin
+     if Trim(Edit_Search.Text) <> '' then
+     begin
+          with TT_Appoinment do
+          begin
+               DBGrid_Appoinment.Columns[1].FieldName := 'DocNameReal';
+               DBGrid_Appoinment.Columns[1].Title.Caption := 'Doctor/Time';
+               Filtered := False;
+               if IsStrANumber(Trim(Edit_Search.Text)) then
+                    Filter := 'PatientIDStr=' + #39 + Trim(Edit_Search.Text) + '*' + #39
+               else
+                    Filter := 'PatientName=' + #39 + Trim(Edit_Search.Text) + '*' + #39;
+               Filtered := True;
+          end;
+     end
+     else
+     begin
+          DBGrid_Appoinment.Columns[1].FieldName := 'TimeRange';
+          TT_Appoinment.Filtered := False;
+     end;
+end;
+
+
+procedure TFrame_AppointmentSearch.ImgClick(Sender: TObject);
+begin
+     if SpeedButton1.Caption = 'AD' then
+     begin
+
+          if MonthCalendar1.Visible = true then
+               MonthCalendar1.Visible := False
+          else
+          begin
+               MonthCalendar1.Visible := True;
+               MonthCalendar1.Left := DateEditX1.Left;
+          end;
+     end;
+end;
+
+procedure TFrame_AppointmentSearch.LoadColor;
+begin
+     LoadColorCode;
+     Shape1.Brush.Color := strtoint(Arr_ColorCode[0, 1]);
+     Shape2.Brush.Color := strtoint(Arr_ColorCode[1, 1]);
+     Shape3.Brush.Color := strtoint(Arr_ColorCode[2, 1]);
+     Shape4.Brush.Color := strtoint(Arr_ColorCode[3, 1]);
+end;
+
+procedure TFrame_AppointmentSearch.LoadData;
+Var
+     Li_Serial, i, li_DocID,li_noscheduleplanner,li_doctorflag: Integer;
+     Qry: TOraQuery;
+     Li_Appid: Integer;
+     STime: TTime;
+     ETime: TTime;
+
+begin
+
+     Qry := TOraQuery.Create(Nil);
+     if dblcb_department.KeyValue = NULL then
+     Begin
+          MessageDlg('Please Select Department First!!', mtWarning, [mbOK], 0);
+          exit;
+     End;
+
+     li_doctorflag := 0;
+
+     if Chb_Doctor.Count = 0 then
+     Begin
+          MessageDlg('No Doctors In This Department!!', mtWarning, [mbOK], 0);
+          exit;
+     End
+     else
+     begin
+          for i:= 0 to Chb_Doctor.Count - 1 do
+          Begin
+               if Chb_Doctor.Checked[i] = True then
+               begin
+                    li_doctorflag := 1;
+               end;
+          End;
+          if li_doctorflag = 0 then
+          begin
+                MessageDlg('Please Select Doctor First!!', mtWarning, [mbOK], 0);
+                exit;
+          end;
+
+     end;
+
+     Li_Serial := 0;
+     ps_Date := DateEditX1.ADDateAsText;
+     gs_SetDate := ps_Date;
+     li_noscheduleplanner := 1;
+
+     try
+          if DBGrid_Appoinment.Fields[0].Value <> NULL then
+               Li_Appid := DBGrid_Appoinment.Fields[0].Value;
+     except
+     end;
+
+     with TT_Appoinment do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          EmptyTable;
+          Open;
+     end;
+
+
+     for i := 0 to Chb_Doctor.Items.Count - 1 do
+     begin
+          if Chb_Doctor.State[i] = cbChecked then
+          begin
+               With Query_Appoinment do
+               Begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add('select rownum as sn,a.* from(select ds.*,A.APPO_PATIENTID,A.APPO_NONPATIENTID from AP_dosd_DoctorScheduleDetail ds,AP_appo_appointment A');
+                    SQL.Add(' Where DS.DOSD_APPOINTMENTID=A.APPO_APPID(+)');
+                    SQL.Add(' And DOSD_DOCTORSCHEDULEID in (select DOSC_DOCTORSCHEDULEID from AP_dosc_doctorschedule where ');
+                    SQL.Add(' DOSC_DOCID=' + Arr_CLB_DoctorID[i, 0] + ' and DOSC_ENGDATE=' + #39 + ps_Date + #39 + ' and DOSC_ISONLEAVE <> ''Y'')');
+                    SQL.Add('And Nvl(DOSD_IsActive,''Y'')=''Y'' And ds.DOSD_ORGID='+InttoStr(gi_HospitalId)+')a ');
+                    if DBLCB_Shift.Text <> '' then
+                    begin
+                         SQL.Add('where upper(DOSD_SHIFT) =' + #39 + DBLCB_Shift.Text + #39);
+                         Sql.Add('And DOSD_ORGID='+IntToStr(gi_HospitalId));
+                    end
+                    else
+                    begin
+                           Sql.Add('where DOSD_ORGID='+IntToStr(gi_HospitalId));
+                    end;
+                    SQL.Add(' order by DOSD_STARTTIME,DOSD_ENDTIME');
+                    sql.savetofile('c:\aap.txt');
+                    Open;
+
+                    if (Eof = True) then
+                    begin
+                         With TT_Noscheduleplanner do
+                         begin
+                                Append;
+                                FieldByName('ScheduleId').AsInteger := li_noscheduleplanner;
+                                FieldByName('DocName').AsString := Arr_CLB_DoctorID[i, 1];
+                                FieldByName('DocID').AsString := Arr_CLB_DoctorID[i, 0];
+                                FieldByName('DepID').AsString := dblcb_department.KeyValue;
+                                FieldByName('ChoosenDoc').AsString := 'N';
+                                post;
+                         end;
+                         Inc(li_noscheduleplanner);
+                    end;
+
+                    while not Eof do
+                    begin
+                         if li_DocID <> strtoint(Arr_CLB_DoctorID[i, 0]) then
+                         begin
+                              with TT_Appoinment do
+                              begin
+                                   Append;
+                                   FieldByName('Serial').AsInteger := Li_Serial;
+                                   FieldByName('DocName').AsString := Arr_CLB_DoctorID[i, 1];
+                                   FieldByName('TimeRange').AsString := Arr_CLB_DoctorID[i, 1];
+                                   Post;
+                              end;
+                              li_DocID := strtoint(Arr_CLB_DoctorID[i, 0]);
+                              GetDoctorNote(li_DocID);
+                         end;
+                         TT_Appoinment.Append;
+                         TT_Appoinment.FieldByName('DocScDetailID').AsInteger := FieldByName('DOSD_DOCTORSCHEDULEDETAILID').AsInteger;
+                         TT_Appoinment.FieldByName('DocNameReal').AsString := Arr_CLB_DoctorID[i, 1];
+                         TT_Appoinment.FieldByName('AppDate').AsString := ps_Date;
+                         TT_Appoinment.FieldByName('DocID').AsString := Arr_CLB_DoctorID[i, 0];
+                         TT_Appoinment.FieldByName('DocTime').AsString := FieldByName('DOSD_STARTTIME').AsString;
+                         TT_Appoinment.FieldByName('DocEndTime').AsString := FieldByName('DOSD_ENDTIME').AsString;
+                         STime := StrToTime(FieldByName('DOSD_STARTTIME').AsString);
+                         ETime := StrToTime(FieldByName('DOSD_ENDTIME').AsString);
+                         TT_Appoinment.FieldByName('TimeRange').AsString := FormatDateTime('hh:nn ampm', STime) + '-' + FormatDateTime('hh:nn ampm', ETime);
+                         TT_Appoinment.FieldByName('TimeRangeOld').AsString := FormatDateTime('hh:nn ampm', StrToTime(FieldByName('Dosd_StartTimeOld').AsString)) + '-' + FormatDateTime('hh:nn ampm', StrToTime(FieldByName('Dosd_EndTimeOld').AsString));
+                         TT_Appoinment.FieldByName('PatientType').AsString := Query_Appoinment.FieldByName('Dosd_PatientType').AsString;
+                         TT_Appoinment.FieldByName('QueueNo').AsString := Query_Appoinment.FieldByName('DOSD_SERIALORDERNO').AsString;
+                         TT_Appoinment.FieldByName('WalkIn').AsString := Query_Appoinment.FieldByName('DOSD_ISWALKIN').AsString;
+                         if FieldByName('DOSD_APPOINTMENTID').AsInteger > 0 then
+                         begin
+                              With Qry do
+                              begin
+                                   Close;
+                                   DatabaseName:=gs_DatabaseName;
+                                   SQL.Clear;
+                                   if Query_Appoinment.FieldByName('APPO_PATIENTID').AsInteger > 0 then
+                                   begin
+                                        SQL.Add('Select Pm.PAMA_PATIENTID as PATIENTID ,Pm.PAMA_NONPATIENTID as NONPATIENTID ,Pm.PAMA_PATIENTNAME as PATIENTNAME ,Pm.PAMA_PHONENO as PHONENO ,Pm.PAMA_MOBILENO as MOBILENO');
+                                        SQL.Add(',a.APPO_STATUS as Status,A.APPO_APPID as APPID,A.APPO_QueueNo as QUENO ,A.APPO_DATAPOSTBY as DATAPOSTBY,A.APPO_APPTAKENFROM as APPTAKENFROM,A.APPO_ISWEBCONFIRM as ISWEBCONFORM');
+                                        SQL.Add(',(Select APPF_STATUS from AP_appf_apppatientfollowup where APPF_APPPATIENTFOLLOWUPID in ');
+                                        SQL.Add('(Select max(APPF_APPPATIENTFOLLOWUPID) from AP_appf_apppatientfollowup Where APPF_APPID=A.APPO_APPID');
+                                        SQL.Add('and APPF_ISACTIVE=''Y''))StatusNew');
+                                        SQL.Add(',(Select APPF_REMARKS from AP_appf_apppatientfollowup where APPF_APPPATIENTFOLLOWUPID in  ');
+                                        SQL.Add('(Select max(APPF_APPPATIENTFOLLOWUPID) from AP_appf_apppatientfollowup Where APPF_APPID=A.APPO_APPID');
+                                        SQL.Add('and APPF_ISACTIVE=''Y''))CommunicationRemarks');
+                                        SQL.Add('from AP_Appo_appointment A,Hs_pama_patientmain Pm');
+                                        SQL.Add('Where A.APPO_PATIENTID=Pm.PAMA_PATIENTID ');
+                                        Sql.Add('And Pm.PAMA_ORGID='+IntToStr(gi_HospitalId));
+                                        Sql.Add('And A.APPO_ORGID='+IntToStr(gi_HospitalId));
+                                        SQL.Add('And A.APPO_APPID=' + inttostr(Query_Appoinment.FieldByName('DOSD_APPOINTMENTID').AsInteger));
+                                   end
+                                   else
+                                   begin
+                                        SQL.Add('Select Np.NOPA_NONPATIENTID as NONPATIENTID,Np.NOPA_PATIENTID as PATIENTID ,Np.NOPA_PATIENTNAME as PATIENTNAME,Np.NOPA_PHONENO as PHONENO,Np.NOPA_MOBILENO as MOBILENO ');
+                                        SQL.Add(',a.APPO_STATUS as Status,A.APPO_APPID as APPID,A.APPO_QueueNo as QUENO ,A.APPO_DATAPOSTBY as DATAPOSTBY,A.APPO_APPTAKENFROM as APPTAKENFROM,A.APPO_ISWEBCONFIRM as ISWEBCONFORM');
+                                        SQL.Add(',(Select appf_Status from AP_appf_apppatientfollowup Where APPF_APPPATIENTFOLLOWUPID in ');
+                                        SQL.Add('(Select max(APPF_APPPATIENTFOLLOWUPID) from AP_appf_apppatientfollowup Where APPF_APPID=A.APPO_APPID');
+                                        SQL.Add('and APPF_ISACTIVE=''Y''))StatusNew');
+                                        SQL.Add(',(Select APPF_REMARKS from AP_appf_apppatientfollowup where APPF_APPPATIENTFOLLOWUPID in ');
+                                        SQL.Add('(Select max(APPF_APPPATIENTFOLLOWUPID) from AP_appf_apppatientfollowup Where APPF_APPID=A.APPO_APPID');
+                                        SQL.Add('and APPF_ISACTIVE=''Y''))CommunicationRemarks');
+                                        SQL.Add('from AP_appo_appointment A,Hs_Nopa_nonpatient Np');
+                                        SQL.Add('Where A.APPO_NONPATIENTID=NP.NOPA_NONPATIENTID');
+                                        Sql.Add('And Np.NOPA_ORGID='+IntToStr(gi_HospitalId));
+                                        Sql.Add('And A.APPO_ORGID='+IntToStr(gi_HospitalId));
+                                        SQL.Add('And A.APPO_APPID=' + inttostr(Query_Appoinment.FieldByName('DOSD_APPOINTMENTID').AsInteger));
+
+                                   end;
+                                   sql.savetofile('c:\pate.txt');
+                                   Open;
+                                   TT_Appoinment.FieldByName('PatientID').AsInteger := FieldByName('PatientID').AsInteger;
+                                   TT_Appoinment.FieldByName('PatientIDStr').AsString := FieldByName('PatientID').AsString;
+                                   if (FieldByName('NonPatientID').AsInteger > 0) and (FieldByName('PatientID').AsString = '')then
+                                   begin
+                                         TT_Appoinment.FieldByName('PatientID').AsInteger := FieldByName('NonPatientID').AsInteger;
+                                         TT_Appoinment.FieldByName('IsNonPatient').AsString :='Y';
+                                   end
+                                   else if  fieldbyname('PatientId').asinteger>0 then
+                                   TT_Appoinment.FieldByName('IsNonPatient').AsString :='N';
+
+                                   TT_Appoinment.FieldByName('NonPatientID').AsInteger := FieldByName('NonPatientID').AsInteger;
+                                   TT_Appoinment.FieldByName('AppID').AsString := FieldByName('AppID').AsString;
+                                   TT_Appoinment.FieldByName('QueueNo').AsString := FieldByName('QueNo').AsString;
+                                   TT_Appoinment.FieldByName('PatientName').AsString := FieldByName('PatientName').AsString;
+                                   TT_Appoinment.FieldByName('PatientPhone').AsString := FieldByName('PhoneNo').AsString;
+                                   TT_Appoinment.FieldByName('PatientMobile').AsString := FieldByName('MobileNo').AsString;
+                                   TT_Appoinment.FieldByName('PatientName').AsString := FieldByName('PatientName').AsString;
+                                   TT_Appoinment.FieldByName('AppTakenby').AsString := FieldByName('DataPostBy').AsString;
+                                   TT_Appoinment.FieldByName('AppStatus').AsString := FieldByName('Status').AsString;
+                                   TT_Appoinment.FieldByName('CommunicationRemarks').AsString := FieldByName('CommunicationRemarks').AsString;
+                                   TT_Appoinment.FieldByName('APPTAKENFROM').AsString := FieldByName('APPTAKENFROM').AsString;
+                                   TT_Appoinment.FieldByName('iswebconform').AsString := FieldByName('iswebconform').AsString;
+                                   TT_Appoinment.FieldByName('QueueNo').AsString := Query_Appoinment.FieldByName('DOSD_SERIALORDERNO').AsString;
+                              end;
+                         end;
+                         TT_Appoinment.Post;
+                         Next;
+                    end;
+               end;
+          end;
+     end;
+     RefreshTable(TT_Appoinment, gs_temppath);
+     DS_Appoinment.DataSet := TT_Appoinment;
+     DBGrid_Appoinment.DataSource := DS_Appoinment;
+     Qry.Free;
+     if Li_Appid > 0 then
+          TT_Appoinment.Locate('AppID', Li_Appid, []);
+end;
+
+procedure TFrame_AppointmentSearch.MonthCalendar1DblClick(Sender: TObject);
+begin
+     DateEditX1.ADDateAsDate := MonthCalendar1.Date;
+
+     Lbl_Dayofweek.Caption := getday(DateEditX1.ADDateAsText);
+     MonthCalendar1.Visible := False;
+
+     // dblcb_department.KeyValue := -1;
+     // CheckBox1.Checked := False;
+     // CheckListBox1.Clear;
+
+     TT_Appoinment.Close;
+     TT_Appoinment.EmptyTable;
+     TT_Appoinment.Open;
+end;
+
+procedure TFrame_AppointmentSearch.new;
+begin
+     //
+     dblcb_department.KeyValue := -1;
+     Chb_All.Checked := False;
+     Chb_Doctor.Clear;
+     TT_Appoinment.Close;
+     TT_Appoinment.EmptyTable;
+end;
+
+procedure TFrame_AppointmentSearch.RefreshAppointment;
+Var
+     Li_Serial, i, li_DocID: Integer;
+     Qry: TOraQuery;
+begin
+     Qry := TOraQuery.Create(Nil);
+
+     Li_Serial := 0;
+
+     with TT_Appoinment do
+     begin
+          Close;
+          EmptyTable;
+          DatabaseName := gs_temppath;
+          Open;
+     end;
+
+     for i := 0 to Chb_Doctor.Items.Count - 1 do
+     begin
+          if Chb_Doctor.State[i] = cbChecked then
+          begin
+               With Query_Appoinment do
+               Begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add('select rownum as sn,a.* from(select ds.*,A.PATIENTID,A.NONPATIENTID from doctorscheduledetail ds,Appointment A');
+                    SQL.Add('Where DS.APPOINTMENTID=A.APPID(+)');
+                    SQL.Add(' And doctorscheduleid in (select doctorscheduleid from doctorschedule where ');
+                    SQL.Add('docid=' + Arr_CLB_DoctorID[i, 0] + ' and EngDate=' + #39 + ps_Date + #39 + ')');
+                    SQL.Add('And Nvl(IsActive,''Y'')=''Y'')a ');
+                    if DBLCB_Shift.Text <> '' then
+                         SQL.Add('where shift =' + #39 + DBLCB_Shift.Text + #39);
+                    SQL.Add(' order by serialorderno');
+                    Open;
+                    while not Eof do
+                    begin
+                         if li_DocID <> strtoint(Arr_CLB_DoctorID[i, 0]) then
+                         begin
+                              with TT_Appoinment do
+                              begin
+                                   Append;
+                                   inc(Li_Serial);
+                                   FieldByName('Serial').AsInteger := Li_Serial;
+                                   FieldByName('DocName').AsString := Arr_CLB_DoctorID[i, 1];
+                              end;
+                              li_DocID := strtoint(Arr_CLB_DoctorID[i, 0]);
+                         end;
+                         TT_Appoinment.Append;
+                         TT_Appoinment.FieldByName('DocScDetailID').AsInteger := FieldByName('DoctorScheduleDetailID').AsInteger;
+                         TT_Appoinment.FieldByName('DocNameReal').AsString := Arr_CLB_DoctorID[i, 1];
+                         TT_Appoinment.FieldByName('DocID').AsString := Arr_CLB_DoctorID[i, 0];
+                         TT_Appoinment.FieldByName('DocTime').AsString := FieldByName('StartTime').AsString;
+                         TT_Appoinment.FieldByName('DocEndTime').AsString := FieldByName('EndTime').AsString;
+                         TT_Appoinment.FieldByName('PatientType').AsString := Query_Appoinment.FieldByName('PatientType').AsString;
+                         if FieldByName('AppointmentId').AsInteger > 0 then
+                         begin
+                              With Qry do
+                              begin
+                                   Close;
+                                   DatabaseName:=gs_DatabaseName;
+                                   SQL.Clear;
+                                   if Query_Appoinment.FieldByName('PatientID').AsInteger > 0 then
+                                   begin
+                                        SQL.Add('Select Pm.PatientId,Pm.NonPatientID,Pm.PatientName,Pm.PhoneNo,Pm.MobileNo');
+                                        SQL.Add(',A.AppID,A.QueNo,A.DatapostBy,A.Status,A.Remarks as CommunicationRemarks');
+                                        SQL.Add('from Appointment A,PatientMain Pm');
+                                        SQL.Add('Where A.PatientID=Pm.PatientID');
+                                        SQL.Add('And A.AppID=' + inttostr(Query_Appoinment.FieldByName('AppointmentId').AsInteger));
+                                   end
+                                   else
+                                   begin
+                                        SQL.Add('Select Np.NonPatientID,Np.PatientId,Np.PatientName,Np.PhoneNo,Np.MobileNo');
+                                        SQL.Add(',A.AppID,A.QueNo,A.DatapostBy,A.Status,A.Remarks as CommunicationRemarks');
+                                        SQL.Add('from Appointment A,NonPatient Np');
+                                        SQL.Add('Where A.NONPATIENTID=NP.NONPATIENTID');
+                                        SQL.Add('And A.AppID=' + inttostr(Query_Appoinment.FieldByName('AppointmentId').AsInteger));
+                                   end;
+                                   Open;
+                                   TT_Appoinment.FieldByName('PatientID').AsInteger := FieldByName('PatientID').AsInteger;
+                                   TT_Appoinment.FieldByName('NonPatientID').AsInteger := FieldByName('NonPatientID').AsInteger;
+                                   TT_Appoinment.FieldByName('AppID').AsString := FieldByName('AppID').AsString;
+                                   TT_Appoinment.FieldByName('QueueNo').AsString := FieldByName('QueNo').AsString;
+                                   TT_Appoinment.FieldByName('PatientName').AsString := FieldByName('PatientName').AsString;
+                                   TT_Appoinment.FieldByName('PatientPhone').AsString := FieldByName('PhoneNo').AsString;
+                                   TT_Appoinment.FieldByName('PatientMobile').AsString := FieldByName('MobileNo').AsString;
+                                   TT_Appoinment.FieldByName('PatientName').AsString := FieldByName('PatientName').AsString;
+                                   TT_Appoinment.FieldByName('AppTakenby').AsString := FieldByName('DataPostBy').AsString;
+                                   TT_Appoinment.FieldByName('AppStatus').AsString := FieldByName('Status').AsString;
+                                   TT_Appoinment.FieldByName('CommunicationRemarks').AsString := FieldByName('CommunicationRemarks').AsString;
+                              end;
+                         end;
+                         TT_Appoinment.Post;
+                         Next;
+                    end;
+               end;
+          end;
+     end;
+     RefreshTable(TT_Appoinment, gs_temppath);
+     DS_Appoinment.DataSet := TT_Appoinment;
+     DBGrid_Appoinment.DataSource := DS_Appoinment;
+end;
+
+
+
+procedure TFrame_AppointmentSearch.SpeedButton1Click(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX1, SpeedButton1);
+     if (SpeedButton1.Caption = 'BS') and (MonthCalendar1.Visible = True) then
+     begin
+            MonthCalendar1.Visible:= False;
+     end;
+end;
+
+procedure TFrame_AppointmentSearch.Timer1Timer(Sender: TObject);
+begin
+     TT_Appoinment.Close;
+     TT_Appoinment.Open;
+
+     if TT_Appoinment.RecordCount > 0 then
+     begin
+          DBGrid_Appoinment.DataSource.DataSet.DisableControls;
+        //  BB_ViewClick(Sender);
+          LoadData;
+          DBGrid_Appoinment.DataSource.DataSet.EnableControls;
+     end;
+end;
+
+procedure TFrame_AppointmentSearch.GetDoctorNote(DocID: Integer);
+Var
+     Qry: TOraQuery;
+Begin
+     Qry := TOraQuery.Create(nil);
+     With Qry do
+     Begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add(' Select * From AP_APDN_APPDOCTORNOTE where APDN_DOCID =' + inttostr(DocID));
+          SQL.Add(' and APDN_FROMDATE >=' + #39 + DateEditX1.Text + #39 + ' and APDN_TODATE <=' + #39 + DateEditX1.Text + #39);
+
+          Open;
+          if FieldByName('APDN_APPDOCNOTEID').AsInteger > 0 then
+          begin
+               RichEdit_DoctorNote.Text := Qry.FieldByName('APDN_DOCTORNOTE').AsString;
+               RichEdit_DoctorNote.Visible := True;
+               Label_DocNote.Visible := True;
+          end
+          else
+          begin
+               RichEdit_DoctorNote.Visible := False;
+               Label_DocNote.Visible := False;
+          end;
+     End;
+
+
+     With Qry do
+     Begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add(' Select DOMS_DOCTORMOVEMNETSSTATUSID,DOMS_REMARKS From AP_DOMS_DOCMOVEMENTSTATUS where DOMS_DOCID =' + inttostr(DocID));
+          SQL.Add(' and DOMS_ENGDATE >=' + #39 + DateEditX1.Text + #39 + ' and DOMS_ENGDATE <=' + #39 + DateEditX1.Text + #39);
+          SQL.Add(' order by DOMS_DOCTORMOVEMNETSSTATUSID desc')  ;
+          Open;
+          if FieldByName('DOMS_DOCTORMOVEMNETSSTATUSID').AsInteger > 0 then
+          begin
+               RichEdit_Dm.Text := Qry.FieldByName('DOMS_REMARKS').AsString;
+               RichEdit_Dm.Visible := True;
+               Label_Dm.Visible := True;
+          end
+          else
+          begin
+               RichEdit_Dm.Visible := False;
+               Label_Dm.Visible := False;
+          end;
+     End;
+
+
+     Qry.Free;
+     if RichEdit_DoctorNote.Text = '' then
+     begin
+            RichEdit_DoctorNote.Visible := False;
+     end;
+End;
+
+end.

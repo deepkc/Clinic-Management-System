@@ -1,0 +1,30 @@
+BDE Migration Wizard log
+
+Created at: 6/14/2017 10:34:12 AM
+
+Initializing unit list
+
+Allocating temporary folder
+
+Processing file: D:\working rabin\INTREPID\Source\Units\Packages\Menu Previlage\Previlage Reports\Unit_PrevilageReport.pas
+
+3 change(s)
+
+Processing file: D:\working rabin\INTREPID\Source\Units\Packages\Menu Previlage\Unit_VMenuPrevilage.pas
+
+10 change(s)
+
+Processing file: D:\working rabin\INTREPID\Source\Units\Packages\Menu Previlage\Previlage Reports\Unit_PrevilageReport.DFM
+
+2 change(s)
+
+Processing file: D:\working rabin\INTREPID\Source\Units\Packages\Menu Previlage\Unit_VMenuPrevilage.DFM
+
+7 change(s)
+
+Replacing original files with changed versions
+
+Removing temporary folder
+
+Replace procedure was performed sucessfully.
+

@@ -1,0 +1,227 @@
+unit Unit_QrSampleCollectionreport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, QRCtrls, qrBarcode, QuickRpt, ExtCtrls, DB, DBTables, Ora, OraSmart, MemDS, OraError;
+
+type
+  TForm_QrSampleCollectionReport = class(TForm)
+    QuickRep1: TQuickRep;
+    TitleBand1: TQRBand;
+    QRLabel1: TQRLabel;
+    QRLabel2: TQRLabel;
+    lbl_Date: TQRLabel;
+    QRLabel6: TQRLabel;
+    QRLabel7: TQRLabel;
+    QRShape1: TQRShape;
+    QRShape4: TQRShape;
+    QRLabel3: TQRLabel;
+    QRShape10: TQRShape;
+    QRSubDetail1: TQRSubDetail;
+    QRDBText3: TQRDBText;
+    Table_Patienttestlist: TTable;
+    QRAsBarcode_patientid: TQRAsBarcode;
+    QRShape7: TQRShape;
+    QRAsBarcode_Labno: TQRAsBarcode;
+    QRLabel4: TQRLabel;
+    QRLabel5: TQRLabel;
+    QRLabel9: TQRLabel;
+    QRLabel10: TQRLabel;
+    QRLabel8: TQRLabel;
+    QRLabel11: TQRLabel;
+    QRDBText4: TQRDBText;
+    QRLabel12: TQRLabel;
+    QRLabel13: TQRLabel;
+    QRLabel14: TQRLabel;
+    QRLabel15: TQRLabel;
+    QRLabel16: TQRLabel;
+    QRLabel17: TQRLabel;
+    QRShape2: TQRShape;
+    QRShape3: TQRShape;
+    QRShape5: TQRShape;
+    QRSubDetail2: TQRSubDetail;
+    QRDBText1: TQRDBText;
+    QRDBText6: TQRDBText;
+    QRLabel19: TQRLabel;
+    procedure QRDBText1Print(sender: TObject; var Value: string);
+    procedure Loaddata;
+    procedure FormCreate(Sender: TObject);
+    procedure QRLabel18Print(sender: TObject; var Value: string);
+    procedure TitleBand1AfterPrint(Sender: TQRCustomBand; BandPrinted: Boolean);
+  private
+
+    { Private declarations }
+  public
+  pi_depid:Integer;
+  ps_patientid,ps_labno,ps_testname,refreshdatereport,ps_testnameid:String;
+    { Public declarations }
+  end;
+
+var
+  Form_QrSampleCollectionReport: TForm_QrSampleCollectionReport;
+
+implementation
+     uses DM,Fxn, Unit_SampleCollectionFrame;
+{$R *.dfm}
+
+procedure TForm_QrSampleCollectionReport.FormCreate(Sender: TObject);
+begin
+     if FileExists(gs_temppath + '\PatientTestList.db') then
+     begin
+          with Table_Patienttestlist do
+          begin
+               Close;
+               TableName := 'PatientTestList.db';
+               TableType := ttDefault;
+               DatabaseName := gs_temppath;
+               DeleteTable;
+          end;
+     end;
+     with Table_Patienttestlist do
+     begin
+          Close;
+          TableName := 'PatientTestList.db';
+          TableType := ttDefault;
+          DatabaseName := gs_temppath;
+          FieldDefs.Clear;
+          FieldDefs.Add('RealSampleNo', ftString, 100);
+          FieldDefs.Add('PatientName', ftString, 100);
+          FieldDefs.Add('PatientDetail', ftString, 400);
+          FieldDefs.Add('Patient', ftString, 100);
+          FieldDefs.Add('Test', ftString, 100);
+          FieldDefs.Add('TestType', ftString, 100);
+          FieldDefs.Add('TESTNAME', ftString, 50);
+          FieldDefs.Add('DueAmt', ftFloat);
+          CreateTable;
+     end;
+     //Loaddata;
+end;
+
+procedure TForm_QrSampleCollectionReport.Loaddata;
+Var
+     Qry: TOraQuery;
+     ls_patient, ls_test,ls_patientDetail,ls_patientDetailOld: string;
+     li_TestNameId: integer;
+begin
+     with Table_Patienttestlist do
+     begin
+          Close;
+          EmptyTable;
+          Open;
+     end;
+     Qry := TOraQuery.Create(nil);
+     with Qry do
+     begin
+          Close;
+          Session:=Dm_Hospital.Db;
+          SQL.Clear;
+          SQL.Add('Select PL.*,to_number(substr(sampleno,1))orderno from vw_patienttestlist PL');
+          SQL.Add('where depid='+IntToStr(pi_depid));
+          SQL.Add('and  PL.TESTDATE >= ' + #39 + refreshdatereport + #39);
+          SQL.Add('and pl.patientid='+QuotedStr(ps_patientid));
+          SQL.Add('and labno='+QuotedStr(ps_labno));
+          SQL.Add('and testnameid in ('+(ps_testnameid)+')');
+          sql.saveToFile('C:\PatientTestList.Txt');
+          Open;
+          lbl_Date.Caption := gs_From;
+          ls_patient := '';
+          ls_test := '';
+          li_TestNameId := 0;
+          while not Eof do
+          begin
+               with Table_Patienttestlist do
+               begin
+                    Append;
+                    if ls_patient <> Qry.FieldByName('Particular').AsString then
+                    begin
+                         FieldByName('RealSampleNO').AsString := Qry.FieldByName('RealSampleNO').AsString;
+                         FieldByName('Patient').AsString := Qry.FieldByName('PatientID').AsString;
+
+                         Post;
+                         Append;
+                         FieldByName('Patient').AsString := Qry.FieldByName('Particular').AsString;
+                         //FieldByName('DueAmt').AsFloat := Qry.FieldByName('BALANCE').AsFloat;
+                         ls_patient := Qry.FieldByName('Particular').AsString;
+
+                         FieldByName('Test').AsString := Qry.FieldByName('Test').AsString;
+                         FieldByName('testname').AsString:=Qry.FieldByName('testname').AsString;
+                         Post;
+                         Append;
+                         ls_test := Qry.FieldByName('test').AsString;
+                    end;
+
+                    if ls_test <> Qry.FieldByName('Test').AsString then
+                    begin
+                         FieldByName('Test').AsString := Qry.FieldByName('Test').AsString;
+                         Post;
+                         Append;
+                         ls_test := Qry.FieldByName('test').AsString;
+                    end;
+
+                    ls_patientDetail:=Qry.FieldByName('MobileNo').AsString+' '+
+                                                            Qry.FieldByName('Email').AsString+' '+
+                                                            Qry.FieldByName('Remarks').AsString;
+                    if ls_patientDetailOld<>ls_patientDetail then
+                    begin
+                         FieldByName('PatientDetail').AsString := ls_patientDetail;
+                         ls_patientDetailOld:=ls_patientDetail;
+                    end;
+
+
+                    if Trim(Qry.FieldByName('ABBREVIATION').AsString) <> '' then
+                         FieldByName('TestType').AsString := Qry.FieldByName('ABBREVIATION').AsString
+                    Else
+                         FieldByName('TestType').AsString := Qry.FieldByName('testtype').AsString;
+                         //FieldByName('testname').AsString:=Qry.FieldByName('testname').AsString;
+                    Post;
+
+                    {if Qry.FieldByName('MobileNo').AsString<>'' then
+                    begin
+                         Append;
+                         FieldByName('Patient').AsString:='('+Qry.FieldByName('MobileNo').AsString+')';
+                         Post;
+                    end;
+                    if Qry.FieldByName('Email').AsString<>'' then
+                    begin
+                         Append;
+                         FieldByName('Patient').AsString:=Qry.FieldByName('Email').AsString;
+                         Post;
+                    end;
+                    if Qry.FieldByName('Remarks').AsString<>'' then
+                    begin
+                         Append;
+                         FieldByName('Patient').AsString:=Qry.FieldByName('Remarks').AsString;
+                         Post;
+                    end;}
+               end;
+               li_TestNameId := Qry.FieldByName('TESTNAMEID').AsInteger;
+               Next;
+          end;
+     end;
+     Qry.Free;
+     Table_Patienttestlist.Close;
+     Table_Patienttestlist.Open;
+end;
+
+procedure TForm_QrSampleCollectionReport.QRDBText1Print(sender: TObject;
+  var Value: string);
+begin
+     QRAsBarcode_patientid.Text:=ps_patientid;
+     QRAsBarcode_Labno.Text:=ps_labno;
+end;
+
+procedure TForm_QrSampleCollectionReport.QRLabel18Print(sender: TObject;
+  var Value: string);
+begin
+     Value:=Table_Patienttestlist.FieldByName('test').AsString;
+end;
+
+procedure TForm_QrSampleCollectionReport.TitleBand1AfterPrint(
+  Sender: TQRCustomBand; BandPrinted: Boolean);
+begin
+     qrlabel19:=Table_Patienttestlist.FieldByName('test').AsString;
+end;
+
+end.

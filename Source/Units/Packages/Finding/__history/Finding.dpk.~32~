@@ -1,0 +1,96 @@
+package Finding;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+{$DEFINE DEBUG}
+
+requires
+  rtl,
+  vcl,
+  MidasFunction,
+  SampleCollection,
+  adortl,
+  Global,
+  acnt2010_R;
+
+contains
+  Unit_FindingFrame in 'Unit_FindingFrame.pas' {Frame_Finding: TFrame},
+  Unit_QrInvestigativeResult in 'Unit_QrInvestigativeResult.pas' {Form_QrFinding},
+  Unit_FindingSetup in 'Unit_FindingSetup.pas' {Form_FindingSetup},
+  Unit_FindingComment in 'Unit_FindingComment.pas' {Form_FindingComment},
+  Unit_FindingFootnote in 'Unit_FindingFootnote.pas' {Form_FindingFootnote},
+  Unit_SensitivityResult in 'Unit_SensitivityResult.pas' {Form_SensitivityResult},
+  Unit_SelectTest in 'Unit_SelectTest.pas' {Form_SelectTest},
+  Unit_ReportFooterSetup in 'Unit_ReportFooterSetup.pas' {Form_ReportFooterSetup},
+  Unit_ManualRepFooterSetup in 'Unit_ManualRepFooterSetup.pas' {Form_ManualRepFooterSetup},
+  Unit_InvestigationMemberSetup in 'Unit_InvestigationMemberSetup.pas' {Form_InvestigationMember},
+  Unit_Mangalam_QrInvestigativeResult in 'Unit_Mangalam_QrInvestigativeResult.pas' {Form_QrFinding_mangalam},
+  Unit_Dhulikhel_QrInvestigativeResult in 'Unit_Dhulikhel_QrInvestigativeResult.pas' {Form_dhulikhel_QrFinding},
+  Unit_ENT_QrInvestigativeResult in 'Unit_ENT_QrInvestigativeResult.pas' {Form_ENT_QrFinding},
+  Unit_QrDeptWiseENTReport in 'Unit_QrDeptWiseENTReport.pas' {Form_QrDeptWiseENTReport},
+  Unit_QrDeptWiseDhirghayuReport in 'Unit_QrDeptWiseDhirghayuReport.pas' {Form_QrDeptWiseDhirghayuReport},
+  Unit_QrDeptWiseGautamBuddhaReport in 'Unit_QrDeptWiseGautamBuddhaReport.pas' {Form_QrDeptWiseGautamBuddhaReport},
+  Unit_QrDeptWiseNMCReport in 'Unit_QrDeptWiseNMCReport.pas' {Form_QrDeptWiseNMCReport},
+  Unit_QrDeptWiseCivilHospitalReport in 'Unit_QrDeptWiseCivilHospitalReport.pas' {Form_QrDeptWiseCivilHospitalReport},
+  Unit_QrDeptWiseNMCA4Report in 'Unit_QrDeptWiseNMCA4Report.pas' {Form_QrDeptWiseNMCA4Report},
+  Unit_QrDeptWiseNepalCancerReport in 'Unit_QrDeptWiseNepalCancerReport.pas' {Form_QrDeptWiseNepalCancerReport},
+  Unit_QrDeptWiseNeuroBrtReport in 'Unit_QrDeptWiseNeuroBrtReport.pas' {Form_QrDeptWiseNeuroBrtReport},
+  Unit_QrDeptWiseNeuroBrtMicrobiologyReport in 'Unit_QrDeptWiseNeuroBrtMicrobiologyReport.pas' {Form_QrDeptWiseNeuroBrtMicrobiologyReport},
+  Unit_SensitivityResultNew in 'Unit_SensitivityResultNew.pas' {Form_SensitivityResultNew},
+  Unit_QrDeptWiseBNBReport in 'Unit_QrDeptWiseBNBReport.pas' {Form_QrDeptWiseBnbReport},
+  Unit_SensitivityResultNeuroBrt in 'Unit_SensitivityResultNeuroBrt.pas' {Form_SensitivityResultNeuroBrt},
+  Unit_QrDeptWiseMeridianReport in 'Unit_QrDeptWiseMeridianReport.pas' {Form_QrDeptWiseMeridianReport},
+  Unit_QrDeptWiseShankarapurReport in 'Unit_QrDeptWiseShankarapurReport.pas' {Form_QrDeptWiseShankarapurReport},
+  Unit_QrDeptWiseShankarapurMicrobiologyReport in 'Unit_QrDeptWiseShankarapurMicrobiologyReport.pas' {Form_QrDeptWiseShankarapurMicrobiologyReport},
+  Unit_QrDeptWiseVigourMicrobiologyReport in 'Unit_QrDeptWiseVigourMicrobiologyReport.pas' {Form_QrDeptWiseVigourMicrobiologyReport},
+  Unit_QrDeptWiseVigourReport in 'Unit_QrDeptWiseVigourReport.pas' {Form_QrDeptWiseVigourReport},
+  Unit_QrDeptWiseEraMicrobiologyReport in 'Unit_QrDeptWiseEraMicrobiologyReport.pas' {Form_QrDeptWiseEraMicrobiologyReport},
+  Unit_QrDeptWiseEraReport in 'Unit_QrDeptWiseEraReport.pas' {Form_QrDeptWiseEraReport},
+  Unit_QrDeptWiseA4Reportkpl in 'Unit_QrDeptWiseA4Reportkpl.pas' {Form_QrDeptWiseBioDiagReportKpl},
+  Unit_QrFindingAarogyaReport in 'Unit_QrFindingAarogyaReport.pas' {Form_QrFindingAarogyaReport},
+  Unit_QrFindingIntrepidReport in 'Unit_QrFindingIntrepidReport.pas' {Form_QrFindingIntrepidReport},
+  Unit_QrAarogyaMicrobiologyReport in 'Unit_QrAarogyaMicrobiologyReport.pas' {Form_QrAarogyaMicrobiologyReport},
+  Unit_QrIntrepidMicrobiologyReport in 'Unit_QrIntrepidMicrobiologyReport.pas' {Form_QrIntrepidMicrobiologyReport},
+  Unit_QrDeptWiseNCHRCA4MicrobiologyReport in 'Unit_QrDeptWiseNCHRCA4MicrobiologyReport.pas' {Form_QrDeptWiseNCHRCA4MicrobiologyReport},
+  Unit_QrDeptWiseINTREPIDA4MicrobiologyReport in 'Unit_QrDeptWiseINTREPIDA4MicrobiologyReport.pas' {Form_QrDeptWiseINTREPIDA4MicrobiologyReport},
+  Unit_QrDeptWiseMANGALAMA4MicrobiologyReport in 'Unit_QrDeptWiseMANGALAMA4MicrobiologyReport.pas' {Form_QrDeptWiseMANGALAMA4MicrobiologyReport},
+  Unit_QrFindingMangalamReport in 'Unit_QrFindingMangalamReport.pas' {Form_QrFindingMangalamReport},
+  Unit_QrDeptWisePATANLABA4MicrobiologyReport in 'Unit_QrDeptWisePATANLABA4MicrobiologyReport.pas' {Form_QrDeptWisepatanA4MicrobiologyReport},
+  Unit_QrFindingPatanLabReport in 'Unit_QrFindingPatanLabReport.pas' {Form_QrFindingPatanLabReport},
+  Unit_QrPatanHistoPathInvestigativeResult in 'Unit_QrPatanHistoPathInvestigativeResult.pas' {Form_patanHistoQrPathFinding},
+  Unit_QrDeptWiseNRLLABA4MicrobiologyReport in 'Unit_QrDeptWiseNRLLABA4MicrobiologyReport.pas' {Form_QrDeptWiseNRLA4MicrobiologyReport},
+  Unit_QrFindingNRLLabReport in 'Unit_QrFindingNRLLabReport.pas' {Form_QrFindingNRLLabReport},
+  Unit_QrNRLHistoPathInvestigativeResult in 'Unit_QrNRLHistoPathInvestigativeResult.pas' {Form_NRLHistoQrPathFinding},
+  Unit_QrDeptWiseGMCLABA4MicrobiologyReport in 'Unit_QrDeptWiseGMCLABA4MicrobiologyReport.pas' {Form_QrDeptWiseGMCA4MicrobiologyReport},
+  Unit_QrFindingGMCLabReport in 'Unit_QrFindingGMCLabReport.pas' {Form_QrFindingGMCLabReport},
+  Unit_QrGMCHistoPathInvestigativeResult in 'Unit_QrGMCHistoPathInvestigativeResult.pas' {Form_GMCHistoQrPathFinding},
+  Unit_QrDeptWiseA4ReportNOZOMIkpl in 'Unit_QrDeptWiseA4ReportNOZOMIkpl.pas' {Form_QrDeptWiseA4NOZOMIReportKpl},
+  Unit_QrDeptWiseNOZOMIMicrobiologyReport in 'Unit_QrDeptWiseNOZOMIMicrobiologyReport.pas' {Form_QrDeptWiseNOZOMIMicrobiologyReport},
+  Unit_QrDeptWiseA4ReportKPLkpl in 'Unit_QrDeptWiseA4ReportKPLkpl.pas' {Form_QrDeptWiseA4NReportKPLkpl},
+  Unit_QrDeptWiseKPLMicrobiologyReport in 'Unit_QrDeptWiseKPLMicrobiologyReport.pas' {Form_QrDeptWiseKPLMicrobiologyReport},
+  Unit_QrFindingIntrepidReport_KPL in 'Unit_QrFindingIntrepidReport_KPL.pas' {Form_QrFindingIntrepidReport_KPL},
+  Unit_QrFindingGMCLabReport_kpl in 'Unit_QrFindingGMCLabReport_kpl.pas' {Form_QrFindingGMCLabReport_kpl},
+  Unit_QrDeptWiseGMCLABA4MicrobiologyReport_kpl in 'Unit_QrDeptWiseGMCLABA4MicrobiologyReport_kpl.pas' {Form_QrDeptWiseGMCA4MicrobiologyReport_kpl};
+
+end.

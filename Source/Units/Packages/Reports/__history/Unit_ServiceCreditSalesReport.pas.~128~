@@ -1,0 +1,505 @@
+unit Unit_ServiceCreditSalesReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DBCtrls, StdCtrls, ExtCtrls, Buttons, OleCtrls, DateEditXControl_TLB,
+  DB, MemDS, DBAccess, Ora, DM, DBTables,QRPrntr, QRPDFFilt ;
+
+type
+  TForm_ServiceCreditSalesReport = class(TForm)
+    Panel2: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    DateEditX_FromDate: TDateEditX;
+    DateEditX_ToDate: TDateEditX;
+    BitBtn_FromDate: TBitBtn;
+    BitBtn_ToDate: TBitBtn;
+    RG_PayType: TRadioGroup;
+    DS_RefDoc: TDataSource;
+    QueryRefDoc: TOraQuery;
+    OraQuery_Hospital: TOraQuery;
+    DS_Hospital: TDataSource;
+    Label4: TLabel;
+    Label3: TLabel;
+    DBLCB_RefDocCode: TDBLookupComboBox;
+    DBLCB_Hospital: TDBLookupComboBox;
+    Panel1: TPanel;
+    BitBtnPreview: TBitBtn;
+    BitBtnCancel: TBitBtn;
+    BitBtn1: TBitBtn;
+    Query_TotalForeXcel: TQuery;
+    CB_TestWise: TCheckBox;
+    Query_ServiceCreditTestWise: TOraQuery;
+    Query_Refund: TOraQuery;
+    QRPDFFilter1: TQRPDFFilter;
+    RG_Paytype1: TRadioGroup;
+    procedure BitBtnPreviewClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure BitBtn_FromDateClick(Sender: TObject);
+    procedure BitBtn_ToDateClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtnCancelClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBLCB_HospitalKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_RefDocCodeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_HospitalClick(Sender: TObject);
+    procedure CB_TestWiseClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    pb_ToXl:Boolean;
+  end;
+
+var
+  Form_ServiceCreditSalesReport: TForm_ServiceCreditSalesReport;
+
+implementation
+
+uses Unit_QRServiceCreditSales,Fxn,ServerDate,UnitSendToExcel,
+  Unit_QRCashCreditSales,Unit_QRServiceCreditSalesTest;
+
+{$R *.dfm}
+
+procedure TForm_ServiceCreditSalesReport.BitBtn1Click(Sender: TObject);
+begin
+     pb_ToXl:=True;
+     BitBtnPreviewClick(Sender);
+end;
+
+procedure TForm_ServiceCreditSalesReport.BitBtnCancelClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_ServiceCreditSalesReport.BitBtnPreviewClick(Sender: TObject);
+var ls_HospitalName,ps_fromdate,ps_todate : String;
+    ls_DoctorName : String;
+aPDF : TQRPDFDocumentFilter;
+begin
+     ps_fromdate:=DateEditX_FromDate.text;
+     ps_todate:= DateEditX_ToDate.text;
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     BitBtn_FromDate.Caption := gs_DateCaption;
+     BitBtn_ToDate.Caption := gs_DateCaption;
+     gs_From := DateEditX_FromDate.text;
+     gs_to := DateEditX_ToDate.text;
+    // DateEditX_FromDate.SystemOfDate := 0;
+    // DateEditX_ToDate.SystemOfDate := 0;
+    // BitBtn_FromDate.Caption := 'BS';
+    // BitBtn_ToDate.Caption := 'BS';
+
+     if CB_TestWise.Checked=false then
+     begin
+          Form_QRServiceCreditSales:=TForm_QRServiceCreditSales.Create(NIL);
+          try
+               with Form_QRServiceCreditSales do
+               begin
+                    QRLabelFrom.Caption :=ps_fromdate;
+                    QRLabelTo.Caption := ps_todate;
+                    With Query_ServiceCredit do
+                    begin
+                         Close;
+                         Session:= DM_Hospital.DB;
+                         sql.Clear;
+                         if (pb_ToXl=true)and(gi_compileValue=14) then
+                         sql.Add(' Select row_number() over(order by billno)sn, billdate,billno,billtime,billby,referaldoc,patientid,patientname,amount,discount,grossamount,HST as VAT,total,paid,due,scheme from VW_SERVICECREDITSALE CCS ')
+                         else
+                         sql.Add(' Select row_number() over(order by billno)sn, billdate,billno,billtime,billby,referaldoc,patientid,patientname,amount,discount,grossamount,HST,total,paid,due,scheme from VW_SERVICECREDITSALE CCS ') ;
+                         sql.Add(' Where billdate >='+QuotedStr(gs_From)+' and billdate<='+QuotedStr(gs_to)+'');
+                         if DBLCB_RefDocCode.KeyValue<>NULL then
+                         begin
+                              SQL.Add(' AND REFDOCID='+intToStr(DBLCB_RefDocCode.KeyValue));
+                              //ls_DoctorName := DBLCB_RefDocCode.Text;
+                         end;
+                         if DBLCB_Hospital.KeyValue<>NULL then
+                         begin
+                              SQL.Add(' AND REFHOSCODE='+QuotedStr(DBLCB_Hospital.KeyValue));
+                              //ls_HospitalName := DBLCB_Hospital.Text;
+                         end;
+
+                         if RG_Paytype1.ItemIndex=0 then
+                         SQL.Add('and billdetailid<=0')
+                         else if RG_Paytype1.ItemIndex=1 then
+                         SQL.Add('and billdetailid>0')
+                         else
+                         SQL.Add('and 1=1');
+                        // if RG_PayType.ItemIndex=0 then
+                        // SQL.Add(' AND PAYTYPE=''CASH''')
+                        // else if RG_PayType.ItemIndex=1 then
+                         //SQL.Add(' AND PAYTYPE=''CREDIT''') ;
+                        // else
+                        // SQL.Add(' aND 1=1');
+                         //sql.SaveToFile('C:\jpt.txt');
+                         Open;
+                    end;
+
+                    with Query_Refund do
+                    Begin
+                         Close;
+                         if (pb_ToXl=true)and(gi_compileValue=14) then
+                         SQL[0]:='select row_number() over(order by billno)sn,refunddate,billno,refundtime,refundby,referaldoc,patientid,patientname,gross,discount,subtotal,hst as VAT,nettotal from VW_SERVICEREFUNDDETAIL SD'
+                         else
+                         SQL[1] := 'where refunddate>=' +QuotedStr(gs_From)+'and refunddate<='+QuotedStr(gs_To);
+                         if DBLCB_RefDocCode.KeyValue<>NULL then
+                         begin
+                              SQL[2] := ' AND REFDOCID='+QuotedStr(DBLCB_RefDocCode.KeyValue);
+                              //ls_DoctorName := DBLCB_RefDocCode.Text;
+                         end;
+                         if DBLCB_Hospital.KeyValue<>NULL then
+                         begin
+                              SQL[3] := ' AND REFHOSCODE='+QuotedStr(DBLCB_Hospital.KeyValue);
+                              //ls_HospitalName := DBLCB_Hospital.Text;
+                         end;
+
+                         //SQL[2] := 'order by billno';
+                         //sql.SaveToFile('jpt1.txt');
+                         Open;
+                    End;
+
+                    if DBLCB_Hospital.KeyValue <> null then
+                    begin
+                         QRLabel25.Caption := DBLCB_Hospital.text;
+                         if DBLCB_RefDocCode.KeyValue <> null then
+                         begin
+                              QRLabel25.Caption := DBLCB_Hospital.text + '/' + DBLCB_RefDocCode.text;
+                         end;
+                         
+                    end
+                    else if DBLCB_RefDocCode.KeyValue <> null then
+                    begin
+                         QRLabel25.Caption := DBLCB_RefDocCode.text;
+                         if DBLCB_Hospital.KeyValue <> null then
+                         begin
+                              QRLabel25.Caption := DBLCB_Hospital.text + '/' + DBLCB_RefDocCode.text;
+                         end;
+                    end
+                    else
+                    begin
+                         QRLabel24.Enabled := false;
+                         QRLabel25.Enabled := false;
+                    end;
+
+                    if gi_compileValue=14 then
+                    QRLabel12.Caption:='VAT';
+                    //QRLabel25.Caption := ls_HospitalName + '/' + ls_DoctorName;
+
+                    if pb_ToXl=False then
+                    begin
+                         qr_ServiceCreditSales.Preview ;
+                         {aPDF := TQRPDFDocumentFilter.Create('report.pdf');
+                         aPDF.FontHandling := fhAutoEmbed;
+                         qr_ServiceCreditSales.ExportToFilter( aPDF);
+                         aPDF.Free;}
+                        { aPDF := TQRPDFDocumentFilter.Create('e.pdf');
+                         qr_ServiceCreditSales.QRPrinter := TQRPrinter.Create(sender);
+                         qr_ServiceCreditSales.Prepare;
+                       //  qr_ServiceCreditSales.QRPrinter.Load('roopaFinalTest.QRp');
+                        qr_ServiceCreditSales.QRPrinter.Load('e.pdf');
+                         aPDF.FontHandling := fhAutoEmbed;
+                         qr_ServiceCreditSales.ExportToFilter( aPDF);
+                         //qr_ServiceCreditSales.Refresh;
+                        // qr_ServiceCreditSales.ExportToFilter(aPDF);
+                         aPDF.Free;  }
+
+                        // qr_ServiceCreditSales.ExportToFilter(TQRPDFDocumentFilter.Create(ExtractFilePath(Application.ExeName)+ FormatDateTime('yyyymmdd', date) +'.pdf'));
+                        // qr_ServiceCreditSales.ExportToFilter(aPDF);
+                    end
+                    else
+                    begin
+                       (*  With Query_TotalForeXcel do
+
+                         begin
+                              Close;
+                              DatabaseName := gs_DatabaseName;
+                              sql.Clear;
+                              sql.Add(' Select sum(amount)amount,sum(discount)discount,sum(grossamount)grossamount,sum(hst)hst,sum(total)total from(');
+                              sql.Add(' Select sum(amount)amount,sum(discount)discount,sum(grossamount)grossamount,sum(hst)hst,sum(total)total');
+                              sql.Add(' from  vw_cashcreditsale CCS Where billdate >='++' and billdate<='++'');
+                              if DBLCB_RefDocCode.KeyValue<>NULL then
+                              SQL.Add(' AND REFDOCCODE='+QuotedStr(DBLCB_RefDocCode.KeyValue));
+                              if DBLCB_Hospital.KeyValue<>NULL then
+                              SQL.Add(' AND REFHOSCODE='+QuotedStr(DBLCB_Hospital.KeyValue));
+                              if RG_PayType.ItemIndex=0 then
+                              SQL.Add(' AND PAYTYPE=''CASH''')
+                              else if RG_PayType.ItemIndex=1 then
+                              SQL.Add(' AND PAYTYPE=''CREDIT''')
+                              else
+                              SQL.Add(' aND 1=1');
+                              sql.add('union');
+                              sql.Add('select -sum(gross)amount,-sum(discount)discount,-sum(subtotal)grossamount,-sum(hst)hst,-sum(nettotal)total from ');
+                              sql.add('VW_REFUNDDETAIL RD where refunddate>=' +QuotedStr(DateEditX_FromDate.text)+'and refunddate<='+QuotedStr(DateEditX_ToDate.text));
+                              sql.SaveToFile('jpt1.txt');
+                              Open;
+                         end; *)
+                    SendToExcelsMultiQuery(Query_ServiceCredit,Query_Refund,nil,nil,nil,nil,'Service Credit Sales Report',
+                    '','','','','',ps_fromdate+'-'+ps_todate,'',gs_HospitalName,gs_HospitalAddress,2,8);
+                     pb_ToXl:=False;
+                    end;
+
+               end;
+          finally
+                 Form_QRServiceCreditSales.Free;
+          end;
+     end
+     else if CB_TestWise.Checked=True then
+     begin
+
+          Form_QRServiceCreditSalesTest:=TForm_QRServiceCreditSalesTest.Create(NIL);
+          try
+               with Form_QRServiceCreditSalesTest do
+               begin
+                    QRLabelFrom.Caption :=ps_fromdate;
+                    QRLabelTo.Caption := ps_todate;
+                    With Query_ServiceCredit do
+                    begin
+                         Close;
+                         Session:= DM_Hospital.DB;
+                         sql.Clear;
+                         if (pb_ToXl=true)and(gi_compileValue=14) then
+                         sql.Add(' Select row_number() over(order by billno)sn, billdate,billno,billtime,billby,SERVICETYPE,referaldoc,patientid,patientname,amount,discount,grossamount,HST as VAT,total,paid,due,scheme FROM VW_SERVICECREDITSALETESTWISE CCS ')
+                         else
+                         sql.Add(' Select row_number() over(order by billno)sn, billdate,billno,billtime,billby,SERVICETYPE,referaldoc,patientid,patientname,amount,discount,grossamount,HST,total,paid,due,scheme FROM VW_SERVICECREDITSALETESTWISE CCS ') ;
+                         sql.Add(' Where billdate >='+QuotedStr(gs_From)+' and billdate<='+QuotedStr(gs_to)+'');
+                         if DBLCB_RefDocCode.KeyValue<>NULL then
+                         begin
+                              SQL.Add(' AND REFDOCID='+intToStr(DBLCB_RefDocCode.KeyValue));
+                              //ls_DoctorName := DBLCB_RefDocCode.Text;
+                         end;
+                         if DBLCB_Hospital.KeyValue<>NULL then
+                         begin
+                              SQL.Add(' AND REFHOSCODE='+QuotedStr(DBLCB_Hospital.KeyValue));
+                              //ls_HospitalName := DBLCB_Hospital.Text;
+                         end;
+
+                         if RG_Paytype1.ItemIndex=0 then
+                         SQL.Add('and billdetailid<=0')
+                         else if RG_Paytype1.ItemIndex=1 then
+                         SQL.Add('and billdetailid>0')
+                         else
+                         SQL.Add('and 1=1');
+                        // if RG_PayType.ItemIndex=0 then
+                        // SQL.Add(' AND PAYTYPE=''CASH''')
+                        // else if RG_PayType.ItemIndex=1 then
+                         //SQL.Add(' AND PAYTYPE=''CREDIT''') ;
+                        // else
+                        // SQL.Add(' aND 1=1');
+                         //sql.SaveToFile('C:\jpt.txt');
+                         Open;
+                    end;
+
+                    with Query_Refund do
+                    Begin
+                         Close;
+                         if (pb_ToXl=true)and(gi_compileValue=14) then
+                         SQL[0]:='select row_number() over(order by billno)sn,refunddate,billno,refundtime,refundby,servicetype,referaldoc,patientid,patientname,gross,discount,subtotal,hst,nettotal from VW_SERVICEREFUNDDETAIL SD';
+                         SQL[1] := 'where refunddate>=' +QuotedStr(gs_From)+'and refunddate<='+QuotedStr(gs_To);
+                         if DBLCB_RefDocCode.KeyValue<>NULL then
+                         begin
+                              SQL[2] := ' AND REFDOCID='+QuotedStr(DBLCB_RefDocCode.KeyValue);
+                              //ls_DoctorName := DBLCB_RefDocCode.Text;
+                         end;
+                         if DBLCB_Hospital.KeyValue<>NULL then
+                         begin
+                              SQL[3] := ' AND REFHOSCODE='+QuotedStr(DBLCB_Hospital.KeyValue);
+                              //ls_HospitalName := DBLCB_Hospital.Text;
+                         end;
+
+                         //SQL[2] := 'order by billno';
+                         //sql.SaveToFile('jpt1.txt');
+                         Open;
+                    End;
+
+                    if DBLCB_Hospital.KeyValue <> null then
+                    begin
+                         QRLabel25.Caption := DBLCB_Hospital.text;
+                         if DBLCB_RefDocCode.KeyValue <> null then
+                         begin
+                              QRLabel25.Caption := DBLCB_Hospital.text + '/' + DBLCB_RefDocCode.text;
+                         end;
+
+                    end
+                    else if DBLCB_RefDocCode.KeyValue <> null then
+                    begin
+                         QRLabel25.Caption := DBLCB_RefDocCode.text;
+                         if DBLCB_Hospital.KeyValue <> null then
+                         begin
+                              QRLabel25.Caption := DBLCB_Hospital.text + '/' + DBLCB_RefDocCode.text;
+                         end;
+                    end
+                    else
+                    begin
+                         QRLabel24.Enabled := false;
+                         QRLabel25.Enabled := false;
+                    end;
+                    if gi_compileValue=14 then
+                    QRLabel12.Caption:='VAT';
+
+                    //QRLabel25.Caption := ls_HospitalName + '/' + ls_DoctorName;
+
+                    if pb_ToXl=False then
+                    begin
+                         qr_ServiceCreditSales.Preview ;
+                         {aPDF := TQRPDFDocumentFilter.Create('report.pdf');
+                         aPDF.FontHandling := fhAutoEmbed;
+                         qr_ServiceCreditSales.ExportToFilter( aPDF);
+                         aPDF.Free;}
+                        { aPDF := TQRPDFDocumentFilter.Create('e.pdf');
+                         qr_ServiceCreditSales.QRPrinter := TQRPrinter.Create(sender);
+                         qr_ServiceCreditSales.Prepare;
+                       //  qr_ServiceCreditSales.QRPrinter.Load('roopaFinalTest.QRp');
+                        qr_ServiceCreditSales.QRPrinter.Load('e.pdf');
+                         aPDF.FontHandling := fhAutoEmbed;
+                         qr_ServiceCreditSales.ExportToFilter( aPDF);
+                         //qr_ServiceCreditSales.Refresh;
+                        // qr_ServiceCreditSales.ExportToFilter(aPDF);
+                         aPDF.Free;  }
+
+                        // qr_ServiceCreditSales.ExportToFilter(TQRPDFDocumentFilter.Create(ExtractFilePath(Application.ExeName)+ FormatDateTime('yyyymmdd', date) +'.pdf'));
+                        // qr_ServiceCreditSales.ExportToFilter(aPDF);
+                    end
+                    else
+                    begin
+                       (*  With Query_TotalForeXcel do
+
+                         begin
+                              Close;
+                              DatabaseName := gs_DatabaseName;
+                              sql.Clear;
+                              sql.Add(' Select sum(amount)amount,sum(discount)discount,sum(grossamount)grossamount,sum(hst)hst,sum(total)total from(');
+                              sql.Add(' Select sum(amount)amount,sum(discount)discount,sum(grossamount)grossamount,sum(hst)hst,sum(total)total');
+                              sql.Add(' from  vw_cashcreditsale CCS Where billdate >='++' and billdate<='++'');
+                              if DBLCB_RefDocCode.KeyValue<>NULL then
+                              SQL.Add(' AND REFDOCCODE='+QuotedStr(DBLCB_RefDocCode.KeyValue));
+                              if DBLCB_Hospital.KeyValue<>NULL then
+                              SQL.Add(' AND REFHOSCODE='+QuotedStr(DBLCB_Hospital.KeyValue));
+                              if RG_PayType.ItemIndex=0 then
+                              SQL.Add(' AND PAYTYPE=''CASH''')
+                              else if RG_PayType.ItemIndex=1 then
+                              SQL.Add(' AND PAYTYPE=''CREDIT''')
+                              else
+                              SQL.Add(' aND 1=1');
+                              sql.add('union');
+                              sql.Add('select -sum(gross)amount,-sum(discount)discount,-sum(subtotal)grossamount,-sum(hst)hst,-sum(nettotal)total from ');
+                              sql.add('VW_REFUNDDETAIL RD where refunddate>=' +QuotedStr(DateEditX_FromDate.text)+'and refunddate<='+QuotedStr(DateEditX_ToDate.text));
+                              sql.SaveToFile('jpt1.txt');
+                              Open;
+                         end; *)
+                    SendToExcelsMultiQuery(Query_ServiceCredit,Query_Refund,nil,nil,nil,nil,'Service Credit Sales Report',
+                    '','','','','',ps_fromdate+'-'+ps_todate,'',gs_HospitalName,gs_HospitalAddress,2,9);
+                     pb_ToXl:=False;
+                    end;
+
+               end;
+          finally
+                 Form_QRServiceCreditSalesTest.Free;
+          end;
+
+     end;
+end;
+
+procedure TForm_ServiceCreditSalesReport.BitBtn_FromDateClick(Sender: TObject);
+begin
+     if DateEditX_FromDate.SystemOfDate = 0 then
+     begin
+          BitBtn_FromDate.Caption := 'AD';
+          DateEditX_FromDate.SystemOfDate := 1;
+          DateEditX_ToDate.SystemOfDate := 1;
+     end
+     else if DateEditX_FromDate.SystemOfDate = 1 then
+     begin
+          BitBtn_FromDate.Caption := 'BS';
+          DateEditX_FromDate.SystemOfDate := 0;
+          DateEditX_ToDate.SystemOfDate := 0;
+     end;
+end;
+
+procedure TForm_ServiceCreditSalesReport.BitBtn_ToDateClick(Sender: TObject);
+begin
+     if DateEditX_ToDate.SystemOfDate = 0 then
+     begin
+          BitBtn_ToDate.Caption := 'AD';
+          DateEditX_ToDate.SystemOfDate := 1;
+          DateEditX_FromDate.SystemOfDate := 1;
+     end
+     else if DateEditX_ToDate.SystemOfDate = 1 then
+     begin
+          BitBtn_ToDate.Caption := 'BS';
+          DateEditX_ToDate.SystemOfDate := 0;
+          DateEditX_FromDate.SystemOfDate := 0;
+     end;
+end;
+
+procedure TForm_ServiceCreditSalesReport.CB_TestWiseClick(Sender: TObject);
+begin
+     if CB_TestWise.Checked=True then
+    // BitBtnPreview.Visible:=false
+     else
+     //BitBtnPreview.Visible:=True;
+end;
+
+procedure TForm_ServiceCreditSalesReport.DBLCB_HospitalClick(Sender: TObject);
+begin
+     with QueryRefDoc do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.clear;
+          sql.Add('select REDO_DOCID as docid,REDO_DOCCODE as docode,TRIM(REPLACE(REPLACE(REPLACE(replace(REDO_DOCNAME,''DR''),''PROF''),''.''),''(MRS)''))DOCNAME ');
+          sql.Add('from HS_REDO_REFERALDOCTOR');
+          SQL.Add('where REDO_HOSPITALCODE='+QuotedStr(DBLCB_Hospital.KeyValue));
+          sql.Add(' and redo_dactive=''Y'' order by REDO_DOCNAME');
+          //sql.SaveToFile('D:\check.txt');
+          Open;
+     end;
+end;
+
+procedure TForm_ServiceCreditSalesReport.DBLCB_HospitalKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     if Key = VK_DELETE then
+     begin
+          DBLCB_Hospital.KeyValue := Null;
+     end;
+end;
+
+procedure TForm_ServiceCreditSalesReport.DBLCB_RefDocCodeKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     if Key = VK_DELETE then
+     begin
+          DBLCB_RefDocCode.KeyValue := Null;
+     end;
+end;
+
+procedure TForm_ServiceCreditSalesReport.FormKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+      if Key = 27 then
+          close;
+end;
+
+procedure TForm_ServiceCreditSalesReport.FormShow(Sender: TObject);
+begin
+     //DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_FromDate.text := ServerDate.TodaysDate;
+     //DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.text := ServerDate.TodaysDate;
+//     DateEditX_FromDate.SystemOfDate := 0;
+//     DateEditX_ToDate.SystemOfDate := 0;
+     BitBtn_FromDate.Caption := 'AD';
+     BitBtn_ToDate.Caption := 'AD';
+     QueryRefDoc.Close;
+     QueryRefDoc.Open;
+     pb_ToXl :=False;
+
+     OraQuery_Hospital.Close;
+     OraQuery_Hospital.Open;
+end;
+
+end.

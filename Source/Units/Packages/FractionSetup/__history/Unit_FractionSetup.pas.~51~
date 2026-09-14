@@ -1,0 +1,2056 @@
+unit Unit_FractionSetup;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+     ExtCtrls, StdCtrls, Buttons, DBCtrls, Grids, DBGrids, ComCtrls, Db, Variants,
+     DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Spin;
+
+type
+     TForm_FractionSetup = class(TForm)
+          StatusBar1: TStatusBar;
+          PageControl1: TPageControl;
+          TabSheet_Detail: TTabSheet;
+          Panel1: TPanel;
+          GroupBox_FixedComm: TGroupBox;
+          RB_Fraction: TRadioGroup;
+          LabelOPDReg: TLabel;
+          LabelOPDProc: TLabel;
+          LabelPathology: TLabel;
+          DS_TempFraction: TDataSource;
+          DS_Doctor: TDataSource;
+          Query_Doctor: TOraQuery;
+          Query_Process: TOraQuery;
+          Edit_OpdReg: TEdit;
+          Edit_OpdProc: TEdit;
+          Edit_Pathology: TEdit;
+          DS_Department: TDataSource;
+          Query_Department: TOraQuery;
+          Query_temProcess: TOraQuery;
+          Query_RealData: TOraQuery;
+          BtnSave: TBitBtn;
+          BtnCancel: TBitBtn;
+          LabelTDS: TLabel;
+          Edit_TDS: TEdit;
+          GroupBoxTestWise: TGroupBox;
+          DS_TestName: TDataSource;
+          Query_TestWiseFraction: TOraQuery;
+          DS_TestWiseFraction: TDataSource;
+          CB_OPDReg: TCheckBox;
+          CB_OPDProcedure: TCheckBox;
+          CB_Path: TCheckBox;
+          CB_TDS: TCheckBox;
+          LabelEmrOPD: TLabel;
+          Edit_EmerOPD: TEdit;
+          CB_EmrOPD: TCheckBox;
+          LabelEmrNightOPD: TLabel;
+          Edit_EmerNightOPD: TEdit;
+          CB_EmerNightOPD: TCheckBox;
+          BtnNew: TBitBtn;
+          PC_FractionSetup: TPageControl;
+          TabSheet1: TTabSheet;
+          TabSheet2: TTabSheet;
+          Label20: TLabel;
+          Label23: TLabel;
+          Label24: TLabel;
+          Label21: TLabel;
+          Label22: TLabel;
+          Label3: TLabel;
+          LabelTestRate: TLabel;
+          LabelDept: TLabel;
+          Edit_Rate: TEdit;
+          Edit_Amount: TEdit;
+          RB_Rate: TRadioButton;
+          RB_Amt: TRadioButton;
+          DBLCB_TestName: TDBLookupComboBox;
+          DBLCB_Department: TDBLookupComboBox;
+          CB_FractionProportional: TCheckBox;
+          GroupBox1: TGroupBox;
+          RB_Both: TRadioButton;
+          RB_OutDoor: TRadioButton;
+          RB_Indoor: TRadioButton;
+          DBGrid3: TDBGrid;
+          Edit_TestName: TEdit;
+          CB_Operation: TCheckBox;
+    SPB_Preview: TSpeedButton;
+          SPB_PositionWiseFrctSetup: TSpeedButton;
+          Button1: TButton;
+          Label2: TLabel;
+          DBLCB_Departmet: TDBLookupComboBox;
+          Edit1: TEdit;
+          Label11: TLabel;
+          Label_HighCharge: TLabel;
+          Label_LowCharge: TLabel;
+          SPB_DoctorWiseFrctSetup: TSpeedButton;
+          Query_TestName: TOraQuery;
+          GroupBox2: TGroupBox;
+          Edit_HosPartRate: TEdit;
+          Edit_HosPartAmount: TEdit;
+          Label1: TLabel;
+          Label4: TLabel;
+          CB_SeparateHospitalPart: TCheckBox;
+          Label5: TLabel;
+          Edit_FixedAmtDeduct: TEdit;
+          Label6: TLabel;
+          Label_TestRateNew: TLabel;
+          Label8: TLabel;
+    SPB_PosWiseSetup2nd: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    SPB_Delete: TSpeedButton;
+    Label7: TLabel;
+    Label9: TLabel;
+    Table_TempFraction: TTable;
+          procedure FormCreate(Sender: TObject);
+          procedure FormKeyPress(Sender: TObject; var Key: Char);
+          procedure FormShow(Sender: TObject);
+          procedure RB_FractionClick(Sender: TObject);
+          procedure SP_CancleClick(Sender: TObject);
+          procedure Edit_OpdRegKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_OpdProcKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_PathologyKeyPress(Sender: TObject; var Key: Char);
+          procedure BtnSaveClick(Sender: TObject);
+          procedure BtnCancelClick(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure RB_RateClick(Sender: TObject);
+          procedure RB_AmtClick(Sender: TObject);
+          procedure Edit_RateKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_AmountKeyPress(Sender: TObject; var Key: Char);
+          procedure SPB_PositionWiseFrctSetupClick(Sender: TObject);
+          procedure DBGrid3DblClick(Sender: TObject);
+          procedure SBDeleteClick(Sender: TObject);
+          procedure DBLCB_DepartmentKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure DBLCB_TestNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure CB_OPDRegClick(Sender: TObject);
+          procedure CB_OPDProcedureClick(Sender: TObject);
+          procedure CB_PathClick(Sender: TObject);
+          procedure CB_TDSClick(Sender: TObject);
+          procedure Edit_OpdRegExit(Sender: TObject);
+          procedure Edit_OpdProcExit(Sender: TObject);
+          procedure Edit_PathologyExit(Sender: TObject);
+          procedure Edit_TDSKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_TDSExit(Sender: TObject);
+          procedure CB_EmerNightOPDClick(Sender: TObject);
+          procedure CB_EmrOPDClick(Sender: TObject);
+          procedure Edit_EmerOPDExit(Sender: TObject);
+          procedure Edit_EmerNightOPDExit(Sender: TObject);
+          procedure Edit_EmerOPDKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_EmerNightOPDKeyPress(Sender: TObject; var Key: Char);
+          procedure DBLCB_TestNameClick(Sender: TObject);
+          procedure DBLCB_DepartmentClick(Sender: TObject);
+          procedure Edit_RateExit(Sender: TObject);
+          procedure Edit_AmountExit(Sender: TObject);
+          procedure Edit_TestNameChange(Sender: TObject);
+          procedure CB_OperationClick(Sender: TObject);
+          procedure CB_FractionProportionalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure Edit_AmountKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure SPB_PreviewClick(Sender: TObject);
+          procedure FormDestroy(Sender: TObject);
+          procedure BtnNewClick(Sender: TObject);
+          procedure DBLCB_DepartmetClick(Sender: TObject);
+          procedure DBLCB_DepartmetKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure DBGrid3DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+          procedure SPB_DoctorWiseFrctSetupClick(Sender: TObject);
+
+          Function CheckIsFixedFractionExist(Description: String): Boolean;
+          procedure CB_EHSDocRoutineClick(Sender: TObject);
+          procedure Edit_HosPartRateKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_HosPartAmountKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_HosPartRateExit(Sender: TObject);
+          procedure Edit_HosPartAmountExit(Sender: TObject);
+          procedure CB_SeparateHospitalPartClick(Sender: TObject);
+          procedure Edit_FixedAmtDeductKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_FixedAmtDeductExit(Sender: TObject);
+    procedure SPB_DeleteClick(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure PC_FractionSetupChange(Sender: TObject);
+
+     private
+          { Private declarations }
+          Is_Fixed_Empty, b_IsNew, b_IsSendToExcel: Boolean;
+          pi_FractionId: Integer;
+          pf_TestPrice: Double;
+
+          Procedure FractionRateAmountCalculation;
+
+     public
+
+          { Public declarations }
+     end;
+
+var
+     Form_FractionSetup: TForm_FractionSetup;
+
+implementation
+
+uses {Unit_Message,} Unit_PositionWiseFractionSetup, Unit_QRFraction, DBgridExportToExcel,
+     Unit_DoctorWiseFrctSetup, Fxn, DM, Unit_Master;
+{$R *.DFM}
+
+procedure TForm_FractionSetup.FormCreate(Sender: TObject);
+begin
+     IF Not Query_Department.Active Then
+          Query_Department.Active := True;
+     IF Not Query_Doctor.Active Then
+          Query_Doctor.Active := True;
+     Form_QRFraction := TForm_QRFraction.Create(Nil);
+     Form_PositionWiseFractionSetup := TForm_PositionWiseFractionSetup.Create(nil);
+end;
+
+procedure TForm_FractionSetup.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     If Key = #13 Then
+          keybd_event(9, 13, 0, 0);
+end;
+
+procedure TForm_FractionSetup.FormShow(Sender: TObject);
+begin
+     RB_FractionClick(Sender);
+
+     {
+     With Query_Process do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select distinct NewRegCharge+NewRegSvrTax+RegistrationCharge+RegistrationChargeSvrTax as RegCharge,NewRegCharge+NewRegSvrTax followupcharge from Department ');
+          sql.add(' Where NewRegCharge > 0 Order by NewRegCharge+NewRegSvrTax+RegistrationCharge+RegistrationChargeSvrTax Desc');
+          Open;
+     End; }
+
+    { Query_Process.First;
+     Label_HighCharge.Visible := True;
+     Label_HighCharge.Caption := Query_Process.FieldByName('RegCharge').AsString;
+     Label_LowCharge.Visible := True;
+     Label_LowCharge.Caption:=Query_Process.FieldByName('followupcharge').AsString;
+      Label9.Caption := Query_Process.FieldByName('followupcharge').AsString;
+     Query_Process.Last;
+     Label7.Visible:=true;
+     Label7.Caption := Query_Process.FieldByName('RegCharge').AsString;
+
+
+     LabelOPDReg.Caption := 'Endocrionology  New Patient (%) :';
+     LabelEmrOPD.Caption := 'Endocrionology Follow Up Patient (%) :';
+     LabelEmrNightOPD.Caption := 'On Call Doctor (%) :';
+     LabelOPDProc.Caption := 'Dietician Charge (%) :';}
+End;
+
+procedure TForm_FractionSetup.FractionRateAmountCalculation;
+begin
+     //
+end;
+
+procedure TForm_FractionSetup.PC_FractionSetupChange(Sender: TObject);
+begin
+     if PC_FractionSetup.ActivePageIndex=0 then
+          PC_FractionSetup.ActivePageIndex:=1
+     ELSE if PC_FractionSetup.ActivePageIndex=1 then
+          PC_FractionSetup.ActivePageIndex:=0;
+end;
+
+procedure TForm_FractionSetup.BtnSaveClick(Sender: TObject);
+Var
+     li_DepId, li_TestNameId: Integer;
+     ls_IsTestDept, ls_Description, ls_FractionFor: String;
+     lf_DeductAmtInTestPrice: Double;
+begin
+     IF RB_Fraction.ItemIndex = 0 Then // Fixed Commession
+     Begin
+          IF MessageDlg('Are you Sure to Save ?', mtConfirmation, [MbYes, MbNo], 0) <> MrYes Then
+               Exit;
+          Try
+               DM_Hospital.Db.StartTransaction;
+               With Query_Process Do
+               Begin
+                    IF CheckIsFixedFractionExist('ENDOCRIONOLOGY NEW PATIENT') = False Then
+                    Begin
+                         pi_FractionId := GetMaxId('hs_frac_Fraction', 'frac_FractionId');
+                         { OPD Registration }
+                         Close;
+                         sql.Clear;
+                         sql.add(' Insert Into hs_frac_Fraction(frac_FractionId, frac_DOCID, frac_DOCTYPE, frac_DEPID, frac_TESTNAMEID,');
+                         sql.add(' frac_FractionRate,frac_FractionAmount,frac_IsRateAmt,frac_FractionType,frac_DESCRIPTION) Values(');
+                         sql.add(IntToStr(pi_FractionId));
+                         sql.add(',0,'' '',0,0 ');
+                         IF CB_OPDReg.Checked = True Then
+                         Begin
+                              sql.add(',0,' + Edit_OpdReg.Text);
+                              sql.add(' ,''A''');
+                         End
+                         Else
+                         Begin
+                              sql.add(',' + Edit_OpdReg.Text + ',0');
+                              sql.add(' ,''R''');
+                         End;
+                         sql.add(',1');
+                         sql.add(',' + #39 + 'ENDOCRIONOLOGY NEW PATIENT' + #39);
+                         sql.add(')');
+                         ExecSQL;
+                    End
+                    Else
+                    Begin
+                         { OPD Registration }
+                         Close;
+                         sql.Clear;
+                         sql.add(' Update hs_frac_Fraction Set ');
+                         IF CB_OPDReg.Checked = True Then
+                         Begin
+                              sql.add(' frac_IsRateAmt=''A''');
+                              sql.add(' ,frac_FractionRate=0,frac_FractionAmount=' + Edit_OpdReg.Text);
+                         End
+                         Else
+                         Begin
+                              sql.add(' frac_IsRateAmt=''R''');
+                              sql.add(' ,frac_FractionAmount=0,frac_FractionRate=' + Edit_OpdReg.Text);
+                         End;
+                         sql.add(' Where frac_DESCRIPTION=''ENDOCRIONOLOGY NEW PATIENT'' and frac_FractionType=1');
+                         ExecSQL;
+                    End;
+//
+                     IF CheckIsFixedFractionExist('ENDOCRIONOLOGY FOLLOW UP PATIENT') = False Then
+                     Begin
+                         pi_FractionId := GetMaxId('hs_frac_Fraction', 'frac_FractionId');
+                         { OPD Registration }
+                         Close;
+                         sql.Clear;
+                         sql.add(' Insert Into hs_frac_Fraction(frac_FractionId, frac_DOCID, frac_DOCTYPE, frac_DEPID, frac_TESTNAMEID,');
+                         sql.add(' frac_FractionRate,frac_FractionAmount,frac_IsRateAmt,frac_FractionType,frac_DESCRIPTION) Values(');
+                         sql.add(IntToStr(pi_FractionId));
+                         sql.add(',0,'' '',0,0 ');
+                         IF CB_EmrOPD.Checked = True Then
+                         Begin
+                              sql.add(',0,' + Edit_EmerOPD.Text);
+                              sql.add(' ,''A''');
+                         End
+                         Else
+                         Begin
+                              sql.add(',' + Edit_EmerOPD.Text + ',0');
+                              sql.add(' ,''R''');
+                         End;
+                         sql.add(',1');
+                     sql.add(',' + #39 + 'ENDOCRIONOLOGY FOLLOW UP PATIENT' + #39);
+                     sql.add(')');
+                     //SQL.SaveToFile('TT.TXT');
+                     ExecSQL;
+                     End
+                     Else
+                     Begin
+                     { Emergency OPD or Registration Charge Low (For Medicare) }
+                     Close;
+                     sql.Clear;
+                     sql.add(' Update hs_frac_Fraction Set ');
+                     IF CB_EmrOPD.Checked = True Then
+                     Begin
+                     sql.add(' frac_IsRateAmt=''A''');
+                     sql.add(' ,frac_FractionAmount=' + Edit_EmerOPD.Text);
+                     End
+                     Else
+                     Begin
+                     sql.add(' frac_IsRateAmt=''R''');
+                     sql.add(' ,frac_FractionRate=' + Edit_EmerOPD.Text);
+                     End;
+                     IF gi_compileValue In [219] Then // 19 -Medicare
+                     sql.add(' Where frac_DESCRIPTION=''ENDOCRIONOLOGY FOLLOW UP PATIENT'' and frac_FractionType=1')
+                     Else
+                     sql.add(' Where frac_DESCRIPTION=''ENDOCRIONOLOGY FOLLOW UP PATIENT'' ');
+                     ExecSQL;
+                     End;
+
+                     IF CheckIsFixedFractionExist('ON CALL DOCTOR') = False Then
+                     Begin
+                     { Emergency Night OPD or Emergency Consultation }
+                    pi_FractionId := GetMaxId('hs_frac_Fraction', 'frac_FractionId');
+                         { OPD Registration }
+                         Close;
+                         sql.Clear;
+                         sql.add(' Insert Into hs_frac_Fraction(frac_FractionId, frac_DOCID, frac_DOCTYPE, frac_DEPID, frac_TESTNAMEID,');
+                         sql.add(' frac_FractionRate,frac_FractionAmount,frac_IsRateAmt,frac_FractionType,frac_DESCRIPTION) Values(');
+                         sql.add(IntToStr(pi_FractionId));
+                         sql.add(',0,'' '',0,0 ');
+                         IF CB_EmerNightOPD.Checked = True Then
+                         Begin
+                              sql.add(',0,' + Edit_EmerNightOPD.Text);
+                              sql.add(' ,''A''');
+                         End
+                         Else
+                         Begin
+                              sql.add(',' + Edit_EmerNightOPD.Text + ',0');
+                              sql.add(' ,''R''');
+                         End;
+                     sql.add(',1');
+                     sql.add(',' + #39 + 'ON CALL DOCTOR' + #39);
+                     sql.add(')');
+                     ExecSQL;
+                     End
+                     Else
+                     Begin
+                     { Emergency Night OPD or Emergency Consultation }
+                     Close;
+                     sql.Clear;
+                     sql.add(' Update hs_frac_Fraction Set ');
+                     IF CB_EmerNightOPD.Checked = True Then
+                     Begin
+                     sql.add(' frac_IsRateAmt=''A''');
+                     sql.add(' ,frac_FractionAmount=' + Edit_EmerNightOPD.Text);
+                     End
+                     Else
+                     Begin
+                     sql.add(' frac_FractionRate=' + Edit_EmerNightOPD.Text);
+                     sql.add(' ,frac_IsRateAmt=''R''');
+                     End;
+                     sql.add(' Where frac_DESCRIPTION=''ON CALL DOCTOR'' and frac_FractionType=1');
+                     ExecSQL;
+                     End;
+
+
+
+                     IF CheckIsFixedFractionExist('DIETICIAN CHARGE') = False Then
+                     Begin
+                     {DIETICIAN CHARGE }
+                         pi_FractionId := GetMaxId('hs_frac_Fraction', 'frac_FractionId');
+                         { OPD Registration }
+                         Close;
+                         sql.Clear;
+                         sql.add(' Insert Into hs_frac_Fraction(frac_FractionId, frac_DOCID, frac_DOCTYPE, frac_DEPID, frac_TESTNAMEID,');
+                         sql.add(' frac_FractionRate,frac_FractionAmount,frac_IsRateAmt,frac_FractionType,frac_DESCRIPTION) Values(');
+                         sql.add(IntToStr(pi_FractionId));
+                         sql.add(',0,'' '',0,0 ');
+                         IF CB_EmerNightOPD.Checked = True Then
+                         Begin
+                              sql.add(',0,' + Edit_OpdProc.Text);
+                              sql.add(' ,''A''');
+                         End
+                         Else
+                         Begin
+                              sql.add(',' + Edit_OpdProc.Text + ',0');
+                              sql.add(' ,''R''');
+                         End;
+                     sql.add(',1');
+                     sql.add(',' + #39 + 'DIETICIAN CHARGE' + #39);
+                     sql.add(')');
+                     ExecSQL;
+                     End
+                     Else
+                     Begin
+                     { Emergency Night OPD or Emergency Consultation }
+                     Close;
+                     sql.Clear;
+                     sql.add(' Update hs_frac_Fraction Set ');
+                     IF CB_EmerNightOPD.Checked = True Then
+                     Begin
+                     sql.add(' frac_IsRateAmt=''A''');
+                     sql.add(' ,frac_FractionAmount=' + Edit_OpdProc.Text);
+                     End
+                     Else
+                     Begin
+                     sql.add(' frac_FractionRate=' + Edit_OpdProc.Text);
+                     sql.add(' ,frac_IsRateAmt=''R''');
+                     End;
+                     sql.add(' Where frac_DESCRIPTION=''DIETICIAN CHARGE'' and frac_FractionType=1');
+                     ExecSQL;
+                     End;
+
+//                     IF CheckIsFixedFractionExist('EMERGENCY DUTY DOCTOR') = False Then
+//                     Begin
+//                     { OPD Procedure  or Emergency Duty Doctor }
+//                     pi_FractionId := GetMaxId('Fraction', 'FractionId');
+//                     Close;
+//                     sql.Clear;
+//                     sql.add(' Insert Into Fraction(FractionId, DOCID, DOCTYPE, DEPID, TESTNAMEID,');
+//                     sql.add(' FractionRate, FractionType,IsRateAmt, DESCRIPTION)Values(');
+//                     sql.add(IntToStr(pi_FractionId));
+//                     sql.add(',0,'' '',0,0 ');
+//                     sql.add(',' + Edit_OpdProc.Text);
+//                     sql.add(' ,0,0,0,0');
+//                     sql.add(',1');
+//
+//                     IF CB_OPDProcedure.Checked = True Then
+//                     sql.add(' ,''A''')
+//                     Else
+//                     sql.add(' ,''R''');
+//
+//                     sql.add(',' + #39 + 'EMERGENCY DUTY DOCTOR' + #39);
+//                     sql.add(')');
+//                     ExecSQL;
+//                     End
+//                     Else
+//                     Begin
+//                     { OPD Procedure  or Emergency Duty Doctor }
+//                     Close;
+//                     sql.Clear;
+//                     sql.add(' Update Fraction Set ');
+//
+//                     IF CB_OPDProcedure.Checked = True Then
+//                     Begin
+//                     sql.add(' FractionAmount=' + Edit_OpdProc.Text);
+//                     sql.add(' ,IsRateAmt=''A''');
+//                     End
+//                     Else
+//                     Begin
+//                     sql.add(' FractionRate=' + Edit_OpdProc.Text);
+//                     sql.add(' ,IsRateAmt=''R''');
+//                     End;
+//
+//                     IF gi_HospitalId In [19] Then // 19 -Medicare
+//                     sql.add(' Where DESCRIPTION=''EMERGENCY DUTY DOCTOR'' and FractionType=1')
+//                     Else
+//                     sql.add(' Where DESCRIPTION=''OPD PROCEDURE'' ');
+//                     ExecSQL;
+//                     End;
+                    //
+                    // IF CheckIsFixedFractionExist('PATHOLOGY') = False Then
+                    // Begin
+                    // { Pathology Dept. }
+                    // pi_FractionId := GetMaxId('Fraction', 'FractionId');
+                    // Close;
+                    // sql.Clear;
+                    // sql.add(' Insert Into Fraction(FractionId, DOCID, DOCTYPE, DEPID, TESTNAMEID,');
+                    // sql.add(' FractionRate, FractionType,IsRateAmt, DESCRIPTION)Values(');
+                    // sql.add(IntToStr(pi_FractionId));
+                    // sql.add(',0,'' '',17,0 '); // 17 - Pathology Dept. Id
+                    // sql.add(',' + Edit_Pathology.Text);
+                    // sql.add(' ,0,0,0,0');
+                    // sql.add(',1');
+                    // IF CB_Path.Checked = True Then
+                    // sql.add(' ,''A''')
+                    // Else
+                    // sql.add(' ,''R''');
+                    // sql.add(',' + #39 + 'PATHOLOGY' + #39);
+                    // sql.add(')');
+                    // ExecSQL;
+                    // End
+                    // Else
+                    // Begin
+                    // Close;
+                    // sql.Clear;
+                    // sql.add(' Update Fraction Set ');
+                    // IF CB_Path.Checked = True Then
+                    // Begin
+                    // sql.add(' FractionAmount=' + Edit_Pathology.Text);
+                    // sql.add(' ,IsRateAmt=''A''');
+                    // End
+                    // Else
+                    // Begin
+                    // sql.add(' FractionRate=' + Edit_Pathology.Text);
+                    // sql.add(' ,IsRateAmt=''R''');
+                    // End;
+                    // sql.add(' Where DESCRIPTION=''PATHOLOGY'' and FractionType=1');
+                    // ExecSQL;
+                    // End;
+                    //
+                    IF CheckIsFixedFractionExist('TDS') = False Then
+                    Begin
+                         pi_FractionId := GetMaxId('hs_frac_Fraction', 'frac_FractionId');
+                         { OPD Registration }
+                         Close;
+                         sql.Clear;
+                         sql.add(' Insert Into hs_frac_Fraction(frac_FractionId, frac_DOCID, frac_DOCTYPE, frac_DEPID, frac_TESTNAMEID,');
+                         sql.add(' frac_FractionRate,frac_FractionAmount,frac_IsRateAmt,frac_FractionType,frac_DESCRIPTION) Values(');
+                         sql.add(IntToStr(pi_FractionId));
+                         sql.add(',0,'' '',0,0 ');
+                         IF CB_TDS.Checked = True Then
+                         Begin
+                              sql.add(',0,' + Edit_TDS.Text);
+                              sql.add(' ,''A''');
+                         End
+                         Else
+                         Begin
+                              sql.add(',' + Edit_TDS.Text + ',0');
+                              sql.add(' ,''R''');
+                         End;
+                         sql.add(',1');
+                         sql.add(',''TDS''');
+                         sql.add(')');
+                         ExecSQL;
+                    End
+                    Else
+                    Begin
+                         { OPD Registration }
+                         Close;
+                         sql.Clear;
+                         sql.add(' Update hs_frac_Fraction Set ');
+                         IF CB_TDS.Checked = True Then
+                         Begin
+                              sql.add(' frac_IsRateAmt=''A''');
+                              sql.add(' ,frac_FractionRate=0,frac_FractionAmount=' + Edit_TDS.Text);
+                         End
+                         Else
+                         Begin
+                              sql.add(' frac_IsRateAmt=''R''');
+                              sql.add(' ,frac_FractionAmount=0,frac_FractionRate=' + Edit_TDS.Text);
+                         End;
+                         sql.add(' Where frac_DESCRIPTION=''TDS'' and frac_FractionType=1');
+                         ExecSQL;
+                    End;
+               End;
+               DM_Hospital.Db.Commit;
+               ShowDoneMessage;
+          Except
+               DM_Hospital.Db.Rollback;
+               ShowMessage('Error Occured While Saving the Data.');
+               Exit;
+          End;
+     End
+     Else If RB_Fraction.ItemIndex = 1 Then // Test Wise Commession
+     Begin
+          if PC_FractionSetup.ActivePageIndex=0 then
+          exit;
+
+          IF (DBLCB_TestName.KeyValue = NULL) and (DBLCB_Department.KeyValue = NULL) Then
+          Begin
+               MessageDlg('Plz. Choose Either Department or Test Name.', mtInformation, [mbok], 0);
+               DBLCB_TestName.SetFocus;
+               Exit;
+          End;
+
+          IF (DBLCB_TestName.KeyValue <> NULL) and (DBLCB_Department.KeyValue <> NULL) Then
+          Begin
+               MessageDlg('You Cannot Choose Both Department and Test Name.', mtWarning, [mbok], 0);
+               DBLCB_TestName.SetFocus;
+               Exit;
+          End;
+
+          IF (RB_Rate.Checked = True) and ((Trim(Edit_Rate.Text) = '') or (Edit_Rate.Text = '0')) Then
+          Begin
+               MessageDlg('Plz. Check The Rate(%).', mtInformation, [mbok], 0);
+               Edit_Rate.SetFocus;
+               Exit;
+          End;
+
+          IF (RB_Amt.Checked = True) and ((Trim(Edit_Amount.Text) = '') or (Edit_Amount.Text = '0')) Then
+          Begin
+               MessageDlg('Plz. Check The Rate(Rs).', mtInformation, [mbok], 0);
+               Edit_Amount.SetFocus;
+               Exit;
+          End;
+
+          if Trim(Edit_HosPartRate.Text) = '' then
+               Edit_HosPartRate.Text := '0';
+
+          if Trim(Edit_HosPartAmount.Text) = '' then
+               Edit_HosPartAmount.Text := '0';
+
+          if StrToFloat(Edit_HosPartRate.Text) >= 100 then
+          Begin
+               MessageDlg('If Hospital Part Fraction is 100 No Need to Setup Fraction.', mtInformation, [mbok], 0);
+               Edit_HosPartRate.SetFocus;
+               Exit;
+          End;
+
+          IF DBLCB_Department.KeyValue <> NULL Then
+          Begin
+               li_DepId := DBLCB_Department.KeyValue;
+               li_TestNameId := 0;
+               ls_IsTestDept := 'D';
+               ls_Description := DBLCB_Department.Text;
+          End
+          Else
+          Begin
+               li_DepId := Query_TestName.FieldByName('DepId').AsInteger;
+               li_TestNameId := Query_TestName.FieldByName('TestNameID').AsInteger;
+               ls_IsTestDept := 'T';
+               ls_Description := DBLCB_TestName.Text;
+          End;
+
+          IF Trim(Edit_Rate.Text) = '' Then
+               Edit_Rate.Text := '0';
+          IF Trim(Edit_Amount.Text) = '' Then
+               Edit_Amount.Text := '0';
+
+          IF RB_Both.Checked = True Then
+               ls_FractionFor := 'Both'
+          Else IF RB_OutDoor.Checked = True Then
+               ls_FractionFor := 'OutDoor'
+          Else
+               ls_FractionFor := 'Indoor';
+
+          if Trim(Edit_FixedAmtDeduct.Text) = '' then
+               Edit_FixedAmtDeduct.Text := '0';
+
+          lf_DeductAmtInTestPrice := StrToFloat(Edit_FixedAmtDeduct.Text);
+
+          IF b_IsNew Then
+          Begin
+               IF DBLCB_TestName.KeyValue <> NULL Then
+               Begin
+                    With Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Select * From hs_frac_Fraction where frac_TestNameId=' + IntToStr(DBLCB_TestName.KeyValue));
+                         sql.add(' and frac_FractionFor=' + #39 + ls_FractionFor + #39);
+                         Open;
+                    End;
+
+                    IF Query_Process.RecordCount > 0 Then
+                    Begin
+                         MessageDlg('Fraction has already setup for this test.', mtInformation, [mbok], 0);
+                         DBLCB_TestName.SetFocus;
+                         Exit;
+                    End;
+               End
+               Else
+               Begin
+                    With Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Select * From hs_frac_Fraction where frac_TestNameId <=0 and frac_DepId=' + IntToStr(DBLCB_Department.KeyValue));
+                         sql.add(' and frac_FractionType=3 and frac_FractionFor=' + #39 + ls_FractionFor + #39);
+                         Open;
+                    End;
+
+                    IF Query_Process.RecordCount > 0 Then
+                    Begin
+                         MessageDlg('Fraction setup of this department is already exist.', mtInformation, [mbok], 0);
+                         DBLCB_Department.SetFocus;
+                         Exit;
+                    End;
+               End;
+
+               IF MessageDlg('Are you Sure to Save ?', mtConfirmation, [MbYes, MbNo], 0) <> MrYes Then
+                    Exit;
+               pi_FractionId := GetMaxId('hs_frac_Fraction', 'frac_FractionId');
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Insert Into hs_frac_Fraction(frac_FractionId, frac_DOCID, frac_DOCTYPE, frac_DEPID,frac_TESTNAMEID, frac_FractionRate,');
+                    sql.add(' frac_FractionAmount,frac_HosPartFractionRate,frac_HosPartFractionAmount,frac_IsRateAmt,frac_FractionType,frac_DESCRIPTION,');
+                    sql.add(
+                         ' frac_IsTestDept,frac_IsFractionPropWithDisPer,frac_FractionFor,FRAC_ISSEPRTCHARGEFROMTESTPRI,FRAC_FIXEDAMTDEDUCTONTESTPRICE) Values(');
+                    sql.add(IntToStr(pi_FractionId));
+                    sql.add(',0,'''',' + IntToStr(li_DepId));
+                    sql.add(',' + IntToStr(li_TestNameId));
+                    sql.add(',' + Edit_Rate.Text);
+                    sql.add(',' + Edit_Amount.Text);
+                    sql.add(',' + Edit_HosPartRate.Text);
+                    sql.add(',' + Edit_HosPartAmount.Text);
+                    IF RB_Amt.Checked = True Then
+                         sql.add(',''A''')
+                    Else
+                         sql.add(',''R''');
+                    sql.add(',3,' + #39 + ls_Description + #39);
+                    sql.add(',' + #39 + ls_IsTestDept + #39);
+                    IF CB_FractionProportional.Checked = True Then
+                         sql.add(' ,''Y''')
+                    Else
+                         sql.add(' ,''N''');
+                    sql.add(' ,' + #39 + ls_FractionFor + #39);
+
+                    IF CB_SeparateHospitalPart.Checked = True Then
+                         sql.add(' ,''Y''')
+                    Else
+                         sql.add(' ,''N''');
+                    sql.add(',' + FloatToStr(lf_DeductAmtInTestPrice));
+                    sql.add(')');
+                    ExecSQL;
+               End;
+               if b_IsNew = True Then
+               SPB_PositionWiseFrctSetupClick(Sender);
+               b_IsNew := True;
+              // ShowDoneMessage;
+          End
+          Else
+          Begin
+               IF DBLCB_TestName.KeyValue <> NULL Then
+               Begin
+                    With Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Select frac_fractionid fractionid From hs_frac_Fraction where frac_TestNameId=' + IntToStr(DBLCB_TestName.KeyValue));
+                         sql.add(' and frac_FractionFor=' + #39 + ls_FractionFor + #39);
+                         Open;
+                    End;
+
+                    IF (Query_Process.RecordCount > 0) and (pi_FractionId <> Query_Process.FieldByName('FractionId').AsInteger) Then
+                    Begin
+                         IF ls_FractionFor = 'Both' Then
+                              MessageDlg('Sorry You Cannot Set Twice Fraction For " ' + ls_FractionFor +
+                                     ' ". Keep either Outdoor or Indoor.', mtInformation, [mbok], 0)
+                         Else IF ls_FractionFor = 'OutDoor' Then
+                              MessageDlg('Sorry You Cannot Set Twice Fraction For " ' + ls_FractionFor + ' ". Keep either Both or Indoor.',
+                                   mtInformation, [mbok], 0)
+                         Else
+                              MessageDlg('Sorry You Cannot Set Twice Fraction For " ' + ls_FractionFor +
+                                     ' ". Keep either Both or Outdoor.', mtInformation, [mbok], 0);
+                         DBLCB_TestName.SetFocus;
+                         Exit;
+                    End;
+               End
+               Else
+               Begin
+                    With Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Select frac_fractionid fractionid From frac_Fraction where frac_TestNameId <=0 and DepId=' + IntToStr(DBLCB_Department.KeyValue));
+                         sql.add(' and frac_FractionType=3 and frac_FractionFor=' + #39 + ls_FractionFor + #39);
+                         Open;
+                    End;
+
+                    IF (Query_Process.RecordCount > 0) and (pi_FractionId <> Query_Process.FieldByName('FractionId').AsInteger) Then
+                    Begin
+                         IF ls_FractionFor = 'Both' Then
+                              MessageDlg('Sorry You Cannot Set Twice Fraction For " ' + ls_FractionFor +
+                                     ' ". Keep either Outdoor or Indoor.', mtInformation, [mbok], 0)
+                         Else IF ls_FractionFor = 'OutDoor' Then
+                              MessageDlg('Sorry You Cannot Set Twice Fraction For " ' + ls_FractionFor + ' ". Keep either Both or Indoor.',
+                                   mtInformation, [mbok], 0)
+                         Else
+                              MessageDlg('Sorry You Cannot Set Twice Fraction For " ' + ls_FractionFor +
+                                     ' ". Keep either Both or Outdoor.', mtInformation, [mbok], 0);
+                         DBLCB_Department.SetFocus;
+                         Exit;
+                    End;
+               End;
+
+               IF MessageDlg('Are you Sure to Save ?', mtConfirmation, [MbYes, MbNo], 0) <> MrYes Then
+                    Exit;
+               Try
+                    DM_Hospital.Db.StartTransaction;
+                    With Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Update hs_frac_Fraction Set frac_DEPID=' + IntToStr(li_DepId));
+                         sql.add(' ,frac_TESTNAMEID=' + IntToStr(li_TestNameId));
+                         sql.add(' ,frac_FractionRate=' + Edit_Rate.Text);
+                         sql.add(' ,frac_FractionAmount=' + Edit_Amount.Text);
+                         sql.add(' ,frac_HosPartFractionRate=' + Edit_HosPartRate.Text);
+                         sql.add(' ,frac_HosPartFractionAmount=' + Edit_HosPartAmount.Text);
+                         IF RB_Amt.Checked = True Then
+                              sql.add(' ,frac_IsRateAmt=''A''')
+                         Else
+                              sql.add(' ,frac_IsRateAmt=''R''');
+                         IF CB_FractionProportional.Checked = True Then
+                              sql.add(' ,frac_IsFractionPropWithDisPer=''Y''')
+                         Else
+                              sql.add(' ,frac_IsFractionPropWithDisPer=''N''');
+                         IF CB_SeparateHospitalPart.Checked = True Then
+                              sql.add(' ,FRAC_ISSEPRTCHARGEFROMTESTPRI=''Y''')
+                         Else
+                              sql.add(' ,FRAC_ISSEPRTCHARGEFROMTESTPRI=''N''');
+                         sql.add(' ,frac_IsTestDept=' + #39 + ls_IsTestDept + #39);
+                         sql.add(' ,frac_DESCRIPTION=' + #39 + ls_Description + #39);
+                         sql.add(' ,frac_FractionFor=' + #39 + ls_FractionFor + #39);
+                         sql.add(' ,FRAC_FIXEDAMTDEDUCTONTESTPRICE=' + FloatToStr(lf_DeductAmtInTestPrice));
+                         sql.add(' where frac_FractionId=' + IntToStr(pi_FractionId));
+                         ExecSQL;
+
+                         Close;
+                         sql.Clear;
+                         sql.add(' Update hs_powf_PositionWiseFraction set powf_FractionFor=' + #39 + ls_FractionFor + #39 + ' where powf_FractionId=' +
+                                IntToStr(pi_FractionId));
+                         ExecSQL;
+                    End;
+                    DM_Hospital.Db.Commit;
+                    ShowDoneMessage;
+               Except
+                    DM_Hospital.Db.Rollback;
+                    MessageDlg('Failure To Update !', mtWarning, [mbok], 0);
+               End;
+          End;
+
+          IF DBLCB_Department.KeyValue <> NULL Then
+          Begin
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update hs_tena_TestName Set tena_IsFractionableItem=''Y'' where tena_DepId=' + IntToStr(DBLCB_Department.KeyValue));
+                    ExecSQL;
+               End;
+          End
+          Else
+          Begin
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update hs_tena_TestName Set tena_IsFractionableItem=''Y'' where tena_TestNameId=' + IntToStr(li_TestNameId));
+                    ExecSQL;
+               End;
+          End;
+
+          SPB_PosWiseSetup2nd.Visible:=True;
+          Query_TestWiseFraction.Close;
+          Query_TestWiseFraction.Open;
+          Query_TestWiseFraction.Locate('FractionId', pi_FractionId, []);
+          DBLCB_Department.KeyValue := NULL;
+          DBLCB_TestName.KeyValue := NULL;
+          DBLCB_TestName.SetFocus;
+          RB_Both.Checked := True;
+          Edit_Rate.Text := '';
+          Edit_Amount.Text := '';
+          Edit_HosPartRate.Text := '';
+          Edit_HosPartAmount.Text := '';
+          CB_FractionProportional.Checked := False;
+          RB_Rate.Checked := True;
+
+          if b_IsNew=True Then
+          SPB_PositionWiseFrctSetupClick(Sender);
+
+          b_IsNew := True;
+
+     End;
+End;
+
+procedure TForm_FractionSetup.RB_FractionClick(Sender: TObject);
+begin
+     BtnSave.Enabled := True;
+
+     IF RB_Fraction.ItemIndex = 0 Then // Fixed Commession Setup
+     Begin
+          GroupBox_FixedComm.BringToFront;
+          With Query_Process Do
+          Begin
+               Close;
+               Session:=DM_Hospital.DB;
+               sql.Clear;
+               sql.add(' Select FRAC_FractionId FractionId,FRAC_Description Description,FRAC_FractionRate FractionRate,FRAC_IsRateAmt IsRateAmt,FRAC_FractionAmount FractionAmount From HS_FRAC_FRACTION ');
+               sql.add(' Where FRAC_FractionType=1 Order By FRAC_Description ');
+               Open;
+
+               If Query_Process.FieldByName('FractionId').AsInteger = 0 Then
+               Begin
+                    Edit_OpdReg.Text := '0';
+                    Edit_EmerOPD.Text := '0';
+                    Edit_EmerNightOPD.Text := '0';
+                    Edit_OpdProc.Text := '0';
+                    Edit_Pathology.Text := '0';
+                    Edit_TDS.Text := '0';
+                    Is_Fixed_Empty := True;
+                    Exit;
+               End;
+
+               Query_Process.First;
+               While not Query_Process.EOF Do
+               Begin
+                    Is_Fixed_Empty := False;
+                    IF Query_Process.FieldByName('Description').AsString = 'ENDOCRIONOLOGY NEW PATIENT' Then
+                    Begin
+                         IF Query_Process.FieldByName('IsRateAmt').AsString = 'A' Then
+                         Begin
+                              CB_OPDReg.Checked := True;
+                              Edit_OpdReg.Text := FieldByName('FractionAmount').AsString;
+                         End
+                         Else
+                         Begin
+                              CB_OPDReg.Checked := False;
+                              Edit_OpdReg.Text := FieldByName('FractionRate').AsString;
+                         End;
+
+                    End
+                    Else IF Query_Process.FieldByName('Description').AsString = 'ENDOCRIONOLOGY FOLLOW UP PATIENT' Then
+                    Begin
+                         IF Query_Process.FieldByName('IsRateAmt').AsString = 'A' Then
+                         Begin
+                              CB_EmrOPD.Checked := True;
+                              Edit_EmerOPD.Text := FieldByName('FractionAmount').AsString;
+                         End
+                         Else
+                         Begin
+                              CB_EmrOPD.Checked := False;
+                              Edit_EmerOPD.Text := FieldByName('FractionRate').AsString;
+                         End;
+                    End
+                    Else IF (Query_Process.FieldByName('Description').AsString = 'ON CALL DOCTOR') or
+                      (Query_Process.FieldByName('Description').AsString = 'EMERGENCY CONSULTATION') Then
+                    Begin
+                         IF Query_Process.FieldByName('IsRateAmt').AsString = 'A' Then
+                         Begin
+                              CB_EmerNightOPD.Checked := True;
+                              Edit_EmerNightOPD.Text := FieldByName('FractionAmount').AsString;
+                         End
+                         Else
+                         Begin
+                              CB_EmerNightOPD.Checked := False;
+                              Edit_EmerNightOPD.Text := FieldByName('FractionRate').AsString;
+                         End;
+                    End
+                    Else IF (Query_Process.FieldByName('Description').AsString = 'DIETICIAN CHARGE') or
+                      (Query_Process.FieldByName('Description').AsString = 'EMERGENCY DUTY DOCTOR') Then
+                    Begin
+                         IF Query_Process.FieldByName('IsRateAmt').AsString = 'A' Then
+                         Begin
+                              CB_OPDProcedure.Checked := True;
+                              Edit_OpdProc.Text := FieldByName('FractionAmount').AsString;
+                         End
+                         Else
+                         Begin
+                              CB_OPDProcedure.Checked := False;
+                              Edit_OpdProc.Text := FieldByName('FractionRate').AsString;
+                         End;
+                    End
+                    Else IF Query_Process.FieldByName('Description').AsString = 'PATHOLOGY' Then
+                    Begin
+                         IF Query_Process.FieldByName('IsRateAmt').AsString = 'A' Then
+                         Begin
+                              CB_Path.Checked := True;
+                              Edit_Pathology.Text := FieldByName('FractionAmount').AsString;
+                         End
+                         Else
+                         Begin
+                              CB_Path.Checked := False;
+                              Edit_Pathology.Text := FieldByName('FractionRate').AsString;
+                         End;
+                    End
+                    Else IF Query_Process.FieldByName('Description').AsString = 'TDS' Then
+                    Begin
+                         IF Query_Process.FieldByName('IsRateAmt').AsString = 'A' Then
+                         Begin
+                              CB_TDS.Checked := True;
+                              Edit_TDS.Text := FieldByName('FractionAmount').AsString;
+                         End
+                         Else
+                         Begin
+                              CB_TDS.Checked := False;
+                              Edit_TDS.Text := FieldByName('FractionRate').AsString;
+                         End;
+                    End;
+                    Query_Process.Next;
+               End;
+          End;
+     End
+     Else IF RB_Fraction.ItemIndex = 1 Then // Test Wise Commession Setup
+     Begin
+          GroupBoxTestWise.BringToFront;
+          Query_Department.Close;
+          Query_Department.Open;
+          Query_TestName.Close;
+          Query_TestName.Open;
+          DBLCB_TestName.KeyValue := NULL;
+          Edit_Rate.Text := '';
+          Edit_Amount.Text := '';
+          RB_Rate.Checked := True;
+          b_IsNew := True;
+          PC_FractionSetup.ActivePageIndex := 0;
+          Edit_TestName.SetFocus;
+          Query_TestWiseFraction.Close;
+          Query_TestWiseFraction.Open;
+     End;
+End;
+
+procedure TForm_FractionSetup.SP_CancleClick(Sender: TObject);
+begin
+     IF Table_TempFraction.RecordCount = 0 Then
+          Exit;
+     If MessageDlg('Are you sure to Delete ?', mtConfirmation, [MbYes, MbNo], 0) = MrYes Then
+          Table_TempFraction.Delete;
+end;
+
+procedure TForm_FractionSetup.Edit_OpdRegKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_OpdReg, Key);
+     Key := Key;
+end;
+
+procedure TForm_FractionSetup.Edit_OpdProcKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_OpdProc, Key);
+     Key := Key;
+end;
+
+procedure TForm_FractionSetup.Edit_PathologyKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_Pathology, Key);
+     Key := Key;
+end;
+
+procedure TForm_FractionSetup.BtnCancelClick(Sender: TObject);
+begin
+     IF RB_Fraction.ItemIndex = 1 Then
+     Begin
+          IF PC_FractionSetup.ActivePageIndex = 1 Then
+          BEGIN
+               DBLCB_Department.KeyValue := NULL;
+               DBLCB_TestName.KeyValue := NULL;
+               LabelDept.Visible := False;
+               LabelTestRate.Caption := '0.00';
+               CB_FractionProportional.Checked := False;
+               CB_SeparateHospitalPart.Checked := False;
+               LABEL5.Enabled:=FALSE;
+               LABEL6.Enabled:=FALSE;
+               LABEL8.Enabled:=FALSE;
+               Edit_FixedAmtDeduct.Enabled:=FALSE;
+               Edit_FixedAmtDeduct.Text:='';
+               Label_TestRateNew.Caption:='0.00';
+               Label_TestRateNew.Enabled:=FALSE;
+               Edit_HosPartRate.Text:='';
+               Edit_HosPartAmount.Text:='';
+               RB_Both.Checked := True;
+               Edit_Rate.Text := '0';
+               Edit_Amount.Text := '0';
+               RB_Rate.Checked := True;
+               SPB_PosWiseSetup2nd.Visible:=False;
+               PC_FractionSetup.ActivePageIndex := 0;
+          END
+          Else
+               Close;
+     End
+     Else
+     Begin
+          Close;
+     End;
+
+end;
+
+procedure TForm_FractionSetup.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_F1 Then
+     Begin
+          RB_Fraction.ItemIndex := 0;
+          RB_FractionClick(Sender);
+     End;
+
+     IF Key = VK_F2 Then
+     Begin
+          RB_Fraction.ItemIndex := 1;
+          RB_FractionClick(Sender);
+     End;
+
+     IF RB_Fraction.ItemIndex = 0 Then
+     Begin
+          IF Key = VK_F4 Then
+               CB_OPDReg.Checked := Not(CB_OPDReg.Checked);
+          IF Key = VK_F5 Then
+               CB_EmrOPD.Checked := Not(CB_EmrOPD.Checked);
+          IF Key = VK_F6 Then
+               CB_EmerNightOPD.Checked := Not(CB_EmerNightOPD.Checked);
+          IF Key = VK_F7 Then
+               CB_OPDProcedure.Checked := Not(CB_OPDProcedure.Checked);
+          IF Key = VK_F8 Then
+               CB_Path.Checked := Not(CB_Path.Checked);
+          IF Key = VK_F9 Then
+               CB_TDS.Checked := Not(CB_TDS.Checked);
+     End
+     Else IF RB_Fraction.ItemIndex = 1 Then
+     Begin
+          IF PC_FractionSetup.ActivePageIndex = 1 Then
+          Begin
+               IF Key = VK_F4 Then
+                    CB_FractionProportional.Checked := Not(CB_FractionProportional.Checked);
+               IF Key = VK_F6 Then
+                    RB_Rate.Checked := True;
+               IF Key = VK_F7 Then
+                    RB_Amt.Checked := True;
+          End
+          Else
+          Begin
+          End;
+
+          IF Key = 27 Then
+               BtnCancelClick(Sender);
+     End;
+
+     IF Key = VK_F12 Then
+          BtnSaveClick(Sender);
+end;
+
+procedure TForm_FractionSetup.RB_RateClick(Sender: TObject);
+begin
+     IF RB_Rate.Checked = True Then
+     Begin
+          Edit_Rate.Color := clWhite;
+          Edit_Rate.ReadOnly := False;
+
+          Edit_Amount.Color := cl3DLight;
+          Edit_Amount.ReadOnly := True;
+     End;
+end;
+
+procedure TForm_FractionSetup.RB_AmtClick(Sender: TObject);
+begin
+     IF RB_Amt.Checked = True Then
+     Begin
+          Edit_Amount.Color := clWhite;
+          Edit_Amount.ReadOnly := False;
+
+          Edit_Rate.Color := cl3DLight;
+          Edit_Rate.ReadOnly := True;
+     End;
+end;
+
+procedure TForm_FractionSetup.Edit_RateKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_Rate, Key);
+     Key := Key;
+end;
+
+procedure TForm_FractionSetup.Edit_AmountKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #13 Then
+          BtnSave.SetFocus;
+
+     if Key in [#8] then
+          Exit;
+
+     AvoidMultipleDecimal(Edit_Amount, Key);
+     Key := Key;
+end;
+
+procedure TForm_FractionSetup.SPB_PositionWiseFrctSetupClick(Sender: TObject);
+begin
+     With Form_PositionWiseFractionSetup Do
+     Begin
+          DBLCB_TestName.KeyValue := Query_TestWiseFraction.FieldByName('FractionId').AsInteger;
+          DBLCB_TestName.Enabled := False;
+           IF Query_TestWiseFraction.FieldByName('FRAC_IsTestDept').AsString='D' Then
+          Begin
+               Label_TestPrice.Caption :='0.00';
+               Label_FractionFor.Caption :='0.00';
+               DBLCB_TestName.KeyValue := NULL;
+               Label_TestNameCap.Caption:='Department';
+               LabelCommAmt.Caption:='0.00';
+               DBLCB_TestName.KeyValue := Query_TestWiseFraction.FieldByName('FRAC_FractionId').AsInteger;
+               //pi_TestDepID:=Query_TestWiseFraction.FieldByName('FRAC_FractionId').AsInteger;
+          End
+          Else
+          Begin
+               DBLCB_TestName.KeyValue := Query_TestWiseFraction.FieldByName('FRAC_FractionId').AsInteger;
+               Label_TestNameCap.Caption:='Test Name';
+               //pi_TestDepID:=Query_TestWiseFraction.FieldByName('FRAC_FractionId').AsInteger;
+          End;
+          DBLCB_TestName.Enabled := False;
+
+
+          IF Query_TestWiseFraction.FieldByName('IsTestDept').AsString = 'T' Then
+          Begin
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    Session:=DM_Hospital.DB;
+                    sql.add(' Select tenp_TestPrice From HS_TENP_TESTNAMEPRICE where tenp_TestNameId=' + Query_TestWiseFraction.FieldByName('TestNameId')
+                           .AsString);
+                    Open;
+               End;
+
+               pf_TestPriceBFAdj := Query_Process.FieldByName('tenp_TestPrice').AsFloat;
+               pf_TestPrice := Query_Process.FieldByName('tenp_TestPrice').AsFloat - Query_TestWiseFraction.FieldByName
+                 ('tenp_FIXEDAMTDEDUCTONTESTPRICE').AsFloat;
+               Label_TestPrice.Caption := FloatToStr(pf_TestPrice);
+          End;
+
+          IF Query_TestWiseFraction.FieldByName('tenp_ISFRACTIONPROPWITHDISPER').AsString = 'Y' Then
+          Begin
+               CB_FractionProportional.Checked := True;
+               CB_FractionProportional.Enabled := False;
+          End
+          Else
+               CB_FractionProportional.Checked := False;
+
+          pf_TotFrctAmt := Query_TestWiseFraction.FieldByName('FractionAmount').AsFloat;
+          pf_TotFrctRate := Query_TestWiseFraction.FieldByName('FractionRate').AsFloat;
+
+          Label_FractionFor.Caption := Query_TestWiseFraction.FieldByName('FractionFor').AsString;
+          ps_FractionFor := Query_TestWiseFraction.FieldByName('FractionFor').AsString;
+          ShowModal;
+     End;
+end;
+
+procedure TForm_FractionSetup.DBGrid3DblClick(Sender: TObject);
+begin
+     b_IsNew := False;
+     pi_FractionId := Query_TestWiseFraction.FieldByName('FractionId').AsInteger;
+     PC_FractionSetup.ActivePageIndex := 1;
+     IF Query_TestWiseFraction.FieldByName('IsTestDept').AsString = 'D' Then
+     Begin
+          DBLCB_Department.KeyValue := Query_TestWiseFraction.FieldByName('DepId').AsInteger;
+          DBLCB_TestName.KeyValue := NULL;
+          LabelDept.Visible := False;
+          DBLCB_Department.SetFocus;
+     End
+     Else
+     Begin
+          With Query_TestName do
+          Begin
+               Close;
+               sql[1] :=
+                 ' and (tena_TestNameId Not In (Select Distinct frac_TestNameId From hs_frac_Fraction where frac_TestNameId > 0) or ' + ' tena_TestNameId=' + IntToStr
+                 (Query_TestWiseFraction.FieldByName('TestNameId').AsInteger) + ')';
+               SQL.SaveToFile('C:\TESTNAMEFRACTION.TXT');
+               Open;
+          End;
+
+          DBLCB_TestName.SetFocus;
+          DBLCB_TestName.KeyValue := Query_TestWiseFraction.FieldByName('TestNameId').AsInteger;
+          With Query_Process do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select tenp_TestPrice testprice From hs_tenp_TestNameprice where tenp_TestNameId=' + IntToStr(Query_TestWiseFraction.FieldByName('TestNameId')
+                           .AsInteger));
+               Open;
+          End;
+          LabelTestRate.Caption := Query_Process.FieldByName('TestPrice').AsString;
+          pf_TestPrice := Query_Process.FieldByName('TestPrice').AsFloat;
+          DBLCB_TestNameClick(Sender);
+     End;
+
+     IF Query_TestWiseFraction.FieldByName('tenp_IsFractionPropWithDisPer').AsString = 'Y' Then
+          CB_FractionProportional.Checked := True
+     Else
+          CB_FractionProportional.Checked := False;
+     Edit_Rate.Text := Query_TestWiseFraction.FieldByName('FractionRate').AsString;
+     Edit_Amount.Text := Query_TestWiseFraction.FieldByName('FractionAmount').AsString;
+
+     Edit_HosPartRate.Text := Query_TestWiseFraction.FieldByName('HosPartFractionRate').AsString;
+     Edit_HosPartAmount.Text := Query_TestWiseFraction.FieldByName('HosPartFractionAmount').AsString;
+     Edit_FixedAmtDeduct.Text := Query_TestWiseFraction.FieldByName('tenp_FIXEDAMTDEDUCTONTESTPRICE').AsString;
+
+     IF Query_TestWiseFraction.FieldByName('IsRateAmt').AsString = 'R' Then
+          RB_Rate.Checked := True
+     Else
+          RB_Amt.Checked := True;
+
+     IF Query_TestWiseFraction.FieldByName('FRAC_ISSEPRTCHARGEFROMTESTPRI').AsString = 'Y' Then
+          CB_SeparateHospitalPart.Checked := True
+     Else
+          CB_SeparateHospitalPart.Checked := False;
+
+     IF Query_TestWiseFraction.FieldByName('FractionFor').AsString = 'Both' Then
+          RB_Both.Checked := True
+     Else IF Query_TestWiseFraction.FieldByName('FractionFor').AsString = 'OutDoor' Then
+          RB_OutDoor.Checked := True
+     Else IF Query_TestWiseFraction.FieldByName('FractionFor').AsString = 'InDoor' Then
+          RB_Indoor.Checked := True;
+end;
+
+procedure TForm_FractionSetup.SPB_DeleteClick(Sender: TObject);
+begin
+     With Query_Process do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select * From hs_frde_FractionDetail where frde_FractionId=' + IntToStr(Query_TestWiseFraction.FieldByName('FractionID').AsInteger));
+          Open;
+          IF RecordCount > 0 Then
+          Begin
+               MessageDlg('Sorry ! You Cannot Delete This Setup Because It Is Already Used In Doctor Fraction.', mtWarning, [mbok], 0);
+               Exit;
+          End;
+     End;
+
+     IF MessageDlg('Are You Sure To Delete This Commession SetUp ?', mtConfirmation, [MbYes, MbNo], 0) = MrYes Then
+     Begin
+          Try
+               DM_Hospital.Db.StartTransaction;
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Delete From hs_powf_PositionWiseFraction where  powf_FractionId=' + IntToStr
+                           (Query_TestWiseFraction.FieldByName('FractionId').AsInteger));
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Delete From hs_frac_Fraction where  frac_TestNameId=' + IntToStr(Query_TestWiseFraction.FieldByName('TestNameId')
+                                .AsInteger));
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update hs_tena_TestName Set tena_IsFractionableItem=''N'' where tena_TestNameId=' + IntToStr
+                           (Query_TestWiseFraction.FieldByName('TestNameId').AsInteger));
+                    ExecSQL;
+               End;
+
+               DM_Hospital.Db.Commit;
+               ShowDoneMessage;
+               Query_TestWiseFraction.Close;
+               Query_TestWiseFraction.Open;
+          Except
+               DM_Hospital.Db.Rollback;
+               MessageDlg('Failure To Delete !', mtWarning, [mbok], 0);
+               Exit;
+          End;
+     End;
+end;
+
+procedure TForm_FractionSetup.DBLCB_DepartmentKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Delete Then
+     Begin
+
+          DBLCB_Department.KeyValue := NULL;
+     End;
+end;
+
+procedure TForm_FractionSetup.DBLCB_TestNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Prior Then
+          DBLCB_Department.SetFocus;
+     IF Key = VK_Delete Then
+     Begin
+          DBLCB_TestName.KeyValue := NULL;
+          LabelDept.Visible := False;
+
+          Label5.Enabled := False;
+          Label6.Enabled := False;
+          Label_TestRateNew.Enabled := False;
+          Label8.Enabled := False;
+          Edit_FixedAmtDeduct.Enabled := False;
+          Edit_FixedAmtDeduct.Text := '0';
+     End;
+end;
+
+procedure TForm_FractionSetup.CB_OPDRegClick(Sender: TObject);
+begin
+     IF gi_compileValue In [119] Then
+     Begin
+          IF CB_OPDReg.Checked = True Then
+               LabelOPDReg.Caption := 'Endocrionology  New Patient Charge (Rs.) :'
+          Else
+               LabelOPDReg.Caption := 'Endocrionology  Follow Up Patient Charge (Rs.) :';
+     End
+     Else
+     Begin
+          IF CB_OPDReg.Checked = True Then
+               LabelOPDReg.Caption := 'Endocrionology  New Patient Charge (Rs.) :'
+          Else
+               LabelOPDReg.Caption := 'Endocrionology  Follow Up Patient Charge (Rs.) :';
+     End;
+end;
+
+procedure TForm_FractionSetup.CB_EmrOPDClick(Sender: TObject);
+begin
+     IF gi_compileValue In [119] Then
+     Begin
+          IF CB_OPDReg.Checked = True Then
+               LabelOPDReg.Caption :=  'Endocrionology  Follow Up Patient Charge (Rs.) :'
+          Else
+               LabelOPDReg.Caption := 'Endocrionology  Follow Up (%) :';
+     End
+     Else
+     Begin
+          IF CB_EmrOPD.Checked = True Then
+               LabelEmrOPD.Caption :=  'Endocrionology  Follow Up Patient Charge (Rs.) :'
+          Else
+               LabelEmrOPD.Caption :=  'Endocrionology  Follow Up Patient % :';
+     End;
+end;
+
+procedure TForm_FractionSetup.CB_OPDProcedureClick(Sender: TObject);
+begin
+     IF gi_compileValue In [119] Then
+     Begin
+          IF CB_OPDProcedure.Checked = True Then
+               LabelOPDProc.Caption := 'Emergency Duty Doctor (Rs) :'
+          Else
+               LabelOPDProc.Caption := 'Emergency Duty Doctor (%) :';
+     End
+     Else
+     Begin
+          IF CB_OPDProcedure.Checked = True Then
+               LabelOPDProc.Caption := 'Dietician Charge (Rs.) :'
+          Else
+               LabelOPDProc.Caption := 'Dietician Charge (%) :';
+     End;
+end;
+
+procedure TForm_FractionSetup.CB_PathClick(Sender: TObject);
+begin
+     IF CB_Path.Checked = True Then
+          LabelPathology.Caption := 'Pathology (Rs.) :'
+     Else
+          LabelPathology.Caption := 'Pathology (%) :';
+end;
+
+procedure TForm_FractionSetup.CB_SeparateHospitalPartClick(Sender: TObject);
+begin
+     if CB_SeparateHospitalPart.Checked = True then
+     Begin
+          Edit_HosPartRate.Color := clWhite;
+          Edit_HosPartAmount.Color := clWhite;
+
+          Edit_HosPartRate.ReadOnly := False;
+          Edit_HosPartAmount.ReadOnly := False;
+     End
+     Else
+     Begin
+          Edit_HosPartRate.Color := clScrollBar;
+          Edit_HosPartAmount.Color := clScrollBar;
+
+          Edit_HosPartRate.ReadOnly := True;
+          Edit_HosPartAmount.ReadOnly := True;
+     End;
+end;
+
+procedure TForm_FractionSetup.CB_TDSClick(Sender: TObject);
+begin
+     IF CB_TDS.Checked = True Then
+          LabelTDS.Caption := 'TDS (Rs) :'
+     Else
+          LabelTDS.Caption := 'TDS (%) :';
+end;
+
+procedure TForm_FractionSetup.Edit_OpdRegExit(Sender: TObject);
+begin
+     IF Trim(Edit_OpdReg.Text) = '' Then
+          Edit_OpdReg.Text := '0'
+     Else
+     Begin
+          IF (CB_OPDReg.Checked = False) and (StrToFloat(Edit_OpdReg.Text) > 100) Then
+          Begin
+               MessageDlg('Plz Check The Define Percent.', mtInformation, [mbok], 0);
+               Edit_OpdReg.SetFocus;
+               Exit;
+          End;
+     End;
+end;
+
+procedure TForm_FractionSetup.Edit_OpdProcExit(Sender: TObject);
+begin
+     IF Trim(Edit_OpdProc.Text) = '' Then
+          Edit_OpdProc.Text := '0'
+     Else
+     Begin
+          IF (CB_OPDProcedure.Checked = False) and (StrToFloat(Edit_OpdProc.Text) > 100) Then
+          Begin
+               MessageDlg('Plz Check The Define Percent.', mtInformation, [mbok], 0);
+               Edit_OpdProc.SetFocus;
+               Exit;
+          End;
+     End;
+end;
+
+procedure TForm_FractionSetup.Edit_PathologyExit(Sender: TObject);
+begin
+     IF Trim(Edit_Pathology.Text) = '' Then
+          Edit_Pathology.Text := '0'
+     Else
+     Begin
+          IF (CB_Path.Checked = False) and (StrToFloat(Edit_Pathology.Text) > 100) Then
+          Begin
+               MessageDlg('Plz Check The Define Percent.', mtInformation, [mbok], 0);
+               Edit_Pathology.SetFocus;
+               Exit;
+          End;
+     End;
+end;
+
+procedure TForm_FractionSetup.Edit_TDSKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_TDS, Key);
+     Key := Key;
+end;
+
+procedure TForm_FractionSetup.Edit_TDSExit(Sender: TObject);
+begin
+     IF Trim(Edit_TDS.Text) = '' Then
+          Edit_TDS.Text := '0'
+     Else
+     Begin
+          IF (CB_TDS.Checked = False) and (StrToFloat(Edit_TDS.Text) > 100) Then
+          Begin
+               MessageDlg('Plz Check The Define Percent.', mtInformation, [mbok], 0);
+               Edit_TDS.SetFocus;
+               Exit;
+          End;
+     End;
+end;
+
+procedure TForm_FractionSetup.CB_EmerNightOPDClick(Sender: TObject);
+begin
+     IF gi_compileValue In [119] Then
+     Begin
+          IF CB_EmerNightOPD.Checked = True Then
+               LabelEmrNightOPD.Caption := 'On Call Docto (Rs) ::'
+          Else
+               LabelEmrNightOPD.Caption := 'On Call Doctor (%) :';
+     End
+     Else
+     Begin
+          IF CB_EmerNightOPD.Checked = True Then
+               LabelEmrNightOPD.Caption := 'On Call Doctor (Rs):'
+          Else
+               LabelEmrNightOPD.Caption := 'On Call Doctor (%) :';
+     End;
+end;
+
+procedure TForm_FractionSetup.Edit_EmerOPDExit(Sender: TObject);
+begin
+     IF Trim(Edit_EmerOPD.Text) = '' Then
+          Edit_EmerOPD.Text := '0'
+     Else
+     Begin
+          IF (CB_EmrOPD.Checked = False) and (StrToFloat(Edit_EmerOPD.Text) > 100) Then
+          Begin
+               MessageDlg('Plz Check The Define Percent.', mtInformation, [mbok], 0);
+               Edit_EmerOPD.SetFocus;
+               Exit;
+          End;
+     End;
+end;
+
+procedure TForm_FractionSetup.Edit_EmerNightOPDExit(Sender: TObject);
+begin
+     IF Trim(Edit_EmerNightOPD.Text) = '' Then
+          Edit_EmerNightOPD.Text := '0'
+     Else
+     Begin
+          IF (CB_EmerNightOPD.Checked = False) and (StrToFloat(Edit_EmerNightOPD.Text) > 100) Then
+          Begin
+               MessageDlg('Plz Check The Define Percent.', mtInformation, [mbok], 0);
+               Edit_EmerNightOPD.SetFocus;
+               Exit;
+          End;
+     End;
+end;
+
+procedure TForm_FractionSetup.Edit_EmerOPDKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_EmerOPD, Key);
+     Key := Key;
+end;
+
+procedure TForm_FractionSetup.Edit_HosPartAmountExit(Sender: TObject);
+begin
+     if Trim(Edit_HosPartAmount.Text) = '' then
+          Edit_HosPartAmount.Text := '0';
+
+     IF (DBLCB_TestName.KeyValue <> NULL) and (pf_TestPrice > 0) and (Trim(Edit_HosPartAmount.Text) <> '') and
+       (CB_SeparateHospitalPart.Checked = True) Then
+     Begin
+          Edit_HosPartRate.Text := FormatFloat('0.00', ((StrToFloat(Edit_HosPartAmount.Text) / pf_TestPrice) * 100));
+          Edit_Rate.Text := FormatFloat('0.00', 100 - StrToFloat(Edit_HosPartRate.Text));
+          Edit_Amount.Text := FormatFloat('0.00000', (pf_TestPrice - StrToFloat(Edit_HosPartAmount.Text)));
+     End;
+end;
+
+procedure TForm_FractionSetup.Edit_HosPartAmountKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_Rate, Key);
+     Key := Key;
+end;
+
+procedure TForm_FractionSetup.Edit_HosPartRateExit(Sender: TObject);
+begin
+     IF Trim(Edit_HosPartRate.Text) = '' Then
+          Edit_HosPartRate.Text := '0';
+
+     IF StrToFloat(Edit_HosPartRate.Text) > 100 Then
+     Begin
+          MessageDlg('Percent Exceeds 100. Check It Out.', mtWarning, [mbok], 0);
+          Edit_HosPartRate.SetFocus;
+          Exit;
+     End;
+
+     IF (DBLCB_TestName.KeyValue <> NULL) and (pf_TestPrice > 0) and (CB_SeparateHospitalPart.Checked = True) Then
+     Begin
+          Edit_HosPartAmount.Text := FormatFloat('0.00', ((StrToFloat(Edit_HosPartRate.Text) * pf_TestPrice) / 100));
+          Edit_Amount.Text := FormatFloat('0.00', (pf_TestPrice - StrToFloat(Edit_HosPartAmount.Text)));
+          Edit_Rate.Text := FormatFloat('0.00', 100 - StrToFloat(Edit_HosPartRate.Text));
+     End;
+end;
+
+procedure TForm_FractionSetup.Edit_HosPartRateKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_Rate, Key);
+     Key := Key;
+end;
+
+procedure TForm_FractionSetup.Edit_EmerNightOPDKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_EmerNightOPD, Key);
+     Key := Key;
+end;
+
+procedure TForm_FractionSetup.DBLCB_TestNameClick(Sender: TObject);
+begin
+     IF DBLCB_TestName.KeyValue <> NULL Then
+     Begin
+          Label3.Visible := True;
+          LabelTestRate.Visible := True;
+          LabelTestRate.Caption := Query_TestName.FieldByName('TestPrice').AsString;
+
+          pf_TestPrice := Query_TestName.FieldByName('TestPrice').AsFloat;
+
+          if Trim(Edit_FixedAmtDeduct.Text) = '' then
+               Edit_FixedAmtDeduct.Text := '0';
+
+          pf_TestPrice := pf_TestPrice - StrToFloat(Edit_FixedAmtDeduct.Text);
+          Label_TestRateNew.Caption := FloatToStr(pf_TestPrice);
+
+          With Query_Process do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select dept_DepName DepName From hs_dept_Department where dept_DepId=' + IntToStr(Query_TestName.FieldByName('DepId').AsInteger));
+               Open;
+          End;
+          LabelDept.Visible := True;
+          LabelDept.Caption := 'Dept. -> ' + Query_Process.FieldByName('DepName').AsString;
+
+          Label5.Enabled := True;
+          Label6.Enabled := True;
+          Label_TestRateNew.Enabled := True;
+          Label8.Enabled := True;
+          Edit_FixedAmtDeduct.Enabled := True;
+
+     End;
+end;
+
+procedure TForm_FractionSetup.DBLCB_DepartmentClick(Sender: TObject);
+begin
+     IF DBLCB_Department.KeyValue <> NULL Then
+     Begin
+          Label3.Visible := False;
+          LabelTestRate.Visible := False;
+
+          Label5.Enabled := False;
+          Label6.Enabled := False;
+          Label_TestRateNew.Enabled := False;
+          Label8.Enabled := False;
+          Edit_FixedAmtDeduct.Enabled := False;
+          Edit_FixedAmtDeduct.Text := '0';
+     End;
+end;
+
+procedure TForm_FractionSetup.Edit_RateExit(Sender: TObject);
+begin
+     IF Trim(Edit_Rate.Text) = '' Then
+          Edit_Rate.Text := '0';
+
+     IF StrToFloat(Edit_Rate.Text) > 100 Then
+     Begin
+          MessageDlg('Percent Exceeds 100. Check It Out.', mtWarning, [mbok], 0);
+          Edit_Rate.SetFocus;
+          Exit;
+     End;
+
+     IF (DBLCB_TestName.KeyValue <> NULL) and (pf_TestPrice > 0) and (Trim(Edit_Rate.Text) <> '') Then
+     Begin
+          Edit_Amount.Text := FormatFloat('0.00', ((StrToFloat(Edit_Rate.Text) * pf_TestPrice) / 100));
+          if CB_SeparateHospitalPart.Checked = True then
+               Edit_HosPartAmount.Text := FormatFloat('0.00', (pf_TestPrice - StrToFloat(Edit_Amount.Text)));
+     End;
+
+end;
+
+procedure TForm_FractionSetup.Edit_FixedAmtDeductExit(Sender: TObject);
+begin
+     if Trim(Edit_FixedAmtDeduct.Text) = '' then
+          Edit_FixedAmtDeduct.Text := '0';
+
+     if DBLCB_TestName.KeyValue <> NULL then
+     Begin
+          if StrToFloat(Edit_FixedAmtDeduct.Text) > Query_TestName.FieldByName('TestPrice').AsFloat then
+          Begin
+               MessageDlg('Sorry Deducted Amount Exceed Test Price.', mtWarning, [mbok], 0);
+               Edit_FixedAmtDeduct.SetFocus;
+               Exit;
+          End;
+
+          pf_TestPrice := Query_TestName.FieldByName('TestPrice').AsFloat - StrToFloat(Edit_FixedAmtDeduct.Text);
+          Label_TestRateNew.Caption := FloatToStr(pf_TestPrice);
+     End;
+end;
+
+procedure TForm_FractionSetup.Edit_FixedAmtDeductKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     AvoidMultipleDecimal(Edit_Rate, Key);
+     Key := Key;
+
+     if Key = #13 then
+     Begin
+          Edit_FixedAmtDeductExit(Sender);
+          IF CB_SeparateHospitalPart.Checked = True Then
+               Edit_HosPartRate.SetFocus
+          Else
+               Edit_Rate.SetFocus;
+     End;
+
+end;
+
+procedure TForm_FractionSetup.Edit_AmountExit(Sender: TObject);
+begin
+     if Trim(Edit_Amount.Text) = '' then
+          Edit_Amount.Text := '0';
+
+     IF (DBLCB_TestName.KeyValue <> NULL) and (pf_TestPrice > 0) and (Trim(Edit_Amount.Text) <> '') Then
+     Begin
+          Edit_Rate.Text := FormatFloat('0.00', ((StrToFloat(Edit_Amount.Text) / pf_TestPrice) * 100));
+          IF CB_SeparateHospitalPart.Checked = True Then
+               Edit_HosPartRate.Text := FormatFloat('0.00', (100 - StrToFloat(Edit_Rate.Text)));
+     End;
+end;
+
+procedure TForm_FractionSetup.Edit_TestNameChange(Sender: TObject);
+begin
+     Edit_TestName.Text := StringReplace(Edit_TestName.Text, '''', '''''', [rfReplaceAll]);
+     with Query_TestWiseFraction do
+     Begin
+          IF Trim(Edit_TestName.Text) <> '' Then
+          Begin
+               Filter := 'DESCRIPTION =' + #39 + Edit_TestName.Text + '*' + #39;
+               Filtered := True;
+          End
+          Else
+               Filtered := False;
+     End;
+end;
+
+procedure TForm_FractionSetup.CB_OperationClick(Sender: TObject);
+begin
+     IF CB_Operation.Checked = True Then
+     Begin
+          With Query_TestWiseFraction do
+          Begin
+               Close;
+//               sql.Clear;
+//               sql.add(' Select DC.FRAC_FractionId Fractionid,DC.FRAC_DepId depid,DC.FRAC_Description description,DC.FRAC_FractionRate tenp_fractionrate,DC.FRAC_FractionFor tenp_fractionfor,');
+//               sql.add(' DC.FRAC_FractionAmount tenp_fractionamount,DC.FRAC_TestNameId testnameid,DC.FRAC_IsRateAmt israteamt,DC.FRAC_IsTestDept istestdept,DC.FRAC_IsFractionPropWithDisPer tenp_IsFractionPropWithDisPer,');
+//               sql.Add(' (Select Count(POWF_PositionWiseFractionID) From HS_POWF_PositionWiseFraction where POWF_FractionId=DC.FRAC_FractionId and POWF_IsActive=''Y'') as NoOfInvolvement');
+//               sql.add(' From HS_FRAC_Fraction DC where DC.FRAC_FractionType=3 and DC.FRAC_TestNameId In (Select TENA_TestNameId From');
+//               sql.add(' HS_TENA_TestName where TENA_TESTNAMETYPE=''O'') Order By DC.FRAC_Description');
+//               sql.SaveToFile('c:\operation.txt');
+               sql[3]:='From HS_FRAC_FRACTION FR where FR.FRAC_FractionType=3 and fr.FRAC_TestNameId In (Select TENA_TestNameId From HS_TENA_TestName where TENA_TESTNAMETYPE=''O'')';
+               Open;
+          End;
+     End
+     Else
+     Begin
+          With Query_TestWiseFraction do
+          Begin
+               Close;
+//               sql.Clear;
+//               sql.add(' Select DC.FRAC_FractionId Fractionid,DC.FRAC_DepId depid,DC.FRAC_Description description,DC.FRAC_FractionRate tenp_fractionrate,DC.FRAC_FractionFor tenp_fractionfor,');
+//               sql.add(' DC.FRAC_FractionAmount tenp_fractionamount,DC.FRAC_TestNameId testnameid,DC.FRAC_IsRateAmt israteamt,DC.FRAC_IsTestDept istestdept,DC.FRAC_IsFractionPropWithDisPer tenp_IsFractionPropWithDisPer,');
+//               sql.Add(' (Select Count(POWF_PositionWiseFractionID) From HS_POWF_PositionWiseFraction where POWF_FractionId=DC.FRAC_FractionId and POWF_IsActive=''Y'') as NoOfInvolvement');
+//               sql.add(' From HS_FRAC_Fraction DC where DC.FRAC_FractionType=3 Order By DC.FRAC_Description');
+               sql[3]:='From HS_FRAC_FRACTION FR where FR.FRAC_FractionType=3';
+               Open;
+          End;
+     End;
+end;
+
+procedure TForm_FractionSetup.CB_FractionProportionalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Prior Then
+          DBLCB_TestName.SetFocus;
+end;
+
+procedure TForm_FractionSetup.Edit_AmountKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     // IF key=VK_Prior Then
+end;
+
+procedure TForm_FractionSetup.SBDeleteClick(Sender: TObject);
+begin
+//
+end;
+
+procedure TForm_FractionSetup.SpeedButton2Click(Sender: TObject);
+begin
+     IF MessageDlg('Are You Sure To Send In Excel ?', mtConfirmation, [MbYes, MbNo], 0) = mrYes Then
+     Begin
+          Try
+               b_IsSendToExcel := True;
+               SPB_PreviewClick(Sender);
+          Except
+               b_IsSendToExcel := False;
+          End;
+     End;
+end;
+
+procedure TForm_FractionSetup.SPB_PreviewClick(Sender: TObject);
+begin
+     With Form_QRFraction do
+     Begin
+          QueryMaster.Close;
+          QueryMaster.Open;
+
+          QueryDetail.Close;
+          QueryDetail.Open;
+
+           //IF b_IsSendToExcel=True Then
+          // SendToExcelMasterDetail(QueryMaster,QueryDetail,'Doctor Fraction Setup Report',ServerDate.TodaysDate,'',gs_HosName,
+          // gs_HosAddress,'')
+          // Else
+          QR_Fraction.Preview;
+          QueryDetail.Close;
+          QueryMaster.Close;
+     End;
+end;
+
+procedure TForm_FractionSetup.FormDestroy(Sender: TObject);
+begin
+     Form_QRFraction.Free;
+     Form_PositionWiseFractionSetup.Free;
+end;
+
+procedure TForm_FractionSetup.BtnNewClick(Sender: TObject);
+begin
+     b_IsNew := True;
+     PC_FractionSetup.ActivePageIndex := 1;
+     DBLCB_Department.KeyValue := NULL;
+     DBLCB_TestName.KeyValue := NULL;
+     LabelDept.Visible := False;
+     LabelTestRate.Caption := '0.00';
+     CB_FractionProportional.Checked := False;
+     RB_Both.Checked := True;
+     Edit_Rate.Text := '0';
+     Edit_Amount.Text := '0';
+     RB_Rate.Checked := True;
+     SPB_PosWiseSetup2nd.Visible:=False;
+     With Query_TestName do
+     Begin
+          Close;
+          sql[1] := ' and tena_TestNameId Not In (Select Distinct frac_TestNameId From hs_frac_Fraction where frac_TestNameId > 0)';
+          Open;
+     End;
+end;
+
+procedure TForm_FractionSetup.DBLCB_DepartmetClick(Sender: TObject);
+begin
+     With Query_TestWiseFraction do
+     Begin
+          Close;
+//          sql.Clear;
+//          sql.add(' Select DC.frac_FractionId fractionid,DC.frac_DepId depid,DC.frac_Description description,DC.frac_FractionRate tenp_fractionrate,DC.frac_FractionFor tenp_fractionfor,');
+//          sql.add(' DC.frac_FractionAmount tenp_fractionamount,DC.frac_TestNameId testnameid,DC.frac_IsRateAmt israteamt,DC.frac_IsTestDept istestdept,DC.frac_IsFractionPropWithDisPer tenp_IsFractionPropWithDisPer,');
+//          sql.add(' (Select Count(powf_PositionWiseFractionID) From hs_powf_PositionWiseFraction where powf_FractionId=DC.frac_FractionId and powf_IsActive=''Y'') as NoOfInvolvement');
+//          sql.add(' From HS_FRAC_Fraction DC where DC.FRAC_FractionType=3 ');
+          IF DBLCB_Departmet.KeyValue <> NULL Then
+               sql[3]:='From HS_FRAC_FRACTION FR where FR.FRAC_FractionType=3 AND fr.FRAC_DEPID=' + IntToStr(DBLCB_Departmet.KeyValue)
+          ELSE
+               SQL[3]:='From HS_FRAC_FRACTION FR where FR.FRAC_FractionType=3';
+//          sql.add(' Order By DC.frac_Description ');
+          Open;
+     End;
+end;
+
+procedure TForm_FractionSetup.DBLCB_DepartmetKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Delete Then
+     Begin
+          DBLCB_Departmet.KeyValue := NULL;
+          DBLCB_DepartmetClick(Sender);
+     End;
+end;
+
+procedure TForm_FractionSetup.DBGrid3DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+     State: TGridDrawState);
+begin
+     IF Query_TestWiseFraction.FieldByName('ISTESTDEPT').AsString = 'D' Then
+     Begin
+          DBGrid3.Canvas.Font.Color := clRed;
+          DBGrid3.DefaultDrawDataCell(Rect, Column.Field, State);
+     End;
+end;
+
+procedure TForm_FractionSetup.SPB_DoctorWiseFrctSetupClick(Sender: TObject);
+begin
+     With Query_Process Do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select * From PositionWiseCommession where FractionId=' + IntToStr(Query_TestWiseFraction.FieldByName('FractionId')
+                      .AsInteger));
+          sql.add(' and IsActive=''T''');
+          Open;
+     End;
+
+     { IF Query_Process.RecordCount > 0 Then
+       Begin
+       MessageDlg('Plz. First Setup Position Wise Fraction. Then Only You Could Able to Setup Doctor Wise Fraction.',mtInformation,[mbok],0);
+       Exit;
+       End; }
+
+     With Form_DoctorWiseFrctSetup Do
+     Begin
+          Try
+               DBLCB_TestName.KeyValue := Query_TestWiseFraction.FieldByName('FractionId').AsInteger;
+
+               IF Query_TestWiseFraction.FieldByName('IsTestDept').AsString = 'T' Then
+               Begin
+                    With Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Select TestPrice From TestName where TestNameId=' + Query_TestWiseFraction.FieldByName('TestNameId')
+                                .AsString);
+                         Open;
+                    End;
+                    pf_TestPrice := Query_Process.FieldByName('TestPrice').AsFloat;
+                    Label_TestPrice.Caption := Query_Process.FieldByName('TestPrice').AsString;
+               End;
+
+               IF Query_TestWiseFraction.FieldByName('ISFRACTIONPROPWITHDISPER').AsString = 'Y' Then
+               Begin
+                    CB_FractionProportional.Checked := True;
+                    CB_FractionProportional.Enabled := False;
+               End
+
+               Else
+                    CB_FractionProportional.Checked := False;
+               Label_FractionFor.Caption := Query_TestWiseFraction.FieldByName('FractionFor').AsString;
+               ps_FractionFor := Query_TestWiseFraction.FieldByName('FractionFor').AsString;
+               ShowModal;
+          Finally
+               Free;
+          End;
+     End;
+end;
+
+Function TForm_FractionSetup.CheckIsFixedFractionExist(Description: String): Boolean;
+Var
+     Qry: TOraQuery;
+Begin
+     Try
+          Qry := TOraQuery.Create(nil);
+          With Qry do
+          Begin
+               Close;
+               Session:=DM_Hospital.DB;
+               sql.Clear;
+               sql.add(' Select * From HS_FRAC_FRACTION where FRAC_FRACTIONTYPE=1 and FRAC_DESCRIPTION=' + #39 + Description + #39);
+               Open;
+          End;
+
+          IF Qry.FieldByName('FRAC_FRACTIONID').AsInteger > 0 Then
+               Result := True
+          Else
+               Result := False;
+     Finally
+          Qry.Free;
+     End;
+End;
+
+procedure TForm_FractionSetup.CB_EHSDocRoutineClick(Sender: TObject);
+begin
+     IF RB_Fraction.ItemIndex = 0 Then
+          RB_FractionClick(Sender)
+     Else
+     Begin
+          Query_TestWiseFraction.Close;
+          Query_TestWiseFraction.Open;
+     End;
+
+end;
+
+END.

@@ -1,0 +1,287 @@
+unit Unit_SchemeDetail;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Fxn, ServerDate, Unit_Master,
+     Dialogs, Buttons, StdCtrls, ExtCtrls, DBCtrls, Grids, DBGrids, ComCtrls, DB, DBTables,
+     DBAccess, Ora, OraSmart, MemDS, OraError,DM;
+
+type
+     TForm_SchemeDetail = class(TForm)
+          Panel1: TPanel;
+          Btn_close: TBitBtn;
+          btn_save: TBitBtn;
+          Panel2: TPanel;
+          SpeedButton1: TSpeedButton;
+          PageControl1: TPageControl;
+          TabSheet1: TTabSheet;
+          DBGrid1: TDBGrid;
+          TabSheet2: TTabSheet;
+          Label2: TLabel;
+          SpeedButton2: TSpeedButton;
+          DBLCB_Scheme: TDBLookupComboBox;
+          Cb_Type: TComboBox;
+          Label4: TLabel;
+          Label6: TLabel;
+          Edit_OpDiscount: TEdit;
+          Label8: TLabel;
+          Edit_IpDiscount: TEdit;
+          DBGrid2: TDBGrid;
+          Label1: TLabel;
+          Query_scheme: TOraQuery;
+          DS_Scheme: TDataSource;
+          BB_Refresh: TBitBtn;
+          Ds_List: TDataSource;
+          lbl_Dep: TLabel;
+          Label5: TLabel;
+          Dblcb_Department: TDBLookupComboBox;
+          Query_Dep: TOraQuery;
+          Ds_Dep: TDataSource;
+          BitBtn1: TBitBtn;
+          Label3: TLabel;
+          Edit_Search: TEdit;
+    Table_SchemeDetail: TTable;
+    Query_List: TQuery;
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure Btn_closeClick(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure BB_RefreshClick(Sender: TObject);
+          procedure FormShow(Sender: TObject);
+          procedure Cb_TypeChange(Sender: TObject);
+          procedure Dblcb_DepartmentKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure Edit_SearchChange(Sender: TObject);
+          procedure FormKeyPress(Sender: TObject; var Key: Char);
+          procedure BitBtn1Click(Sender: TObject);
+    procedure btn_saveClick(Sender: TObject);
+    procedure DBGrid2KeyPress(Sender: TObject; var Key: Char);
+     private
+          { Private declarations }
+          Procedure SaveData;
+     public
+          { Public declarations }
+     end;
+
+var
+     Form_SchemeDetail: TForm_SchemeDetail;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_SchemeDetail.BB_RefreshClick(Sender: TObject);
+Var
+     li_DepId: Integer;
+begin
+     if DBLCB_Scheme.KeyValue=Null then
+     begin
+          ShowMessage('Please choose Scheme');
+          Exit;
+     end;
+     if Cb_Type.Text='' then
+     begin
+          ShowMessage('Please choose Scheme');
+          Exit;
+     end;
+     if Dblcb_Department.KeyValue <> Null then
+          li_DepId := Dblcb_Department.KeyValue
+     else
+          li_DepId := 0;
+     LoadSchemeDetail(Table_SchemeDetail, DBLCB_Scheme.KeyValue, li_DepId, Cb_Type.Text);
+     RefreshQuery(Query_List, gs_temppath);
+     //RefreshQuery(Query_List, gs_temppath);
+end;
+
+procedure TForm_SchemeDetail.BitBtn1Click(Sender: TObject);
+Var
+     OpDiscount, IpDiscount: Double;
+begin
+     if Edit_OpDiscount.Text <> '' then
+          OpDiscount := StrToFloat(Edit_OpDiscount.Text)
+     else
+          OpDiscount := 0;
+
+     if Edit_IpDiscount.Text <> '' then
+          IpDiscount := StrToFloat(Edit_IpDiscount.Text)
+     else
+          IpDiscount := 0;
+
+     With Table_SchemeDetail do
+     begin
+          Close;
+          Open;
+          while Not Eof do
+          begin
+                //Table_SchemeDetail.Locate('Type', Query_List.FieldByName('type').AsString, []);
+               Edit;
+               FieldByName('OpDiscount').AsFloat := OpDiscount;
+               FieldByName('IpDiscount').AsFloat := IpDiscount;
+               Post;
+               Next;
+          end;
+     end;
+     RefreshQuery(Query_List, gs_temppath);
+     Edit_OpDiscount.Clear;
+     Edit_IpDiscount.Clear;
+end;
+
+procedure TForm_SchemeDetail.Btn_closeClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_SchemeDetail.btn_saveClick(Sender: TObject);
+begin
+     SaveData;
+     ShowDoneMessage;
+end;
+
+procedure TForm_SchemeDetail.Cb_TypeChange(Sender: TObject);
+begin
+     if Cb_Type.ItemIndex = 2 then
+     begin
+          lbl_Dep.Visible := True;
+          Label5.Visible := True;
+          Dblcb_Department.Visible := True;
+          BB_Refresh.Left := 800;
+     end
+     else
+     begin
+          lbl_Dep.Visible := False;
+          Label5.Visible := False;
+          Dblcb_Department.Visible := False;
+          BB_Refresh.Left := 528;
+     end;
+end;
+
+procedure TForm_SchemeDetail.DBGrid2KeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     begin
+          DBGrid2.ReadOnly:=false;
+          Table_SchemeDetail.Edit;
+          Table_SchemeDetail.FieldByName('OpDiscount').AsString:=DBGrid2.Fields[1].Value;
+          Table_SchemeDetail.FieldByName('IpDiscount').AsString:=DBGrid2.Fields[2].Value;
+          Table_SchemeDetail.Post;
+     end;
+end;
+
+procedure TForm_SchemeDetail.Dblcb_DepartmentKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = VK_DELETE then
+          Dblcb_Department.KeyValue := Null;
+end;
+
+procedure TForm_SchemeDetail.Edit_SearchChange(Sender: TObject);
+begin
+     Edit_Search.Text := StringReplace(Edit_Search.Text, '''', '''''', [rfReplaceAll]);
+     with Query_List do
+     Begin
+          IF Trim(Edit_Search.Text) <> '' Then
+          Begin
+               Filter := 'Type =' + #39 + Trim(Edit_Search.Text) + '*' + #39;
+               Filtered := True;
+          End
+          Else
+               Filtered := False;
+     End;
+end;
+
+procedure TForm_SchemeDetail.FormCreate(Sender: TObject);
+begin
+     with Query_scheme do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          Open;
+     end;
+     If FileExists(gs_temppath + '\SchemeDetail.db') then
+     begin
+          With Table_SchemeDetail do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'SchemeDetail.db';
+               DeleteTable;
+          end;
+     end;
+     With Table_SchemeDetail do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          TableName := 'SchemeDetail.db';
+          FieldDefs.Clear;
+          FieldDefs.Add('SchemeDetailId', ftInteger);
+          FieldDefs.Add('SchemeID', ftInteger);
+          FieldDefs.Add('RefType', ftString, 32);
+          FieldDefs.Add('RefNo', ftInteger);
+          FieldDefs.Add('Type', ftString, 32);
+          FieldDefs.Add('OpDiscount', ftFloat);
+          FieldDefs.Add('IpDiscount', ftFloat);
+          CreateTable;
+     end;
+     PageControl1.Pages[0].TabVisible := False;
+end;
+
+procedure TForm_SchemeDetail.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = 27 then
+          Btn_closeClick(Sender);
+end;
+
+procedure TForm_SchemeDetail.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+          keybd_event(9, 13, 0, 0);
+end;
+
+procedure TForm_SchemeDetail.FormShow(Sender: TObject);
+begin
+     //RefreshQuery(Query_List, gs_temppath);
+     with Query_List do
+     begin
+          Close;
+          DatabaseName:=gs_temppath;
+          Open;
+     end;
+     RefreshQuery(Query_Dep, gs_DatabaseName);
+end;
+
+procedure TForm_SchemeDetail.SaveData;
+Var
+     SchemeId, SchemeDetailId ,RefNo, DATAPOSTBY: Integer;
+     RefType, DataPostDateTime, MacID: String;
+     OpDiscount, IpDiscount: Double;
+begin
+     with Table_SchemeDetail do
+     begin
+          Close;
+          Open;
+          while not Eof do
+          begin
+               if FieldByName('SchemeDetailId').AsString <> '' then
+                    SchemeDetailId := FieldByName('SchemeDetailId').AsInteger
+               else
+                    SchemeDetailId := 0;
+
+               SchemeId:=FieldByName('SchemeId').AsInteger;
+               RefNo:=FieldByName('RefNo').AsInteger;
+               DATAPOSTBY:=gi_UserID;
+               DataPostDateTime:=TodaysDate+' '+TodaysTime;
+               RefType:=FieldByName('RefType').AsString;
+               MacID:=gs_MacID;
+               OpDiscount:=FieldByName('OpDiscount').AsFloat;
+               IpDiscount:=FieldByName('IpDiscount').AsFloat;
+
+
+               if SchemeDetailId = 0 then
+                    SaveSchemeDetail(SchemeId, RefNo, DATAPOSTBY, RefType, DataPostDateTime, MacID, OpDiscount, IpDiscount)
+               else
+                    UpdateSchemeDetail(SchemeDetailId, RefNo, DATAPOSTBY, RefType, DataPostDateTime, MacID, OpDiscount, IpDiscount);
+               Next;
+          end;
+     end;
+end;
+
+end.

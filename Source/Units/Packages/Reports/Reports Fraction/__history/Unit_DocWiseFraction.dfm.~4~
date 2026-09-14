@@ -1,0 +1,786 @@
+object Form_DocWiseFraction: TForm_DocWiseFraction
+  Left = 482
+  Top = 202
+  BorderStyle = bsDialog
+  Caption = 'Doctor Fraction Report'
+  ClientHeight = 266
+  ClientWidth = 396
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poOwnerFormCenter
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 396
+    Height = 30
+    Align = alTop
+    TabOrder = 0
+    object BitBtnPreview: TBitBtn
+      Left = 3
+      Top = 2
+      Width = 115
+      Height = 25
+      Caption = '&Preview (F1)'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+        0003377777777777777308888888888888807F33333333333337088888888888
+        88807FFFFFFFFFFFFFF7000000000000000077777777777777770F8F8F8F8F8F
+        8F807F333333333333F708F8F8F8F8F8F9F07F333333333337370F8F8F8F8F8F
+        8F807FFFFFFFFFFFFFF7000000000000000077777777777777773330FFFFFFFF
+        03333337F3FFFF3F7F333330F0000F0F03333337F77773737F333330FFFFFFFF
+        03333337F3FF3FFF7F333330F00F000003333337F773777773333330FFFF0FF0
+        33333337F3F37F3733333330F08F0F0333333337F7337F7333333330FFFF0033
+        33333337FFFF7733333333300000033333333337777773333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BitBtnPreviewClick
+    end
+    object BitBtnExcel: TBitBtn
+      Left = 117
+      Top = 2
+      Width = 159
+      Height = 25
+      Caption = 'Send To Excel (F2)'
+      DoubleBuffered = True
+      Glyph.Data = {
+        5A010000424D5A01000000000000760000002800000016000000130000000100
+        040000000000E4000000C40E0000C40E00001000000000000000000000000000
+        80000080000000808000800000008000800080800000C0C0C000808080000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+        FFFFFFFFFF00FFFFFFFFFFFFFFFFFFFFFF00FFFF4000000000006666FF00FFFF
+        408888888806EEF0FF00FFFF440E6666606EEF04FF00FFFF4440E66606EEF060
+        FF00FFFF44440E606EEF0000FF00FFFF44444006EEF04444FF00FFFF4444406E
+        EF004444FF00FFFF444406EEF0680444FF00FFFF44406EEF0E668044FF00FFFF
+        4406EEF040E66804FF00FFFF40FFFF04440EEEE0FF00FFFF4000004444400000
+        FF00FFFF4044444444444444FF00FFFFFFFFFFFFFFFFFFFFFF00FFFFFFFFFFFF
+        FFFFFFFFFF00FFFFFFFFFFFFFFFFFFFFFF00FFFFFFFFFFFFFFFFFFFFFF00}
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BitBtnExcelClick
+    end
+    object BitBtnCancel: TBitBtn
+      Left = 277
+      Top = 2
+      Width = 117
+      Height = 25
+      Cancel = True
+      Caption = '&Cancel (Esc)'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        333333333333333333333333333333333333333FFF33FF333FFF339993370733
+        999333777FF37FF377733339993000399933333777F777F77733333399970799
+        93333333777F7377733333333999399933333333377737773333333333990993
+        3333333333737F73333333333331013333333333333777FF3333333333910193
+        333333333337773FF3333333399000993333333337377737FF33333399900099
+        93333333773777377FF333399930003999333337773777F777FF339993370733
+        9993337773337333777333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = BitBtnCancelClick
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 30
+    Width = 396
+    Height = 236
+    Align = alClient
+    BevelOuter = bvLowered
+    TabOrder = 1
+    object Label1: TLabel
+      Left = 48
+      Top = 120
+      Width = 57
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'From Date :'
+    end
+    object Label2: TLabel
+      Left = 229
+      Top = 120
+      Width = 19
+      Height = 13
+      Caption = 'To :'
+    end
+    object Label3: TLabel
+      Left = 66
+      Top = 146
+      Width = 39
+      Height = 13
+      Caption = 'Doctor :'
+    end
+    object DateEditX_FromDate: TDateEditX
+      Left = 112
+      Top = 116
+      Width = 93
+      Height = 21
+      TabOrder = 0
+      ControlData = {
+        545046300A5444617465456469745200044C656674027003546F700274057769
+        647468025D0B4461746541442E5965617203D6070C4461746541442E4D6F6E74
+        6802010A4461746541442E44617902180B4461746556532E59656172030E080C
+        4461746556532E4D6F6E7468020A0A4461746556532E446179020B0000}
+    end
+    object DateEditX_ToDate: TDateEditX
+      Left = 250
+      Top = 116
+      Width = 93
+      Height = 21
+      TabOrder = 1
+      ControlData = {
+        545046300A5444617465456469745200044C65667403FA0003546F7002740577
+        69647468025D0B4461746541442E5965617203D6070C4461746541442E4D6F6E
+        746802010A4461746541442E44617902180B4461746556532E59656172030E08
+        0C4461746556532E4D6F6E7468020A0A4461746556532E446179020B0000}
+    end
+    object BitBtn_FromDate: TBitBtn
+      Left = 179
+      Top = 118
+      Width = 24
+      Height = 18
+      Caption = 'BS'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      TabStop = False
+      OnClick = BitBtn_FromDateClick
+    end
+    object BitBtn_ToDate: TBitBtn
+      Left = 317
+      Top = 118
+      Width = 24
+      Height = 18
+      Caption = 'BS'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 3
+      TabStop = False
+      OnClick = BitBtn_ToDateClick
+    end
+    object DBLC_Doctor: TDBLookupComboBox
+      Left = 112
+      Top = 143
+      Width = 229
+      Height = 21
+      KeyField = 'DOCID'
+      ListField = 'DOCNAME'
+      ListFieldIndex = 1
+      ListSource = DS_Doctor
+      TabOrder = 4
+      OnKeyDown = DBLC_DoctorKeyDown
+    end
+    object GroupBox1: TGroupBox
+      Left = 247
+      Top = 3
+      Width = 142
+      Height = 79
+      TabOrder = 5
+      object RB_Detail: TRadioButton
+        Left = 4
+        Top = 52
+        Width = 85
+        Height = 17
+        Caption = 'Detail       (F7)'
+        TabOrder = 0
+        OnClick = RB_DetailClick
+      end
+      object RB_Summary: TRadioButton
+        Left = 4
+        Top = 16
+        Width = 85
+        Height = 17
+        Caption = 'Summary  (F6)'
+        Checked = True
+        TabOrder = 1
+        TabStop = True
+        OnClick = RB_SummaryClick
+      end
+      object CB_Merge: TCheckBox
+        Left = 34
+        Top = 32
+        Width = 53
+        Height = 17
+        Caption = 'Merge'
+        Checked = True
+        Enabled = False
+        State = cbChecked
+        TabOrder = 2
+        Visible = False
+      end
+    end
+    object CB_Lock: TCheckBox
+      Left = 246
+      Top = 209
+      Width = 48
+      Height = 14
+      Caption = 'Lock'
+      TabOrder = 6
+      Visible = False
+    end
+    object BitBtnLock: TBitBtn
+      Left = 293
+      Top = 204
+      Width = 94
+      Height = 23
+      Caption = '&Fraction Lock'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333000003
+        333333333F777773FF333333008888800333333377333F3773F3333077870787
+        7033333733337F33373F3308888707888803337F33337F33337F330777880887
+        7703337F33337FF3337F3308888000888803337F333777F3337F330777700077
+        7703337F33377733337F33088888888888033373FFFFFFFFFF73333000000000
+        00333337777777777733333308033308033333337F7F337F7F33333308033308
+        033333337F7F337F7F33333308033308033333337F73FF737F33333377800087
+        7333333373F77733733333333088888033333333373FFFF73333333333000003
+        3333333333777773333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 7
+      Visible = False
+      OnClick = BitBtnLockClick
+    end
+    object GroupBox2: TGroupBox
+      Left = 3
+      Top = 3
+      Width = 241
+      Height = 79
+      TabOrder = 8
+      object RB_OPBill: TRadioButton
+        Left = 4
+        Top = 33
+        Width = 136
+        Height = 17
+        Caption = 'OPD  Income           (F4)'
+        TabOrder = 0
+        OnClick = RB_OPBillClick
+      end
+      object RB_IPBill: TRadioButton
+        Left = 4
+        Top = 55
+        Width = 139
+        Height = 17
+        Caption = 'IPD Income             (F5)'
+        TabOrder = 1
+        OnClick = RB_IPBillClick
+      end
+      object RB_OPIPBill: TRadioButton
+        Left = 4
+        Top = 9
+        Width = 141
+        Height = 17
+        Caption = 'OPD + IPD Income  (F3)'
+        Checked = True
+        TabOrder = 2
+        TabStop = True
+        OnClick = RB_OPIPBillClick
+      end
+      object CB_Reg: TCheckBox
+        Left = 144
+        Top = 33
+        Width = 45
+        Height = 17
+        Caption = 'Reg.'
+        TabOrder = 3
+      end
+    end
+    object CBSummariseDetail: TCheckBox
+      Left = 113
+      Top = 208
+      Width = 75
+      Height = 17
+      Caption = 'Summarize'
+      TabOrder = 9
+      OnClick = CBSummariseDetailClick
+    end
+    object CB_DailyIPDConsultation: TCheckBox
+      Left = 200
+      Top = 86
+      Width = 155
+      Height = 17
+      Caption = 'With Daily IPD Consultation'
+      Enabled = False
+      TabOrder = 10
+      Visible = False
+    end
+    object CB_InclInactiveDoc: TCheckBox
+      Left = 113
+      Top = 168
+      Width = 143
+      Height = 17
+      Caption = 'Doctor Including Inactive'
+      TabOrder = 11
+      OnClick = CB_InclInactiveDocClick
+    end
+    object DBGrid1: TDBGrid
+      Left = 317
+      Top = 174
+      Width = 54
+      Height = 24
+      DataSource = DS_QueryExcel
+      TabOrder = 12
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Visible = False
+    end
+    object CB_BillAmount: TCheckBox
+      Left = 9
+      Top = 208
+      Width = 97
+      Height = 17
+      Caption = 'With Bill Amount'
+      TabOrder = 13
+      OnClick = CBSummariseDetailClick
+    end
+  end
+  object Query_Doctor: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'select Doct_DocName DocName,Doct_DOCID DOCID ,Doct_Desig Desig f' +
+        'rom Hs_Doct_Doctor'
+      ''
+      'Order by DocName')
+    Left = 195
+    Top = 37
+  end
+  object DS_Doctor: TDataSource
+    DataSet = Query_Doctor
+    Left = 211
+    Top = 45
+  end
+  object Query_Name: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'Select PatientId,Title||'#39' '#39'||FName||'#39' '#39'||LName as Name From Pati' +
+        'entMain'
+      
+        'where PatientId IN ( Select Distinct PatientId From BillDetail w' +
+        'here '
+      'BillDate>=:FromDate and BillDate <=:ToDate)')
+    Left = 245
+    Top = 31
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'FromDate'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftString
+        Name = 'ToDate'
+        ParamType = ptUnknown
+      end>
+  end
+  object QueryDetail: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'Select BillNo,BillDATE,BillTime,PatientId,MODIFYBY,RateType,Sum(' +
+        'qty*Amount) as'
+      
+        'Amount,sum((qty*Amount)*(Dis/100)) as Discount,Sum(VatAmt) as Va' +
+        'tAmt'
+      ',Sum(((Qty*Amount)+VatAmt)-(Qty*Amount*Dis/100)) as NetTotal'
+      
+        ' From BillDetail Where (BillDate>=:FromDate AND BillDate<=:ToDat' +
+        'e)  and (PayType='#39'CASH'#39')'
+      'AND (BillType='#39'B'#39' OR BillType='#39'O'#39') And DocCode=:DocCode'
+      ''
+      ''
+      
+        'Group by BillNo,BillDATE,BillTime,PatientId,Modifyby,RateType or' +
+        'der by BillDate,billNo'
+      ''
+      ''
+      ''
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' ')
+    Left = 176
+    Top = 197
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'FromDate'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftString
+        Name = 'ToDate'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftString
+        Name = 'DocCode'
+        ParamType = ptUnknown
+      end>
+  end
+  object QueryCreditBill: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'Select BillNo,BillDATE,BillTime,PatientId,MODIFYBY,RateType,Sum(' +
+        'qty*Amount) as'
+      
+        'Amount,sum((qty*Amount)*(Dis/100)) as Discount,Sum(VatAmt) as Va' +
+        'tAmt'
+      ',Sum(((Qty*Amount)+VatAmt)-(Qty*Amount*Dis/100)) as NetTotal'
+      
+        'From BillDetail Where (BillDate>=:FromDate AND BillDate<=:ToDate' +
+        ') and (PayType='#39'CREDIT'#39')'
+      'AND (BillType='#39'B'#39' OR BillType='#39'O'#39') And DocCode=:DocCode'
+      ''
+      ''
+      
+        'Group by BillNo,BillDATE,BillTime,PatientId,Modifyby,RateType or' +
+        'der by BillDate,billNo'
+      ' '
+      ' '
+      ' '
+      ' ')
+    Left = 199
+    Top = 65
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'FromDate'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftString
+        Name = 'ToDate'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftString
+        Name = 'DocCode'
+        ParamType = ptUnknown
+      end>
+    object QueryCreditBillBILLDATE: TStringField
+      FieldName = 'BILLDATE'
+      Size = 10
+    end
+    object QueryCreditBillBILLTIME: TStringField
+      FieldName = 'BILLTIME'
+      Size = 12
+    end
+    object QueryCreditBillBILLNO: TStringField
+      FieldName = 'BILLNO'
+      Size = 15
+    end
+    object QueryCreditBillPATIENTID: TFloatField
+      FieldName = 'PATIENTID'
+    end
+    object QueryCreditBillPName: TStringField
+      FieldKind = fkLookup
+      FieldName = 'PName'
+      LookupDataSet = Query_Name
+      LookupKeyFields = 'PATIENTID'
+      LookupResultField = 'NAME'
+      KeyFields = 'PATIENTID'
+      Size = 50
+      Lookup = True
+    end
+    object QueryCreditBillAMOUNT: TFloatField
+      FieldName = 'AMOUNT'
+    end
+    object QueryCreditBillDISCOUNT: TFloatField
+      FieldName = 'DISCOUNT'
+    end
+    object QueryCreditBillVATAMT: TFloatField
+      FieldName = 'VATAMT'
+    end
+    object QueryCreditBillNETTOTAL: TFloatField
+      FieldName = 'NETTOTAL'
+    end
+  end
+  object QueryRefundBill: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'Select BillNo,BillDATE,BillTime,PatientId,MODIFYBY,RateType,Sum(' +
+        'qty*Amount) as'
+      
+        'Amount,sum((qty*Amount)*(Dis/100)) as Discount,Sum(VatAmt) as Va' +
+        'tAmt'
+      ',Sum(((Qty*Amount)+VatAmt)-(Qty*Amount*Dis/100)) as NetTotal'
+      
+        'From BillDetail Where (BillDate>=:FromDate AND BillDate<=:ToDate' +
+        ') And DocCode=:DocCode'
+      
+        'AND (BillNo Like '#39'RF%'#39') And Service<>'#39'OPREF'#39' AND Service<>'#39'IPREF' +
+        #39
+      ''
+      ''
+      
+        'Group by BillNo,BillDATE,BillTime,PatientId,Modifyby,RateType or' +
+        'der by BillDate,billNo'
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' ')
+    Left = 127
+    Top = 80
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'FromDate'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftString
+        Name = 'ToDate'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftString
+        Name = 'DocCode'
+        ParamType = ptUnknown
+      end>
+    object QueryRefundBillBILLDATE: TStringField
+      FieldName = 'BILLDATE'
+      Size = 10
+    end
+    object QueryRefundBillBILLTIME: TStringField
+      FieldName = 'BILLTIME'
+      Size = 12
+    end
+    object QueryRefundBillBILLNO: TStringField
+      FieldName = 'BILLNO'
+      Size = 15
+    end
+    object QueryRefundBillPATIENTID: TFloatField
+      FieldName = 'PATIENTID'
+    end
+    object QueryRefundBillName: TStringField
+      FieldKind = fkLookup
+      FieldName = 'PName'
+      LookupDataSet = Query_Name
+      LookupKeyFields = 'PATIENTID'
+      LookupResultField = 'NAME'
+      KeyFields = 'PATIENTID'
+      Size = 40
+      Lookup = True
+    end
+    object QueryRefundBillAMOUNT: TFloatField
+      FieldName = 'AMOUNT'
+    end
+    object QueryRefundBillDISCOUNT: TFloatField
+      FieldName = 'DISCOUNT'
+    end
+    object QueryRefundBillVATAMT: TFloatField
+      FieldName = 'VATAMT'
+    end
+    object QueryRefundBillNETTOTAL: TFloatField
+      FieldName = 'NETTOTAL'
+    end
+  end
+  object Query_Process: TQuery
+    DatabaseName = 'Hospital'
+    Left = 364
+    Top = 74
+  end
+  object QueryIPDetail: TQuery
+    DatabaseName = 'Hospital'
+    Left = 127
+    Top = 30
+  end
+  object Query_SubProcess: TQuery
+    DatabaseName = 'Hospital'
+    Left = 329
+    Top = 50
+  end
+  object QueryCashDocSum: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'Select DocCode,PayType,Sum(UnitTestCost*Qty) Total,(Select F_Nam' +
+        'e||'#39' '#39'||L_Name From Doctor Where DocCode=DrProcedures.DocCode) D' +
+        'ocName'
+      
+        ',Sum(UnitTestCost*Disper/100) Discount,Sum((UnitTestCost*Qty)-Ro' +
+        'und(UnitTestCost*Disper/100)) SubTotal'
+      
+        ',Sum(((UnitTestCost*Qty)-(UnitTestCost*Disper/100))*DocRatePer/1' +
+        '00) DocPortion'
+      'From DrProcedures'
+      'Where BillDate>=:FromDate And BillDate<=:ToDate'
+      'And BillType In ('#39'O'#39','#39'B'#39','#39'IP'#39','#39'A'#39')'
+      'And BillNo Not Like '#39'TP%'#39
+      'And '#39'AniD'#39'='#39'AniD'#39
+      'And DocCommession>0'
+      'Group By DocCode,PayType'
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' ')
+    Left = 72
+    Top = 79
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'FromDate'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ToDate'
+        ParamType = ptUnknown
+      end>
+  end
+  object QueryCreditDocSum: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'Select D.F_Name||'#39' '#39'||D.L_Name as Name,BD.DocCode,BD.BillNo,BD.B' +
+        'illDATE,BD.BillTime,BD.PatientId,'
+      
+        'BD.MODIFYBY,BD.RateType,Sum((BD.qty*BD.Amount)+BD.VatAmt) as Amo' +
+        'unt,sum((BD.qty*BD.Amount)*(BD.Dis/100)) as Discount,'
+      
+        'Sum(BD.VatAmt) as VatAmt,Sum(((BD.Qty*BD.Amount)+BD.VatAmt)-(BD.' +
+        'Qty*BD.Amount*BD.Dis/100)) as NetTotal'
+      'From BillDetail BD,Doctor D Where BD.DocCode=D.DocCode(+) '
+      'and (BD.BillDate>=:FromDate AND BD.BillDate<=:ToDate)  '
+      'and (BD.PayType='#39'CREDIT'#39')'
+      'AND (BD.BillType='#39'B'#39' OR BD.BillType='#39'O'#39') '
+      'and (BD.DocCode is not null)'
+      'And (39=39)'
+      
+        'Group by D.F_Name||'#39' '#39'||D.L_Name,BD.DocCode,BD.BillNo,BD.BillDAT' +
+        'E,BD.BillTime,BD.PatientId,BD.Modifyby,BD.RateType'
+      
+        'Order by D.F_Name||'#39' '#39'||D.L_Name,BD.DocCode,BD.BillDate,BD.billN' +
+        'o '
+      ' '
+      ' '
+      ' '
+      ' ')
+    Left = 159
+    Top = 67
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'FromDate'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftString
+        Name = 'ToDate'
+        ParamType = ptUnknown
+      end>
+  end
+  object QueryRefundDocSum: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'Select DocCode,Sum(UnitTestCost*Qty) Total,(Select F_Name||'#39' '#39'||' +
+        'L_Name From Doctor Where DocCode=DrProcedures.DocCode) DocName'
+      
+        ',Sum(UnitTestCost*Disper/100) Discount,Sum((UnitTestCost*Qty)-Ro' +
+        'und(UnitTestCost*Disper/100)) SubTotal'
+      
+        ',Sum(((UnitTestCost*Qty)-(UnitTestCost*Disper/100))*DocRatePer/1' +
+        '00) DocPortion'
+      'From DrProcedures'
+      'Where BillDate>=:FromDate And BillDate<=:ToDate'
+      'And BillType In ('#39'O'#39','#39'B'#39','#39'IP'#39','#39'A'#39')'
+      'And '#39'AniD'#39'='#39'AniD'#39
+      'And IsCancel='#39'Y'#39
+      'Group By DocCode '
+      ' '
+      ' '
+      ' '
+      ' ')
+    Left = 151
+    Top = 66
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'FromDate'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftString
+        Name = 'ToDate'
+        ParamType = ptUnknown
+      end>
+  end
+  object Table_DFDoctorPartDetail: TTable
+    Left = 135
+    Top = 58
+  end
+  object Table_DFDoctorPartSummary: TTable
+    Left = 152
+    Top = 58
+  end
+  object TableItemCount: TTable
+    Left = 143
+    Top = 50
+  end
+  object Query_ExcelDetail: TQuery
+    SQL.Strings = (
+      'Select PatientId,PatientName,BillDate,BillNo,Service,DrAmount'
+      'From  DFDoctorPartDetail.db '
+      'Order by DocCode,PayType,BillDate,PatientId,InpatientId,BillNo ')
+    Left = 144
+    Top = 58
+  end
+  object Query_ExcelRefund: TQuery
+    Left = 193
+    Top = 58
+  end
+  object DS_QueryExcel: TDataSource
+    DataSet = QueryDetail
+    Left = 208
+    Top = 192
+  end
+end

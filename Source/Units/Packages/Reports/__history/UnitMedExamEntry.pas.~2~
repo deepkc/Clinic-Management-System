@@ -1,0 +1,3325 @@
+unit UnitMedExamEntry;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DBCtrls, StdCtrls, Grids, DBGrids, Buttons, ComCtrls, OleCtrls,UnitSendToExcel,
+  DateEditXControl_TLB, ExtCtrls, Db, DBTables, Ora, OraSmart, MemDS, OraError, DBAccess, Ora, OraSmart, MemDS, OraError,serverDate,VDateUtils;
+
+type
+  TFormMedExamEntry = class(TForm)
+    Panel1: TPanel;
+    Shape6: TShape;
+    BtnSave: TBitBtn;
+    BtnCancel: TBitBtn;
+    BtnDetail: TBitBtn;
+    BtnPrint: TBitBtn;
+    DataSourceQuerySearch: TDataSource;
+    QuerySearch: TOraQuery;
+    PageControlmain: TPageControl;
+    TabSheetMain: TTabSheet;
+    Panel3: TPanel;
+    Shape2: TShape;
+    Shape1: TShape;
+    Label29: TLabel;
+    Label117: TLabel;
+    Label30: TLabel;
+    Shape11: TShape;
+    Shape10: TShape;
+    Label50: TLabel;
+    EditDay: TEdit;
+    DateEditXToday: TDateEditX;
+    ButtonDate: TButton;
+    UpDown2: TUpDown;
+    BitBtnRefresh: TBitBtn;
+    Editsearch: TEdit;
+    BitBtnSearch: TBitBtn;
+    DBGrid2: TDBGrid;
+    EditPatient: TEdit;
+    EditFirstName: TEdit;
+    EditLastName: TEdit;
+    EditAgeSearch: TEdit;
+    EditGender: TEdit;
+    EditPAddress: TEdit;
+    PageControlMedicalExam: TPageControl;
+    TabSheet1: TTabSheet;
+    GroupBoxDetail: TGroupBox;
+    Label1: TLabel;
+    Label3: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    EditNationality: TEdit;
+    EditPassport: TEdit;
+    CmbGender: TComboBox;
+    EditAge: TEdit;
+    Label5: TLabel;
+    EditAddress: TEdit;
+    CmbAgeType: TComboBox;
+    Label174: TLabel;
+    Button5: TButton;
+    Label179: TLabel;
+    DateEditDOB: TDateEditX;
+    Button9: TButton;
+    Label4: TLabel;
+    Editcompany: TEdit;
+    LabelPatientid: TLabel;
+    Label6: TLabel;
+    GroupBoxPhyRep: TGroupBox;
+    Label2: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    EditHeight: TEdit;
+    EditAudioRt: TEdit;
+    EditWeight: TEdit;
+    EditRefraction: TEdit;
+    EditAudioLft: TEdit;
+    EditVisAcuityLft: TEdit;
+    Label20: TLabel;
+    Label21: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label24: TLabel;
+    Label25: TLabel;
+    EditColorVision: TEdit;
+    EditBloodPressure: TEdit;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    Label26: TLabel;
+    EditVisAcuityRt: TEdit;
+    Label27: TLabel;
+    Label28: TLabel;
+    GroupBoxLabRep: TGroupBox;
+    Label14: TLabel;
+    Label31: TLabel;
+    Label32: TLabel;
+    Label33: TLabel;
+    EditUrineGlucose: TEdit;
+    EditUrineProtein: TEdit;
+    EditUrineBlood: TEdit;
+    Label34: TLabel;
+    Label36: TLabel;
+    Label37: TLabel;
+    Label38: TLabel;
+    Label40: TLabel;
+    EditGPT: TEdit;
+    EditGOT: TEdit;
+    Label35: TLabel;
+    Label39: TLabel;
+    EditCholestrol: TEdit;
+    Label41: TLabel;
+    Label42: TLabel;
+    Label43: TLabel;
+    Label44: TLabel;
+    Label45: TLabel;
+    Label47: TLabel;
+    Label48: TLabel;
+    EditHematos: TEdit;
+    EditRH: TEdit;
+    EditABO: TEdit;
+    Label52: TLabel;
+    Label53: TLabel;
+    Label54: TLabel;
+    Label55: TLabel;
+    Label56: TLabel;
+    Label57: TLabel;
+    EditHBsAg: TEdit;
+    EditVDRL: TEdit;
+    EditAids: TEdit;
+    EditHBeAg: TEdit;
+    Label58: TLabel;
+    Label59: TLabel;
+    Label60: TLabel;
+    Label61: TLabel;
+    EditTPHA: TEdit;
+    EditAidsExam: TEdit;
+    Label62: TLabel;
+    Label63: TLabel;
+    Label64: TLabel;
+    EditHBeAb: TEdit;
+    QueryModify: TOraQuery;
+    QueryMedExam: TOraQuery;
+    Label11: TLabel;
+    EditFullName: TEdit;
+    Label65: TLabel;
+    MemoSummary: TMemo;
+    GroupBox3: TGroupBox;
+    GroupBox4: TGroupBox;
+    BitBtnFooter: TBitBtn;
+    EditDistrict: TEdit;
+    Label_Time: TLabel;
+    Timer1: TTimer;
+    Label69: TLabel;
+    Label71: TLabel;
+    Label72: TLabel;
+    GroupBox5: TGroupBox;
+    Label73: TLabel;
+    Label74: TLabel;
+    Label75: TLabel;
+    Label76: TLabel;
+    GroupBox7: TGroupBox;
+    GroupBox8: TGroupBox;
+    GroupBox9: TGroupBox;
+    GroupBox1: TGroupBox;
+    GroupBox10: TGroupBox;
+    GroupBox11: TGroupBox;
+    GroupBox12: TGroupBox;
+    GroupBox13: TGroupBox;
+    Label77: TLabel;
+    DateEditExam: TDateEditX;
+    GroupBoxXRay: TGroupBox;
+    Label46: TLabel;
+    Label49: TLabel;
+    EditFilm: TEdit;
+    Label51: TLabel;
+    EditFinding: TMemo;
+    Label78: TLabel;
+    Label79: TLabel;
+    Label80: TLabel;
+    EditFilmPA: TEdit;
+    EditFindingPA: TMemo;
+    Edit_NRCholes: TEdit;
+    Edit_NRSGOT: TEdit;
+    Edit_NRSGPT: TEdit;
+    GroupBox6: TGroupBox;
+    Label10: TLabel;
+    Edit_EPSRegNo: TEdit;
+    LabelMID: TLabel;
+    Label66: TLabel;
+    GroupBox14: TGroupBox;
+    Edit_CitizenshipNo: TEdit;
+    Label67: TLabel;
+    Label81: TLabel;
+    Shape3: TShape;
+    Label82: TLabel;
+    Query_Process: TOraQuery;
+    PageControl_TBExam: TPageControl;
+    TabSheet2: TTabSheet;
+    GroupBox2: TGroupBox;
+    Label68: TLabel;
+    Label70: TLabel;
+    Label83: TLabel;
+    Label84: TLabel;
+    Label85: TLabel;
+    Label86: TLabel;
+    Label87: TLabel;
+    Label88: TLabel;
+    Label_TPatientid: TLabel;
+    Label90: TLabel;
+    Label91: TLabel;
+    Label_TBid: TLabel;
+    Label93: TLabel;
+    DateEdit_TExam: TDateEditX;
+    Edit_TNationality: TEdit;
+    Edit_TPassport: TEdit;
+    CMB_TGender: TComboBox;
+    Edit_TAge: TEdit;
+    Edit_TAddress: TEdit;
+    CMB_TAgeType: TComboBox;
+    Button1: TButton;
+    DateEdit_TDOB: TDateEditX;
+    Button2: TButton;
+    Edit_Tcompany: TEdit;
+    Edit_TFullName: TEdit;
+    Edit_TCitizenshipNo: TEdit;
+    GroupBox15: TGroupBox;
+    Label94: TLabel;
+    Label95: TLabel;
+    Label96: TLabel;
+    Label97: TLabel;
+    Label98: TLabel;
+    Label99: TLabel;
+    Label100: TLabel;
+    Label101: TLabel;
+    Edit_THeight: TEdit;
+    Edit_TWeight: TEdit;
+    Edit_TBloodPressure: TEdit;
+    GroupBox16: TGroupBox;
+    GroupBox17: TGroupBox;
+    Label102: TLabel;
+    Label103: TLabel;
+    Label104: TLabel;
+    Label105: TLabel;
+    Label106: TLabel;
+    Label107: TLabel;
+    Label108: TLabel;
+    Label109: TLabel;
+    Label110: TLabel;
+    GroupBox18: TGroupBox;
+    GroupBox19: TGroupBox;
+    GroupBox20: TGroupBox;
+    GroupBox21: TGroupBox;
+    GroupBox22: TGroupBox;
+    Panel_CheckResult: TPanel;
+    CB_Infective: TCheckBox;
+    CB_NonInfective: TCheckBox;
+    CB_DrugSensitive: TCheckBox;
+    CB_MDR: TCheckBox;
+    CB_UnderTreatment: TCheckBox;
+    CB_Cured: TCheckBox;
+    CB_ComplicatedTreatment: TCheckBox;
+    CB_Failed: TCheckBox;
+    CB_Defaulted: TCheckBox;
+    GroupBox23: TGroupBox;
+    GroupBox24: TGroupBox;
+    Edit_PhysicianName: TEdit;
+    Edit_PhysicianLicense: TEdit;
+    Edit_Remarks: TEdit;
+    Edit_Examination: TEdit;
+    GroupBox25: TGroupBox;
+    Label111: TLabel;
+    Label112: TLabel;
+    Label113: TLabel;
+    CB_Positive: TCheckBox;
+    CB_Negetive: TCheckBox;
+    Edit_TechnicianName: TEdit;
+    Edit_TechnicianLicense: TEdit;
+    BitBtn_TBExamination: TBitBtn;
+    Query_TBExam: TOraQuery;
+    DateEditXRegAge: TDateEditX;
+    DateEdit_XRAYDATE: TDateEditX;
+    Button3: TButton;
+    CB_NonSpecific: TCheckBox;
+    CB_InactiveTB: TCheckBox;
+    CB_ActiveTB: TCheckBox;
+    edit_Summary: TEdit;
+    BitBtnExcel: TBitBtn;
+    ComboBox_visualiaid: TComboBox;
+    procedure BtnCancelClick(Sender: TObject);
+    procedure BtnSaveClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    Procedure SetQueryToSelection;
+    procedure EditsearchKeyPress(Sender: TObject; var Key: Char);
+    procedure simplesearch;
+    procedure BitBtnRefreshClick(Sender: TObject);
+    procedure BitBtnSearchClick(Sender: TObject);
+    procedure SearchEXtended;
+    procedure BtnDetailClick(Sender: TObject);
+    procedure DBGrid2CellClick(Column: TColumn);
+    procedure Button5Click(Sender: TObject);
+    procedure Button9Click(Sender: TObject);
+    procedure BtnPrintClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EditDayKeyPress(Sender: TObject; var Key: Char);
+    procedure EditFullNameKeyPress(Sender: TObject; var Key: Char);
+    procedure EditNationalityKeyPress(Sender: TObject; var Key: Char);
+    procedure EditPassportKeyPress(Sender: TObject; var Key: Char);
+    procedure EditAgeKeyPress(Sender: TObject; var Key: Char);
+    procedure CmbAgeTypeKeyPress(Sender: TObject; var Key: Char);
+    procedure CmbGenderKeyPress(Sender: TObject; var Key: Char);
+    procedure EditAddressKeyPress(Sender: TObject; var Key: Char);
+    procedure EditcompanyKeyPress(Sender: TObject; var Key: Char);
+    procedure EditHeightKeyPress(Sender: TObject; var Key: Char);
+    procedure EditColorVisionKeyPress(Sender: TObject; var Key: Char);
+    procedure EditWeightKeyPress(Sender: TObject; var Key: Char);
+    procedure EditBloodPressureKeyPress(Sender: TObject; var Key: Char);
+    procedure EditVisAcuityRtKeyPress(Sender: TObject; var Key: Char);
+    procedure EditVisAcuityLftKeyPress(Sender: TObject; var Key: Char);
+    procedure EditRefractionKeyPress(Sender: TObject; var Key: Char);
+    procedure EditAudioRtKeyPress(Sender: TObject; var Key: Char);
+    procedure EditAudioLftKeyPress(Sender: TObject; var Key: Char);
+    procedure EditUrineGlucoseKeyPress(Sender: TObject; var Key: Char);
+    procedure EditUrineProteinKeyPress(Sender: TObject; var Key: Char);
+    procedure EditUrineBloodKeyPress(Sender: TObject; var Key: Char);
+    procedure EditGOTKeyPress(Sender: TObject; var Key: Char);
+    procedure EditGPTKeyPress(Sender: TObject; var Key: Char);
+    procedure EditCholestrolKeyPress(Sender: TObject; var Key: Char);
+    procedure EditHematosKeyPress(Sender: TObject; var Key: Char);
+    procedure EditABOKeyPress(Sender: TObject; var Key: Char);
+    procedure EditRHKeyPress(Sender: TObject; var Key: Char);
+    procedure EditFilmKeyPress(Sender: TObject; var Key: Char);
+    procedure EditFindingKeyPress(Sender: TObject; var Key: Char);
+    procedure EditHBsAgKeyPress(Sender: TObject; var Key: Char);
+    procedure EditVDRLKeyPress(Sender: TObject; var Key: Char);
+    procedure EditAidsKeyPress(Sender: TObject; var Key: Char);
+    procedure EditHBeAgKeyPress(Sender: TObject; var Key: Char);
+    procedure EditHBeAbKeyPress(Sender: TObject; var Key: Char);
+    procedure EditTPHAKeyPress(Sender: TObject; var Key: Char);
+    procedure EditAidsExamKeyPress(Sender: TObject; var Key: Char);
+    procedure MemoSummaryKeyPress(Sender: TObject; var Key: Char);
+    procedure BitBtnFooterClick(Sender: TObject);
+    procedure EditPatientKeyPress(Sender: TObject; var Key: Char);
+    procedure EditFirstNameKeyPress(Sender: TObject; var Key: Char);
+    procedure EditLastNameKeyPress(Sender: TObject; var Key: Char);
+    procedure EditAgeSearchKeyPress(Sender: TObject; var Key: Char);
+    procedure EditGenderKeyPress(Sender: TObject; var Key: Char);
+    procedure EditDistrictKeyPress(Sender: TObject; var Key: Char);
+    procedure EditPAddressKeyPress(Sender: TObject; var Key: Char);
+    procedure Timer1Timer(Sender: TObject);
+    procedure DBGrid2DblClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Edit_NRSGOTKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_NRSGPTKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_NRCholesKeyPress(Sender: TObject; var Key: Char);
+    procedure EditFilmPAKeyPress(Sender: TObject; var Key: Char);
+    procedure EditFindingPAKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_EPSRegNoKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_CitizenshipNoKeyPress(Sender: TObject; var Key: Char);
+    procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure BitBtn_TBExaminationClick(Sender: TObject);
+    procedure CB_InfectiveClick(Sender: TObject);
+    procedure CB_NonInfectiveClick(Sender: TObject);
+    procedure CB_DrugSensitiveClick(Sender: TObject);
+    procedure CB_MDRClick(Sender: TObject);
+    procedure CB_UnderTreatentClick(Sender: TObject);
+    procedure CB_CuredClick(Sender: TObject);
+    procedure CB_ComplicatedTreatmentClick(Sender: TObject);
+    procedure CB_FailedClick(Sender: TObject);
+    procedure CB_DefaultedClick(Sender: TObject);
+    procedure CB_PositiveClick(Sender: TObject);
+    procedure CB_NegetiveClick(Sender: TObject);
+    procedure saveMedicalExamination(Sender: TObject);
+    procedure saveTBExamination(Sender: TObject);
+    procedure AssignMedicalValue(Sender: TObject);
+    procedure Edit_TAgeExit(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure EditAgeExit(Sender: TObject);
+    procedure Edit_TAgeKeyPress(Sender: TObject; var Key: Char);
+    procedure CMB_TAgeTypeKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_NonSpecificClick(Sender: TObject);
+    procedure CB_InactiveTBClick(Sender: TObject);
+    procedure CB_ActiveTBClick(Sender: TObject);
+    procedure Edit_TNationalityKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_TPassportKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_TCitizenshipNoKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_TAddressKeyPress(Sender: TObject; var Key: Char);
+    procedure CMB_TGenderKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_TcompanyKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_THeightKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_TWeightKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_TBloodPressureKeyPress(Sender: TObject; var Key: Char);
+    procedure edit_SummaryKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_RemarksKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_ExaminationKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_PhysicianNameKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_PhysicianLicenseKeyPress(Sender: TObject;
+      var Key: Char);
+    procedure Edit_TechnicianNameKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_TechnicianLicenseKeyPress(Sender: TObject;
+      var Key: Char);
+    procedure DateEdit_TExamKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_TFullNameKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_NonSpecificKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_InactiveTBKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_ActiveTBKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_NonInfectiveKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_DrugSensitiveKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_MDRKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_CuredKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_ComplicatedTreatmentKeyPress(Sender: TObject;
+      var Key: Char);
+    procedure CB_FailedKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_DefaultedKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_UnderTreatmentKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_PositiveKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_NegetiveKeyPress(Sender: TObject; var Key: Char);
+    procedure FormDestroy(Sender: TObject);
+    procedure DateEdit_TDOBKeyPress(Sender: TObject; var Key: Smallint);
+    procedure BitBtnExcelClick(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    UserName,UserLoginTime, IsInPatient,Ps_string,SqlString:String;
+    UserID,NpatientNo,pi_patientid,pi_medexamid,pi_TBExamid : Integer;
+    PS_EPSREGNO,PS_FULLNAME,PS_DATEOFEXAM,PS_NATIONALITY,PS_DATEOFBIRTH,PS_PASSPORT,PS_COMPANYNAME,PS_ADDRESS,PS_SEX,PS_AGETYPE,PS_HEIGHT,PS_WEIGHT,
+    PS_COLORVISION,PS_BLOODPRESSURE,PS_VISUALACUITYRT,PS_VISUALACUITYLFT,PS_REFRACTION,PS_AUDIOMETRYRT,PS_AUDIOMETRYLFT,PS_URINEGLUCOSE,PS_URINEPROTEIN,
+    PS_URINEBLOOD,PS_SERUMGOT,PS_SERUMGPT,PS_TCHOLESTROL,PS_HEMATOS,PS_ABO,PS_RH,PS_FILMNO,PS_FINDING,PS_HEPATISISHBSAG,PS_VDRL,PS_AIDS,PS_HEPATISISHBEAG,
+    PS_HEPATISISHBEAB,PS_TPHA,PS_AIDSEXAM,PS_FILMNOPA,PS_FINDINGPA,PS_SUMMARY,PS_NRSGOT,PS_NRSGPT,PS_NRTCHOLESTEROL,PS_CITIZENSHIPNO,PS_AGE:String;
+    pb_isnew:boolean;
+    ps_common,Ps_DOBAD,ps_visualaid:string;
+    pi_SetAgeCount:Integer;
+
+    function Checkupdate(EPSREGNO,FULLNAME,DATEOFEXAM,NATIONALITY,DATEOFBIRTH,PASSPORT,COMPANYNAME,ADDRESS,SEX,AGETYPE,HEIGHT,WEIGHT,
+    COLORVISION,BLOODPRESSURE,VISUALACUITYRT,VISUALACUITYLFT,REFRACTION,AUDIOMETRYRT,AUDIOMETRYLFT,URINEGLUCOSE,URINEPROTEIN,
+    URINEBLOOD,SERUMGOT,SERUMGPT,TCHOLESTROL,HEMATOS,ABO,RH,FILMNO,FINDING,HEPATISISHBSAG,VDRL,AIDS,HEPATISISHBEAG,
+    HEPATISISHBEAB,TPHA,AIDSEXAM,FILMNOPA,FINDINGPA,SUMMARY,NRSGOT,NRSGPT,NRTCHOLESTEROL,CITIZENSHIPNO,AGE,visualaid:String;patientid:Integer):String;
+  end;
+
+var
+  FormMedExamEntry: TFormMedExamEntry;
+
+implementation
+
+uses UnitdmHospital, Unit_GlobalFxnVar, UnitUserLogin,
+  unitMedExamEntryReport, UnitPathologyFooterSetup, Unit_Message,unit_TBExaminationReport;
+
+{$R *.DFM}
+
+procedure TFormMedExamEntry.BtnCancelClick(Sender: TObject);
+begin
+     If PageControlMedicalExam.Visible=True then
+     Begin
+          BtnSave.Enabled:=False;
+          BtnDetail.Enabled:=True;
+          BitBtn_TBExamination.Enabled:=True;
+          //BtnPrint.Enabled:=true;
+          PageControlmain.Visible:=True;
+          PageControlMedicalExam.Visible:=False;
+          PageControl_TBExam.visible:=False;
+     End
+     else If PageControl_TbExam.Visible=True then
+     Begin
+          BtnSave.Enabled:=False;
+          BtnDetail.Enabled:=True;
+          BitBtn_TBExamination.Enabled:=True;
+          //BtnPrint.Enabled:=true;
+          PageControlmain.Visible:=True;
+          PageControlMedicalExam.Visible:=False;
+          PageControl_TBExam.visible:=False;
+     End
+     Else
+     Begin
+          Close;
+     End;
+end;
+
+
+procedure TFormMedExamEntry.SetQueryToSelection;
+var
+cSql,ak,MyString:String;
+begin
+     //MyString:='AND RegDate<=:SDate AND RegDate>=:PDate  Order by patientID';
+   
+     With querySearch do
+     begin
+          close;
+          with SQL do
+          begin
+               clear;
+               Add('Select Distinct MedicalExamination.MedicalExaminationID,TuberclosisExamination.TBExaminationId,PatientMain.PatientID,patientmain.FName,');
+               Add(' patientmain.LName,patientmain.Gender, patientmain.AgeType,patientmain.DistrictID, patientmain.PAddress,District.Districtname,(Select DepName From Department where ');
+               Add(' DepCode=PatientMain.DepCode) as DepName,PatientMain.Age,(select testname from testname where testnamecode=billdetail.service and rownum=1) as test ');
+               Add('From PatientMain,District,BillDetail,MedicalExamination,TuberClosisExamination');
+               Add(' Where PatientMain.PatientID=BillDetail.PatientID And Patientmain.districtid=District.districtid And PatientMain.PatientID=MedicalExamination.PatientID(+)');
+               Add(' and patientmain.patientid=TuberClosisExamination.patientid(+)');
+               Add(' And BillDetail.BillDate<=:SDate AND BillDetail.BillDate>=:PDate  ');
+               //Add(' And BillDetail.Service In (''EPS01'',''EPS02'') ');
+               Add(' And BillDetail.DepId = 35 ');
+               {If Trim(Editsearch.Text) <> '' Then
+               Add(' PatientMain.PatientID='+Trim(Editsearch.Text));}
+               Add(' Order by PatientMain.PatientID');
+               ParamByName('SDate').ASString:=AdToVS(DateEditXToday.ADDateAsDate);
+               ParamByName('PDate').ASString:=AdToVS(DateEditXToday.ADDateAsDate-StrToInt(EditDay.Text));
+               //SaveToFile('d:\Sql.txt');
+          end;
+          Open;
+
+     end;
+
+     {IF editPatient.Text<>'' then
+     csql:='(PatientMain.PatientID='+EditPatient.Text+') AND '
+     Else
+     begin
+          If EditFirstName.Text<>'' then csql:=csql+' (PatientMain.FName like '+chr(39)+EditFirstName.Text+'%'+chr(39)+') AND  ';
+          If EditLastName.Text<>'' then csql:=csql+' (PatientMain.LName like '+chr(39)+EditLastName.Text+'%'+chr(39)+') AND ';
+          If EditGender.Text<>'' then csql:=csql+' (PatientMain.Gender like '+chr(39)+EditGender.Text+'%'+chr(39)+') AND ';
+          If EditAgeSearch.Text<>'' then csql:=csql+' (PatientMain.Age like '+chr(39)+EditAgeSearch.Text+'%'+chr(39)+') AND ';
+     end;
+     delete(cSql,length(cSql)-4,4);
+     With querySearch do
+     begin
+          disablecontrols;
+          Try
+               close;
+               IF csql='' then
+               Begin
+                    //csql:='And RegDate<=:SDate AND RegDate>=:PDate  Order by patientID';
+                    csql:='And BillDetail.BillDate<=:SDate AND BillDetail.BillDate>=:PDate  Order by PatientMain.PatientID';
+               End
+               Else
+                    csql:=' And  '+csql+MyString;
+               sql[2]:=csql;
+               //SQL.SaveToFile('C:\serch.txt');
+               Try
+                    ParamByName('SDate').ASString:=AdToVS(DateEditXToday.ADDateAsDate);
+                    ParamByName('PDate').ASString:=AdToVS(DateEditXToday.ADDateAsDate-StrToInt(EditDay.Text));
+                    //SQL.SaveToFile('Sql.txt');
+                    open;
+                    //StatusBardetails.Panels[0].Text:='Total Patient  :- '+IntToStr(RecordCount);
+               Except
+                    sql[2]:=csql;//'And (39=39)';
+               End;
+          Finally
+               enablecontrols;
+          End;
+     End;}
+End;
+
+procedure TFormMedExamEntry.BtnSaveClick(Sender: TObject);
+begin
+     if ps_common='ME' then
+          saveMedicalExamination(sender)
+     else if ps_common='TB' then
+          saveTBExamination(sender);
+     BtnCancelClick(sender);
+ end;
+
+
+procedure TFormMedExamEntry.FormShow(Sender: TObject);
+begin
+  Timer1.Enabled := True;
+  UserName:=FrmUserLogin.UserName;
+  //LabelUserName.Caption := FrmUserLogin.UserName;
+  UserID:=FrmUserLogin.UserID;
+ // Service:=FrmUserLogin.Service;
+  //IsInPatient := FrmUserLogin.IsInPatient;
+  UserLoginTime:=FrmUserLogin.UserLoginTime;
+  BtnSave.Enabled:=False;
+  DateEditXToday.text:=ServerDate.TodaysDate;
+  PageControlmain.Align:=AlClient;
+  ComboBox_visualiaid.ItemIndex:=0;
+
+  With QueryModify Do
+  Begin
+        Close;
+        Sql.Clear;
+        Sql.Add('Select DepCode,UserId,UserName,IsIncharge,IsPhyRep,IsLabRep,IsXRayRep From UserMain');
+        Sql.Add(' Where UserId = '+ IntToStr(FrmUserLogin.UserID));
+        Open;
+  End;
+  {If  QueryModify.FieldByName('IsModifyPatientName').Asstring = 'T' Then
+  EditFullName.Enabled:=True
+  Else
+  EditFullName.Enabled:=False;}
+
+  If  QueryModify.FieldByName('DepCode').Asstring = 'ALL' Then
+  Begin
+
+    //BtnSave.Enabled := False;
+    //GroupBox2.Enabled := False;
+    //GroupBoxPhyRep.Enabled:=False;
+    //GroupBoxLabRep.Enabled := False;
+  End
+  Else
+  Begin
+    BtnPrint.Enabled:=False;
+    //BtnSave.Enabled := True;
+  End;
+
+  If gs_IsIncharge='Y' Then
+  Begin
+     GroupBoxDetail.Enabled:=True;
+     MemoSummary.Enabled:=True;
+     BtnPrint.Enabled:=True;
+  End
+  Else
+  Begin
+     GroupBoxDetail.Enabled:=False;
+     MemoSummary.Enabled:=False;
+     BtnPrint.Enabled:=False;
+  End;
+
+  If QueryModify.FieldByName('IsPhyRep').AsString ='T' Then
+  GroupBoxPhyRep.Enabled:=True
+  Else
+  GroupBoxPhyRep.Enabled:=False;
+
+  If QueryModify.FieldByName('IsLabRep').AsString ='T' Then
+  GroupBoxLabRep.Enabled := True
+  Else
+  GroupBoxLabRep.Enabled := False;
+
+  If QueryModify.FieldByName('IsXrayRep').AsString ='T' Then
+  GroupBoxXRay.Enabled := True
+  Else
+  GroupBoxXRay.Enabled := False;
+
+  If QueryModify.FieldByName('IsIncharge').AsString ='Y' Then
+  BitBtnFooter.Enabled:=True
+  Else
+  BitBtnFooter.Enabled:=False;
+
+  If FrmUserLogin.UserID In [1] Then
+  Begin
+    BtnPrint.Enabled:=True;
+    BtnSave.Enabled := True;
+    GroupBoxDetail.Enabled := True;
+    GroupBoxPhyRep.Enabled:=True;
+    GroupBoxLabRep.Enabled := True;
+    BitBtnFooter.Enabled:=True;
+  End;
+
+  //StatusBardetails.Panels[1].Text:='User Name:     '+UserName;
+  Setquerytoselection;
+  PageControlmain.BringToFront;
+  Editsearch.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditsearchKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  If key=#13 then
+  Begin
+    IF EditSearch.Text<>'' Then
+    Begin
+        Simplesearch;
+    End
+    Else
+      Setquerytoselection;
+  End;
+
+end;
+
+Procedure TFormMedExamEntry.SimpleSearch;
+var ss:string;
+    len,i:integer;
+    IsNumeric:boolean;
+begin
+
+ With QuerySearch do
+ begin
+   close;
+   With SQL do
+   begin
+     Try
+       clear;
+       Add('Select Distinct MedicalExamination.MedicalExaminationID,PatientMain.PatientID,patientmain.FName,patientmain.LName,');
+       Add(' patientmain.Gender, patientmain.AgeType,patientmain.DistrictID, patientmain.PAddress,District.Districtname,(Select DepName From Department where ');
+       Add(' DepCode=PatientMain.DepCode) as DepName,PatientMain.Age From PatientMain,District,BillDetail,MedicalExamination');
+       Add(' Where PatientMain.PatientID=BillDetail.PatientID And Patientmain.districtid=District.districtid And PatientMain.PatientID=MedicalExamination.PatientID(+)');
+       Add(' And BillDetail.BillDate<='+#39+AdToVS(DateEditXToday.ADDateAsDate)+#39+' AND BillDetail.BillDate>='+#39+AdToVS(DateEditXToday.ADDateAsDate-StrToInt(EditDay.Text))+#39);
+       //Add(' And BillDetail.Service In (''EPS01'',''EPS02'') ');
+       Add(' and BillDetail.DepId = 35');
+       Add(' And PatientMain.PatientID='+Trim(Editsearch.Text));
+       //Add('Order by PatientMAin.patientID');
+       //Add('OR Age ='+#39+EditSearch.text+#39);
+       //Add('OR PhoneNo ='+#39+EditSearch.text+#39+')');
+
+       //ParamByName('SDate').ASString:=AdToVS(DateEditXToday.ADDateAsDate);
+       //ParamByName('PDate').ASString:=AdToVS(DateEditXToday.ADDateAsDate-StrToInt(EditDay.Text));
+       //SavetoFile('C:\SSerch.Txt');
+       savetofile('C:\search.txt');
+       Open;
+       //StatusBarDetails.Panels[0].Text:='Total Patient :- '+IntToStr(RecordCount);
+     Except
+       Try
+         clear;
+         Add('Select Distinct MedicalExamination.MedicalExaminationID,PatientMain.PatientID,patientmain.FName,patientmain.LName,');
+       Add(' patientmain.Gender, patientmain.AgeType,patientmain.DistrictID, patientmain.PAddress,District.Districtname,(Select DepName From Department where ');
+       Add(' DepCode=PatientMain.DepCode) as DepName,PatientMain.Age From PatientMain,District,BillDetail,MedicalExamination');
+       Add(' Where PatientMain.PatientID=BillDetail.PatientID And Patientmain.districtid=District.districtid And PatientMain.PatientID=MedicalExamination.PatientID(+)');
+//       Add(' And BillDetail.Service In (''EPS01'') ');
+       Add(' and BillDetail.DepId = 35');
+       Add(' And PatientMain.PatientID='+Trim(Editsearch.Text));
+       //Add('OR Age ='+#39+EditSearch.text+#39);
+       //Add('OR PhoneNo ='+#39+EditSearch.text+#39+')');
+         {Add('Select patientmain.*,District.Districtname,(Select DepName From Department where DepCode=PatientMain.DepCode) as DepName from PatientMain,District');
+         Add('Where Patientmain.districtid=District.districtid And(');
+         Add(' RegDate<=:SDate');
+         Add('AND RegDate>=:PDate');
+         Add('AND Fname  like '+chr(39)+editSearch.text+'%'+chr(39));
+         Add('OR Mname  like '+chr(39)+editSearch.text+'%'+chr(39));
+         Add('OR Lname  like '+chr(39)+editSearch.text+'%'+chr(39));
+         Add('OR Gender  like '+chr(39)+editSearch.text+'%'+chr(39));
+         Add('OR MaritalStatus  like '+chr(39)+editSearch.text+'%'+chr(39)+')');}
+         //Add('Order by PatientMAin.patientID');
+         //SavetoFile('C:\SSerch.Txt');
+         ParamByName('SDate').ASString:=AdToVS(DateEditXToday.ADDateAsDate);
+         ParamByName('PDate').ASString:=AdToVS(DateEditXToday.ADDateAsDate-StrToInt(EditDay.Text));
+         //savetofile('search.txt');
+         Open;
+         //StatusBarDetails.Panels[0].Text:='Total Patient :- '+IntToStr(RecordCount);
+       Except
+       End;
+     End;
+   End;
+ End;
+End;
+
+procedure TFormMedExamEntry.BitBtnRefreshClick(Sender: TObject);
+begin
+     Setquerytoselection;
+end;
+
+procedure TFormMedExamEntry.BitBtnSearchClick(Sender: TObject);
+begin
+    IF EditSearch.Text<>'' Then
+    Begin
+        Simplesearch;
+    End
+    Else
+      Setquerytoselection;
+     //SearchExtended;
+end;
+
+
+Procedure TFormMedExamEntry.SearchEXtended;
+var ss:string;
+    len,i:integer;
+    IsNumeric:boolean;
+begin
+     With QuerySearch do
+     Begin
+          close;
+          With SQL do
+          begin
+               Try
+                    Clear;
+                    Add('Select patientmain.*,District.Districtname,(Select DepName From Department where DepCode=PatientMain.DepCode) as DepName from PatientMain,District,BillDetail');
+                    Add('Where PatientMain.PatientID=BillDetail.PatientID And Patientmain.districtid=District.districtid ');
+                    Add(' And BillDetail.BillDate<=:SDate');
+                    Add('AND BillDetail.BillDate>=:PDate');
+                    Add('AND PatientMAin.PatientId='+Editsearch.Text);
+                    Add('Order by PatientMAin.patientID');
+                    //Add('OR Age ='+#39+EditSearch.text+#39);
+                    //Add('OR PhoneNo ='+#39+EditSearch.text+#39+')');
+                    ParamByName('SDate').ASString:=AdToVS(DateEditXToday.ADDateAsDate);
+                    ParamByName('PDate').ASString:=AdToVS(DateEditXToday.ADDateAsDate-StrToInt(EditDay.Text));
+                    OPen;
+               Except
+                    Try
+                         IF Length(Editsearch.Text)<3 Then
+                         Begin
+                              Showmessage('Would you mind ! Required at least three charcter');
+                              Exit;
+                              Editsearch.SetFocus;
+                         End;
+                         Clear;
+                         Add('Select patientmain.*,District.Districtname,(Select DepName From Department where DepCode=PatientMain.DepCode) as DepName from PatientMain,District,BillDetail');
+                         Add('Where PatientMain.PatientID=BillDetail.PatientID And Patientmain.districtid=District.districtid ');
+                         Add(' And BillDetail.BillDate<=:SDate');
+                         Add('AND BillDetail.BillDate>=:PDate');
+                         Add('AND PatientMAin.PatientId='+Editsearch.Text);
+                         Add('Order by PatientMAin.patientID');
+                         //Add('OR Age ='+#39+EditSearch.text+#39);
+                         //Add('OR PhoneNo ='+#39+EditSearch.text+#39+')');
+                         ParamByName('SDate').ASString:=AdToVS(DateEditXToday.ADDateAsDate);
+                         ParamByName('PDate').ASString:=AdToVS(DateEditXToday.ADDateAsDate-StrToInt(EditDay.Text));Open;
+                         //StatusBarDetails.Panels[0].Text:='Total Patient :- '+IntToStr(RecordCount);
+                    Except
+                    End;
+               End;
+          End;
+     End;
+End;
+
+procedure TFormMedExamEntry.BtnDetailClick(Sender: TObject);
+var
+     ls_Address:String;
+begin
+    if (QuerySearch.FieldByName('Test').AsString<>'KOREA EPS') then
+    begin
+          Showmessage('Please select ''KOREA EPS'' Test!!');
+          Exit;
+    end;                               
+
+    ps_common:='ME';
+
+    If QuerySearch.RecordCount=0 then Exit;
+
+    With QuerySearch Do
+    Begin
+        IF Not Active Then
+        Begin
+            Showmessage('Would you mind ! there are no data');
+            Exit;
+        End;
+        IF FieldByName('PatientID').asInteger<=0 Then
+        Begin
+            Showmessage('Would you mind ! there are no data');
+            Exit;
+        End;
+    End;
+
+    BtnSave.Enabled:=True;
+    BtnDetail.Enabled:=False;
+    BitBtn_TBExamination.enabled:=False;
+    //BtnPrint.Enabled:=True;
+
+    {If  QueryModify.FieldByName('DepCode').Asstring = 'ALL' Then
+    Begin
+        BtnPrint.Enabled:=True;
+        //BtnSave.Enabled := False;
+        //GroupBox2.Enabled := False;
+        //GroupBoxPhyRep.Enabled:=False;
+        //GroupBoxLabRep.Enabled := False;
+    End
+    Else
+    Begin
+        BtnPrint.Enabled:=False;
+        //BtnSave.Enabled := True;
+    End;}
+
+    If QueryModify.FieldByName('IsIncharge').AsString ='Y' Then
+    BitBtnFooter.Enabled:=True
+    Else
+    BitBtnFooter.Enabled:=False;
+
+    If FrmUserLogin.UserID In [1] Then
+    Begin
+        BtnPrint.Enabled:=True;
+        BtnSave.Enabled := True;
+        GroupBoxDetail.Enabled := True;
+        GroupBoxPhyRep.Enabled:=True;
+        GroupBoxLabRep.Enabled := True;
+        BitBtnFooter.Enabled:=True;
+    End;
+
+    PageControlmain.Visible:=False;
+    PageControlMedicalExam.Visible:=True;
+    PageControl_TBExam.visible:=False;
+
+    If QuerySearch.Active=true then
+    begin
+        LabelPatientid.Caption:=QuerySearch.fieldbyname('PatientID').asstring;
+        NpatientNo:=QuerySearch.fieldbyname('PatientID').AsInteger;
+       // EditFullName.Text:= QuerySearch.fieldbyname('FullName').asString;
+        EditFullName.Text:=QuerySearch.fieldbyname('Lname').asstring+' '+QuerySearch.fieldbyname('Fname').asstring;
+        EditAge.Text:=IntToStr(QuerySearch.FieldByname('Age').AsInteger);
+        CmbAgeType.ItemIndex:=CmbAgeType.Items.IndexOf(QuerySearch.FieldByname('AgeType').AsString);
+        CmbGender.ItemIndex:=CmbGender.Items.IndexOf(QuerySearch.FieldByname('Gender').AsString);
+        //DateEditExam.text:=ServerDate.TodaysDate;
+        //DateEditDOB.text:=ServerDate.TodaysDate;
+     End;
+    //Retrive the Total Information of the selected patient
+
+    ls_Address:='';
+    With QueryMedExam Do
+    Begin
+          Close;
+          Sql.Clear;
+          Sql.Add('Select PAddress,DistrictID,(Select InitCap(DistrictName) From District Where DistrictID=PatientMain.DistrictID) District From PatientMain Where PatientId ='+LabelPatientid.Caption);//+IntToStr(LabelPatientid.Caption);//QuerySearch.FieldByname('PatientId').AsInteger));
+          Open;
+          //ls_Address:=FieldByName('PAddress').AsString+', '+FieldByName('District').AsString;
+          ls_Address:=FieldByName('District').AsString;
+    End;
+
+    With QueryMedExam Do
+    Begin
+          Close;
+          Sql.Clear;
+          Sql.Add('Select * From MedicalExamination Where PatientId ='+LabelPatientid.Caption);//+IntToStr(LabelPatientid.Caption);//QuerySearch.FieldByname('PatientId').AsInteger));
+          Open;
+          pi_medexamid:= FieldByname('MedicalExaminationID').AsInteger;
+
+    If FieldByname('MedicalExaminationID').AsInteger> 0 Then
+    begin
+          pb_isnew:=False;
+          LabelMID.Caption:=IntToStr(QueryMedExam.FieldByname('MedicalExaminationID').AsInteger);
+          Edit_EPSRegNo.Text:=QueryMedExam.fieldbyname('EPSRegNo').asstring;
+          EditFullName.Text:=QueryMedExam.fieldbyname('FullName').asstring;
+          EditAge.Text:=IntToStr(QueryMedExam.FieldByname('Age').AsInteger);
+          CmbAgeType.ItemIndex:=CmbAgeType.Items.IndexOf(QueryMedExam.FieldByname('AgeType').AsString);
+          CmbGender.ItemIndex:=CmbGender.Items.IndexOf(QueryMedExam.FieldByname('Sex').AsString);
+          EditNationality.text:=(QueryMedExam.FieldByname('Nationality').AsString);
+          EditPassport.text:=(QueryMedExam.FieldByname('Passport').AsString);
+          Edit_CitizenshipNo.text:=(QueryMedExam.FieldByname('CitizenshipNo').AsString);
+          DateEditExam.text:=(QueryMedExam.FieldByname('DateOfExam').AsString);
+          DateEditDOB.text:=(QueryMedExam.FieldByname('DateOfBirth').AsString);
+          If QueryMedExam.FieldByname('Address').AsString<>'' Then
+          EditAddress.text:=(QueryMedExam.FieldByname('Address').AsString)
+          Else
+          EditAddress.text:=ls_Address;
+          Editcompany.text:=(QueryMedExam.FieldByname('CompanyName').AsString);
+          EditHeight.text:=(QueryMedExam.FieldByname('Height').AsString);
+          Editweight.text:=(QueryMedExam.FieldByname('Weight').AsString);
+          EditColorVision.text:=(QueryMedExam.FieldByname('ColorVision').AsString);
+          EditBloodPressure.text:=(QueryMedExam.FieldByname('BloodPressure').AsString);
+          EditVisAcuityRt.text:=(QueryMedExam.FieldByname('VISUALACUITYRT').AsString);
+          EditVisAcuityLft.text:=(QueryMedExam.FieldByname('VISUALACUITYLFT').AsString);
+          EditRefraction.text:=(QueryMedExam.FieldByname('Refraction').AsString);
+          EditAudioRt.text:=(QueryMedExam.FieldByname('AUDIOMETRYRT').AsString);
+          EditAudioLft.text:=(QueryMedExam.FieldByname('AUDIOMETRYLFT').AsString);
+          EditUrineGlucose.text:=(QueryMedExam.FieldByname('UrineGlucose').AsString);
+          EditUrineProtein.text:=(QueryMedExam.FieldByname('UrineProtein').AsString);
+          EditUrineBlood.text:=(QueryMedExam.FieldByname('UrineBlood').AsString);
+          EditGOT.text:=(QueryMedExam.FieldByname('SERUMGOT').AsString);
+          EditGPT.text:=(QueryMedExam.FieldByname('SERUMGPT').AsString);
+          EditCholestrol.text:=(QueryMedExam.FieldByname('TCHOLESTROL').AsString);
+          EditHematos.text:=(QueryMedExam.FieldByname('Hematos').AsString);
+          EditABO.text:=(QueryMedExam.FieldByname('ABO').AsString);
+          EditRH.text:=(QueryMedExam.FieldByname('RH').AsString);
+          EditFilm.text:=(QueryMedExam.FieldByname('FilmNo').AsString);
+          EditFinding.text:=(QueryMedExam.FieldByname('Finding').AsString);
+          EditHBsAg.text:=(QueryMedExam.FieldByname('HepatisisHBsAg').AsString);
+          EditVDRL.text:=(QueryMedExam.FieldByname('VDRL').AsString);
+          EditAids.text:=(QueryMedExam.FieldByname('AIDS').AsString);
+          EditHBeAg.text:=(QueryMedExam.FieldByname('HepatisisHBeAg').AsString);
+          EditHBeAb.text:=(QueryMedExam.FieldByname('HepatisisHBeAb').AsString);
+          EditTPHA.text:=(QueryMedExam.FieldByname('TPHA').AsString);
+          EditAidsExam.text:=(QueryMedExam.FieldByname('AIDSExam').AsString);
+          MemoSummary.text:=(QueryMedExam.FieldByname('Summary').AsString);
+          Edit_NRSGOT.text:=(QueryMedExam.FieldByname('NRSGOT').AsString);
+          Edit_NRSGPT.text:=(QueryMedExam.FieldByname('NRSGPT').AsString);
+          Edit_NRCholes.text:=(QueryMedExam.FieldByname('NRTCholesterol').AsString);
+          EditFilmPA.text:=(QueryMedExam.FieldByname('FilmNoPA').AsString);
+          EditFindingPA.text:=(QueryMedExam.FieldByname('FindingPA').AsString);
+          ComboBox_visualiaid.ItemIndex:=ComboBox_visualiaid.Items.IndexOf(QueryMedExam.FieldByname('VISUALAID').AsString);
+     End
+     Else
+     Begin
+          pb_isnew:=True;
+          LabelMID.Caption:='0';
+          Edit_EPSRegNo.Text:='';
+          //EditNationality.text:='';
+          EditPassport.text:='';
+          Edit_CitizenshipNo.Text:='';
+          DateEditExam.text:=VSTOADS(ServerDate.TodaysDate);
+          DateEditDOB.text:=VSTOADS(ServerDate.TodaysDate);
+          EditAddress.text:=ls_Address;
+          Editcompany.text:='';
+          EditHeight.text:='';
+          Editweight.text:='';
+          EditColorVision.text:='NORMAL';
+          EditBloodPressure.text:='120/80';
+          EditVisAcuityRt.text:='6/6';
+          EditVisAcuityLft.text:='6/6';
+          EditRefraction.text:='';
+          //EditAudioRt.text:='';
+          //EditAudioLft.text:='';
+          //EditUrineGlucose.text:='';
+          //EditUrineProtein.text:='';
+          //EditUrineBlood.text:='';
+          EditGOT.text:='';
+          EditGPT.text:='';
+          EditCholestrol.text:='';
+          EditHematos.text:='';
+          EditABO.text:='';
+          EditRH.text:='';
+          EditFilm.text:='';
+          EditFinding.text:='';
+          //EditHBsAg.text:='';
+          //EditVDRL.text:='';
+          EditAids.text:='';
+          //EditHBeAg.text:='';
+          //EditHBeAb.text:='';
+          //EditTPHA.text:='';
+          EditAidsExam.text:='';
+          MemoSummary.text:='Physically and mentally fit';
+          //Edit_NRSGOT.text:='';
+          //Edit_NRSGPT.text:='';
+          //Edit_NRCholes.text:='';
+          EditFilmPA.text:='';
+          EditFindingPA.text:='';
+          ComboBox_visualiaid.ItemIndex:=0;
+      end;
+    End;
+
+    If GroupBoxPhyRep.Enabled=True Then
+    EditHeight.SetFocus;
+    If GroupBoxLabRep.Enabled=True Then
+    EditUrineGlucose.SetFocus;
+    If GroupBoxXRay.Enabled=True Then
+    EditFilm.SetFocus;
+    If GroupBoxDetail.Enabled=True Then
+    Edit_EPSRegNo.SetFocus;
+
+End;
+
+procedure TFormMedExamEntry.DBGrid2CellClick(Column: TColumn);
+begin
+ //NpatientNo:=QuerySearch.FieldByName('PatientID').asinteger;
+end;
+
+procedure TFormMedExamEntry.Button5Click(Sender: TObject);
+begin
+  If DateEditExam.SystemOfDate=0  then
+  begin
+    Button5.Caption:='AD';
+    DateEditExam.SystemOfDate:=1;
+  end
+  else
+  begin
+    Button5.Caption:='VS';
+    DateEditExam.SystemOfDate:=0;
+  End;
+end;
+
+procedure TFormMedExamEntry.Button9Click(Sender: TObject);
+begin
+     If DateEditDOB.SystemOfDate=0  then
+     begin
+          Button9.Caption:='AD';
+          DateEditDOB.SystemOfDate:=1;
+     end
+     else
+     begin
+          Button9.Caption:='VS';
+          DateEditDOB.SystemOfDate:=0;
+     End;
+end;
+
+procedure TFormMedExamEntry.BtnPrintClick(Sender: TObject);
+begin
+     IF PageControlmain.Visible=True tHEN
+     begin
+          if QuerySearch.FIELDBYNAME('Test').Asstring='EPS T.B SCREENING ' then
+          begin
+               NpatientNo:=QuerySearch.FIELDBYNAME('PATIENTID').AsInteger;
+               ps_common:='TB'
+          end
+          else if QuerySearch.FIELDBYNAME('Test').Asstring='KOREA EPS' then
+          begin
+               NpatientNo:=QuerySearch.FIELDBYNAME('PATIENTID').AsInteger;
+               ps_common:='ME'
+          end;
+     end
+     Else
+     begin
+          if ps_common='ME' then
+               NpatientNo:=StrToInt(LabelPatientid.Caption)
+          else if ps_common='TB' then
+               NpatientNo:=StrToInt(Label_TPatientid.Caption);
+     end;
+
+    // if ((ps_common='ME') or (PageControlmain.visible=True)) then
+     if (ps_common='ME') then
+     begin
+          With FormReportMedicalExamination Do
+          Begin
+               with QueryMain Do
+               Begin
+                    Close;
+                    ParamByName('PatientID').AsInteger := NpatientNo;
+                    Open;
+               End;
+
+               If QueryMain.FieldByName('MedicalExaminationID').AsInteger <= 0 Then
+               Begin
+                    ShowMessage('No Record To Print');
+                    Exit;
+               End;
+               with QueryFooter Do
+               Begin
+                    Close;
+                    Open;
+               End;
+
+               ls_Gender:=QueryMain.FieldByName('Sex').AsString;
+               QRLabelPDate.Caption:=VSTOADS(ServerDate.TodaysDate);
+               QRLabelFooter1.Caption:=QueryFooter.FieldByName('Footer1').AsString;
+               QRLabelFooter2.Caption:=QueryFooter.FieldByName('Footer2').AsString;
+               QuickRep1.Preview;
+          End;
+     end
+     else if (ps_common='TB')  then
+     begin
+          Form_TBExaminationReport:=TForm_TBExaminationReport.Create(application);
+          try
+          With Form_TBExaminationReport Do
+          Begin
+                    with QueryMain Do
+                    Begin
+                         Close;
+                         ParamByName('PatientID').AsInteger := NpatientNo;
+                         Open;
+                    End;
+
+                    If QueryMain.FieldByName('TBExaminationID').AsInteger <= 0 Then
+                    Begin
+                         ShowMessage('No Record To Print');
+                         Exit;
+                    End;
+                    with QueryFooter Do
+                    Begin
+                         Close;
+                         Open;
+                    End;
+
+                    if QueryMain.FieldByName('Sex').AsString='MALE' then
+                         img_female.Picture:=nil
+                    else if QueryMain.FieldByName('Sex').AsString='FEMALE' then
+                         img_male.picture:=nil;
+
+                    if QueryMain.FieldByName('Result').AsString='N' then
+                    begin
+                         //img_Nonspecific.Picture:=Nil;
+                         img_inactive.picture:=Nil;
+                         img_active.picture:=Nil;
+                         img_infective.picture:=Nil;
+                         img_noninfective.picture:=Nil;
+                         img_Drugsensitive.picture:=Nil;
+                         img_MDR.picture:=Nil;
+                    end
+                    else if QueryMain.FieldByName('Result').AsString='I' then
+                    begin
+                         img_Nonspecific.Picture:=Nil;
+                         //  img_inactive.picture:=Nil;
+                         img_active.picture:=Nil;
+                         img_infective.picture:=Nil;
+                         img_noninfective.picture:=Nil;
+                         img_Drugsensitive.picture:=Nil;
+                         img_MDR.picture:=Nil;
+                    end
+                    else if QueryMain.FieldByName('Result').AsString='A' then
+                    begin
+                         img_Nonspecific.Picture:=Nil;
+                         img_inactive.picture:=Nil;
+                         //img_active.picture:=Nil;
+                         if QueryMain.FieldByName('RA_Infective').AsString='T' then
+                              img_noninfective.picture:=Nil
+                         else
+                              img_infective.picture:=Nil;
+                         if QueryMain.FieldByName('RA_DrugSensitive').AsString='T' then
+                              img_MDR.picture:=Nil
+                         else
+                              img_Drugsensitive.picture:=Nil;
+                    end;
+               if querymain.fieldbyname('TreatmentOutcome').asstring='UT' then
+               begin
+                    //img_Undertreatment.picture:=Nil;
+                    img_Cured.picture:=Nil;
+                    img_complicated.picture:=Nil;
+                    img_Failed.picture:=Nil;
+                    img_Defaulted.picture:=Nil;
+               end
+               else if querymain.fieldbyname('TreatmentOutcome').asstring='C' then
+               begin
+                    img_Undertreatment.picture:=Nil;
+                    //img_Cured.picture:=Nil;
+                    img_complicated.picture:=Nil;
+                    img_Failed.picture:=Nil;
+                    img_Defaulted.picture:=Nil;
+               end
+               else if querymain.fieldbyname('TreatmentOutcome').asstring='CT' then
+               begin
+                    img_Undertreatment.picture:=Nil;
+                    img_Cured.picture:=Nil;
+                    //img_complicated.picture:=Nil;
+                    img_Failed.picture:=Nil;
+                    img_Defaulted.picture:=Nil;
+               end
+               else if querymain.fieldbyname('TreatmentOutcome').asstring='F' then
+               begin
+                    img_Undertreatment.picture:=Nil;
+                    img_Cured.picture:=Nil;
+                    img_complicated.picture:=Nil;
+                    //img_Failed.picture:=Nil;
+                    img_Defaulted.picture:=Nil;
+               end
+               else if querymain.fieldbyname('TreatmentOutcome').asstring='D' then
+               begin
+                    img_Undertreatment.picture:=Nil;
+                    img_Cured.picture:=Nil;
+                    img_complicated.picture:=Nil;
+                    img_Failed.picture:=Nil;
+                    //img_Defaulted.picture:=Nil;
+               end;
+               if QueryMain.FieldByName('smearmicroscopy').AsString='T' then
+                    img_Negetive.picture:=Nil
+               else if QueryMain.FieldByName('smearmicroscopy').AsString='F' then
+                    img_positive.picture:=Nil;
+
+               ls_Gender:=QueryMain.FieldByName('Sex').AsString;
+               QRLabelPDate.Caption:=VSTOADS(ServerDate.TodaysDate);
+               //QRLabelFooter1.Caption:=QueryFooter.FieldByName('Footer1').AsString;
+               //QRLabelFooter2.Caption:=QueryFooter.FieldByName('Footer2').AsString;
+
+               QuickRep1.Preview;
+               QuickRep1.Refresh;
+          End;
+          finally
+               Form_TBExaminationReport.Free;
+          end;
+     end;
+      
+end;
+
+procedure TFormMedExamEntry.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    If Key=vk_Escape Then
+    BtnCancelClick(Self);
+
+    If (Key = 13) And (ActiveControl = DateEditExam) Then
+    EditPassport.SetFocus;
+
+    If (Key = 13) And (ActiveControl = DateEditDOB) Then
+    Edit_CitizenshipNo.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditDayKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key=#13 Then
+    BitBtnRefreshClick(Sender);
+end;
+
+procedure TFormMedExamEntry.EditFullNameKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditNationality.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditNationalityKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    DateEditExam.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditPassportKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    DateEditDOB.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditAgeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    begin
+          EditAgeExit(sender);
+          CmbAgeType.SetFocus;
+    end;
+end;
+
+procedure TFormMedExamEntry.CmbAgeTypeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditAddress.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CmbGenderKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    Editcompany.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditAddressKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    CmbGender.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditcompanyKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    Begin
+        If GroupBoxPhyRep.Enabled = True Then
+        EditHeight.SetFocus
+        Else
+        EditUrineGlucose.SetFocus;
+    End;
+end;
+
+procedure TFormMedExamEntry.EditHeightKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditWeight.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditColorVisionKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditBloodPressure.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditWeightKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditColorVision.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditBloodPressureKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditVisAcuityRt.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditVisAcuityRtKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditVisAcuityLft.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditVisAcuityLftKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditAudioRt.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditRefractionKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditAudioRt.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditAudioRtKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditAudioLft.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditAudioLftKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    Begin
+        If GroupBoxLabRep.Enabled = True Then
+        EditUrineGlucose.SetFocus
+        Else
+        MemoSummary.SetFocus;
+    End;
+end;
+
+procedure TFormMedExamEntry.EditUrineGlucoseKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditUrineProtein.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditUrineProteinKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditUrineBlood.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditUrineBloodKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditGOT.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditGOTKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key in [#8] then Exit;
+    If Key = #13 Then
+    EditGPT.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditGPTKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key in [#8] then Exit;
+    If Key = #13 Then
+    EditCholestrol.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditCholestrolKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key in [#8] then Exit;
+    If Key = #13 Then
+    EditHematos.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditHematosKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key in [#8] then Exit;
+    If Key = #13 Then
+    EditABO.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditABOKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditRH.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditRHKeyPress(Sender: TObject; var Key: Char);
+begin
+    If Key = #13 Then
+    //Edit_NRSGOT.SetFocus;
+    EditHBsAg.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditFilmKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditFinding.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditFindingKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditFilmPA.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditHBsAgKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditVDRL.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditVDRLKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditHBeAg.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditAidsKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditHBeAg.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditHBeAgKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditHBeAb.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditHBeAbKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    EditTPHA.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditTPHAKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    Begin
+     If GroupBoxXRay.Enabled=True Then
+     EditFilm.SetFocus
+     Else
+     BtnSave.SetFocus;
+    End;
+end;
+
+procedure TFormMedExamEntry.EditAidsExamKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    MemoSummary.SetFocus;
+end;
+
+procedure TFormMedExamEntry.MemoSummaryKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    If Key = #13 Then
+    BtnSave.SetFocus;
+end;
+
+procedure TFormMedExamEntry.BitBtnFooterClick(Sender: TObject);
+begin
+    With Formpathologyfootersetup Do
+    Begin
+        Try
+            Formpathologyfootersetup:=TFormpathologyfootersetup.Create(Self);
+            With Query2 Do
+            Begin
+                Close;
+                Sql.Clear;
+                Sql.Add('Select DepName,DepID From Department');
+                Sql.Add(' Where DepID=104');
+                Open;
+            End;
+            {With Query1 Do
+            Begin
+                Close;
+                Sql[3]:=' And D.DepID=104';
+                Open;
+            End;}
+
+            ShowModal;
+          Finally
+            Free;
+          End;
+     End;
+end;
+
+procedure TFormMedExamEntry.EditPatientKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   IF key=#13 Then
+   Begin
+      with QuerySearch do
+      Begin
+         IF Trim(EditPatient.text)<>'' Then
+         Begin
+            Filter:='PatientId ='+#39+EditPatient.text+#39;
+            Filtered:=True;
+         End
+         Else
+         Filtered:=False;
+      End;
+   End;
+end;
+
+procedure TFormMedExamEntry.EditFirstNameKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   IF key=#13 then
+   Begin
+      EditFirstName.text:=StringReplace(EditFirstName.text,'''','''''',[rfReplaceAll]);
+      with QuerySearch do
+      Begin
+         IF Trim(EditFirstName.text)<>'' Then
+         Begin
+            Filter:='FName ='+#39+EditFirstName.text+'*'+#39;
+            Filtered:=True;
+         End
+         Else
+         Filtered:=False;
+      End;
+   End;
+   EditFirstName.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditLastNameKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   IF key=#13 Then
+   Begin
+      EditLastName.text:=StringReplace(EditLastName.text,'''','''''',[rfReplaceAll]);
+      with QuerySearch do
+      Begin
+         IF Trim(EditLastName.text)<>'' Then
+         Begin
+            Filter:='LName ='+#39+EditLastName.text+'*'+#39;
+            Filtered:=True;
+         End
+         Else
+         Filtered:=False;
+      End;
+   End;
+   EditLastName.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditAgeSearchKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    IF key=#13 Then
+   Begin
+      with QuerySearch do
+      Begin
+         IF Trim(EditAgeSearch.text)<>'' Then
+         Begin
+            Filter:='Age ='+EditAgeSearch.text;
+            Filtered:=True;
+         End
+         Else
+         Filtered:=False;
+      End;
+   End;
+   IF not (key In['0'..'9']) Then Key:=#0;
+   EditAgeSearch.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditGenderKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   IF key=#13 Then
+   Begin
+      with QuerySearch do
+      Begin
+         IF Trim(EditGender.text)<>'' Then
+         Begin
+            Filter:='Gender ='+EditGender.text+'*'+#39;
+            Filtered:=True;
+         End
+         Else
+         Filtered:=False;
+      End;
+   End;
+   EditGender.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditDistrictKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   IF key=#13 Then
+     Begin
+          EditDistrict.text:=StringReplace(EditDistrict.text,'''','''''',[rfReplaceAll]);
+          with QuerySearch do
+          Begin
+               IF Trim(EditDistrict.text)<>'' Then
+               Begin
+                    Filter:='DistrictName ='+#39+EditDistrict.text+'*'+#39;
+                    Filtered:=True;
+               End
+               Else
+               Filtered:=False;
+          End;
+     End;
+     EditDistrict.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditPAddressKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   IF key=#13 Then
+   Begin
+      EditPAddress.text:=StringReplace(EditPAddress.text,'''','''''',[rfReplaceAll]);
+      with QuerySearch do
+      Begin
+         IF Trim(EditPAddress.text)<>'' Then
+         Begin
+            Filter:='PAddress ='+#39+EditPAddress.text+'*'+#39;
+            Filtered:=True;
+         End
+         Else
+         Filtered:=False;
+      End;
+   End;
+   EditPAddress.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Timer1Timer(Sender: TObject);
+begin
+    Label_Time.Caption:=TimeToStr(Now)+'  '+gs_UserName;
+end;
+
+procedure TFormMedExamEntry.DBGrid2DblClick(Sender: TObject);
+begin
+     if QuerySearch.FIELDBYNAME('Test').Asstring='EPS T.B SCREENING ' then
+          BitBtn_TBExaminationClick(sender)
+     else if QuerySearch.FIELDBYNAME('Test').Asstring='KOREA EPS' then
+          BtnDetailClick(Sender);
+end;
+
+procedure TFormMedExamEntry.FormCreate(Sender: TObject);
+begin
+    FormReportMedicalExamination:=TFormReportMedicalExamination.Create(Self);
+end;
+
+procedure TFormMedExamEntry.Edit_NRSGOTKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     If Key = #13 Then
+    Edit_NRSGPT.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_NRSGPTKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     If Key = #13 Then
+    Edit_NRCholes.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_NRCholesKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     If Key = #13 Then
+     EditHBsAg.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditFilmPAKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     If Key = #13 Then
+    EditFindingPA.SetFocus;
+end;
+
+procedure TFormMedExamEntry.EditFindingPAKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     If Key = #13 Then
+     Begin
+          If MemoSummary.Enabled=True Then
+          MemoSummary.SetFocus
+          Else
+          BtnSave.SetFocus;
+     End;
+end;
+
+procedure TFormMedExamEntry.Edit_EPSRegNoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     If Key=#13 Then
+     EditNationality.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_CitizenshipNoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     If Key = #13 Then
+     EditAge.SetFocus;
+end;
+
+procedure TFormMedExamEntry.DBGrid2DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+     With DBGrid2 Do
+     Begin
+          IF (QuerySearch.FieldByName('MedicalExaminationID').asString<>'') or (QuerySearch.FieldByName('MedicalExaminationID').AsInteger>0) Then
+          Begin
+               Canvas.Font.Color:=clRed;
+               Canvas.Pen.Color:=ClBlue;
+               DefaultDrawDataCell(rect,Column.Field,State);
+          End;
+
+          IF Trim(EditSearch.Text) = '' Then
+          begin
+               if (QuerySearch.FieldByName('TBExaminationID').asString<>'') or (QuerySearch.FieldByName('TBExaminationID').AsInteger>0) Then
+               Begin
+                    Canvas.Font.Color:=clRed;
+                    Canvas.Pen.Color:=clGreen;
+                    DefaultDrawDataCell(rect,Column.Field,State);
+               End;
+          end;
+     End;
+end;
+
+
+
+function TFormMedExamEntry.Checkupdate(EPSREGNO, FULLNAME, DATEOFEXAM,
+  NATIONALITY, DATEOFBIRTH, PASSPORT, COMPANYNAME, ADDRESS, SEX,
+  AGETYPE, HEIGHT, WEIGHT, COLORVISION, BLOODPRESSURE, VISUALACUITYRT,
+  VISUALACUITYLFT, REFRACTION, AUDIOMETRYRT, AUDIOMETRYLFT, URINEGLUCOSE,
+  URINEPROTEIN, URINEBLOOD, SERUMGOT, SERUMGPT, TCHOLESTROL, HEMATOS, ABO,
+  RH, FILMNO, FINDING, HEPATISISHBSAG, VDRL, AIDS, HEPATISISHBEAG,
+  HEPATISISHBEAB, TPHA, AIDSEXAM, FILMNOPA, FINDINGPA, SUMMARY, NRSGOT,
+  NRSGPT, NRTCHOLESTEROL, CITIZENSHIPNO, AGE,visualaid: String;
+  patientid: Integer): String;
+begin
+     Ps_string:='';
+     with Query_Process do
+     begin
+          close;
+          databasename:=gs_databasename;
+          sql.Clear;
+          sql.add('Select * from medicalexamination where patientid='+inttostr(patientid));
+          open;
+     end;
+     //if EPSREGNO<>Query_Process.fieldbyname('EPSREGNO').AsString then
+          Ps_string:=Ps_string + 'EPSREGNO='+#39+EPSREGNO+#39+',';
+     if FULLNAME<>Query_Process.fieldbyname('FULLNAME').AsString then
+          Ps_string:=Ps_string +'FULLNAME='+#39+FULLNAME+#39+',';
+     if DATEOFEXAM<>Query_Process.fieldbyname('DATEOFEXAM').AsString then
+          Ps_string:=Ps_string +'DATEOFEXAM='+#39+DATEOFEXAM+#39+',';
+     if NATIONALITY<>Query_Process.fieldbyname('NATIONALITY').AsString then
+          Ps_string:=Ps_string +'NATIONALITY='+#39+NATIONALITY+#39+',';
+     if DATEOFBIRTH<>Query_Process.fieldbyname('DATEOFBIRTH').AsString then
+          Ps_string:=Ps_string +'DATEOFBIRTH='+#39+DATEOFBIRTH+#39+',';
+     if PASSPORT<>Query_Process.fieldbyname('PASSPORT').AsString then
+          Ps_string:=Ps_string +'PASSPORT='+#39+PASSPORT+#39+',';
+     if COMPANYNAME<>Query_Process.fieldbyname('COMPANYNAME').AsString then
+          Ps_string:=Ps_string +'COMPANYNAME='+#39+COMPANYNAME+#39+',';
+     if ADDRESS<>Query_Process.fieldbyname('ADDRESS').AsString then
+          Ps_string:=Ps_string +'ADDRESS='+#39+ADDRESS+#39+',';
+     if SEX<>Query_Process.fieldbyname('SEX').AsString then
+          Ps_string:=Ps_string +'SEX='+#39+SEX+#39+',';
+     if AGETYPE<>Query_Process.fieldbyname('AGETYPE').AsString then
+          Ps_string:=Ps_string +'AGETYPE='+#39+AGETYPE+#39+',';
+     if HEIGHT<>Query_Process.fieldbyname('HEIGHT').AsString then
+          Ps_string:=Ps_string +'HEIGHT='+#39+HEIGHT+#39+',';
+     if WEIGHT<>Query_Process.fieldbyname('WEIGHT').AsString then
+          Ps_string:=Ps_string +'WEIGHT='+#39+WEIGHT+#39+',';
+     if COLORVISION<>Query_Process.fieldbyname('COLORVISION').AsString then
+          Ps_string:=Ps_string +'COLORVISION='+#39+COLORVISION+#39+',';
+     if BLOODPRESSURE<>Query_Process.fieldbyname('BLOODPRESSURE').AsString then
+          Ps_string:=Ps_string +'BLOODPRESSURE='+#39+BLOODPRESSURE+#39+',';
+     if VISUALACUITYRT<>Query_Process.fieldbyname('VISUALACUITYRT').AsString then
+          Ps_string:=Ps_string +'VISUALACUITYRT='+#39+VISUALACUITYRT+#39+',';
+     if VISUALACUITYLFT<>Query_Process.fieldbyname('VISUALACUITYLFT').AsString then
+          Ps_string:=Ps_string +'VISUALACUITYLFT='+#39+VISUALACUITYLFT+#39+',';
+     if REFRACTION<>Query_Process.fieldbyname('REFRACTION').AsString then
+          Ps_string:=Ps_string +'REFRACTION='+#39+REFRACTION+#39+',';
+     if AUDIOMETRYRT<>Query_Process.fieldbyname('AUDIOMETRYRT').AsString then
+          Ps_string:=Ps_string +'AUDIOMETRYRT='+#39+AUDIOMETRYRT+#39+',';
+     if AUDIOMETRYLFT<>Query_Process.fieldbyname('AUDIOMETRYLFT').AsString then
+          Ps_string:=Ps_string +'AUDIOMETRYLFT='+#39+AUDIOMETRYLFT+#39+',';
+     if URINEGLUCOSE<>Query_Process.fieldbyname('URINEGLUCOSE').AsString then
+          Ps_string:=Ps_string +'URINEGLUCOSE='+#39+URINEGLUCOSE+#39+',';
+     if URINEPROTEIN<>Query_Process.fieldbyname('URINEPROTEIN').AsString then
+          Ps_string:=Ps_string +'URINEPROTEIN='+#39+URINEPROTEIN+#39+',';
+     if URINEBLOOD<>Query_Process.fieldbyname('URINEBLOOD').AsString then
+          Ps_string:=Ps_string +'URINEBLOOD='+#39+URINEBLOOD+#39+',';
+     if SERUMGOT<>Query_Process.fieldbyname('SERUMGOT').AsString then
+          Ps_string:=Ps_string +'SERUMGOT='+#39+SERUMGOT+#39+',';
+     if SERUMGPT<>Query_Process.fieldbyname('SERUMGPT').AsString then
+          Ps_string:=Ps_string +'SERUMGPT='+#39+SERUMGPT+#39+',';
+     if TCHOLESTROL<>Query_Process.fieldbyname('TCHOLESTROL').AsString then
+          Ps_string:=Ps_string +'TCHOLESTROL='+#39+TCHOLESTROL+#39+',';
+     if HEMATOS<>Query_Process.fieldbyname('HEMATOS').AsString then
+          Ps_string:=Ps_string +'HEMATOS='+#39+HEMATOS+#39+',';
+     if ABO<>Query_Process.fieldbyname('ABO').AsString then
+          Ps_string:=Ps_string +'ABO='+#39+ABO+#39+',';
+     if RH<>Query_Process.fieldbyname('RH').AsString then
+          Ps_string:=Ps_string +'RH='+#39+RH+#39+',';
+     if FILMNO<>Query_Process.fieldbyname('FILMNO').AsString then
+          Ps_string:=Ps_string +'FILMNO='+#39+FILMNO+#39+',';
+     if FINDING<>Query_Process.fieldbyname('FINDING').AsString then
+          Ps_string:=Ps_string +'FINDING='+#39+FINDING+#39+',';
+     if HEPATISISHBSAG<>Query_Process.fieldbyname('HEPATISISHBSAG').AsString then
+          Ps_string:=Ps_string +'HEPATISISHBSAG='+#39+HEPATISISHBSAG+#39+',';
+     if VDRL<>Query_Process.fieldbyname('VDRL').AsString then
+          Ps_string:=Ps_string +'VDRL='+#39+VDRL+#39+',';
+     if AIDS<>Query_Process.fieldbyname('AIDS').AsString then
+          Ps_string:=Ps_string +'AIDS='+#39+AIDS+#39+',';
+     if HEPATISISHBEAG<>Query_Process.fieldbyname('HEPATISISHBEAG').AsString then
+          Ps_string:=Ps_string +'HEPATISISHBEAG='+#39+HEPATISISHBEAG+#39+',';
+     if HEPATISISHBEAB<>Query_Process.fieldbyname('HEPATISISHBEAB').AsString then
+          Ps_string:=Ps_string +'HEPATISISHBEAB='+#39+HEPATISISHBEAB+#39+',';
+     if TPHA<>Query_Process.fieldbyname('TPHA').AsString then
+          Ps_string:=Ps_string +'TPHA='+#39+TPHA+#39+',';
+     if AIDSEXAM<>Query_Process.fieldbyname('AIDSEXAM').AsString then
+          Ps_string:=Ps_string +'AIDSEXAM='+#39+AIDSEXAM+#39+',';
+     if FILMNOPA<>Query_Process.fieldbyname('FILMNOPA').AsString then
+          Ps_string:=Ps_string +'FILMNOPA='+#39+FILMNOPA+#39+',';
+     if FINDINGPA<>Query_Process.fieldbyname('FINDINGPA').AsString then
+          Ps_string:=Ps_string +'FINDINGPA='+#39+FINDINGPA+#39+',';
+     if SUMMARY<>Query_Process.fieldbyname('SUMMARY').AsString then
+          Ps_string:=Ps_string +'SUMMARY='+#39+SUMMARY+#39+',';
+     if NRSGOT<>Query_Process.fieldbyname('NRSGOT').AsString then
+          Ps_string:=Ps_string +'NRSGOT='+#39+NRSGOT+#39+',';
+     if NRSGPT<>Query_Process.fieldbyname('NRSGPT').AsString then
+          Ps_string:=Ps_string +'NRSGPT='+#39+NRSGPT+#39+',';
+     if NRTCHOLESTEROL<>Query_Process.fieldbyname('NRTCHOLESTEROL').AsString then
+          Ps_string:=Ps_string +'NRTCHOLESTEROL='+#39+NRTCHOLESTEROL+#39+',';
+     if CITIZENSHIPNO<>Query_Process.fieldbyname('CITIZENSHIPNO').AsString then
+          Ps_string:=Ps_string +'CITIZENSHIPNO='+#39+CITIZENSHIPNO+#39+',';
+            if visualaid<>Query_Process.fieldbyname('VISUALAID').AsString then
+          Ps_string:=Ps_string +'VISUALAID='+#39+VISUALAID+#39+',';
+     if AGE<>Query_Process.fieldbyname('AGE').AsString then
+          Ps_string:=Ps_string +'AGE='+AGE;
+     result:=Ps_string;
+end;
+
+procedure TFormMedExamEntry.BitBtn_TBExaminationClick(Sender: TObject);
+var ls_Address:string;
+begin
+        
+     if QuerySearch.FieldByName('Test').AsString<>'EPS T.B SCREENING ' then
+     begin
+          Showmessage('Please select ''EPS T.B SCREENING'' Test!!');
+          Exit;
+     end;
+
+     ps_common:='TB';
+
+     If QuerySearch.RecordCount=0 then Exit;
+
+     With QuerySearch Do
+     Begin
+          IF Not Active Then
+          Begin
+               Showmessage('Would you mind ! there are no data');
+               Exit;
+          End;
+          IF FieldByName('PatientID').asInteger<=0 Then
+          Begin
+               Showmessage('Would you mind ! there are no data');
+               Exit;
+          End;
+     End;
+
+     BtnSave.Enabled:=True;
+     BtnDetail.Enabled:=False;
+     BitBtn_TBExamination.Enabled:=False;
+
+     If QueryModify.FieldByName('IsIncharge').AsString ='Y' Then
+          BitBtnFooter.Enabled:=True
+     Else
+          BitBtnFooter.Enabled:=False;
+
+     If FrmUserLogin.UserID In [1] Then
+     Begin
+          BtnPrint.Enabled:=True;
+          BtnSave.Enabled := True;
+          //GroupBoxDetail.Enabled := True;
+          //GroupBoxPhyRep.Enabled:=True;
+          //GroupBoxLabRep.Enabled := True;
+          //BitBtnFooter.Enabled:=True;
+     End;
+
+     PageControlmain.Visible:=False;
+     PageControlMedicalExam.Visible:=False;
+     PageControl_TBExam.visible:=True;
+
+     If QuerySearch.Active=true then
+     begin
+          Label_TPatientid.Caption:=QuerySearch.fieldbyname('PatientID').asstring;
+          NpatientNo:=QuerySearch.fieldbyname('PatientID').AsInteger;
+          // EditFullName.Text:= QuerySearch.fieldbyname('FullName').asString;
+          Edit_TFullName.Text:=QuerySearch.fieldbyname('Lname').asstring+' '+QuerySearch.fieldbyname('Fname').asstring;
+          Edit_TAge.Text:=IntToStr(QuerySearch.FieldByname('Age').AsInteger);
+          CMB_TAgeType.ItemIndex:=CmbAgeType.Items.IndexOf(QuerySearch.FieldByname('AgeType').AsString);
+          CMB_TGender.ItemIndex:=CmbGender.Items.IndexOf(QuerySearch.FieldByname('Gender').AsString);
+          DateEdit_TExam.text:=ServerDate.TodaysDate;
+          DateEdit_TDOB.text:=ServerDate.TodaysDate;
+     End;
+     //Retrive the Total Information of the selected patient
+
+     ls_Address:='';
+     With Query_TBExam Do
+     Begin
+          Close;
+          databasename:=gs_DatabaseName;
+          Sql.Clear;
+          Sql.Add('Select PAddress,DistrictID,(Select InitCap(DistrictName) From District Where DistrictID=PatientMain.DistrictID) District');
+          SQL.Add(' From PatientMain Where PatientId ='+inttostr(NpatientNo));
+          Open;
+          ls_Address:=FieldByName('District').AsString;
+     End;
+
+     With Query_TBExam Do
+     Begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          Sql.Clear;
+          Sql.Add('Select * From TuberClosisExamination Where PatientId ='+Label_TPatientid.Caption);//+IntToStr(LabelPatientid.Caption);//QuerySearch.FieldByname('PatientId').AsInteger));
+          Open;
+          pi_TBExamid:= FieldByname('TBExaminationID').AsInteger;
+
+          If FieldByname('TBExaminationID').AsInteger> 0 Then
+          begin
+               pb_isnew:=False;
+               Label_TBid.Caption:=IntToStr(Query_TBExam.FieldByname('TBExaminationID').AsInteger);
+               //Edit_EPSRegNo.Text:=QueryMedExam.fieldbyname('EPSRegNo').asstring;
+               Edit_TFullName.Text:=Query_TBExam.fieldbyname('FullName').asstring;
+               Edit_TAge.Text:=IntToStr(Query_TBExam.FieldByname('Age').AsInteger);
+               CMB_TAgeType.ItemIndex:=CmbAgeType.Items.IndexOf(Query_TBExam.FieldByname('AgeType').AsString);
+               CMB_TGender.ItemIndex:=CmbGender.Items.IndexOf(Query_TBExam.FieldByname('Sex').AsString);
+               Edit_TNationality.text:=(Query_TBExam.FieldByname('Nationality').AsString);
+               Edit_TPassport.text:=(Query_TBExam.FieldByname('Passport').AsString);
+               Edit_TCitizenshipNo.text:=(Query_TBExam.FieldByname('CitizenshipNo').AsString);
+               DateEdit_TExam.text:=(Query_TBExam.FieldByname('DateOfExam').AsString);
+               DateEdit_TDOB.text:=(Query_TBExam.FieldByname('DateOfBirth').AsString);
+               If Query_TBExam.FieldByname('Address').AsString<>'' Then
+                    Edit_TAddress.text:=(Query_TBExam.FieldByname('Address').AsString)
+               Else
+                    Edit_TAddress.text:=ls_Address;
+               Edit_Tcompany.text:=(Query_TBExam.FieldByname('CompanyName').AsString);
+               Edit_THeight.text:=(Query_TBExam.FieldByname('Height').AsString);
+               Edit_TWeight.text:=(Query_TBExam.FieldByname('Weight').AsString);
+               Edit_TBloodPressure.text:=(Query_TBExam.FieldByname('BloodPressure').AsString);
+               dateEdit_XRayDate.text:=(Query_TBExam.FieldByname('XrayDate').AsString);
+
+               If Query_TBExam.fieldbyname('RESULT').AsString='N' then
+               begin
+                    CB_NonSpecific.checked:=True;
+               end
+               else If Query_TBExam.fieldbyname('RESULT').AsString='I' then
+               begin
+                    CB_InactiveTB.checked:=True;
+               end
+               else If Query_TBExam.fieldbyname('RESULT').AsString='A' then
+               begin
+                    CB_ActiveTB.checked:=True;
+                    Panel_CheckResult.visible:=True;
+                    if Query_TBExam.FieldByName('RA_Infective').AsString='T' then
+                    begin
+                         CB_Infective.checked:=True;
+                    end
+                    else if Query_TBExam.FieldByName('RA_Infective').AsString='F' then
+                    begin
+                         CB_NonInfective.checked:=True;
+                    end;
+
+                    if Query_TBExam.FieldByName('RA_DrugSensitive').AsString='T' then
+                    begin
+                         CB_DrugSensitive.Checked:=True;
+                    end
+                    else if Query_TBExam.FieldByName('RA_DrugSensitive').AsString='F' then
+                    begin
+                         CB_MDR.checked:=True;
+                    end;
+               end;
+
+               if Query_TBExam.FieldByName('TreatmentOutcome').AsString='UT' then
+               begin
+                    CB_UnderTreatment.Checked:=True;
+               end
+               else if Query_TBExam.FieldByName('TreatmentOutcome').AsString='C' then
+               begin
+                    CB_Cured.Checked:=True;
+               end
+               else if Query_TBExam.FieldByName('TreatmentOutcome').AsString='CT' then
+               begin
+                    CB_ComplicatedTreatment.Checked:=True;
+               end
+               else if Query_TBExam.FieldByName('TreatmentOutcome').AsString='F' then
+               begin
+                    CB_Failed.Checked:=True;
+               end
+               else if Query_TBExam.FieldByName('TreatmentOutcome').AsString='D' then
+               begin
+                    CB_Defaulted.checked:=True;
+               end;
+               Edit_Remarks.text:=Query_TBExam.FieldByname('RemarksResult').AsString;
+               Edit_Examination.text:=Query_TBExam.FieldByname('Examination').AsString;
+               Edit_PhysicianName.text:=Query_TBExam.FieldByname('PhysicianName').AsString;
+               Edit_PhysicianLicense.text:=Query_TBExam.FieldByname('PhysicianLicense').AsString;
+
+               if Query_TBExam.FieldByName('SMEARMICROSCOPY').AsString='T' then
+                    CB_Positive.Checked:=True
+               else if Query_TBExam.FieldByName('SMEARMICROSCOPY').AsString='F' then
+                    CB_Negetive.Checked:=True;
+
+               Edit_TechnicianName.text:=Query_TBExam.FieldByname('TechnicianName').AsString;
+               Edit_TechnicianLicense.text:=Query_TBExam.FieldByname('TechnicianLicense').AsString;
+          End
+          Else
+          Begin
+               pb_isnew:=True;
+               Label_TBid.Caption:='0';
+               //EditNationality.text:='';
+               Edit_TPassport.text:='';
+               Edit_TCitizenshipNo.Text:='';
+               DateEdit_TExam.text:=VSTOADS(ServerDate.TodaysDate);
+               DateEdit_TDOB.text:=VSTOADS(ServerDate.TodaysDate);
+               Edit_TAddress.text:=ls_Address;
+               Edit_Tcompany.text:='';
+               Edit_THeight.text:='';
+               Edit_TWeight.text:='';
+               Edit_TBloodPressure.text:='';
+               DateEdit_XRAYDATE.text:=(Query_TBExam.FieldByname('XrayDate').AsString);
+               CB_NonSpecific.checked:=False;
+               CB_InactiveTB.checked:=False;
+               CB_ActiveTB.checked:=False;
+               Panel_CheckResult.visible:=False;
+               CB_Infective.checked:=False;
+               CB_NonInfective.checked:=False;
+               CB_DrugSensitive.Checked:=False;
+               CB_MDR.checked:=False;
+               CB_UnderTreatment.Checked:=False;
+               CB_Cured.Checked:=False;
+               CB_ComplicatedTreatment.Checked:=False;
+               CB_Failed.Checked:=False;
+               CB_Defaulted.checked:=False;
+               Edit_Remarks.text:='';
+               Edit_Examination.text:='';
+               Edit_PhysicianName.text:='';
+               Edit_PhysicianLicense.text:='';
+               CB_Positive.Checked:=False;
+               CB_Negetive.Checked:=False;
+               Edit_TechnicianName.text:='';
+               Edit_TechnicianLicense.text:='';
+
+          end;
+     End;
+      Edit_TNationality.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_InfectiveClick(Sender: TObject);
+begin
+     if CB_Infective.Checked=True then
+          CB_NonInfective.checked:=False;
+end;
+
+procedure TFormMedExamEntry.CB_NonInfectiveClick(Sender: TObject);
+begin
+     if CB_NonInfective.Checked=True then
+          CB_Infective.checked:=False;
+end;
+
+procedure TFormMedExamEntry.CB_DrugSensitiveClick(Sender: TObject);
+begin
+     if CB_DrugSensitive.Checked=True then
+          CB_MDR.Checked:=False;
+end;
+
+procedure TFormMedExamEntry.CB_MDRClick(Sender: TObject);
+begin
+     if CB_MDR.Checked=True then
+          CB_DrugSensitive.Checked:=False;
+end;
+
+procedure TFormMedExamEntry.CB_UnderTreatentClick(Sender: TObject);
+begin
+     if CB_UnderTreatment.Checked=True then
+     begin
+          CB_UnderTreatment.Checked:=True;
+          CB_Cured.checked:=False;
+          CB_ComplicatedTreatment.checked:=False;
+          CB_Failed.Checked:=False;
+          CB_Defaulted.checked:=False;
+     end;
+end;
+
+procedure TFormMedExamEntry.CB_CuredClick(Sender: TObject);
+begin
+     if CB_Cured.Checked=True then
+     begin
+          CB_Cured.Checked:=True;
+          CB_UnderTreatment.Checked:=False;
+          CB_ComplicatedTreatment.checked:=False;
+          CB_Failed.Checked:=False;
+          CB_Defaulted.checked:=False;
+     end;
+end;
+
+procedure TFormMedExamEntry.CB_ComplicatedTreatmentClick(Sender: TObject);
+begin
+     if CB_ComplicatedTreatment.Checked=True then
+     begin
+          CB_ComplicatedTreatment.Checked:=True;
+          CB_UnderTreatment.Checked:=False;
+          CB_Cured.checked:=False;
+          CB_Failed.Checked:=False;
+          CB_Defaulted.checked:=False;
+     end;
+end;
+
+procedure TFormMedExamEntry.CB_FailedClick(Sender: TObject);
+begin
+     if CB_Failed.Checked=True then
+     begin
+          CB_Failed.Checked:=True;
+          CB_UnderTreatment.Checked:=False;
+          CB_Cured.checked:=False;
+          CB_ComplicatedTreatment.checked:=False;
+          CB_Defaulted.checked:=False;
+     end;
+end;
+
+procedure TFormMedExamEntry.CB_DefaultedClick(Sender: TObject);
+begin
+     if CB_Defaulted.Checked=True then
+     begin
+          CB_Defaulted.Checked:=True;
+          CB_UnderTreatment.Checked:=False;
+          CB_Cured.checked:=False;
+          CB_ComplicatedTreatment.checked:=False;
+          CB_Failed.Checked:=False;
+     end;
+end;
+
+procedure TFormMedExamEntry.CB_PositiveClick(Sender: TObject);
+begin
+     if CB_Positive.checked=True then
+     begin
+          CB_Positive.checked:=True;
+          CB_Negetive.checked:=False;
+     end;
+end;
+
+procedure TFormMedExamEntry.CB_NegetiveClick(Sender: TObject);
+begin
+     if CB_Negetive.Checked=True then
+     begin
+          CB_Negetive.Checked:=True;
+          CB_Positive.checked:=False;
+     end;
+end;
+
+procedure TFormMedExamEntry.saveTBExamination(Sender: TObject);
+var  qry :TOraQuery;
+     TBExam : Integer;
+begin
+     SqlString:='';
+     qry:=TOraQuery.create(self);
+     qry.databasename:='HOSPITAL';
+     with qry do
+     begin
+          close;
+          with sql do
+          begin
+               clear;
+               add('SELECT * from patientMain where PatientId='+Label_TPatientid.Caption);
+          end;
+          open;
+     end;
+
+     if ((CB_NonSpecific.Checked=False) and (CB_InactiveTB.Checked=False) and (CB_ActiveTB.Checked=False)) then
+     begin
+          Showmessage('Would you mind ! Please select Result Type');
+          Exit;
+     end;
+
+     if CB_ActiveTB.Checked=True then
+     begin
+          if ((CB_Infective.Checked=False) and (CB_NonInfective.Checked=False)) then
+          begin
+               Showmessage('Would you mind ! Please select Infective TB or NonInfective TB');
+               Exit;
+          end;
+          if ((CB_DrugSensitive.Checked=False) and (CB_MDR.Checked=False)) then
+          begin
+               Showmessage('Would you mind ! Please select Drug Sensitive TB or MDR TB');
+               Exit;
+          end;
+     end;
+
+     if ((CB_UnderTreatment.Checked=False) and (CB_Cured.Checked=False) and (CB_ComplicatedTreatment.Checked=False)
+               and (CB_Failed.Checked=False) and (CB_Defaulted.Checked=False)) then
+     begin
+          Showmessage('Would you mind ! Please select Treatmen Outcome');
+          Exit;
+     end;
+
+     if ((CB_Positive.Checked=False) and (CB_Negetive.Checked=False)) then
+     begin
+          Showmessage('Would you mind ! Please select Smear Microscopy finding');
+          Exit;
+     end;
+
+     if (Edit_PhysicianName.Text='')  then
+     begin
+          Showmessage('Would you mind ! Please fill Physician Name');
+          Exit;
+     end;
+
+     if (Edit_TechnicianName.Text='')  then
+     begin
+          Showmessage('Would you mind ! Please fill Technician Name');
+          Exit;
+     end;
+
+     if (Edit_PhysicianLicense.Text='')  then
+     begin
+          Showmessage('Would you mind ! Please fill physician license no.');
+          Exit;
+     end;
+
+     if (Edit_TechnicianLicense.Text='')  then
+     begin
+          Showmessage('Would you mind ! Please fill Technician license no.');
+          Exit;
+     end;
+
+     with Query_Process do
+     begin
+     close;
+          databasename:=gs_databasename;
+          sql.clear;
+          sql.add('Select * from TuberClosisexamination where patientid='+Label_TPatientid.Caption);
+          open;
+     end;
+     pi_patientid:=StrToInt(Label_TPatientid.Caption);
+
+     if Query_Process.FieldByName('TBEXAMINATIONID').AsInteger>0 then
+     begin
+          pb_isnew:=False;
+     end
+     else
+          pb_isnew:=True;
+
+     DMhospital.Hospital.StartTransaction;
+     Try
+          If pb_isnew=true then //New One, so Insert the Data
+          begin
+               TBExam:=DMhospital.GetNewLongIntKeyValue('TuberClosisExamination','TBExaminationID');
+               With qry do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Insert into TuberClosisExamination(TBExaminationID,Patientid,FullName,Nationality,Passport,CitizenshipNo,Address, ');
+                    Sql.Add('Age,Sex,AgeType,COMPANYNAME,DateofExam,DateofBirth,Height,Weight,BloodPressure, ');
+                    SQL.Add('XRAYDATE,RESULT,RA_Infective,RA_DrugSensitive,TREATMENTOUTCOME,Summary,REMARKSRESULT,EXAMINATION,PHYSICIANNAME,PHYSICIANLICENSE,');
+                    SQL.Add('SMEARMICROSCOPY,TECHNICIANNAME,TECHNICIANLICENSE');
+                    Sql.Add(') Values(');
+                    Sql.Add(IntToStr(TBExam));
+                    Sql.Add(' ,'+Label_TPatientid.Caption);
+                    //Sql.Add(' ,'+#39+Edit_EPSRegNo.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_TFullName.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_TNationality.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_TPassport.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_TCitizenshipNo.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_TAddress.Text+#39);
+                    Sql.Add(' ,'+Edit_TAge.Text);
+                    Sql.Add(' ,'+#39+Cmb_TGender.Text+#39);
+                    Sql.Add(' ,'+#39+Cmb_TAgeType.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_Tcompany.Text+#39);
+                    Sql.Add(' ,'+#39+DateEdit_TExam.Text+#39);
+                    Sql.Add(' ,'+#39+DateEdit_TDOB.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_THeight.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_TWeight.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_TBloodPressure.Text+#39);
+                    Sql.Add(' ,'+#39+DateEdit_XRAYDATE.Text+#39);
+                    if CB_NonSpecific.Checked=True then
+                         Sql.Add(' ,''N''')
+                    else if CB_InactiveTB.Checked=True then
+                         Sql.Add(' ,''I''')
+                    else if CB_ActiveTB.Checked=True then
+                    begin
+                         Sql.Add(' ,''A''');
+                         if CB_Infective.Checked=True then
+                              SQL.Add(' ,''T''')
+                         else if CB_NonInfective.Checked=True then
+                              SQL.Add(' ,''F''');
+                         if CB_DrugSensitive.Checked=True then
+                              SQL.Add(' ,''T''')
+                         else if CB_MDR.Checked=True then
+                              SQL.Add(' ,''F''');
+                    end;
+                    if CB_activeTB.Checked=False then
+                    begin
+                         SQL.Add(' ,''F'',''F''');
+                    end;
+                    if CB_UnderTreatment.Checked=True then
+                         Sql.Add(' ,''UT''')
+                    else if CB_Cured.Checked=True then
+                         Sql.Add(' ,''C''')
+                    else if CB_ComplicatedTreatment.Checked=True then
+                         Sql.Add(' ,''CT''')
+                    else if CB_Failed.Checked=True then
+                         Sql.Add(' ,''F''')
+                    else if CB_Defaulted.Checked=True then
+                         Sql.Add(' ,''D''');
+                    SQL.Add(' ,'+#39+Edit_Summary.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_Remarks.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_Examination.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_PhysicianName.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_PhysicianLicense.Text+#39);
+                    if CB_Positive.Checked=True then
+                         SQL.Add(' ,''T''')
+                    else if CB_Negetive.Checked=True then
+                         SQL.Add(' ,''F''');
+                    Sql.Add(' ,'+#39+Edit_TechnicianName.Text+#39);
+                    Sql.Add(' ,'+#39+Edit_TechnicianLicense.Text+#39);
+                    Sql.Add(')');
+                    //Sql.savetofile('D:\TBexam.txt');
+                    ExecSQL;
+
+                    LabelMID.Caption:=IntToStr(TBExam);
+               end;
+          end
+          Else
+          begin
+              With qry do
+              begin
+                   Close;
+                   Sql.Clear;
+                   Sql.Add('Update  TuberClosisExamination Set ');
+                   Sql.Add('patientid='+Label_TPatientid.Caption);
+                   //Sql.Add(',EPSRegNo='+#39+Edit_EPSRegNo.Text+#39);
+                   Sql.Add(',FullName='+#39+Edit_TFullName.Text+#39);
+                   Sql.Add(',Age='+Edit_Tage.Text);
+                   Sql.Add(',Sex='+#39+Cmb_TGender.Text+#39);
+                   Sql.Add(',AgeType='+#39+Cmb_TAgeType.Text+#39);
+                   Sql.Add(',Nationality='+#39+Edit_TNationality.Text+#39);
+                   Sql.Add(',Passport='+#39+Edit_TPassport.Text+#39);
+                   Sql.Add(',CitizenshipNo='+#39+Edit_TCitizenshipNo.Text+#39);
+                   Sql.Add(',Address='+#39+Edit_TAddress.Text+#39);
+                   Sql.Add(',CompanyName='+#39+Edit_Tcompany.Text+#39);
+                   Sql.Add(',DateofExam='+#39+DateEdit_TExam.Text+#39);
+                   Sql.Add(',DateofBirth='+#39+DateEdit_TDOB.Text+#39);
+                   Sql.Add(',Height='+#39+Edit_THeight.Text+#39);
+                   Sql.Add(',Weight='+#39+Edit_TWeight.Text+#39);
+                   Sql.Add(',BloodPressure='+#39+Edit_TBloodPressure.Text+#39);
+                   if CB_NonSpecific.Checked=True then
+                         Sql.Add(',Result=''N''')
+                    else if CB_InactiveTB.Checked=True then
+                         Sql.Add(',Result=''I''')
+                    else if CB_activeTB.Checked=True then
+                    begin
+                         Sql.Add(',Result=''A''');
+                         if CB_Infective.Checked=True then
+                              SQL.Add(',RA_Infective=''T''')
+                         else if CB_NonInfective.Checked=True then
+                              SQL.Add(',RA_Infective=''F''');
+                         if CB_DrugSensitive.Checked=True then
+                              SQL.Add(',RA_DrugSensitive=''T''')
+                         else if CB_MDR.Checked=True then
+                              SQL.Add(',RA_DrugSensitive=''F''');
+                    end;
+                    if CB_UnderTreatment.Checked=True then
+                         Sql.Add(',TREATMENTOUTCOME=''UT''')
+                    else if CB_Cured.Checked=True then
+                         Sql.Add(',TREATMENTOUTCOME=''C''')
+                    else if CB_ComplicatedTreatment.Checked=True then
+                         Sql.Add(',TREATMENTOUTCOME=''CT''')
+                    else if CB_Failed.Checked=True then
+                         Sql.Add(',TREATMENTOUTCOME=''F''')
+                    else if CB_Defaulted.Checked=True then
+                         Sql.Add(',TREATMENTOUTCOME=''D''');
+                    SQL.Add(' ,Summary='+#39+Edit_Summary.Text+#39);
+                    Sql.Add(' ,REMARKSRESULT='+#39+Edit_Remarks.Text+#39);
+                    Sql.Add(' ,EXAMINATION='+#39+Edit_Examination.Text+#39);
+                    Sql.Add(' ,PHYSICIANNAME='+#39+Edit_PhysicianName.Text+#39);
+                    Sql.Add(' ,PHYSICIANLICENSE='+#39+Edit_PhysicianLicense.Text+#39);
+                    if CB_Positive.Checked=True then
+                         SQL.Add(',SMEARMICROSCOPY=''T''')
+                    else if CB_Negetive.Checked=True then
+                         SQL.Add(',SMEARMICROSCOPY=''F''');
+                    Sql.Add(' ,TECHNICIANNAME='+#39+Edit_TechnicianName.Text+#39);
+                    Sql.Add(' ,TECHNICIANLICENSE='+#39+Edit_TechnicianLicense.Text+#39);
+                    Sql.Add(' Where TBEXAMINATIONID='+Label_TBid.Caption);
+                    //Sql.savetofile('D:\TBexam.txt');
+                    ExecSQL;
+              end;
+          End;
+          DMhospital.Hospital.Commit;
+          frm_Message.ShowModal;
+     Except
+           DMhospital.Hospital.Rollback;
+           MessageDlg('Sorry ! Error Occur While Saving the data.',mtError,[MbOk],0);
+     End;
+
+
+     BitBtnRefreshClick(Sender);
+     BtnPrintClick(Sender);
+
+     NpatientNo:=0;
+     //BtnCancelClick(Sender);
+     //QuerySearch;
+     
+end;
+
+procedure TFormMedExamEntry.saveMedicalExamination(Sender: TObject);
+var  qry :TOraQuery;
+     MedicalExam : Integer;
+begin
+     SqlString:='';
+     {If EditNationality.text='' then
+     begin
+          ShowMessage('Nationality Cannot be Null.');
+          EditNationality.SetFocus;
+          Exit;
+     end;}
+     qry:=TOraQuery.create(self);
+     qry.databasename:='HOSPITAL';
+
+     with qry do
+     begin
+          close;
+          with sql do
+          begin
+               clear;
+               add('SELECT * from patientMain where PatientId='+LabelPatientid.Caption);
+          end;
+          open;
+     end;
+
+     {With Query_Process Do
+     Begin
+          With Sql Do
+          Begin
+               Clear;
+               Add('Select NVL(LRange,''AniD'') LRange,NVL(HRange,''AniD'') HRange');
+               Add(' ,NVL(LRangeF,''AniD'') LRangeF,NVL(HRangeF,''AniD'') HRangeF');
+               Add(' From Test Where TestID='+IntToStr(TestID));
+               //SaveToFile('Sql.txt');
+          End;
+     End;}
+     with Query_Process do
+     begin
+     close;
+          databasename:=gs_databasename;
+          sql.clear;
+          sql.add('Select * from medicalexamination where patientid='+LabelPatientid.Caption);
+          //sql.savetofile('pp.txt');
+          open;
+     end;
+     pi_patientid:=StrToInt(LabelPatientid.Caption);
+
+     if Query_Process.FieldByName('medicalexaminationid').AsInteger>0 then
+     begin
+          pb_isnew:=False;
+          AssignMedicalValue(sender);
+     end
+     else
+          pb_isnew:=True;
+
+     if pb_isnew=False then
+     begin
+          SqlString:=checkupdate(PS_EPSREGNO,PS_FULLNAME,PS_DATEOFEXAM,PS_NATIONALITY,PS_DATEOFBIRTH,PS_PASSPORT,PS_COMPANYNAME,PS_ADDRESS,PS_SEX,PS_AGETYPE,PS_HEIGHT,PS_WEIGHT,
+               PS_COLORVISION,PS_BLOODPRESSURE,PS_VISUALACUITYRT,PS_VISUALACUITYLFT,PS_REFRACTION,PS_AUDIOMETRYRT,PS_AUDIOMETRYLFT,PS_URINEGLUCOSE,PS_URINEPROTEIN,
+               PS_URINEBLOOD,PS_SERUMGOT,PS_SERUMGPT,PS_TCHOLESTROL,PS_HEMATOS,PS_ABO,PS_RH,PS_FILMNO,PS_FINDING,PS_HEPATISISHBSAG,PS_VDRL,PS_AIDS,PS_HEPATISISHBEAG,
+               PS_HEPATISISHBEAB,PS_TPHA,PS_AIDSEXAM,PS_FILMNOPA,PS_FINDINGPA,PS_SUMMARY,PS_NRSGOT,PS_NRSGPT,PS_NRTCHOLESTEROL,PS_CITIZENSHIPNO,Ps_AGE,ps_visualaid,pi_patientid);
+     end;
+
+     DMhospital.Hospital.StartTransaction;
+     Try
+          If pb_isnew=true then //New One, so Insert the Data
+          begin
+              MedicalExam:=DMhospital.GetNewLongIntKeyValue('MedicalExamination','MedicalExaminationID');
+              With qry do
+              begin
+                   Close;
+                   Sql.Clear;
+                   Sql.Add('Insert into MedicalExamination(MedicalExaminationID,Patientid,EPSRegNo,FullName,Nationality,Passport,CitizenshipNo,Address, ');
+                   Sql.Add('Age,Sex,AgeType,COMPANYNAME,DateofExam,DateofBirth,Height,Weight,ColorVision,BloodPressure, ');
+                   Sql.Add('VisualacuityRt,Visualacuitylft,Refraction,AudiometryRt,Audiometrylft,UrineGlucose,UrineProtein,');
+                   Sql.Add('UrineBlood,SerumGOT,SerumGPT,TCholestrol,Hematos,ABO,RH,FilmNo,Finding,HepatisisHBsAg,VDRL,' );
+                   Sql.Add('AIDS,HepatisisHBeAg,HepatisisHBeAb,TPHA,AIDSExam,Summary,NRSGOT,NRSGPT,NRTCholesterol,FilmNoPA,FindingPA,visualaid) Values(');
+                   Sql.Add(IntToStr(MedicalExam));
+                   Sql.Add(' ,'+LabelPatientid.Caption);
+                   Sql.Add(' ,'+#39+Edit_EPSRegNo.Text+#39);
+                   Sql.Add(' ,'+#39+EditFullName.Text+#39);
+                   Sql.Add(' ,'+#39+EditNationality.Text+#39);
+                   Sql.Add(' ,'+#39+EditPassport.Text+#39);
+                   Sql.Add(' ,'+#39+Edit_CitizenshipNo.Text+#39);
+                   Sql.Add(' ,'+#39+EditAddress.Text+#39);
+                   Sql.Add(' ,'+EditAge.Text);
+                   Sql.Add(' ,'+#39+CmbGender.Text+#39);
+                   Sql.Add(' ,'+#39+CmbAgeType.Text+#39);
+                   Sql.Add(' ,'+#39+Editcompany.Text+#39);
+                   Sql.Add(' ,'+#39+DateEditExam.Text+#39);
+                   Sql.Add(' ,'+#39+DateEditDOB.Text+#39);
+                   Sql.Add(' ,'+#39+EditHeight.Text+#39);
+                   Sql.Add(' ,'+#39+EditWeight.Text+#39);
+                   Sql.Add(' ,'+#39+EditColorVision.Text+#39);
+                   Sql.Add(' ,'+#39+EditBloodPressure.Text+#39);
+                   Sql.Add(' ,'+#39+EditVisAcuityRt.Text+#39);
+                   Sql.Add(' ,'+#39+EditVisAcuityLft.Text+#39);
+                   Sql.Add(' ,'+#39+EditRefraction.Text+#39);
+                   Sql.Add(' ,'+#39+EditAudioRt.Text+#39);
+                   Sql.Add(' ,'+#39+EditAudioLft.Text+#39);
+                   Sql.Add(' ,'+#39+EditUrineGlucose.Text+#39);
+                   Sql.Add(' ,'+#39+EditUrineProtein.Text+#39);
+                   Sql.Add(' ,'+#39+EditUrineBlood.Text+#39);
+                   Sql.Add(' ,'+#39+EditGOT.Text+#39);
+                   Sql.Add(' ,'+#39+EditGPT.Text+#39);
+                   Sql.Add(' ,'+#39+EditCholestrol.Text+#39);
+                   Sql.Add(' ,'+#39+EditHematos.Text+#39);
+                   Sql.Add(' ,'+#39+EditABO.Text+#39);
+                   Sql.Add(' ,'+#39+EditRH.Text+#39);
+                   Sql.Add(' ,'+#39+EditFilm.Text+#39);
+                   Sql.Add(' ,'+#39+EditFinding.Text+#39);
+                   Sql.Add(' ,'+#39+EditHBsAg.Text+#39);
+                   Sql.Add(' ,'+#39+EditVDRL.Text+#39);
+                   Sql.Add(' ,'+#39+EditAIDS.Text+#39);
+                   Sql.Add(' ,'+#39+EditHBeAg.Text+#39);
+                   Sql.Add(' ,'+#39+EditHBeAb.Text+#39);
+                   Sql.Add(' ,'+#39+EditTPHA.Text+#39);
+                   Sql.Add(' ,'+#39+EditAidsExam.text+#39);
+                   Sql.Add(' ,'+#39+MemoSummary.Text+#39);
+                   Sql.Add(' ,'+#39+Edit_NRSGOT.Text+#39);
+                   Sql.Add(' ,'+#39+Edit_NRSGPT.Text+#39);
+                   Sql.Add(' ,'+#39+Edit_NRCholes.Text+#39);
+                   Sql.Add(' ,'+#39+EditFilmPA.Text+#39);
+                   Sql.Add(' ,'+#39+EditFindingPA.Text+#39);
+                    Sql.Add(' ,'+#39+ComboBox_visualiaid.Text+#39);
+                   Sql.Add(')');
+                   //Sql.savetofile('C:\medexam.txt');
+                   ExecSQL;
+
+                   LabelMID.Caption:=IntToStr(MedicalExam);
+              end;
+          end
+          Else
+          begin
+              {With qry do
+              begin
+                   Close;
+                   Sql.Clear;
+                   Sql.Add('Update  MedicalExamination Set ');
+                   Sql.Add('patientid='+LabelPatientid.Caption);
+                   Sql.Add(',EPSRegNo='+#39+Edit_EPSRegNo.Text+#39);
+                   Sql.Add(',FullName='+#39+EditFullName.Text+#39);
+                   Sql.Add(',Age='+editage.Text);
+                   Sql.Add(',Sex='+#39+CmbGender.Text+#39);
+                   Sql.Add(',AgeType='+#39+CmbAgeType.Text+#39);
+                   Sql.Add(',Nationality='+#39+EditNationality.Text+#39);
+                   Sql.Add(',Passport='+#39+EditPassport.Text+#39);
+                   Sql.Add(',CitizenshipNo='+#39+Edit_CitizenshipNo.Text+#39);
+                   Sql.Add(',Address='+#39+EditAddress.Text+#39);
+                   Sql.Add(',CompanyName='+#39+Editcompany.Text+#39);
+                   Sql.Add(',DateofExam='+#39+DateEditExam.Text+#39);
+                   Sql.Add(',DateofBirth='+#39+DateEditDOB.Text+#39);
+                   Sql.Add(',Height='+#39+EditHeight.Text+#39);
+                   Sql.Add(',Weight='+#39+EditWeight.Text+#39);
+                   Sql.Add(',ColorVision='+#39+EditColorVision.Text+#39);
+                   Sql.Add(',BloodPressure='+#39+EditBloodPressure.Text+#39);
+                   Sql.Add(',VisualacuityRt='+#39+EditVisAcuityRt.Text+#39);
+                   Sql.Add(',Visualacuitylft='+#39+EditVisAcuityLft.Text+#39);
+                   Sql.Add(',Refraction='+#39+EditRefraction.Text+#39);
+                   Sql.Add(',AudiometryRt='+#39+EditAudioRt.Text+#39);
+                   Sql.Add(',Audiometrylft='+#39+EditAudioLft.Text+#39);
+                   Sql.Add(',UrineGlucose='+#39+EditUrineGlucose.Text+#39);
+                   Sql.Add(',UrineProtein='+#39+EditUrineProtein.Text+#39);
+                   Sql.Add(',UrineBlood='+#39+EditUrineBlood.Text+#39);
+                   Sql.Add(',SerumGOT='+#39+EditGOT.Text+#39);
+                   Sql.Add(',SerumGPT='+#39+EditGPT.Text+#39);
+                   Sql.Add(',TCholestrol='+#39+EditCholestrol.Text+#39);
+                   Sql.Add(',Hematos='+#39+EditHematos.Text+#39);
+                   Sql.Add(',ABO='+#39+EditABO.Text+#39);
+                   Sql.Add(',RH='+#39+EditRH.Text+#39);
+                   Sql.Add(',FilmNo='+#39+EditFilm.Text+#39);
+                   Sql.Add(',Finding='+#39+EditFinding.Text+#39);
+                   Sql.Add(',HepatisisHBsAg='+#39+EditHBsAg.Text+#39);
+                   Sql.Add(',VDRL='+#39+EditVDRL.Text+#39);
+                   Sql.Add(',AIDS='+#39+EditAIDS.Text+#39);
+                   Sql.Add(',HepatisisHBeAg='+#39+EditHBeAg.Text+#39);
+                   Sql.Add(',HepatisisHBeAb='+#39+EditHBeAb.Text+#39);
+                   Sql.Add(',TPHA='+#39+EditTPHA.Text+#39);
+                   Sql.Add(',AIDSExam='+#39+EditAidsExam.Text+#39);
+                   Sql.Add(',Summary='+#39+MemoSummary.Text+#39);
+                   Sql.Add(',NRSGOT='+#39+Edit_NRSGOT.Text+#39);
+                   Sql.Add(',NRSGPT='+#39+Edit_NRSGPT.Text+#39);
+                   Sql.Add(',NRTCholesterol='+#39+Edit_NRCholes.Text+#39);
+                   Sql.Add(',FilmNoPA='+#39+EditFilmPA.Text+#39);
+                   Sql.Add(',FindingPA='+#39+EditFindingPA.Text+#39);
+                   Sql.Add(' Where MEDICALEXAMINATIONID='+LabelMID.Caption);
+                   //Sql.savetofile('C:\medexam.txt');
+
+                   ExecSQL; }
+              if SqlString<>'' then
+              begin
+              sqlstring := Copy(SqlString,1,length(sqlstring)-1);
+                    With qry do
+                    begin
+                         Close;
+                         Sql.Clear;
+                         Sql.Add('Update  MedicalExamination Set '+SqlString);
+                         SQL.ADD('where medicalexaminationid='+IntToStr(pi_medexamid));
+                         sql.savetofile('update.txt');
+                         execsql;
+                    end;
+              end;
+          End;
+          DMhospital.Hospital.Commit;
+          frm_Message.ShowModal;
+     Except
+           DMhospital.Hospital.Rollback;
+           MessageDlg('Sorry ! Error Occur While Saving the data.',mtError,[MbOk],0);
+     End;
+     BtnPrintClick(Sender);
+     BitBtnRefreshClick(Sender);
+     NpatientNo:=0;
+     //BtnCancelClick(Sender);
+     //QuerySearch;
+     
+end;
+
+procedure TFormMedExamEntry.AssignMedicalValue(Sender: TObject);
+begin
+     //if Edit_EPSRegNo.Text='' then
+     //     PS_EPSREGNO:=Query_Process.FieldByName('EPSREGNO').AsString
+     //else
+         PS_EPSREGNO:=Edit_EPSRegNo.Text;
+
+     if EditFullName.Text='' then
+          PS_FULLNAME:=Query_Process.FieldByName('FULLNAME').AsString
+     else
+          PS_FULLNAME:=EditFullName.Text;
+
+     if DateEditExam.Text='' then
+          PS_DATEOFEXAM:=Query_Process.FieldByName('DATEOFEXAM').AsString                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           //che
+     else
+          PS_DATEOFEXAM:=DateEditExam.Text;
+
+     if EditNationality.Text='' then
+           PS_NATIONALITY:=Query_Process.FieldByName('NATIONALITY').AsString
+     else
+          PS_NATIONALITY:=EditNationality.Text;
+
+     if DateEditDOB.Text='' then
+           PS_DATEOFBIRTH:=Query_Process.FieldByName('DATEOFBIRTH').AsString
+     else
+          PS_DATEOFBIRTH:=DateEditDOB.Text;
+
+     if EditPassport.Text='' then
+          PS_PASSPORT:=EditPassport.Text+Query_Process.FieldByName('PASSPORT').AsString
+     else
+          PS_PASSPORT:= EditPassport.Text;
+
+     if Editcompany.Text='' then
+          PS_COMPANYNAME:=Editcompany.Text+Query_Process.FieldByName('COMPANYNAME').AsString
+     else
+          PS_COMPANYNAME:= Editcompany.text;
+
+     if EditAddress.text='' then
+          PS_ADDRESS:=EditAddress.Text+Query_Process.FieldByName('ADDRESS').AsString
+     else
+          PS_ADDRESS:= EditAddress.Text;
+
+     if CmbGender.text='' then
+          PS_SEX:=CmbGender.Text+Query_Process.FieldByName('SEX').AsString
+     else
+          PS_SEX:= CmbGender.Text;
+
+     if CmbAgeType.text='' then
+          PS_AGETYPE:=CmbAgeType.Text+Query_Process.FieldByName('AGETYPE').AsString
+     else
+          PS_AGETYPE:= CmbAgeType.text;
+
+     if EditHeight.text='' then
+          PS_HEIGHT:=EditHeight.Text+Query_Process.FieldByName('HEIGHT').AsString
+     else
+          PS_HEIGHT:= EditHeight.Text;
+
+     if EditWeight.Text='' then
+          PS_WEIGHT:=EditWeight.Text+Query_Process.FieldByName('WEIGHT').AsString
+     else
+          PS_WEIGHT:= EditWeight.Text;
+
+     if EditColorVision.Text='' then
+          PS_COLORVISION:=EditColorVision.Text+Query_Process.FieldByName('COLORVISION').AsString
+     else
+          PS_COLORVISION:= EditColorVision.Text;
+
+     if EditBloodPressure.Text='' then
+          PS_BLOODPRESSURE:=EditBloodPressure.Text+Query_Process.FieldByName('BLOODPRESSURE').AsString
+     else
+          PS_BLOODPRESSURE:= EditBloodPressure.Text;
+
+     if EditVisAcuityRt.text='' then
+          PS_VISUALACUITYRT:=EditVisAcuityRt.Text+Query_Process.FieldByName('VISUALACUITYRT').AsString
+     else
+          PS_VISUALACUITYRT:= EditVisAcuityRt.Text;
+
+     if EditVisAcuityLft.Text='' then
+          PS_VISUALACUITYLFT:=EditVisAcuityLft.Text+Query_Process.FieldByName('VISUALACUITYLFT').AsString
+     else
+          PS_VISUALACUITYLFT:= EditVisAcuityLft.Text;
+
+     if EditRefraction.Text='' then
+          PS_REFRACTION:=EditRefraction.Text+Query_Process.FieldByName('REFRACTION').AsString
+     else
+          PS_REFRACTION:= EditRefraction.Text;
+
+     if EditAudioRt.Text='' then
+          PS_AUDIOMETRYRT:=EditAudioRt.Text+Query_Process.FieldByName('AUDIOMETRYRT').AsString
+     else
+          PS_AUDIOMETRYRT:= EditAudioRt.Text;
+
+     if EditAudioLft.Text='' then
+          PS_AUDIOMETRYLFT:=EditAudioLft.Text+Query_Process.FieldByName('AUDIOMETRYLFT').AsString
+     else
+          PS_AUDIOMETRYLFT:= EditAudioLft.Text;
+
+     if EditUrineGlucose.text='' then
+          PS_URINEGLUCOSE:=EditUrineGlucose.Text+Query_Process.FieldByName('URINEGLUCOSE').AsString
+     else
+          PS_URINEGLUCOSE:= EditUrineGlucose.Text;
+
+     if EditUrineProtein.Text='' then
+          PS_URINEPROTEIN:=EditUrineProtein.Text+Query_Process.FieldByName('URINEPROTEIN').AsString
+     else
+          PS_URINEPROTEIN:= EditUrineProtein.Text;
+
+     if EditUrineBlood.Text='' then
+          PS_URINEBLOOD:=EditUrineBlood.Text+Query_Process.FieldByName('URINEBLOOD').AsString
+     else
+          PS_URINEBLOOD:= EditUrineBlood.Text;
+
+     if EditGOT.Text='' then
+          PS_SERUMGOT:=EditGOT.Text+Query_Process.FieldByName('SERUMGOT').AsString
+     else
+          PS_SERUMGOT:= EditGOT.Text;
+
+     if EditGPT.Text='' then
+          PS_SERUMGPT:=EditGPT.Text+Query_Process.FieldByName('SERUMGPT').AsString
+     else
+          PS_SERUMGPT:= EditGPT.Text;
+
+     if EditCholestrol.Text='' then
+          PS_TCHOLESTROL:=EditCholestrol.Text+Query_Process.FieldByName('TCHOLESTROL').AsString
+     else
+          PS_TCHOLESTROL:= EditCholestrol.Text;
+
+     if EditHematos.Text='' then
+          PS_HEMATOS:=EditHematos.Text+Query_Process.FieldByName('HEMATOS').AsString
+     else
+          PS_HEMATOS:= EditHematos.Text;
+
+     if EditABO.Text='' then
+          PS_ABO:=EditABO.Text+Query_Process.FieldByName('ABO').AsString
+     else
+          PS_ABO:= EditABO.Text;
+
+     if EditRH.Text='' then
+          PS_RH:=EditRH.text+Query_Process.FieldByName('RH').AsString
+     else
+          PS_RH:= EditRH.Text;
+
+     if EditFilm.Text='' then
+          PS_FILMNO:=EditFilm.Text+Query_Process.FieldByName('FILMNO').AsString
+     else
+          PS_FILMNO:= EditFilm.Text;
+
+     if EditFinding.Text='' then
+          PS_FINDING:=EditFinding.Text+Query_Process.FieldByName('FINDING').AsString
+     else
+          PS_FINDING:= EditFinding.Text;
+
+     if EditHBsAg.Text='' then
+          PS_HEPATISISHBSAG:=EditHBsAg.Text+Query_Process.FieldByName('HEPATISISHBSAG').AsString
+     else
+          PS_HEPATISISHBSAG:= EditHBsAg.Text;
+
+     if EditVDRL.Text='' then
+          PS_VDRL:=EditVDRL.Text+Query_Process.FieldByName('VDRL').AsString
+     else
+          PS_VDRL:= EditVDRL.Text;
+
+     if EditAids.Text='' then
+          PS_AIDS:=EditAids.Text+Query_Process.FieldByName('AIDS').AsString
+     else
+          PS_AIDS:= EditAids.Text;
+
+     if EditHBeAg.Text='' then
+          PS_HEPATISISHBEAG:=EditHBeAg.Text+Query_Process.FieldByName('HEPATISISHBEAG').AsString
+     else
+          PS_HEPATISISHBEAG:= EditHBeAg.Text;
+
+     if EditHBeAb.Text='' then
+          PS_HEPATISISHBEAB:=EditHBeAb.Text+Query_Process.FieldByName('HEPATISISHBEAB').AsString
+     else
+          PS_HEPATISISHBEAB:= EditHBeAb.Text;
+
+     if EditTPHA.Text='' then
+          PS_TPHA:=EditTPHA.Text+Query_Process.FieldByName('TPHA').AsString
+     else
+          PS_TPHA:= EditTPHA.Text;
+
+     if EditAidsExam.Text='' then
+          PS_AIDSEXAM:=EditAidsExam.Text+Query_Process.FieldByName('AIDSEXAM').AsString
+     else
+          PS_AIDSEXAM:= EditAidsExam.Text;
+
+     if EditFilmPA.Text='' then
+          PS_FILMNOPA:=EditFilmPA.Text+Query_Process.FieldByName('FILMNOPA').AsString
+     else
+          PS_FILMNOPA:= EditFilmPA.Text;
+
+     if EditFindingPA.Text='' then
+          PS_FINDINGPA:=EditFindingPA.Text+Query_Process.FieldByName('FINDINGPA').AsString
+     else
+          PS_FINDINGPA:= EditFindingPA.Text;
+
+     if MemoSummary.Text='' then
+          PS_SUMMARY:=MemoSummary.Text+Query_Process.FieldByName('SUMMARY').AsString
+     else
+          PS_SUMMARY:= MemoSummary.Text;
+
+     if Edit_NRSGOT.Text='' then
+          PS_NRSGOT:=Edit_NRSGOT.Text+Query_Process.FieldByName('NRSGOT').AsString
+     else
+          PS_NRSGOT:= Edit_NRSGOT.Text;
+
+     if Edit_NRSGPT.Text='' then
+          PS_NRSGPT:=Edit_NRSGPT.Text+Query_Process.FieldByName('NRSGPT').AsString
+     else
+          PS_NRSGPT:= Edit_NRSGPT.Text;
+
+     if Edit_NRCholes.Text='' then
+          PS_NRTCHOLESTEROL:=Edit_NRCholes.Text+Query_Process.FieldByName('NRTCHOLESTEROL').AsString
+     else
+          PS_NRTCHOLESTEROL:= Edit_NRCholes.Text;
+
+     if Edit_CitizenshipNo.Text='' then
+          PS_CITIZENSHIPNO:=Edit_CitizenshipNo.Text+Query_Process.FieldByName('CITIZENSHIPNO').AsString
+     else
+          PS_CITIZENSHIPNO:= Edit_CitizenshipNo.Text;
+
+     if EditAge.Text='' then
+          Ps_AGE:=EditAge.Text+Query_Process.FieldByName('AGE').AsString
+     else
+          PS_AGE:= EditAge.Text;
+
+      if ComboBox_visualiaid.text='' then
+          ps_visualaid:=ComboBox_visualiaid.Text+Query_Process.FieldByName('VISUALAID').AsString
+     else
+          ps_visualaid:= ComboBox_visualiaid.text;
+end;
+
+procedure TFormMedExamEntry.Edit_TAgeExit(Sender: TObject);
+ Var li_DOBADCAlc:Integer;
+DateEditXDOBAD:TDateEditX;
+begin
+     DateEditXDOBAD:=TDateEditX.Create(nil);
+     DateEditXDOBAD.SystemOfDate:=gi_DateSystem;
+     IF ((Trim(Edit_TAge.Text)='') or (Trim(Edit_TAge.Text)='0')) and (pi_SetAgeCount <= 2) Then
+     Begin
+          pi_SetAgeCount:=pi_SetAgeCount+1;
+          MessageDlg('Plz. put patient age.',mtWarning,[mbok],0);
+          Edit_TAge.Text:='0';
+          Edit_TAge.SetFocus;
+     End;
+     IF (Trim(Edit_TAge.Text)<>'') Then
+     Begin
+          IF StrToInt(Edit_TAge.Text) > 0 Then
+          Begin
+               DateEditXRegAge.SystemOfDate:=gi_DateSystem;
+               DateEdit_TDOB.SystemOfDate:=gi_DateSystem;
+               DateEditXRegAge.Text:=ServerDate.TodaysDate;
+               ChangeCaption(Button2,gi_DateSystem);
+               if CMB_TAgeType.Text='Year' then
+                    DateEditXRegAge.ADDateAsDate:=DateEditXRegAge.ADDateAsDate-StrToInt(Edit_TAge.Text)*365
+               Else if CMB_TAgeType.Text='Month' then
+                    DateEditXRegAge.ADDateAsDate:=DateEditXRegAge.ADDateAsDate-StrToInt(Edit_TAge.Text)*30
+               Else if Cmb_TAgeType.Text='Day' then
+                    DateEditXRegAge.ADDateAsDate:=DateEditXRegAge.ADDateAsDate-StrToInt(Edit_TAge.Text);
+               //DateEditXDOB.Text:=ADToVS(DateEditXRegAge.VSDateAsText);
+               //DateEditXDOB.VSDateAsText:=DateEditXRegAge.VSDateAsText;
+               DateEdit_TDOB.Text:=DateEditXRegAge.Text;
+               DateEditXDOBAD.TExt:= DateEditXRegAge.Text; //Subtracting 56 Yrs 08 Months and 16 Days to get ADDOB from DOB
+               DateEditXDOBAD.SystemOfDate:=1;
+               Ps_DOBAD:= DateEditXDOBAD.TExt;
+          End;
+     End;
+end;
+
+procedure TFormMedExamEntry.Button1Click(Sender: TObject);
+begin
+     if DateEdit_TExam.SystemOfDate=0  then
+     begin
+          Button1.Caption:='AD';
+          DateEdit_TExam.SystemOfDate:=1;
+     end
+     else
+     begin
+          Button1.Caption:='VS';
+          DateEdit_TExam.SystemOfDate:=0;
+     End;
+end;
+
+procedure TFormMedExamEntry.Button2Click(Sender: TObject);
+begin
+     If DateEdit_TDOB.SystemOfDate=0  then
+     begin
+          Button2.Caption:='AD';
+          DateEdit_TDOB.SystemOfDate:=1;
+     end
+     else
+     begin
+          Button2.Caption:='VS';
+          DateEdit_TDOB.SystemOfDate:=0;
+     End;
+end;
+
+procedure TFormMedExamEntry.EditAgeExit(Sender: TObject);
+Var li_DOBADCAlc:Integer;
+DateEditXDOBAD:TDateEditX;
+begin
+     DateEditXDOBAD:=TDateEditX.Create(nil);
+     DateEditXDOBAD.SystemOfDate:=gi_DateSystem;
+   IF ((Trim(Edit_TAge.Text)='') or (Trim(Edit_TAge.Text)='0')) and (pi_SetAgeCount <= 2) Then
+   Begin
+      pi_SetAgeCount:=pi_SetAgeCount+1;
+      MessageDlg('Plz. put patient age.',mtWarning,[mbok],0);
+      EditAge.Text:='0';
+      if PageControl_TBExam.Visible=True then
+          Edit_TAge.SetFocus
+      else
+      EditAge.SetFocus;
+   End
+   else
+   IF (Trim(Edit_TAge.Text)<>'') Then
+   Begin
+      IF StrToInt(Edit_TAge.Text) > 0 Then
+      Begin
+           DateEditXRegAge.SystemOfDate:=gi_DateSystem;
+           DateEditDOB.SystemOfDate:=gi_DateSystem;
+           DateEditXRegAge.Text:=ServerDate.TodaysDate;
+           ChangeCaption(Button9,gi_DateSystem);
+           if CmbAgeType.Text='Year' then
+               DateEditXRegAge.ADDateAsDate:=DateEditXRegAge.ADDateAsDate-StrToInt(EditAge.Text)*365
+           Else if CmbAgeType.Text='Month' then
+               DateEditXRegAge.ADDateAsDate:=DateEditXRegAge.ADDateAsDate-StrToInt(EditAge.Text)*30
+           Else if CmbAgeType.Text='Day' then
+               DateEditXRegAge.ADDateAsDate:=DateEditXRegAge.ADDateAsDate-StrToInt(EditAge.Text);
+           //DateEditXDOB.Text:=ADToVS(DateEditXRegAge.VSDateAsText);
+           //DateEditXDOB.VSDateAsText:=DateEditXRegAge.VSDateAsText;
+           DateEditDOB.Text:=DateEditXRegAge.Text;
+           DateEditXDOBAD.TExt:= DateEditXRegAge.Text; //Subtracting 56 Yrs 08 Months and 16 Days to get ADDOB from DOB
+           DateEditXDOBAD.SystemOfDate:=1;
+           Ps_DOBAD:= DateEditXDOBAD.TExt;
+      End;
+   End;
+end;
+
+
+procedure TFormMedExamEntry.Edit_TAgeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     If Key = #13 Then
+    begin
+          EditAgeExit(sender);
+               CMB_TAgeType.SetFocus;
+    end;
+end;
+
+procedure TFormMedExamEntry.CMB_TAgeTypeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     If Key = #13 Then
+    Edit_TAddress.SetFocus;
+end;
+
+
+
+
+procedure TFormMedExamEntry.CB_NonSpecificClick(Sender: TObject);
+begin
+     if CB_NonSpecific.Checked=True then
+     begin
+          CB_NonSpecific.Checked:=True;
+          CB_InactiveTB.Checked:=False;
+          CB_ActiveTB.Checked:=False;
+          Panel_CheckResult.visible:=False;
+     end;
+end;
+
+procedure TFormMedExamEntry.CB_InactiveTBClick(Sender: TObject);
+begin
+      if CB_InactiveTB.Checked=True then
+     begin
+          CB_InactiveTB.Checked:=True;
+          CB_NonSpecific.checked:=False;
+          CB_ActiveTB.checked:=False;
+          Panel_CheckResult.visible:=False;
+     end;
+end;
+
+procedure TFormMedExamEntry.CB_ActiveTBClick(Sender: TObject);
+begin
+     if CB_ActiveTB.Checked=True then
+     begin
+          CB_ActiveTB.Checked:=True;
+          CB_NonSpecific.Checked:=false;
+          CB_InactiveTB.Checked:=False;
+          Panel_CheckResult.visible:=True;
+          {CB_Infective.Checked:=False;
+          CB_NonInfective.Checked:=False;
+          CB_DrugSensitive.checked:=False;
+          CB_MDR.checked:=False;  }
+     end;
+end;
+
+procedure TFormMedExamEntry.Edit_TNationalityKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+        Edit_TPassport.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_TPassportKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+         Edit_TCitizenshipNo.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_TCitizenshipNoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+          Edit_TAge.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_TAddressKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+          CMB_TGender.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CMB_TGenderKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+          Edit_Tcompany.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_TcompanyKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+          Edit_THeight.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_THeightKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+         Edit_TWeight.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_TWeightKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+         Edit_TBloodPressure.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_TBloodPressureKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+         DateEdit_XRAYDATE.SetFocus;
+end;
+
+procedure TFormMedExamEntry.edit_SummaryKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+         Edit_Remarks.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_RemarksKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+         Edit_Examination.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_ExaminationKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+         Edit_PhysicianName.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_PhysicianNameKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+         Edit_PhysicianLicense.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_PhysicianLicenseKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+        CB_Positive.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_TechnicianNameKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+         Edit_TechnicianLicense.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_TechnicianLicenseKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+         BtnSave.SetFocus;
+end;
+
+procedure TFormMedExamEntry.DateEdit_TExamKeyPress(Sender: TObject;
+  var Key:Char);
+begin
+    // IF (KEY=strtoint(#13)) then
+       // Edit_TPassport.SetFocus;
+end;
+
+procedure TFormMedExamEntry.Edit_TFullNameKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (KEY=#13) then
+         edit_tnationality.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_NonSpecificKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF Key=#13 then
+     CB_InactiveTB.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_InactiveTBKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+          IF Key=#13 then
+     CB_ActiveTB.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_ActiveTBKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+          IF Key=#13 then
+           begin
+               if CB_ActiveTB.Checked=True then
+               CB_Infective.SetFocus
+               else
+               cb_undertreatment.setfocus;
+           end;
+end;
+
+procedure TFormMedExamEntry.CB_NonInfectiveKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+          IF Key=#13 then
+     CB_DrugSensitive.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_DrugSensitiveKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+          IF Key=#13 then
+     CB_MDR.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_MDRKeyPress(Sender: TObject; var Key: Char);
+begin
+          IF Key=#13 then
+     CB_UnderTreatment.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_CuredKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+          IF Key=#13 then
+     CB_ComplicatedTreatment.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_ComplicatedTreatmentKeyPress(
+  Sender: TObject; var Key: Char);
+begin
+          IF Key=#13 then
+     CB_Failed.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_FailedKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF Key=#13 then
+     CB_Defaulted.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_DefaultedKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+          IF Key=#13 then
+     edit_Summary.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_UnderTreatmentKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF Key=#13 then
+     CB_Cured.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_PositiveKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF Key=#13 then
+     CB_Negetive.SetFocus;
+end;
+
+procedure TFormMedExamEntry.CB_NegetiveKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF Key=#13 then
+     Edit_TechnicianName.SetFocus;
+end;
+
+procedure TFormMedExamEntry.FormDestroy(Sender: TObject);
+begin
+     FormMedExamEntry.Free;
+end;
+
+procedure TFormMedExamEntry.DateEdit_TDOBKeyPress(Sender: TObject;
+  var Key: Smallint);
+begin
+     //IF (KEY=#13) then
+          //Edit_TCitizenshipNo.SetFocus;
+end;
+
+procedure TFormMedExamEntry.BitBtnExcelClick(Sender: TObject);
+begin
+  //SendToExcel(DataSet:TDataSet;DBGRD:TDBGrid;ReportTitle:String;ReportDate:String; Summary:String; Company:String; CompanyAddress:String);
+  SendToExcel(querySearch,nil,'Medical Examination',serverdate.TodaysDate, 'Medical Examination',gs_HosName,gs_HosAddress);
+end;
+
+end.
+

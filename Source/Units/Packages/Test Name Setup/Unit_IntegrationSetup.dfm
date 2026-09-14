@@ -1,0 +1,330 @@
+object Form_InregrationSetup: TForm_InregrationSetup
+  Left = 0
+  Top = 0
+  Caption = 'Inregration Setup'
+  ClientHeight = 546
+  ClientWidth = 1037
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1037
+    Height = 546
+    Align = alClient
+    TabOrder = 0
+    DesignSize = (
+      1037
+      546)
+    object Label1: TLabel
+      Left = 6
+      Top = 14
+      Width = 97
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Department Name  :'
+    end
+    object Label_AccHeadName: TLabel
+      Left = 672
+      Top = 49
+      Width = 87
+      Height = 14
+      AutoSize = False
+      Caption = 'Account Head'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold, fsUnderline]
+      ParentFont = False
+      WordWrap = True
+    end
+    object Label17: TLabel
+      Left = 576
+      Top = 49
+      Width = 87
+      Height = 14
+      AutoSize = False
+      Caption = 'Account Head'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold, fsUnderline]
+      ParentFont = False
+      WordWrap = True
+    end
+    object Label_AccHeadId: TLabel
+      Left = 831
+      Top = 51
+      Width = 39
+      Height = 14
+      AutoSize = False
+      Caption = '0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      WordWrap = True
+    end
+    object SPB_SetAccHead: TSpeedButton
+      Left = 892
+      Top = 43
+      Width = 133
+      Height = 22
+      Caption = 'Set Acc. Head'
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00555555555555
+        555555555555555555555555555555555555555555FF55555555555559055555
+        55555555577FF5555555555599905555555555557777F5555555555599905555
+        555555557777FF5555555559999905555555555777777F555555559999990555
+        5555557777777FF5555557990599905555555777757777F55555790555599055
+        55557775555777FF5555555555599905555555555557777F5555555555559905
+        555555555555777FF5555555555559905555555555555777FF55555555555579
+        05555555555555777FF5555555555557905555555555555777FF555555555555
+        5990555555555555577755555555555555555555555555555555}
+      NumGlyphs = 2
+      OnClick = SPB_SetAccHeadClick
+    end
+    object DBGrid1: TSMDBGrid
+      Left = 6
+      Top = 69
+      Width = 549
+      Height = 470
+      DataSource = Ds_List
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Flat = False
+      BandsFont.Charset = DEFAULT_CHARSET
+      BandsFont.Color = clWindowText
+      BandsFont.Height = -11
+      BandsFont.Name = 'Tahoma'
+      BandsFont.Style = []
+      Groupings = <>
+      GridStyle.Style = gsCustom
+      GridStyle.OddColor = clWindow
+      GridStyle.EvenColor = clWindow
+      TitleHeight.PixelCount = 24
+      FooterColor = clBtnFace
+      ExOptions = [eoCheckBoxSelect, eoENTERlikeTAB, eoKeepSelection, eoStandardPopup, eoBLOBEditor, eoTitleWordWrap, eoFilterAutoApply]
+      RegistryKey = 'Software\Scalabium'
+      RegistrySection = 'SMDBGrid'
+      WidthOfIndicator = 23
+      DefaultRowHeight = 17
+      ScrollBars = ssHorizontal
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Testnamecode'
+          Title.Alignment = taCenter
+          Title.Caption = 'Testname Code'
+          Width = 90
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Testname'
+          Title.Alignment = taCenter
+          Title.Caption = 'Test Name'
+          Width = 276
+          Visible = True
+        end
+        item
+          Alignment = taCenter
+          Expanded = False
+          FieldName = 'ACCHEADID'
+          Title.Alignment = taCenter
+          Title.Caption = 'Account Head'
+          Width = 100
+          Visible = True
+        end
+        item
+          Alignment = taCenter
+          Expanded = False
+          FieldName = 'ACCHEADIP'
+          Title.Alignment = taCenter
+          Title.Caption = 'Account Head (IP)'
+          Visible = False
+        end>
+    end
+    object TreeView1: TTreeView
+      Left = 575
+      Top = 68
+      Width = 454
+      Height = 470
+      Anchors = []
+      Color = clWhite
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Indent = 30
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 1
+      OnClick = TreeView1Click
+    end
+    object DBLCB_Dep: TDBLookupComboBox
+      Left = 109
+      Top = 12
+      Width = 236
+      Height = 21
+      KeyField = 'DEPT_DEPID'
+      ListField = 'DEPT_DEPNAME'
+      ListSource = DS_DepName
+      TabOrder = 2
+      OnClick = DBLCB_DepClick
+    end
+    object RBtn_Code: TRadioButton
+      Left = 578
+      Top = 353
+      Width = 54
+      Height = 17
+      Caption = 'Code'
+      TabOrder = 3
+      Visible = False
+    end
+    object GroupBox2: TGroupBox
+      Left = 573
+      Top = 9
+      Width = 272
+      Height = 33
+      Caption = 'Account Head For'
+      TabOrder = 4
+      Visible = False
+      object RB_Service: TRadioButton
+        Left = 4
+        Top = 14
+        Width = 85
+        Height = 17
+        Caption = 'OPD Services'
+        TabOrder = 0
+        OnClick = RB_ServiceClick
+      end
+      object RB_serviceipd: TRadioButton
+        Left = 167
+        Top = 13
+        Width = 85
+        Height = 17
+        Caption = 'IPD Services'
+        TabOrder = 1
+        OnClick = RB_serviceipdClick
+      end
+    end
+    object GroupBox1: TGroupBox
+      Left = 37
+      Top = 36
+      Width = 396
+      Height = 28
+      TabOrder = 5
+      object Rb_Integrated: TRadioButton
+        Left = 256
+        Top = 6
+        Width = 113
+        Height = 17
+        Caption = 'Integrated'
+        TabOrder = 0
+        OnClick = Rb_IntegratedClick
+      end
+      object Rb_nonIntegrated: TRadioButton
+        Left = 30
+        Top = 6
+        Width = 113
+        Height = 17
+        Caption = 'Non-Integrated'
+        Checked = True
+        TabOrder = 1
+        TabStop = True
+        OnClick = Rb_nonIntegratedClick
+      end
+    end
+  end
+  object Query_DepName: TOraQuery
+    SQL.Strings = (
+      'Select * from HS_DEPT_Department '
+      'Order by DEPT_DepName  ')
+    Left = 40
+    Top = 200
+  end
+  object DS_DepName: TDataSource
+    DataSet = Query_DepName
+    Left = 64
+    Top = 200
+  end
+  object Query_list: TOraQuery
+    SQL.Strings = (
+      'Select * From VW_HS_Setup_TestName'
+      'where (0=0)'
+      ''
+      ''
+      'Order by TestName')
+    Left = 143
+    Top = 191
+  end
+  object Ds_List: TDataSource
+    DataSet = Query_list
+    Left = 182
+    Top = 183
+  end
+  object qry_stateofaccount: TOraQuery
+    SQL.Strings = (
+      'select state from bnb_acc.acctree where id=:id')
+    Left = 264
+    Top = 168
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'id'
+      end>
+  end
+  object QueryAccTree: TOraQuery
+    SQL.Strings = (
+      'SELECT ID, Name,LF,state'
+      'from  Sumeru_Acc.AccTree'
+      'where ParentID = :ParentID'
+      'order by ID asc'
+      ' ')
+    Left = 398
+    Top = 158
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'ParentID'
+      end>
+  end
+  object Query_Save: TOraQuery
+    SQL.Strings = (
+      'SELECT ID, Name,LF,state'
+      'from  Sumeru_Acc.AccTree'
+      'where ParentID = :ParentID'
+      'order by ID asc'
+      ' ')
+    Left = 486
+    Top = 198
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'ParentID'
+      end>
+  end
+end

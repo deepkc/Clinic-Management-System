@@ -1,0 +1,6 @@
+select ROWNUM AS SN, RD.* from VW_SERVICEREFUNDDETAILTESTWISE RD
+where refunddate>='2017/09/16'and refunddate<='2017/10/16'
+and 39=39
+and 39=39
+and 39=39
+order by sn

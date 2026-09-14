@@ -1,0 +1,234 @@
+unit UnitDeptWiseReport;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm, serverdate,
+     Dialogs, ComCtrls, StdCtrls, OleCtrls, DateEditXControl_TLB, Buttons,
+     DBCtrls,
+     ExtCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError,UnitSendToExcel;
+
+type
+     TFormDeptwiseCollection = class(TForm)
+          Panel1: TPanel;
+          Btn_Preview: TButton;
+          Panel2: TPanel;
+          Label3: TLabel;
+          DBLCB_DepName: TDBLookupComboBox;
+          GroupBox1: TGroupBox;
+          label2: TLabel;
+          Label1: TLabel;
+          BtnTo: TSpeedButton;
+          BtnFrom: TSpeedButton;
+          DateEditXTo: TDateEditX;
+          Chk_Detail: TCheckBox;
+          DateEditxFrom: TDateEditX;
+          StatusBar1: TStatusBar;
+          QueryDept: TOraQuery;
+          Dsdept: TDataSource;
+    BitBtn1: TBitBtn;
+    CB_PayType: TComboBox;
+    LBL_PayType: TLabel;
+          procedure Btn_PreviewClick(Sender: TObject);
+          procedure BtnFromClick(Sender: TObject);
+          procedure BtnToClick(Sender: TObject);
+          procedure FormShow(Sender: TObject);
+          procedure DBLCB_DepNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure BitBtn1Click(Sender: TObject);
+     private
+          { Private declarations }
+     public
+          { Public declarations}
+          pb_ToXl:Boolean;
+     end;
+
+var
+     FormDeptwiseCollection: TFormDeptwiseCollection;
+
+implementation
+
+uses UnitRepDeptWiseCollection, Unit_departmentWiseCollectionReport;
+{$R *.dfm}
+
+procedure TFormDeptwiseCollection.BitBtn1Click(Sender: TObject);
+begin
+     pb_ToXl:=True;
+     Btn_PreviewClick(Sender);
+     pb_ToXl:=False;
+end;
+
+procedure TFormDeptwiseCollection.BtnFromClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditxFrom, BtnFrom);
+end;
+
+procedure TFormDeptwiseCollection.BtnToClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditXTo, BtnTo);
+end;
+
+procedure TFormDeptwiseCollection.Btn_PreviewClick(Sender: TObject);
+var
+Arr_Dataset:Array of TDataset;
+begin
+     DateEditxFrom.SystemOfDate := gi_datesystem;
+     DateEditXTo.SystemOfDate := gi_datesystem;
+     BtnFrom.Caption := gs_DateCaption;
+     BtnTo.Caption := gs_DateCaption;
+     gs_From := DateEditxFrom.text;
+     gs_to := DateEditXTo.text;
+     DateEditxFrom.SystemOfDate := 0;
+     DateEditXTo.SystemOfDate := 0;
+     BtnFrom.Caption := 'BS';
+     BtnTo.Caption := 'BS';
+     if gs_CalledFrom='CollReport' then
+     begin
+          if (Chk_Detail.Checked = True) and (DBLCB_DepName.KeyValue = Null) then
+          begin
+               ShowMessage('Please Select the Department');
+               DBLCB_DepName.SetFocus;
+               exit;
+          end;
+          try
+               FormRepDeptWiseSum := TFormRepDeptWiseSum.Create(nil);
+               if Chk_Detail.Checked <> True then
+               begin
+                    with FormRepDeptWiseSum do
+                    begin
+                         With QueryMain do
+                         begin
+                              close;
+                              Session:=DM_Hospital.DB;
+                              Sql.Clear;
+                              Sql.Add('Select depid,depname,Sum(CashAmount)CashAmount,Sum(CreditAmount)CreditAmount');
+                              Sql.Add(',Sum(TotalAmount)TotalAmount,sum(TotalDiscount)TotalDiscount');
+                              Sql.Add(',sum(RefundAmount)RefundAmount,sum(RefundDiscount)RefundDiscount,sum(NetAmount)NetAmount');
+                              Sql.Add(' from VW_Dept_Wise_Total_Coll');
+                              Sql.Add(' where BillDate Between '#39 + gs_From + #39 + 'and '+#39+gs_to + #39);
+                              if DBLCB_DepName.KeyValue <> Null then
+                                   Sql.Add('And DepId = ' + IntToStr(DBLCB_DepName.KeyValue));
+                              Sql.Add(' Group by depid,DepName');
+                              Sql.Add(' Order by DepName');
+                              Open;
+                         end;
+                         with QueryDeposit do
+                         begin
+                              close;
+                              Session:=DM_Hospital.DB;
+                              Sql.Clear;
+                              Sql.Add('Select Sum(DEPO_CrAmount) As Deposit,Sum(DEPO_DrAmount) As DepositRef');
+                              Sql.Add(' from HS_DEPO_Deposit');
+                              Sql.Add('where DEPO_depositDate>='#39 + gs_From + #39 + 'and DEPO_depositDate<='#39 + gs_to + #39);
+                              Open;
+                         end;
+                         if pb_ToXl then
+                         begin
+                              SetLength(Arr_Dataset,2);
+                              Arr_Dataset[0]:=QueryMain;
+                              Arr_Dataset[1]:=QueryDeposit;
+                              SendToExcelsNew(Arr_Dataset,nil,'Department Wise Collection',DateEditxFrom.Text+'-'+DateEditXTo.Text,'',
+                                gs_HospitalName,gs_HospitalAddress,3);
+                              pb_ToXl:=False;
+                              Exit;
+                         end;
+                         QRLabel7.Caption := DateEditxFrom.text;
+                         QRLabel6.Caption := DateEditXTo.text;
+                         QuickRep1.Preview;
+                    end;
+               end
+               else
+               begin
+                    // Detail report
+               end;
+
+          finally
+               FormRepDeptWiseSum.free;
+          end;
+     end;
+     if gs_CalledFrom='NewCollReport' then
+     begin
+          try
+               Form_DepartmentWiseCollectionReport:=TForm_DepartmentWiseCollectionReport.Create(nil);
+               with Form_DepartmentWiseCollectionReport do
+               begin
+                    With QueryMain do
+                    begin
+                         close;
+                         Session:=DM_Hospital.DB;
+                         Sql.Clear;
+                         Sql.Add(' SELECT ''SERVICES'' AS MAJDEP,');
+                         Sql.Add(' CASE WHEN DEPID IN (SELECT DEPID FROM DEPARTMENT WHERE DEPTYPE=''HISTOLOGY'') THEN ''PATHOLOGY LAB'' ELSE ''OTHERS'' END AS MAINDEP,');
+                         Sql.Add(' DEPNAME,SUM(QTY) QTY,SUM(TOTALAMOUNT)TOTALAMOUNT, SUM(TOTALDISCOUNT) TOTALDISCOUNT,');
+                         Sql.Add(' SUM(GROSSAMOUNT)GROSSAMOUNT,SUM(HST) HST,SUM(GROSSAMOUNT+HST) NETTOTAL');
+                         Sql.Add(' FROM VW_NewDept_Wise_Total_Coll');
+                         Sql.Add(' where BillDate Between '#39 + gs_From + #39 + 'and '+#39+gs_to + #39);
+                         if DBLCB_DepName.KeyValue <> Null then
+                              Sql.Add('And DepId = ' + IntToStr(DBLCB_DepName.KeyValue));
+                         if (CB_PayType.ItemIndex=1) OR (CB_PayType.ItemIndex=2) then
+                              Sql.Add('And PAYTYPE = ' + QuotedStr(CB_PayType.Text))
+                         else if (CB_PayType.ItemIndex=3) then
+                              Sql.Add('And PAYTYPE = ' + QuotedStr(CB_PayType.Text));
+                         Sql.Add(' Group by depid,DepName');
+                         Sql.Add(' Order by DepName');
+                         sql.SaveToFile('hello.txt');
+                         Open;
+                    end;
+                    if pb_ToXl then
+                    begin
+                         SendToExcels_query(QueryMain,nil,'New Department Wise Collection',DateEditxFrom.Text+'-'+DateEditXTo.Text,'',
+                           gs_HospitalName,gs_HospitalAddress,3);
+                         pb_ToXl:=False;
+                         Exit;
+                    end;
+                    QRLabel16.Caption := DateEditxFrom.text;
+                    QRLabel15.Caption := DateEditXTo.text;
+                    QRLabel17.Caption := DateEditXTo.text;
+                    qr_department.Preview;
+               end;
+          finally
+               Form_DepartmentWiseCollectionReport.Free;
+          end;
+     end;
+end;
+
+procedure TFormDeptwiseCollection.DBLCB_DepNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = VK_DELETE then
+          DBLCB_DepName.KeyValue := Null;
+end;
+
+procedure TFormDeptwiseCollection.FormShow(Sender: TObject);
+begin
+     DateEditxFrom.SystemOfDate := gi_datesystem;
+     DateEditXTo.SystemOfDate := gi_datesystem;
+     DateEditxFrom.text := serverdate.TodaysDate;
+     DateEditXTo.text := serverdate.TodaysDate;
+     BtnFrom.Caption := gs_DateCaption;
+     BtnTo.Caption := gs_DateCaption;
+     DateEditxFrom.SystemOfDate := 0;
+     DateEditXTo.SystemOfDate := 0;
+     BtnFrom.Caption := 'BS';
+     BtnTo.Caption := 'BS';
+     with QueryDept do
+     begin
+          close;
+          Session:=DM_Hospital.DB;
+          Open;
+     end;
+     if gs_CalledFrom='NewCollReport' then
+     begin
+          LBL_PayType.Visible:=True;
+          CB_PayType.Visible:=True;
+     end;
+end;
+
+initialization
+
+RegisterClass(TFormDeptwiseCollection);
+
+Finalization
+
+UnRegisterClass(TFormDeptwiseCollection);
+
+end.

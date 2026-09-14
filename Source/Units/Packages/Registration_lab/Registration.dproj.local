@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2011/11/09 12:00:06.667.dproj,C:\Users\vicky\Documents\RAD Studio\Projects\Package1.dproj=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Registration\Registration.dproj</Transaction>
+    <Transaction>2011/11/09 19:05:22.220.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\DM\DM.pas=</Transaction>
+    <Transaction>2011/11/09 19:05:22.220.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\DM\DM.dfm=</Transaction>
+    <Transaction>2011/11/10 11:46:39.585.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Fxn.pas=</Transaction>
+    <Transaction>2011/11/10 11:46:48.648.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\ServerDate.pas=</Transaction>
+    <Transaction>2011/11/10 16:28:17.612.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Unit_Message.pas=</Transaction>
+    <Transaction>2011/11/10 16:28:17.612.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Unit_Message.dfm=</Transaction>
+    <Transaction>2011/11/10 16:28:49.763.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\SaveData.pas=</Transaction>
+  </Transactions>
+</BorlandProject>

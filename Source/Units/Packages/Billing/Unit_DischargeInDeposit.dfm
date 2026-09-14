@@ -1,0 +1,638 @@
+object Form_DischargeInDeposit: TForm_DischargeInDeposit
+  Left = 383
+  Top = 210
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Discharge In Deposit'
+  ClientHeight = 446
+  ClientWidth = 622
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 622
+    Height = 29
+    Align = alTop
+    TabOrder = 0
+    DesignSize = (
+      622
+      29)
+    object BtnSave: TBitBtn
+      Left = 430
+      Top = 2
+      Width = 92
+      Height = 25
+      Anchors = [akLeft, akTop, akRight]
+      Caption = '&Save (F12)'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333330070
+        7700333333337777777733333333008088003333333377F73377333333330088
+        88003333333377FFFF7733333333000000003FFFFFFF77777777000000000000
+        000077777777777777770FFFFFFF0FFFFFF07F3333337F3333370FFFFFFF0FFF
+        FFF07F3FF3FF7FFFFFF70F00F0080CCC9CC07F773773777777770FFFFFFFF039
+        99337F3FFFF3F7F777F30F0000F0F09999937F7777373777777F0FFFFFFFF999
+        99997F3FF3FFF77777770F00F000003999337F773777773777F30FFFF0FF0339
+        99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
+        93337FFFF7737777733300000033333333337777773333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BtnSaveClick
+    end
+    object BtnCancel: TBitBtn
+      Left = 522
+      Top = 2
+      Width = 98
+      Height = 25
+      Hint = 'Cancel as well as Exit'
+      Anchors = [akLeft, akTop, akRight]
+      Cancel = True
+      Caption = '&Cancel [ESC]'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        333333333333333333333333333333333333333FFF33FF333FFF339993370733
+        999333777FF37FF377733339993000399933333777F777F77733333399970799
+        93333333777F7377733333333999399933333333377737773333333333990993
+        3333333333737F73333333333331013333333333333777FF3333333333910193
+        333333333337773FF3333333399000993333333337377737FF33333399900099
+        93333333773777377FF333399930003999333337773777F777FF339993370733
+        9993337773337333777333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+      OnClick = BtnCancelClick
+    end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 427
+    Width = 622
+    Height = 19
+    Panels = <
+      item
+        Width = 50
+      end
+      item
+        Width = 50
+      end>
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 29
+    Width = 622
+    Height = 398
+    Align = alClient
+    BevelOuter = bvLowered
+    TabOrder = 2
+    object Label2: TLabel
+      Left = 3
+      Top = 42
+      Width = 131
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Discharge In Deposit Date :'
+    end
+    object Label8: TLabel
+      Left = 73
+      Top = 71
+      Width = 61
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Inpatient No:'
+    end
+    object Label1: TLabel
+      Left = 64
+      Top = 124
+      Width = 70
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Patient Name :'
+    end
+    object LabelPtName: TLabel
+      Left = 140
+      Top = 124
+      Width = 73
+      Height = 13
+      Caption = 'PatientName'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 78
+      Top = 147
+      Width = 56
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Patient No :'
+    end
+    object LabelPtNo: TLabel
+      Left = 140
+      Top = 147
+      Width = 52
+      Height = 13
+      Caption = 'PatientId'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label5: TLabel
+      Left = 87
+      Top = 196
+      Width = 47
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Dis Date :'
+      Visible = False
+    end
+    object LabelDisDate: TLabel
+      Left = 140
+      Top = 196
+      Width = 50
+      Height = 13
+      Caption = 'Dis Date'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object LabelDisPt: TLabel
+      Left = 288
+      Top = 165
+      Width = 154
+      Height = 20
+      Caption = 'Discharged Patient'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clFuchsia
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label4: TLabel
+      Left = 84
+      Top = 172
+      Width = 50
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Inpt Date :'
+    end
+    object LabelInptDate: TLabel
+      Left = 140
+      Top = 172
+      Width = 54
+      Height = 13
+      Caption = 'Inpt Date'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label6: TLabel
+      Left = 79
+      Top = 95
+      Width = 54
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'In Care Of :'
+    end
+    object Label7: TLabel
+      Left = 98
+      Top = 14
+      Width = 36
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Today :'
+    end
+    object Label_AddScheme: TLabel
+      Left = 66
+      Top = 217
+      Width = 67
+      Height = 13
+      Caption = 'Add Scheme :'
+    end
+    object Label_Amount: TLabel
+      Left = 512
+      Top = 160
+      Width = 33
+      Height = 25
+      Caption = '0.0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -21
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object SPB_MakeUptodate: TSpeedButton
+      Left = 139
+      Top = 263
+      Width = 263
+      Height = 22
+      Caption = 'Make Uptodate Trans. of Back Date Entered Service'
+      OnClick = SPB_MakeUptodateClick
+    end
+    object DateEditXDisDate: TDateEditX
+      Left = 138
+      Top = 38
+      Width = 93
+      Height = 21
+      TabOrder = 0
+      ControlData = {
+        545046300A5444617465456469745200044C656674038A0003546F7002260577
+        69647468025D0B4461746541442E5965617203D6070C4461746541442E4D6F6E
+        746802010A4461746541442E44617902180B4461746556532E59656172030E08
+        0C4461746556532E4D6F6E7468020A0A4461746556532E446179020B0000}
+    end
+    object BitBtn_FromDate: TBitBtn
+      Left = 205
+      Top = 39
+      Width = 24
+      Height = 19
+      Caption = 'BS'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      TabStop = False
+      OnClick = BitBtn_FromDateClick
+    end
+    object Edit_InpatientId: TEdit
+      Left = 138
+      Top = 66
+      Width = 94
+      Height = 21
+      TabOrder = 2
+      OnExit = Edit_InpatientIdExit
+      OnKeyDown = Edit_InpatientIdKeyDown
+      OnKeyPress = Edit_InpatientIdKeyPress
+    end
+    object CB_DisInDeposit: TCheckBox
+      Left = 140
+      Top = 243
+      Width = 190
+      Height = 17
+      Caption = 'Remove Discharge In Deposit  (F1)'
+      TabOrder = 4
+    end
+    object Edit_CareOf: TEdit
+      Left = 138
+      Top = 93
+      Width = 351
+      Height = 21
+      Hint = 'In Care of Remarks 50 Char Only'
+      MaxLength = 50
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 3
+      OnKeyPress = Edit_CareOfKeyPress
+    end
+    object DEX_Today: TDateEditX
+      Left = 138
+      Top = 10
+      Width = 93
+      Height = 21
+      TabOrder = 5
+      ControlData = {
+        545046300A5444617465456469745200044C656674038A0003546F70020A0577
+        69647468025D0B4461746541442E5965617203D6070C4461746541442E4D6F6E
+        746802010A4461746541442E44617902180B4461746556532E59656172030E08
+        0C4461746556532E4D6F6E7468020A0A4461746556532E446179020B05436F6C
+        6F720708636C53696C76657208526561644F6E6C79090000}
+    end
+    object Btn_Today: TBitBtn
+      Left = 205
+      Top = 11
+      Width = 24
+      Height = 19
+      Caption = 'BS'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 6
+      TabStop = False
+      OnClick = Btn_TodayClick
+    end
+    object DBLC_AddScheme: TDBLookupComboBox
+      Left = 138
+      Top = 215
+      Width = 264
+      Height = 21
+      KeyField = 'SCHE_SCHEMEID'
+      ListField = 'SCHE_SCHEME'
+      ListSource = DataSource_Scheme
+      TabOrder = 7
+    end
+    object CheckBox_AddScheme: TCheckBox
+      Left = 407
+      Top = 216
+      Width = 80
+      Height = 17
+      Caption = 'Add Scheme'
+      TabOrder = 8
+      OnClick = CheckBox_AddSchemeClick
+    end
+    object GroupBox1: TGroupBox
+      Left = 139
+      Top = 290
+      Width = 454
+      Height = 102
+      Caption = 'Special Deposit In Discharge Cashed Receipt Date Post'
+      TabOrder = 9
+      DesignSize = (
+        454
+        102)
+      object Label9: TLabel
+        Left = 5
+        Top = 21
+        Width = 68
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Cashed Date :'
+      end
+      object SPB_SetDiscount: TSpeedButton
+        Left = 77
+        Top = 39
+        Width = 204
+        Height = 27
+        Anchors = [akLeft, akTop, akRight]
+        Caption = 'Set Cash Received Date'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        Glyph.Data = {
+          B60D0000424DB60D000000000000360000002800000030000000180000000100
+          180000000000800D000001000000010000000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFF8F8F8EAEAEACFD1D0B7BEBAB6BDB9CDCFCEE9E9E9F7F7F7FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFF8F8F8EAEAEAD1D1D1BDBDBDBCBCBCCFCFCFE9E9E9F7
+          F7F7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFF6F6F6BBC1BE5B93731F9A570CAB560DAF5B0DB0
+          5D0CAD5A1D9E5A549370B2BBB6F4F4F4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6F6F6C0C0C08C8C8C8B8B8B
+          9898989C9C9C9C9C9C9A9A9A8E8E8E8B8B8BBABABAF4F4F4FFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEDDDEDE5593700E
+          A95410B46011BA6712BE6D14C17015C27314C17215BF7012BB6A10B2614C956D
+          D5D7D6FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFE
+          FEDEDEDE8C8C8C959595A0A0A0A7A7A7ABABABADADADAFAFAFAEAEAEACACACA8
+          A8A89F9F9F8C8C8CD7D7D7FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFCBCFCD29995A10B25B14BC6819C2731BC77A1ECB8020CD8422CE
+          8621CE8621CC831EC97E1BC57718BE6F25A463BEC5C1FEFEFEFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFCFCFCF8B8B8B9E9E9EA8A8A8ADADADB4B4B4
+          B8B8B8B9B9B9BBBBBBBBBBBBBABABAB6B6B6B1B1B1ABABAB959595C4C4C4FEFE
+          FEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD9DCDA279C5A14B66019C16E20
+          C87B24CE8429D28D2DD5932FD79730D89830D7982FD6952DD39129D08A23CB81
+          1EC47724AA67CDD2CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDBDBDB8D8D
+          8DA2A2A2ADADADB3B3B3BBBBBBBEBEBEC2C2C2C6C6C6C5C5C5C5C5C5C4C4C4C0
+          C0C0BDBDBDB7B7B7B0B0B09A9A9AD1D1D1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          F7F7F747986B15B75F1DC37023CC7E2AD28B31D79637D99E3BDCA43DDFA840DF
+          A93FDFA93EDEA63ADCA136D99B31D4932ACF8821C87B3CA16EF3F4F3FFFFFFFF
+          FFFFFFFFFFFFFFFFF7F7F78D8D8DA3A3A3B0B0B0B8B8B8BEBEBEC6C6C6C7C7C7
+          CCCCCCCECECECECECECFCFCFCCCCCCCBCBCBC7C7C7C2C2C2BCBCBCB4B4B49595
+          95F4F4F4FFFFFFFFFFFFFFFFFFFFFFFFA5B7AE15B45C1DC36D26CD7F2ED48E36
+          DA9B3DC594102E24225A484CE1B54DE5B94CE5B84CE4B549E2B044DFA93FDBA1
+          36D7972ED18B24C77B93AEA0FFFFFFFFFFFFFFFFFFFFFFFFB5B5B59F9F9FAFAF
+          AFB9B9B9C1C1C1C8C8C8B7B7B72B2B2B555555D3D3D3D6D6D6D6D6D6D4D4D4D2
+          D2D2CFCFCFCACACAC5C5C5BEBEBEB3B3B3ABABABFFFFFFFFFFFFFFFFFFFBFBFB
+          439D6C1DC06926CC7C30D48D39DB9C40C6970E231C010101010101285A4C5BE7
+          C45AEAC559E9C256E7BD52E5B64BE1AE44DDA43BD89931D28B3AAA73F8F8F8FF
+          FFFFFFFFFFFBFBFB919191ACACACB8B8B8C0C0C0C9C9C9B7B7B7212121010101
+          010101555555DADADADCDCDCDCDCDCD9D9D9D6D6D6D1D1D1CDCDCDC6C6C6BFBF
+          BF9C9C9CF8F8F8FFFFFFFFFFFFDEE2E01BB86123C9742ED28839DA9B40C5960D
+          221B01010127695814352D0000002C5D5066EACD65ECCC61EBC75CE9C157E6B9
+          4EE2B045DEA43BD8982BCB80CDD6D1FFFFFFFFFFFFE1E1E1A4A4A4B5B5B5BEBE
+          BEC7C7C7B7B7B7202020010101626262323232000000585858DFDFDFE0E0E0DE
+          DEDEDBDBDBD7D7D7D2D2D2CCCCCCC6C6C6B9B9B9D5D5D5FFFFFFFFFFFFACC2B7
+          1FC26929D08035D8953FD69F0D231C0000002C705F62ECCE61E0C71738310101
+          012F5D526FECD16AEECF66ECCA61E9C257E6B94EE2AF44DDA236D6929ABBABFF
+          FFFFFFFFFFBFBFBFACACACBCBCBCC6C6C6C6C6C6202020000000696969E0E0E0
+          D6D6D6353535010101595959E1E1E1E2E2E2DFDFDFDCDCDCD7D7D7D2D2D2CDCD
+          CDC3C3C3B7B7B7FFFFFFFFFFFF90B9A423CB752FD58C3BDC9E46DDAA1B4D3E2D
+          746264EBCD6BF0D671F2DB6EE5D11B3934000000325F5474EDD36EEED069ECC9
+          60E9C056E5B74CE1AC3DDC9E80B69CFFFFFFFFFFFFB4B4B4B5B5B5C2C2C2CACA
+          CACDCDCD4848486D6D6DDFDFDFE4E4E4E8E8E8DCDCDC3737370000005B5B5BE3
+          E3E3E3E3E3DFDFDFDBDBDBD6D6D6D0D0D0CACACAB0B0B0FFFFFFFFFFFF8DBDA5
+          28D18035D99541DFA64EE5B459E9BF63ECCA6CEFD274F1D97BF4DE80F5E279E7
+          D61D3A35010101335E5477ECD171EECE68EBC65EE8BD53E4B345E0A77EB99EFF
+          FFFFFFFFFFB7B7B7BCBCBCC6C6C6CDCDCDD5D5D5DADADADFDFDFE4E4E4E7E7E7
+          EAEAEAEDEDEDDDDDDD3737370101015A5A5AE1E1E1E2E2E2DEDEDEDADADAD4D4
+          D4CECECEB2B2B2FFFFFFFFFFFF9EC5B22DD28639DB9A46E1AA54E6B860EBC36B
+          EDCD75EFD47CF2DA83F4DF88F5E28BF5E380E5D31E3A34000000335C5279EBCD
+          6FECC965E9C05AE6B74BE1AC8FC3ACFFFFFFFFFFFFC0C0C0BEBEBECACACAD1D1
+          D1D7D7D7DDDDDDE1E1E1E3E3E3E8E8E8EBEBEBEDEDEDEBEBEBDCDCDC38383800
+          0000595959DFDFDFDFDFDFDBDBDBD7D7D7D1D1D1BCBCBCFFFFFFFFFFFFC6DBD1
+          2FD0873EDC9D4CE2AC5AE6B967EBC472EECE7CF0D484F2DA8BF3DE8FF4E092F4
+          E192F4E085E4D01F3832010101335B5176E8C86BEAC35FE7BA4FE0ADB5D6C7FF
+          FFFFFFFFFFD8D8D8BCBCBCCBCBCBD1D1D1D8D8D8DEDEDEE2E2E2E5E5E5E8E8E8
+          E9E9E9EBEBEBEBEBEBEBEBEBDBDBDB363636010101585858DDDDDDDCDCDCD8D8
+          D8D0D0D0D2D2D2FFFFFFFFFFFFF7F9F83BC78A40DD9F4DE3AE5DE7BA69EBC575
+          EECD80F0D488F2D990F3DC94F4DE96F4DF97F4DF95F3DD86E2CC1E3630010101
+          3564576DEAC363E8BC4CD6A3ECF3F0FFFFFFFFFFFFF9F9F9B7B7B7CBCBCBD2D2
+          D2D9D9D9DEDEDEE1E1E1E4E4E4E8E8E8EAEAEAEBEBEBEBEBEBEBEBEBE9E9E9DA
+          DADA3434340101015E5E5EDDDDDDD9D9D9C6C6C6F2F2F2FFFFFFFFFFFFFFFFFF
+          82C9AB40DDA04EE2AE5EE7BA6AEBC477EDCC82EFD28BF1D791F2DA96F3DC99F3
+          DD99F3DD97F3DB93F2D982E0C72441393972616FEAC463E8BD7BCDADFFFFFFFF
+          FFFFFFFFFFFFFFFFC1C1C1CBCBCBD2D2D2D8D8D8DDDDDDE1E1E1E3E3E3E7E7E7
+          E8E8E8E9E9E9EAEAEAEAEAEAEAEAEAE9E9E9D7D7D73E3E3E6C6C6CDDDDDDDADA
+          DAC4C4C4FFFFFFFFFFFFFFFFFFFFFFFFE5F0EC46D29B4EE2AD5CE6B869EAC276
+          EDCA80EFD089F0D490F1D895F2DA98F3DB98F2DA96F2D992F1D78BF0D482EDCF
+          79ECCA6FEBC45CDFB3DBEEE6FFFFFFFFFFFFFFFFFFFFFFFFEFEFEFC3C3C3D1D1
+          D1D7D7D7DCDCDCE0E0E0E3E3E3E5E5E5E7E7E7E9E9E9EAEAEAE9E9E9E8E8E8E7
+          E7E7E5E5E5E2E2E2E0E0E0DEDEDED1D1D1EBEBEBFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFB1E1CE49DEA858E6B664E9BF70ECC77CEECD84F0D28BF1D590F1D793F2
+          D893F2D791F1D78DF1D586F0D280EECE74EDC967E8C0A7DFCAFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFDBDBDBCFCFCFD7D7D7DADADADFDFDFE2E2E2E5E5E5
+          E7E7E7E6E6E6E9E9E9E8E8E8E7E7E7E7E7E7E5E5E5E2E2E2E1E1E1DADADAD9D9
+          D9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFE99DFC551E2B05EE8BC69
+          EAC375EDCA7DEECE84EFD288F0D48BF0D48BF0D589F0D485EFD280EECF78EDCC
+          6DEAC593E1C6FCFEFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFED7D7
+          D7D3D3D3D9D9D9DDDDDDE1E1E1E3E3E3E5E5E5E4E4E4E6E6E6E6E6E6E5E5E5E4
+          E4E4E3E3E3E1E1E1DDDDDDD8D8D8FDFDFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFDFEFEADE6D255E0B262E9BF6CEBC574EDCA7BEECD7FEECF81EF
+          D081EFD180EFD07DEECE78EDCC6BE7C2A8E6D1FBFDFDFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEE0E0E0D1D1D1DBDBDBDEDEDEE1E1E1
+          E1E1E1E2E2E2E3E3E3E3E3E3E4E4E4E2E2E2E2E2E2DADADADFDFDFFDFDFDFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDEF4EC83
+          E3C35DE4BA69EBC56FECC973EDCB77EDCC76EECD76EDCC6BE8C486E4C6D7F3E9
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFF2F2F2D8D8D8D6D6D6DEDEDEE0E0E0E0E0E0E1E1E1E2E2E2E1E1E1DB
+          DBDBD9D9D9F0F0F0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFEE5F7F1B5ECDA98E8CF84E5C885E5
+          C799E8D0B4ECDAE1F6EFFDFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F5F5E5E5E5
+          DFDFDFDADADADADADAE0E0E0E6E6E6F3F3F3FEFEFEFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+        NumGlyphs = 2
+        ParentFont = False
+        OnClick = SPB_SetDiscountClick
+      end
+      object Label_DisInDepositDate: TLabel
+        Left = 119
+        Top = 70
+        Width = 63
+        Height = 19
+        Caption = '---------'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label_CashReceivedDate: TLabel
+        Left = 335
+        Top = 70
+        Width = 70
+        Height = 19
+        Caption = '----------'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label12: TLabel
+        Left = 12
+        Top = 76
+        Width = 101
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Dis. In Deposit Date :'
+      end
+      object Label13: TLabel
+        Left = 231
+        Top = 76
+        Width = 96
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Cash Receipt Date :'
+      end
+      object DEX_CashReceivedDate: TDateEditX
+        Left = 77
+        Top = 17
+        Width = 93
+        Height = 21
+        TabOrder = 0
+        ControlData = {
+          545046300A5444617465456469745200044C656674024D03546F700211057769
+          647468025D0B4461746541442E5965617203D6070C4461746541442E4D6F6E74
+          6802010A4461746541442E44617902180B4461746556532E59656172030E080C
+          4461746556532E4D6F6E7468020A0A4461746556532E446179020B0000}
+      end
+      object Btn_CashReceivedDate: TBitBtn
+        Left = 144
+        Top = 18
+        Width = 24
+        Height = 19
+        Caption = 'BS'
+        DoubleBuffered = True
+        ParentDoubleBuffered = False
+        TabOrder = 1
+        TabStop = False
+        OnClick = Btn_CashReceivedDateClick
+      end
+      object CB_IsCashedReceived: TCheckBox
+        Left = 179
+        Top = 19
+        Width = 118
+        Height = 17
+        Caption = 'Is Cash Received'
+        Checked = True
+        State = cbChecked
+        TabOrder = 2
+        OnClick = CB_IsCashedReceivedClick
+      end
+    end
+  end
+  object Query_Void: TOraQuery
+    Left = 336
+    Top = 29
+  end
+  object Query_InpatientInfo: TOraQuery
+    Left = 377
+    Top = 29
+  end
+  object Query_Process: TOraQuery
+    Left = 416
+    Top = 29
+  end
+  object Query_Scheme: TOraQuery
+    SQL.Strings = (
+      'select * from HS_SCHE_Scheme'
+      'Order by SCHE_Scheme')
+    Left = 472
+    Top = 32
+  end
+  object DataSource_Scheme: TDataSource
+    DataSet = Query_Scheme
+    Left = 528
+    Top = 32
+  end
+  object Query_discharge: TOraQuery
+    SQL.Strings = (
+      'select  *  from  Hs_Inre_InpatientReg')
+    Left = 536
+    Top = 72
+  end
+  object Query_SubProcess: TOraQuery
+    SQL.Strings = (
+      'select  *  from  Hs_Inre_InpatientReg')
+    Left = 496
+    Top = 72
+  end
+  object Query_MutualDocForShare: TOraQuery
+    Left = 399
+    Top = 101
+  end
+end

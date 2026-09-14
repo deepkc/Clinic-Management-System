@@ -1,0 +1,2632 @@
+object Form_DefaultSetup: TForm_DefaultSetup
+  Left = 0
+  Top = 0
+  AutoSize = True
+  Caption = 'Default Setup'
+  ClientHeight = 678
+  ClientWidth = 904
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel_Fluid: TPanel
+    Left = 1
+    Top = 221
+    Width = 903
+    Height = 452
+    TabOrder = 6
+    object Label4: TLabel
+      Left = 35
+      Top = 13
+      Width = 87
+      Height = 13
+      Caption = 'Clinical Diagnosis :'
+    end
+    object Label30: TLabel
+      Left = 36
+      Top = 142
+      Width = 99
+      Height = 13
+      Caption = 'Specimen Received :'
+    end
+    object Label31: TLabel
+      Left = 36
+      Top = 205
+      Width = 82
+      Height = 13
+      Caption = 'Amount of Fluid :'
+    end
+    object Label32: TLabel
+      Left = 35
+      Top = 259
+      Width = 95
+      Height = 13
+      Caption = 'Gross Appearance :'
+    end
+    object Label33: TLabel
+      Left = 408
+      Top = 13
+      Width = 117
+      Height = 13
+      Caption = 'Microscopic Description :'
+    end
+    object Label34: TLabel
+      Left = 408
+      Top = 139
+      Width = 52
+      Height = 13
+      Caption = 'Diagnosis :'
+    end
+    object Label35: TLabel
+      Left = 408
+      Top = 259
+      Width = 52
+      Height = 13
+      Caption = 'Comment :'
+    end
+    object RichEdit_FluidClinicalFeatures: TRichEdit
+      Left = 35
+      Top = 36
+      Width = 305
+      Height = 98
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      TabOrder = 0
+      OnEnter = RichEdit_FluidClinicalFeaturesEnter
+    end
+    object Edit_SpecimenReceived: TEdit
+      Left = 36
+      Top = 165
+      Width = 199
+      Height = 21
+      TabOrder = 1
+      OnEnter = Edit_SpecimenReceivedEnter
+    end
+    object EditAmountOfFluid: TEdit
+      Left = 37
+      Top = 225
+      Width = 199
+      Height = 21
+      TabOrder = 2
+      OnEnter = EditAmountOfFluidEnter
+    end
+    object RichEdit_GrossAppearance: TRichEdit
+      Left = 36
+      Top = 281
+      Width = 304
+      Height = 94
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      TabOrder = 3
+      OnEnter = RichEdit_GrossAppearanceEnter
+    end
+    object RichEdit_MicroscopicDescription: TRichEdit
+      Left = 407
+      Top = 35
+      Width = 343
+      Height = 98
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      TabOrder = 4
+      OnEnter = RichEdit_MicroscopicDescriptionEnter
+    end
+    object RichEdit_FluidDiagnosis: TRichEdit
+      Left = 407
+      Top = 159
+      Width = 343
+      Height = 89
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      TabOrder = 5
+      OnEnter = RichEdit_FluidDiagnosisEnter
+    end
+    object RichEdit_FluidComment: TRichEdit
+      Left = 408
+      Top = 287
+      Width = 342
+      Height = 89
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      TabOrder = 6
+      OnEnter = RichEdit_FluidCommentEnter
+    end
+  end
+  object Panel_FluidDC: TPanel
+    Left = 1
+    Top = 219
+    Width = 902
+    Height = 451
+    TabOrder = 7
+    object Label37: TLabel
+      Left = 32
+      Top = 68
+      Width = 56
+      Height = 13
+      Caption = 'Neutrophil :'
+    end
+    object Label39: TLabel
+      Left = 34
+      Top = 117
+      Width = 65
+      Height = 13
+      Caption = 'Lymphocyte :'
+    end
+    object Label41: TLabel
+      Left = 32
+      Top = 173
+      Width = 54
+      Height = 13
+      Caption = 'Eosinophil :'
+    end
+    object Label42: TLabel
+      Left = 32
+      Top = 289
+      Width = 60
+      Height = 13
+      Caption = 'Plasma Cell :'
+    end
+    object Label50: TLabel
+      Left = 32
+      Top = 229
+      Width = 50
+      Height = 13
+      Caption = 'Mast Cell :'
+    end
+    object Label51: TLabel
+      Left = 408
+      Top = 265
+      Width = 40
+      Height = 13
+      Caption = 'Others :'
+    end
+    object Label11: TLabel
+      Left = 32
+      Top = 16
+      Width = 130
+      Height = 13
+      Caption = 'Types of Sample Received:'
+    end
+    object Label64: TLabel
+      Left = 32
+      Top = 347
+      Width = 63
+      Height = 13
+      Caption = 'Macrophage:'
+    end
+    object Edit_Neutrophil: TEdit
+      Left = 32
+      Top = 88
+      Width = 326
+      Height = 21
+      TabOrder = 1
+      OnEnter = Edit_NeutrophilEnter
+      OnKeyPress = Edit_NeutrophilKeyPress
+    end
+    object Edit_Lymphocyte: TEdit
+      Left = 32
+      Top = 136
+      Width = 326
+      Height = 21
+      TabOrder = 2
+      OnEnter = Edit_LymphocyteEnter
+      OnKeyPress = Edit_LymphocyteKeyPress
+    end
+    object Edit_Eosinophil: TEdit
+      Left = 32
+      Top = 195
+      Width = 326
+      Height = 21
+      TabOrder = 3
+      OnEnter = Edit_EosinophilEnter
+      OnKeyPress = Edit_EosinophilKeyPress
+    end
+    object Edit_PlasmaCell: TEdit
+      Left = 32
+      Top = 313
+      Width = 326
+      Height = 21
+      TabOrder = 5
+      OnEnter = Edit_PlasmaCellEnter
+      OnKeyPress = Edit_PlasmaCellKeyPress
+    end
+    object Edit_MastCell: TEdit
+      Left = 32
+      Top = 248
+      Width = 326
+      Height = 21
+      TabOrder = 4
+      OnEnter = Edit_MastCellEnter
+      OnKeyPress = Edit_MastCellKeyPress
+    end
+    object RichEdit_OtherFindings: TRichEdit
+      Left = 408
+      Top = 290
+      Width = 319
+      Height = 97
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      TabOrder = 7
+      OnEnter = RichEdit_OtherFindingsEnter
+    end
+    object Edit_TypeSampleReceived: TEdit
+      Left = 32
+      Top = 37
+      Width = 326
+      Height = 21
+      TabOrder = 0
+      OnEnter = Edit_TypeSampleReceivedEnter
+      OnKeyPress = Edit_TypeSampleReceivedKeyPress
+    end
+    object Edit_Macrophage: TEdit
+      Left = 32
+      Top = 366
+      Width = 326
+      Height = 21
+      TabOrder = 6
+      OnEnter = Edit_MacrophageEnter
+      OnKeyPress = Edit_MacrophageKeyPress
+    end
+  end
+  object Panel_PBS: TPanel
+    Left = 0
+    Top = 221
+    Width = 902
+    Height = 451
+    TabOrder = 9
+    object Label99: TLabel
+      Left = 32
+      Top = 68
+      Width = 30
+      Height = 13
+      Caption = 'WBC :'
+    end
+    object Label100: TLabel
+      Left = 34
+      Top = 117
+      Width = 48
+      Height = 13
+      Caption = 'Platelets :'
+    end
+    object Label101: TLabel
+      Left = 32
+      Top = 173
+      Width = 119
+      Height = 13
+      Caption = 'Parasite/Immature cells :'
+    end
+    object Label103: TLabel
+      Left = 32
+      Top = 229
+      Width = 103
+      Height = 13
+      Caption = 'Reticulocytes Count :'
+    end
+    object Label104: TLabel
+      Left = 32
+      Top = 281
+      Width = 40
+      Height = 13
+      Caption = 'Others :'
+    end
+    object Label105: TLabel
+      Left = 32
+      Top = 16
+      Width = 27
+      Height = 13
+      Caption = 'RBC :'
+    end
+    object Edit_WBCs: TEdit
+      Left = 32
+      Top = 88
+      Width = 367
+      Height = 21
+      TabOrder = 1
+      OnEnter = Edit_NeutrophilEnter
+    end
+    object Edit_PlateletsPBS: TEdit
+      Left = 32
+      Top = 137
+      Width = 367
+      Height = 21
+      TabOrder = 2
+      OnEnter = Edit_LymphocyteEnter
+    end
+    object Edit_ParasitePBS: TEdit
+      Left = 32
+      Top = 195
+      Width = 367
+      Height = 21
+      TabOrder = 3
+      OnEnter = Edit_EosinophilEnter
+    end
+    object Edit_ReticulocytesPBS: TEdit
+      Left = 32
+      Top = 248
+      Width = 367
+      Height = 21
+      TabOrder = 4
+      OnEnter = Edit_MastCellEnter
+    end
+    object RichEdit_Others: TRichEdit
+      Left = 32
+      Top = 306
+      Width = 319
+      Height = 97
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      TabOrder = 5
+      OnEnter = RichEdit_OtherFindingsEnter
+    end
+    object Edit_RBCs: TEdit
+      Left = 32
+      Top = 37
+      Width = 367
+      Height = 21
+      TabOrder = 0
+      OnEnter = Edit_TypeSampleReceivedEnter
+    end
+  end
+  object Panel_Bonemarrow: TPanel
+    Left = 1
+    Top = 227
+    Width = 902
+    Height = 451
+    TabOrder = 5
+    object Label53: TLabel
+      Left = 461
+      Top = 231
+      Width = 58
+      Height = 13
+      Caption = 'Hemogram :'
+      Enabled = False
+      Visible = False
+    end
+    object Label54: TLabel
+      Left = 430
+      Top = 286
+      Width = 88
+      Height = 13
+      Caption = 'Peripheral Smear :'
+      Enabled = False
+      Visible = False
+    end
+    object Label55: TLabel
+      Left = 447
+      Top = 329
+      Width = 74
+      Height = 13
+      Caption = 'Clinical Details :'
+      Enabled = False
+      Visible = False
+    end
+    object Label56: TLabel
+      Left = 16
+      Top = 195
+      Width = 96
+      Height = 13
+      Caption = 'Specimen Adequacy'
+    end
+    object Label57: TLabel
+      Left = 17
+      Top = 236
+      Width = 47
+      Height = 13
+      Caption = 'Cellularity'
+    end
+    object Label58: TLabel
+      Left = 368
+      Top = 457
+      Width = 61
+      Height = 13
+      Caption = 'Myeopoiesis '
+      Enabled = False
+      Visible = False
+    end
+    object Label59: TLabel
+      Left = 15
+      Top = 329
+      Width = 68
+      Height = 13
+      Caption = 'Erythropoiesis'
+    end
+    object Label60: TLabel
+      Left = 16
+      Top = 396
+      Width = 72
+      Height = 13
+      Caption = 'Lymphopoiesis '
+    end
+    object Label61: TLabel
+      Left = 17
+      Top = 365
+      Width = 88
+      Height = 13
+      Caption = 'Megakaryopoiesis '
+    end
+    object Label62: TLabel
+      Left = 16
+      Top = 423
+      Width = 61
+      Height = 13
+      Caption = 'Plasma Cells '
+    end
+    object Label70: TLabel
+      Left = 460
+      Top = 197
+      Width = 59
+      Height = 13
+      Caption = 'Histiocytes :'
+      Enabled = False
+      Visible = False
+    end
+    object Label72: TLabel
+      Left = 442
+      Top = 21
+      Width = 77
+      Height = 32
+      AutoSize = False
+      Caption = 'Abnormal Cells / Hemoparasites '
+      WordWrap = True
+    end
+    object Label73: TLabel
+      Left = 473
+      Top = 362
+      Width = 46
+      Height = 13
+      Caption = 'Parasite :'
+      Enabled = False
+      Visible = False
+    end
+    object Label74: TLabel
+      Left = 394
+      Top = 257
+      Width = 125
+      Height = 13
+      Caption = 'Iron Store (Pearl'#39's Stain) :'
+      Enabled = False
+      Visible = False
+    end
+    object Label76: TLabel
+      Left = 454
+      Top = 78
+      Width = 63
+      Height = 13
+      Caption = 'Special Stain '
+    end
+    object Label77: TLabel
+      Left = 462
+      Top = 166
+      Width = 53
+      Height = 13
+      Caption = 'Comments '
+    end
+    object Label6: TLabel
+      Left = 16
+      Top = 162
+      Width = 85
+      Height = 13
+      Caption = 'Site of Aspiration '
+    end
+    object Label14: TLabel
+      Left = 262
+      Top = 21
+      Width = 79
+      Height = 13
+      Caption = 'Civilian Features'
+      Enabled = False
+      Visible = False
+    end
+    object Label15: TLabel
+      Left = 30
+      Top = 17
+      Width = 132
+      Height = 13
+      Caption = 'Peripheral Blood Smear'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label16: TLabel
+      Left = 15
+      Top = 36
+      Width = 23
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'RBC '
+    end
+    object Label18: TLabel
+      Left = 16
+      Top = 59
+      Width = 26
+      Height = 13
+      Caption = 'WBC '
+    end
+    object Label20: TLabel
+      Left = 15
+      Top = 86
+      Width = 44
+      Height = 13
+      Caption = 'Platelets '
+    end
+    object Label21: TLabel
+      Left = 15
+      Top = 112
+      Width = 131
+      Height = 13
+      Caption = 'Hemoparasite/Atypical cells'
+    end
+    object Label22: TLabel
+      Left = 17
+      Top = 265
+      Width = 49
+      Height = 13
+      Caption = 'M:E Ratio '
+    end
+    object Label24: TLabel
+      Left = 368
+      Top = 491
+      Width = 61
+      Height = 13
+      Caption = 'Myeologram '
+      Enabled = False
+      Visible = False
+    end
+    object Label25: TLabel
+      Left = 467
+      Top = 111
+      Width = 48
+      Height = 13
+      Caption = 'Diagonsis '
+    end
+    object Label26: TLabel
+      Left = 17
+      Top = 293
+      Width = 139
+      Height = 13
+      Caption = 'Myelopoiesis                         :'
+    end
+    object Label66: TLabel
+      Left = 16
+      Top = 130
+      Width = 130
+      Height = 26
+      Caption = 'Indication for bonemarrow Aspiration'
+      WordWrap = True
+    end
+    object Label80: TLabel
+      Left = 151
+      Top = 36
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label81: TLabel
+      Left = 151
+      Top = 59
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label82: TLabel
+      Left = 151
+      Top = 86
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label83: TLabel
+      Left = 151
+      Top = 112
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label84: TLabel
+      Left = 151
+      Top = 137
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label85: TLabel
+      Left = 151
+      Top = 162
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label86: TLabel
+      Left = 151
+      Top = 195
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label87: TLabel
+      Left = 151
+      Top = 236
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label88: TLabel
+      Left = 151
+      Top = 265
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label89: TLabel
+      Left = 152
+      Top = 334
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label90: TLabel
+      Left = 488
+      Top = 489
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+      Enabled = False
+      Visible = False
+    end
+    object Label91: TLabel
+      Left = 151
+      Top = 365
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label92: TLabel
+      Left = 151
+      Top = 396
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label93: TLabel
+      Left = 150
+      Top = 423
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label95: TLabel
+      Left = 516
+      Top = 78
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label96: TLabel
+      Left = 516
+      Top = 112
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label97: TLabel
+      Left = 516
+      Top = 167
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object RichEdit_PeripheralSmear: TRichEdit
+      Left = 522
+      Top = 281
+      Width = 268
+      Height = 34
+      Enabled = False
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 20
+      Visible = False
+    end
+    object RichEdit_Hemogram: TRichEdit
+      Left = 522
+      Top = 219
+      Width = 268
+      Height = 34
+      Enabled = False
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 19
+      Visible = False
+    end
+    object RichEdit_ClinicalDetails: TRichEdit
+      Left = 522
+      Top = 321
+      Width = 268
+      Height = 34
+      Enabled = False
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 18
+      Visible = False
+    end
+    object Edit_Cellularity: TEdit
+      Left = 158
+      Top = 233
+      Width = 269
+      Height = 21
+      TabOrder = 7
+      OnEnter = Edit_CellularityEnter
+      OnKeyPress = Edit_CellularityKeyPress
+    end
+    object RichEdit_Erythropoiesis: TRichEdit
+      Left = 158
+      Top = 321
+      Width = 269
+      Height = 34
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 10
+      OnEnter = RichEdit_ErythropoiesisEnter
+      OnKeyPress = RichEdit_ErythropoiesisKeyPress
+    end
+    object Edit_Histiocytes: TEdit
+      Left = 522
+      Top = 193
+      Width = 268
+      Height = 21
+      Enabled = False
+      TabOrder = 21
+      Visible = False
+    end
+    object Edit_Parasite: TEdit
+      Left = 523
+      Top = 360
+      Width = 268
+      Height = 21
+      Enabled = False
+      TabOrder = 22
+      Visible = False
+    end
+    object Edit_IronStore: TEdit
+      Left = 522
+      Top = 256
+      Width = 268
+      Height = 21
+      Enabled = False
+      TabOrder = 23
+      Visible = False
+    end
+    object Edit_BoneSiteOfAspiration: TEdit
+      Left = 158
+      Top = 159
+      Width = 268
+      Height = 21
+      TabOrder = 5
+      OnEnter = Edit_BoneSiteOfAspirationEnter
+      OnKeyPress = Edit_BoneSiteOfAspirationKeyPress
+    end
+    object Edit_SpecialStain: TEdit
+      Left = 525
+      Top = 75
+      Width = 268
+      Height = 21
+      TabOrder = 15
+      OnEnter = Edit_SpecialStainEnter
+      OnKeyPress = Edit_SpecialStainKeyPress
+    end
+    object Edit_Lymphopoiesis: TEdit
+      Left = 158
+      Top = 393
+      Width = 269
+      Height = 21
+      TabOrder = 12
+      OnEnter = Edit_LymphopoiesisEnter
+      OnKeyPress = Edit_LymphopoiesisKeyPress
+    end
+    object Edit_PlasmaCells: TEdit
+      Left = 158
+      Top = 420
+      Width = 269
+      Height = 21
+      TabOrder = 13
+      OnKeyPress = Edit_PlasmaCellsKeyPress
+    end
+    object Edit_Megakaryopoiesis: TEdit
+      Left = 158
+      Top = 362
+      Width = 268
+      Height = 21
+      TabOrder = 11
+      OnEnter = Edit_MegakaryopoiesisEnter
+      OnKeyPress = Edit_MegakaryopoiesisKeyPress
+    end
+    object RichEdit_AbnormalCells: TRichEdit
+      Left = 525
+      Top = 12
+      Width = 268
+      Height = 57
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 14
+      OnEnter = RichEdit_AbnormalCellsEnter
+      OnExit = RichEdit_AbnormalCellsExit
+    end
+    object Edit_BoneMarrowComment: TEdit
+      Left = 522
+      Top = 165
+      Width = 268
+      Height = 21
+      TabOrder = 17
+      OnEnter = Edit_BoneMarrowCommentEnter
+    end
+    object RichEdit_CivilianFeatures: TRichEdit
+      Left = 288
+      Top = 40
+      Width = 148
+      Height = 61
+      Enabled = False
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 24
+      Visible = False
+      OnEnter = RichEdit_CivilianFeaturesEnter
+    end
+    object Edit_Rbc: TEdit
+      Left = 158
+      Top = 32
+      Width = 121
+      Height = 21
+      TabOrder = 0
+      OnEnter = Edit_RbcEnter
+      OnKeyPress = Edit_RbcKeyPress
+    end
+    object Edit_Wbc: TEdit
+      Left = 158
+      Top = 58
+      Width = 121
+      Height = 21
+      TabOrder = 1
+      OnEnter = Edit_WbcEnter
+      OnKeyPress = Edit_WbcKeyPress
+    end
+    object Edit_Platelets: TEdit
+      Left = 158
+      Top = 83
+      Width = 121
+      Height = 21
+      TabOrder = 2
+      OnEnter = Edit_PlateletsEnter
+      OnKeyPress = Edit_PlateletsKeyPress
+    end
+    object Edit_Hemoparasite: TEdit
+      Left = 158
+      Top = 109
+      Width = 121
+      Height = 21
+      TabOrder = 3
+      OnEnter = Edit_HemoparasiteEnter
+      OnKeyPress = Edit_HemoparasiteKeyPress
+    end
+    object Edit_MERatio: TEdit
+      Left = 158
+      Top = 262
+      Width = 269
+      Height = 21
+      TabOrder = 8
+      OnEnter = Edit_MERatioEnter
+      OnKeyPress = Edit_MERatioKeyPress
+    end
+    object Edit_Myeologram: TEdit
+      Left = 510
+      Top = 488
+      Width = 269
+      Height = 21
+      Enabled = False
+      TabOrder = 25
+      Visible = False
+    end
+    object RichEdit_Adequacy: TRichEdit
+      Left = 158
+      Top = 187
+      Width = 269
+      Height = 37
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      TabOrder = 6
+      OnEnter = RichEdit_AdequacyEnter
+      OnKeyPress = RichEdit_AdequacyKeyPress
+    end
+    object Edit_Myeopoiesis: TEdit
+      Left = 510
+      Top = 454
+      Width = 269
+      Height = 21
+      Enabled = False
+      TabOrder = 26
+      Visible = False
+    end
+    object RichEdit_Diagonsis: TRichEdit
+      Left = 525
+      Top = 102
+      Width = 268
+      Height = 57
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      TabOrder = 16
+      OnEnter = RichEdit_DiagonsisEnter
+      OnKeyPress = RichEdit_DiagonsisKeyPress
+    end
+    object Edit_Myelopoiesis: TEdit
+      Left = 159
+      Top = 291
+      Width = 268
+      Height = 21
+      TabOrder = 9
+      OnKeyPress = Edit_MyelopoiesisKeyPress
+    end
+    object Edit_BonemarrowAspiration: TEdit
+      Left = 158
+      Top = 134
+      Width = 268
+      Height = 21
+      TabOrder = 4
+      OnEnter = Edit_BonemarrowAspirationEnter
+      OnKeyPress = Edit_BonemarrowAspirationKeyPress
+    end
+  end
+  object Panel_USGFNAC: TPanel
+    Left = 2
+    Top = 221
+    Width = 902
+    Height = 452
+    TabOrder = 8
+    object Label67: TLabel
+      Left = 54
+      Top = 29
+      Width = 78
+      Height = 13
+      Caption = 'Clinical Findings:'
+    end
+    object Label68: TLabel
+      Left = 55
+      Top = 137
+      Width = 88
+      Height = 13
+      Caption = 'Site Of Aspiration:'
+    end
+    object Label69: TLabel
+      Left = 54
+      Top = 180
+      Width = 85
+      Height = 13
+      Caption = 'Sample Received:'
+    end
+    object Label71: TLabel
+      Left = 54
+      Top = 299
+      Width = 87
+      Height = 13
+      Caption = 'Type of Apiration:'
+    end
+    object Label75: TLabel
+      Left = 412
+      Top = 29
+      Width = 110
+      Height = 13
+      Caption = 'Microscopic Discription:'
+    end
+    object Label78: TLabel
+      Left = 412
+      Top = 136
+      Width = 49
+      Height = 13
+      Caption = 'Diagnosis:'
+    end
+    object Label79: TLabel
+      Left = 412
+      Top = 238
+      Width = 54
+      Height = 13
+      Caption = 'Comments:'
+    end
+    object Label141: TLabel
+      Left = 60
+      Top = 208
+      Width = 99
+      Height = 13
+      Caption = 'No of slides Air Dried'
+    end
+    object Label142: TLabel
+      Left = 60
+      Top = 231
+      Width = 143
+      Height = 13
+      Caption = 'No of slides Alcohol wet fixed '
+    end
+    object Label143: TLabel
+      Left = 60
+      Top = 255
+      Width = 204
+      Height = 13
+      Caption = 'No of slides with adequate cellular material'
+    end
+    object RichEdit_ClinicalFindings: TRichEdit
+      Left = 48
+      Top = 52
+      Width = 320
+      Height = 79
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      OnEnter = RichEdit_ClinicalFindingsEnter
+      OnExit = RichEdit_ClinicalFindingsExit
+    end
+    object RichEdit_Sample: TRichEdit
+      Left = 415
+      Top = 349
+      Width = 320
+      Height = 85
+      Enabled = False
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 9
+      Visible = False
+      OnEnter = RichEdit_SampleEnter
+    end
+    object RichEdit_Diag: TRichEdit
+      Left = 412
+      Top = 154
+      Width = 327
+      Height = 78
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 7
+      OnEnter = RichEdit_DiagEnter
+      OnExit = RichEdit_DiagExit
+    end
+    object RichEdit_Microscopic: TRichEdit
+      Left = 412
+      Top = 51
+      Width = 327
+      Height = 79
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 6
+      OnEnter = RichEdit_MicroscopicEnter
+      OnExit = RichEdit_MicroscopicExit
+    end
+    object RichEdit_Com: TRichEdit
+      Left = 412
+      Top = 258
+      Width = 327
+      Height = 82
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 8
+      OnEnter = RichEdit_ComEnter
+    end
+    object Edit_SOAspiration: TEdit
+      Left = 54
+      Top = 154
+      Width = 320
+      Height = 21
+      TabOrder = 1
+      OnEnter = Edit_SOAspirationEnter
+      OnKeyPress = Edit_SOAspirationKeyPress
+    end
+    object Edit_TypeofAspiration: TEdit
+      Left = 54
+      Top = 319
+      Width = 320
+      Height = 21
+      TabOrder = 5
+      OnEnter = Edit_TypeofAspirationEnter
+      OnKeyPress = Edit_TypeofAspirationKeyPress
+    end
+    object Edit_AirDried: TEdit
+      Left = 272
+      Top = 204
+      Width = 102
+      Height = 21
+      TabOrder = 2
+      OnKeyPress = Edit_AirDriedKeyPress
+    end
+    object Edit_AlcoholWet: TEdit
+      Left = 272
+      Top = 228
+      Width = 102
+      Height = 21
+      TabOrder = 3
+      OnKeyPress = Edit_AlcoholWetKeyPress
+    end
+    object Edit_AdequateCellular: TEdit
+      Left = 272
+      Top = 253
+      Width = 102
+      Height = 21
+      TabOrder = 4
+      OnKeyPress = Edit_AdequateCellularKeyPress
+    end
+  end
+  object Panel_Pap: TPanel
+    Left = 0
+    Top = 221
+    Width = 902
+    Height = 452
+    TabOrder = 1
+    object Label28: TLabel
+      Left = 439
+      Top = 12
+      Width = 117
+      Height = 13
+      Caption = 'Microscopic Description :'
+    end
+    object Label29: TLabel
+      Left = 440
+      Top = 265
+      Width = 57
+      Height = 13
+      Caption = 'Comments :'
+    end
+    object Label36: TLabel
+      Left = 19
+      Top = 11
+      Width = 134
+      Height = 13
+      Caption = 'Clinical Features/Diagnosis :'
+    end
+    object Label38: TLabel
+      Left = 23
+      Top = 188
+      Width = 55
+      Height = 13
+      Caption = 'Adequacy :'
+    end
+    object Label40: TLabel
+      Left = 23
+      Top = 226
+      Width = 117
+      Height = 13
+      Caption = 'General Categorization :'
+    end
+    object Label27: TLabel
+      Left = 23
+      Top = 151
+      Width = 52
+      Height = 13
+      Caption = 'Specimen :'
+    end
+    object Results: TLabel
+      Left = 441
+      Top = 146
+      Width = 114
+      Height = 13
+      Caption = 'Results/Interpretation :'
+    end
+    object RichEdit_PapMDescription: TRichEdit
+      Left = 439
+      Top = 29
+      Width = 346
+      Height = 101
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 4
+      OnEnter = RichEdit_PapMDescriptionEnter
+    end
+    object RichEdit_PapComment: TRichEdit
+      Left = 440
+      Top = 285
+      Width = 346
+      Height = 103
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      TabOrder = 6
+      OnEnter = RichEdit_PapCommentEnter
+    end
+    object Edit_PapAdequacy: TEdit
+      Left = 85
+      Top = 185
+      Width = 277
+      Height = 21
+      TabOrder = 2
+      OnEnter = Edit_PapAdequacyEnter
+    end
+    object RichEdit_PAPClinicalFeatures: TRichEdit
+      Left = 21
+      Top = 30
+      Width = 385
+      Height = 98
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      OnEnter = RichEdit_PAPClinicalFeaturesEnter
+    end
+    object Edit_SpecimenType: TEdit
+      Left = 85
+      Top = 146
+      Width = 277
+      Height = 21
+      TabOrder = 1
+      OnEnter = Edit_SpecimenTypeEnter
+    end
+    object RichEdit_PapCategorization: TRichEdit
+      Left = 23
+      Top = 247
+      Width = 394
+      Height = 104
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      TabOrder = 3
+      OnEnter = RichEdit_PapCategorizationEnter
+    end
+    object RichEdit_Results: TRichEdit
+      Left = 440
+      Top = 165
+      Width = 347
+      Height = 91
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 5
+      OnEnter = RichEdit_ResultsEnter
+    end
+  end
+  object Panel_Surgical: TPanel
+    Left = 1
+    Top = 222
+    Width = 902
+    Height = 451
+    TabOrder = 4
+    object Label44: TLabel
+      Left = 17
+      Top = 109
+      Width = 99
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Specimen Received :'
+    end
+    object Label45: TLabel
+      Left = 810
+      Top = 112
+      Width = 100
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'CLINICAL HISTORY :'
+      Visible = False
+    end
+    object Label46: TLabel
+      Left = 16
+      Top = 212
+      Width = 112
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'GROSS DESCRIPTION :'
+    end
+    object Label47: TLabel
+      Left = 429
+      Top = 16
+      Width = 138
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'MICROSCOPIC DIAGNOSIS :'
+    end
+    object Label48: TLabel
+      Left = 431
+      Top = 167
+      Width = 52
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Diagnosis :'
+    end
+    object Label49: TLabel
+      Left = 429
+      Top = 267
+      Width = 50
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'COMMENT'
+    end
+    object Label5: TLabel
+      Left = 15
+      Top = 397
+      Width = 56
+      Height = 13
+      Caption = 'Biopsy Site:'
+      Enabled = False
+      Visible = False
+    end
+    object Label65: TLabel
+      Left = 429
+      Top = 114
+      Width = 64
+      Height = 13
+      Caption = 'Special Stain:'
+    end
+    object Label98: TLabel
+      Left = 21
+      Top = 11
+      Width = 112
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'CLINICAL DIAGNOSIS :'
+    end
+    object Label94: TLabel
+      Left = 15
+      Top = 324
+      Width = 67
+      Height = 13
+      Caption = 'Peer Review :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object RichEdit_SpecimenReceived: TRichEdit
+      Left = 15
+      Top = 131
+      Width = 375
+      Height = 75
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+      OnEnter = RichEdit_SpecimenReceivedEnter
+    end
+    object RichEdit_SurgicalHistory: TRichEdit
+      Left = 806
+      Top = 131
+      Width = 375
+      Height = 75
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 8
+      Visible = False
+      OnEnter = RichEdit_SurgicalHistoryEnter
+    end
+    object RichEdit_SurgicalGross: TRichEdit
+      Left = 16
+      Top = 232
+      Width = 375
+      Height = 77
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      OnEnter = RichEdit_SurgicalGrossEnter
+    end
+    object RichEdit_SurgicalMicroscopic: TRichEdit
+      Left = 429
+      Top = 35
+      Width = 375
+      Height = 71
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 4
+      OnEnter = RichEdit_SurgicalMicroscopicEnter
+    end
+    object RichEdit_SurgicalDiagnosis: TRichEdit
+      Left = 429
+      Top = 186
+      Width = 375
+      Height = 75
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 6
+      OnEnter = RichEdit_SurgicalDiagnosisEnter
+    end
+    object RichEdit_SurgicalComment: TRichEdit
+      Left = 431
+      Top = 286
+      Width = 375
+      Height = 77
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 7
+      OnEnter = RichEdit_SurgicalCommentEnter
+    end
+    object Edit_SurgicalBiopsy: TEdit
+      Left = 13
+      Top = 419
+      Width = 249
+      Height = 21
+      Enabled = False
+      TabOrder = 9
+      Visible = False
+    end
+    object Edit_Stain: TEdit
+      Left = 429
+      Top = 132
+      Width = 375
+      Height = 21
+      TabOrder = 5
+      OnEnter = Edit_StainEnter
+    end
+    object RichEdit_SurClinicalFindings: TRichEdit
+      Left = 13
+      Top = 35
+      Width = 375
+      Height = 71
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      OnEnter = RichEdit_SurClinicalFindingsEnter
+    end
+    object ComboBox3: TComboBox
+      Left = 15
+      Top = 342
+      Width = 376
+      Height = 21
+      TabOrder = 3
+      OnEnter = cb_FNACPeerEnter
+      Items.Strings = (
+        'Yes'
+        'No')
+    end
+  end
+  object Panel_Fnac: TPanel
+    Left = 2
+    Top = 222
+    Width = 902
+    Height = 451
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 3
+    OnClick = Panel_FnacClick
+    object Label17: TLabel
+      Left = 22
+      Top = 248
+      Width = 117
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Microscopic Description :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label23: TLabel
+      Left = 479
+      Top = 136
+      Width = 57
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Comments :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label19: TLabel
+      Left = 469
+      Top = 248
+      Width = 67
+      Height = 13
+      Caption = 'Peer Review :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label43: TLabel
+      Left = 22
+      Top = 11
+      Width = 81
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Clinical Findings :'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label9: TLabel
+      Left = 23
+      Top = 124
+      Width = 89
+      Height = 13
+      Caption = 'Site of Aspiration :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label10: TLabel
+      Left = 21
+      Top = 181
+      Width = 95
+      Height = 13
+      Caption = 'Type of Aspiration :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label13: TLabel
+      Left = 475
+      Top = 11
+      Width = 52
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Diagnosis :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object RichEdit_FnacMicroscopic: TRichEdit
+      Left = 22
+      Top = 267
+      Width = 400
+      Height = 90
+      TabStop = False
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      ScrollBars = ssVertical
+      TabOrder = 3
+      WantTabs = True
+      OnEnter = RichEdit_FnacMicroscopicEnter
+    end
+    object RichEdit_FnacComment: TRichEdit
+      Left = 469
+      Top = 154
+      Width = 398
+      Height = 86
+      TabStop = False
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      ScrollBars = ssVertical
+      TabOrder = 5
+      WantTabs = True
+      OnEnter = RichEdit_FnacCommentEnter
+    end
+    object RichEdit_FnacClinicalFeatures: TRichEdit
+      Left = 22
+      Top = 30
+      Width = 400
+      Height = 88
+      TabStop = False
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      ScrollBars = ssVertical
+      TabOrder = 0
+      WantTabs = True
+      OnEnter = RichEdit_FnacClinicalFeaturesEnter
+    end
+    object Edit_SiteOfAspiration: TEdit
+      Left = 22
+      Top = 143
+      Width = 401
+      Height = 21
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+      OnEnter = Edit_SiteOfAspirationEnter
+    end
+    object Edit_TypeofAspitate: TEdit
+      Left = 22
+      Top = 200
+      Width = 401
+      Height = 21
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      OnEnter = Edit_TypeofAspitateEnter
+    end
+    object RichEdit_Diagnosis: TRichEdit
+      Left = 469
+      Top = 30
+      Width = 398
+      Height = 90
+      TabStop = False
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      ScrollBars = ssVertical
+      TabOrder = 4
+      WantTabs = True
+      OnEnter = RichEdit_DiagnosisEnter
+    end
+    object cb_FNACPeer: TComboBox
+      Left = 469
+      Top = 267
+      Width = 398
+      Height = 21
+      TabOrder = 6
+      OnEnter = cb_FNACPeerEnter
+      Items.Strings = (
+        'Yes'
+        'No')
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 39
+    Width = 903
+    Height = 182
+    TabOrder = 0
+    object SpeedButton1: TSpeedButton
+      Left = 294
+      Top = 64
+      Width = 23
+      Height = 22
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333000000000
+        3333333777777777F3333330F777777033333337F3F3F3F7F3333330F0808070
+        33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+        33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+        333333F7F7F7F7F7F3F33030F080707030333737F7F7F7F7F7333300F0808070
+        03333377F7F7F7F773333330F080707033333337F7F7F7F7F333333070707070
+        33333337F7F7F7F7FF3333000000000003333377777777777F33330F88877777
+        0333337FFFFFFFFF7F3333000000000003333377777777777333333330777033
+        3333333337FFF7F3333333333000003333333333377777333333}
+      NumGlyphs = 2
+      Visible = False
+      OnClick = SpeedButton1Click
+    end
+    object Label1: TLabel
+      Left = 17
+      Top = 93
+      Width = 70
+      Height = 13
+      Caption = 'Report Format'
+    end
+    object Label2: TLabel
+      Left = 17
+      Top = 68
+      Width = 51
+      Height = 13
+      Caption = 'Test Name'
+    end
+    object Label3: TLabel
+      Left = 17
+      Top = 124
+      Width = 56
+      Height = 13
+      Caption = 'Report Title'
+    end
+    object SpeedButton2: TSpeedButton
+      Left = 294
+      Top = 87
+      Width = 26
+      Height = 25
+      Glyph.Data = {
+        E6040000424DE604000000000000360000002800000014000000140000000100
+        180000000000B0040000120B0000120B00000000000000000000D8E9ECD8E9EC
+        D8E9ECD8E9ECD8E9ECD8E9ECDAEAEFDEEBF3E2EBF7E4EAF9E4EAF9E3EBF8E0EB
+        F5DBEAEFD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8
+        E9ECD9E9EDE0EBF4DAE7EDC1DED1A1D3AC8FD0998FD0999CD0A6BADBC8D8E6EB
+        E0ECF4D9EAEDD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD9E9EDE0EB
+        F5B5DAC262C4613AC03212BE0C00C60000C50008B9022EB9245BC25AA9D4B7DE
+        E8F3DAEAEED8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD9EAEDDAE8ED87C99030BD2C
+        0DBE0812BC1218C1191AC21C19C01B18C01812BB130DBE0823BB2379C481D6E5
+        E7DAEAEED8E9ECD8E9ECD8E9ECD9E9EEDFEBF38ECE9812BA1108C1091BBB2316
+        BB1C19B71D19B11A1AB11A19B71B14BA1A1FB9280AC40D06BF0675C77FDBE8EE
+        DBEAEFD8E9ECD8E9ECE1ECF6A9DBB120B1200FBB1B17B72A1AB5261CC1242FD1
+        3A3EE24A3EE14A2DCF371ABF221DB62318B6240BC01B0BB4198BD199DFECF3D9
+        E9EDDDEBF2CAE4DE40C7470BBB1920B4301DB72A17BD2307C318A9E4ADFFFFFF
+        FFFFFFA9E3AC06C21719BB221EBD291BB52D0DBA1F26BE37BADFCDE0ECF4E4EC
+        F799D8B104B81B0DBD291EBF3019C22809BE1F00BC15B8EEBFFFFFFFFFFFFFB8
+        EFC000BF180EBF2A0EC1280FBE2E11BE2900B4168DD4A0E2EBF6DEEAF17ECB92
+        05B51C12C33418C9321ED13B17D04000D31FAEF2BCFFFEFFFFFFFFB0F4BF00D9
+        261ED2401BCB3B11C92E1FC03E06B22360C46FD6E7E9D0E6E356C56604B91F0C
+        C33726D34BA9F9B5D8F9E5D7F8DEF0F9F3FFFEFDFFFEFDF1FAF4D9FADFDEFAE3
+        ABF5B926D44016BE3809C12D27C13EC4E3D8CCE4E147C0600FBD2E18C84223CF
+        49F3FEF1FFFDFFFFFFFFFEFFFEFDFEFDFDFEFDFEFFFEFFFFFFFFFEFFEFFFED24
+        D7471BC03F11C43F1DB63ABFE0D3CCE6E240C7680DBE3917CD4427C64FF0FBF3
+        FFFFFFFFFFFFFFFEFFF9FEFBF9FEFBFFFEFEFFFFFFFFFFFFEEFCF21CCD4F1ACA
+        4C0FC3411ABB40BFE2D6D9EAED73D39005BE380FD44724C7526ADC8C89E7A680
+        E39FD9F2E2FDFEFFFDFEFFD9F2E180E29F8AE6A575DE9417C54D11D44E05C83B
+        4ECB71CFE6E5E5EDF69DD7B900C03D1ADC5412CF5105CD4A00C74100C531B1EE
+        C1FFFFFFFFFFFFB1EEC200C53200CA3F04C8461AD05B14D75400C33B8BD7ACE2
+        ECF3DEEAF0C7E7E134C87302D04714D75812CF5D17D05D00CD49B0EECCFFFFFF
+        FFFFFFB0EECC00CD4A13D55813D15F18D26005D6521BC45CB6E1D1E1ECF3D8E9
+        ECE5EDF598DABC0CC85414DC521BD55A16D16003D05380E1A8D3F7E3D3F7E380
+        E1A803D05414D25920D75C17DD5C02CC537FD6AAE4ECF3D9E9EDD8E9ECD8E9EC
+        E4EDF487D9A901D24D0EE05813DC6817D65D13D15C0ED35A0ED35A13D15C17D6
+        5D19DD6912E75E00D64D65D596DEEBEFDAE9EDD8E9ECD8E9ECD8E9ECD8E9EDDE
+        EAEF7FE2AE0DCE610ED3641DE17016E36913E26413E26416E3691DE17011D767
+        02D15F64DD9FD5EAE8DBEAEFD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD9E9EDE1EB
+        F2A9E2CD48E28A00DA5E00D95C02DC6102DC6100D95C00DA6041E0829EE0C4DB
+        EBEFDCE9EFD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECDAE9EDE1EBF2
+        CAEBE3B6E6D4AAE6CC8BE4B98AE3B8A8E6CBB5E6D5C9EAE1E1ECF2DBE9EED8E9
+        ECD8E9ECD8E9ECD8E9EC}
+      OnClick = SpeedButton2Click
+    end
+    object Label7: TLabel
+      Left = 106
+      Top = 69
+      Width = 4
+      Height = 13
+      Caption = ':'
+      Color = clBackground
+      ParentColor = False
+    end
+    object Label8: TLabel
+      Left = 106
+      Top = 94
+      Width = 4
+      Height = 13
+      Caption = ':'
+      Color = clBackground
+      ParentColor = False
+    end
+    object Label12: TLabel
+      Left = 106
+      Top = 125
+      Width = 4
+      Height = 13
+      Caption = ':'
+      Color = clBackground
+      ParentColor = False
+    end
+    object Label52: TLabel
+      Left = 17
+      Top = 40
+      Width = 70
+      Height = 13
+      Caption = 'Master Format'
+    end
+    object Label63: TLabel
+      Left = 106
+      Top = 41
+      Width = 4
+      Height = 13
+      Caption = ':'
+      Color = clBackground
+      ParentColor = False
+    end
+    object CheckBox_Active: TCheckBox
+      Left = 323
+      Top = 68
+      Width = 50
+      Height = 13
+      Caption = 'Active'
+      Checked = True
+      State = cbChecked
+      TabOrder = 0
+    end
+    object DBLC_TestName: TDBLookupComboBox
+      Left = 118
+      Top = 65
+      Width = 170
+      Height = 21
+      DropDownWidth = 300
+      KeyField = 'twms_testnameid'
+      ListField = 'testname'
+      ListSource = DataSource_TestName
+      TabOrder = 1
+      OnClick = DBLC_TestNameClick
+      OnKeyPress = DBLC_TestNameKeyPress
+    end
+    object DBLC_ReportType: TDBLookupComboBox
+      Left = 118
+      Top = 91
+      Width = 170
+      Height = 21
+      DropDownWidth = 300
+      KeyField = 'reporttypeid'
+      ListField = 'reporttype'
+      ListSource = DataSource_ReportFormat
+      TabOrder = 2
+      OnClick = DBLC_ReportTypeClick
+      OnKeyPress = DBLC_ReportTypeKeyPress
+    end
+    object RichEdit_Title: TRichEdit
+      Left = 116
+      Top = 118
+      Width = 401
+      Height = 35
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      TabOrder = 3
+      OnEnter = RichEdit_TitleEnter
+      OnSelectionChange = RichEdit_TitleSelectionChange
+    end
+    object CheckBox_Default: TCheckBox
+      Left = 399
+      Top = 68
+      Width = 50
+      Height = 13
+      Caption = 'Default'
+      Checked = True
+      State = cbChecked
+      TabOrder = 4
+    end
+    object ToolBar1: TToolBar
+      AlignWithMargins = True
+      Left = 4
+      Top = 4
+      Width = 895
+      Height = 21
+      AutoSize = True
+      ButtonHeight = 19
+      ButtonWidth = 45
+      Caption = 'ToolBar1'
+      EdgeInner = esNone
+      Flat = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      List = True
+      ParentFont = False
+      ShowCaptions = True
+      TabOrder = 5
+      Wrapable = False
+      object ToolButton1: TToolButton
+        Left = 0
+        Top = 0
+        AutoSize = True
+        Caption = 'B'
+        ImageIndex = 0
+        Style = tbsCheck
+        OnClick = ToolButton1Click
+      end
+      object ToolButton6: TToolButton
+        Left = 22
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton6'
+        ImageIndex = 4
+        Style = tbsSeparator
+      end
+      object ToolButton2: TToolButton
+        Left = 30
+        Top = 0
+        AutoSize = True
+        Caption = 'I'
+        ImageIndex = 1
+        Style = tbsCheck
+        OnClick = ToolButton2Click
+      end
+      object ToolButton4: TToolButton
+        Left = 50
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton4'
+        ImageIndex = 3
+        Style = tbsSeparator
+      end
+      object ToolButton3: TToolButton
+        Left = 58
+        Top = 0
+        AutoSize = True
+        Caption = 'U'
+        ImageIndex = 4
+        Style = tbsCheck
+        OnClick = ToolButton3Click
+      end
+      object ToolButton5: TToolButton
+        Left = 81
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton5'
+        ImageIndex = 3
+        Style = tbsSeparator
+      end
+      object ToolButton7: TToolButton
+        Left = 89
+        Top = 0
+        AutoSize = True
+        Caption = 'ST'
+        ImageIndex = 3
+        Style = tbsCheck
+        OnClick = ToolButton7Click
+      end
+      object ToolButton12: TToolButton
+        Left = 117
+        Top = 0
+        Width = 3
+        Caption = 'ToolButton12'
+        ImageIndex = 6
+        Style = tbsSeparator
+      end
+      object ToolButton9: TToolButton
+        Left = 120
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton9'
+        ImageIndex = 5
+        Style = tbsSeparator
+      end
+      object Tbtn_Font: TToolButton
+        Left = 128
+        Top = 0
+        AutoSize = True
+        Caption = 'Font'
+        ImageIndex = 4
+        Style = tbsCheck
+        OnClick = Tbtn_FontClick
+      end
+      object ToolButton16: TToolButton
+        Left = 166
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton16'
+        ImageIndex = 8
+        Style = tbsSeparator
+      end
+      object ToolButton8: TToolButton
+        Left = 174
+        Top = 0
+        AutoSize = True
+        Caption = 'Left'
+        ImageIndex = 8
+        OnClick = ToolButton8Click
+      end
+      object ToolButton10: TToolButton
+        Left = 209
+        Top = 0
+        AutoSize = True
+        Caption = 'Center'
+        ImageIndex = 9
+        OnClick = ToolButton10Click
+      end
+      object ToolButton11: TToolButton
+        Left = 258
+        Top = 0
+        AutoSize = True
+        Caption = 'Right'
+        ImageIndex = 10
+        OnClick = ToolButton11Click
+      end
+      object ComboBox1: TComboBox
+        Left = 299
+        Top = 0
+        Width = 39
+        Height = 21
+        TabOrder = 0
+        OnChange = ComboBox1Change
+        Items.Strings = (
+          '10'
+          '12'
+          '14'
+          '16'
+          '20'
+          '22'
+          '24'
+          '26'
+          '30'
+          '32'
+          '34'
+          '36'
+          '38'
+          '40')
+      end
+      object ButtonColor1: TButtonColor
+        Left = 338
+        Top = 0
+        Height = 19
+        Caption = 'Color'
+        TabOrder = 1
+        OnClick = ButtonColor1Click
+      end
+      object ComboBox2: TComboBox
+        Left = 413
+        Top = 0
+        Width = 126
+        Height = 21
+        Enabled = False
+        TabOrder = 2
+        Visible = False
+        OnChange = ComboBox2Change
+      end
+    end
+    object DBLC_MsterFormat: TDBLookupComboBox
+      Left = 118
+      Top = 38
+      Width = 170
+      Height = 21
+      KeyField = 'mase_mastersetupid'
+      ListField = 'mase_mastersetupname'
+      ListSource = OraDataSource_Master
+      TabOrder = 6
+      OnClick = DBLC_MsterFormatClick
+      OnKeyPress = DBLC_MsterFormatKeyPress
+    end
+    object Memo: TMemo
+      Left = 502
+      Top = 24
+      Width = 41
+      Height = 29
+      Lines.Strings = (
+        'Memo')
+      TabOrder = 7
+      Visible = False
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 904
+    Height = 41
+    Align = alTop
+    TabOrder = 2
+    object Btn_close: TBitBtn
+      Left = 819
+      Top = 1
+      Width = 84
+      Height = 39
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alRight
+      Caption = 'Close'
+      DoubleBuffered = True
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        18000000000000030000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFF6569BA717FE06B6EBEFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFDFEFFFFFFFFFFFFB9BADD7A83E6
+        6A80FF273CD9EBECF6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7677
+        C58788D9FFFFFFFFFFFFA0A1D34D54DE2536EB0B20D9E3E3F3FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFDCDCEE0E16C0B1B2DEFFFFFFFFFFFFE9E9F41519BF
+        060EDB0412D87B7DC3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2C34BA1822
+        C1FFFFFFFFFFFFFFFFFFFFFFFF5A5BBA0002CF0309D8080FC1DADAECFFFFFFFF
+        FFFFFFFFFFFFFFFF7A7CC50C21DF9C9DD2FFFFFFFFFFFFFFFFFFFFFFFFFDFDFE
+        1E1FB00001D00106D52326B1FFFFFFFFFFFFFFFFFFA9AAD30C28E52733BEFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE8E9F41112B50000D10103CE5A5CB9FF
+        FFFFB1B2D90B1FD40C26DFD2D1E7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFE2E3F21516B50000D20101C44D4EB8070EC30514E16F70BEFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F5FA2D2DB00001CC00
+        00CC0103D13639B3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFE2E2F23236B70207CF0103D20001C97777C2FFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7174CA0F1ED10717E40510DE0E
+        13BA0507C10608CC6162BEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9B9BD2
+        4F58D23D57F71D3CFA0D26F01921BFEBEBF6C4C4E5191BBE2325D44A4ABBF9F9
+        FCFFFFFFFFFFFFFFFFFF8487D0A2ABF78D9DFF6A7FFF3A55F9313BC1EFEFF7FF
+        FFFFFFFFFFFDFDFE5B5CBF4041D1494AC4A2A2D5FFFFFFFFFFFF8788CCB6BBF5
+        A3ACFB6973E17678C8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC8C8E65555
+        C16061CC5A5ABDADAED9DFDFEF9192D29A9DE29596D2FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFEDEDF77C7DC96162C58383CB}
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = Btn_closeClick
+    end
+    object BB_New: TBitBtn
+      Left = 657
+      Top = 1
+      Width = 82
+      Height = 39
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alRight
+      Caption = '&New'
+      DoubleBuffered = True
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        18000000000000030000120B0000120B00000000000000000000FFFFFFFCFCFC
+        F6F6F6F0F0F0E9E9E9E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7
+        E7E9E9E9EFEFEFF4F4F4FFFFFFFBFBFBF2F2F2BBBBBBB1B1B1AEAEAEAEAEAEAE
+        AEAEAEAEAEAEAEAEAEAEAEAEAEAEAEAEAEB1B1B1B7B7B7EFEFEFFFFFFFFAFAFA
+        F1A964F1AB67F1AC69F2AE6CF2AE6CF2AE6DF2AE6DF2AE6DF2AE6CF1AC69F1AB
+        67F1A964B1B1B1E9E9E9FFFFFFF9F9F9F1A861ECECECECECECECECECECECECEC
+        ECECECECECECECECECECECECECECECECECF1A861AEAEAEE7E7E7FFFFFFF9F9F9
+        F0A65EEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDED
+        EDF0A65EAEAEAEE7E7E7FFFFFFF9F9F9F0A359EBEBEBEBEBEBEBEBEBEBEBEBEB
+        EBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBF0A359AEAEAEE7E7E7FFFFFFF9F9F9
+        F0A154EBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEAEA
+        EAF0A154AEAEAEE7E7E7FFFFFFF9F9F9F0A154EBEBEBEBEBEBEBEBEBEBEBEBEB
+        EBEBEBEBEBEBEBEBEBEBEBEBEBEBEAEAEAF0A154AEAEAEE7E7E7FFFFFFF9F9F9
+        F0A359EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEECEC
+        ECF0A359AEAEAEE7E7E7FFFFFFF9F9F9F0A760F0F0F0F0F0F0F0F0F0F0F0F0F0
+        F0F0F0F0F0F0F0F0F0F0F0F0F0F0EDEDEDF0A760AEAEAEE7E7E7FFFFFFF9F9F9
+        F0A760F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0EDED
+        EDF0A760AFAFAFE8E8E8FFFFFFF9F9F9F0AB68F1F1F1F1F1F1F1F1F1F1F1F1F1
+        F1F1F1F1F1F1F1F1F1F1F1F1F1F1F0F0F0F0AB68B5B5B5EEEEEEFFFFFFF9F9F9
+        F1B172F3F3F3F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F1B172F1B172F1B1
+        72F1B172EBEBEBF4F4F4FFFFFFFAFAFAF2B77DF6F6F6F6F6F6F6F6F6F6F6F6F6
+        F6F6F6F6F6F6F6F6F3B77EF7E0CEF2B77DEBEBEBF4F4F4FAFAFAFFFFFFFBFBFB
+        F4BD89F9F9F9FAFAFAFAFAFAFAFAFAFAFAFAFAFAFAFAFAFAF4BE89F4BE89EBEB
+        EBF4F4F4FBFBFBFEFEFEFFFFFFFCFCFCF5C596F5C596F5C596F5C596F5C596F5
+        C596F5C596F5C596F5C596EEEEEEF4F4F4FAFAFAFEFEFEFFFFFF}
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BB_NewClick
+    end
+    object btn_save: TBitBtn
+      Left = 739
+      Top = 1
+      Width = 80
+      Height = 39
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alRight
+      Caption = '&Save'
+      DoubleBuffered = True
+      Glyph.Data = {
+        B60D0000424DB60D000000000000360000002800000030000000180000000100
+        180000000000800D000001000000010000000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBA793CC1782CAE733EBD8F65BE
+        8F62BD8E62BD8E62BD8E62BD8E62BD8E62BD8E62BC8E62BC8E62BD8E62BC8F64
+        AF7641BE7325B87134FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7676767373
+        737070708B8B8B8A8A8A8A8A8A8A8A8A8989898989898A8A8A89898989898989
+        89898989898C8C8C737373707070707070FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFC88B47F1B941A29179D2DCECDEE3E8DEE4E8DFE4E9E0E5EAE1E6EBE1E6
+        EBE2E7EDE3E8EDE4E8EEE5E9EED4DDEDA49682EAA218BF7727FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF858585ABABAB8D8D8DDFDFDFE4E4E4E5E5E5E5E5E5
+        E6E6E6E7E7E7E7E7E7E9E9E9E9E9E9E9E9E9E9E9E9E1E1E19393939898987474
+        74FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCD9754EDB649AF997FD0D4DCB8
+        AEAFABA0A3A4999D9D9394948A8E8D8488867D8180787B786E737C7477C7C9D2
+        B4A18AE8A122C88132FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF909090A9A9
+        A9949494D5D5D5AFAFAFA2A2A29A9A9A9494948C8C8C8686867F7F7F79797970
+        7070747474CBCBCB9D9D9D9797977D7D7DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFD09858EFBB52B19C83DCE0E8E2E2DFDFDEDDDEDDDCDDDCDBDCDCDADBDA
+        D9DAD9D8D9D9D8D8D8D7DADAD8DBE0E8B4A28CEAA62CCB8437FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF919191AEAEAE999999E2E2E2E2E2E2DEDEDEDDDDDD
+        DCDCDCDBDBDBDADADAD9D9D9DADADAD9D9D9DADADAE1E1E19F9F9F9B9B9B8080
+        80FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD39C5CEFBF5BBAA58DDCDDE5BC
+        B4B5B0A6A9AAA0A4A49A9D9C9396958D918F868A8A8285817A7E867F83D2D4DD
+        BEAD97EAAC36CB883CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF959595B2B2
+        B2A1A1A1DEDEDEB4B4B4A8A8A8A2A2A29C9C9C9494948E8E8E8888888383837C
+        7C7C818181D6D6D6A9A9A9A0A0A0838383FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFD5A05FF0C262BDAA92E4E8F0E0DDDCDBD7D8D8D5D6D7D3D4D4D0D1D1CF
+        D0D0CDCDCECBCDCBC8C9CCCACBE2E5EDBFAF9BEDB13ECE8D3FFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF9A9A9AB6B6B6A6A6A6EAEAEADDDDDDD8D8D8D5D5D5
+        D4D4D4D2D2D2CFCFCFCDCDCDCBCBCBC8C8C8CACACAE7E7E7ADADADA6A6A68787
+        87FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD7A362F2C569C2AF98ECEEF7EA
+        E8E7E6E3E3E4E2E2E2E0E0E1DEDFDFDCDDDDDBDBDCD8DAD9D6D7DCDADAEAEDF5
+        C3B3A1EEB645D29144FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9D9D9DB9B9
+        B9ACACACF0F0F0E8E8E8E4E4E4E3E3E3DFDFDFDEDEDEDCDCDCDBDBDBD8D8D8D6
+        D6D6DADADAEEEEEEB0B0B0AAAAAA8B8B8BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFDAA664F4C870C9B8A2EDF0F9DAD6D7D2CCCECECACBCAC6C7C7C1C4C2BD
+        C1BEBABDBCB5B9B4B0B3B9B6B8E8ECF4CBBDABF0B94DD59747FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF9F9F9FBDBDBDB5B5B5F3F3F3D7D7D7CECECECBCBCB
+        C7C7C7C2C2C2BEBEBEBCBCBCB6B6B6B0B0B0B7B7B7EEEEEEB9B9B9AEAEAE9090
+        90FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDBAB69F5CD78BDAD98E9ECF6FA
+        F9F7FAF9F8FBFAF9FCFBFAFDFCFAFEFDFBFFFEFCFFFEFDFFFFFDFFFFFDEAEDF7
+        BDAF9FF2BF56D89D4AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA3A3A3C1C1
+        C1A9A9A9EEEEEEF8F8F8F8F8F8F9F9F9FAFAFAFCFCFCFCFCFCFDFDFDFEFEFEFF
+        FFFFFFFFFFEFEFEFACACACB2B2B2949494FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFDDAD6CF6D388CFA463AD9072A18771A38972A38972A38972A38972A389
+        72A38972A38871A38972A18671AD9071CFA76AF4C668DA9F4FFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFA5A5A5C8C8C89C9C9C8D8D8D858585868686868686
+        8787878686868787878686868585858686868383838D8D8D9E9E9EBABABA9797
+        97FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0B16FF3D38FF8C65EE2B76AB0
+        A4A0C8BCB0C4B8ADC4B8ADC4B8ADC4B8ACC7BBAFC8BEB3CBC1B5B1A5A1E1B769
+        F9C965F2C76FDDA553FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFAAAAAAC8C8
+        C8B9B9B9ADADADA4A4A4BBBBBBB7B7B7B7B7B7B6B6B6B5B5B5BABABABCBCBCBF
+        BFBFA6A6A6ADADADBCBCBCBBBBBB9D9D9DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFE3B572F5D794F5C764DFBD7BBFC1CEDEDEE0D9D9DBD9D9DBD9D9DBDDDD
+        DECCCBCEB8B6BBC5C3C7BCBECBE0BF7CF5C96BF2CC76E0AA55FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFADADADCCCCCCBABABAB4B4B4C3C3C3DEDEDED9D9D9
+        D9D9D9DADADADDDDDDCCCCCCB6B6B6C5C5C5C1C1C1B6B6B6BCBCBCC1C1C1A0A0
+        A0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE5B975F6D999F5CA6AE2C281C7
+        C6D1E2E1DFDEDCDBDEDCDBDDDCDAE8E9EAACA096A5814EB4966EA3A3B3EACA87
+        F5CB70F3CF7CE2AE5AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB0B0B0CECE
+        CEBDBDBDB8B8B8C8C8C8E1E1E1DCDCDCDCDCDCDBDBDBE8E8E89F9F9F7B7B7B91
+        9191A8A8A8C1C1C1BFBFBFC3C3C3A4A4A4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFE8BD78F7DB9DF6CD70E5C686CDCCD6E7E6E4E3E2E1E3E2E1E3E1E0EAEC
+        F0C2B19EECC065E9C882A1A3B7EECE8EF7CE75F5D381E6B35DFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFB5B5B5D1D1D1C0C0C0BCBCBCCECECEE6E6E6E2E2E2
+        E2E2E2E1E1E1EEEEEEAEAEAEB5B5B5BDBDBDA8A8A8C4C4C4C1C1C1C6C6C6A9A9
+        A9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEAC07AF9DEA0F8D075E8CA8CD3
+        D3DDECECEAE8E8E7E8E8E7E8E7E6F0F4F7C1B2A1E7BD64E8C882A7A7BCF0D294
+        F8D27BF8D88AE7B259FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB6B6B6D4D4
+        D4C3C3C3C1C1C1D5D5D5ECECECE8E8E8E8E8E8E8E8E8F4F4F4B0B0B0B2B2B2BD
+        BDBDABABABC9C9C9C7C7C7CCCCCCA8A8A8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFECC480F8E1A5F8D272E9CC8ADADAE2F1F1EFEDEDECEDEDECEDECEBF8FA
+        FBB9B1A7B09261C0A980B6B6C5F0D493FAD984EDC36AE9BB78FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFBCBCBCD7D7D7C4C4C4C3C3C3DCDCDCF0F0F0EEEEEE
+        EDEDEDECECECFAFAFAAEAEAE8B8B8BA2A2A2BABABACACACACCCCCCB8B8B8B4B4
+        B4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEDC47BFDEFCEFCE2A2EFDBAFE3
+        E8F6FAFEFFF6FAFFF6FAFFF6FBFFFBFFFFE5E9EFC7CBD7D4D6E0E1E5F3F2E0B6
+        F2C86FEABB6FFDF8F0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB9B9B9EAEA
+        EAD8D8D8D5D5D5EAEAEAFEFEFEFBFBFBFAFAFAFBFBFBFFFFFFEBEBEBCDCDCDD8
+        D8D8E9E9E9D9D9D9BCBCBCB4B4B4F7F7F7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFE9B861EFCA80F2CC83EECB85E9CC96EFD298EFD298EFD298EFD298EFD1
+        97F4D59BF8DA9EF7D99DE9CA93EBC57EEEC67FFDF9F2FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFAEAEAEBFBFBFC2C2C2C1C1C1C4C4C4C9C9C9CACACA
+        C9C9C9CACACAC9C9C9CBCBCBD0D0D0D0D0D0C2C2C2BCBCBCBEBEBEF8F8F8FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = btn_saveClick
+    end
+  end
+  object OraQuery_TestName: TOraQuery
+    SQL.Strings = (
+      
+        'select tws.*,(select tena_testname from hs_tena_testname where t' +
+        'ena_testnameid=tws.twms_testnameid)testname from HC_TWMS_TestWis' +
+        'eMasterSetup tws'
+      'where twms_mastersetupid=:id')
+    Left = 528
+    Top = 144
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'id'
+      end>
+  end
+  object DataSource_TestName: TDataSource
+    DataSet = OraQuery_TestName
+    Left = 576
+    Top = 80
+  end
+  object DataSource_ReportFormat: TDataSource
+    DataSet = OraQuery_ReportFormat
+    Left = 576
+    Top = 128
+  end
+  object OraQuery_ReportFormat: TOraQuery
+    SQL.Strings = (
+      'select * from clinical_reporttype'
+      'where testnameid=:id')
+    Left = 536
+    Top = 192
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'id'
+      end>
+  end
+  object OraQuery_Blank: TOraQuery
+    Left = 656
+    Top = 32
+  end
+  object ColorDialog1: TColorDialog
+    Left = 368
+  end
+  object FontDialog1: TFontDialog
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    Left = 304
+  end
+  object OraQuery_Listing: TOraQuery
+    SQL.Strings = (
+      
+        'select t.*,(select test from test where testid=t.CLSP_TESTNAMEID' +
+        ')test from HC_CLSP_CLINICALSETUPPAP t'
+      'Where 1=1'
+      'Order by CLSP_FINDINGSID')
+    Left = 723
+    Top = 175
+  end
+  object DataSource_Listing: TDataSource
+    DataSet = OraQuery_Listing
+    Left = 680
+    Top = 184
+  end
+  object OraQuery_FnacListing: TOraQuery
+    SQL.Strings = (
+      
+        'select t.*,(select test from test where testid=t.CLSF_TESTNAMEID' +
+        ')test from HC_CLSF_CLINICALSETUPFNAC t'
+      'Where 1=1'
+      'Order by CLSF_SETUPID')
+    Left = 728
+    Top = 16
+  end
+  object OraQuery_SurgicalListing: TOraQuery
+    SQL.Strings = (
+      
+        'select t.*,(select test from test where testid=t.CLSS_testnameid' +
+        ')test from HC_CLSS_CLINICALSETUPSURGICAL t'
+      'Where 1=1'
+      'Order by CLSS_SETUPID')
+    Left = 728
+    Top = 120
+  end
+  object OraQuery_BoneListing: TOraQuery
+    SQL.Strings = (
+      
+        'SELECT t.*,(SELECT TEST from TEST where testid=t.CLSB_TESTNAMEID' +
+        ')test from HC_CLSB_CLINICALSETUPBONEMARO t'
+      'Where 1=1'
+      'Order by CLSB_SETUPID')
+    Left = 800
+    Top = 56
+  end
+  object OraQuery_FmagListing: TOraQuery
+    SQL.Strings = (
+      
+        'select t.*,(select test from test where testid=t.CSFM_TESTNAMEID' +
+        ')test from HC_CSFM_CLINICALSETUPFLMALIGN t'
+      'Where 1=1'
+      'Order by CSFM_SETUPID')
+    Left = 472
+    Top = 64
+  end
+  object OraQuery_fluidDc: TOraQuery
+    SQL.Strings = (
+      
+        'select t.*,(select test from test where testid=t.CSFD_TESTNAMEID' +
+        ')test from HC_CSFD_CLINICALSETUPFLUIDDC t'
+      'Where 1=1'
+      'Order by CSFD_SETUPID')
+    Left = 480
+  end
+  object OraQuery_master: TOraQuery
+    SQL.Strings = (
+      'select * from HC_MASE_MASTERSETUP'
+      'order by mase_mastersetupid')
+    Left = 88
+    Top = 65528
+  end
+  object OraDataSource_Master: TOraDataSource
+    DataSet = OraQuery_master
+    Left = 176
+  end
+  object OraQuery_Vsgfnaclisting: TOraQuery
+    SQL.Strings = (
+      
+        'select t.*,(select test from test where testid=t.CUGF_TESTNAMEID' +
+        ')test from HC_CUGF_CLINICALSETUPUSGFNAC t'
+      'Where 1=1'
+      'Order by CUGF_SETUPID')
+    Left = 394
+    Top = 174
+  end
+  object Query_Blank: TOraQuery
+    Left = 17
+    Top = 1
+  end
+  object NestedTable1: TNestedTable
+    Left = 544
+    Top = 136
+  end
+end

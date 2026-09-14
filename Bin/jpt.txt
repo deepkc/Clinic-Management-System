@@ -1,0 +1,4 @@
+ Select ROWNUM AS SN, CCS.* from vw_cashcreditsale CCS 
+ Where billdate >='2017/08/04' and billdate<='2017/08/04'
+ AND REFHOSCODE='HOS01'
+ aND 1=1

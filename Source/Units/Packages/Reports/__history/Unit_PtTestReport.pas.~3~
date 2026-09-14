@@ -1,0 +1,758 @@
+unit Unit_PtTestReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, Grids, DBGrids, ExtCtrls, OleCtrls, DateEditXControl_TLB,DM,
+  Buttons, Db, DBTables,serverdate, DBCtrls, MemDS, DBAccess, Ora;
+
+type
+  TForm_PtTestReport = class(TForm)
+    GroupBox1: TGroupBox;
+    Edit_PatientNo: TEdit;
+    Label1: TLabel;
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    BitBtnRefresh: TBitBtn;
+    BitBtnPrint: TBitBtn;
+    Table_Test: TTable;
+    TableInvestigationMaster: TTable;
+    TableInvestigationDetail: TTable;
+    RadioGroup1: TRadioGroup;
+    DataSourceGrid: TDataSource;
+    Query_Blank: TQuery;
+    Query_Test: TQuery;
+    Label4: TLabel;
+    LblPatientName: TLabel;
+    Label5: TLabel;
+    LblAgeSex: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    LblContact: TLabel;
+    LblAddress: TLabel;
+    Edit_InpatientNo: TEdit;
+    Label8: TLabel;
+    GroupBox2: TGroupBox;
+    Label2: TLabel;
+    DateEditXFrom: TDateEditX;
+    DateEditXTo: TDateEditX;
+    Label3: TLabel;
+    Chk_SearchByDate: TCheckBox;
+    Label9: TLabel;
+    DBLCB_Department: TDBLookupComboBox;
+    DSDept: TDataSource;
+    Query_Patienttest: TOraQuery;
+    Query_Void: TOraQuery;
+    QueryDept: TOraQuery;
+    Query_Process: TOraQuery;
+    CB_SearchPatient: TCheckBox;
+    procedure BitBtnRefreshClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure CreateTableForPrint;
+    procedure BitBtnPrintClick(Sender: TObject);
+    procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure Edit_PatientNoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormShow(Sender: TObject);
+    procedure Chk_SearchByDateClick(Sender: TObject);
+    procedure Edit_PatientNoKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_InpatientNoKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_InpatientNoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_DepartmentKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_DepartmentClick(Sender: TObject);
+    procedure BB_CLOSEClick(Sender: TObject);
+    procedure CB_SearchPatientClick(Sender: TObject);
+  private
+    function CheckSensitivity(TestNameID: Integer;PatientTestId:Integer): Boolean;
+    { Private declarations }
+  public
+    { Public declarations }
+    pi_VisitID,pi_AccessFrom:Integer;
+  end;
+
+var
+  Form_PtTestReport: TForm_PtTestReport;
+
+implementation
+
+uses fxn, UnitSendToExcel,Unit_PatientSearchForPt;
+
+{$R *.DFM}
+
+procedure TForm_PtTestReport.BitBtnRefreshClick(Sender: TObject);
+var PreDepId,TEstID:Integer;
+    ls_Sens:String;
+begin
+    with Query_Patienttest do
+    begin
+        close;
+        Session:=DM_Hospital.DB;
+        Sql.Clear;
+        Sql.Add('select pt.patientid,pt.InPatientID,GetPatientName(pt.PatientID) PtName,');
+        Sql.Add('  (Select pama_Age||'' ''||Substr(pama_AgeType,1,1)||'' ''||pama_Gender From hs_pama_PatientMain Where pama_PatientID=PT.PatientID) AgeSex,');
+        Sql.Add(' (Select pama_Address From hs_pama_PatientMain Where pama_PatientID=PT.PatientID) Address,');
+        Sql.Add('  (Select pama_PhoneNo||'' ''||PAMA_MOBILENO From hs_pama_PatientMain Where pama_PatientID=PT.PatientID) ContactNo,');
+        Sql.Add(' pt.patienttestid, TN.tena_Depid as depid,pt.testdate from ');
+        Sql.Add(' patienttest pt, hs_tena_testname tn where pt.testnameid=tn.tena_testnameid(+) ');
+        //Sql.Add(' and LineEdit=''T''');
+        If DBLCB_Department.KeyValue>0 Then
+        Sql.Add(' And Pt.DepId='+IntToStr(DBLCB_Department.KeyValue));
+        If Trim(Edit_PatientNo.Text)<>'' Then
+        Sql.Add(' And PatientId='+Trim(Edit_PatientNo.Text))
+        Else If Trim(Edit_InpatientNo.Text)<>'' Then
+        Sql.Add(' And InPatientId='+Trim(Edit_InpatientNo.Text));
+        If pi_AccessFrom<>1 Then
+        Begin
+          {Sql.Add(' and pt.testdate>= '+#39+DateEditXFrom.text+#39);
+          Sql.Add('and pt.testdate<= '+#39+DateEditXTo.Text+#39);}
+          if Chk_SearchByDate.Checked then
+          begin
+               Sql.Add(' and pt.testdate>= '+#39+DateEditXFrom.text+#39);
+               Sql.Add('and pt.testdate<= '+#39+DateEditXTo.Text+#39);
+          end
+          else
+          Sql.Add(' and pt.testdate<= '+#39+ServerDate.TodaysDate+#39);
+        End
+        Else
+        Begin
+          if Chk_SearchByDate.Checked then
+          Sql.Add(' and (( pt.testdate between '+#39+DateEditXFrom.text+#39+' And '+#39+DateEditXTo.text+#39+')')
+          else
+          Sql.Add(' and ((pt.testdate <='+#39+ServerDate.TodaysDate+#39+')');
+          //Sql.Add(' Or pt.VisitID= '+IntToStr(pi_VisitID)+')');
+        End;
+        if RadioGroup1.ItemIndex = 0 then
+            Sql.Add('order by pt.testdate Desc')
+            //Sql.Add('order by pt.TestDate Desc')
+        else
+             Sql.Add('order by pt.testdate Asc');
+             //Sql.Add('order by pt.TestDate Asc');
+      //  Sql.SaveToFile('C:\testrep.txt');
+        Open;
+
+        first;
+
+        //If Trim(Edit_PatientNo.Text)='' Then
+        //////////
+        Begin
+          If FieldByName('PatientID').AsString<>'' Then
+          Edit_PatientNo.Text:=FieldByName('PatientID').AsString;
+        End;
+
+        //If Trim(Edit_InpatientNo.Text)='' Then
+        Begin
+          If FieldByName('InPatientID').AsString<>'' Then
+          Edit_InpatientNo.Text:=FieldByName('InPatientID').AsString;
+        End;
+
+        LblPatientName.Caption:=FieldByName('PtName').AsString;
+        LblAgeSex.Caption:=FieldByName('AgeSex').AsString;
+        LblAddress.Caption:=FieldByName('Address').AsString;
+        LblContact.Caption:=FieldByName('ContactNo').AsString;
+        TableInvestigationMaster.close;
+        TableInvestigationMaster.emptyTable;
+        TableInvestigationMaster.open;
+        while not eof do
+        begin
+            TableInvestigationMaster.Append;
+            TableInvestigationMaster.FieldByName('DepID').AsInteger:=FieldByName('DepID').AsInteger;
+           // TableInvestigationMaster.FieldByName('DepOrder').AsInteger:=FieldByName('DepOrder').AsInteger; ---
+            TableInvestigationMaster.FieldByName('PatientTestID').AsInteger:=FieldByName('PatientTestID').AsInteger;
+            TableInvestigationMaster.FieldByName('TestDate').AsString:=FieldByName('testDate').asString;
+            //TableInvestigationMaster.FieldByName('IsEdit').AsString:=FieldByName('LineEdit').asString;
+            TableInvestigationMaster.Post;
+            Next;
+        end;
+    end;
+
+    TableInvestigationDetail.close;
+    TableInvestigationDetail.EmptyTable;
+    TableInvestigationDetail.open;
+     With Query_Blank Do
+     Begin
+          Close;
+          DatabaseName:=gs_TempPath;
+          Sql.Clear;
+          Sql.Add('Select distinct depid from InvestigationMasterprint.db');
+          Open;
+          First;
+          While Not Eof Do
+          Begin
+                with Query_Process do
+                begin
+                    close;
+                    Session:=DM_Hospital.DB;
+                    Sql.Clear;
+                    Sql.Add('Select dept_DepName as depname from hs_dept_Department where dept_Depid = '+Query_Blank.FieldByName('DepID').asString);
+                    open;
+                    TableInvestigationDetail.Append;
+                    TableInvestigationDetail.FieldByName('TestName').AsString:=FieldByName('DepName').AsString;
+                    TableInvestigationDetail.FieldByName('Dep').AsInteger:=1;
+                    TableInvestigationDetail.post;
+                end;
+
+                with Query_Test do
+                begin
+                    close;
+                    DatabaseName:=gs_TempPath;
+                    Sql.Clear;
+                    Sql.Add('Select patienttestid from InvestigationMasterprint.db where depid= '+  Query_Blank.Fieldbyname('Depid').asstring);
+                    open;
+
+                    first;
+                    while not eof do
+                    begin
+
+                        with Query_Process do
+                        begin
+                            close;
+                            session:=DM_Hospital.DB;
+                            Sql.Clear;
+                            Sql.Add('SELECT A.TestID,A.TestNameId,C.PatientTestID,D.Test,A.Finding,A.Unit,A.RefRange,A.Extra');
+                            Sql.Add(' ,D.LRangeG||''-''||D.HRANGEG||Case when Trim(D.LRangeF||''-''||D.HRangeF)<>''-'' Then ''  ''||D.LRangeF||''-''||D.HRangeF End as RefRangeNew');
+                            // Sql.Add(' ,'+TestResult_Range);
+                            Sql.Add(' ,D.DisplayOrder,D.IsHeading ');
+                           // Sql.Add(' ,NVL((Select Trim(Ranges) as OtherRange From Ranges Where TestID=A.TestID and rownum=1),'' '')  OtherRange');
+                            //Sql.Add(' ,TN.DepID,TN.TestNameCode,C.TestDate,(SELECT BILLTIME FROM ALTERNATE_BILLDETAIL WHERE BILLNO=C.BILLNO AND SERVICE=C.TESTNAMECODE) TESTTIME');
+                            Sql.Add(' ,TN.tena_DepID as depid,TN.tena_TestNameCode,C.TestDate,C.TestTime,substr(c.FINDINGPOSTDATETIME,0,10)as ReportDate,substr(c.FINDINGPOSTDATETIME,11,9) as dataposttime');
+                            Sql.Add(' From PatientTestDetail A,PatientTest C,Test D,hs_tena_TestName TN');
+                            Sql.Add(' Where (A.PatientTestId='+Query_Test.FieldByName('PatientTestID').AsString+') And');
+                            //If Trim(Edit_PatientNo.Text)<>'' Then
+                            Sql.Add(' (A.PatientID='+Trim(Edit_PatientNo.Text)+')');
+                            //Else If Trim(Edit_InpatientNo.Text)<>'' Then
+                            //Sql.Add(' (A.InPatientID='+Trim(Edit_InpatientNo.Text)+')');
+                            Sql.Add(' and (A.PatientTestId=C.PatientTestId) ');
+                             If (DBLCB_Department.KeyValue>0) Then
+                              Sql.Add(' And C.DepId='+IntToStr(DBLCB_Department.KeyValue));
+                            Sql.Add(' AND (A.TestID=D.TestID) And');
+                            Sql.Add(' (A.TestNameId=TN.tena_TESTNAMEID)');
+                            Sql.Add(' And (NVL(Finding,''AniD'')<>''AniD'' Or D.IsHeading=''Y'')');
+                            Sql.Add(' Order  By D.DisplayOrder');
+                           // Sql.Savetofile('C:\med.txt');
+                            open;
+
+                            //PreDepID:=0;
+                            first;
+                            while not eof do
+                            begin
+                            // If PreDepID<>FieldByName('DepID').AsInteger Then
+                             // begin
+                                TableInvestigationDetail.Append;
+                                TableInvestigationDetail.FieldByName('DepID').AsInteger:=FieldByName('DepID').AsInteger;
+                                TableInvestigationDetail.FieldByName('TestID').AsInteger:=FieldByName('TestID').AsInteger;
+                                TableInvestigationDetail.FieldByName('TestNameID').AsInteger:=FieldByName('TestNameID').AsInteger;
+                                TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('Test').AsString;
+                                TableInvestigationDetail.FieldByName('Finding').AsString:=FieldByName('Finding').AsString;
+                                TableInvestigationDetail.FieldByName('Unit').AsString:=FieldByName('Unit').AsString;
+                              {  If Trim(FieldByName('OtherRange').AsString)<>'' Then
+                                Begin
+                                If Trim(FieldByName('OtherRange').AsString)<>'-' Then
+                                    TableInvestigationDetail.FieldByName('RefRange').AsString:=FieldByName('OtherRange').AsString
+                                Else
+                                    TableInvestigationDetail.FieldByName('RefRange').AsString:='';
+                                End
+                                Else }
+                                Begin
+                                If Trim(FieldByName('RefRange').AsString)<>'-' Then
+                                    TableInvestigationDetail.FieldByName('RefRange').AsString:=FieldByName('RefRangeNew').AsString//FieldByName('RefRange').AsString
+                                Else
+                                    TableInvestigationDetail.FieldByName('RefRange').AsString:='';
+                                End;
+                                TableInvestigationDetail.FieldByName('TestDate').AsString:=FieldByName('TestDate').AsString;
+                                TableInvestigationDetail.FieldByName('TestTime').AsString:=FieldByName('TestTime').AsString;
+                                TableInvestigationDetail.FieldByName('ReportDate').AsString:=FieldByName('ReportDate').AsString;
+                                TableInvestigationDetail.FieldByName('ReportTime').AsString:=FieldByName('dataposttime').AsString;
+                                TableInvestigationDetail.FieldByName('Dep').AsInteger:=0;
+                                TableInvestigationDetail.FieldByName('Sensitive').AsInteger:=0;
+                                TableInvestigationDetail.post;
+
+                                TEstID:=Query_Process.FieldByName('TestNameID').AsInteger;
+                                If (CheckSensitivity(Query_Process.FieldByName('TestNameID').AsInteger,Query_Test.FieldByName('PatientTestID').asInteger)=True) Then
+                                Begin
+                                    with Query_Void do
+                                    begin
+                                        close;
+                                        DatabaseName:=gs_TempPath;
+                                        Sql.clear;
+                                        Sql.Add('Select TestNameId from InvestigationDetailprint.db where patienttestid='+Query_Test.FieldByName('PatientTestID').asString);
+                                        Sql.Add('And Sensitive=1');
+                                        open;
+                                    end;
+                                    if Query_Void.Fieldbyname('Testnameid').ASString='' then
+                                    begin
+                                        With Query_Void Do
+                                        Begin
+                                            Close;
+                                            DatabaseName:=gs_DatabaseName;
+                                            With Sql Do
+                                            Begin
+                                                clear;
+                                                Add('select (medicine||''-->''||Result)as Finding from sensitivityresult sr, sensitivemedicine sm');
+                                                Add('where SR.SENSITIVEMEDICINEID=SM.SENSITIVEMEDICINEID and sm.testnameid='+ Query_Process.FieldByName('TestNameID').asString);
+                                                Add('And Sr.Patienttestid= '+ Query_Process.FieldByName('patienttestid').asString);
+                                            End;
+                                            open;
+                                            first;
+                                            while not eof do
+                                            begin
+                                                ls_Sens:= FieldByName('Finding').AsString;
+                                                next;
+                                                if ls_Sens<>FieldByName('Finding').AsString then
+                                                 ls_Sens:=ls_Sens+' | ' + FieldByName('Finding').AsString;
+                                                TableInvestigationDetail.Append;
+                                                TableInvestigationDetail.FieldByName('Finding').AsString:= ls_Sens;
+                                                TableInvestigationDetail.FieldByName('Dep').AsInteger:=0;
+                                                TableInvestigationDetail.FieldByName('Sensitive').AsInteger:=1;
+                                                TableInvestigationDetail.post;
+                                                next;
+                                            end;
+
+                                        End;
+                                    end;
+                                End;
+                                 // end;
+                                //PreDepId:=FieldByName('DepID').AsInteger;
+                            next;
+                            end;
+                        end;
+                    next;
+                    end;
+                end;
+          next;
+          end;
+     end;
+     TableInvestigationDetail.close;
+     TableInvestigationDetail.open;
+
+     //Now Adding Another Block To Display Ct and Xray Report In the Exsiting Reports............
+     //Done on Date 2069/01/12.. As per the request of Parasji from CMC........
+
+     with Query_Patienttest do
+    begin
+        close;
+        Session:=DM_Hospital.DB;
+        Sql.Clear;
+        Sql.Add('select pt.patientid,pt.InPatientID,GetPatientName(pt.PatientID) PtName,');
+        Sql.Add(' (Select pama_Age||'' ''||Substr(pama_AgeType,1,1)||'' ''||pama_Gender From hs_pama_PatientMain Where pama_PatientID=PT.PatientID) AgeSex,');
+        Sql.Add(' (Select pama_Address From hs_pama_PatientMain Where pama_PatientID=PT.PatientID) Address,');
+        Sql.Add(' (Select PAMA_PHONENO||'' '' ||PAMA_MOBILENO From hs_pama_PatientMain Where PatientID=PT.PatientID AND ROWNUM=1) ContactNo,');
+        Sql.Add(' pt.patienttestid, TN.tena_Depid as depid,pt.testdate from');
+        Sql.Add('patienttest pt, hs_tena_testname tn where pt.testnameid=tn.tena_testnameid(+) ');
+       // Sql.Add(' and LineEdit=''F''');
+        If (DBLCB_Department.KeyValue>0) Then
+        Sql.Add(' And Pt.DepId='+IntToStr(DBLCB_Department.KeyValue));
+        If Trim(Edit_PatientNo.Text)<>'' Then
+        Sql.Add(' And PatientId='+Trim(Edit_PatientNo.Text))
+        Else If Trim(Edit_InpatientNo.Text)<>'' Then
+        Sql.Add(' And InPatientId='+Trim(Edit_InpatientNo.Text));
+        If pi_AccessFrom<>1 Then
+        Begin
+          //Sql.Add(' and pt.testdate>= '+#39+DateEditXFrom.text+#39);
+          //Sql.Add('and pt.testdate<= '+#39+DateEditXTo.Text+#39);}
+          if Chk_SearchByDate.Checked then
+          begin
+               Sql.Add(' and pt.testdate>= '+#39+DateEditXFrom.text+#39);
+               Sql.Add('and pt.testdate<= '+#39+DateEditXTo.Text+#39);
+          end
+          else
+          Sql.Add(' and pt.testdate<= '+#39+ServerDate.TodaysDate+#39);
+        End
+        Else
+        Begin
+          if Chk_SearchByDate.Checked then
+          Sql.Add(' and (( pt.testdate between '+#39+DateEditXFrom.text+#39+' And '+#39+DateEditXTo.text+#39+')')
+          else
+          Sql.Add(' and ((pt.testdate <='+#39+ServerDate.TodaysDate+#39+')');
+          Sql.Add(' Or pt.VisitID= '+IntToStr(pi_VisitID)+')');
+        End;
+        if RadioGroup1.ItemIndex = 0 then
+            Sql.Add('order by pt.testdate Desc')
+            //Sql.Add('order by pt.TestDate Desc')
+        else
+             Sql.Add('order by pt.testdate Asc');
+             //Sql.Add('order by pt.TestDate Asc');
+       // Sql.SaveToFile('C:\testrep.txt');
+        Open;
+
+        first;
+
+        //If Trim(Edit_PatientNo.Text)='' Then
+        Begin
+          If FieldByName('PatientID').AsString<>'' Then
+          Edit_PatientNo.Text:=FieldByName('PatientID').AsString;
+        End;
+
+        //If Trim(Edit_InpatientNo.Text)='' Then
+        Begin
+          If FieldByName('InPatientID').AsString<>'' Then
+          Edit_InpatientNo.Text:=FieldByName('InPatientID').AsString;
+        End;
+
+        {LblPatientName.Caption:=FieldByName('PtName').AsString;
+        LblAgeSex.Caption:=FieldByName('AgeSex').AsString;
+        LblAddress.Caption:=FieldByName('Address').AsString;
+        LblContact.Caption:=FieldByName('ContactNo').AsString;     }
+        TableInvestigationMaster.close;
+        TableInvestigationMaster.emptyTable;
+        TableInvestigationMaster.open;
+        while not eof do
+        begin
+            TableInvestigationMaster.Append;
+            TableInvestigationMaster.FieldByName('DepID').AsInteger:=FieldByName('DepID').AsInteger;
+           // TableInvestigationMaster.FieldByName('DepOrder').AsInteger:=FieldByName('DepOrder').AsInteger;
+            TableInvestigationMaster.FieldByName('PatientTestID').AsInteger:=FieldByName('PatientTestID').AsInteger;
+            TableInvestigationMaster.FieldByName('TestDate').AsString:=FieldByName('testDate').asString;
+           // TableInvestigationMaster.FieldByName('IsEdit').AsString:=FieldByName('LineEdit').asString;
+            TableInvestigationMaster.Post;
+            Next;
+        end;
+    end;
+
+    TableInvestigationDetail.close;
+    //TableInvestigationDetail.EmptyTable;
+    TableInvestigationDetail.open;
+
+    //commented for manipal
+    { With Query_Blank Do
+     Begin
+          Close;
+          DatabaseName:=gs_TempPath;
+          Sql.Clear;
+          Sql.Add('Select distinct depid from InvestigationMasterprint.db');
+          Open;
+          First;
+          While Not Eof Do
+          Begin
+                with Query_Process do
+                begin
+                    close;
+                    session:=DM_Hospital.DB;
+                    Sql.Clear;
+                    Sql.Add('Select dept_DepName as depname from hs_dept_Department where dept_Depid = '+Query_Blank.FieldByName('DepID').asString);
+                    open;
+                    TableInvestigationDetail.Append;
+                    TableInvestigationDetail.FieldByName('TestName').AsString:=FieldByName('DepName').AsString;
+                    TableInvestigationDetail.FieldByName('Dep').AsInteger:=1;
+                    TableInvestigationDetail.post;
+                end;
+
+                with Query_Test do
+                begin
+                    close;
+                    DatabaseName:=gs_TempPath;
+                    Sql.Clear;
+                    Sql.Add('Select patienttestid from InvestigationMasterprint.db where depid= '+  Query_Blank.Fieldbyname('Depid').asstring);
+                    open;
+                    first;
+                    while not eof do
+                    begin
+                        with Query_Process do
+                        begin
+                            close;
+                            session:=DM_Hospital.DB;
+                            Sql.Clear;
+                            Sql.Add('Select PT.EditFindingId,P.PatientTestId,P.ModifyDate,P.ReportTime,PT.TestNAmeID,P.TestDate,P.TestTime,Tn.DepId,TN.TEstNAme,PT.TitleOne,Pt.TitleTwo,Pt.TitleThree,Pt.TitleFour,Pt.TitleFive,Pt.Titlesix');
+                            Sql.Add(',Pt.TitleSeven,Pt.TitleEight,Pt.TitleNine,Pt.TitleTen,Pt.TitleEleven,Pt.TitleTwelve,Pt.TitleThirteen,Pt.TitleFourteen,Pt.TitleFifteen,Pt.TitleSixteen');
+                            Sql.Add(',PS.RESULTONE,PS.RESULTtwo,PS.RESULTThree,PS.RESULTFour,PS.RESULTFive,PS.RESULTSix,PS.RESULTSeven,PS.RESULTEight,PS.RESULTNine,PS.RESULTTen');
+                            Sql.Add(',PS.RESULTEleven,PS.RESULTtwelve,PS.RESULTThirteen,PS.RESULTfourteen,PS.RESULTfifteen,PS.RESULTsixteen');
+                            Sql.Add('From PAtientTEstSpecial PS, PatientTest P, TEstEditFinding PT, TestNAme TN');
+                            Sql.Add('Where Ps.PatientTestId=PS.PatientTestId');
+                            Sql.Add('And P.TEstNAmeId=TN.TestNameID');
+                            Sql.Add('And PT.TESTNAMEID=P.TestNameId');
+                            If (DBLCB_Department.KeyValue>0) Then
+                            Sql.Add(' And P.DepId='+IntToStr(DBLCB_Department.KeyValue));
+                            Sql.Add('And P.PatientTestID='+Query_Test.FieldByName('PatientTestId').asString);
+                            sql.savetofile('C:\abctt.txt');
+                                 Open;
+
+                            TableInvestigationDetail.Close;
+                            TableInvestigationDetail.Open;
+                            TableInvestigationDetail.Append;
+                            TableInvestigationDetail.FieldByName('DepID').AsInteger:=FieldByName('DepID').AsInteger;
+                                //TableInvestigationDetail.FieldByName('TestID').AsInteger:=FieldByName('TestID').AsInteger;
+                            TableInvestigationDetail.FieldByName('TestNameID').AsInteger:=FieldByName('TestNameID').AsInteger;
+                            TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('TestName').AsString;
+                            TableInvestigationDetail.FieldByName('TestDate').AsString:=FieldByName('TestDate').AsString;
+                            TableInvestigationDetail.FieldByName('TestTime').AsString:=FieldByName('TestTime').AsString;
+                            TableInvestigationDetail.FieldByName('ReportDate').AsString:=FieldByName('ModifyDate').AsString;
+                            TableInvestigationDetail.FieldByName('ReportTime').AsString:=FieldByName('ReportTime').AsString;
+                            TableInvestigationDetail.Post;
+                            TableInvestigationDetail.Append;
+                            TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('TitleOne').AsString;
+                            TableInvestigationDetail.FieldByName('Finding').AsString:=FieldByName('RESULTONE').AsString;
+                            TableInvestigationDetail.post;
+                            TableInvestigationDetail.Append;
+                            TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('TitleTwo').AsString;
+                            TableInvestigationDetail.FieldByName('Finding').AsString:=FieldByName('RESULTTwo').AsString;
+                            TableInvestigationDetail.post;
+                            TableInvestigationDetail.Append;
+                            TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('TitleThree').AsString;
+                            TableInvestigationDetail.FieldByName('Finding').AsString:=FieldByName('RESULTThree').AsString;
+                            TableInvestigationDetail.post;
+                            TableInvestigationDetail.Append;
+                            TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('TitleFour').AsString;
+                            TableInvestigationDetail.FieldByName('Finding').AsString:=FieldByName('RESULTFour').AsString;
+                            TableInvestigationDetail.post;
+                            TableInvestigationDetail.Append;
+                            TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('TitleFive').AsString;
+                            TableInvestigationDetail.FieldByName('Finding').AsString:=FieldByName('RESULTFive').AsString;
+                            TableInvestigationDetail.post;
+                            TableInvestigationDetail.Append;
+                            TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('TitleSix').AsString;
+                            TableInvestigationDetail.FieldByName('Finding').AsString:=FieldByName('RESULTSix').AsString;
+                            TableInvestigationDetail.post;
+                            TableInvestigationDetail.Append;
+                            TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('TitleSeven').AsString;
+                            TableInvestigationDetail.FieldByName('Finding').AsString:=FieldByName('RESULTSeven').AsString;
+                            TableInvestigationDetail.post;
+                            TableInvestigationDetail.Append;
+                            TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('TitleEight').AsString;
+                            TableInvestigationDetail.FieldByName('Finding').AsString:=FieldByName('RESULTEight').AsString;
+                            TableInvestigationDetail.post;
+                            TableInvestigationDetail.Append;
+                            TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('TitleNine').AsString;
+                            TableInvestigationDetail.FieldByName('Finding').AsString:=FieldByName('RESULTNine').AsString;
+                            TableInvestigationDetail.post;
+                            TableInvestigationDetail.Append;
+                            TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('TitleTen').AsString;
+                            TableInvestigationDetail.FieldByName('Finding').AsString:=FieldByName('RESULTTen').AsString;
+                            TableInvestigationDetail.post;
+                            TableInvestigationDetail.Append;
+                            TableInvestigationDetail.FieldByName('TestName').AsString:='    '+FieldByName('TitleEleven').AsString;
+                            TableInvestigationDetail.FieldByName('Finding').AsString:=FieldByName('RESULTEleven').AsString;
+                            TableInvestigationDetail.post;
+                        end;
+                    next;
+                    end;
+                end;
+          next;
+          end;
+     end;
+     TableInvestigationDetail.close;
+     TableInvestigationDetail.open;}
+  //   if FormEmergencyModule.b_onprint=true then
+  //   BB_CLOSEClick(SENDER);
+end;
+
+procedure TForm_PtTestReport.CB_SearchPatientClick(Sender: TObject);
+begin
+     if CB_SearchPatient.Checked=True then
+     begin
+           try
+               Form_PatientSearchForPT := TForm_PatientSearchForPT.Create(nil);
+
+               Form_PatientSearchForPT.ShowModal;
+          finally
+               Form_PatientSearchForPT.Free;
+          end;
+     end;
+end;
+
+function TForm_PtTestReport.CheckSensitivity(TestNameID:Integer;PatientTestId:Integer):Boolean;
+begin
+    with Query_void do
+    begin
+        close;
+        Session:=DM_Hospital.DB;
+        sql.Clear;
+        Sql.Add('select Sm.Sensitivemedicineid from SENSITIVEMEDICINETESTWISE sm, sensitivityresult sr');
+        Sql.Add('where SM.SENSITIVEMEDICINEID=(select SENSITIVEMEDICINEID from SENSITIVEMEDICINETESTWISE a where a.SMTWID=sr.SMTWID)');
+        Sql.Add('and SM.TESTNAMEID=(select testnameid from patienttest where patienttestid=SR.patienttestid and patientid=sr.patientid)');
+        Sql.Add('and sm.testnameid= '+IntToStr(TestNameId));
+        Sql.Add('and sr.patienttestid= '+IntToStr(PatientTestId));
+       // sql.savetofile('C:\abcct.txt');
+        open;
+        first;
+    end;
+    if Query_void.fieldbyname('Sensitivemedicineid').AsString<>'' then
+    result:=true
+    else
+    Result:=false;
+end;
+
+procedure TForm_PtTestReport.CreateTableForPrint;
+begin
+    With TableInvestigationMaster Do
+     Begin
+          Close;
+          DataBaseName:=gs_TempPath;
+          TableName:='InvestigationMasterprint.db';
+          TableType:=TTParadox;
+          FieldDefs.Clear;
+          Fielddefs.add('DepID',ftInteger);
+          Fielddefs.add('TestDate',ftString,10);
+          Fielddefs.add('DepOrder',ftInteger);
+          Fielddefs.add('PatientTestID',ftInteger);
+          Fielddefs.add('ISEdit',ftString,1);
+          CreateTable;
+     End;
+
+     With TableInvestigationDetail Do
+     Begin
+          Close;
+          DataBaseName:=gs_TempPath;
+          TableName:='InvestigationDetailprint.db';
+          TableType:=TTParadox;
+          FieldDefs.Clear;
+          Fielddefs.add('DepID',ftInteger);
+          Fielddefs.add('TestID',ftInteger);
+          Fielddefs.add('TestNameID',ftInteger);
+          Fielddefs.add('TestName',ftString,1000);
+          Fielddefs.add('Finding',ftString,1000);
+          Fielddefs.add('Unit',ftString,40);
+          Fielddefs.add('RefRange',ftString,1000);
+          Fielddefs.add('PatientTestID',ftInteger);
+          Fielddefs.add('TestDate',ftString,10);
+          Fielddefs.add('TestTime',ftString,12);
+          Fielddefs.add('ReportDate',ftString,10);
+          Fielddefs.add('ReportTime',ftString,12);
+          Fielddefs.add('Dep',ftInteger);
+          Fielddefs.add('Sensitive',ftInteger);
+          CreateTable;
+     End;
+end;
+
+procedure TForm_PtTestReport.FormCreate(Sender: TObject);
+begin
+    CreateTableForPrint;
+end;
+
+procedure TForm_PtTestReport.BitBtnPrintClick(Sender: TObject);
+begin
+     if MessageDlg('Are You sure you want to send the data to Excel.',mtWarning,[mbYes,mbNo],0)=mrNo then
+        exit
+     else
+     begin
+          with Query_Process do
+          begin
+               close;
+               Session:=DM_Hospital.DB;
+               Sql.Clear;
+               Sql.Add('Select InitCap(pama_FName ||'' ''||pama_LName)as Name from hs_pama_PatientMain where pama_patientid='+Trim(Edit_PatientNo.Text));
+               open;
+          end;
+          sendToExcel(nil, DBGrid1, 'Patient Test Report of :'+Query_Process.FieldByName('Name').ASString, ServerDate.todaysDate,' ',gs_HospitalName,gs_HospitalAddress,0);
+     end;
+end;
+
+procedure TForm_PtTestReport.DBGrid1DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+     With DBGrid1 Do
+     Begin
+          IF TableInvestigationDetail.FieldByName('Dep').AsInteger=1 Then
+          Begin
+               Canvas.Font.Color:=clTeal;
+               Canvas.Pen.Color:=Clblue;
+               DefaultDrawDataCell(rect,Column.Field,State);
+          End
+          Else
+          Begin
+               Canvas.Font.Color:=clBlack;
+               Canvas.Pen.Color:=Clblue;
+               DefaultDrawDataCell(rect,Column.Field,State);
+          End;
+     End;
+end;
+
+procedure TForm_PtTestReport.Edit_PatientNoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     If Trim(Edit_PatientNo.Text)<>'' Then
+     Begin
+          if key = 13 then
+          BitBtnRefreshClick(sender);
+     End;
+     If Key=vk_Down Then
+     Edit_InpatientNo.SetFocus;
+end;
+
+procedure TForm_PtTestReport.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key=#27 then
+     close;
+end;
+
+procedure TForm_PtTestReport.FormShow(Sender: TObject);
+begin
+     DateEditXFrom.text:=ServerDate.TodaysDate;
+     DateEditXTo.text:=DateEditXFrom.text;
+     DateEditXFrom.ReadOnly:=True;
+     DateEditXTo.ReadOnly:=True;
+     DateEditXFrom.Color:=clMenu;
+     DateEditXTo.Color:=clMenu;
+     QueryDept.Close;
+     QueryDept.Session:=DM_Hospital.DB;
+     QueryDept.Open;
+     If Trim(Edit_PatientNo.Text)<>'' Then
+     BitBtnRefreshClick(Sender);
+end;
+
+procedure TForm_PtTestReport.Chk_SearchByDateClick(Sender: TObject);
+begin
+     If Chk_SearchByDate.Checked Then
+     Begin
+          DateEditXFrom.ReadOnly:=False;
+          DateEditXTo.ReadOnly:=False;
+          DateEditXFrom.Color:=clWhite;
+          DateEditXTo.Color:=clWhite;
+     End
+     Else
+     Begin
+          DateEditXFrom.ReadOnly:=True;
+          DateEditXTo.ReadOnly:=True;
+          DateEditXFrom.Color:=clMenu;
+          DateEditXTo.Color:=clMenu;
+     End;
+end;
+
+procedure TForm_PtTestReport.Edit_PatientNoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF key=#8 Then Exit;
+     IF Not (key In['0'..'9']) Then Key:=#0;
+end;
+
+procedure TForm_PtTestReport.Edit_InpatientNoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF key=#8 Then Exit;
+     IF Not (key In['0'..'9']) Then Key:=#0;
+end;
+
+procedure TForm_PtTestReport.Edit_InpatientNoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     If Trim(Edit_InpatientNo.Text)<>'' Then
+     Begin
+          if key = 13 then
+          BitBtnRefreshClick(sender);
+     End;
+     If Key=vk_Up Then
+     Edit_PatientNo.SetFocus;
+end;
+
+procedure TForm_PtTestReport.DBLCB_DepartmentKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     if Key=vk_Delete then
+     DBLCB_Department.KeyValue:=0;
+end;
+
+procedure TForm_PtTestReport.DBLCB_DepartmentClick(Sender: TObject);
+begin
+     BitBtnRefreshClick(sender);
+end;
+
+procedure TForm_PtTestReport.BB_CLOSEClick(Sender: TObject);
+begin
+     CLOSE;
+end;
+
+end.

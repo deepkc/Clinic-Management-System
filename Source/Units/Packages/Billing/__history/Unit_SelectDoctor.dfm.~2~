@@ -1,0 +1,119 @@
+object Form_SelectDoctor: TForm_SelectDoctor
+  Left = 446
+  Top = 240
+  BorderStyle = bsDialog
+  Caption = 'Select Doctor'
+  ClientHeight = 315
+  ClientWidth = 403
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poOwnerFormCenter
+  OnClose = FormClose
+  OnDblClick = FormDblClick
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 403
+    Height = 315
+    Align = alClient
+    BevelOuter = bvLowered
+    TabOrder = 0
+    object Panel2: TPanel
+      Left = 1
+      Top = 1
+      Width = 401
+      Height = 25
+      Align = alTop
+      BevelOuter = bvLowered
+      TabOrder = 0
+      object Edit_Search: TEdit
+        Left = 3
+        Top = 2
+        Width = 395
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 0
+        OnChange = Edit_SearchChange
+      end
+    end
+    object DBGrid1: TDBGrid
+      Left = 4
+      Top = 30
+      Width = 395
+      Height = 282
+      DataSource = DS_Doctor
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      TabOrder = 1
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'DocCODE'
+          Title.Alignment = taCenter
+          Title.Caption = 'Code'
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clBlack
+          Title.Font.Height = -11
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Width = 51
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'DOCNAME'
+          Title.Alignment = taCenter
+          Title.Caption = 'Name'
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clBlack
+          Title.Font.Height = -11
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Width = 239
+          Visible = True
+        end>
+    end
+  end
+  object Query_Doctor: TOraQuery
+    SQL.Strings = (
+      
+        'Select doct_docname docname,doct_doccode doccode,Doct_DocId DocI' +
+        'd From HS_Doct_Doctor '
+      'Where DOCT_IsActive='#39'Y'#39
+      'Order By DOCT_DocName')
+    FilterOptions = [foCaseInsensitive]
+    Left = 91
+    Top = 33
+  end
+  object DS_Doctor: TDataSource
+    DataSet = Query_Doctor
+    Left = 187
+    Top = 106
+  end
+  object Query_VariableComm: TOraQuery
+    Left = 177
+    Top = 208
+  end
+  object Query_TempProcess: TOraQuery
+    Left = 64
+    Top = 144
+  end
+  object Table_Operation: TOraTable
+    Left = 80
+    Top = 96
+  end
+end

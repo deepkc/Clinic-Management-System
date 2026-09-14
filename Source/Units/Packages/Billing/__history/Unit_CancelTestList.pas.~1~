@@ -1,0 +1,140 @@
+unit Unit_CancelTestList;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, OleCtrls, DateEditXControl_TLB, Grids, DBGrids,
+  ExtCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError,Fxn,Dm,ServerDate,DBGridExportToExcel;
+
+type
+  TForm_CancelTestList = class(TForm)
+    Panel2: TPanel;
+    DBGrid1: TDBGrid;
+    Panel1: TPanel;
+    BitBtn2: TBitBtn;
+    BitBtnExcel: TBitBtn;
+    Query_List: TOraQuery;
+    DS_List: TDataSource;
+    Edit_PatientId: TEdit;
+    Label_PatientId: TLabel;
+    RB_OP: TRadioButton;
+    RB_IP: TRadioButton;
+    Label3: TLabel;
+    Label4: TLabel;
+    BB_Refresh: TBitBtn;
+    procedure RB_IPClick(Sender: TObject);
+    procedure Edit_PatientIdKeyPress(Sender: TObject; var Key: Char);
+    procedure BitBtnExcelClick(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
+    procedure BB_RefreshClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+       pi_InPatientId, pi_PatientId : Integer;
+
+       procedure GetCancelTest;
+    { Public declarations }
+  end;
+
+var
+  Form_CancelTestList: TForm_CancelTestList;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_CancelTestList.BB_RefreshClick(Sender: TObject);
+begin
+     GetCancelTest;
+end;
+
+procedure TForm_CancelTestList.BitBtn2Click(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_CancelTestList.BitBtnExcelClick(Sender: TObject);
+begin
+     If MessageDlg('Are you sure to send in Excel ?',mtconfirmation,[mbyes,mbno],0)=mryes then
+     Begin
+          ExportDBGrid(Form_CancelTestList, DBGrid1, true, 'Cancelled Test List ', '');
+     End;
+end;
+
+procedure TForm_CancelTestList.Edit_PatientIdKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if Key=#13 then
+     GetCancelTest;
+end;
+
+procedure TForm_CancelTestList.GetCancelTest;
+Begin
+     LoadPatientData(StrToInt(Trim(Edit_PatientId.Text)));
+     if Gs_PatientName<>'' then
+     begin
+          label4.Visible := True;
+          label4.Caption := Gs_PatientName;
+     end
+     else
+     begin
+          MessageDlg('Sorry ! Please Check Hospital No Properly. Anybody is Not Registered With This Number( ' + (Edit_PatientId.Text) + ' )', mtWarning, [MbOk], 0);
+          Edit_PatientId.SetFocus;
+          Exit;
+     end;
+     if Trim(Edit_PatientId.Text)<>'' then
+     begin
+          with Query_List do
+          begin
+               Close;
+               DatabaseName :=gs_DatabaseName;
+               SQL.Clear;
+               SQL.Add('Select Teca_PatientId PatientId,Teca_Inpatientid Inpatientid, Teca_Billno Billno,(Select Tena_Testname From');
+               SQL.Add('HS_Tena_Testname Where Tena_Testnameid=TC.Teca_TestNameid)Service ,Teca_TestDate TestDate,Teca_DataPostDate CancelDate,');
+               SQL.Add('Teca_DataPostTime CancelTime,(Select Usma_Username From HS_Usma_Usermain where Usma_Userid = TC.Teca_DataPostBy)CancelBy,');
+               SQL.Add('Teca_Remarks Remarks From HS_TECA_TEstCancel TC');
+               if RB_OP.Checked=True then
+               begin
+                    SQL.Add('Where Teca_PatientId='+Trim(Edit_PatientId.Text));
+                    SQL.Add('and Teca_Inpatientid=0 Order By CancelDate');
+               end
+               else
+               begin
+                    SQL.Add('Where Teca_InpatientId='+Trim(Edit_PatientId.Text));
+                    SQL.Add('Order By Canceldate,PatientId');
+               end;
+               Open;
+          end;
+     end;
+end;
+
+procedure TForm_CancelTestList.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key=27 then Close;
+end;
+
+procedure TForm_CancelTestList.FormShow(Sender: TObject);
+begin
+     if pi_InPatientId > 0 then
+     begin
+          RB_IP.Checked:=True;
+          Edit_PatientId.Text:=IntToStr(pi_InPatientId);
+          GetCancelTest;
+     end;
+end;
+
+procedure TForm_CancelTestList.RB_IPClick(Sender: TObject);
+begin
+     if RB_IP.Checked=True then
+     begin
+          Label_PatientId.Caption :='IP No :'
+     end
+     else
+          Label_PatientId.Caption :='Patient ID :'
+
+end;
+
+end.

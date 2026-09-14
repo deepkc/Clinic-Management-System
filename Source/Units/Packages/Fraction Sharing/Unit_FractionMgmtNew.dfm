@@ -1,0 +1,3470 @@
+object Form_FractionMgmtNew: TForm_FractionMgmtNew
+  Left = 146
+  Top = 0
+  Caption = 'Fraction Management'
+  ClientHeight = 723
+  ClientWidth = 903
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poDesigned
+  WindowState = wsMaximized
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object PC_Investigation: TPageControl
+    Left = 0
+    Top = 30
+    Width = 895
+    Height = 578
+    ActivePage = TS_Investigation
+    TabOrder = 2
+    object TS_Investigation: TTabSheet
+      Caption = 'Investigation'
+      object Shape5: TShape
+        Left = 0
+        Top = 3
+        Width = 878
+        Height = 47
+        Brush.Color = clBtnFace
+        Pen.Mode = pmMask
+        Shape = stRoundRect
+      end
+      object Label25: TLabel
+        Left = 14
+        Top = 7
+        Width = 70
+        Height = 13
+        Caption = 'Hospital No    :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label26: TLabel
+        Left = 152
+        Top = 7
+        Width = 43
+        Height = 13
+        Caption = 'Name    :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label_HosNo: TLabel
+        Left = 85
+        Top = 7
+        Width = 31
+        Height = 13
+        Caption = 'None'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Labelname: TLabel
+        Left = 199
+        Top = 7
+        Width = 31
+        Height = 13
+        Caption = 'None'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label8: TLabel
+        Left = 14
+        Top = 29
+        Width = 71
+        Height = 13
+        Caption = 'InPatient No  : '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object LabelIpNo: TLabel
+        Left = 85
+        Top = 29
+        Width = 31
+        Height = 13
+        Caption = 'None'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object LabelAdmnCap: TLabel
+        Left = 716
+        Top = 9
+        Width = 64
+        Height = 13
+        Caption = 'Admn .Date :'
+      end
+      object LabelDisCap: TLabel
+        Left = 716
+        Top = 29
+        Width = 63
+        Height = 13
+        Caption = 'Dis. Date     :'
+      end
+      object Label10: TLabel
+        Left = 152
+        Top = 29
+        Width = 45
+        Height = 13
+        Caption = 'Scheme :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object LabelCommunity: TLabel
+        Left = 199
+        Top = 29
+        Width = 31
+        Height = 13
+        Caption = 'None'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object SPB_TestItemSwap: TSpeedButton
+        Left = 603
+        Top = 27
+        Width = 84
+        Height = 19
+        Caption = 'Test Item &Swap'
+        Flat = True
+        OnClick = SPB_TestItemSwapClick
+      end
+      object PC_ItemFractionBreak: TPageControl
+        Left = 0
+        Top = 301
+        Width = 879
+        Height = 247
+        ActivePage = TabSheet4
+        TabOrder = 6
+        OnChange = PC_ItemFractionBreakChange
+        object TabSheet4: TTabSheet
+          Caption = '&Break Item'
+          object Label13: TLabel
+            Left = 617
+            Top = 3
+            Width = 56
+            Height = 13
+            Alignment = taRightJustify
+            Caption = 'DR./Tech. :'
+          end
+          object Label_Description: TLabel
+            Left = 675
+            Top = 22
+            Width = 64
+            Height = 13
+            Caption = 'Description'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label11: TLabel
+            Left = 613
+            Top = 22
+            Width = 60
+            Height = 13
+            Alignment = taRightJustify
+            Caption = 'Description :'
+          end
+          object SPB_TalliedFractionItems: TSpeedButton
+            Left = 708
+            Top = 140
+            Width = 156
+            Height = 22
+            Caption = 'Make up-to-date Fract. (F6)'
+            Flat = True
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000130B0000130B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+              333333333333333333FF33333333333330003FF3FFFFF3333777003000003333
+              300077F777773F333777E00BFBFB033333337773333F7F33333FE0BFBF000333
+              330077F3337773F33377E0FBFBFBF033330077F3333FF7FFF377E0BFBF000000
+              333377F3337777773F3FE0FBFBFBFBFB039977F33FFFFFFF7377E0BF00000000
+              339977FF777777773377000BFB03333333337773FF733333333F333000333333
+              3300333777333333337733333333333333003333333333333377333333333333
+              333333333333333333FF33333333333330003333333333333777333333333333
+              3000333333333333377733333333333333333333333333333333}
+            NumGlyphs = 2
+            OnClick = SPB_TalliedFractionItemsClick
+          end
+          object Label14: TLabel
+            Left = 597
+            Top = 42
+            Width = 76
+            Height = 13
+            Hint = 'Actual DR./Tech.:'
+            Alignment = taRightJustify
+            Caption = 'Act. DR./Tech.:'
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object SB_SetChanges: TSpeedButton
+            Left = 708
+            Top = 76
+            Width = 156
+            Height = 22
+            Caption = 'Set &Changes               (F3)'
+            Flat = True
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000130B0000130B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333330070
+              7700333333337777777733333333008088003333333377F73377333333330088
+              88003333333377FFFF7733333333000000003FFFFFFF77777777000000000000
+              000077777777777777770FFFFFFF0FFFFFF07F3333337F3333370FFFFFFF0FFF
+              FFF07F3FF3FF7FFFFFF70F00F0080CCC9CC07F773773777777770FFFFFFFF039
+              99337F3FFFF3F7F777F30F0000F0F09999937F7777373777777F0FFFFFFFF999
+              99997F3FF3FFF77777770F00F000003999337F773777773777F30FFFF0FF0339
+              99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
+              93337FFFF7737777733300000033333333337777773333333333}
+            NumGlyphs = 2
+            OnClick = SB_SetChangesClick
+          end
+          object SB_ModifyFraction: TSpeedButton
+            Left = 708
+            Top = 98
+            Width = 156
+            Height = 22
+            Caption = '&Sub Fraction               (F4)'
+            Flat = True
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000120B0000120B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333000000
+              000033333377777777773333330FFFFFFFF03FF3FF7FF33F3FF700300000FF0F
+              00F077F777773F737737E00BFBFB0FFFFFF07773333F7F3333F7E0BFBF000FFF
+              F0F077F3337773F3F737E0FBFBFBF0F00FF077F3333FF7F77F37E0BFBF00000B
+              0FF077F3337777737337E0FBFBFBFBF0FFF077F33FFFFFF73337E0BF0000000F
+              FFF077FF777777733FF7000BFB00B0FF00F07773FF77373377373330000B0FFF
+              FFF03337777373333FF7333330B0FFFF00003333373733FF777733330B0FF00F
+              0FF03333737F37737F373330B00FFFFF0F033337F77F33337F733309030FFFFF
+              00333377737FFFFF773333303300000003333337337777777333}
+            NumGlyphs = 2
+            OnClick = SB_ModifyFractionClick
+          end
+          object SB_SpFractionAdd: TSpeedButton
+            Left = 709
+            Top = 119
+            Width = 156
+            Height = 20
+            Caption = 'Sp. Fraction Add          (F5)'
+            Flat = True
+            Glyph.Data = {
+              DE000000424DDE0000000000000076000000280000000D0000000D0000000100
+              0400000000006800000000000000000000001000000000000000000000000000
+              8000008000000080800080000000800080008080000080808000C0C0C0000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+              F000FFFFFFFFFFFFF000FFFFF000FFFFF000FFFFF0F0FFFFF000FFFFF0F0FFFF
+              F000FF0000F0000FF000FF0FFFFFFF0FF000FF0000F0000FF000FFFFF0F0FFFF
+              F000FFFFF0F0FFFFF000FFFFF000FFFFF000FFFFFFFFFFFFF000FFFFFFFFFFFF
+              F000}
+            OnClick = SB_SpFractionAddClick
+          end
+          object SBDelete: TSpeedButton
+            Left = 591
+            Top = 121
+            Width = 112
+            Height = 20
+            Hint = 'Delete Particular Fraction'
+            Caption = 'Delete          (F7)'
+            Flat = True
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000120B0000120B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333000000000
+              3333333777777777F3333330F777777033333337F3F3F3F7F3333330F0808070
+              33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+              33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+              333333F7F7F7F7F7F3F33030F080707030333737F7F7F7F7F7333300F0808070
+              03333377F7F7F7F773333330F080707033333337F7F7F7F7F333333070707070
+              33333337F7F7F7F7FF3333000000000003333377777777777F33330F88877777
+              0333337FFFFFFFFF7F3333000000000003333377777777777333333330777033
+              3333333337FFF7F3333333333000003333333333377777333333}
+            NumGlyphs = 2
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = SBDeleteClick
+          end
+          object SP_ResetChrgDivide: TSpeedButton
+            Left = 591
+            Top = 97
+            Width = 112
+            Height = 22
+            Caption = '&Reset'
+            Flat = True
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000130B0000130B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+              3333333333FFFFF3333333333999993333333333F77777FFF333333999999999
+              3333333777333777FF33339993707399933333773337F3777FF3399933000339
+              9933377333777F3377F3399333707333993337733337333337FF993333333333
+              399377F33333F333377F993333303333399377F33337FF333373993333707333
+              333377F333777F333333993333101333333377F333777F3FFFFF993333000399
+              999377FF33777F77777F3993330003399993373FF3777F37777F399933000333
+              99933773FF777F3F777F339993707399999333773F373F77777F333999999999
+              3393333777333777337333333999993333333333377777333333}
+            NumGlyphs = 2
+            OnClick = SP_ResetChrgDivideClick
+          end
+          object Label_marketing: TLabel
+            Left = 596
+            Top = 41
+            Width = 77
+            Height = 13
+            Hint = 'Actual Mktg Personal.:'
+            Alignment = taRightJustify
+            Caption = 'Mktg Personal : '
+            ParentShowHint = False
+            ShowHint = True
+            Visible = False
+          end
+          object SPB_SetZeroDiscount: TSpeedButton
+            Left = 712
+            Top = 195
+            Width = 156
+            Height = 22
+            Caption = 'Set Zero Discount (0)'
+            OnClick = SPB_SetZeroDiscountClick
+          end
+          object Label48: TLabel
+            Left = 3
+            Top = 167
+            Width = 152
+            Height = 16
+            Caption = 'Total Fraction Amount :'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object lbl_TotalFractionAmount: TLabel
+            Left = 161
+            Top = 167
+            Width = 63
+            Height = 16
+            Caption = '#######'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clHotLight
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object DBGrid_DocInvolved: TDBGrid
+            Left = -1
+            Top = 0
+            Width = 591
+            Height = 161
+            DataSource = DS_Frct_BreakUp_OfItem
+            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+            TabOrder = 0
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -11
+            TitleFont.Name = 'Tahoma'
+            TitleFont.Style = []
+            OnCellClick = DBGrid_DocInvolvedCellClick
+            Columns = <
+              item
+                Expanded = False
+                FieldName = 'DOCCODE'
+                ReadOnly = True
+                Title.Alignment = taCenter
+                Title.Caption = 'Code'
+                Width = 32
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DRNAME'
+                ReadOnly = True
+                Title.Alignment = taCenter
+                Title.Caption = 'Name'
+                Width = 101
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DESCRIPTION'
+                ReadOnly = True
+                Title.Alignment = taCenter
+                Title.Caption = 'Description'
+                Width = 74
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'FRACTIONAMOUNT'
+                ReadOnly = True
+                Title.Alignment = taCenter
+                Title.Caption = 'Amount'
+                Width = 53
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DISCOUNT'
+                Title.Alignment = taCenter
+                Title.Caption = 'Discount'
+                Width = 56
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DocFrctNet'
+                Title.Alignment = taCenter
+                Title.Caption = 'Net Amount'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'FRACTIONRATE'
+                ReadOnly = True
+                Title.Alignment = taCenter
+                Title.Caption = 'Rate %'
+                Width = 42
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'FRACTIONAMOUNT'
+                Title.Caption = 'Rate (Rs)'
+                Width = 48
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'SCharge'
+                Title.Alignment = taCenter
+                Title.Caption = 'S. Charge'
+                Visible = False
+              end
+              item
+                Expanded = False
+                FieldName = 'BILLDATE'
+                Title.Alignment = taCenter
+                Title.Caption = 'Bill Date'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'RefundDate'
+                Title.Alignment = taCenter
+                Title.Caption = 'Refund Date'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'Remarks'
+                Title.Alignment = taCenter
+                Visible = True
+              end>
+          end
+          object Edit_DrTech: TEdit
+            Left = 675
+            Top = -1
+            Width = 189
+            Height = 21
+            ReadOnly = True
+            TabOrder = 1
+            OnKeyDown = Edit_DrTechKeyDown
+          end
+          object DBLCB_ActualDrTech: TDBLookupComboBox
+            Left = 677
+            Top = 41
+            Width = 191
+            Height = 21
+            DropDownAlign = daRight
+            DropDownWidth = 273
+            KeyField = 'DOCID'
+            ListField = 'DOCNAME'
+            ListFieldIndex = 1
+            ListSource = DS_ActulaDoctor
+            TabOrder = 2
+            OnKeyDown = DBLCB_ActualDrTechKeyDown
+          end
+          object CB_ParticularItem: TCheckBox
+            Left = 599
+            Top = 144
+            Width = 104
+            Height = 17
+            Hint = 'Make up-to-date of particual item'
+            Alignment = taLeftJustify
+            BiDiMode = bdLeftToRight
+            Caption = 'For Particular Item'
+            Checked = True
+            ParentBiDiMode = False
+            ParentShowHint = False
+            ShowHint = True
+            State = cbChecked
+            TabOrder = 3
+          end
+          object Panel3: TPanel
+            Left = 705
+            Top = 78
+            Width = 3
+            Height = 85
+            BevelInner = bvLowered
+            BorderStyle = bsSingle
+            Color = clRed
+            TabOrder = 4
+          end
+          object CB_MainDoctor: TCheckBox
+            Left = 766
+            Top = 21
+            Width = 97
+            Height = 17
+            Hint = 'Update Main Doctor In Master Part'
+            Caption = 'Main Doctor (F8)'
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 5
+          end
+          object CB_ChangeFrctAmt: TCheckBox
+            Left = 593
+            Top = 60
+            Width = 110
+            Height = 16
+            Caption = 'Change Frct. Amt'
+            TabOrder = 6
+            OnClick = CB_ChangeFrctAmtClick
+          end
+          object Edit_FrctAmt: TEdit
+            Left = 629
+            Top = 77
+            Width = 74
+            Height = 21
+            Color = clScrollBar
+            ReadOnly = True
+            TabOrder = 7
+          end
+          object CB_Per: TCheckBox
+            Left = 593
+            Top = 79
+            Width = 32
+            Height = 17
+            Caption = '%'
+            Enabled = False
+            TabOrder = 8
+          end
+          object CB_CRPGroup: TCheckBox
+            Left = 599
+            Top = 163
+            Width = 80
+            Height = 17
+            Caption = 'CRP Group'
+            TabOrder = 9
+          end
+          object CB_SetMainConsAsSurgeon: TCheckBox
+            Left = 679
+            Top = 162
+            Width = 178
+            Height = 17
+            Caption = 'Set Main Cons. Doc as Surgeon'
+            TabOrder = 10
+          end
+          object DBLCB_MktgReferral: TDBLookupComboBox
+            Left = 677
+            Top = 60
+            Width = 191
+            Height = 21
+            DropDownAlign = daRight
+            DropDownWidth = 273
+            KeyField = 'Docid'
+            ListField = 'DOCNAME'
+            ListFieldIndex = 1
+            ListSource = Ds_Marketing
+            TabOrder = 11
+            Visible = False
+          end
+          object Cb_Referal: TCheckBox
+            Left = 599
+            Top = 180
+            Width = 120
+            Height = 17
+            Caption = 'Marketing Referral'
+            Enabled = False
+            TabOrder = 12
+            Visible = False
+            OnClick = Cb_ReferalClick
+          end
+          object CB_OutReferral: TCheckBox
+            Left = 599
+            Top = 200
+            Width = 97
+            Height = 17
+            Caption = 'OutDoor Refferal'
+            Enabled = False
+            TabOrder = 13
+            Visible = False
+            OnClick = CB_OutReferralClick
+          end
+        end
+        object TS_SubFraction: TTabSheet
+          Caption = '&Sub Fraction'
+          ImageIndex = 1
+          object GroupBox2: TGroupBox
+            Left = 0
+            Top = -4
+            Width = 869
+            Height = 184
+            TabOrder = 0
+            object Label16: TLabel
+              Left = -1
+              Top = 16
+              Width = 94
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Main Doctor :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label17: TLabel
+              Left = -1
+              Top = 108
+              Width = 94
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = '2nd Doctor :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label18: TLabel
+              Left = -1
+              Top = 32
+              Width = 94
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Fraction Amt (Rs) :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label_RoundChrg: TLabel
+              Left = 96
+              Top = 33
+              Width = 26
+              Height = 13
+              Caption = '0.00'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlue
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label20: TLabel
+              Left = -1
+              Top = 69
+              Width = 94
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Divided Amt. (Rs) :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label21: TLabel
+              Left = 180
+              Top = 69
+              Width = 65
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Divided (%) :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label15: TLabel
+              Left = -1
+              Top = 134
+              Width = 94
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Divided Amt. (Rs) :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label19: TLabel
+              Left = 179
+              Top = 134
+              Width = 65
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Divided (%) :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label23: TLabel
+              Left = 434
+              Top = 46
+              Width = 94
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = '3rd Doctor :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label24: TLabel
+              Left = 434
+              Top = 69
+              Width = 94
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Divided Amt. (Rs) :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label27: TLabel
+              Left = 628
+              Top = 69
+              Width = 65
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Divided (%) :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label_AccAmt: TLabel
+              Left = 645
+              Top = 20
+              Width = 26
+              Height = 13
+              Caption = '0.00'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clFuchsia
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label_AccPer: TLabel
+              Left = 645
+              Top = 4
+              Width = 26
+              Height = 13
+              Caption = '0.00'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clFuchsia
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label_DocName: TLabel
+              Left = 99
+              Top = 14
+              Width = 39
+              Height = 13
+              Caption = 'Doctor'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlue
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label30: TLabel
+              Left = 504
+              Top = 19
+              Width = 139
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Accumulated Amt.(Rs.) :'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label32: TLabel
+              Left = 508
+              Top = 2
+              Width = 135
+              Height = 14
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Accumulated Per(%) :'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object SP_SetSubFract: TSpeedButton
+              Left = 724
+              Top = 3
+              Width = 134
+              Height = 18
+              Caption = '&Set Changes        (F3)'
+              Flat = True
+              Glyph.Data = {
+                76010000424D7601000000000000760000002800000020000000100000000100
+                04000000000000010000130B0000130B00001000000000000000000000000000
+                800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333330070
+                7700333333337777777733333333008088003333333377F73377333333330088
+                88003333333377FFFF7733333333000000003FFFFFFF77777777000000000000
+                000077777777777777770FFFFFFF0FFFFFF07F3333337F3333370FFFFFFF0FFF
+                FFF07F3FF3FF7FFFFFF70F00F0080CCC9CC07F773773777777770FFFFFFFF039
+                99337F3FFFF3F7F777F30F0000F0F09999937F7777373777777F0FFFFFFFF999
+                99997F3FF3FFF77777770F00F000003999337F773777773777F30FFFF0FF0339
+                99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
+                93337FFFF7737777733300000033333333337777773333333333}
+              NumGlyphs = 2
+              OnClick = SP_SetSubFractClick
+            end
+            object SP_Prev1: TSpeedButton
+              Left = 724
+              Top = 22
+              Width = 134
+              Height = 15
+              BiDiMode = bdLeftToRight
+              Caption = '&Go To Previous    (F4)'
+              Flat = True
+              Glyph.Data = {
+                76010000424D7601000000000000760000002800000020000000100000000100
+                04000000000000010000120B0000120B00001000000000000000000000000000
+                800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+                3333333333333333333333333333333333333333333333333333333333333333
+                3333333333333FF3333333333333003333333333333F77F33333333333009033
+                333333333F7737F333333333009990333333333F773337FFFFFF330099999000
+                00003F773333377777770099999999999990773FF33333FFFFF7330099999000
+                000033773FF33777777733330099903333333333773FF7F33333333333009033
+                33333333337737F3333333333333003333333333333377333333333333333333
+                3333333333333333333333333333333333333333333333333333333333333333
+                3333333333333333333333333333333333333333333333333333}
+              NumGlyphs = 2
+              ParentBiDiMode = False
+              OnClick = SP_Prev1Click
+            end
+            object Label1: TLabel
+              Left = 342
+              Top = 46
+              Width = 88
+              Height = 13
+              Caption = 'S. Charge (Rs.)'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlue
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label2: TLabel
+              Left = 354
+              Top = 108
+              Width = 88
+              Height = 13
+              Caption = 'S. Charge (Rs.)'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlue
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label3: TLabel
+              Left = 780
+              Top = 46
+              Width = 88
+              Height = 13
+              Caption = 'S. Charge (Rs.)'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlue
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label5: TLabel
+              Left = 153
+              Top = 32
+              Width = 94
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'S.Charge (Rs.)'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label_SChargeCap: TLabel
+              Left = 250
+              Top = 33
+              Width = 26
+              Height = 13
+              Caption = '0.00'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlue
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label44: TLabel
+              Left = 449
+              Top = 108
+              Width = 79
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = '4th Doctor :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label45: TLabel
+              Left = 435
+              Top = 134
+              Width = 94
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Divided Amt. (Rs) :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label46: TLabel
+              Left = 629
+              Top = 134
+              Width = 65
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Divided (%) :'
+              Color = clInactiveBorder
+              ParentColor = False
+            end
+            object Label47: TLabel
+              Left = 781
+              Top = 108
+              Width = 88
+              Height = 13
+              Caption = 'S. Charge (Rs.)'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlue
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object DBLCB_2ndDoc: TDBLookupComboBox
+              Left = 96
+              Top = 104
+              Width = 247
+              Height = 21
+              KeyField = 'DOCID'
+              ListField = 'DOCNAME'
+              ListSource = DS_ActulaDoctor
+              TabOrder = 3
+              OnKeyPress = DBLCB_2ndDocKeyPress
+            end
+            object Edit_AmtMainDoc: TEdit
+              Left = 96
+              Top = 65
+              Width = 81
+              Height = 21
+              TabOrder = 1
+              Text = '0'
+              OnExit = Edit_AmtMainDocExit
+              OnKeyPress = Edit_AmtMainDocKeyPress
+            end
+            object Edit_PerMainDoc: TEdit
+              Left = 249
+              Top = 65
+              Width = 81
+              Height = 21
+              Color = clScrollBar
+              ReadOnly = True
+              TabOrder = 2
+              Text = '0'
+              OnExit = Edit_PerMainDocExit
+              OnKeyPress = Edit_PerMainDocKeyPress
+            end
+            object Edit_Amt2ndDoc: TEdit
+              Left = 96
+              Top = 130
+              Width = 81
+              Height = 21
+              TabOrder = 4
+              Text = '0'
+              OnExit = Edit_Amt2ndDocExit
+              OnKeyPress = Edit_Amt2ndDocKeyPress
+            end
+            object Edit_Per2ndDoc: TEdit
+              Left = 248
+              Top = 130
+              Width = 81
+              Height = 21
+              Color = clScrollBar
+              ReadOnly = True
+              TabOrder = 5
+              Text = '0'
+              OnExit = Edit_Per2ndDocExit
+              OnKeyPress = Edit_Per2ndDocKeyPress
+            end
+            object DBLCB_3rdDoc: TDBLookupComboBox
+              Left = 531
+              Top = 42
+              Width = 247
+              Height = 21
+              KeyField = 'DOCID'
+              ListField = 'NAME'
+              ListSource = DS_VisitDoctor3rd
+              TabOrder = 6
+              OnKeyPress = DBLCB_3rdDocKeyPress
+            end
+            object Edit_Amt3rdDoc: TEdit
+              Left = 530
+              Top = 65
+              Width = 88
+              Height = 21
+              TabOrder = 7
+              Text = '0'
+              OnExit = Edit_Amt3rdDocExit
+              OnKeyPress = Edit_Amt3rdDocKeyPress
+            end
+            object Edit_Per3rdDoc: TEdit
+              Left = 697
+              Top = 65
+              Width = 81
+              Height = 21
+              Color = clMenu
+              ReadOnly = True
+              TabOrder = 8
+              Text = '0'
+              OnExit = Edit_Per3rdDocExit
+              OnKeyPress = Edit_Per3rdDocKeyPress
+            end
+            object CB_PercentBasis: TCheckBox
+              Left = 340
+              Top = 20
+              Width = 140
+              Height = 17
+              Caption = 'Is Percentage Basis  (F2)'
+              TabOrder = 0
+              OnClick = CB_PercentBasisClick
+            end
+            object CB_UserDefineFract: TCheckBox
+              Left = 340
+              Top = 4
+              Width = 139
+              Height = 17
+              Caption = 'User Define Fraction (F1)'
+              TabOrder = 9
+            end
+            object Edit_Scharge1st: TEdit
+              Left = 342
+              Top = 65
+              Width = 88
+              Height = 21
+              TabOrder = 10
+              OnKeyPress = Edit_Scharge1stKeyPress
+            end
+            object Edit_Scharge2nd: TEdit
+              Left = 340
+              Top = 130
+              Width = 88
+              Height = 21
+              TabOrder = 11
+              OnKeyPress = Edit_Scharge2ndKeyPress
+            end
+            object Edit_Scharge3rd: TEdit
+              Left = 781
+              Top = 65
+              Width = 88
+              Height = 21
+              TabOrder = 12
+              OnKeyPress = Edit_Scharge3rdKeyPress
+            end
+            object DBLCB_4thDoc: TDBLookupComboBox
+              Left = 532
+              Top = 104
+              Width = 247
+              Height = 21
+              KeyField = 'DOCID'
+              ListField = 'NAME'
+              ListSource = DS_VisitDoctor4th
+              TabOrder = 13
+              OnKeyDown = DBLCB_4thDocKeyDown
+            end
+            object Edit_Amt4thDoc: TEdit
+              Left = 531
+              Top = 130
+              Width = 88
+              Height = 21
+              TabOrder = 14
+              Text = '0'
+              OnExit = Edit_Amt4thDocExit
+              OnKeyPress = Edit_Amt4thDocKeyPress
+            end
+            object Edit_Per4thDoc: TEdit
+              Left = 698
+              Top = 130
+              Width = 81
+              Height = 21
+              Color = clMenu
+              ReadOnly = True
+              TabOrder = 15
+              Text = '0'
+              OnExit = Edit_Per4thDocExit
+              OnKeyPress = Edit_Per4thDocKeyPress
+            end
+            object Edit_Scharge4th: TEdit
+              Left = 781
+              Top = 130
+              Width = 88
+              Height = 21
+              TabOrder = 16
+              OnKeyPress = Edit_Scharge3rdKeyPress
+            end
+            object CB_TreatAsSingleQty: TCheckBox
+              Left = 176
+              Top = 2
+              Width = 130
+              Height = 17
+              Caption = 'Treate As Single Qty'
+              TabOrder = 17
+            end
+          end
+        end
+        object TS_SpFractionAdd: TTabSheet
+          Caption = 'S&pecial Fraction Add'
+          ImageIndex = 2
+          object Label34: TLabel
+            Left = 30
+            Top = 72
+            Width = 107
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Doctor / Techinician :'
+            Color = clInactiveBorder
+            ParentColor = False
+          end
+          object Label35: TLabel
+            Left = 93
+            Top = 51
+            Width = 44
+            Height = 13
+            Alignment = taRightJustify
+            Caption = 'Position :'
+            Color = clInactiveBorder
+            ParentColor = False
+          end
+          object Label36: TLabel
+            Left = 31
+            Top = 94
+            Width = 107
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Fraction Amount (Rs) :'
+            Color = clInactiveBorder
+            ParentColor = False
+          end
+          object SPB_SPFractAdd: TSpeedButton
+            Left = 142
+            Top = 139
+            Width = 111
+            Height = 25
+            Caption = '&Addition (F3)'
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000130B0000130B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333330070
+              7700333333337777777733333333008088003333333377F73377333333330088
+              88003333333377FFFF7733333333000000003FFFFFFF77777777000000000000
+              000077777777777777770FFFFFFF0FFFFFF07F3333337F3333370FFFFFFF0FFF
+              FFF07F3FF3FF7FFFFFF70F00F0080CCC9CC07F773773777777770FFFFFFFF039
+              99337F3FFFF3F7F777F30F0000F0F09999937F7777373777777F0FFFFFFFF999
+              99997F3FF3FFF77777770F00F000003999337F773777773777F30FFFF0FF0339
+              99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
+              93337FFFF7737777733300000033333333337777773333333333}
+            NumGlyphs = 2
+            OnClick = SPB_SPFractAddClick
+          end
+          object Label37: TLabel
+            Left = 38
+            Top = 4
+            Width = 101
+            Height = 13
+            Alignment = taRightJustify
+            Caption = 'Total Test Price (Rs):'
+            Color = clInactiveBorder
+            ParentColor = False
+          end
+          object Label38: TLabel
+            Left = -9
+            Top = 26
+            Width = 148
+            Height = 13
+            Alignment = taRightJustify
+            Caption = 'Distributed Fraction Tot. (Rs.):'
+            Color = clInactiveBorder
+            ParentColor = False
+          end
+          object Label_TotTestPrice: TLabel
+            Left = 144
+            Top = 5
+            Width = 26
+            Height = 13
+            Caption = '0.00'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label_FractTotal: TLabel
+            Left = 144
+            Top = 26
+            Width = 26
+            Height = 13
+            Caption = '0.00'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label42: TLabel
+            Left = 68
+            Top = 120
+            Width = 72
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Remarks :'
+            Color = clInactiveBorder
+            ParentColor = False
+          end
+          object DLCB_AddedkDoctor: TDBLookupComboBox
+            Left = 143
+            Top = 69
+            Width = 261
+            Height = 21
+            KeyField = 'DOCID'
+            ListField = 'DOCNAME'
+            ListSource = DS_ActulaDoctor
+            TabOrder = 1
+            OnKeyPress = DLCB_AddedkDoctorKeyPress
+          end
+          object DBLCB_Position: TDBLookupComboBox
+            Left = 143
+            Top = 46
+            Width = 261
+            Height = 21
+            KeyField = 'POSITIONID'
+            ListField = 'POSITION'
+            ListSource = DS_Position
+            TabOrder = 0
+            OnKeyPress = DBLCB_PositionKeyPress
+          end
+          object Edit_AddedFractAmt: TEdit
+            Left = 143
+            Top = 92
+            Width = 95
+            Height = 21
+            TabOrder = 2
+            OnExit = Edit_AddedFractAmtExit
+            OnKeyPress = Edit_AddedFractAmtKeyPress
+          end
+          object BitBtn_Deduct: TBitBtn
+            Left = 257
+            Top = 139
+            Width = 108
+            Height = 25
+            Caption = 'Deduction (F4)'
+            DoubleBuffered = True
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000130B0000130B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+              3333333333333333FF3333333333333003333333333333377F33333333333307
+              733333FFF333337773333C003333307733333777FF333777FFFFC0CC03330770
+              000077777FF377777777C033C03077FFFFF077FF77F777FFFFF7CC00000F7777
+              777077777777777777773CCCCC00000000003777777777777777333330030FFF
+              FFF03333F77F7F3FF3F7333C0C030F00F0F03337777F7F77373733C03C030FFF
+              FFF03377F77F7F3F333733C03C030F0FFFF03377F7737F733FF733C000330FFF
+              0000337777F37F3F7777333CCC330F0F0FF0333777337F737F37333333330FFF
+              0F03333333337FFF7F7333333333000000333333333377777733}
+            NumGlyphs = 2
+            ParentDoubleBuffered = False
+            TabOrder = 3
+            OnClick = BitBtn_DeductClick
+          end
+          object Edit_RemarksFrcAdd: TEdit
+            Left = 143
+            Top = 115
+            Width = 261
+            Height = 21
+            TabOrder = 4
+          end
+          object DBGrid1: TDBGrid
+            Left = 408
+            Top = 0
+            Width = 462
+            Height = 219
+            DataSource = DS_Frct_BreakUp_OfItem
+            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+            TabOrder = 5
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -11
+            TitleFont.Name = 'Tahoma'
+            TitleFont.Style = []
+            OnCellClick = DBGrid_DocInvolvedCellClick
+            Columns = <
+              item
+                Expanded = False
+                FieldName = 'DOCCODE'
+                ReadOnly = True
+                Title.Alignment = taCenter
+                Title.Caption = 'Code'
+                Width = 32
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DRNAME'
+                ReadOnly = True
+                Title.Alignment = taCenter
+                Title.Caption = 'Name'
+                Width = 101
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DESCRIPTION'
+                ReadOnly = True
+                Title.Alignment = taCenter
+                Title.Caption = 'Description'
+                Width = 74
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'FRACTIONAMOUNT'
+                ReadOnly = True
+                Title.Alignment = taCenter
+                Title.Caption = 'Amount'
+                Width = 53
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DISCOUNT'
+                Title.Alignment = taCenter
+                Title.Caption = 'Discount'
+                Width = 56
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DocFrctNet'
+                Title.Alignment = taCenter
+                Title.Caption = 'Net Amount'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'FRACTIONRATE'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'MS Sans Serif'
+                Font.Style = []
+                ReadOnly = True
+                Title.Alignment = taCenter
+                Title.Caption = 'Rate %'
+                Title.Font.Charset = DEFAULT_CHARSET
+                Title.Font.Color = clWindowText
+                Title.Font.Height = -9
+                Title.Font.Name = 'MS Sans Serif'
+                Title.Font.Style = []
+                Width = 42
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'FRACTIONAMOUNT'
+                Title.Caption = 'Rate (Rs)'
+                Width = 48
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'SCharge'
+                Title.Alignment = taCenter
+                Title.Caption = 'S. Charge'
+                Width = 65
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'BILLDATE'
+                Title.Alignment = taCenter
+                Title.Caption = 'Bill Date'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'RefundDate'
+                Title.Alignment = taCenter
+                Title.Caption = 'Refund Date'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'Remarks'
+                Title.Alignment = taCenter
+                Visible = True
+              end>
+          end
+          object CB_IsDisPerAppliedforBilling: TCheckBox
+            Left = 242
+            Top = 94
+            Width = 160
+            Height = 17
+            Caption = 'Is Dis. Per. Applied of Billing'
+            Checked = True
+            State = cbChecked
+            TabOrder = 6
+          end
+        end
+        object TS_OperationCase: TTabSheet
+          Caption = '&Frct. Adj.  After Locking'
+          ImageIndex = 3
+          object Label29: TLabel
+            Left = 595
+            Top = 24
+            Width = 76
+            Height = 13
+            Hint = 'Actual DR./Tech.:'
+            Alignment = taRightJustify
+            Caption = 'Act. DR./Tech.:'
+            Color = clInactiveBorder
+            ParentColor = False
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object SPB_AdjFrctAL: TSpeedButton
+            Left = 674
+            Top = 47
+            Width = 156
+            Height = 18
+            Caption = ' Set &Changes                (F3)'
+            Flat = True
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000130B0000130B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333330070
+              7700333333337777777733333333008088003333333377F73377333333330088
+              88003333333377FFFF7733333333000000003FFFFFFF77777777000000000000
+              000077777777777777770FFFFFFF0FFFFFF07F3333337F3333370FFFFFFF0FFF
+              FFF07F3FF3FF7FFFFFF70F00F0080CCC9CC07F773773777777770FFFFFFFF039
+              99337F3FFFF3F7F777F30F0000F0F09999937F7777373777777F0FFFFFFFF999
+              99997F3FF3FFF77777770F00F000003999337F773777773777F30FFFF0FF0339
+              99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
+              93337FFFF7737777733300000033333333337777773333333333}
+            NumGlyphs = 2
+            OnClick = SPB_AdjFrctALClick
+          end
+          object Label31: TLabel
+            Left = 597
+            Top = 96
+            Width = 74
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Doctor / Tech.:'
+            Color = clInactiveBorder
+            Enabled = False
+            ParentColor = False
+            Visible = False
+          end
+          object Label39: TLabel
+            Left = 599
+            Top = 116
+            Width = 72
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Frct. Amt. (Rs) :'
+            Color = clInactiveBorder
+            Enabled = False
+            ParentColor = False
+            Visible = False
+          end
+          object SPB_AdjAdd: TSpeedButton
+            Left = 674
+            Top = 152
+            Width = 91
+            Height = 19
+            Caption = '&Addition (F4)'
+            Enabled = False
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000120B0000120B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333000000
+              000033333377777777773333330FFFFFFFF03FF3FF7FF33F3FF700300000FF0F
+              00F077F777773F737737E00BFBFB0FFFFFF07773333F7F3333F7E0BFBF000FFF
+              F0F077F3337773F3F737E0FBFBFBF0F00FF077F3333FF7F77F37E0BFBF00000B
+              0FF077F3337777737337E0FBFBFBFBF0FFF077F33FFFFFF73337E0BF0000000F
+              FFF077FF777777733FF7000BFB00B0FF00F07773FF77373377373330000B0FFF
+              FFF03337777373333FF7333330B0FFFF00003333373733FF777733330B0FF00F
+              0FF03333737F37737F373330B00FFFFF0F033337F77F33337F733309030FFFFF
+              00333377737FFFFF773333303300000003333337337777777333}
+            NumGlyphs = 2
+            Visible = False
+            OnClick = SPB_AdjAddClick
+          end
+          object Label40: TLabel
+            Left = 592
+            Top = 3
+            Width = 79
+            Height = 13
+            Hint = 'Actual DR./Tech.:'
+            Alignment = taRightJustify
+            Caption = 'Adj. Frct. Date :'
+            Color = clInactiveBorder
+            ParentColor = False
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object Label33: TLabel
+            Left = 597
+            Top = 45
+            Width = 71
+            Height = 43
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Adjustment After Frct. Lock'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clRed
+            Font.Height = -12
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+            WordWrap = True
+          end
+          object Label41: TLabel
+            Left = 599
+            Top = 137
+            Width = 72
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Remarks :'
+            Color = clInactiveBorder
+            ParentColor = False
+          end
+          object DBGrid_FrctAdjAftLocking: TDBGrid
+            Left = -2
+            Top = -1
+            Width = 589
+            Height = 173
+            DataSource = DS_Frct_BreakUp_OfItem
+            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+            TabOrder = 0
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -11
+            TitleFont.Name = 'Tahoma'
+            TitleFont.Style = []
+            OnCellClick = DBGrid_FrctAdjAftLockingCellClick
+            OnDrawColumnCell = DBGrid_FrctAdjAftLockingDrawColumnCell
+            Columns = <
+              item
+                Expanded = False
+                FieldName = 'DOCCODE'
+                ReadOnly = True
+                Title.Alignment = taCenter
+                Title.Caption = 'Code'
+                Width = 43
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DRNAME'
+                ReadOnly = True
+                Title.Alignment = taCenter
+                Title.Caption = 'Name'
+                Width = 111
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DESCRIPTION'
+                Title.Caption = 'Description'
+                Width = 20
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'FRACTIONAMOUNT'
+                Title.Caption = 'Amount'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DISCOUNT'
+                Title.Caption = 'Discount'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DocFrctNet'
+                Title.Caption = 'Net Amount'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'FRACTIONRATE'
+                Title.Caption = 'Rate %'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'FRACTIONAMOUNT'
+                Title.Caption = 'Rate (Rs)'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'SCharge'
+                Visible = False
+              end
+              item
+                Expanded = False
+                FieldName = 'BILLDATE'
+                Title.Caption = 'Billdate'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'RefundDate'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'Remarks'
+                Visible = True
+              end>
+          end
+          object DBLCB_DrTechAL: TDBLookupComboBox
+            Left = 674
+            Top = 20
+            Width = 195
+            Height = 21
+            DropDownAlign = daRight
+            DropDownWidth = 273
+            KeyField = 'DOCID'
+            ListField = 'DOCCODE;DOCNAME'
+            ListFieldIndex = 1
+            ListSource = DS_ActulaDoctor
+            TabOrder = 1
+            OnKeyDown = DBLCB_ActualDrTechKeyDown
+          end
+          object CB_FrctAdjAL: TCheckBox
+            Left = 674
+            Top = 73
+            Width = 161
+            Height = 14
+            Caption = 'Fraction Addition && Deduction'
+            Enabled = False
+            TabOrder = 2
+            Visible = False
+            OnClick = CB_FrctAdjALClick
+          end
+          object DBLCB_AdjDocTech: TDBLookupComboBox
+            Left = 674
+            Top = 92
+            Width = 194
+            Height = 21
+            Enabled = False
+            KeyField = 'DOCCODE'
+            ListField = 'DOCNAME'
+            ListSource = DS_ActulaDoctor
+            TabOrder = 3
+            Visible = False
+            OnKeyPress = DLCB_AddedkDoctorKeyPress
+          end
+          object Edit_AdjFrctAmt: TEdit
+            Left = 674
+            Top = 111
+            Width = 92
+            Height = 21
+            Color = clScrollBar
+            Enabled = False
+            ReadOnly = True
+            TabOrder = 4
+            Visible = False
+            OnExit = Edit_AddedFractAmtExit
+            OnKeyPress = Edit_AddedFractAmtKeyPress
+          end
+          object BitBtn_AdjDeduction: TBitBtn
+            Left = 767
+            Top = 152
+            Width = 103
+            Height = 20
+            Caption = 'Deduction (F5)'
+            DoubleBuffered = True
+            Enabled = False
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000130B0000130B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+              3333333333333333FF3333333333333003333333333333377F33333333333307
+              733333FFF333337773333C003333307733333777FF333777FFFFC0CC03330770
+              000077777FF377777777C033C03077FFFFF077FF77F777FFFFF7CC00000F7777
+              777077777777777777773CCCCC00000000003777777777777777333330030FFF
+              FFF03333F77F7F3FF3F7333C0C030F00F0F03337777F7F77373733C03C030FFF
+              FFF03377F77F7F3F333733C03C030F0FFFF03377F7737F733FF733C000330FFF
+              0000337777F37F3F7777333CCC330F0F0FF0333777337F737F37333333330FFF
+              0F03333333337FFF7F7333333333000000333333333377777733}
+            NumGlyphs = 2
+            ParentDoubleBuffered = False
+            TabOrder = 5
+            Visible = False
+            OnClick = BitBtn_AdjDeductionClick
+          end
+          object DateEditX_AdjFrctDate: TDateEditX
+            Left = 673
+            Top = -1
+            Width = 92
+            Height = 21
+            TabOrder = 6
+            ControlData = {
+              545046300A5444617465456469745200044C65667403A10203546F7002FF0577
+              69647468025C0B4461746541442E5965617203DA070C4461746541442E4D6F6E
+              746802090A4461746541442E44617902020B4461746556532E59656172031308
+              0C4461746556532E4D6F6E746802050A4461746556532E44617902110000}
+          end
+          object Btn_AdjFrctDate: TButton
+            Left = 739
+            Top = 2
+            Width = 24
+            Height = 20
+            Caption = 'AD'
+            TabOrder = 7
+            OnClick = Btn_AdjFrctDateClick
+          end
+          object Edit_Remarks: TEdit
+            Left = 674
+            Top = 132
+            Width = 192
+            Height = 21
+            TabOrder = 8
+          end
+          object CB_SplFrctAdd: TCheckBox
+            Left = 590
+            Top = 155
+            Width = 84
+            Height = 17
+            Caption = 'Spl. Frct. Add'
+            Enabled = False
+            TabOrder = 9
+            Visible = False
+            OnClick = CB_SplFrctAddClick
+          end
+        end
+      end
+      object DateEditXIPDate: TDateEditX
+        Left = 781
+        Top = 5
+        Width = 94
+        Height = 21
+        TabOrder = 0
+        ControlData = {
+          545046300A5444617465456469745200044C656674030D0303546F7002050577
+          69647468025E0B4461746541442E5965617203D4070C4461746541442E4D6F6E
+          746802070A4461746541442E446179021E0B4461746556532E59656172030D08
+          0C4461746556532E4D6F6E746802040A4461746556532E446179020F08526561
+          644F6E6C79090000}
+      end
+      object DateEditXDisDate: TDateEditX
+        Left = 781
+        Top = 25
+        Width = 94
+        Height = 21
+        TabOrder = 1
+        ControlData = {
+          545046300A5444617465456469745200044C656674030D0303546F7002190577
+          69647468025E0B4461746541442E5965617203D4070C4461746541442E4D6F6E
+          746802070A4461746541442E446179021E0B4461746556532E59656172030D08
+          0C4461746556532E4D6F6E746802040A4461746556532E446179020F08526561
+          644F6E6C79090000}
+      end
+      object Button_AdmnDate: TButton
+        Left = 846
+        Top = 7
+        Width = 27
+        Height = 17
+        Caption = 'AD'
+        TabOrder = 2
+        OnClick = Button_AdmnDateClick
+      end
+      object Button_DisDate: TButton
+        Left = 846
+        Top = 28
+        Width = 27
+        Height = 17
+        Caption = 'AD'
+        TabOrder = 3
+        OnClick = Button_DisDateClick
+      end
+      object DBGridPatientTest: TDBGrid
+        Left = 7
+        Top = 50
+        Width = 877
+        Height = 246
+        Hint = 'After add Investigation Press Ctrl+Enter;'
+        Color = clBtnFace
+        DataSource = DS_PatientTest
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 4
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'MS Sans Serif'
+        TitleFont.Style = []
+        OnCellClick = DBGridPatientTestCellClick
+        OnDrawColumnCell = DBGridPatientTestDrawColumnCell
+        OnKeyDown = DBGridPatientTestKeyDown
+        Columns = <
+          item
+            Color = clHighlightText
+            Expanded = False
+            FieldName = 'SERVICEDATE'
+            Title.Alignment = taCenter
+            Title.Caption = 'Service Date'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 70
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'SERVICETIME'
+            Title.Caption = 'Time'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 34
+            Visible = True
+          end
+          item
+            ButtonStyle = cbsEllipsis
+            Expanded = False
+            FieldName = 'SERVICEBILLNO'
+            ReadOnly = True
+            Title.Alignment = taCenter
+            Title.Caption = 'Svr. Bill No'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 94
+            Visible = True
+          end
+          item
+            ButtonStyle = cbsEllipsis
+            Expanded = False
+            FieldName = 'BILLDATE'
+            ReadOnly = True
+            Title.Alignment = taCenter
+            Title.Caption = 'Bill Date'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'BILLNO'
+            ReadOnly = True
+            Title.Alignment = taCenter
+            Title.Caption = 'BillNo'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 93
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DocCode'
+            Title.Caption = 'Doc. Code'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'RefDocCode'
+            Title.Alignment = taCenter
+            Title.Caption = 'Ref.Doc.Code'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 70
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'SERVICE'
+            Title.Alignment = taCenter
+            Title.Caption = 'Svr. Code'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 53
+            Visible = True
+          end
+          item
+            Color = 14672870
+            Expanded = False
+            FieldName = 'SERVICETYPE'
+            ReadOnly = True
+            Title.Alignment = taCenter
+            Title.Caption = 'Service Type'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 156
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'AMOUNT'
+            ReadOnly = True
+            Title.Alignment = taCenter
+            Title.Caption = 'Amount'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 58
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTY'
+            ReadOnly = True
+            Title.Alignment = taCenter
+            Title.Caption = 'Qty'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 48
+            Visible = True
+          end
+          item
+            Color = 14672870
+            Expanded = False
+            FieldName = 'DISPER'
+            ReadOnly = True
+            Title.Alignment = taCenter
+            Title.Caption = 'Dis.Per'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 41
+            Visible = True
+          end
+          item
+            Color = 14672870
+            Expanded = False
+            FieldName = 'DISCOUNT'
+            ReadOnly = True
+            Title.Alignment = taCenter
+            Title.Caption = 'Discount'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 49
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VATAMT'
+            ReadOnly = True
+            Title.Alignment = taCenter
+            Title.Caption = 'Vat Amt'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 53
+            Visible = True
+          end
+          item
+            Color = clWindow
+            Expanded = False
+            FieldName = 'NETTOTAL'
+            ReadOnly = True
+            Title.Alignment = taCenter
+            Title.Caption = 'Net Total'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 54
+            Visible = True
+          end
+          item
+            Color = clHighlightText
+            Expanded = False
+            FieldName = 'USERNAME'
+            Title.Alignment = taCenter
+            Title.Caption = 'User'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -11
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 82
+            Visible = True
+          end>
+      end
+      object CB_FractionableItem: TCheckBox
+        Left = 444
+        Top = 28
+        Width = 152
+        Height = 17
+        Caption = 'Only Fractionable Item (F9)'
+        TabOrder = 5
+        OnClick = CB_FractionableItemClick
+      end
+      object EditItemName: TEdit
+        Left = 507
+        Top = 300
+        Width = 369
+        Height = 21
+        ReadOnly = True
+        TabOrder = 7
+        OnKeyDown = EditItemNameKeyDown
+      end
+      object Panel2: TPanel
+        Left = 442
+        Top = 301
+        Width = 64
+        Height = 19
+        BevelInner = bvLowered
+        TabOrder = 8
+        object Label12: TLabel
+          Left = 1
+          Top = 2
+          Width = 59
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'Item Name :'
+        end
+      end
+      object CB_Referral: TCheckBox
+        Left = 444
+        Top = 6
+        Width = 204
+        Height = 17
+        Caption = 'Marketing and Out Referral'
+        TabOrder = 9
+        OnClick = CB_ReferralClick
+      end
+      object BitBtn_ReplicateFraction: TBitBtn
+        Left = 594
+        Top = 3
+        Width = 116
+        Height = 25
+        Caption = 'Replicate Fraction'
+        DoubleBuffered = True
+        ParentDoubleBuffered = False
+        TabOrder = 10
+      end
+    end
+  end
+  object PC_BillDisplay: TPageControl
+    Left = 0
+    Top = 32
+    Width = 903
+    Height = 669
+    ActivePage = TabSheet2
+    Align = alClient
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    object TabSheet2: TTabSheet
+      Caption = 'Bill List'
+      object Shape2: TShape
+        Left = 0
+        Top = 2
+        Width = 877
+        Height = 58
+        Brush.Color = clBtnFace
+        Shape = stRoundRect
+      end
+      object Label9: TLabel
+        Left = 1
+        Top = 20
+        Width = 40
+        Height = 13
+        Caption = 'Search :'
+      end
+      object Shape3: TShape
+        Left = 312
+        Top = 4
+        Width = 124
+        Height = 50
+        Brush.Color = clBtnFace
+        Shape = stRoundRect
+      end
+      object Label6: TLabel
+        Left = 311
+        Top = 11
+        Width = 31
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'From :'
+      end
+      object Label7: TLabel
+        Left = 323
+        Top = 34
+        Width = 19
+        Height = 13
+        Caption = 'To :'
+      end
+      object SB_View: TSpeedButton
+        Left = 132
+        Top = 34
+        Width = 67
+        Height = 22
+        Caption = '&View (F5)'
+        Flat = True
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000130B0000130B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+          33033333333333333F7F3333333333333000333333333333F777333333333333
+          000333333333333F777333333333333000333333333333F77733333333333300
+          033333333FFF3F777333333700073B703333333F7773F77733333307777700B3
+          33333377333777733333307F8F8F7033333337F333F337F3333377F8F9F8F773
+          3333373337F3373F3333078F898F870333337F33F7FFF37F333307F99999F703
+          33337F377777337F3333078F898F8703333373F337F33373333377F8F9F8F773
+          333337F3373337F33333307F8F8F70333333373FF333F7333333330777770333
+          333333773FF77333333333370007333333333333777333333333}
+        NumGlyphs = 2
+        OnClick = SB_ViewClick
+      end
+      object SPB_InvFraction: TSpeedButton
+        Left = 632
+        Top = 5
+        Width = 139
+        Height = 22
+        Caption = 'Frct. Of &Investigation(F3) '
+        Flat = True
+        Glyph.Data = {
+          F6000000424DF600000000000000760000002800000010000000100000000100
+          04000000000080000000120B0000120B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00555555000555
+          55555555008880055555555088CCC880555555508C888C8055555508CCCCCCC8
+          05555508CECCCCC805555508CEECCCC8055555508C444C805555555088FFF880
+          5555555508FFF80555555555508F805555555555508F805555555555508F8055
+          55555555508F8055555555550888880555555555500000555555}
+        OnClick = SPB_InvFractionClick
+      end
+      object SPB_RoundFraction: TSpeedButton
+        Left = 631
+        Top = 28
+        Width = 139
+        Height = 22
+        Caption = 'Frct of &Round Chrg (F4) '
+        Flat = True
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000120B0000120B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+          333333333333333333333333333333333333333FF33333333FF3330033333333
+          00333377FF33333377FF300003333330000337777FFFFFF7777F000000000000
+          000077777777777777770F88FFFF8FFF88F07F333F33333333370FFF9FFF8FFF
+          FF707F337FF333FFFFF70FF999FF800000037F377733377777730FFF9FFF0888
+          80337F3373337F3337330FFFFFFF088803337FFFFFFF7FFF7333700000000000
+          3333777777777777F33333333339399939333333333337773333333333333393
+          3333333333333373333333333333933393333333333333333333333333333393
+          3333333333333333333333333333333333333333333333333333}
+        NumGlyphs = 2
+        OnClick = SPB_RoundFractionClick
+      end
+      object Shape4: TShape
+        Left = 775
+        Top = 4
+        Width = 97
+        Height = 50
+        Brush.Color = clBtnFace
+        Pen.Mode = pmMask
+        Shape = stRoundRect
+      end
+      object Label22: TLabel
+        Left = 777
+        Top = 6
+        Width = 46
+        Height = 16
+        Caption = 'Today'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clNavy
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label28: TLabel
+        Left = 439
+        Top = 21
+        Width = 91
+        Height = 13
+        Caption = 'Test Name && Dept.'
+      end
+      object Panel_Reg: TPanel
+        Left = 110
+        Top = 3
+        Width = 45
+        Height = 44
+        BevelOuter = bvLowered
+        TabOrder = 14
+        Visible = False
+        object CB_Int: TCheckBox
+          Left = 3
+          Top = 2
+          Width = 35
+          Height = 13
+          Caption = 'I&nt.'
+          TabOrder = 0
+          Visible = False
+        end
+        object CB_Ghc: TCheckBox
+          Left = 3
+          Top = 16
+          Width = 41
+          Height = 12
+          Caption = '&Ghc'
+          TabOrder = 1
+          Visible = False
+        end
+        object CB_EmrOPD: TCheckBox
+          Left = 3
+          Top = 34
+          Width = 40
+          Height = 10
+          Caption = 'E&mr'
+          TabOrder = 2
+          Visible = False
+        end
+      end
+      object DateEditX_FromBillView: TDateEditX
+        Left = 342
+        Top = 7
+        Width = 93
+        Height = 21
+        TabOrder = 0
+        ControlData = {
+          545046300A5444617465456469745200044C65667403560103546F7002070577
+          69647468025D0B4461746541442E5965617203D6070C4461746541442E4D6F6E
+          746802010A4461746541442E44617902180B4461746556532E59656172030E08
+          0C4461746556532E4D6F6E7468020A0A4461746556532E446179020B0000}
+      end
+      object DateEditX_ToBillView: TDateEditX
+        Left = 342
+        Top = 30
+        Width = 93
+        Height = 21
+        TabOrder = 1
+        ControlData = {
+          545046300A5444617465456469745200044C65667403560103546F70021E0577
+          69647468025D0B4461746541442E5965617203D6070C4461746541442E4D6F6E
+          746802010A4461746541442E44617902180B4461746556532E59656172030E08
+          0C4461746556532E4D6F6E7468020A0A4461746556532E446179020B0000}
+      end
+      object BitBtn_From: TBitBtn
+        Left = 409
+        Top = 8
+        Width = 24
+        Height = 18
+        Caption = 'BS'
+        DoubleBuffered = True
+        ParentDoubleBuffered = False
+        TabOrder = 2
+        OnClick = BitBtn_FromClick
+      end
+      object BitBtn_To: TBitBtn
+        Left = 409
+        Top = 32
+        Width = 24
+        Height = 18
+        Caption = 'BS'
+        DoubleBuffered = True
+        ParentDoubleBuffered = False
+        TabOrder = 3
+        OnClick = BitBtn_ToClick
+      end
+      object DBGrid_BillList: TDBGrid
+        Left = -3
+        Top = 85
+        Width = 879
+        Height = 425
+        DataSource = DS_BillList
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick]
+        TabOrder = 4
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+        OnTitleClick = DBGrid_BillListTitleClick
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'PatientId'
+            Title.Alignment = taCenter
+            Title.Caption = 'Hospital No'
+            Width = 66
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'InPatientId'
+            Title.Alignment = taCenter
+            Title.Caption = 'Inpt. No'
+            Width = 57
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Name'
+            Title.Alignment = taCenter
+            Width = 112
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'BillNo'
+            Title.Alignment = taCenter
+            Title.Caption = 'Bill No'
+            Width = 93
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'BillDate'
+            Title.Alignment = taCenter
+            Title.Caption = 'Bill Date'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'BillTime'
+            Title.Alignment = taCenter
+            Title.Caption = 'Time'
+            Width = 32
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Amount'
+            Title.Alignment = taCenter
+            Width = 55
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DocCode'
+            Title.Alignment = taCenter
+            Title.Caption = 'Doc.Code'
+            Width = 49
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Discount'
+            Title.Alignment = taCenter
+            Width = 53
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'SubTotal'
+            Title.Alignment = taCenter
+            Title.Caption = 'Sub Total'
+            Width = 58
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'SvrTax'
+            Title.Alignment = taCenter
+            Title.Caption = 'Svr. Tax'
+            Width = 44
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'NetAmount'
+            Title.Alignment = taCenter
+            Title.Caption = 'Net Amount'
+            Width = 61
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'UserName'
+            Title.Alignment = taCenter
+            Title.Caption = 'User'
+            Visible = True
+          end>
+      end
+      object Edit_Search: TEdit
+        Left = 42
+        Top = 16
+        Width = 156
+        Height = 21
+        CharCase = ecUpperCase
+        MaxLength = 16
+        TabOrder = 5
+        OnChange = Edit_SearchChange
+        OnKeyPress = EditSearchKeyPress
+      end
+      object RB_IPBill: TRadioButton
+        Left = 202
+        Top = 4
+        Width = 29
+        Height = 17
+        Caption = '&IP'
+        Checked = True
+        TabOrder = 6
+        TabStop = True
+        OnClick = RB_IPBillClick
+      end
+      object RB_OPBill: TRadioButton
+        Left = 234
+        Top = 4
+        Width = 32
+        Height = 17
+        Caption = '&OP'
+        TabOrder = 7
+        OnClick = RB_OPBillClick
+      end
+      object RB_Both: TRadioButton
+        Left = 269
+        Top = 4
+        Width = 43
+        Height = 17
+        Caption = '&Both'
+        TabOrder = 8
+        OnClick = RB_BothClick
+      end
+      object CB_GlobalSearch: TCheckBox
+        Left = 42
+        Top = 36
+        Width = 87
+        Height = 17
+        Hint = 'Search By : Patient Id , Inpatient Id & BillNo'
+        Caption = '&Global Search'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 9
+      end
+      object DateEditX_TodayDate: TDateEditX
+        Left = 778
+        Top = 29
+        Width = 91
+        Height = 21
+        TabOrder = 10
+        ControlData = {
+          545046300A5444617465456469745200044C656674030A0303546F70021D0577
+          69647468025B0B4461746541442E5965617203D2070C4461746541442E4D6F6E
+          746802020A4461746541442E44617902060B4461746556532E59656172030A08
+          0C4461746556532E4D6F6E7468020A0A4461746556532E446179021805436F6C
+          6F720709636C42746E466163650C466F6E742E43686172736574070C414E5349
+          5F434841525345540A466F6E742E436F6C6F72070C636C57696E646F77546578
+          740B466F6E742E48656967687402F509466F6E742E4E616D65060D4D53205361
+          6E732053657269660A466F6E742E5374796C650B000A506172656E74466F6E74
+          080000}
+      end
+      object Button_TodayDate: TButton
+        Left = 843
+        Top = 31
+        Width = 26
+        Height = 17
+        Caption = 'BS'
+        TabOrder = 11
+        OnClick = Button_TodayDateClick
+      end
+      object DBLCB_TestName: TDBLookupComboBox
+        Left = 439
+        Top = 33
+        Width = 190
+        Height = 21
+        DropDownWidth = 480
+        KeyField = 'TESTNAMECODE'
+        ListField = 'TESTNAME'
+        ListFieldIndex = 1
+        ListSource = DS_TestName
+        TabOrder = 12
+        OnKeyDown = DBLCB_TestNameKeyDown
+      end
+      object DBLCB_DepName: TDBLookupComboBox
+        Left = 300
+        Top = 63
+        Width = 190
+        Height = 21
+        DropDownWidth = 400
+        KeyField = 'DEPID'
+        ListField = 'DEPNAME'
+        ListSource = DS_Department
+        TabOrder = 13
+        OnClick = DBLCB_DepNameClick
+        OnKeyDown = DBLCB_DepNameKeyDown
+      end
+      object CB_ByName: TCheckBox
+        Left = 42
+        Top = 2
+        Width = 97
+        Height = 13
+        Caption = 'By Name'
+        TabOrder = 15
+      end
+      object CB_FractionableTest: TCheckBox
+        Left = 535
+        Top = 21
+        Width = 96
+        Height = 12
+        Caption = 'Frctionable Test'
+        TabOrder = 16
+        OnClick = CB_FractionableTestClick
+      end
+      object CB_OutStdPt: TCheckBox
+        Left = 205
+        Top = 22
+        Width = 77
+        Height = 17
+        Caption = 'Out Std. Pt.'
+        TabOrder = 17
+        OnClick = CB_OutStdPtClick
+      end
+      object CB_Reg: TCheckBox
+        Left = 205
+        Top = 42
+        Width = 40
+        Height = 14
+        Hint = 'Reg Bill Only'
+        Caption = 'Reg.'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 18
+      end
+      object CB_FinalBill: TCheckBox
+        Left = 251
+        Top = 40
+        Width = 59
+        Height = 17
+        Caption = 'Final Bill'
+        TabOrder = 19
+      end
+      object Edit1: TEdit
+        Left = 0
+        Top = 62
+        Width = 78
+        Height = 21
+        Color = clMedGray
+        ReadOnly = True
+        TabOrder = 20
+      end
+      object Edit2: TEdit
+        Left = 79
+        Top = 62
+        Width = 57
+        Height = 21
+        Color = clMedGray
+        ReadOnly = True
+        TabOrder = 21
+      end
+      object Edit_DocCode: TEdit
+        Left = 496
+        Top = 62
+        Width = 52
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 22
+        OnChange = Edit_DocCodeChange
+      end
+      object CB_RoundVisitSharingMgmt: TCheckBox
+        Left = 632
+        Top = 62
+        Width = 146
+        Height = 17
+        Caption = 'Round Visit Sharing Mgmt.'
+        TabOrder = 23
+      end
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 903
+    Height = 32
+    Align = alTop
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    object BitBtnPreview: TBitBtn
+      Left = 19
+      Top = 2
+      Width = 110
+      Height = 28
+      Caption = '&Preview (F1)'
+      DoubleBuffered = True
+      Enabled = False
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+        0003377777777777777308888888888888807F33333333333337088888888888
+        88807FFFFFFFFFFFFFF7000000000000000077777777777777770F8F8F8F8F8F
+        8F807F333333333333F708F8F8F8F8F8F9F07F333333333337370F8F8F8F8F8F
+        8F807FFFFFFFFFFFFFF7000000000000000077777777777777773330FFFFFFFF
+        03333337F3FFFF3F7F333330F0000F0F03333337F77773737F333330FFFFFFFF
+        03333337F3FF3FFF7F333330F00F000003333337F773777773333330FFFF0FF0
+        33333337F3F37F3733333330F08F0F0333333337F7337F7333333330FFFF0033
+        33333337FFFF7733333333300000033333333337777773333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      Visible = False
+      OnClick = BitBtnPreviewClick
+    end
+    object BitBtnExcel: TBitBtn
+      Left = 105
+      Top = 2
+      Width = 137
+      Height = 28
+      Caption = 'Send  To &Excel (F2)'
+      DoubleBuffered = True
+      Glyph.Data = {
+        F6010000424DF60100000000000076000000280000001F000000180000000100
+        04000000000080010000C40E0000C40E00001000000000000000000000000000
+        80000080000000808000800000008000800080800000C0C0C000808080000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FFFF44444444
+        44440000FFFFFFFFFFF0FFFF4000000000006666FFFFFFFFFFF0FFFF40888888
+        8806EEF0FFFFFFFFFFF0FFFF440E6666606EEF04FFFFFFFFFFF0FFFF4440E666
+        06EEF060FFFFFFFFFFF0FFFF44440E606EEF0000FFFFFFFFFFF0FFFF44444006
+        EEF04444FFFFFFFFFFF0FFFF4444406EEF004444FFFFFFFFFFF0FFFF444406EE
+        F0680444FFFFFFFFFFF0FFFF44406EEF0E668044FFFFFFFFFFF0FFFF4406EEF0
+        40E66804FFFFFFFFFFF0FFFF40FFFF04440EEEE0FFFFFFFFFFF0FFFF40000044
+        44400000FFFFFFFFFFF0FFFF4444444444444444FFFFFFFFFFF0FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0}
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      Visible = False
+      OnClick = BitBtnExcelClick
+    end
+    object BitBtn2: TBitBtn
+      Left = 768
+      Top = 2
+      Width = 115
+      Height = 28
+      Caption = '&Cancel (Esc)'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        333333333333333333333333333333333333333FFF33FF333FFF339993370733
+        999333777FF37FF377733339993000399933333777F777F77733333399970799
+        93333333777F7377733333333999399933333333377737773333333333990993
+        3333333333737F73333333333331013333333333333777FF3333333333910193
+        333333333337773FF3333333399000993333333337377737FF33333399900099
+        93333333773777377FF333399930003999333337773777F777FF339993370733
+        9993337773337333777333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = BitBtn2Click
+    end
+    object BitBtn_FrctModify: TBitBtn
+      Left = 219
+      Top = 2
+      Width = 127
+      Height = 28
+      Caption = 'Fraction Modify'
+      DoubleBuffered = True
+      Enabled = False
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333000000
+        000033333377777777773333330FFFFFFFF03FF3FF7FF33F3FF700300000FF0F
+        00F077F777773F737737E00BFBFB0FFFFFF07773333F7F3333F7E0BFBF000FFF
+        F0F077F3337773F3F737E0FBFBFBF0F00FF077F3333FF7F77F37E0BFBF00000B
+        0FF077F3337777737337E0FBFBFBFBF0FFF077F33FFFFFF73337E0BF0000000F
+        FFF077FF777777733FF7000BFB00B0FF00F07773FF77373377373330000B0FFF
+        FFF03337777373333FF7333330B0FFFF00003333373733FF777733330B0FF00F
+        0FF03333737F37737F373330B00FFFFF0F033337F77F33337F733309030FFFFF
+        00333377737FFFFF773333303300000003333337337777777333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 3
+      Visible = False
+      OnClick = BitBtn_FrctModifyClick
+    end
+    object BitBtn_FractionUptodate: TBitBtn
+      Left = 601
+      Top = 2
+      Width = 168
+      Height = 28
+      Caption = 'Make up-to-date Fraction'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        333333333333333333FF33333333333330003FF3FFFFF3333777003000003333
+        300077F777773F333777E00BFBFB033333337773333F7F33333FE0BFBF000333
+        330077F3337773F33377E0FBFBFBF033330077F3333FF7FFF377E0BFBF000000
+        333377F3337777773F3FE0FBFBFBFBFB039977F33FFFFFFF7377E0BF00000000
+        339977FF777777773377000BFB03333333337773FF733333333F333000333333
+        3300333777333333337733333333333333003333333333333377333333333333
+        333333333333333333FF33333333333330003333333333333777333333333333
+        3000333333333333377733333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 4
+      OnClick = BitBtn_FractionUptodateClick
+    end
+    object BitBtnBillBreakup: TBitBtn
+      Left = 337
+      Top = 2
+      Width = 109
+      Height = 28
+      Caption = '&Bill Breakup'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00559999999995
+        5555557777777775F5555559999999505555555777777757FFF5555555555550
+        0955555555555FF7775F55555555995501955555555577557F75555555555555
+        01995555555555557F5755555555555501905555555555557F57555555555555
+        0F905555555555557FF75555555555500005555555555557777555555555550F
+        F05555555555557F57F5555555555008F05555555555F775F755555555570000
+        05555555555775577555555555700007555555555F755F775555555570000755
+        55555555775F77555555555700075555555555F75F7755555555570007555555
+        5555577F77555555555500075555555555557777555555555555}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 5
+      OnClick = BitBtnBillBreakupClick
+    end
+    object BitBtn_FrctAddAsSalary: TBitBtn
+      Left = 448
+      Top = 2
+      Width = 154
+      Height = 28
+      Caption = '&Fraction Add Lump Sum'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333000000
+        000033333377777777773333330FFFFFFFF03FF3FF7FF33F3FF700300000FF0F
+        00F077F777773F737737E00BFBFB0FFFFFF07773333F7F3333F7E0BFBF000FFF
+        F0F077F3337773F3F737E0FBFBFBF0F00FF077F3333FF7F77F37E0BFBF00000B
+        0FF077F3337777737337E0FBFBFBFBF0FFF077F33FFFFFF73337E0BF0000000F
+        FFF077FF777777733FF7000BFB00B0FF00F07773FF77373377373330000B0FFF
+        FFF03337777373333FF7333330B0FFFF00003333373733FF777733330B0FF00F
+        0FF03333737F37737F373330B00FFFFF0F033337F77F33337F733309030FFFFF
+        00333377737FFFFF773333303300000003333337337777777333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 6
+      OnClick = BitBtn_FrctAddAsSalaryClick
+    end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 701
+    Width = 903
+    Height = 22
+    Panels = <
+      item
+        Width = 100
+      end
+      item
+        Width = 50
+      end>
+  end
+  object Panel4: TPanel
+    Left = 740
+    Top = 33
+    Width = 50
+    Height = 20
+    TabOrder = 4
+    object SpeedButton2: TSpeedButton
+      Left = 0
+      Top = -3
+      Width = 50
+      Height = 22
+      Caption = 'Info.  '
+      Glyph.Data = {
+        FE050000424DFE05000000000000360400002800000015000000130000000100
+        080000000000C801000000000000000000000001000000000000F5FBFC00D9EB
+        EF00DCEDF000DBEDF000E1F0F200F0F6F700D5E7EB00D8E9EC00D8EAEE00DBEE
+        F200D5E8EB00E5F1F300D8ECF000DCE5E800BFB3AF00C0B4B000E4F0F200D8EB
+        EE00DCEFF300DEF3F800D2D9DD00D2B49E009B6B45009F807700E6EFF300D9EE
+        F200D9E6EA00C8D1D300BBBDBD00B0948300E0B38600AB7D590080605600CFD1
+        D300DEEBEF00DCEFF200D8EAED00DAEFF400CED3D500C2AC9F009D806E008661
+        47009E785A00EDC8A300C39A770077513900825E4C009C7F7700CFCFD000DCF0
+        F400D8EBEF00C9CAC700B69F9000BE9C7C00DDBC9B00E7C3A000F3D1AC00FCDB
+        B600F8D8B200E5C09C00B18C6A0082573A007C584900C5C3C200DBEEF100D9EC
+        F000BFB0A200D2B79D00F2D9BC00FFE7C800F1CEAE00BA744A00B96D4000D6AB
+        8600FDE4C000F7D8B400DEBD9A00966E4D00835F5100D2CECF00DBECEF00D7EA
+        EE00DACEBF00F5DDC300FFEAD000FFEFD500E6CCB0008C3910009C3B0D00D8B0
+        9100FFEDCF00FFE3C200FBDDBC00DDC1A000794D3300B49E9700DAEAED00D6E9
+        EC00D6E9ED00F2E9D800FFEBD400FEEAD300FFEFDA00E9D4BB00964B2500A94E
+        2300E6C6AB00FFEBD200FEE3C800FFE7CA00F1D7BB00CEAB8C00A78F8500D4E4
+        E700F6F2E600FFF0DE00FEEDDC00FFF9E700EEDFCC0096431B00AB4D2200E4C8
+        AE00FFF1DB00FEE8CF00FEE8CE00FDE4CC00E6CFB700A7918600D4E3E500D6E8
+        EC00F6F7EF00FFF5E800FEF3E700FAF4E700C3A793007A25000091431D00E0C7
+        B200FFF6E400FEECD800FEEDD700FCE8D200E8D2B900BAA69E00D5E5E800F0F0
+        EC00FEFAF500FFF9F200F9F0E400D2BDAE00C7B3A700C9BAAC00F2E6DB00FEF4
+        E600FEF0DE00FFFAF000F9ECE000BDA18E00D0D0D000D9EAEE00D7E9EC00E2E4
+        E400F8F4F300FFFDFB00FFFFFC00E8DDDE00AE6D5D00EDBD9C00F0E3D700FFFB
+        F200FFFCF500FBF6F100E5D3C400C3B2AC00D5E5E900D9EBEE00DAD7D800E6E3
+        E300F4F1F100FFFFFF00E4DAD6006527160098685E00FBF6F400FBF8F600E2D5
+        CB00D6DAD500DBEAED00D9EAED00D8E8EB00D7E6E800D6D2CE00ECEFF000F1F6
+        F600EBEEEE00ECEFF100F5FAFB00F6F9F800DFD8D500D2D9DA00D8ECEF00D8E9
+        ED00D7E8EC00DAECF00000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000102020202
+        0202020202020202020202020203040000000506070707070707070708090907
+        07070707070A0B0000000506070707070707070C0D0E0F0D08070707070A1000
+        0000050607070707111213141516171819070707070A10000000050607070709
+        1A1B1C1D1E1F202122232407070A100000000506070725262728292A2B2C2D2E
+        2F303124070A1000000005060732333435363738393A3B3C3D3E3F40240A1000
+        00000506074142434445464748494A4B4C4D4E4F500A10000000050607515253
+        5455565758595A5B5C5D5E5F60611000000005060762636465666768696A6B6C
+        6D6E6F707162100000000506076272737475767778797A7B7C7D7E7F80621000
+        00000506078182838485868788898A8B8C8D8E8F906210000000050607819192
+        939495969798999A9B9C9D9E9F0A10000000050607A0A1A2A3A4A5A6A7A8A9AA
+        ABACADAEAF0A1000000005060724B0B1B2B3B4B5B6B7B3B8B9BABBBC070A1000
+        000005060707BDBEBFC0C1C2C3C4C5C6C7C81107070A1000000005060707C907
+        A0CA0740CBCACACA24070707070A100000000506070707070707070707070707
+        07070707070A10000000050607070707070707070707070707070707070A1000
+        0000}
+      OnClick = SpeedButton2Click
+    end
+  end
+  object ProgressBar1: TProgressBar
+    Left = 123
+    Top = 703
+    Width = 780
+    Height = 17
+    TabOrder = 5
+  end
+  object CB_IsPathologicalDept: TCheckBox
+    Left = 201
+    Top = 8
+    Width = 123
+    Height = 17
+    Caption = '&Pathological Dept.'
+    TabOrder = 6
+  end
+  object Query_Doctor: TOraQuery
+    SQL.Strings = (
+      
+        'Select Doct_DocId DOcid,Doct_DocCode Doccode,Doct_DocName Docnam' +
+        'e From '
+      'Hs_Doct_Doctor Order By DocName')
+    Left = 564
+    Top = 184
+  end
+  object DS_Doctor: TDataSource
+    DataSet = Query_Doctor
+    Left = 600
+    Top = 184
+  end
+  object Table_DocLedger: TOraTable
+    TableName = 'DoctorLedger.db'
+    Left = 649
+    Top = 184
+  end
+  object DS_DoctorLedger: TDataSource
+    DataSet = Query_Result
+    Left = 540
+    Top = 264
+  end
+  object Query_DocLedger: TOraQuery
+    SQL.Strings = (
+      
+        'Select DP.DocCode,DR.F_Name||'#39' '#39'||DR.L_Name as DocName,DP.BillNo' +
+        ','
+      'DP.DocCommession,(Select PatientName From PatientMain where '
+      'PatientId=DP.PatientId) as PtName, DP.BillDate,DP.TestNameCode,'
+      'TN.TestName From TestName TN, DRProcedures DP,Doctor DR '
+      'where DP.DocCode=Dr.DocCode and '
+      'DP.TestNameCode=TN.TestNameCode(+)'
+      'and DP.DocCode=:DocCode '
+      'and BillDate >=:FromDate and BillDate<=:ToDate'
+      ''
+      '')
+    Left = 596
+    Top = 264
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'DocCode'
+      end
+      item
+        DataType = ftString
+        Name = 'FromDate'
+      end
+      item
+        DataType = ftString
+        Name = 'ToDate'
+      end>
+  end
+  object Query_DocPayment: TOraQuery
+    SQL.Strings = (
+      'Select * From DoctorPayment where DocCode=:DocCode'
+      'and PayDate>=:FromDate and PayDate<=:ToDate')
+    Left = 628
+    Top = 264
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'DocCode'
+      end
+      item
+        DataType = ftString
+        Name = 'FromDate'
+      end
+      item
+        DataType = ftString
+        Name = 'ToDate'
+      end>
+  end
+  object Query_Result: TOraQuery
+    SQL.Strings = (
+      'Select * From DoctorLedger.db Order By BillDate,BillNo')
+    Left = 509
+    Top = 264
+  end
+  object Query_TempProcess: TOraQuery
+    SQL.Strings = (
+      '')
+    Left = 257
+    Top = 176
+  end
+  object Query_Void: TOraQuery
+    Left = 700
+    Top = 264
+  end
+  object QryTestName: TOraQuery
+    SQL.Strings = (
+      
+        'Select Distinct TN.Tena_TestNameId TestNameId,TN.Tena_DepId DepI' +
+        'd,TN.Tena_TestNameCode TestNameCode,TN.Tena_TestName TestName Fr' +
+        'om Hs_Frac_Fraction F,'
+      
+        'Hs_Tena_TestName TN where F.Frac_FractionType=3 and TN.Tena_DEPI' +
+        'D IN (Select Frac_DepId From Hs_Frac_Fraction where Frac_TestNam' +
+        'eId=0 and Frac_DepID > 0)'
+      'Or (F.Frac_TestNameId=TN.Tena_TestNameId)'
+      'Order by TN.Tena_TestName'
+      '')
+    Left = 609
+    Top = 172
+  end
+  object DSTestName: TDataSource
+    DataSet = QryTestName
+    Left = 536
+    Top = 236
+  end
+  object Query_Process: TOraQuery
+    Left = 296
+    Top = 253
+  end
+  object QueryCommPartner: TOraQuery
+    Left = 480
+    Top = 244
+  end
+  object QueryVarCommPerson: TOraQuery
+    Left = 218
+    Top = 220
+  end
+  object QueryDetail: TOraQuery
+    Left = 250
+    Top = 220
+  end
+  object Query_GetComm: TOraQuery
+    Left = 281
+    Top = 220
+  end
+  object Query_GetPersonTemp: TOraQuery
+    SQL.Strings = (
+      
+        'Select Distinct PersonName From FractionMgmt.db Order By PersonN' +
+        'ame')
+    Left = 317
+    Top = 220
+  end
+  object DS_GetPersonTemp: TDataSource
+    DataSet = Query_GetPersonTemp
+    Left = 335
+    Top = 221
+  end
+  object DS_TempProcess: TDataSource
+    DataSet = Query_TempProcess
+    Left = 308
+    Top = 192
+  end
+  object DS_BillList: TDataSource
+    DataSet = Query_BillList
+    Left = 100
+    Top = 273
+  end
+  object Query_GetBillList: TOraQuery
+    SQL.Strings = (
+      
+        'Select BillNo,BillDATE,BillTime,PatientId,MODIFYBY,PayType,RateT' +
+        'ype,(Select Title||'#39' '#39'||PatientName From PatientMain where Patie' +
+        'ntId=BillDetail.PatientId) as Name,'
+      
+        'Sum(qty*Amount) as Amount,sum((qty*Amount)*(Dis/100)) as Discoun' +
+        't,Sum(VatAmt) as SvrTax '
+      ',Sum(((Qty*Amount)+VatAmt)-(Qty*Amount*Dis/100)) as NetTotal'
+      'From BillDetail Where (BillType='#39'B'#39' OR BillType='#39'O'#39') and '
+      '(BillDate>=:FromDate AND BillDate<=:ToDate) '
+      ''
+      ''
+      
+        'Group by BillNo,BillDATE,BillTime,PatientId,Modifyby,PayType,Rat' +
+        'eType order by BillDate,billNo'
+      ''
+      ' '
+      ' '
+      ' '
+      ' ')
+    Left = 132
+    Top = 271
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'FromDate'
+      end
+      item
+        DataType = ftString
+        Name = 'ToDate'
+      end>
+  end
+  object Query_PatientInfo: TOraQuery
+    SQL.Strings = (
+      
+        'Select IPR.PatientId,IPR.InpatientId,IPR.ADMNDATE,IPR.DisDate,IP' +
+        'R.CommunityId,IPR.SchemeId,MemberNo,ISDISINDEPOSIT,'
+      
+        '(Select Pama_PatientName From Hs_Pama_PatientMain where Pama_Pat' +
+        'ientId=IPR.PatientId) as PtName,IsDischarged,'
+      
+        '(Select Sche_Scheme From Hs_Sche_Scheme where Sche_SchemeId=IPR.' +
+        'SchemeId) as Scheme,DisInDepositDate'
+      'From InpatientReg IPR where IPR.InpatientId=:InpatientId')
+    Left = 204
+    Top = 272
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'InpatientId'
+      end>
+  end
+  object Query_PatientTest: TOraQuery
+    SQL.Strings = (
+      
+        ' Select SBD.ServiceBillDetailId,BD.BillDetailId,SBD.BillDate Ser' +
+        'viceDate,SubStr(SBD.BillTime,1,5) ServiceTime,SBD.BillNo Service' +
+        'BillNo,BD.BillDate,BD.BillNo,SBD.Service,InitCap(SBD.ServiceType' +
+        ') ServiceType,'
+      
+        ' Case when SBD.BillDetailId > 0 Then BD.BillType Else SBD.BillTy' +
+        'pe End BillType,'
+      
+        ' Case when SBD.BillDetailId > 0 Then BD.DocCode Else SBD.DocCode' +
+        ' End DocCode,'
+      
+        ' Case when SBD.BillDetailId > 0 Then BD.RefDocCode Else SBD.RefD' +
+        'ocCode End RefDocCode,'
+      
+        ' Round(Case when SBD.BillDetailId > 0 Then BD.Amount Else SBD.Am' +
+        'ount End,2) Amount,'
+      
+        ' Case when SBD.BillDetailId > 0 Then BD.Qty Else SBD.VatAmt End ' +
+        'Qty,'
+      
+        ' Round(Case when SBD.BillDetailId > 0 Then BD.VatAmt Else SBD.Va' +
+        'tAmt End,2) VatAmt,'
+      
+        ' Round(Case when SBD.BillDetailId > 0 Then BD.DisPer Else SBD.Va' +
+        'tAmt End,2) DisPer,'
+      
+        ' Round(Case when SBD.BillDetailId > 0 Then (BD.Amount*BD.Qty*BD.' +
+        'DisPer/100) Else (SBD.Amount*SBD.Qty*SBD.DisPer/100) End,2) Disc' +
+        'ount,'
+      
+        ' Round(Case when SBD.BillDetailId > 0 Then ((BD.Amount*BD.Qty)+B' +
+        'D.VatAmt-(BD.Amount*BD.Qty*BD.DisPer/100)) Else ((SBD.Amount*SBD' +
+        '.Qty)+SBD.VatAmt-(SBD.Amount*SBD.Qty*SBD.DisPer/100)) End,2) Net' +
+        'Total,'
+      
+        ' (Select UserName From UserMain where UserId=SBD.BillBy) as Uase' +
+        'rName,'
+      ' TN.IsFractionableItem,TN.IsOT'
+      ' From ServiceBillDetail SBD,BillDetail BD,TestName TN'
+      
+        ' where SBD.BillDetailId=BD.BillDetailId(+) and SBD.Service=TN.Te' +
+        'stNameCode(+)'
+      
+        ' and (BD.BillType='#39'B'#39' or BD.BillType='#39'R'#39') and BD.PatientId=13000' +
+        '303'
+      ' and BD.BillNo='#39'CS69/70-0000577'#39
+      ' and BD.Service='#39'URP001'#39
+      ' and BD.BillDate >='#39'2013/01/13'#39
+      ' and BD.BillDate<='#39'2013/01/13'#39
+      ' Order By  SBD.ServiceBillDetailId'
+      '')
+    Left = 579
+    Top = 211
+  end
+  object DS_PatientTest: TDataSource
+    DataSet = Query_PatientTest
+    Left = 206
+    Top = 352
+  end
+  object Query_GetFractionItem: TOraQuery
+    Left = 236
+    Top = 272
+  end
+  object Query_Frct_BreakUp_OfItem: TOraQuery
+    SQL.Strings = (
+      
+        'Select FractionDetailId,FractionId,DocCode,DocId,PatientId,Inpat' +
+        'ientId,BillDetailId,TestNameId,TestNameCode,BillNo,'
+      
+        ' BillDate,DisDate,FractionAmount as Rate,Qty,FractionAmount*Qty ' +
+        'as FractionAmount,(FractionAmount*Qty*DisPer/100) as Discount,'
+      
+        ' ((FractionAmount*Qty)-(FractionAmount*Qty*DisPer/100)) as DocCo' +
+        'mmNet,'
+      
+        ' DisPer,Qty,FractionRate,UnitTestCost,UnitTestCostORG,FixedAmoun' +
+        'tDeductOnTestPrice,PositionWiseFractionId,DepId,IsOperation,'
+      ' PrevDocCode,IsFractionPropWithDisPer,'
+      ' BillType,PayType,IsChargeDivide,IsFractionLocked,'
+      
+        ' (Select DocName From Doctor where DocCode=FD.DocCode) as DrName' +
+        ',(Select PositionName From'
+      
+        ' PositionWiseFraction where PositionWiseFractionId=FD.PositionWi' +
+        'seFractionId) as Description'
+      ' From FractionDetail FD where BillDetailId=1065034'
+      ' Order By FD.TestNameCode,FD.PositionWiseFractionId'
+      ''
+      ''
+      ' '
+      ' '
+      ' ')
+    Left = 308
+    Top = 275
+  end
+  object DS_Frct_BreakUp_OfItem: TDataSource
+    DataSet = Query_Frct_BreakUp_OfItem
+    Left = 327
+    Top = 280
+  end
+  object Query_ActDoctor: TOraQuery
+    SQL.Strings = (
+      
+        'Select Doct_DocId DOcid,Doct_DocCode Doccode,Doct_DocName Docnam' +
+        'e From '
+      'Hs_Doct_Doctor where doct_isactive='#39'Y'#39' Order By DocName')
+    Left = 369
+    Top = 248
+  end
+  object DS_ActulaDoctor: TDataSource
+    DataSet = Query_ActDoctor
+    Left = 405
+    Top = 352
+  end
+  object Query_Position: TOraQuery
+    SQL.Strings = (
+      
+        'select POSI_POSITIONID POSITIONID,POSI_POSITION POSITION from hs' +
+        '_posi_position')
+    Left = 380
+    Top = 222
+  end
+  object DS_Position: TDataSource
+    DataSet = Query_Position
+    Left = 388
+    Top = 198
+  end
+  object BatchMove_DrProcedure: TCRBatchMove
+    Left = 436
+    Top = 237
+  end
+  object Query_Department: TOraQuery
+    SQL.Strings = (
+      
+        'Select Dept_DepId DepId,Dept_DepName DepName From HS_Dept_Depart' +
+        'ment order by Dept_DepName')
+    Left = 412
+    Top = 224
+  end
+  object DS_Department: TDataSource
+    DataSet = Query_Department
+    Left = 432
+    Top = 176
+  end
+  object Query_RefundFrctPost: TOraQuery
+    Left = 810
+    Top = 232
+  end
+  object Query_TestName: TOraQuery
+    SQL.Strings = (
+      
+        'Select Tena_TestNameCode TestNameCode,Tena_Testname TestName Fro' +
+        'm Hs_Tena_Testname where Tena_IsActive='#39'Y'#39' Order By Tena_TestNam' +
+        'e')
+    Left = 500
+    Top = 240
+  end
+  object DS_TestName: TDataSource
+    DataSet = Query_TestName
+    Left = 200
+    Top = 360
+  end
+  object Query_ActDoctor2nd: TOraQuery
+    SQL.Strings = (
+      
+        'Select Doct_DocId DOcid,Doct_DocCode Doccode,Doct_DocName Docnam' +
+        'e From '
+      'Hs_Doct_Doctor Order By DocName')
+    Left = 417
+    Top = 272
+  end
+  object DS_ActulaDoctor2nd: TDataSource
+    DataSet = Query_ActDoctor2nd
+    Left = 389
+    Top = 240
+  end
+  object Query_MutualDocForShare: TOraQuery
+    Left = 260
+    Top = 149
+  end
+  object Qry: TOraQuery
+    Left = 788
+    Top = 312
+  end
+  object Ds_Marketing: TDataSource
+    DataSet = Query_marketing
+    Left = 736
+    Top = 248
+  end
+  object Query_marketing: TOraQuery
+    SQL.Strings = (
+      'Select MKRE_MKTGREFERRALID as docid,MKRE_REFERRALPERSON DOCNAME'
+      ' from HS_MKRE_MKTGREFERRAL')
+    Left = 836
+    Top = 296
+  end
+  object Query_Update: TOraQuery
+    Left = 744
+    Top = 232
+  end
+  object Query_VisitDoctor4th: TOraQuery
+    SQL.Strings = (
+      
+        'Select DOCT_DocId as DocID,DOCT_DocName as Name,DOCT_DocCode Doc' +
+        'Code '
+      
+        ' From HS_DOCT_Doctor where DOCT_IsActive='#39'Y'#39'  Order By DOCT_DocN' +
+        'ame')
+    Left = 443
+    Top = 305
+  end
+  object DS_VisitDoctor4th: TDataSource
+    DataSet = Query_VisitDoctor4th
+    Left = 477
+    Top = 314
+  end
+  object Query_VisitDoctor3rd: TOraQuery
+    SQL.Strings = (
+      
+        'Select DOCT_DocId as DocID,DOCT_DocName as Name,DOCT_DocCode Doc' +
+        'Code '
+      
+        ' From HS_DOCT_Doctor where DOCT_IsActive='#39'Y'#39'  Order By DOCT_DocN' +
+        'ame')
+    Left = 571
+    Top = 313
+  end
+  object DS_VisitDoctor3rd: TDataSource
+    DataSet = Query_VisitDoctor3rd
+    Left = 605
+    Top = 322
+  end
+  object Query_get: TOraQuery
+    Left = 760
+    Top = 576
+  end
+  object Queryblank: TOraQuery
+    Left = 760
+    Top = 640
+  end
+  object TableSalesBookIPOP: TTable
+    Left = 392
+    Top = 416
+  end
+  object Query_BillList: TQuery
+    Left = 504
+    Top = 368
+  end
+  object Query_getdetail: TOraQuery
+    Left = 256
+    Top = 88
+  end
+end

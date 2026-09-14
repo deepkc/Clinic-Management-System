@@ -1,0 +1,1543 @@
+unit Unit_TestNameRateChange;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Fxn, Unit_Master_Hos, serverdate, dm, DbGridExportToExcel,
+     Dialogs, StdCtrls, Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ComCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, DBCGrids, Mask;
+
+type
+     TForm_TestNameRateChange = class(TForm)
+          Panel2: TPanel;
+          BB_Save: TBitBtn;
+          BB_Close: TBitBtn;
+          BB_New: TBitBtn;
+          PageControl1: TPageControl;
+          TabSheet1: TTabSheet;
+          TabSheet2: TTabSheet;
+          Label1: TLabel;
+          DBLCB_Dep: TDBLookupComboBox;
+          Label2: TLabel;
+          Edit_Search: TEdit;
+          DBGrid1: TDBGrid;
+          Label3: TLabel;
+          Le_TestNameCode: TLabeledEdit;
+          Le_TestName: TLabeledEdit;
+          Label6: TLabel;
+          Dblcb_TestNameCategory: TDBLookupComboBox;
+          Le_Remarks: TLabeledEdit;
+    CB_IsActiveTestName: TCheckBox;
+          Query_Department: TOraQuery;
+          Ds_Department: TDataSource;
+          Dblcb_DepNew: TDBLookupComboBox;
+          Query_list: TOraQuery;
+          Ds_List: TDataSource;
+          Label7: TLabel;
+          Label8: TLabel;
+          Label9: TLabel;
+          Label10: TLabel;
+          SpeedButton1: TSpeedButton;
+          SpeedButton2: TSpeedButton;
+          CB_WorkList: TCheckBox;
+          Label11: TLabel;
+          DBlcb_SampleSource: TDBLookupComboBox;
+          QuerySampleSource: TOraQuery;
+          DS_SampleSource: TDataSource;
+          le_Order: TLabeledEdit;
+          CB_HideAllTestInPatientList: TCheckBox;
+          Query_TestNameCategory: TOraQuery;
+          DS_TestNameCategory: TDataSource;
+          Query_GetAutoTestNameCode: TOraQuery;
+          Label_TestNameCode: TLabel;
+          CB_GlobalSearch: TCheckBox;
+          CB_Extended: TCheckBox;
+          Query_Process: TOraQuery;
+          DS_Process: TDataSource;
+          Btn_Approve: TBitBtn;
+    CB_NonTaxableItem: TCheckBox;
+    GroupBox1: TGroupBox;
+    Label14: TLabel;
+    Edit3: TEdit;
+    CB_InactiveItem: TCheckBox;
+    Edit1: TEdit;
+    Label15: TLabel;
+    GroupBox2: TGroupBox;
+    RB_None: TRadioButton;
+    RB_IsOt: TRadioButton;
+    RB_IsProcedure: TRadioButton;
+    RB_IsImplant: TRadioButton;
+    Cb_IsPackageTestName: TCheckBox;
+    Label_OTType: TLabel;
+    CMBOTType: TComboBox;
+    GroupBox3: TGroupBox;
+    Label5: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label16: TLabel;
+    DBCtrlGrid1: TDBCtrlGrid;
+    DBText1: TDBText;
+    DBEdit1: TDBEdit;
+    DBEdit2: TDBEdit;
+    DBEdit3: TDBEdit;
+    CB_IncSvrTax: TCheckBox;
+    CB_IsTaxable: TCheckBox;
+    CB_IsDicountable: TCheckBox;
+    Cb_IsEditable: TCheckBox;
+    Label4: TLabel;
+    DBText2: TDBText;
+    DS_TestNamePrice: TDataSource;
+    SpeedButtonEdu: TSpeedButton;
+    CB_Enable: TCheckBox;
+    CB_AutoFormulaOn: TCheckBox;
+    DBGrid2: TDBGrid;
+    Query_TestPriceList: TOraQuery;
+    DS_TestPriceList: TDataSource;
+    Label_MultiOrgBillCatCap: TLabel;
+    DBLCB_MultiBillCategory: TDBLookupComboBox;
+    qry_MultiBillCategory: TOraQuery;
+    DS_MultiBillCategory: TDataSource;
+    CB_ISECHSITEM: TCheckBox;
+    Label_ECHSCap: TLabel;
+    Query_DepName: TOraQuery;
+    DS_DepName: TDataSource;
+    CB_ECHSItem: TCheckBox;
+    CB_IsFractionableItem: TCheckBox;
+    Label17: TLabel;
+    DBLCB_AccHead: TDBLookupComboBox;
+    Query_AccountHead: TOraQuery;
+    DS_AccountHead: TDataSource;
+    Label18: TLabel;
+    DBLCB_AccheadIp: TDBLookupComboBox;
+    Query_accheadIp: TOraQuery;
+    Ds_accheadIp: TDataSource;
+    Label19: TLabel;
+    Label20: TLabel;
+    DBEdit4: TDBEdit;
+    DBEdit5: TDBEdit;
+    BitBtn1: TBitBtn;
+    Query_Update: TOraQuery;
+    TBL_TestNamePrice: TTable;
+    Query_TempProcess: TQuery;
+    CB_SpecialTest: TCheckBox;
+    CB_isBlockTest: TCheckBox;
+          procedure PageControl1Change(Sender: TObject);
+          procedure BB_NewClick(Sender: TObject);
+          procedure BB_CloseClick(Sender: TObject);
+          procedure DBLCB_DepClick(Sender: TObject);
+          procedure Edit_SearchChange(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure FormShow(Sender: TObject);
+          procedure Le_TestPriceGKeyPress(Sender: TObject; var Key: Char);
+          procedure FormKeyPress(Sender: TObject; var Key: Char);
+          procedure BB_SaveClick(Sender: TObject);
+          procedure DBGrid1DblClick(Sender: TObject);
+          procedure SpeedButton1Click(Sender: TObject);
+          procedure SpeedButton2Click(Sender: TObject);
+          procedure Dblcb_TestNameCategoryKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure DBlcb_SampleSourceKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure GetAutoTestNameCode;
+          procedure Dblcb_DepNewClick(Sender: TObject);
+          procedure CB_GlobalSearchClick(Sender: TObject);
+          procedure Btn_ApproveClick(Sender: TObject);
+    procedure CB_AutoFormulaOnClick(Sender: TObject);
+    procedure CB_NonTaxableItemClick(Sender: TObject);
+    procedure CB_InactiveItemClick(Sender: TObject);
+    procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure RB_IsOtClick(Sender: TObject);
+    procedure RB_NoneClick(Sender: TObject);
+    procedure RB_IsProcedureClick(Sender: TObject);
+    procedure RB_IsImplantClick(Sender: TObject);
+    procedure SpeedButtonEduClick(Sender: TObject);
+    procedure CMBOTTypeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure CB_EnableClick(Sender: TObject);
+    procedure DBEdit1KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit1Exit(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure BitBtn1Click(Sender: TObject);
+     private
+          pf_testprice, pf_vat, pf_testpricefrg, pf_VatFrg, pf_testpricePVT, pf_VatPVT, pf_TestPriceFRGGen, pf_VatFrgGen,
+            pf_TestPriceFrgPVt, pf_VatFrgPVT: Double;
+          pb_isnew: Boolean;
+
+          ps_TestNameCode: String;
+
+          pi_TestNameId : Integer;
+
+
+          pf_PVTRatio,pf_FRGRatio, pf_FRPRatio : Double;
+          { Private declarations }
+     public
+
+          procedure LoadTestPriceCategoryRatio;
+          procedure DisplayOTType;
+          procedure CreateTableTestNamePrice;
+          procedure LoadTestNamePrice;
+          procedure CalculateVatTaxAmt;
+          { Public declarations }
+     end;
+
+var
+     Form_TestNameRateChange: TForm_TestNameRateChange;
+
+implementation
+
+uses  Unit_TNCategorySetup, Unit_TestNameSetup,Unit_IntegrationSetup;
+
+{$R *.dfm}
+
+procedure TForm_TestNameRateChange.BB_CloseClick(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+     Begin
+          PageControl1.ActivePageIndex := 0;
+          Query_list.Close;
+          Query_list.Session := DM_Hospital.DB;
+          Query_list.Open;
+          Query_list.Locate('TestNameCode', ps_TestNameCode, []);
+     End
+     else
+          Close;
+end;
+
+procedure TForm_TestNameRateChange.BB_NewClick(Sender: TObject);
+begin
+     if DBLCB_Dep.KeyValue = NULL then
+     Begin
+          MessageDlg('Please Select Department First !', mtWarning, [mbok], 0);
+          if CB_GlobalSearch.Checked=False then
+          DBLCB_Dep.SetFocus;
+          Exit;
+     End;
+
+     pb_isnew := true;
+     CB_IsActiveTestName.Checked := true;
+     CB_IsDicountable.Checked := true;
+     CB_IsTaxable.Checked := true;
+     PageControl1.ActivePageIndex := 1;
+
+     Le_TestNameCode.Text:='';
+     Le_TestName.Text:='';
+
+     Le_TestNameCode.ReadOnly:=False;
+     Le_TestNameCode.Color:=clWhite;
+     //CB_AutoFormulaOn.Checked:=True;
+
+     RB_None.Checked:=True;
+
+     if Trim(DBLCB_Dep.Text) <> '' then
+     Begin
+          Dblcb_DepNew.KeyValue := DBLCB_Dep.KeyValue;
+          Dblcb_DepNew.Enabled:=False;
+          Dblcb_DepNew.Color:=clMedGray;
+          //GetAutoTestNameCode;
+     End;
+
+     if CB_ISECHSITEM.Checked=True then
+     Begin
+          Label_ECHSCap.Visible:=True;
+          CB_ECHSItem.Checked:=True;
+          CB_ECHSItem.Enabled:=False;
+          CB_ECHSItem.Visible:=True;
+     End
+     else
+     Begin
+          Label_ECHSCap.Visible:=False;
+          CB_ECHSItem.Checked:=False;
+          CB_ECHSItem.Enabled:=False;
+          CB_ECHSItem.Visible:=False;
+     End;
+
+     DBLCB_AccHead.KeyValue:=Null;
+     DBLCB_AccheadIp.KeyValue:=Null;
+
+     pi_TestNameId:=0;
+     LoadTestNamePrice;
+     Le_TestNameCode.SetFocus;
+
+end;
+
+procedure TForm_TestNameRateChange.LoadTestNamePrice;
+begin
+     With TBL_TestNamePrice do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          Exclusive := True;
+          EmptyTable;
+          Open;
+     end;
+
+     with Query_Process do
+     begin
+          Close;
+          Session := DM_Hospital.DB;
+          SQL.Clear;
+          if pb_isnew then
+          Begin
+               SQL.Add(' Select 0 TESTNAMEPRICEID, PATY_PATIENTTYPECODE PATIENTTYPECODE,PATY_PATIENTTYPE PATIENTTYPE,');
+               SQL.Add(' ''N'' as ISCHARGEWITHSVRTAX, PATY_CURRENCYTYPE  CURRENCYTYPE, 0 TESTPRICE,0 VATAMT,0 as TestPriceNew,0 as VatAmtNew');
+               SQL.Add(' From HS_PaTy_PatientType');
+               if CB_ISECHSITEM.Checked=False then
+               SQL.Add(' where PATY_PATIENTTYPECODE Not In (''ECG'',''ECP'',''ECS'')')
+               Else
+               SQL.Add(' where PATY_PATIENTTYPECODE In (''ECG'',''ECP'',''ECS'')');
+               SQL.Add(' Order By PATY_DISPLAYORDER');
+          End
+          else
+          Begin
+               SQL.Add(' Select * From VW_HS_SETUP_TESTNAMEPRICE');
+               SQL.Add(' Where TestNameId='+IntToStr(pi_TestNameId));
+               if CB_ISECHSITEM.Checked=False then
+               SQL.Add(' and PATIENTTYPECODE Not In (''ECG'',''ECP'',''ECS'')')
+               Else
+               SQL.Add(' and PATIENTTYPECODE In (''ECG'',''ECP'',''ECS'')');
+
+               sql.add(' Order by PATIENTTYPEORDER');
+          End;
+          Open;
+          First;
+          while Not EOF Do
+          begin
+               with TBL_TestNamePrice do
+               Begin
+                    Append;
+                    FieldByName('TESTNAMEPRICEID').AsInteger:=Query_Process.FieldByName('TESTNAMEPRICEID').AsInteger;
+                    FieldByName('PatientTypeCode').AsString:=Query_Process.FieldByName('PatientTypeCode').AsString;
+                    FieldByName('PatientType').AsString:='Test Price ('+Query_Process.FieldByName('PATIENTTYPE').AsString+')';
+                    FieldByName('CURRENCYTYPE').AsString:=Query_Process.FieldByName('CURRENCYTYPE').AsString;
+                    IF Query_Process.FieldByName('ISCHARGEWITHSVRTAX').AsString='Y' Then
+                    FieldByName('TESTPRICE').AsFloat:=Query_Process.FieldByName('TESTPRICE').AsFloat+Query_Process.FieldByName('VATAMT').AsFloat
+                    else
+                    FieldByName('TESTPRICE').AsFloat:=Query_Process.FieldByName('TESTPRICE').AsFloat;
+                    FieldByName('TESTPRICENEW').AsFloat:=Query_Process.FieldByName('TESTPRICENEW').AsFloat;
+                    FieldByName('TAXPER').AsFloat:=gf_TaxPercent;
+                    FieldByName('VATAMT').AsFloat:=Query_Process.FieldByName('VATAMT').AsFloat;
+                    FieldByName('VATAMTNEW').AsFloat:=Query_Process.FieldByName('VATAMTNEW').AsFloat;
+                    Post;
+               End;
+               Query_Process.Next;
+          end;
+
+          { Sometimes if New PatientType Introduce at that time the NewPatientType Rate has no setup
+            for to keep this in setup ---- First Check Whether the New Patient Type or
+            not in the Existing TestNamePrice List in Modif Case Only }
+
+          if pb_isnew=False then
+          Begin
+               With Query_Process do
+               Begin
+                    Close;
+                    Session := DM_Hospital.DB;
+                    SQL.Clear;
+                    SQL.Add(' Select PATY_PATIENTTYPEID PATIENTTYPEID, 0 TESTNAMEPRICEID, PATY_PATIENTTYPECODE PATIENTTYPECODE,PATY_PATIENTTYPE PATIENTTYPE,');
+                    SQL.Add(' ''N'' as ISCHARGEWITHSVRTAX, PATY_CURRENCYTYPE  CURRENCYTYPE, 0 TESTPRICE,0 VATAMT,0 TESTPRICENEW,0 VATAMTNEW');
+                    SQL.Add(' From HS_PaTy_PatientType Where PATY_PATIENTTYPECODE Not In (Select PATIENTTYPECODE');
+                    SQL.Add(' From VW_HS_SETUP_TESTNAMEPRICE Where TestNameId='+IntToStr(pi_TestNameId)+')');
+
+                    if CB_ISECHSITEM.Checked=False then
+                    SQL.Add(' and PATY_PATIENTTYPECODE Not In (''ECG'',''ECP'',''ECS'')')
+                    Else
+                    SQL.Add(' and PATY_PATIENTTYPECODE In (''ECG'',''ECP'',''ECS'')');
+
+                    SQL.Add(' Order By PATY_DISPLAYORDER');
+                    Open;
+                    First;
+                    while Not EOF Do
+                    begin
+                         with TBL_TestNamePrice do
+                         Begin
+                              Append;
+                              FieldByName('TESTNAMEPRICEID').AsInteger:=Query_Process.FieldByName('TESTNAMEPRICEID').AsInteger;
+                              FieldByName('PatientTypeCode').AsString:=Query_Process.FieldByName('PatientTypeCode').AsString;
+                              FieldByName('PatientType').AsString:='Test Price ('+Query_Process.FieldByName('PATIENTTYPE').AsString+')';
+                              FieldByName('CURRENCYTYPE').AsString:=Query_Process.FieldByName('CURRENCYTYPE').AsString;
+                              IF Query_Process.FieldByName('ISCHARGEWITHSVRTAX').AsString='Y' Then
+                              FieldByName('TESTPRICE').AsFloat:=Query_Process.FieldByName('TESTPRICE').AsFloat+Query_Process.FieldByName('VATAMT').AsFloat
+                              else
+                              FieldByName('TESTPRICE').AsFloat:=Query_Process.FieldByName('TESTPRICE').AsFloat;
+                              FieldByName('TESTPRICENEW').AsFloat:=Query_Process.FieldByName('TESTPRICENEW').AsFloat;
+                              FieldByName('TAXPER').AsFloat:=gf_TaxPercent;
+                              FieldByName('VATAMT').AsFloat:=Query_Process.FieldByName('VATAMT').AsFloat;
+                              FieldByName('VATAMTNEW').AsFloat:=Query_Process.FieldByName('VATAMTNEW').AsFloat;
+                              Post;
+                         End;
+                         Query_Process.Next;
+                    end;
+               End;
+          End;
+     end;
+end;
+
+procedure TForm_TestNameRateChange.BB_SaveClick(Sender: TObject);
+Var
+     ls_TESTNAMECODE, ls_TESTNAME, ls_TNCATEGORYCODE, ls_REMARKS, DATAPOSTDATE, DATAPOSTTIME, HIDETESTINPATIENTLIST :string;
+     ls_ISCHARGEWITHSVRTAX, ISPROCEDURE,ISImplant,MODIFYSTATUS,ls_OTType: String;
+     li_DEPID, li_SAMPLESOURCEID, li_DISPLAYORDER,li_AccHeadId,li_AccHeadIdIp: integer;
+     TESTPRICE, VAT, TESTPRICEFOREIGNER, VATFRG, NEWTESTPRICE, TESTPRICEPVT, VATPVT, TESTPRICEFRGGEN, VATFRGGEN, TESTPRICEFRGPVT,
+       VATFRGPVT: Double;
+     ls_ISVATABLE, ls_ISEDITABLE, ls_ISACTIVE, ls_TESTNAMETYPE, ls_ISDISCOUNTABLE, ls_ISPACKAGETEST, ls_ISFRACTIONABLEITEM, ls_WORKLIST, ls_ISECHSITEM: String;
+     ls_CPTCODE, ls_ORGMULTIBILLCATEGORY,ls_ISSPECIALTEST,ls_isblocktest : string;
+     Column : TColumn;
+begin
+     if (Dblcb_DepNew.KeyValue = NULL) or (Le_TestNameCode.Text = '') or (Le_TestName.Text = '') then
+     begin
+          MsgBox(1004, 0, '', '', '');
+          Exit;
+     end;
+
+     (*IF Length(Trim(Le_TestNameCode.Text))<>6 Then
+     begin
+          MessageDlg('TestNameCode Must be of 6 Char.',mtWarning,[mbOK],0);
+          Le_TestNameCode.SetFocus;
+          Exit;
+     end;*)
+
+
+
+     { SaveTestName(TESTNAMECODE, TESTNAME, TNCATEGORYCODE, REMARKS, DATAPOSTDATE, DATAPOSTTIME: String;
+       DEPID, DATAPOSTBY: integer; TESTPRICE, VAT, TESTPRICEFOREIGNER, VATFRG: Double; ISVATABLE, ISEDITABLE, ISACTIVE,
+       ISOT, ISDISCOUNTABLE, ISPACKAGETEST, ISFRACTIONABLEITEM: Boolean) }
+
+     ls_TESTNAMECODE := StringReplace(Trim(Le_TestNameCode.Text),'''','''''',[rfReplaceAll]);
+     if pb_isnew then
+     Begin
+          IF IsDataExist('HS_TENA_TESTNAME', 'TENA_TESTNAMECODE', ls_TESTNAMECODE) Then
+          Begin
+               MessageDlg('Duplicate Test Name Code(' + ls_TESTNAMECODE + ') !', mtWarning, [mbok], 0);
+               Exit;
+          End;
+     End;
+
+     ls_TESTNAME := Trim(Le_TestName.Text);
+     IF pb_isnew Then
+     Begin
+          IF IsDataExist('HS_TENA_TESTNAME', 'TENA_TESTNAME', ls_TESTNAME) Then
+          Begin
+               IF MessageDlg('Already Exist Such Test Name (' + ls_TESTNAME + '). Do You Want Continuee ?', mtConfirmation, [mbYes, mbNo], 0)
+                 <> mrYes Then
+                    Exit;
+          End;
+     End;
+
+     li_DEPID := Dblcb_DepNew.KeyValue;
+
+     IF Trim(Dblcb_TestNameCategory.Text)='' Then
+     begin
+          MessageDlg('TestName Category is Compulsory.',mtWarning,[mbOK],0);
+          Dblcb_TestNameCategory.SetFocus;
+          Exit;
+     end;
+
+     if Trim(Dblcb_TestNameCategory.Text)='' then
+          ls_TNCATEGORYCODE := ''
+     else
+          ls_TNCATEGORYCODE := Dblcb_TestNameCategory.KeyValue;
+
+
+     if Trim(DBLCB_MultiBillCategory.Text)='' then
+          ls_ORGMULTIBILLCATEGORY := 'HOS'
+     else
+          ls_ORGMULTIBILLCATEGORY := DBLCB_MultiBillCategory.KeyValue;
+
+
+     if (RB_IsImplant.Checked=True) and (ls_TNCATEGORYCODE<>'IMPCH') then
+     Begin
+          MessageDlg('Test Name Category Must be Implant.', mtWarning, [mbok], 0);
+          Dblcb_TestNameCategory.SetFocus;
+          Exit;
+     End;
+
+     if RB_IsOt.Checked=True then
+     Begin
+          if CMBOTType.ItemIndex=0 then
+          ls_OTType:='MAJ'
+          Else if CMBOTType.ItemIndex=1 then
+          ls_OTType:='MIN'
+          Else if CMBOTType.ItemIndex=2 then
+          ls_OTType:='INT'
+          Else
+          ls_OTType:='';
+     End
+     Else
+     ls_OTType:='';
+
+     if Trim(DBlcb_SampleSource.Text)<>'' then
+          li_SAMPLESOURCEID := DBlcb_SampleSource.KeyValue
+     else
+          li_SAMPLESOURCEID := 0;
+
+     ls_REMARKS := Le_Remarks.Text;
+
+
+
+     if CB_IsActiveTestName.Checked = true then
+          ls_ISACTIVE := 'Y'
+     else
+          ls_ISACTIVE := 'N';
+
+     if RB_IsOt.Checked = true then
+          ls_TESTNAMETYPE := 'O'
+     else if RB_IsProcedure.Checked = true then
+          ls_TESTNAMETYPE := 'P'
+     else if RB_IsImplant.Checked = true then
+          ls_TESTNAMETYPE := 'I'
+     else
+          ls_TESTNAMETYPE := 'N';
+
+
+
+     if CB_WorkList.Checked = true then
+          ls_WORKLIST := 'Y'
+     else
+          ls_WORKLIST := 'N';
+
+     if Cb_IsPackageTestName.Checked = true then
+          ls_ISPACKAGETEST := 'Y'
+     Else
+          ls_ISPACKAGETEST := 'N';
+
+     if le_Order.Text <> '' then
+          li_DISPLAYORDER := StrToInt(le_Order.Text)
+     ELSE
+          li_DISPLAYORDER := 0;
+
+     if CB_HideAllTestInPatientList.Checked = true then
+          HIDETESTINPATIENTLIST := 'Y'
+     Else
+          HIDETESTINPATIENTLIST := 'N';
+
+     if CB_IncSvrTax.Checked = true then
+          ls_ISCHARGEWITHSVRTAX := 'Y'
+     Else
+          ls_ISCHARGEWITHSVRTAX := 'N';
+
+     if CB_IsDicountable.Checked = true then
+          ls_ISDISCOUNTABLE := 'Y'
+     else
+          ls_ISDISCOUNTABLE := 'N';
+
+     if CB_IsTaxable.Checked = true then
+          ls_ISVATABLE := 'Y'
+     else
+          ls_ISVATABLE := 'N';
+
+
+     if Cb_IsEditable.Checked = true then
+          ls_ISEDITABLE := 'Y'
+     else
+          ls_ISEDITABLE := 'N';
+
+
+     if pb_isnew then
+     begin
+          NEWTESTPRICE := 0;
+          MODIFYSTATUS := 'N';
+     end
+     Else
+     begin
+          NEWTESTPRICE := StrToFloat(format('%.4f', [pf_testprice]));
+          MODIFYSTATUS := 'M';
+     end;
+
+     if CB_IsFractionableItem.Checked = true then
+          ls_ISFRACTIONABLEITEM := 'Y'
+     else
+          ls_ISFRACTIONABLEITEM := 'N';
+
+     if CB_ECHSItem.Checked=True then
+     ls_ISECHSITEM:='Y'
+     else
+     ls_ISECHSITEM:='N';
+
+     IF DBLCB_AccHead.keyValue<>NULL Then
+     li_AccHeadId:=DBLCB_AccHead.keyValue
+     Else
+     li_AccHeadId:=0;
+
+     IF DBLCB_AccheadIp.keyValue<>NULL Then
+     li_AccHeadIdIp:=DBLCB_AccheadIp.keyValue
+     Else
+     li_AccHeadIdIp:=0;
+
+
+     if CB_SpecialTest.Checked=True then
+     begin
+          ls_ISSPECIALTEST:='Y';
+     end
+     else
+     begin
+         ls_ISSPECIALTEST:='N';
+     end;
+
+     if CB_isBlockTest.Checked=True then
+     ls_isblocktest:='Y'
+     else
+     ls_isblocktest:='N';
+
+
+     (*UpdateTestNameNew(TESTNAME, TNCATEGORYCODE, ISACTIVE, TestNameType,OTTYPE, CPTCODE,ISWORKLISTMADE, ISPACKAGETEST, ISFRACTIONABLEITEM,
+          ISECHSITEM, REMARKS : string;
+          TESTNAMEID, DEPID, DISPLAYORDER,SAMPLESOURCEID : Integer); Stdcall;
+
+     SaveTestNameNew(TestNameCode, TESTNAME, TNCATEGORYCODE, ISACTIVE, TestNameType,OTTYPE, CPTCODE,
+          ISWORKLISTMADE, ISPACKAGETEST, ISFRACTIONABLEITEM, ISECHSITEM, REMARKS : string;
+          DEPID, DISPLAYORDER,SAMPLESOURCEID : Integer); Stdcall;*)
+
+
+     try
+          DM_Hospital.DB.StartTransaction;
+          try
+               if pb_isnew then
+               Begin
+                    SaveTestNameNew(ls_TESTNAMECODE, ls_TESTNAME, ls_TNCATEGORYCODE,ls_ORGMULTIBILLCATEGORY,
+                         ls_ISACTIVE, ls_TESTNAMETYPE,ls_OTType, ls_CPTCODE,ls_WORKLIST, ls_ISPACKAGETEST,
+                          ls_ISECHSITEM, ls_REMARKS,ls_ISSPECIALTEST,ls_isblocktest,li_DEPID, li_DISPLAYORDER, li_SAMPLESOURCEID,li_AccHeadId,li_AccHeadIdIp);
+                    pi_TestNameId:=gi_TestNameId;
+               End
+               else
+                    UpdateTestNameNew(ls_TESTNAMECODE,ls_TESTNAME, ls_TNCATEGORYCODE, ls_ORGMULTIBILLCATEGORY, ls_ISACTIVE, ls_TESTNAMETYPE,ls_OTType,
+                         ls_CPTCODE,ls_WORKLIST, ls_ISPACKAGETEST, ls_ISECHSITEM, ls_REMARKS,ls_ISSPECIALTEST,ls_isblocktest,pi_TestNameId,
+                         li_DEPID, li_DISPLAYORDER, li_SAMPLESOURCEID,li_AccHeadId,li_AccHeadIdIp);
+          except
+               if pb_isnew then
+               Begin
+                    SaveTestNameNew(ls_TESTNAMECODE, ls_TESTNAME, ls_TNCATEGORYCODE, ls_ORGMULTIBILLCATEGORY, ls_ISACTIVE,
+                    ls_TESTNAMETYPE,ls_OTType, ls_CPTCODE,ls_WORKLIST, ls_ISPACKAGETEST,  ls_ISECHSITEM,
+                    ls_REMARKS,ls_ISSPECIALTEST,ls_isblocktest,li_DEPID, li_DISPLAYORDER, li_SAMPLESOURCEID,li_AccHeadId,li_AccHeadIdIp );
+                    pi_TestNameId:=gi_TestNameId;
+               End
+               else
+                    UpdateTestNameNew(ls_TESTNAMECODE,ls_TESTNAME, ls_TNCATEGORYCODE, ls_ORGMULTIBILLCATEGORY, ls_ISACTIVE, ls_TESTNAMETYPE,ls_OTType,
+                          ls_CPTCODE,ls_WORKLIST, ls_ISPACKAGETEST,  ls_ISECHSITEM, ls_REMARKS,ls_ISSPECIALTEST,ls_isblocktest,pi_TestNameId,
+                          li_DEPID, li_DISPLAYORDER, li_SAMPLESOURCEID,li_AccHeadId,li_AccHeadIdIp );
+          end;
+
+          (* Save Test Name Price *)
+          TBL_TestNamePrice.First;
+          while Not TBL_TestNamePrice.EOF do
+          begin
+               if pb_isnew then
+               begin
+                    (*SaveTestNamePrice(PATIENTTYPECODE, CURRENCYTYPE, ISVATABLE, ISTESTPRICEEDITABLE,ISDISCOUNTABLE, ISCHARGEWITHSVRTAX: string;
+                        TESTNAMEID, DEPID: Integer; TESTPRICE, VATAMT:Double); Stdcall;*)
+                    if Trim(TBL_TestNamePrice.FieldByName('PATIENTTYPECODE').AsString)<>'' then
+                    SaveTestNamePrice(TBL_TestNamePrice.FieldByName('PATIENTTYPECODE').AsString,TBL_TestNamePrice.FieldByName('CURRENCYTYPE').AsString,
+                              ls_ISVATABLE, ls_ISEDITABLE, ls_ISDISCOUNTABLE, ls_ISCHARGEWITHSVRTAX, pi_TestNameId, li_DEPID,
+                              TBL_TestNamePrice.FieldByName('TESTPRICENEW').AsFloat,TBL_TestNamePrice.FieldByName('VATAMTNEW').AsFloat);
+               end
+               else
+               begin
+                    (*UpdateTestNamePrice(PATIENTTYPECODE, CURRENCYTYPE, ISVATABLE, ISTESTPRICEEDITABLE,ISDISCOUNTABLE, ISCHARGEWITHSVRTAX: string;
+                         TESTNAMEPRICEID: Integer; TESTPRICE, VATAMT:Double); Stdcall;*)
+                    if Trim(TBL_TestNamePrice.FieldByName('PATIENTTYPECODE').AsString)<>'' then
+                    Begin
+                         if TBL_TestNamePrice.FieldByName('TESTNAMEPRICEID').AsInteger > 0 then
+                         UpdateTestPriceRate(TBL_TestNamePrice.FieldByName('PATIENTTYPECODE').AsString,TBL_TestNamePrice.FieldByName('CURRENCYTYPE').AsString,
+                                   ls_ISVATABLE, ls_ISEDITABLE, ls_ISDISCOUNTABLE, ls_ISCHARGEWITHSVRTAX,
+                                   TBL_TestNamePrice.FieldByName('TESTNAMEPRICEID').AsInteger,
+                                   TBL_TestNamePrice.FieldByName('TESTPRICE').AsFloat,TBL_TestNamePrice.FieldByName('VATAMT').AsFloat,
+                                   TBL_TestNamePrice.FieldByName('TESTPRICENEW').AsFloat,TBL_TestNamePrice.FieldByName('VATAMTNEW').AsFloat)
+                         else
+                         SaveTestNamePrice(TBL_TestNamePrice.FieldByName('PATIENTTYPECODE').AsString,TBL_TestNamePrice.FieldByName('CURRENCYTYPE').AsString,
+                              ls_ISVATABLE, ls_ISEDITABLE, ls_ISDISCOUNTABLE, ls_ISCHARGEWITHSVRTAX, pi_TestNameId, li_DEPID,
+                              TBL_TestNamePrice.FieldByName('TESTPRICE').AsFloat,TBL_TestNamePrice.FieldByName('VATAMTNEW').AsFloat);
+                    End;
+               end;
+
+               TBL_TestNamePrice.Next;
+          end;
+
+          DM_Hospital.DB.Commit;
+          ShowDoneMessage;
+     except
+          DM_Hospital.DB.Rollback;
+          MsgBox(1005, 0, '', '', '');
+          Exit;
+     end;
+
+
+     ClearAll(PageControl1.Pages[1]);
+
+     Dblcb_DepNew.KeyValue := li_DEPID;
+     if (CB_ISECHSITEM.Checked=False) and (pb_isnew=True)  then
+     GetAutoTestNameCode;
+
+     CB_IsActiveTestName.Checked := true;
+     CB_IsDicountable.Checked := true;
+     CB_IsTaxable.Checked := true;
+     CB_IncSvrTax.Checked := true;
+     //Cb_IsEditable.Enabled := False;
+     Cb_IsEditable.Checked := False;
+     CB_IncSvrTax.Checked := true;
+     DBLCB_Dep.KeyValue:=li_DEPID;
+     if pb_isnew=True then
+     BB_NewClick(Sender)
+     Else
+     Begin
+          PageControl1.ActivePageIndex := 0;
+          Query_list.Close;
+          Query_list.Session := DM_Hospital.DB;
+          Query_list.Open;
+          Query_list.Locate('TestNameCode', ps_TestNameCode, []);
+          DBGrid1CellClick(Column);
+     End;
+end;
+
+procedure TForm_TestNameRateChange.BitBtn1Click(Sender: TObject);
+begin
+     if DBLCB_Dep.KeyValue = NULL then
+     Begin
+          MessageDlg('Please Select Department First !', mtWarning, [mbok], 0);
+          if CB_GlobalSearch.Checked=False then
+          DBLCB_Dep.SetFocus;
+          Exit;
+     End;
+
+     IF MessageDlg('Do You Really Want to Update The Test Rate?', mtConfirmation, [mbYes, mbNo], 0)<> mrYes Then
+     Exit;
+
+     With Query_update do
+     Begin
+          close;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          Sql.Add('Update hs_tena_testname set tena_testprice=tena_testpricenew,tena_vatamt=tena_vatamtnew');
+          sql.Add('Where depid='+Inttostr(DBLCB_Dep.KeyValue));
+          ExecSQL;
+     End;
+end;
+
+procedure TForm_TestNameRateChange.Btn_ApproveClick(Sender: TObject);
+begin
+     {Form_TestApprove := tForm_TestApprove.Create(nil);
+     try
+          Form_TestApprove.ShowModal;
+     finally
+          Form_TestApprove.Free;
+     end;  }
+end;
+
+
+procedure TForm_TestNameRateChange.CB_AutoFormulaOnClick(Sender: TObject);
+begin
+     (*if CB_AutoFormulaOn.Checked=True then
+     Begin
+          Lbl_PVTRatio.Visible:=True;
+          Lbl_FRGRatio.Visible:=True;
+          Lbl_FRPRatio.Visible:=True;
+     End
+     Else
+     Begin
+          Lbl_PVTRatio.Visible:=False;
+          Lbl_FRGRatio.Visible:=False;
+          Lbl_FRPRatio.Visible:=False;
+     End;*)
+end;
+
+procedure TForm_TestNameRateChange.CB_EnableClick(Sender: TObject);
+begin
+     if CB_Enable.Checked=True then
+     Begin
+          Dblcb_DepNew.Enabled:=True;
+          Dblcb_DepNew.Color:=clWhite;
+     End
+     Else
+     Begin
+          Dblcb_DepNew.Enabled:=False;
+          Dblcb_DepNew.Color:=clMedGray;
+     End;
+
+end;
+
+procedure TForm_TestNameRateChange.CB_GlobalSearchClick(Sender: TObject);
+Var Column : TColumn;
+begin
+     if CB_GlobalSearch.Checked = true then
+     Begin
+          DBLCB_Dep.KeyValue := NULL;
+          DBLCB_Dep.Enabled := False;
+          DBLCB_Dep.Color := clScrollBar;
+          With Query_list do
+          Begin
+               Close;
+               if CB_ISECHSITEM.Checked=False then
+               SQL[1] := ' where IsECHSItem=''N'''
+               Else
+               SQL[1] := ' where IsECHSItem=''Y''';
+
+               if CB_InactiveItem.Checked=False then
+               SQL[2] := ' and IsActive=''Y'''
+               else
+               SQL[2] := ' and IsActive=''N''';
+               Open;
+          End;
+          DBGrid1.Columns[2].Visible := true;
+          DBGrid1.Columns[2].Width := 70;
+     End
+     Else
+     Begin
+          DBLCB_Dep.KeyValue := NULL;
+          DBLCB_Dep.Enabled := true;
+          DBLCB_Dep.Color := clWhite;
+          DBGrid1.Columns[2].Visible := False;
+          CB_Extended.Checked := False;
+          DBLCB_Dep.SetFocus;
+     End;
+     DBGrid1CellClick(Column);
+end;
+
+procedure TForm_TestNameRateChange.CB_InactiveItemClick(Sender: TObject);
+Var Column : TColumn;
+begin
+     if (Trim(DBLCB_Dep.Text)='') and (CB_GlobalSearch.Checked=False) then
+     Begin
+          if CB_ISECHSITEM.Checked=True then
+          MessageDlg('You Must Have to Select Either Department or Check Global Search Before Checked " Display ECHS Item".',mtWarning,[mbok],0);
+          CB_ISECHSITEM.Checked:=False;
+          CB_ISECHSITEM.SetFocus;
+          Exit;
+     End;
+
+     With Query_list do
+     Begin
+          Close;
+          if CB_InactiveItem.Checked=True then
+          Begin
+               if CB_ISECHSITEM.Checked=False then
+               SQL[1] := ' Where IsEchsItem=''N'' and IsActive=''N'''
+               Else
+               SQL[1] := ' Where IsEchsItem=''Y'' and IsActive=''N''';
+          End
+          Else
+          Begin
+               if CB_ISECHSITEM.Checked=False then
+               SQL[1] := ' Where IsEchsItem=''N'' and IsActive=''Y'''
+               Else
+               SQL[1] := ' Where IsEchsItem=''Y'' and IsActive=''Y''';
+          End;
+
+          if Trim(DBLCB_Dep.Text)<>'' then
+          SQL[2] := ' and DepId='+IntToStr(DBLCB_Dep.KeyValue)
+          Else
+          SQL[2] := ' ';
+          Open;
+     End;
+     DBGrid1CellClick(Column);
+end;
+
+procedure TForm_TestNameRateChange.CB_NonTaxableItemClick(Sender: TObject);
+Var Column : TColumn;
+begin
+     With Query_list do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          if CB_NonTaxableItem.Checked=True then
+          Begin
+               if CB_ISECHSITEM.Checked=False then
+               SQL[1] := ' Where IsEchsItem=''N'' and ISVATABLE=''N'''
+               Else
+               SQL[1] := ' Where IsEchsItem=''Y'' and ISVATABLE=''N''';
+          End
+          Else
+          Begin
+               if CB_ISECHSITEM.Checked=False then
+               SQL[1] := ' Where IsEchsItem=''N'''
+               Else
+               SQL[1] := ' Where IsEchsItem=''Y''';
+          End;
+          if Trim(DBLCB_Dep.Text)<>'' then
+          SQL[2] := ' and DepId='+IntToStr(DBLCB_Dep.KeyValue)
+          Else
+          SQL[2] := ' ';
+          Open;
+     End;
+     DBGrid1CellClick(Column);
+end;
+
+procedure TForm_TestNameRateChange.CMBOTTypeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key=8 then
+     CMBOTType.ItemIndex:=-1;
+end;
+
+procedure TForm_TestNameRateChange.DBEdit1Exit(Sender: TObject);
+begin
+     CalculateVatTaxAmt;
+end;
+
+procedure TForm_TestNameRateChange.DBEdit1KeyPress(Sender: TObject; var Key: Char);
+begin
+     if not(Key in [#8, '0' .. '9', '-', DecimalSeparator]) then
+          Key := #0
+     else if ((Key = DecimalSeparator) or (Key = '-')) and (Pos(Key, (Sender as TDBEdit).Text) > 0) then
+          Key := #0
+     else if (Key = '-') and ((Sender as TDBEdit).SelStart <> 0) then
+          Key := #0;
+
+     if Key=#13 then
+     DBEdit1Exit(Sender);
+
+     if Key=#16 then
+     Begin
+          IF Trim(TBL_TestNamePrice.FieldByName('PatientType').AsString)='' Then
+          TBL_TestNamePrice.Delete;
+     End;
+end;
+
+Procedure TForm_TestNameRateChange.CalculateVatTaxAmt;
+Var
+     lf_TestPrice,lf_TestPriceNew, lf_VatAmt,Lf_VatAmtNew: Double;
+     ls_PatientTypeCode :String;
+begin
+     lf_TestPrice := TBL_TestNamePrice.FieldByName('TESTPRICE').AsFloat;
+     lf_TestPriceNew := TBL_TestNamePrice.FieldByName('TESTPRICENEW').AsFloat;
+     ls_PatientTypeCode:=TBL_TestNamePrice.FieldByName('PATIENTTYPECODE').AsString;
+
+     if CB_IsTaxable.Checked=True then
+     Begin
+          if CB_IncSvrTax.Checked = true then
+          begin
+               if TBL_TestNamePrice.FieldByName('CURRENCYTYPE').AsString<>'USD' then
+               //lf_TestPriceNew := GetNoOfDecimalPartOfFloatNum((lf_TestPrice/(1+gf_TaxPercent/100)), 4)
+               lf_TestPriceNew := GetNoOfDecimalPartOfFloatNum((lf_TestPriceNew/(1+gf_TaxPercent/100)), 4)
+               else
+               //lf_TestPriceNew := GetNoOfDecimalPartOfFloatNum((lf_TestPrice/(1+gf_TaxPercent/100)), 6);
+               lf_TestPriceNew := GetNoOfDecimalPartOfFloatNum((lf_TestPriceNew/(1+gf_TaxPercent/100)), 6);
+               //lf_VatAmt := lf_TestPrice - lf_TestPriceNew;
+               Lf_VatAmtNew:=TBL_TestNamePrice.FieldByName('TESTPRICENEW').AsFloat-lf_TestPriceNew;
+          end
+          else
+          begin
+               //lf_TestPriceNew:=lf_TestPrice;
+               if TBL_TestNamePrice.FieldByName('CURRENCYTYPE').AsString<>'USD' then
+               //lf_VatAmt:= GetNoOfDecimalPartOfFloatNum((lf_TestPrice * gf_TaxPercent)/ 100, 4)
+               Lf_VatAmtNew:= GetNoOfDecimalPartOfFloatNum((lf_TestPriceNew * gf_TaxPercent)/ 100, 4)
+               else
+               //lf_VatAmt:= GetNoOfDecimalPartOfFloatNum((lf_TestPrice * gf_TaxPercent)/ 100, 6);
+               Lf_VatAmtNew:= GetNoOfDecimalPartOfFloatNum((lf_TestPriceNew * gf_TaxPercent)/ 100, 6);
+          end;
+     End
+     Else
+     Begin
+          //lf_TestPriceNew:=lf_TestPrice;
+          lf_TestPriceNew:=TBL_TestNamePrice.FieldByName('TESTPRICENEW').AsFloat;
+          lf_VatAmt:=0;
+     End;
+
+     With Query_TempProcess do
+     begin
+          Close;
+          DatabaseName:=gs_temppath;
+          SQL.Clear;
+          SQL.Add(' Update TestNamePriceChange.db Set TestPrice='+FloatToStr(lf_TestPrice)+',');
+          SQL.Add(' TestPriceNew='+FloatToStr(lf_TestPriceNew)+' ,VatAmtNEW='+FloatToStr(Lf_VatAmtNew));
+          SQL.Add(' Where PatientTypeCode='+#39+ls_PatientTypeCode+#39);
+          ExecSQL;
+     end;
+
+     if CB_AutoFormulaOn.Checked then
+     Begin
+          With Query_TempProcess do
+          begin
+               Close;
+               DatabaseName:=gs_temppath;
+               sql.Clear;
+               sql.add('Select * From TestNamePriceChange where PatientTypeCode=''GEN''');
+               Open;
+          end;
+
+          lf_TestPrice:=Query_TempProcess.FieldByName('TESTPRICE').AsFloat;
+
+
+          With Query_Process do
+          begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.add('Select * From HS_PATY_PatientType where PATY_PatientTypeCode<>''GEN''');
+               Open;
+               First;
+               while Not EOF do
+               begin
+                    lf_TestPrice:=lf_TestPrice * Query_Process.FieldByName('PATY_CHARGERATIOPER').AsFloat / 100;
+                    if CB_IncSvrTax.Checked = true then
+                    begin
+                         if Query_Process.FieldByName('PATY_CURRENCYTYPE').AsString<>'USD' then
+                         lf_TestPriceNew := GetNoOfDecimalPartOfFloatNum((lf_TestPrice/(1+gf_TaxPercent/100)), 4)
+                         else
+                         lf_TestPriceNew := GetNoOfDecimalPartOfFloatNum((lf_TestPrice/(1+gf_TaxPercent/100)), 6);
+                         lf_VatAmt := lf_TestPrice - lf_TestPriceNew;
+                    end
+                    else
+                    begin
+                         lf_TestPriceNew:=lf_TestPrice;
+                         if Query_Process.FieldByName('PATY_CURRENCYTYPE').AsString<>'USD' then
+                         lf_VatAmt:= GetNoOfDecimalPartOfFloatNum((lf_TestPrice * gf_TaxPercent)/ 100, 4)
+                         else
+                         lf_VatAmt:= GetNoOfDecimalPartOfFloatNum((lf_TestPrice * gf_TaxPercent)/ 100, 6);
+                    end;
+
+                    With Query_TempProcess do
+                    begin
+                         Close;
+                         DatabaseName:=gs_temppath;
+                         SQL.Clear;
+                         SQL.Add(' Update TestNamePriceChange.db Set TestPrice='+FloatToStr(lf_TestPrice)+',');
+                         SQL.Add(' TestPriceNew='+FloatToStr(lf_TestPriceNew)+' ,VatAmtNew='+FloatToStr(lf_VatAmtNew));
+                         SQL.Add(' Where PatientTypeCode='+#39+Query_Process.FieldByName('PATY_PATIENTTYPECODE').AsString+#39);
+                         ExecSQL;
+                    end;
+                    Query_Process.Next;
+               end;
+          end;
+     End;
+
+     TBL_TestNamePrice.Close;
+     TBL_TestNamePrice.Open;
+     TBL_TestNamePrice.Locate('PatientTypeCode',ls_PatientTypeCode,[]);
+
+     //IF Trim(TBL_TestNamePrice.FieldBYName('PatientTypeCode').AsString)='' Then
+     //TBL_TestNamePrice.Delete;
+end;
+
+procedure TForm_TestNameRateChange.DBGrid1CellClick(Column: TColumn);
+begin
+     if Query_list.FieldByName('TestNameId').AsInteger > 0 then
+     Begin
+          With Query_TestPriceList do
+          Begin
+               Close;
+               if CB_ISECHSITEM.Checked=False then
+               sql[1]:='Where IsECHSItem=''N'' and TestNameId='+IntToStr(Query_list.FieldByName('TestNameId').AsInteger)
+               Else
+               sql[1]:='Where IsECHSItem=''Y'' and TestNameId='+IntToStr(Query_list.FieldByName('TestNameId').AsInteger);
+               Open;
+          End;
+     End;
+end;
+
+procedure TForm_TestNameRateChange.DBGrid1DblClick(Sender: TObject);
+begin
+     if Query_list.FieldByName('TestNameId').AsInteger <=0 then
+     begin
+          MessageDlg(' No Test Name Record to Modify.',mtWarning,[mbOK],0);
+          Exit;
+     end;
+
+
+     pb_isnew := False;
+     PageControl1.ActivePageIndex := 1;
+     with Query_list do
+     begin
+          pi_TestNameId:=FieldByName('TestNameId').AsInteger;
+          Dblcb_DepNew.KeyValue := Query_list.FieldByName('DepId').AsInteger;
+          Dblcb_DepNew.Enabled:=False;
+
+          Le_TestNameCode.Text := FieldByName('TestNameCode').AsString;
+          Le_TestNameCode.ReadOnly:=True;
+          Le_TestNameCode.Color:=clMenu;
+
+          ps_TestNameCode := FieldByName('TestNameCode').AsString;
+          Le_TestName.Text := FieldByName('TestName').AsString;
+          Le_Remarks.Text := FieldByName('Remarks').AsString;
+          le_Order.Text := IntToStr(FieldByName('DisplayOrder').AsInteger);
+          if FieldByName('IsActive').AsString = 'Y' then
+               CB_IsActiveTestName.Checked := true
+          else
+               CB_IsActiveTestName.Checked := False;
+
+
+          if FieldByName('ISPACKAGETEST').AsString = 'Y' then
+               Cb_IsPackageTestName.Checked := true
+          else
+               Cb_IsPackageTestName.Checked := False;
+
+          if FieldByName('IsWorklistMade').AsString = 'Y' then
+               CB_WorkList.Checked := true
+          else
+               CB_WorkList.Checked := False;
+
+          (*if FieldByName('HIDETESTINPATIENTLIST').AsString = 'Y' then
+               CB_HideAllTestInPatientList.Checked := true
+          else
+               CB_HideAllTestInPatientList.Checked := False;*)
+
+          DBLCB_AccHead.KeyValue:= Query_list.FieldByName('accheadop').Asinteger;
+          DBLCB_AccheadIp.KeyValue:= Query_list.FieldByName('accheadip').Asinteger;
+
+          CMBOTType.ItemIndex:=-1;
+          if FieldByName('TestNameType').AsString = 'O' then
+          Begin
+               RB_IsOt.Checked := True;
+               if FieldByName('OTType').AsString='MAJ' then
+               CMBOTType.ItemIndex:=0
+               Else if FieldByName('OTType').AsString='MIN' then
+               CMBOTType.ItemIndex:=1
+               Else if FieldByName('OTType').AsString='INT' then
+               CMBOTType.ItemIndex:=2
+               Else
+               CMBOTType.ItemIndex:=-1;
+          End
+          else if FieldByName('TestNameType').AsString = 'P' then
+               RB_IsProcedure.Checked := True
+          else if FieldByName('TestNameType').AsString = 'I' then
+               RB_IsImplant.Checked := True
+          else
+               RB_None.Checked:=True;
+
+          DisplayOTType;
+
+          if FieldByName('SampleSourceId').AsInteger > 0 then
+               DBlcb_SampleSource.KeyValue := FieldByName('SampleSourceId').AsInteger
+          Else
+               DBlcb_SampleSource.KeyValue:=-1;
+
+          Dblcb_TestNameCategory.KeyValue := FieldByName('TNCATEGORYCODE').AsString;
+          DBLCB_MultiBillCategory.KeyValue := FieldByName('ORGMULTIBILLCATEGORY').AsString;
+
+     end;
+
+     if CB_ISECHSITEM.Checked=True then
+     Begin
+          Label_ECHSCap.Visible:=True;
+          CB_ECHSItem.Checked:=True;
+          CB_ECHSItem.Enabled:=False;
+          CB_ECHSItem.Visible:=True;
+     End
+     else
+     Begin
+          Label_ECHSCap.Visible:=False;
+          CB_ECHSItem.Checked:=False;
+          CB_ECHSItem.Enabled:=False;
+          CB_ECHSItem.Visible:=False;
+     End;
+
+     LoadTestNamePrice;
+
+     { Starts TestNamePrice }
+     With Query_Process do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Select * From VW_HS_SETUP_TESTNAMEPRICE');
+          SQL.Add(' Where TestNameId='+IntToStr(pi_TestNameId));
+          Open;
+
+          if FieldByName('ISDISCOUNTABLE').AsString = 'Y' then
+               CB_IsDicountable.Checked := true
+          else
+               CB_IsDicountable.Checked := False;
+          if FieldByName('ISVATABLE').AsString = 'Y' then
+               CB_IsTaxable.Checked := true
+          else
+               CB_IsTaxable.Checked := False;
+
+          if FieldByName('ISTESTPRICEEDITABLE').AsString = 'Y' then
+               Cb_IsEditable.Checked := true
+          else
+               Cb_IsEditable.Checked := False;
+
+
+          if FieldByName('ISCHARGEWITHSVRTAX').AsString = 'Y' then
+               CB_IncSvrTax.Checked := true
+          else
+               CB_IncSvrTax.Checked := False;
+
+     end;
+
+     CB_AutoFormulaOn.Checked:=False;
+
+end;
+
+procedure TForm_TestNameRateChange.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+     IF (Query_list.FieldByName('IsFractionableItem').asString='Y') Then
+     Begin
+          DBGrid1.Canvas.Font.Color:=$000080FF;
+          DBGrid1.DefaultDrawDataCell(rect,Column.Field,State);
+     End;
+
+     IF (Query_list.FieldByName('IsActive').asString='N') Then
+     Begin
+          DBGrid1.Canvas.Font.Color:=clRed;
+          DBGrid1.DefaultDrawDataCell(rect,Column.Field,State);
+     End;
+end;
+
+procedure TForm_TestNameRateChange.DBLCB_DepClick(Sender: TObject);
+Var Column :TColumn;
+begin
+     if Trim(DBLCB_Dep.Text)<>'' then
+     Begin
+          with Query_list do
+          begin
+               Close;
+               Session := DM_Hospital.DB;
+               if CB_ISECHSITEM.Checked=False then
+               SQL[1] := 'Where IsECHSItem=''N'' and Depid=' + IntToStr(DBLCB_Dep.KeyValue)
+               Else
+               SQL[1] := 'Where IsECHSItem=''Y'' and Depid=' + IntToStr(DBLCB_Dep.KeyValue);
+
+               if CB_InactiveItem.Checked=False then
+               SQL[2] := 'and IsActive=''Y'''
+               else
+               SQL[2] := 'and IsActive=''N''';
+               //sql.savetofile('C:\test.txt');
+               Open;
+          end;
+          DBGrid1CellClick(Column);
+     End;
+end;
+
+procedure TForm_TestNameRateChange.Dblcb_DepNewClick(Sender: TObject);
+begin
+     if pb_isnew then
+          GetAutoTestNameCode;
+end;
+
+procedure TForm_TestNameRateChange.DBlcb_SampleSourceKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = 8 then
+     DBlcb_SampleSource.KeyValue := -1;
+end;
+
+procedure TForm_TestNameRateChange.Dblcb_TestNameCategoryKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = 8 then
+     Dblcb_TestNameCategory.KeyValue := -1;
+end;
+
+procedure TForm_TestNameRateChange.Edit_SearchChange(Sender: TObject);
+begin
+     if CB_Extended.Checked = False then
+     Begin
+          Edit_Search.Text := StringReplace(Edit_Search.Text, '''', '''''', [rfReplaceAll]);
+          with Query_list do
+          Begin
+               IF Trim(Edit_Search.Text) <> '' Then
+               Begin
+                    Filter := 'TestName =' + #39 + Trim(Edit_Search.Text) + '*' + #39+' or TestNameCode =' + #39 + Trim(Edit_Search.Text) + '*' + #39;
+                    Filtered := true;
+               End
+               Else
+                    Filtered := False;
+          End;
+     End
+     Else
+     Begin
+          With Query_list do
+          begin
+               Filtered := False;
+               Close;
+               SQL[5] := ' Where IsActive=''Y'' and TestName Like ''%' + uppercase(Edit_Search.Text) + '%''';
+               Open;
+          end;
+     End;
+end;
+
+procedure TForm_TestNameRateChange.FormCreate(Sender: TObject);
+begin
+     Query_Department.Close;
+     Query_Department.Session := DM_Hospital.DB;
+     Query_Department.Open;
+
+     Query_DepName.Close;
+     Query_DepName.Session := DM_Hospital.DB;
+     Query_DepName.Open;
+
+     QuerySampleSource.Close;
+     QuerySampleSource.Session := DM_Hospital.DB;
+     QuerySampleSource.Open;
+
+     Try
+          With Query_AccountHead do
+          begin
+               Close;
+               Session := DM_Hospital.DB;
+               SQL.Clear;
+               SQL.add(' Select ID,ParentId,Name From '+gs_DB_AccUserName+'.Acctree where ParentID=37');
+               SQL.add(' Order by Name');
+          end;
+     except
+
+     End;
+
+     Try
+          With Query_accheadIp do
+          begin
+               Close;
+               Session := DM_Hospital.DB;
+               SQL.Clear;
+               SQL.add(' Select ID,ParentId,Name From '+gs_DB_AccUserName+'.Acctree where ParentID=36');
+               SQL.add(' Order by Name');
+          end;
+     except
+
+     End;
+end;
+
+procedure TForm_TestNameRateChange.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = VK_F1 then
+          CB_GlobalSearch.Checked := Not(CB_GlobalSearch.Checked);
+
+     if TabSheet2.TabVisible = true then
+     Begin
+          if Key = VK_F2 Then
+               CB_AutoFormulaOn.Checked := Not(CB_AutoFormulaOn.Checked);
+     End;
+
+     if TabSheet2.TabVisible = true then
+     Begin
+          if Key = VK_F12 Then
+          BB_SaveClick(Sender);
+     End;
+
+
+
+     if Key = 27 then
+          BB_CloseClick(Sender);
+end;
+
+procedure TForm_TestNameRateChange.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+          keybd_event(9, 13, 0, 0);
+end;
+
+procedure TForm_TestNameRateChange.FormShow(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex := 0;
+     Query_TestNameCategory.Close;
+     Query_TestNameCategory.Open;
+
+     if gs_IsMultiOrgBilling='Y' then
+     begin
+          qry_MultiBillCategory.Close;
+          qry_MultiBillCategory.Open;
+          Label_MultiOrgBillCatCap.Enabled:=True;
+          DBLCB_MultiBillCategory.Enabled:=True;
+          DBLCB_MultiBillCategory.KeyValue:='HOS';
+     end
+     Else
+     begin
+          qry_MultiBillCategory.Close;
+          Label_MultiOrgBillCatCap.Enabled:=False;
+          DBLCB_MultiBillCategory.Enabled:=False;
+          DBLCB_MultiBillCategory.KeyValue:='HOS';
+     end;
+
+     CreateTableTestNamePrice;
+     LoadTestPriceCategoryRatio;
+end;
+
+procedure TForm_TestNameRateChange.CreateTableTestNamePrice;
+Begin
+     TBL_TestNamePrice.Close;
+     IF FileExists(gs_temppath + '\TestNamePriceChange.db') Then
+          DeleteFile(gs_temppath + '\TestNamePriceChange.db');
+
+     with TBL_TestNamePrice do
+     Begin
+          DatabaseName := gs_temppath;
+          Close;
+          Exclusive := False;
+          Tablename := 'TestNamePriceChange.db';
+          tableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('TESTNAMEPRICEID', ftInteger);
+          FieldDefs.Add('TestNameId', ftInteger);
+          FieldDefs.Add('PatientTypeCode', FtString, 3);
+          FieldDefs.Add('PatientType', FtString, 30);
+          FieldDefs.Add('CURRENCYTYPE', FtString, 3);
+          FieldDefs.Add('TESTPRICE', ftFloat);
+          FieldDefs.Add('TESTPRICENEW', ftFloat);
+          FieldDefs.Add('TAXPER', ftFloat);
+          FieldDefs.Add('VATAMT', ftFloat);
+          FieldDefs.Add('VATAMTNEW', ftFloat);
+          CreateTable;
+     End;
+End;
+
+procedure TForm_TestNameRateChange.LoadTestPriceCategoryRatio;
+Begin
+     With Query_Process do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          sql.Add(' Select * From HS_PaTy_PatientType');
+          Open;
+          pf_PVTRatio:=0;
+          pf_FRGRatio:=0;
+          pf_FRPRatio:=0;
+
+          (*First;
+          while not EOF do
+          Begin
+               if Query_Process.FieldByName('TestPriceType').AsString='PVT' then
+               pf_PVTRatio:=Query_Process.FieldByName('Ratio').AsFloat
+               Else if Query_Process.FieldByName('TestPriceType').AsString='FRG' then
+               pf_FRGRatio:=Query_Process.FieldByName('Ratio').AsFloat
+               Else if Query_Process.FieldByName('TestPriceType').AsString='FRP' then
+               pf_FRPRatio:=Query_Process.FieldByName('Ratio').AsFloat;
+               Query_Process.Next;
+          End;*)
+     End;
+
+     (*Lbl_PVTRatio.Caption:=FloatToStr(pf_PVTRatio)+' of General Rate';
+     Lbl_FRGRatio.Caption:=FloatToStr(pf_FRGRatio)+' of General Rate';
+     Lbl_FRPRatio.Caption:=FloatToStr(pf_FRPRatio)+' of General Rate';*)
+End;
+
+procedure TForm_TestNameRateChange.Le_TestPriceGKeyPress(Sender: TObject; var Key: Char);
+begin
+     if not(Key in [#8, '0' .. '9', '-', DecimalSeparator]) then
+          Key := #0
+     else if ((Key = DecimalSeparator) or (Key = '-')) and (Pos(Key, (Sender as TLabeledEdit).Text) > 0) then
+          Key := #0
+     else if (Key = '-') and ((Sender as TLabeledEdit).SelStart <> 0) then
+          Key := #0;
+
+end;
+
+procedure TForm_TestNameRateChange.PageControl1Change(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+          PageControl1.ActivePageIndex := 0
+     else
+          PageControl1.ActivePageIndex := 1;
+end;
+
+procedure TForm_TestNameRateChange.RB_IsImplantClick(Sender: TObject);
+begin
+     DisplayOTType;
+end;
+
+procedure TForm_TestNameRateChange.RB_IsOtClick(Sender: TObject);
+begin
+     DisplayOTType;
+end;
+
+procedure TForm_TestNameRateChange.RB_IsProcedureClick(Sender: TObject);
+begin
+     DisplayOTType;
+end;
+
+procedure TForm_TestNameRateChange.RB_NoneClick(Sender: TObject);
+begin
+     DisplayOTType;
+end;
+
+procedure TForm_TestNameRateChange.DisplayOTType;
+Begin
+     if RB_IsOt.Checked=True then
+     Begin
+          Label_OTType.Enabled:=True;
+          Label_OTType.Visible:=True;
+          CMBOTType.Enabled:=True;
+          CMBOTType.Visible:=True;
+     End
+     Else
+     Begin
+          Label_OTType.Enabled:=False;
+          Label_OTType.Visible:=False;
+          CMBOTType.Enabled:=False;
+          CMBOTType.Visible:=False;
+     End;
+End;
+
+procedure TForm_TestNameRateChange.SpeedButton1Click(Sender: TObject);
+begin
+(*     if MsgBox(1002, 1, '', '', '') then
+     begin
+          DeleteTestName(Query_list.FieldByName('TestNameID').AsInteger);
+     end;
+     Query_list.Close;
+     Query_list.Open;*)
+
+end;
+
+procedure TForm_TestNameRateChange.SpeedButton2Click(Sender: TObject);
+Var
+     DBGrid: TDBGrid;
+     ls_ReportTitle: String;
+begin
+     DBGrid := TDBGrid.Create(Nil);
+     if DBLCB_Dep.Text = '' then
+          ls_ReportTitle := 'Test Price List'
+     Else
+          ls_ReportTitle := 'Test Price List of ' + DBLCB_Dep.Text;
+
+     With Query_Process do
+     Begin
+          Close;
+          SQL.Clear;
+          SQL.add(' Select  DepName,');
+          SQL.add(' TestNameCode,TestName,TestPrice,VATAMT,TOTALPRICE Total,IsVatable,IsDiscountable,IsFractionableItem');
+//          SQL.add(' TestNameCategory');
+          SQL.add(' From VW_HS_SETUP_TESTNAMEPRICE where  ISActive=''Y''');
+          if DBLCB_Dep.KeyValue <> NULL then
+               SQL.add(' and DepId=' + IntToStr(DBLCB_Dep.KeyValue));
+          SQL.add(' Order By DepName,TestName');
+          Open;
+     End;
+     DBGrid.DataSource := DS_Process;
+
+     if MsgBox(1010, 1, '', '', '') then
+     begin
+          ExportDBGrid(Form_TestNameRateChange, DBGrid, true, ls_ReportTitle, TodaysDateVS + ' BS -' + TodaysDate + ' AD');
+     end;
+end;
+
+procedure TForm_TestNameRateChange.SpeedButtonEduClick(Sender: TObject);
+begin
+     try
+          Form_TNCategorySetup := TForm_TNCategorySetup.Create(nil);
+          Form_TNCategorySetup.ShowModal;
+     finally
+          Form_TNCategorySetup.Free;
+     end;
+
+     Query_TestNameCategory.Close;
+     Query_TestNameCategory.Open;
+end;
+
+procedure TForm_TestNameRateChange.GetAutoTestNameCode;
+Var
+     ls_TESTNAMECODEPREFIX: String;
+begin
+     //Exit;
+     With Query_Process do
+     Begin
+          Close;
+          SQL.Clear;
+          SQL.add(' Select DEPT_TESTNAMECODEPREFIX,DEPT_DEPTYPE From HS_DEPT_Department where DEPT_DepId=' + IntToStr(Dblcb_DepNew.KeyValue));
+          Open;
+     End;
+
+     if Query_Process.FieldByName('DEPT_DEPTYPE').AsString = 'P' then // P- Pathological
+          Dblcb_TestNameCategory.KeyValue := 'INVOT';
+
+     ls_TESTNAMECODEPREFIX := Query_Process.FieldByName('DEPT_TESTNAMECODEPREFIX').AsString;
+
+     With Query_GetAutoTestNameCode do
+     Begin
+          Close;
+          SQL.Clear;
+          SQL.add(' Select Nvl(Max(SubStr(TENA_TestnameCode,4,6)),0) as Num');
+          SQL.add(' From HS_TENA_TestName where TENA_TestNameCode Like '+#39+ls_TESTNAMECODEPREFIX+'%''');
+          //SQL.add(' Select Count(*) as Num From TestName where DepId=' + IntToStr(Dblcb_DepNew.KeyValue));
+          Open;
+     End;
+
+     Label_TestNameCode.Caption := ls_TESTNAMECODEPREFIX+ FormatFloat('000', Query_GetAutoTestNameCode.FieldByName('Num').AsFloat + 1);
+     IF pb_isnew = true Then
+     Le_TestNameCode.Text := Trim(Label_TestNameCode.Caption);
+end;
+
+end.

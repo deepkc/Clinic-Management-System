@@ -1,0 +1,49 @@
+package TestNameSetup;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+{$DEFINE DEBUG}
+
+requires
+  rtl,
+  vcl,
+  dbrtl,
+  vcldb,
+  bdertl,
+  Global,
+  MidasFunction,
+  SMCmpntD2010;
+
+contains
+  Unit_TestNameSetup in 'Unit_TestNameSetup.pas' {Form_TestNameSetup},
+  Unit_UnitSetup in 'Unit_UnitSetup.pas' {Form_UnitName},
+  Unit_TestNameRateChange in 'Unit_TestNameRateChange.pas' {Form_TestNameRateChange},
+  Unit_TestNameSetupNew in 'Unit_TestNameSetupNew.pas' {Form_TestNameSetupNew},
+  Unit_TNCategorySetup in 'Unit_TNCategorySetup.pas' {Form_TNCategorySetup},
+  Unit_IntegrationSetup in 'Unit_IntegrationSetup.pas' {Form_InregrationSetup},
+  Unit_CalculationName in 'Unit_CalculationName.pas' {Form_AutoCalculation},
+  Unit_SetupSourceTestCode in 'Unit_SetupSourceTestCode.pas' {Form_SourceSetupTestCode},
+  Unit_TestCalculation in 'Unit_TestCalculation.pas' {Form_TestCalculation};
+
+end.

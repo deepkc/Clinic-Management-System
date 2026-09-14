@@ -1,0 +1,362 @@
+unit UnitReportRemaining;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ExtCtrls, Grids, DBGrids, StdCtrls, Buttons, OleCtrls, ServerDate,
+  DateEditXControl_TLB, DBTables, Db, SMDBGrid, MemDS, DBAccess, Ora,UnitSendToExcel;
+type
+  TFormReportRemaining = class(TForm)
+    DSSample: TDataSource;
+    Panel_Top: TPanel;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    DateEditXFromDate: TDateEditX;
+    DateEditXToDate: TDateEditX;
+    BitBtnRefresh: TBitBtn;
+    RGReport: TRadioGroup;
+    SMDBGrid1: TSMDBGrid;
+    QryAniD: TOraQuery;
+    shp1: TShape;
+    lbl1: TLabel;
+    lbl2: TLabel;
+    shp2: TShape;
+    shp_1: TShape;
+    btn_excel: TBitBtn;
+    btn_preview: TBitBtn;
+    Rg_Status: TRadioGroup;
+    procedure FormCreate(Sender: TObject);
+    procedure BitBtnRefreshClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure RGReportClick(Sender: TObject);
+    procedure EditSearchChange(Sender: TObject);
+    procedure SMDBGrid1DrawngColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure btn_excelClick(Sender: TObject);
+    procedure Rg_StatusClick(Sender: TObject);
+    procedure btn_previewClick(Sender: TObject);
+  private
+    procedure CreateSampleRegister;
+    procedure GetMeOtherParameters(SampleID: Integer);
+    { Private declarations }
+  public
+    { Public declarations }
+    ls_ReportType,ps_BillNo,ps_Remaining:String;
+    pi_SampleNo,pi_Report,pi_No:Integer;
+  end;
+
+var
+  FormReportRemaining: TFormReportRemaining;
+implementation
+
+uses Fxn,DM,Unit_QrReportRemaining;
+
+{$R *.DFM}
+
+procedure TFormReportRemaining.CreateSampleRegister;
+begin
+     {With TableSampleList Do
+     Begin
+          Close;
+          DataBaseName:=gs_TempPath;
+          TableName:='ReportRemaining.db';
+          TableType:=TTParadox;
+          FieldDefs.Clear;
+          Fielddefs.add('Sno',ftInteger);
+          Fielddefs.add('PatientID',ftInteger);
+          Fielddefs.add('SampleID',ftString,12);
+          Fielddefs.add('PatientName',ftString,50);
+          Fielddefs.add('Address',ftString,50);
+          Fielddefs.add('TestName',ftString,300);
+          Fielddefs.add('BillNo',ftString,20);
+          Fielddefs.add('No',ftInteger);
+          Fielddefs.add('SampleNo',ftInteger);
+          Fielddefs.add('Report',ftInteger);
+          Fielddefs.add('Remaining',ftInteger);
+          CreateTable;
+     End;   }
+end;
+
+procedure TFormReportRemaining.FormCreate(Sender: TObject);
+begin
+     DateEditXFromDate.SystemOfDate:=gi_DateSystem;
+     DateEditXToDate.SystemOfDate:=gi_DateSystem;
+
+     DateEditXFromDate.Text:=gs_From;
+     DateEditXToDate.Text:=gs_to;
+     //DateEditXFromDate.Text:=ServerDate.TodaysDate;
+     //DateEditXToDate.Text:=DateEditXFromDate.Text;
+     //CreateSampleRegister;
+     BitBtnRefreshClick(Sender);
+end;
+
+procedure TFormReportRemaining.BitBtnRefreshClick(Sender: TObject);
+Var  PatientID,I:Integer;
+begin
+     If DateEditXFromDate.Text>DateEditXToDate.Text Then
+     Begin
+          If MessageDlg('Invalid Date Range.',mtConfirmation,[mbYes,mbNo],0)=mrNo Then
+          DateEditXToDate.SetFocus;
+          Exit;
+     End;
+
+     With QryAniD Do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.Add('select rownum as Sno,(select case when undostatus=1 then '''' else sampleNo end as sampleNo from samplecollection where patienttestid=pt.patienttestid)sampleID,');
+
+          if gi_compileValue<>3 then
+              sql.Add('pt.patientid,pt.testdate,pt.testprogressstatus,pm.pama_patientname,(select tena_testname from hs_tena_testname where tena_testnamecode=pt.testnamecode)testname from patienttest pt,hs_pama_patientmain pm')
+          else
+              sql.Add('pt.patientid,pt.testdate,pt.testprogressstatus,pm.patientname,(select tena_testname from hs_tena_testname where tena_testnamecode=pt.testnamecode)testname from patienttest pt,hs_pama_patientmain pm');
+
+          sql.Add('where pt.patientid=pm.pama_patientid');
+          sql.Add('and pt.testprogressstatus<4');
+          sql.Add('and 1=1');
+          sql.Add('and 1=1');
+          sql[4]:='and pt.testdate between '+QuotedStr(DateEditXFromDate.text)+' and '+QuotedStr(DateEditXToDate.text);
+          sql[5]:=' and pt.depid in ('+gs_UserDepId+')';
+          sql.SaveToFile('c:\reportRemaining.txt');
+          open;
+     End;
+
+
+
+
+
+end;
+
+procedure TFormReportRemaining.btn_excelClick(Sender: TObject);
+begin
+     if MessageDlg('Are you sure to export?',mtConfirmation,mbYesNo,0)=mrYes then
+     begin
+          SendToExcels(nil,SMDBGrid1,'Report Remaining',(DateEditXFromDate.text+'-'+DateEditXToDate.text),'',gs_HospitalName,gs_HospitalAddress,0);
+     end;
+end;
+
+procedure TFormReportRemaining.btn_previewClick(Sender: TObject);
+begin
+    try
+      Form_QRreportremaining:=TForm_QRreportremaining.Create(nil);
+      with Form_QRreportremaining do
+      begin
+        qrlbl_DaFrom.Caption:=DateEditXFromDate.text;
+        qrlbl_DaTo.Caption:=DateEditXToDate.text;
+        qrlbl_hosname.Caption:=gs_HospitalName;
+        qrlbl_hosaddress.Caption:=gs_HospitalAddress;
+        with orqry_data do
+        begin
+          Close;
+          Session:=DM_Hospital.DB;
+          if Rg_Status.ItemIndex=0 then
+          begin
+             SQL[4]:='and testprogressstatus=3';
+             sql[5]:='and pt.testdate between '+QuotedStr(DateEditXFromDate.text)+' and '+QuotedStr(DateEditXToDate.text);
+             sql[6]:=' and pt.depid in ('+gs_UserDepId+')';
+          end
+          else if Rg_Status.ItemIndex=1 then
+          begin
+             SQL[4]:='and testprogressstatus<=2';
+             sql[5]:='and pt.testdate between '+QuotedStr(DateEditXFromDate.text)+' and '+QuotedStr(DateEditXToDate.text);
+             sql[6]:=' and pt.depid in ('+gs_UserDepId+')';
+          end
+          else
+          begin
+             SQL[4]:='and 1=1';
+             sql[5]:='and pt.testdate between '+QuotedStr(DateEditXFromDate.text)+' and '+QuotedStr(DateEditXToDate.text);
+             sql[6]:=' and pt.depid in ('+gs_UserDepId+')';
+          end;
+          //sql.SaveToFile('c:\qr.txt');
+          Open;
+        end;
+
+        Form_QRreportremaining.QR_RptRemg.PreviewModal;
+      end;
+    finally
+      Form_QRreportremaining.Free;
+    end;
+end;
+
+procedure TFormReportRemaining.GetMeOtherParameters(SampleID:Integer);
+Var BillNo,S_DateStr,E_DateStr:String;
+    S_Date,E_Date:Integer;
+begin
+    { S_Date:=StrToInt(Copy(gs_FYear,1,2));
+     E_Date:=StrToInt(Copy(gs_FYear,4,2));
+
+     S_DateStr:=Copy(DateEditXFromDate.Text,1,2)+IntToStr(S_Date)+'/04/01';
+     E_DateStr:=Copy(DateEditXFromDate.Text,1,2)+IntToStr(E_Date)+'/03/32';
+
+     BillNo:=Chr(39);
+     With QryProcess Do
+     Begin
+          Close;
+          With Sql Do
+          Begin
+               Clear;
+               Add('Select Distinct BillNo From PatientTest');
+               Add(' Where SampleID='+IntToStr(SampleID));
+               Add(' And TestDate Between'+#39+S_DateStr+#39);
+               Add(' And '+#39+E_DateStr+#39);
+          End;
+          Open;
+          First;
+          ps_BillNo:=FieldByName('BillNo').AsString;
+          While Not Eof Do
+          Begin
+               BillNo:=BillNo+Chr(39)+FieldByName('BillNo').AsString+Chr(39)+',';
+               Next;
+          End;
+          BillNo:=Copy(BillNo,2,Length(BillNo)-2);
+
+          Close;
+          With Sql Do
+          Begin
+               Clear;
+               Add('Select Count(PT.TestNameCode) No From PatientTest PT,TestName TN');
+               Add(' Where (PT.TestNameID = TN.TestNameID(+)) AND');
+               Add(' PT.BillNo In('+BillNo+')');
+               //Add(' And TN.LineEdit='+Chr(39)+ls_ReportType+Chr(39));
+               Add(' And TN.LineEdit=''T''');
+               Add(' And TestDate Between'+#39+S_DateStr+#39);
+               Add(' And '+#39+E_DateStr+#39);
+               //SaveToFile('Sql.txt');
+          End;
+          Open;
+          pi_No:=FieldByName('No').AsInteger;
+
+          Close;
+          With Sql Do
+          Begin
+               Clear;
+               Add('Select Count(PT.TestNameCode) No From PatientTest PT,TestName TN');
+               Add(' Where (PT.TestNameID = TN.TestNameID(+)) AND');
+               //Add(' PT.BillNo In('+Chr(39)+BillNo+Chr(39)+')');
+               Add(' PT.SampleID='+IntToStr(SampleID));
+               //Add(' And TN.LineEdit='+Chr(39)+ls_ReportType+Chr(39));
+               Add(' And TN.LineEdit=''T''');
+               Add(' And PT.WorkingStatus Not In (''REG'',''InPatient'')');
+               Add(' And TestDate Between'+#39+S_DateStr+#39);
+               Add(' And '+#39+E_DateStr+#39);
+          End;
+          Open;
+          pi_Report:=FieldByName('No').AsInteger;
+
+          Close;
+          With Sql Do
+          Begin
+               Clear;
+               Add('SELECT PT.SampleID,PT.TestNameCode,Nls_InitCap(TN.TestName) As TestName');
+               Add(' FROM PatientTest PT,Testname TN');
+               Add(' WHERE  (PT.TestNameID = TN.TestNameID(+)) AND');
+               Add(' PT.BillNo In('+BillNo+')');
+               //Add(' And TN.LineEdit='+Chr(39)+ls_ReportType+Chr(39));
+               Add(' And TN.LineEdit=''T''');
+               Add(' And PT.WorkingStatus In (''REG'',''InPatient'')');
+               Add(' And PT.SampleID>0');
+               Add(' And TestDate Between'+#39+S_DateStr+#39);
+               Add(' And '+#39+E_DateStr+#39);
+               //SaveToFile('Sql.txt');
+          End;
+          Open;
+          First;
+          ps_Remaining:='';
+          While Not Eof Do
+          Begin
+               ps_Remaining:=ps_Remaining+FieldByName('TestName').AsString+',';
+               Next;
+          End;
+          ps_Remaining:=Copy(ps_Remaining,0,Length(ps_Remaining)-1);
+     End; }
+end;
+
+procedure TFormReportRemaining.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     IF Key=VK_F5 Then
+     BitBtnRefreshClick(Sender)
+     else if key=VK_ESCAPE then
+     close;
+
+end;
+
+procedure TFormReportRemaining.BitBtn1Click(Sender: TObject);
+begin
+     If MessageDlg('Are you sure? sending to Excel.',mtConfirmation,[mbYes,mbNo],0)=mrYes Then
+     //SendToExcel(Nil,DBGrid1,'Lab Services',DateEditXFromDate.Text,'Lab Services',gs_HosName,gs_HosAddress);
+end;
+
+procedure TFormReportRemaining.DBGrid1DblClick(Sender: TObject);
+begin
+    // If QrySample.FieldByName('SampleID').AsString='' Then
+   //  Begin
+   //       MessageDlg('Sorry!!! No Data Exist?',mtWarning,[mbOK],0);
+   //       Exit;
+   //  End;
+     {With FormPathologyMain Do
+     Begin
+          RBSearchBy.ItemIndex:=1;
+          EditSerch.Text:=QrySample.FieldByName('SampleID').AsString;
+          BitBtnRefClick(Sender);
+     End;  }
+   //  Close;
+end;
+
+procedure TFormReportRemaining.RGReportClick(Sender: TObject);
+begin
+     BitBtnRefreshClick(Sender);
+end;
+
+procedure TFormReportRemaining.Rg_StatusClick(Sender: TObject);
+begin
+     with QryAniD do
+     begin
+          Filtered:=False;
+          if Rg_Status.ItemIndex=0 then
+          begin
+               Filter:='testprogressstatus>2' ;
+               Filtered:=True;
+          end
+          else if Rg_Status.ItemIndex=1 then
+          begin
+               Filter:='testprogressstatus<=2';
+               Filtered:=True;
+          end
+          else if Rg_Status.ItemIndex=2 then
+               Filtered:=False;
+     end;
+end;
+
+procedure TFormReportRemaining.SMDBGrid1DrawngColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  if QryAniD.FieldByName('sampleid').asstring<>'' then
+  begin
+    SMDBGrid1.Canvas.Font.Color:=clRed;
+    SMDBGrid1.DefaultDrawDataCell(Rect, Column.Field, State);
+  end;
+end;
+
+procedure TFormReportRemaining.EditSearchChange(Sender: TObject);
+begin
+     //EditSearch.text:=StringReplace(EditSearch.text,'''','''''',[rfReplaceAll]);
+     {with QrySample do
+     Begin
+          IF Trim(EditSearch.text)<>'' Then
+          Begin
+               Filter:='PatientName ='+#39+EditSearch.text+'*'+#39;
+               Filtered:=True;
+          End
+          Else
+          Filtered:=False;
+     End;  }
+end;
+
+end.

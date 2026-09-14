@@ -1,0 +1,255 @@
+unit Unit_PatientTestDetail;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,ServerDate,
+  Dialogs, StdCtrls, Buttons, ExtCtrls, DB, MemDS,DBGrids, DBAccess, Ora,dm,fxn, DBCtrls,UnitSendToExcel,
+  OleCtrls, DateEditXControl_TLB;
+
+type
+  TForm_PatienttestDetail = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Bb_SendtoExcel: TBitBtn;
+    bb_close: TBitBtn;
+    lbl1: TLabel;
+    dblkcbb_dep: TDBLookupComboBox;
+    chk_deptAll: TCheckBox;
+    orqry_dep: TOraQuery;
+    ds_dep: TDataSource;
+    Label1: TLabel;
+    dblcb_test: TDBLookupComboBox;
+    Label2: TLabel;
+    DateEditxFrom: TDateEditX;
+    DateEditXTo: TDateEditX;
+    Label3: TLabel;
+    BtnTo: TSpeedButton;
+    BtnFrom: TSpeedButton;
+    Chk_TestAll: TCheckBox;
+    orqry_test: TOraQuery;
+    Ds_test: TDataSource;
+    procedure bb_closeClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Bb_SendtoExcelClick(Sender: TObject);
+    procedure chk_deptAllClick(Sender: TObject);
+    procedure BtnToClick(Sender: TObject);
+    procedure BtnFromClick(Sender: TObject);
+    procedure Chk_TestAllClick(Sender: TObject);
+    procedure dblkcbb_depClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+  dbGRid:TDBGrid;
+    { Public declarations }
+  end;
+
+var
+  Form_PatienttestDetail: TForm_PatienttestDetail;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_PatienttestDetail.bb_closeClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_PatienttestDetail.Bb_SendtoExcelClick(Sender: TObject);
+var
+  Orqry:TOraQuery;
+  datasource1:TDataSource;
+begin
+    try
+      Orqry:=TOraQuery.Create(nil);
+      with Orqry do
+      begin
+        Close;
+        Session:=DM_Hospital.DB;
+        sql.Clear;
+        SQL.Add('select rownum as sno, patientid, realsampleno as sampleno, patientname,age,sex,testname,testtype,finding,refrange,unit,schemename from VW_PATIENTTESTDETAIL ');
+        SQL.Add('where testdate between '+QuotedStr(DateEditxFrom.text)+ ' and '+QuotedStr(DateEditXTo.text));
+        SQL.Add('and finding is not null');
+        if (chk_deptAll.Checked=false) and (Chk_TestAll.Checked=False) then
+        begin
+               SQL.Add('and depid='+quotedstr(dblkcbb_dep.KeyValue));
+               SQL.Add('and testnameid='+QuotedStr(dblcb_test.KeyValue));
+        end
+        else if (chk_deptAll.Checked=true) and (Chk_TestAll.Checked=false) then
+        begin
+             SQL.Add('and testnameid='+QuotedStr(dblcb_test.KeyValue));
+        end
+        else if (chk_deptAll.Checked=false) and (Chk_TestAll.Checked=true) then
+        begin
+             SQL.Add('and depid='+quotedstr(dblkcbb_dep.KeyValue));
+        end;
+        //SQL.SaveToFile('c:\checkpatienttestdetail.txt');
+        Open;
+      end;
+      datasource1:=TDataSource.Create(Self);
+      datasource1.DataSet:=Orqry;
+      dbGRid.DataSource:=datasource1;
+      SendToExcels(nil,dbGRid,'Patient Test Detail',TodaysDate   +' :-    '+'(From  '+DateEditxFrom.text+'  To  '+DateEditXTo.text+')','',gs_HospitalName,gs_HospitalAddress,0);
+    finally
+       Orqry.free;
+    end;
+end;
+
+
+procedure TForm_PatienttestDetail.BtnToClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditXTo,BtnTo);
+end;
+
+procedure TForm_PatienttestDetail.chk_deptAllClick(Sender: TObject);
+begin
+     if chk_deptAll.Checked then
+     begin
+          dblkcbb_dep.KeyValue := null;
+          dblkcbb_dep.Enabled := false;
+          //RefreshQuery(orqry_test,'');
+          with orqry_test do
+          begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql[1] := 'Where 1=1';
+               Open;
+          end;
+     end
+     else
+     begin
+          dblkcbb_dep.KeyValue := orqry_dep.FieldByName('dept_DepId').AsInteger;
+          dblkcbb_dep.Enabled := true;
+          if Chk_TestAll.Checked then
+               with orqry_test do
+               begin
+                    Close;
+                    Session := DM_Hospital.DB;
+                    sql[1] := 'Where 1=1';
+                    Open;
+               end
+          else
+          begin
+               with orqry_test do
+               begin
+                    Close;
+                    Session := DM_Hospital.DB;
+                    sql[1] := 'Where tena_DepId = ' + QuotedStr(dblkcbb_dep.KeyValue);
+                    Open;
+               end;
+          end;
+     end;
+end;
+
+procedure TForm_PatienttestDetail.Chk_TestAllClick(Sender: TObject);
+begin
+     if Chk_TestAll.checked then
+     begin
+          dblcb_test.KeyValue := null;
+          dblcb_test.Enabled := False;
+          with orqry_test do
+          begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql[1] := 'Where 1=1';
+               Open;
+          end;
+     end
+     else
+     begin
+          dblcb_test.Enabled := True;
+          dblcb_test.KeyValue := orqry_test.FieldByName('tena_TestNameId').AsInteger;
+          if not chk_deptAll.Checked then
+          begin
+               with orqry_test do
+               begin
+                    Close;
+                    Session := DM_Hospital.DB;
+                    sql[1] := 'Where tena_DepId = ' + QuotedStr(dblkcbb_dep.KeyValue);
+                    Open;
+               end;
+          end
+          else
+          begin
+               with orqry_test do
+               begin
+                    Close;
+                    Session := DM_Hospital.DB;
+                    sql[1] := 'Where 1=1';
+                    Open;
+               end;
+          end;
+     end;
+
+end;
+
+procedure TForm_PatienttestDetail.dblkcbb_depClick(Sender: TObject);
+begin
+     if not Chk_TestAll.Checked then
+     begin
+          with orqry_test do
+          begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql[1] := 'Where tena_DepId = ' + QuotedStr(dblkcbb_dep.KeyValue);
+               Open;
+          end;
+     end
+     else
+     begin
+          with orqry_test do
+          begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql[1] := 'Where 1=1';
+               Open;
+          end;
+     end;
+
+end;
+
+procedure TForm_PatienttestDetail.FormCreate(Sender: TObject);
+begin
+     DateEditxFrom.text:= ServerDate.TodaysDateVS;
+     DateEditXTo.text:= ServerDate.TodaysDateVS;
+     RefreshQuery(orqry_dep, '');
+     RefreshQuery(orqry_test, '');
+     chk_deptAll.Checked := true;
+     Chk_TestAll.Checked := true;
+     dbGRid := TDBGrid.Create(Self);
+end;
+
+procedure TForm_PatienttestDetail.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if key=VK_ESCAPE then
+          Close;
+end;
+
+procedure TForm_PatienttestDetail.FormShow(Sender: TObject);
+begin
+     if gi_compileValue=1 then
+     begin
+          DateEditxFrom.SystemOfDate:=1;
+          DateEditXTo.SystemOfDate:=1;
+          BtnFrom.Caption:='AD';
+          BtnTo.Caption:= 'AD';
+     end
+     else
+     begin
+          DateEditxFrom.SystemOfDate:=0;
+          DateEditXTo.SystemOfDate:=0;
+          BtnFrom.Caption:='BS';
+          BtnTo.Caption:= 'BS';
+     end;
+end;
+
+procedure TForm_PatienttestDetail.BtnFromClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditxFrom,BtnFrom);
+end;
+
+end.

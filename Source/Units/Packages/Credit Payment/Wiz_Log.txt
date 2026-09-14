@@ -1,0 +1,82 @@
+BDE Migration Wizard log
+
+Created at: 6/21/2017 10:27:23 AM
+
+Initializing unit list
+
+Allocating temporary folder
+
+Processing file: D:\Credit Payment\Preview.pas
+
+No changes
+
+Processing file: D:\Credit Payment\Unit_Credit.pas
+
+No changes
+
+Processing file: D:\Credit Payment\Unit_CreditPayment.pas
+
+16 change(s)
+
+Processing file: D:\Credit Payment\Unit_CreditReceiptBook.pas
+
+1 change(s)
+
+Processing file: D:\Credit Payment\Unit_Main.pas
+
+1 change(s)
+
+Processing file: D:\Credit Payment\Unit_Message.pas
+
+No changes
+
+Processing file: D:\Credit Payment\Unit_Preview.pas
+
+No changes
+
+Processing file: D:\Credit Payment\Unit_QrCredit.pas
+
+No changes
+
+Processing file: D:\Credit Payment\Unit_QrReceipt.pas
+
+3 change(s)
+
+Processing file: D:\Credit Payment\Unit_Credit.DFM
+
+No changes
+
+Processing file: D:\Credit Payment\Unit_CreditPayment.DFM
+
+11 change(s)
+
+Processing file: D:\Credit Payment\Unit_CreditReceiptBook.DFM
+
+No changes
+
+Processing file: D:\Credit Payment\Unit_Main.DFM
+
+No changes
+
+Processing file: D:\Credit Payment\Unit_Message.DFM
+
+No changes
+
+Processing file: D:\Credit Payment\Unit_Preview.DFM
+
+No changes
+
+Processing file: D:\Credit Payment\Unit_QrCredit.DFM
+
+No changes
+
+Processing file: D:\Credit Payment\Unit_QrReceipt.DFM
+
+No changes
+
+Replacing original files with changed versions
+
+Removing temporary folder
+
+Replace procedure was performed sucessfully.
+

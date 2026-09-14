@@ -1,0 +1,1609 @@
+object Frame_Parent: TFrame_Parent
+  Left = 0
+  Top = 0
+  Width = 1145
+  Height = 594
+  TabOrder = 0
+  object Panel_Parent: TPanel
+    Left = 0
+    Top = 82
+    Width = 1145
+    Height = 512
+    Align = alClient
+    TabOrder = 2
+  end
+  object Panel_list: TPanel
+    Left = 0
+    Top = 82
+    Width = 1145
+    Height = 512
+    Align = alClient
+    Anchors = [akTop, akRight, akBottom]
+    Color = clWhite
+    ParentBackground = False
+    TabOrder = 3
+    object StatusBar1: TStatusBar
+      Left = 1
+      Top = 482
+      Width = 1143
+      Height = 29
+      Panels = <
+        item
+          Width = 150
+        end
+        item
+          Width = 150
+        end
+        item
+          Width = 150
+        end>
+    end
+    object Panel3: TPanel
+      Left = 1
+      Top = 1
+      Width = 1143
+      Height = 100
+      Align = alTop
+      TabOrder = 0
+      DesignSize = (
+        1143
+        100)
+      object Label2: TLabel
+        Left = 11
+        Top = 5
+        Width = 115
+        Height = 21
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Patient Search'
+        Color = 2922059
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+        Layout = tlCenter
+      end
+      object Label110: TLabel
+        Left = 560
+        Top = 24
+        Width = 106
+        Height = 13
+        Caption = '  - > Today'#39's Followup'
+        Visible = False
+      end
+      object Label116: TLabel
+        Left = 869
+        Top = 5
+        Width = 71
+        Height = 13
+        Caption = '- > Free In-Pt.'
+        Visible = False
+      end
+      object SPBRegisteredPateintFromFrontDesk: TSpeedButton
+        Left = 1094
+        Top = 43
+        Width = 33
+        Height = 28
+        Caption = 'Registered Patient From Front Desk'
+        Enabled = False
+        Visible = False
+        OnClick = SPBRegisteredPateintFromFrontDeskClick
+      end
+      object SpeedButton5: TSpeedButton
+        Left = 1104
+        Top = 1
+        Width = 38
+        Height = 98
+        Align = alRight
+        Flat = True
+        Glyph.Data = {
+          6E110000424D6E11000000000000360000002800000026000000260000000100
+          18000000000038110000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          0000FFFFFFFFFFFFFEFEFEFAFAFAF4F4F4F1F1F1ECECECE6E6E6E2E3E2DFDFDF
+          DCDDDDDBDBDBDADADADBDBDBDBDBDBDBDBDBDADBDBDADBDADADADADADBDADADA
+          DADADADADADADADADADADADADADADADADADADADBDBDBDBDBDBDCDDDDE0E0E0E5
+          E5E5EAEAEAECECECF4F4F4FEFEFEFFFFFFFFFFFF0000FFFFFFFFFFFFF7F7F7DC
+          DCDCD4D4D4A1A1A1939093918E928C898C8A86898A8689878486888486888386
+          8783848783858883858883868984878883858984868A85868A85878B86878B86
+          878B86878B87878C87888C88888E898A918C8E8D8B8C939292C3C3C3CFCFCFF5
+          F5F5FFFFFFFFFFFF0000FFFFFFFFFFFFFDFDFDEBECEB959295A9A6A98D978C83
+          90828B9689919E8F97A4989DAB9FA2AFA6A7B5AEABBAB4AEBEBBB2C2BCB4C7BE
+          B4C8C0B5C9C1B6C8C2B5C9C3B5C9C4B3C9C3B3C7C3B1C6C3B0C5C2AEC3C2ADC1
+          C1AABCBAA6B9B5BCC5C5CBC5CB9E9B9DEDEDEDFCFCFCFFFFFFFFFFFF0000FFFF
+          FFFFFFFFFFFFFF959195989D961C491B00310000300000390000420000430000
+          4600004602004906004B0D004C11004C15004C1A004D1D004F20004E21004E23
+          004D23004E24004D22004E20004C1F004D1C004B1A004312003D0B003E0E4274
+          51CECBD0ABAAAAFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFFC8C7C8A2A0A00A3E
+          0A003900005800008E00009B06009E1100A41C01A82603AD3106B03C07B54508
+          B64F05B85701B95E00BA6400BA6800BB6A00BA6D00B96C00B96C00B86900B667
+          00B46300B35E00B15900B053019D45025D26003C09286236BFB4BEE1E1E1FFFF
+          FFFFFFFF0000FFFFFFFFFFFFAEA9AE748D6F003D00005A00009C00005C00003E
+          00003E00003F0000410200420700430A00450F00471300461400471800481A00
+          481B00471D00471D00461D00461C00441A004319004217004115004013004414
+          006F2E04AD4603592100430EAEBCB4B8B6B7FFFFFFFFFFFF0000FFFFFFFFFFFF
+          B3ACB3587F54004A00019601004B000841086B8667748F7275917578957B7B98
+          827E9E8884A19186A79787AA9C8BB0A48DB2A78FB4AA8FB4A891B3A992B3A892
+          B4A991B1A790B0A78EB0A48DAEA58FADA575958500380F005F24069336004710
+          89A393C0BBBEFFFFFFFFFFFF0000FFFFFFFFFFFFB3ACB55E8757006000008000
+          00360097AA8FB7BFAFB0BCAAB2BDAEB3BFB3B5BFB7B4C0B9B4C2BDB4C1C0B2C2
+          C1AFC2C4ADC2C4ACC1C4A9C1C5A7C0C4A5C0C5A5BFC3A4BDC3A5BBC1A6BBBEA6
+          B8BCA6B5BBC0C2CE7F9E8E0034060486310054138AA495C0BBBDFFFFFFFFFFFF
+          0000FFFFFFFFFFFFB3ABB5638F5D006400007000004200ACBCA2A7B79FA9B9A4
+          ABBBA7ADBEACADBFB0AEBFB4AEC2B8AEC2BAADC2BDABC3C0AAC2C1A8C3C2A6C3
+          C2A4C2C0A3C0C0A2BFBFA3BEBEA2BDBCA3BBBAA2B8B8A3B6B6A9B4B89CB3A900
+          36050271270054138CA596BFBBBDFFFFFFFFFFFF0000FFFFFFFFFFFFB3ABB668
+          9661006100006800004600ADC0A3A8BBA1ADBEA5ADBFA9ADC0AEAFC2B1B0C3B5
+          B0C3BAB0C5BEB0C4C0AEC4C3ACC4C4ACC4C2A9C3C3ABC8C7A9C8C7A8C8C4A7C4
+          C1A6C2C0A6C0BEA8BDBCA5B8B6A9B6B699B4A8003A06006222004F108DA696BE
+          B9BDFFFFFFFFFFFF0000FFFFFFFFFFFFB4ABB56B9E64005B00016202004F00B0
+          C5A7AABEA1ADC1A6AEC2ABB0C2B0B2C5B5B3C6BAB5C7BFB3C7C0B3C8C4B2C8C7
+          B1C8C7AFC8C8B7D0D39EB6B293ADA697AFA897AEA795ABA493A9A1899E92A2B2
+          AFA9B8B59BB8A9003E0700591E004B0F8CA797BFB9BDFFFFFFFFFFFF0000FFFF
+          FFFFFFFFB3AAB56FA268005700025E05005600B5CBABAAC0A3AFC4A9B3C7B1BD
+          CDBEBECFC3C0CFC7C0D1CEC2D2D0C1D2D2B9CECEB4CACAB7CFD1BECED3094406
+          004700004900004900004A00003C00467246B0BFBFA9B3B49CBAAB0041070051
+          1B00470E8DA898BEB9BCFFFFFFFFFFFF0000FFFFFFFFFFFFB4AAB571A76A0057
+          00045D07005C01B9CFAEADC3A5B6C9B1A1B19F6C8C6C819A84809885829A8881
+          9A8A7E9886B8C4CAC3DADBD3DCE913580F005600005B00005B00005C00005000
+          387238C5D0D5A7BAB2AAB5B39DBAAA004609004C1900480E8EAA9ABDB8BBFFFF
+          FFFFFFFF0000FFFFFFFFFFFFB4AAB674AA6D005C0005640A006304BED4B4B0C4
+          A8B6C9B2C3D2C1477748004D00005B00005A00005900005700185E17D0D3E34B
+          824D005900006402006302016403005B00276E28CAD4D8AEC0BBAABBB4ACB6B5
+          9EBAAC004908005019004A0E8EAC9ABDB8BBFFFFFFFFFFFF0000FFFFFFFFFFFF
+          B5AAB576AD6E00600008680C006608C3D7B9B3C7ACB8CBB4BCCFBCD8DFDB5083
+          53005A00006802006801006700005E001B6C1B00600000670100670200670200
+          6400116511BFCFC9B8CCC5B1C2BAAEBCB7B0B7B59FBCAB004C0900521A004C0D
+          8FAE9BBDB7BAFFFFFFFFFFFF0000FFFFFFFFFFFFB5AAB678AF72006500096C10
+          006B0BC8DCBFB7C9AFBDD0B8BDCFBDBCCFBFE6EAED82AD84007000168D221B8F
+          2620942B1D942820952B20942B1D9127128A1E017607D9E6E2C8DAD5B3C6BEB2
+          C1BBB1BEB8B3B9B7A0BDAC00530C00551B004F0F90B09CBBB5B9FFFFFFFFFFFF
+          0000FFFFFFFFFFFFB5ACB67AB175006A020A7013007210CEDEC3B8CAB1C2D4BE
+          D0E2CFE4F2E5E9F9EEFFFFFFB2D6B512942318992B1A972C1A992D19982C1A98
+          2D1798290C901CDBEDDFEEFFFAE0F2E9DBEAE1C9D6CFB8C4BDB4B9B6A0BEAB00
+          580E005A1C00551191B09CBBB6BAFFFFFFFFFFFF0000FFFFFFFFFFFFB5ACB67C
+          B277006D040B731500750FD2DEC6CEDEC5E2F1DBE6F6E3E8F6E9EBF8EEEFFDF6
+          FFFFFF30A543119F2D18A13419A23519A13418A134079B22A9CFB1FFFFFFE4F9
+          EEE1F2E9DEECE4DCE7DFD5DFD8CCCFCDA2BFAB005A0D005F1E00581291B19CBA
+          B5B8FFFFFFFFFFFF0000FFFFFFFFFFFFB7ACB77CB5790070060873130E8721E2
+          F2E3E0EFD5E4F1DDE7F4E3ECF7EAF0FDF2FFFFFF5BB96F01A62B17AE3D16AD3D
+          17AE3E16AD3D17AE3D0DAC362DA348FFF9FFEEFFF5E6F4EAE1ECE4DBE4DED6DD
+          D7DADBD8B8D5C2007320005F1B005B1391B29BBAB3B9FFFFFFFFFFFF0000FFFF
+          FFFFFFFFB7ADB87AB67800780D2491311D992FE0F1E1E2EED5E8F4DEEDF7E5F1
+          FAEDFFFFFF84CF9700B22F15BC4B15BA4815BA4816BB4A15BB4A15BB4A16BC4A
+          03B83C53AD6BFFFCFFEBF8EFE5EFE7E0E7E0DADFDADAD9D7B6D3BF03802D157F
+          3900671C8EB19ABAB3B7FFFFFFFFFFFF0000FFFFFFFFFFFFB7ABB780BD7F158E
+          232696331C982FE1F2E1E6EFD6ECF4E1F0F8E6FFFFFFB5E0C000BC3F14C55613
+          C55513C45413C65405C24C0FC55314C55514C55513C55400BF3EAAC6B0FFFFFD
+          EAF0E8E3E9E1DDE2DBDDDBD9B7D5BE00822C168239077F2F95B9A1B8B1B6FFFF
+          FFFFFFFF0000FFFFFFFEFEFEBDB2BD8DCA901691232697321D9C30E1F1E2E9F0
+          D9EFF6E1FFFFF2E1EDDD00C7470ED15E12D25F11D25E11D36100CA438CDEA914
+          CE5E0DD35F11D25E11D25E0FD35F00C34BD8D5D2F9FCF6E5EAE3DFE3DCDFDDDB
+          B5D5BD02872D14843A06802EA3C6AFBCB6BAFFFFFFFFFFFF0000FFFFFFFEFEFE
+          C0B6C08DC98B1792262799341D9E32E1F2E2EDF1D8FEFAEAEAF1E609D45C09DC
+          660FDB690FDB690EDB6900D55492E1B2FFFFFFCBE9D500D14E0EDC6A0DDB690F
+          DB6904DE641AC763FDE5EEEEF0E9E3E5DDE2DEDCB4D3BB018B2F14893C058330
+          9EC3ACBCB5BBFFFFFFFFFFFF0000FFFFFFFEFEFEC1B6C18BC889179225289A33
+          1EA033E2F2E3F4F2DAF0F1E226D66A00DC5900DC5F00DC5F00DB5F00D95771DF
+          9BFFFFFFFEFDFDFFFFFF71D99D00D95500DA5D00DA5E00DB5E00DD5557C57EF4
+          EBEBE4E8E0E5E0E0B3D3BA028F30158B3C0787319BC2A9BDB5BAFFFFFFFFFFFF
+          0000FFFFFFFEFEFEC1B6C188C885199427289C351FA133E2F2E3F5F1DBF1F7E3
+          E0F8E7EEF9EFEDF9F2EDF9F0EDF9F0ECF7F0FFFFFFFEFDFEFCFCFCFEFDFEFFFC
+          FFE5EFEBEAF1EDEBF3EEEBF4EFECF7F0E0F7E7EFEFE8E6E9E2E8E2E1B1D3B903
+          9332158E3D068A3297BFA5BCB4B8FFFFFFFFFFFF0000FFFFFFFEFEFEC0B5C086
+          C484199326299B3720A234E3F3E3F3F0DAF9F8E4FFFEEDFFFDF5FFFDFDFFFCFF
+          FFFEFFFFFEFFFEFEFEFCFCFCFCFCFCFDFDFDFDFCFCFFFFFFFFFEFFFFFEFFFFFE
+          FFFFFEFCFCFBF4EFF1EAE8E9E2E8E3E2B2D3B904933416903D078C3293BCA0BB
+          B4B9FFFFFFFFFFFF0000FFFFFFFEFEFEC0B5C085C08319942A299C3620A234E2
+          F2E3F4F1DBF7F7E4FCFCEAFDFDF2FDFDF9FCFCFDFDFDFDFDFDFDFDFDFDFDFDFD
+          FCFCFCFDFDFDFDFDFDFCFCFCFCFCFCFDFDFCFCFCFDFDFDF9F7FBF1EEF3EAE9EB
+          E2E8E5E3AFD2B803963416923F078E338EB89DBBB4B9FFFFFFFFFFFF0000FFFF
+          FFFEFEFEC0B5C084BF811A932A2A9B3820A235E3F2E2F2EFD9F6F6E3FBFBEAFC
+          FCF1FCFCF7FCFCFDFCFCFCFDFDFDFCFCFCFCFCFCFCFCFCFCFCFCFCFCFCFDFDFD
+          FCFCFCFDFDFCFCFCFDFDFDF8F7FAF2F0F3EAE8ECE2E9E5E2B0D1B90498351692
+          3F0790358BB499BAB2B7FFFFFFFFFFFF0000FFFFFFFEFEFEC1B6C081BC821992
+          2C299A391A9E31E2F1E0F5EEDFF4F3E0F9F8E6FDFCEFFDFCF5FDFCFDFDFCFDFE
+          FDFEFDFCFCFDFCFDFCFBFCFDFCFDFDFCFCFEFDFEFDFCFCFEFDFEFDFCFDFDFDF8
+          F7F9F1EFF1EAE8ECE3F3E8EAA5CFB004993715934006903586B094BAB3B8FFFF
+          FFFFFFFF0000FFFFFFFEFEFEC1B6C17DBA8118912D2A983B1A9D336DC378FFFA
+          F4FFFEFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFDFFFF
+          FDFFFFFCFFFFFEFFFFFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFF6FAFFF0F7E2E3DD
+          30AD5A129C3F1593400691357FAB8EBAB3B7FFFFFFFFFFFF0000FFFFFFFEFFFF
+          BBB2B991C19515902C26963A29A03F1CA2390EA73411B23C11B94315C34A15CC
+          5219D75A1DE0641DE86D1EEF7420F67D22FA8122FC8422FA851FF37F1DEF791C
+          E77317DE6A14D46111C8580DBF4F0AB54905A93F15A4461A9D4513933F049436
+          8EAE9AB3AFB2FFFFFFFFFFFF0000FFFFFFFFFFFFB6B4B6D1D5CF14953120953A
+          279D3F27A44429AC482AB54E2ABD542CC55A2ECD612ED56831DD7231E47831E9
+          7D33EE8534F18934F18B34F18A33ED8732E98330E27D2EDB762DD46E2ACA6826
+          C05F24B7591FAC501BA44A199B450D983E1E9840A99FA6CDCDCDFFFFFFFFFFFF
+          0000FFFFFFFFFFFFFEFFFEA598A2A0CFA900931F0D9D3416A43B16AC4017B646
+          18BE4C1AC7511ACF591BD8611DE0691FE8701FED7622F47C22F58124F88422F6
+          8423F28022EF7C23E87720E0711ED9691CD2631BC65A18BE5314B34D10AB4505
+          A63D00993093AC9C877E84FFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFDD
+          DDDDB3A7B0E1D5DC86CA9A74CB8E76CF9079D5957BDA997DDE9D7EE2A280E2A5
+          80E6A980E7AB7FE7AD80E9AE81E6AF81E6AE81E6AF80E4AD7FE2AC7EDFA97CDC
+          A379D69E74CF9770C7906AC18A65B78160B27C73A985B5A2AF978F94F5F5F5FF
+          FFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFF1F1F1BFBCBEBAAFB6BA
+          AEB6BBAFB8BDB0B9BCAFB8BDAFB8BDAFB7BBACB5BAACB5BAACB5B9AAB2B9A9B2
+          B7A9B2B6A7AFB6A7AEB4A5ADB3A4ABB2A4ACB0A2ABAEA0A9ADA0A9AB9FA6AA9D
+          A5A99DA5A79CA3A79DA4C4C3C3F8F8F8FFFFFFFFFFFFFFFFFFFFFFFF0000FFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000}
+        OnClick = SpeedButton5Click
+        ExplicitLeft = 1102
+        ExplicitTop = -2
+      end
+      object Label117: TLabel
+        Left = 560
+        Top = 7
+        Width = 74
+        Height = 13
+        Caption = '  - > Normal Pt.'
+        Visible = False
+      end
+      object Label105: TLabel
+        Left = 560
+        Top = 40
+        Width = 71
+        Height = 13
+        Caption = '  - > In Patient'
+        Visible = False
+      end
+      object Label1: TLabel
+        Left = 560
+        Top = 57
+        Width = 80
+        Height = 13
+        Caption = '  - > P. Admitted'
+        Visible = False
+      end
+      object Edit_Search: TEdit
+        Left = 11
+        Top = 30
+        Width = 193
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 4
+        OnKeyPress = Edit_SearchKeyPress
+      end
+      object GroupBox1: TGroupBox
+        Left = 207
+        Top = 2
+        Width = 163
+        Height = 73
+        TabOrder = 1
+        object Label4: TLabel
+          Left = 3
+          Top = 32
+          Width = 31
+          Height = 13
+          Caption = 'From :'
+        end
+        object SPB_From: TSpeedButton
+          Left = 101
+          Top = 28
+          Width = 22
+          Height = 22
+          Caption = 'AD'
+          OnClick = SPB_FromClick
+        end
+        object Label5: TLabel
+          Left = 18
+          Top = 54
+          Width = 16
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'To:'
+        end
+        object SPB_To: TSpeedButton
+          Left = 101
+          Top = 50
+          Width = 22
+          Height = 22
+          Caption = 'AD'
+          OnClick = SPB_ToClick
+        end
+        object DEX_From: TDateEditX
+          Left = 36
+          Top = 29
+          Width = 65
+          Height = 21
+          TabOrder = 2
+          ControlData = {
+            545046300A5444617465456469745200044C656674022403546F70021D0B4461
+            746541442E5965617203DB070C4461746541442E4D6F6E746802090A44617465
+            41442E44617902160B4461746556532E596561720314080C4461746556532E4D
+            6F6E746802060A4461746556532E44617902050000}
+        end
+        object DEX_To: TDateEditX
+          Left = 36
+          Top = 51
+          Width = 65
+          Height = 21
+          TabOrder = 3
+          ControlData = {
+            545046300A5444617465456469745200044C656674022403546F7002330B4461
+            746541442E5965617203DB070C4461746541442E4D6F6E746802090A44617465
+            41442E44617902160B4461746556532E596561720314080C4461746556532E4D
+            6F6E746802060A4461746556532E44617902050000}
+        end
+        object CB_All: TCheckBox
+          Left = 5
+          Top = 4
+          Width = 28
+          Height = 17
+          Caption = 'All'
+          Checked = True
+          Enabled = False
+          State = cbChecked
+          TabOrder = 1
+          OnClick = CB_AllClick
+        end
+        object DBLC_Dep: TDBLookupComboBox
+          Left = 35
+          Top = 2
+          Width = 118
+          Height = 21
+          Enabled = False
+          KeyField = 'DEPT_DEPCODE'
+          ListField = 'DEPT_DEPNAME'
+          ListSource = DS_Dep
+          TabOrder = 0
+        end
+      end
+      object GroupBox2: TGroupBox
+        Left = 373
+        Top = 2
+        Width = 156
+        Height = 72
+        TabOrder = 2
+        object Label6: TLabel
+          Left = 2
+          Top = 20
+          Width = 65
+          Height = 26
+          Alignment = taCenter
+          Caption = 'Include more than'
+          WordWrap = True
+        end
+        object Label7: TLabel
+          Left = 130
+          Top = 22
+          Width = 24
+          Height = 13
+          Caption = 'Days'
+        end
+        object BB_Refresh: TSpeedButton
+          Left = 56
+          Top = 41
+          Width = 97
+          Height = 28
+          Caption = 'Refresh [F5]'
+          OnClick = BB_RefreshClick
+        end
+        object se_days: TSpinEdit
+          Left = 71
+          Top = 18
+          Width = 56
+          Height = 22
+          MaxValue = 0
+          MinValue = 0
+          TabOrder = 1
+          Value = 0
+          OnChange = se_daysChange
+          OnKeyPress = se_daysKeyPress
+        end
+        object CB_DateRange: TCheckBox
+          Left = 3
+          Top = 3
+          Width = 98
+          Height = 13
+          Caption = 'By Date Range'
+          Checked = True
+          State = cbChecked
+          TabOrder = 0
+          OnClick = CB_DateRangeClick
+        end
+      end
+      object Edit3: TEdit
+        Left = 544
+        Top = 24
+        Width = 12
+        Height = 12
+        TabStop = False
+        BorderStyle = bsNone
+        CharCase = ecUpperCase
+        Color = 4227327
+        TabOrder = 5
+        Visible = False
+      end
+      object Edit12: TEdit
+        Left = 859
+        Top = 7
+        Width = 8
+        Height = 8
+        TabStop = False
+        BorderStyle = bsNone
+        CharCase = ecUpperCase
+        Color = 12718764
+        TabOrder = 3
+        Visible = False
+      end
+      object CB_WithRepeatVisit: TCheckBox
+        Left = 159
+        Top = 54
+        Width = 25
+        Height = 17
+        Caption = 'Patient With Repeat Visit'
+        Enabled = False
+        TabOrder = 7
+        Visible = False
+      end
+      object GB_PatientAdmission: TGroupBox
+        Left = 1081
+        Top = 77
+        Width = 15
+        Height = 24
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 21
+        Visible = False
+        object RB_AllRegPatient: TRadioButton
+          Left = 8
+          Top = 5
+          Width = 129
+          Height = 17
+          Caption = 'All Registered Patient'
+          Checked = True
+          TabOrder = 0
+          TabStop = True
+        end
+        object RB_OutStdPatient: TRadioButton
+          Left = 8
+          Top = 25
+          Width = 175
+          Height = 17
+          Caption = 'Admitted(OutStd.) Patient Only'
+          TabOrder = 1
+        end
+      end
+      object Edit_PatientID: TEdit
+        Left = 0
+        Top = 77
+        Width = 86
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 8
+        OnChange = Edit_PatientIDChange
+      end
+      object Edit_CareOf: TEdit
+        Left = 734
+        Top = 77
+        Width = 89
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 18
+        OnChange = Edit_CareOfChange
+      end
+      object Panel5: TPanel
+        Left = 898
+        Top = 1
+        Width = 206
+        Height = 98
+        Align = alRight
+        TabOrder = 0
+        DesignSize = (
+          206
+          98)
+        object BitBtnOutPt: TBitBtn
+          Left = -4
+          Top = 1
+          Width = 112
+          Height = 25
+          Hint = 'Out-Patient Analysis'
+          Anchors = [akTop, akRight]
+          Caption = 'Out-Patient (F3)'
+          DoubleBuffered = True
+          Enabled = False
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000130B0000130B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333303
+            333333333333337FF3333333333333903333333333333377FF33333333333399
+            03333FFFFFFFFF777FF3000000999999903377777777777777FF0FFFF0999999
+            99037F3337777777777F0FFFF099999999907F3FF777777777770F00F0999999
+            99037F773777777777730FFFF099999990337F3FF777777777330F00FFFFF099
+            03337F773333377773330FFFFFFFF09033337F3FF3FFF77733330F00F0000003
+            33337F773777777333330FFFF0FF033333337F3FF7F3733333330F08F0F03333
+            33337F7737F7333333330FFFF003333333337FFFF77333333333000000333333
+            3333777777333333333333333333333333333333333333333333}
+          NumGlyphs = 2
+          ParentDoubleBuffered = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 0
+          Visible = False
+          OnClick = BitBtnOutPtClick
+        end
+        object BitBtn8: TBitBtn
+          Left = 110
+          Top = 1
+          Width = 94
+          Height = 25
+          Hint = 'Patient Analysis'
+          Anchors = [akTop, akRight]
+          Caption = '&Analysis           '
+          DoubleBuffered = True
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000130B0000130B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333303
+            333333333333337FF3333333333333903333333333333377FF33333333333399
+            03333FFFFFFFFF777FF3000000999999903377777777777777FF0FFFF0999999
+            99037F3337777777777F0FFFF099999999907F3FF777777777770F00F0999999
+            99037F773777777777730FFFF099999990337F3FF777777777330F00FFFFF099
+            03337F773333377773330FFFFFFFF09033337F3FF3FFF77733330F00F0000003
+            33337F773777777333330FFFF0FF033333337F3FF7F3733333330F08F0F03333
+            33337F7737F7333333330FFFF003333333337FFFF77333333333000000333333
+            3333777777333333333333333333333333333333333333333333}
+          NumGlyphs = 2
+          ParentDoubleBuffered = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 1
+          Visible = False
+        end
+        object BitBtnInpatient: TBitBtn
+          Left = -1
+          Top = 26
+          Width = 108
+          Height = 25
+          Hint = 'In-Patient Analysis'
+          Anchors = [akTop, akRight]
+          BiDiMode = bdLeftToRight
+          Caption = 'In-Patient   (F4)'
+          DoubleBuffered = True
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000130B0000130B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333303
+            333333333333337FF3333333333333903333333333333377FF33333333333399
+            03333FFFFFFFFF777FF3000000999999903377777777777777FF0FFFF0999999
+            99037F3337777777777F0FFFF099999999907F3FF777777777770F00F0999999
+            99037F773777777777730FFFF099999990337F3FF777777777330F00FFFFF099
+            03337F773333377773330FFFFFFFF09033337F3FF3FFF77733330F00F0000003
+            33337F773777777333330FFFF0FF033333337F3FF7F3733333330F08F0F03333
+            33337F7737F7333333330FFFF003333333337FFFF77333333333000000333333
+            3333777777333333333333333333333333333333333333333333}
+          NumGlyphs = 2
+          ParentBiDiMode = False
+          ParentDoubleBuffered = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 2
+          Visible = False
+          OnClick = BitBtnInpatientClick
+        end
+        object BitBtnMLC: TBitBtn
+          Left = 110
+          Top = 27
+          Width = 94
+          Height = 25
+          Hint = 'MLC'
+          Anchors = [akTop, akRight]
+          Caption = 'MLC        (F10)'
+          DoubleBuffered = True
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000130B0000130B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333303
+            333333333333337FF3333333333333903333333333333377FF33333333333399
+            03333FFFFFFFFF777FF3000000999999903377777777777777FF0FFFF0999999
+            99037F3337777777777F0FFFF099999999907F3FF777777777770F00F0999999
+            99037F773777777777730FFFF099999990337F3FF777777777330F00FFFFF099
+            03337F773333377773330FFFFFFFF09033337F3FF3FFF77733330F00F0000003
+            33337F773777777333330FFFF0FF033333337F3FF7F3733333330F08F0F03333
+            33337F7737F7333333330FFFF003333333337FFFF77333333333000000333333
+            3333777777333333333333333333333333333333333333333333}
+          NumGlyphs = 2
+          ParentDoubleBuffered = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 3
+          Visible = False
+        end
+      end
+      object CB_GlobalSearch: TCheckBox
+        Left = 11
+        Top = 53
+        Width = 48
+        Height = 20
+        Caption = '&Global'
+        TabOrder = 6
+        OnClick = CB_GlobalSearchClick
+      end
+      object Edit_FileNo: TEdit
+        Left = 89
+        Top = 77
+        Width = 72
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 9
+        OnChange = Edit_FileNoChange
+      end
+      object CB_ByCRNo: TCheckBox
+        Left = 69
+        Top = 53
+        Width = 72
+        Height = 20
+        Caption = 'By CR No.'
+        Enabled = False
+        TabOrder = 22
+        Visible = False
+        OnClick = CB_GlobalSearchClick
+      end
+      object Edit1: TEdit
+        Tag = 12
+        Left = 544
+        Top = 7
+        Width = 12
+        Height = 12
+        TabStop = False
+        BorderStyle = bsNone
+        CharCase = ecUpperCase
+        Color = -1
+        TabOrder = 23
+        Visible = False
+      end
+      object Edit11: TEdit
+        Left = 544
+        Top = 41
+        Width = 12
+        Height = 12
+        TabStop = False
+        BorderStyle = bsNone
+        CharCase = ecUpperCase
+        Color = clRed
+        TabOrder = 24
+        Visible = False
+      end
+      object Edit5: TEdit
+        Left = 544
+        Top = 58
+        Width = 12
+        Height = 12
+        TabStop = False
+        BorderStyle = bsNone
+        CharCase = ecUpperCase
+        Color = 12718764
+        TabOrder = 25
+        Visible = False
+      end
+      object Edit_FirstName: TEdit
+        Left = 89
+        Top = 77
+        Width = 103
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 10
+        OnChange = Edit_FirstNameChange
+      end
+      object Edit_LastName: TEdit
+        Left = 193
+        Top = 77
+        Width = 93
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 11
+        OnChange = Edit_LastNameChange
+      end
+      object Edit_AgeSex: TEdit
+        Left = 288
+        Top = 77
+        Width = 63
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 12
+        OnChange = Edit_AgeSexChange
+      end
+      object Edit_DepCode: TEdit
+        Left = 352
+        Top = 77
+        Width = 53
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 13
+        OnChange = Edit_DepCodeChange
+      end
+      object Edit_LastVisitDate: TEdit
+        Left = 406
+        Top = 77
+        Width = 59
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 14
+        OnChange = Edit_LastVisitDateChange
+      end
+      object Edit_VisitTime: TEdit
+        Left = 467
+        Top = 77
+        Width = 47
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 15
+        OnChange = Edit_VisitTimeChange
+      end
+      object Edit_Address: TEdit
+        Left = 515
+        Top = 77
+        Width = 150
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 16
+        OnChange = Edit_AddressChange
+      end
+      object Edit_District: TEdit
+        Left = 667
+        Top = 77
+        Width = 66
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 17
+        OnChange = Edit_DistrictChange
+      end
+      object Edit_MobileNo: TEdit
+        Left = 825
+        Top = 77
+        Width = 90
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 19
+        OnChange = Edit_MobileNoChange
+      end
+      object Edit_PhoneNo: TEdit
+        Left = 918
+        Top = 77
+        Width = 75
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 20
+        OnChange = Edit_PhoneNoChange
+      end
+      object BTN_CARD: TBitBtn
+        Left = 712
+        Top = 24
+        Width = 105
+        Height = 33
+        Caption = 'Card Print BACK'
+        DoubleBuffered = True
+        ParentDoubleBuffered = False
+        TabOrder = 26
+        OnClick = BTN_CARDClick
+      end
+    end
+    object Panel4: TPanel
+      Left = 1
+      Top = 101
+      Width = 1143
+      Height = 381
+      Align = alClient
+      Anchors = [akTop, akRight, akBottom]
+      Caption = 'Panel4'
+      TabOrder = 1
+      object DBGrid1: TDBGrid
+        Left = 1
+        Top = 1
+        Width = 1141
+        Height = 379
+        Align = alClient
+        Anchors = [akTop, akRight, akBottom]
+        Color = clWhite
+        DataSource = DS_List
+        DrawingStyle = gdsGradient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+        ParentFont = False
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+        OnCellClick = DBGrid1CellClick
+        OnDrawColumnCell = DBGrid1DrawColumnCell
+        OnDblClick = DBGrid1DblClick
+        Columns = <
+          item
+            Expanded = False
+            Visible = False
+          end
+          item
+            Expanded = False
+            FieldName = 'sn'
+            Title.Alignment = taCenter
+            Title.Caption = 'S.N'
+            Width = 33
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'PATIENTID'
+            Title.Alignment = taCenter
+            Title.Caption = 'Hosp. No'
+            Width = 73
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'FILENO'
+            Title.Alignment = taCenter
+            Title.Caption = 'CR No.'
+            Visible = False
+          end
+          item
+            Expanded = False
+            FieldName = 'ERPATIENTCATEGORY'
+            Title.Caption = 'Category'
+            Visible = False
+          end
+          item
+            Expanded = False
+            FieldName = 'FNAME'
+            Title.Alignment = taCenter
+            Title.Caption = 'First Name'
+            Width = 103
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'LNAME'
+            Title.Alignment = taCenter
+            Title.Caption = 'Last Name'
+            Width = 93
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'CURRENTAGEGENDER'
+            Title.Alignment = taCenter
+            Title.Caption = 'Age/Sex'
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DEPCODE'
+            Title.Alignment = taCenter
+            Title.Caption = 'L.V.Dep.'
+            Width = 52
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VISITDATE'
+            Title.Alignment = taCenter
+            Title.Caption = 'L.Visit Date'
+            Width = 59
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VISITTIME2ND'
+            Title.Alignment = taCenter
+            Title.Caption = 'V. Time'
+            Width = 48
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'FullAddress'
+            Title.Alignment = taCenter
+            Title.Caption = 'Address'
+            Width = 151
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DISTRICTNAME'
+            Title.Caption = 'District'
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'NEXTTOKIN'
+            Title.Alignment = taCenter
+            Title.Caption = 'Care of '
+            Width = 90
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'MOBILENO'
+            Title.Alignment = taCenter
+            Title.Caption = 'Mobile No'
+            Width = 93
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'PHONENO'
+            Title.Alignment = taCenter
+            Title.Caption = 'Phone No'
+            Width = 75
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'REGDATE'
+            Title.Caption = 'Reg. Date'
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VISITCOUNTTOTAL'
+            Title.Alignment = taCenter
+            Title.Caption = 'V. Count'
+            Width = 47
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'COUNTRYNAME'
+            Title.Alignment = taCenter
+            Title.Caption = 'Country'
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DOBAD'
+            Title.Alignment = taCenter
+            Title.Caption = 'DOB(AD)'
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'EMAIL'
+            Title.Alignment = taCenter
+            Title.Caption = 'Email'
+            Width = 99
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'EMERGENCYNO'
+            Title.Caption = 'Emr. No'
+            Visible = False
+          end
+          item
+            Expanded = False
+            FieldName = 'DischargeType'
+            Title.Caption = 'Discharge Type'
+            Visible = False
+          end>
+      end
+      object DBGrid2: TDBGrid
+        Left = 99
+        Top = 200
+        Width = 992
+        Height = 120
+        DataSource = ds_excel
+        TabOrder = 1
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+        Visible = False
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'SN'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'HospitalNo'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'FNAME'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'LNAME'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'AGEGENDER'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VISITCOUNT'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ADDRESS'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DISTRICTNAME'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'MOBILENO'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'PHONENO'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'REGDATE'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VISITCOUNTTOTAL'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'COUNTRYNAME'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DOBAD'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'EMAIL'
+            Visible = True
+          end>
+      end
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1145
+    Height = 41
+    Align = alTop
+    Color = 16771304
+    ParentBackground = False
+    TabOrder = 0
+    object Sb_Queuelist: TSpeedButton
+      AlignWithMargins = True
+      Left = 504
+      Top = 4
+      Width = 81
+      Height = 30
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Queue List'
+      Enabled = False
+      Visible = False
+      OnClick = Sb_QueuelistClick
+      ExplicitLeft = 248
+      ExplicitTop = 0
+    end
+    object SPBPatientInOut: TSpeedButton
+      AlignWithMargins = True
+      Left = 845
+      Top = 4
+      Width = 99
+      Height = 30
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Patient In/Out'
+      Enabled = False
+      Visible = False
+      OnClick = SPBPatientInOutClick
+      ExplicitLeft = 688
+    end
+    object SB_CancelReg: TSpeedButton
+      AlignWithMargins = True
+      Left = 423
+      Top = 4
+      Width = 81
+      Height = 30
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Cancel Reg.'
+      Enabled = False
+      Visible = False
+      OnClick = SB_CancelRegClick
+      ExplicitLeft = 248
+      ExplicitTop = 6
+    end
+    object SPB_OPDCount: TSpeedButton
+      AlignWithMargins = True
+      Left = 585
+      Top = 4
+      Width = 74
+      Height = 30
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'OPD Count'
+      Enabled = False
+      Visible = False
+      OnClick = SPB_OPDCountClick
+      ExplicitLeft = 449
+    end
+    object SPBServiceBillDetail: TSpeedButton
+      AlignWithMargins = True
+      Left = 944
+      Top = 4
+      Width = 89
+      Height = 30
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Service Detail'
+      Enabled = False
+      Visible = False
+      OnClick = SPBServiceBillDetailClick
+      ExplicitLeft = 808
+    end
+    object SPB_ServiceAcknowledge: TSpeedButton
+      AlignWithMargins = True
+      Left = 1033
+      Top = 4
+      Width = 111
+      Height = 30
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Service Acknowledge'
+      Enabled = False
+      Visible = False
+      OnClick = SPB_ServiceAcknowledgeClick
+      ExplicitLeft = 898
+      ExplicitTop = 13
+      ExplicitHeight = 28
+    end
+    object SPB_Investigation: TSpeedButton
+      AlignWithMargins = True
+      Left = 297
+      Top = 4
+      Width = 126
+      Height = 30
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Investigation Reports'
+      Enabled = False
+      Visible = False
+      OnClick = SPB_InvestigationClick
+      ExplicitLeft = 50
+    end
+    object BtnDoctorVisit: TBitBtn
+      AlignWithMargins = True
+      Left = 659
+      Top = 4
+      Width = 85
+      Height = 30
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Doctor Visit'
+      DoubleBuffered = True
+      Enabled = False
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      Visible = False
+      OnClick = BtnDoctorVisitClick
+    end
+    object BtnServiceComplete: TBitBtn
+      AlignWithMargins = True
+      Left = 744
+      Top = 4
+      Width = 101
+      Height = 30
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Service Complete'
+      DoubleBuffered = True
+      Enabled = False
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      Visible = False
+      OnClick = BtnServiceCompleteClick
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 41
+    Width = 1145
+    Height = 41
+    Align = alTop
+    Color = 16771304
+    ParentBackground = False
+    TabOrder = 1
+    object SPBUploadPrescription: TSpeedButton
+      Left = 1
+      Top = 1
+      Width = 99
+      Height = 39
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alLeft
+      Caption = '&Image Upload'
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333303
+        333333333333337FF3333333333333903333333333333377FF33333333333399
+        03333FFFFFFFFF777FF3000000999999903377777777777777FF0FFFF0999999
+        99037F3337777777777F0FFFF099999999907F3FF777777777770F00F0999999
+        99037F773777777777730FFFF099999990337F3FF777777777330F00FFFFF099
+        03337F773333377773330FFFFFFFF09033337F3FF3FFF77733330F00F0000003
+        33337F773777777333330FFFF0FF033333337F3FF7F3733333330F08F0F03333
+        33337F7737F7333333330FFFF003333333337FFFF77333333333000000333333
+        3333777777333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      Visible = False
+      OnClick = SPBUploadPrescriptionClick
+    end
+    object SPBUndoDischarge: TSpeedButton
+      AlignWithMargins = True
+      Left = 847
+      Top = 4
+      Width = 126
+      Height = 30
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Undo Discharge [ER]'
+      Enabled = False
+      Visible = False
+      OnClick = SPBUndoDischargeClick
+      ExplicitLeft = 884
+    end
+    object SPB_EmrDutyDocConsultant: TSpeedButton
+      AlignWithMargins = True
+      Left = 681
+      Top = 4
+      Width = 166
+      Height = 30
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'EMR.Duty Doctor/ Consultant'
+      Enabled = False
+      Visible = False
+      OnClick = SPB_EmrDutyDocConsultantClick
+      ExplicitLeft = 664
+    end
+    object SB_HospitalVisit: TSpeedButton
+      Left = 973
+      Top = 1
+      Width = 171
+      Height = 39
+      Align = alRight
+      Caption = 'Follow-Up Visit  (F2)'
+      Enabled = False
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033BBBBBBBBBB
+        BB33337777777777777F33BB00BBBBBBBB33337F77333333F37F33BB0BBBBBB0
+        BB33337F73F33337FF7F33BBB0BBBB000B33337F37FF3377737F33BBB00BB00B
+        BB33337F377F3773337F33BBBB0B00BBBB33337F337F7733337F33BBBB000BBB
+        BB33337F33777F33337F33EEEE000EEEEE33337F3F777FFF337F33EE0E80000E
+        EE33337F73F77773337F33EEE0800EEEEE33337F37377F33337F33EEEE000EEE
+        EE33337F33777F33337F33EEEEE00EEEEE33337F33377FF3337F33EEEEEE00EE
+        EE33337F333377F3337F33EEEEEE00EEEE33337F33337733337F33EEEEEEEEEE
+        EE33337FFFFFFFFFFF7F33EEEEEEEEEEEE333377777777777773}
+      NumGlyphs = 2
+      Visible = False
+      OnClick = SB_HospitalVisitClick
+      ExplicitLeft = 969
+      ExplicitTop = 2
+    end
+    object SB_ChangeDepartment: TSpeedButton
+      Left = 236
+      Top = 1
+      Width = 137
+      Height = 39
+      Align = alLeft
+      Caption = 'Change Doc. &&  Dept. (F9)'
+      Enabled = False
+      Visible = False
+      OnClick = SB_ChangeDepartmentClick
+    end
+    object SPB_PatientAdmn: TSpeedButton
+      Left = 373
+      Top = 1
+      Width = 113
+      Height = 39
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alLeft
+      Caption = 'Patient Admission'
+      Enabled = False
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        333333333333333333333333333333333333333FF33333333FF3330033333333
+        00333377FF33333377FF300003333330000337777FFFFFF7777F000000000000
+        000077777777777777770F88FFFF8FFF88F07F333F33333333370FFF9FFF8FFF
+        FF707F337FF333FFFFF70FF999FF800000037F377733377777730FFF9FFF0888
+        80337F3373337F3337330FFFFFFF088803337FFFFFFF7FFF7333700000000000
+        3333777777777777F33333333339399939333333333337773333333333333393
+        3333333333333373333333333333933393333333333333333333333333333393
+        3333333333333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      Visible = False
+      OnClick = SPB_PatientAdmnClick
+    end
+    object SPB_DayCareReg: TSpeedButton
+      Left = 758
+      Top = 1
+      Width = 111
+      Height = 39
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alLeft
+      Caption = 'Day Care Reg.'
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00555555550555
+        555555555555F55555555505555B0555570555F55557F55555F55B50555B0555
+        7B55575F5557F555575555B5055B5557B5555575F55755557555555B5550005B
+        55555557555FFF575555555555BBB0055555555555777FF5555555555BBBBB00
+        55555555577777FF55555000BBBBBBB050005FFF7777777F5FFFBBB5BBBBBBB0
+        BBB577757777777F77755555BBBBBBB55555555577777775555555555BBBBB55
+        55555555577777555555555705BBB55505555555F5777555F555557B5555055B
+        505555575555F5575F5557B5555B0555B50555755557F55575F55B55555B0555
+        5B5557555557F55557555555555B555555555555555755555555}
+      NumGlyphs = 2
+      Visible = False
+      OnClick = SPB_DayCareRegClick
+      ExplicitLeft = 647
+    end
+    object SPB_VisitDetail: TSpeedButton
+      Left = 486
+      Top = 1
+      Width = 161
+      Height = 39
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alLeft
+      Caption = 'Set Scheme/Visit Detail (F10)'
+      Enabled = False
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333300000000
+        0000333377777777777733330FFFFFFFFFF033337F3FFF3F3FF733330F000F0F
+        00F033337F777373773733330FFFFFFFFFF033337F3FF3FF3FF733330F00F00F
+        00F033337F773773773733330FFFFFFFFFF033337FF3333FF3F7333300FFFF00
+        F0F03333773FF377F7373330FB00F0F0FFF0333733773737F3F7330FB0BF0FB0
+        F0F0337337337337373730FBFBF0FB0FFFF037F333373373333730BFBF0FB0FF
+        FFF037F3337337333FF700FBFBFB0FFF000077F333337FF37777E0BFBFB000FF
+        0FF077FF3337773F7F37EE0BFB0BFB0F0F03777FF3733F737F73EEE0BFBF00FF
+        00337777FFFF77FF7733EEEE0000000003337777777777777333}
+      NumGlyphs = 2
+      Visible = False
+      OnClick = SPB_VisitDetailClick
+    end
+    object SPB_NewCRNo: TSpeedButton
+      Left = 647
+      Top = 1
+      Width = 111
+      Height = 39
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alLeft
+      Caption = 'Get CR No. (F11)'
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        33333333FF33333333FF333993333333300033377F3333333777333993333333
+        300033F77FFF3333377739999993333333333777777F3333333F399999933333
+        33003777777333333377333993333333330033377F3333333377333993333333
+        3333333773333333333F333333333333330033333333F33333773333333C3333
+        330033333337FF3333773333333CC333333333FFFFF77FFF3FF33CCCCCCCCCC3
+        993337777777777F77F33CCCCCCCCCC3993337777777777377333333333CC333
+        333333333337733333FF3333333C333330003333333733333777333333333333
+        3000333333333333377733333333333333333333333333333333}
+      NumGlyphs = 2
+      Visible = False
+      OnClick = SPB_NewCRNoClick
+      ExplicitLeft = 655
+    end
+    object BitBtnRefund: TBitBtn
+      Left = 100
+      Top = 1
+      Width = 136
+      Height = 39
+      Hint = 'Registration Refund'
+      Align = alLeft
+      Caption = 'Refund/Re-Print    (F8)'
+      DoubleBuffered = True
+      Enabled = False
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333303
+        333333333333337FF3333333333333903333333333333377FF33333333333399
+        03333FFFFFFFFF777FF3000000999999903377777777777777FF0FFFF0999999
+        99037F3337777777777F0FFFF099999999907F3FF777777777770F00F0999999
+        99037F773777777777730FFFF099999990337F3FF777777777330F00FFFFF099
+        03337F773333377773330FFFFFFFF09033337F3FF3FFF77733330F00F0000003
+        33337F773777777333330FFFF0FF033333337F3FF7F3733333330F08F0F03333
+        33337F7737F7333333330FFFF003333333337FFFF77333333333000000333333
+        3333777777333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+      Visible = False
+      OnClick = BitBtnRefundClick
+    end
+    object BitBtn_DocVisit: TBitBtn
+      Left = 869
+      Top = 1
+      Width = 104
+      Height = 39
+      Margins.Left = 0
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Caption = 'Doctor Visit'
+      DoubleBuffered = True
+      Enabled = False
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      Visible = False
+      OnClick = BitBtn_DocVisitClick
+    end
+  end
+  object QueryBlank: TOraQuery
+    Left = 232
+    Top = 232
+  end
+  object DS_List: TDataSource
+    DataSet = QueryList
+    Left = 584
+    Top = 232
+  end
+  object QueryList: TOraQuery
+    SQL.Strings = (
+      'select rownum as sn, PA.* from VW_HS_PATIENTMAIN_ALL PA'
+      'WHERE 99=99'
+      'AND 99=99'
+      'and VisitDate='#39'2015/03/26'#39
+      'ORDER BY REGDATE DESC,REGTIME DESC')
+    FetchAll = True
+    AfterOpen = QueryListAfterOpen
+    AfterScroll = QueryListAfterScroll
+    Left = 712
+    Top = 248
+  end
+  object Timer_CheckBillingClosed: TTimer
+    Enabled = False
+    Interval = 1
+    Left = 528
+    Top = 312
+  end
+  object Timer_ChkNewPatientClosed: TTimer
+    Enabled = False
+    Interval = 1
+    Left = 488
+    Top = 264
+  end
+  object Twain: TDelphiTwain
+    TransferMode = ttmMemory
+    SourceCount = 0
+    Info.MajorVersion = 1
+    Info.MinorVersion = 0
+    Info.Language = tlUserLocale
+    Info.CountryCode = 1
+    Info.Groups = [tgControl, tgImage]
+    Info.VersionInfo = 'A'
+    Info.Manufacturer = 'A'
+    Info.ProductFamily = 'A'
+    Info.ProductName = 'A'
+    LibraryLoaded = False
+    SourceManagerLoaded = False
+    Left = 800
+    Top = 304
+  end
+  object Query_Dep: TOraQuery
+    SQL.Strings = (
+      'Select DEPT_DEPCODE,DEPT_DEPNAME FROM HS_DEPT_Department'
+      'where 1=1')
+    Left = 384
+    Top = 248
+  end
+  object DS_Dep: TDataSource
+    DataSet = Query_Dep
+    Left = 352
+    Top = 312
+  end
+  object SavePictureDialog1: TSavePictureDialog
+    Left = 640
+    Top = 272
+  end
+  object OpenPictureDialog1: TOpenPictureDialog
+    Left = 800
+    Top = 296
+  end
+  object Queryexcel: TOraQuery
+    Session = DM_Hospital.DB
+    FetchAll = True
+    Left = 920
+    Top = 112
+  end
+  object ds_excel: TDataSource
+    DataSet = Queryexcel
+    Left = 872
+    Top = 216
+  end
+end

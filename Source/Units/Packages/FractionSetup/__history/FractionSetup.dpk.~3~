@@ -1,0 +1,40 @@
+package FractionSetup;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  Global;
+
+contains
+  Unit_FractionSetup in 'Unit_FractionSetup.pas' {Form_FractionSetup},
+  Unit_FractionSetup_Special in 'Unit_FractionSetup_Special.pas' {Form_FractionSetup_Specail},
+  Unit_FractionMgmt in 'Unit_FractionMgmt.pas' {Form_FractionMgmt},
+  Unit_DoctorIncomeChange in 'Unit_DoctorIncomeChange.pas' {Form_DoctorIncomeCorrect},
+  Unit_PositionWiseFractionSetup in 'Unit_PositionWiseFractionSetup.pas' {Form_PositionWiseFractionSetup},
+  Unit_QRFraction in 'Unit_QRFraction.pas' {Form_QRFraction},
+  Unit_Position in 'Unit_Position.pas' {Form_Position};
+
+end.

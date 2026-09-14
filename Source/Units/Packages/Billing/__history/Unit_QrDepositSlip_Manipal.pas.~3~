@@ -1,0 +1,307 @@
+unit Unit_QrDepositSlip_Manipal;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,Fxn_hos,dm,
+  ServerDate,InWordsSu,
+  Dialogs, QRCtrls, qrBarcode, QuickRpt, ExtCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, pngimage, jpeg;
+
+type
+  TForm_QrDepositSlip_Manipal = class(TForm)
+    QrDepositSlip: TQuickRep;
+    PageHeaderBand1: TQRBand;
+    lbl_headName: TQRLabel;
+    lbl_reprint: TQRLabel;
+    QRShape2: TQRShape;
+    QRSubDetail1: TQRSubDetail;
+    GroupFooterBand1: TQRBand;
+    QRLabel28: TQRLabel;
+    lbl_Inwords: TQRLabel;
+    QRLabel30: TQRLabel;
+    lbl_user: TQRLabel;
+    QRLabel40: TQRLabel;
+    lbl_Total: TQRLabel;
+    QRLabel46: TQRLabel;
+    QRLabel48: TQRLabel;
+    QRShape3: TQRShape;
+    QRLabel22: TQRLabel;
+    lbl_Date: TQRLabel;
+    QRLabel34: TQRLabel;
+    PageFooterBand1: TQRBand;
+    QRLabel5: TQRLabel;
+    QRLabel13: TQRLabel;
+    lbl_pagetotal: TQRLabel;
+    QRLabel14: TQRLabel;
+    QRLabel15: TQRLabel;
+    lbl_totpage: TQRLabel;
+    QRSysData1: TQRSysData;
+    lbl_contd: TQRLabel;
+    QRLabel10: TQRLabel;
+    QRLabel12: TQRLabel;
+    QRLabel16: TQRLabel;
+    lbl_Addres: TQRLabel;
+    lbl_Name: TQRLabel;
+    Lbl_HosNo: TQRLabel;
+    QRLabel18: TQRLabel;
+    QRLabel19: TQRLabel;
+    QRLabel21: TQRLabel;
+    QRLabel2: TQRLabel;
+    QRLabel3: TQRLabel;
+    lbl_agesex: TQRLabel;
+    lbl_billtype: TQRLabel;
+    lbl_InvoiceNo: TQRLabel;
+    QRLabel7: TQRLabel;
+    QRLabel8: TQRLabel;
+    QRLabel9: TQRLabel;
+    lbl_contactno: TQRLabel;
+    QRLabel24: TQRLabel;
+    QRLabel26: TQRLabel;
+    lbl_InvoiceDate: TQRLabel;
+    QrBarcode: TQRAsBarcode;
+    lbl_Particular: TQRLabel;
+    QRLabel37: TQRLabel;
+    QRLabel39: TQRLabel;
+    lbl_amount: TQRLabel;
+    QRLabel35: TQRLabel;
+    QRLabel_HosSloganTitle: TQRLabel;
+    QRLabel60: TQRLabel;
+    QRLabel63: TQRLabel;
+    QRLabel_HosAddress: TQRLabel;
+    qry_Process: TOraQuery;
+    QRLabel6: TQRLabel;
+    QRLabel_Remarks: TQRLabel;
+    QRLabel1: TQRLabel;
+    QRLabel_IPNO: TQRLabel;
+    Lbl_InvDateBS: TQRLabel;
+    QRLabel11: TQRLabel;
+    QRLabel17: TQRLabel;
+    QRLabel_RefInvNo: TQRLabel;
+    QRLabel23: TQRLabel;
+    QRLabel65: TQRLabel;
+    QRLabel66: TQRLabel;
+    QRLabel_MPCNo: TQRLabel;
+    QRImage1: TQRImage;
+    QRShape4: TQRShape;
+    procedure FormCreate(Sender: TObject);
+    procedure QrDepositSlipBeforePrint(Sender: TCustomQuickRep;
+      var PrintReport: Boolean);
+    procedure QRLabel35Print(sender: TObject; var Value: string);
+    procedure QRLabel_HosSloganTitlePrint(sender: TObject; var Value: string);
+    procedure QRLabel_HosAddressPrint(sender: TObject; var Value: string);
+    procedure QRLabel63Print(sender: TObject; var Value: string);
+    procedure QRLabel60Print(sender: TObject; var Value: string);
+  private
+     pf_Total:Double;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_QrDepositSlip_Manipal: TForm_QrDepositSlip_Manipal;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_QrDepositSlip_Manipal.FormCreate(Sender: TObject);
+Var
+     Str:String;
+begin
+     SetPrinter('Bill Printer');
+     LoadPatientData(gi_PatientID);
+     With qry_Process do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          SQL.Add(' Select INRE_Inpatientid From HS_INRE_InpatientReg where INRE_PatientId='+IntToStr(gi_PatientID));
+          SQL.Add(' and INRE_IsDischarged=''N''');
+          Open;
+          if qry_Process.FieldByName('INRE_Inpatientid').AsInteger > 0 then
+          Begin
+               QRLabel_IPNO.Caption:=IntToStr(qry_Process.FieldByName('INRE_Inpatientid').AsInteger);
+               QRLabel_IPNO.Enabled:=True;
+               QRLabel11.Enabled:=True;
+               QRLabel1.Enabled:=True;
+          End
+          Else
+          Begin
+               QRLabel_IPNO.Enabled:=False;
+               QRLabel11.Enabled:=False;
+               QRLabel1.Enabled:=False;
+          End;
+     End;
+
+     if gi_HospitalId=562 then // 562 - Manipal
+     QrBarcode.Text:=''
+     Else
+     QrBarcode.Text:=Gs_BillNo;
+
+     lbl_InvoiceNo.Caption:=Gs_BillNo;
+     lbl_InvoiceDate.Caption:=GetBillDate(Gs_BillNo);
+     lbl_Name.Caption:=Trim(Gs_Title+' '+UpperCase(Gs_PatientName));//UpperCase(MyPatient.PatientName);
+     Lbl_HosNo.Caption:=IntToStr(gi_PatientID);//IntToStr(MyPatient.PatientId);
+     lbl_Addres.Caption:=Gs_Address;//MyPatient.Address;
+     lbl_agesex.Caption:=Gs_Age+' '+Copy(Gs_agetype,1,1)+' / '+Copy(Gs_Gender,1,1);//MyPatient.AgeGender;
+     if Trim(Gs_MobileNo)<>'' then
+     lbl_contactno.Caption:=Gs_MobileNo//MyPatient.ContactNo;
+     Else
+     lbl_contactno.Caption:=Gs_PhoneNo;
+
+     lbl_Date.Caption:=GetBillDate(Gs_BillNo);//TodaysDate + ' AD - ' + TodaysDateVS + ' BS' + ' ' + TodaysTime;
+
+     if gi_datesystem=1 then
+     Lbl_InvDateBS.Caption := '( '+ADToVSS(Copy(GetBillDate(Gs_BillNo),1,10))+' BS )'
+     Else
+     Lbl_InvDateBS.Caption := '( '+VSTOADS(Copy(GetBillDate(Gs_BillNo),1,10))+' AD )';
+     IF (Copy(Gs_BillNo,1,2)='PC') or (Copy(Gs_BillNo,1,2)='PR') Then
+     Begin
+          QRLabel_MPCNo.Enabled:=True;
+          QRLabel_MPCNo.Caption:=gs_MemberNo;
+          QRLabel65.Enabled:=True;
+          QRLabel66.Enabled:=True;
+     End
+     Else
+     Begin
+          QRLabel_MPCNo.Enabled:=False;
+          QRLabel65.Enabled:=False;
+          QRLabel66.Enabled:=False;
+     End;
+     if (Copy(Gs_BillNo,1,2)='DP') or (Copy(Gs_BillNo,1,2)='PA') or (Copy(Gs_BillNo,1,2)='PC') then
+     Begin
+          pf_Total:=GetDrAmount(Gs_BillNo);
+          if Copy(Gs_BillNo,1,2)='DP' then
+          Begin
+               lbl_headName.Caption:='DEPOSIT SLIP';
+               lbl_billtype.Caption:='Deposit No.';
+               QRLabel24.Caption:='Deposit Date';
+
+               QRLabel_RefInvNo.Enabled:=True;
+               QRLabel23.Enabled:=True;
+               QRLabel17.Enabled:=True;
+               QRLabel_RefInvNo.Caption:=GetAdvanceRefInvoiceNo(Gs_BillNo);
+          End
+          Else
+          Begin
+               lbl_headName.Caption:='COPAY RECEIPT SLIP';
+               lbl_billtype.Caption:='Receipt No.';
+               QRLabel24.Caption:='Receipt Date';
+
+               QRLabel_RefInvNo.Enabled:=True;
+               QRLabel23.Enabled:=True;
+               QRLabel17.Enabled:=True;
+               QRLabel_RefInvNo.Caption:=GetCopayRefInvoiceNo(Gs_BillNo);
+          End;
+     End
+     else if (Copy(Gs_BillNo,1,2)='DR') or (Copy(Gs_BillNo,1,2)='PR') then
+     Begin
+          pf_Total:=GetCrAmount(Gs_BillNo);
+          if Copy(Gs_BillNo,1,2)='DR' then
+          Begin
+               lbl_headName.Caption:='DEPOSIT REFUND SLIP';
+               lbl_billtype.Caption:='Deposit No.';
+               QRLabel24.Caption:='Deposit Date';
+
+               QRLabel_RefInvNo.Enabled:=True;
+               QRLabel23.Enabled:=True;
+               QRLabel17.Enabled:=True;
+               QRLabel_RefInvNo.Caption:=GetAdvanceRefInvoiceNo(Gs_BillNo);
+          End
+          Else
+          Begin
+               lbl_headName.Caption:='COPAY REFUND RECEIPT SLIP';
+               lbl_billtype.Caption:='Receipt No.';
+               QRLabel24.Caption:='Receipt Date';
+
+               QRLabel_RefInvNo.Enabled:=True;
+               QRLabel23.Enabled:=True;
+               QRLabel17.Enabled:=True;
+               QRLabel_RefInvNo.Caption:=GetCopayRefInvoiceNo(Gs_BillNo);
+          End;
+     End;
+     lbl_amount.Caption:=FormatFloat('#0,0.00',pf_Total);
+     lbl_Total.Caption:=FormatFloat('#0,0.00',pf_Total);
+     lbl_Inwords.Caption:=AmountInWords(pf_Total);
+     if (Copy(Gs_BillNo,1,2)='DP') or (Copy(Gs_BillNo,1,2)='PA') then
+     //Str:='Deposit for '+GetDepositRefType(Gs_BillNo)
+     Str:='Deposit Received('+gs_DepositType+')'
+     else if (Copy(Gs_BillNo,1,2)='DR') or (Copy(Gs_BillNo,1,2)='RD') then
+     //Str:='Deposit refund for '+GetDepositRefType(Gs_BillNo);
+     Str:='Deposit Refund('+gs_DepositType+')'
+     else if Copy(Gs_BillNo,1,2)='PC' then
+     Str:='Part of Copayment Items Receipt ('+GetCopayItemsList(Gs_BillNo)+')'
+     else if Copy(Gs_BillNo,1,2)='PR' then
+     Str:='Part of Copayment Items Refund ('+GetCopayItemsList(Gs_BillNo)+')';
+
+     lbl_Particular.Caption:=Str;
+     if Trim(gs_DepositRemarks)<>'' then
+     Begin
+          QRLabel_Remarks.Visible:=True;
+          QRLabel6.Visible:=True;
+          QRLabel_Remarks.Caption:=gs_DepositRemarks;
+     End
+     else
+     Begin
+          QRLabel_Remarks.Visible:=False;
+          QRLabel6.Visible:=False;
+          QRLabel_Remarks.Caption:=gs_DepositRemarks;
+     End;
+     lbl_user.Caption:=GetDepositUser(Gs_BillNo);
+end;
+
+procedure TForm_QrDepositSlip_Manipal.QrDepositSlipBeforePrint(
+  Sender: TCustomQuickRep; var PrintReport: Boolean);
+var
+     poLandscape, poPotrait: TPrinterOrientation ;
+begin
+     (*if gb_IsBillPrintInPotrait=True then
+     QrDepositSlip.Page.Orientation :=poPotrait
+     else
+     QrDepositSlip.Page.Orientation :=poLandscape;*)
+end;
+procedure TForm_QrDepositSlip_Manipal.QRLabel35Print(sender: TObject; var Value: string);
+begin
+     if gb_BillPrintInPrintedPaper=False then
+     Value:=gs_HospitalName
+     else
+     Value:='';
+end;
+
+procedure TForm_QrDepositSlip_Manipal.QRLabel_HosSloganTitlePrint(sender: TObject; var Value: string);
+begin
+     if gb_BillPrintInPrintedPaper=False then
+     Begin
+          if Trim(gs_HosSloganTitle)<>'' then
+          Value:=gs_HosSloganTitle
+          Else
+          Begin
+               Value:='';
+               //QRLabel_PhoneNo.Top:=QRLabel_HosAddress.Top;
+               QRLabel_HosAddress.Top:=QRLabel_HosSloganTitle.Top;
+          End;
+     End
+     else
+     Value:='';
+end;
+
+procedure TForm_QrDepositSlip_Manipal.QRLabel60Print(sender: TObject; var Value: string);
+begin
+     QRLabel60.Caption:=gs_TPINNOBill;
+end;
+
+procedure TForm_QrDepositSlip_Manipal.QRLabel63Print(sender: TObject; var Value: string);
+begin
+     QRLabel63.Caption:=gs_Hospitalphone;
+end;
+
+procedure TForm_QrDepositSlip_Manipal.QRLabel_HosAddressPrint(sender: TObject; var Value: string);
+begin
+     if gb_BillPrintInPrintedPaper=False then
+     Value:=gs_HospitalAddress
+     else
+     Value:='';
+end;
+
+end.

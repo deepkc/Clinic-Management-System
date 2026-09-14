@@ -1,0 +1,439 @@
+unit Unit_FractionLocking;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, StdCtrls, DBCtrls, Buttons, OleCtrls, DateEditXControl_TLB,
+  DBTables, DB, fxn, dm, serverdate, ComCtrls, Grids, DBGrids;
+
+type
+  TForm_FractionLocking = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    QueryList: TQuery;
+    DS_List: TDataSource;
+    Query_OriginalData: TQuery;
+    Query_Process: TQuery;
+    Query_Doctor: TQuery;
+    DS_Doctor: TDataSource;
+    Shape3: TShape;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label1: TLabel;
+    GroupBox1: TGroupBox;
+    RB_IPBill: TRadioButton;
+    RB_OPBill: TRadioButton;
+    RB_Both: TRadioButton;
+    DEX_From: TDateEditX;
+    DEX_To: TDateEditX;
+    BitBtn_To: TBitBtn;
+    BitBtn_From: TBitBtn;
+    DBLCB_Doctor: TDBLookupComboBox;
+    CB_All: TCheckBox;
+    BitBtnLock: TBitBtn;
+    GroupBox2: TGroupBox;
+    RB_External: TRadioButton;
+    RB_Internal: TRadioButton;
+    Query_SubProcess: TQuery;
+    ProgressBar1: TProgressBar;
+    Query_LockUnLockStatus: TQuery;
+    DS_LockUnLockStatus: TDataSource;
+    Panel3: TPanel;
+    DBGrid1: TDBGrid;
+    Panel4: TPanel;
+    DBGrid2: TDBGrid;
+    Label2: TLabel;
+    Edit_Billno: TEdit;
+    SPB_ShowFractionLockStatus: TSpeedButton;
+    Query_ShowBillList: TQuery;
+    DS_ShowBillList: TDataSource;
+    Label3: TLabel;
+    Label_Name: TLabel;
+    BitBtnUnlock: TBitBtn;
+    procedure BitBtnLockClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure BitBtn_FromClick(Sender: TObject);
+    procedure SPB_ShowFractionLockStatusClick(Sender: TObject);
+    procedure RB_InternalClick(Sender: TObject);
+    procedure RB_ExternalClick(Sender: TObject);
+    procedure BitBtnUnlockClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_FractionLocking: TForm_FractionLocking;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_FractionLocking.BitBtnLockClick(Sender: TObject);
+var
+     lb_IsFractionLocked:Boolean;
+     ls_TodaysDate, ls_TodaysTime : String;
+     li_NoOfRecord, i : Integer;
+     j: Double;
+begin
+     With Query_Process do
+     Begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          sql.Clear;
+          sql.add(' Select LOG_FLLID,(Select DOCT_Desig||'' ''||DOCT_DOCNAME From Hs_Doct_Doctor where Doct_DocCode=FLL.LOG_DocCode) as Doctor ');
+          sql.add(' ,LOG_LockDate,LOG_LockTime,LOG_DateFrom,LOG_DateTo,(Select USMA_UserName From Hs_Usma_UserMain where Usma_UserId=FLL.LOG_UserId) as UserName');
+          sql.add(' From HS_LOG_FRACTIONLOCKUNLOCK FLL ');
+          sql.add(' WHERE '+#39+DEX_From.Text+#39+' >=LOG_DateFrom and '+#39+DEX_To.Text+#39+' <=LOG_DateFrom');
+          if DBLCB_Doctor.KeyValue<>null then
+          SQL.Add('and LOG_DocId='+IntToStr(DBLCB_Doctor.KeyValue));
+          Open;
+     End;
+
+     if DBLCB_Doctor.KeyValue<>null then
+     begin
+          IF Query_Process.FieldByName('LOG_FLLID').AsInteger>0 Then
+          Begin
+               MessageDlg('Fraction between '+Query_Process.FieldByName('LOG_DateFrom').AsString+'-'+Query_Process.FieldByName('LOG_DateTo').AsString+
+               ' of   " '+Query_Process.FieldByName('Doctor').AsString+' "   is already locked '+Char(10)+
+               ' by   " '+Query_Process.FieldByName('UserName').AsString+'  "   on Date  " '+Query_Process.FieldByName('LOG_LockDate').AsString+' "'
+               ,mtInformation,[mbok],0);
+               Exit;
+          End;
+     end
+     else
+     begin
+          IF  Query_Process.FieldByName('LOG_FLLID').AsInteger>0 Then
+          Begin
+               MessageDlg('Fraction between '+Query_Process.FieldByName('LOG_DateFrom').AsString+'-'+Query_Process.FieldByName('LOG_DateTo').AsString+
+               ' by   " '+Query_Process.FieldByName('UserName').AsString+'  "   on Date  " '+Query_Process.FieldByName('LOG_LockDate').AsString+' "'
+               ,mtInformation,[mbok],0);
+               Exit;
+          End;
+     end;
+
+     ls_TodaysDate:=ServerDate.TodaysDate;
+     ls_TodaysTime:=ServerDate.TodaysTime;
+
+     ProgressBar1.Position:=0;
+     With Query_Process do
+     begin
+          if RB_External.Checked then
+          Begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Select FRDE_FractionDetailId,FRDE_BillDetailID,FRDE_ServiceBillDetailId,FRDE_PatientId,FRDE_InpatientID,');
+               SQL.Add(' FRDE_DOCID,FRDE_TestNameId,FRDE_Description,FRDE_UnitTestCost,FRDE_Qty,FRDE_FractionAmount,FRDE_Disper,FRDE_FractionRate,');
+               SQL.Add(' FRDE_FractionID,FRDE_PositionWiseFractionID,FRDE_ISFRACTIONPROPWITHDISPER,FRDE_REFFRACTIONDETAILID,'''' IsRefund,FRDE_Remarks,');
+               SQL.Add(' FRDE_Datapostby,FRDE_Datapostdate,FRDE_dataposttime');
+               SQL.Add(' From HS_BIDE_BillDetail BD,HS_FRDE_FractionDetail FD');
+               SQL.Add(' where BIDE_BillDetailID=FRDE_BillDetailId and BD.BIDE_BillType In (''B'',''R'') and FRDE_TestNameCode<>''IPCON''');
+               SQL.Add(' and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+               SQL.Add(' Union ');
+               SQL.Add(' Select FRDE_FractionDetailId,FRDE_BillDetailID,FRDE_ServiceBillDetailId,FRDE_PatientId,FRDE_InpatientID,');
+               SQL.Add(' FRDE_DOCID,FRDE_TestNameId,FRDE_Description,FRDE_UnitTestCost,FRDE_Qty,FRDE_FractionAmount,FRDE_Disper,FRDE_FractionRate,');
+               SQL.Add(' FRDE_FractionID,FRDE_PositionWiseFractionID,FRDE_ISFRACTIONPROPWITHDISPER,FRDE_REFFRACTIONDETAILID,'''' IsRefund,FRDE_Remarks,');
+               SQL.Add(' FRDE_Datapostby,FRDE_Datapostdate,FRDE_dataposttime');
+               SQL.Add(' From HS_FRDE_FractionDetail FD');
+               SQL.Add(' where FRDE_InpatientId In (Select INRE_InpatientId From HS_INRE_InpatientReg where INRE_IsDischarged=''Y''');
+               SQL.Add(' and INRE_DisDate>='+#39+DEX_From.Text+#39+' and INRE_DisDate<='+#39+DEX_To.Text+#39+')');
+               SQL.Add(' Order by FRDE_FractionDetailId');
+               Open;
+          End
+          else
+          Begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Select FRDE_FractionDetailId,FRDE_BillDetailID,FRDE_ServiceBillDetailId,FRDE_PatientId,FRDE_InpatientID,');
+               SQL.Add(' FRDE_DOCID,FRDE_TestNameId,FRDE_Description,FRDE_UnitTestCost,FRDE_Qty,FRDE_FractionAmount,FRDE_Disper,FRDE_FractionRate,');
+               SQL.Add(' FRDE_FractionID,FRDE_PositionWiseFractionID,FRDE_ISFRACTIONPROPWITHDISPER,FRDE_REFFRACTIONDETAILID,'''' IsRefund,FRDE_Remarks,');
+               SQL.Add(' FRDE_Datapostby,FRDE_Datapostdate,FRDE_dataposttime');
+               SQL.Add(' From HS_FRDE_FractionDetail FD');
+               SQL.Add(' where FRDE_InpatientId In (Select INRE_InpatientId From HS_INRE_InpatientReg where INRE_IsDisInDeposit=''Y'' and INRE_DISINDEPOSITESCHEME=22');
+               SQL.Add(' and INRE_SPLDISINDEPOCASHDATE>='+#39+DEX_From.Text+#39+' and INRE_SPLDISINDEPOCASHDATE<='+#39+DEX_To.Text+#39+')');
+               SQL.Add(' Order by FRDE_FractionDetailId');
+               Open;
+          End;
+          Query_Process.SQL.SaveToFile('C:\FractionLock.txt');
+
+          i:=0;
+          li_NoOfRecord:=Query_Process.RecordCount;
+          First;
+          try
+          DM_Hospital.DB.StartTransaction;
+          while not Query_Process.Eof do
+          begin
+               //if Table_FractionLock.FieldByName('CHecked').AsBoolean=True then
+               //begin
+                    lb_IsFractionLocked := True;
+
+                    with Query_SubProcess do
+                    begin
+                         Close;
+                         DatabaseName:=gs_DatabaseName;
+                         SQL.Clear;
+                         SQL.Add(' Update hs_frde_fractiondetail set frde_isfractionlocked=''Y'',FRDE_FrctLockDate='+#39+ls_TodaysDate+#39);
+                         SQL.Add(' where frde_fractiondetailid='+inttostr(Query_Process.FieldByName('FRDE_FRACTIONDETAILID').AsInteger));
+                         ExecSQL;
+
+                         if Query_Process.FieldByName('isrefund').AsString='Y' then
+                         begin
+                              Close;
+                              DatabaseName := gs_DatabaseName;
+                              SQL.Clear;
+                              SQL.Add(' Update Hs_FRRD_FractionRefundDetail set FRRD_ISFRACTIONLOCKED=''Y'',FRRD_FRCTLOCKDATE='+#39+ls_TodaysDate+#39);
+                              SQL.Add(' WHERE FRRD_FRACTIONDETAILID='+IntToStr(Query_Process.FieldByName('FRDE_FRACTIONDETAILID').AsInteger));
+                              ExecSQL;
+                         end;
+                         Close;
+                         DatabaseName := gs_DatabaseName;
+                         SQL.Clear;
+                         SQL.Add(' Insert into BNB_IMAGE.HS_LOG_FRACTIONDETAIL(LOG_FRACTIONDETAILID,LOG_PATIENTID,LOG_INPATIENTID,LOG_BILLDETAILID,LOG_SERVICEBILLDETAILID,');
+                         SQL.Add(' LOG_DOCID,LOG_TESTNAMEID,LOG_DESCRIPTION,LOG_UNITTESTCOST,LOG_QTY,LOG_FRACTIONAMOUNT,LOG_FRACTIONRATE,LOG_DISPER,');
+                         SQL.Add(' LOG_FRACTIONID,LOG_POSITIONWISEFRACTIONID,LOG_ISFRACTIONPROPWITHDISPER,LOG_REMARKS,LOG_DATAPOSTBY,LOG_DATAPOSTDATE,');
+                         SQL.Add(' LOG_DATAPOSTTIME) Values(');
+                         SQL.Add( IntToStr(Query_Process.FieldByName('FRDE_FRACTIONDETAILID').AsInteger)+','+IntToStr(Query_Process.FieldByName('FRDE_Patientid').AsInteger));
+                         SQL.Add(' ,'+IntToStr(Query_Process.FieldByName('FRDE_Inpatientid').AsInteger)+','+IntToStr(Query_Process.FieldByName('FRDE_billdetailid').AsInteger));
+                         SQL.Add(' ,'+IntToStr(Query_Process.FieldByName('FRDE_Servicebilldetailid').AsInteger)+','+IntToStr(Query_Process.FieldByName('FRDE_docid').AsInteger));
+                         SQL.Add(' ,'+IntToStr(Query_Process.FieldByName('FRDE_testnameid').AsInteger)+','+#39+Query_Process.FieldByName('FRDE_Description').AsString+#39);
+                         SQL.Add(' ,'+FloatToStr(Query_Process.FieldByName('FRDE_UnitTestcost').AsFloat)+','+FloatToStr(Query_Process.FieldByName('FRDE_Qty').AsFloat));
+                         SQL.Add(' ,'+FloatToStr(Query_Process.FieldByName('FRDE_FRACTIONAMOUNT').AsFloat)+','+FloatToStr(Query_Process.FieldByName('FRDE_FractionRate').AsFloat));
+                         SQL.Add(' ,'+FloatToStr(Query_Process.FieldByName('FRDE_Disper').AsFloat)+','+IntToStr(Query_Process.FieldByName('FRDE_Fractionid').AsInteger));
+                         SQL.Add(' ,'+IntToStr(Query_Process.FieldByName('FRDE_POSITIONWISEFRACTIONID').AsInteger)+','+#39+Query_Process.FieldByName('FRDE_ISFRACTIONPROPWITHDISPER').AsString+#39);
+                         SQL.Add(' ,'+#39+Query_Process.FieldByName('FRDE_Remarks').AsString+#39+','+IntToStr(Query_Process.FieldByName('FRDE_Datapostby').AsInteger));
+                         SQL.Add(' ,'+#39+Query_Process.FieldByName('FRDE_Datapostdate').AsString+#39+','+#39+Query_Process.FieldByName('FRDE_dataposttime').AsString+#39+')');
+                         //SQL.SaveToFile('C:\FractionDetail.txt');
+                         ExecSQL;
+                    end;
+
+               ProgressBar1.Position:=Round((i/li_NoOfRecord)*100);
+               Inc(i);
+               Query_Process.Next;
+          end;
+
+          ProgressBar1.Position:=100;
+
+          if lb_IsFractionLocked=True then
+          begin
+               with Query_Process do
+               begin
+                    Close;
+                    SQL.Clear;
+                    SQL.add(' Insert Into HS_LOG_FRACTIONLOCKUNLOCK(LOG_FLLID,LOG_UserId,LOG_LockDate,LOG_LockTime,LOG_DOCID,LOG_DocCode,');
+                    SQL.add(' LOG_DateFrom,LOG_DateTo) Values('+IntToStr(GetMaxId('HS_LOG_FRACTIONLOCKUNLOCK','LOG_FLLID'))+','+IntToStr(gi_UserId));
+                    SQL.add(' ,'+#39+ls_TodaysDate+#39+','+#39+ls_TodaysTime+#39);
+                    if DBLCB_Doctor.KeyValue<>Null then
+                    begin
+                         SQL.Add(','+IntToStr(DBLCB_Doctor.KeyValue));
+                         SQL.Add(','+#39+Query_Doctor.FieldByName('Doccode').AsString+#39);
+                    end
+                    else
+                    begin
+                         SQL.Add(','+IntToStr(0));
+                         SQL.Add(','+'''''');
+                    end;
+                    SQL.add(' ,'+#39+DEX_From.Text+#39);
+                    SQL.add(' ,'+#39+DEX_To.Text+#39+')');
+                    ExecSQL;
+               end;
+          end;
+          DM_Hospital.DB.Commit;
+          ShowDoneMessage;
+          lb_IsFractionLocked :=False;
+     Except
+          DM_Hospital.DB.RollBack;
+          lb_IsFractionLocked := False;
+          MessageDlg('Failure to Lock Fraction. Plz Contact With System Administrator.',mtWarning,[mbok],0);
+     end;
+
+
+     end;
+
+     ProgressBar1.Position:=0;
+     //LoadData;
+end;
+
+procedure TForm_FractionLocking.BitBtnUnlockClick(Sender: TObject);
+begin
+     if Query_ShowBillList.FieldByName('BIDE_InpatientID').AsInteger > 0 then
+     begin
+          With Query_Process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Select INRE_ISTRANSLOCKED From HS_INRE_InpatientReg where INRE_InpatientId='+IntToStr(Query_ShowBillList.FieldByName('BIDE_InpatientID').AsInteger));
+               Open;
+          end;
+
+          if Query_Process.FieldByName('INRE_ISTRANSLOCKED').AsString='N' then
+          begin
+               MessageDlg(' Sorry This Is In Already Unlock State. No Need To Unlock Again.',mtInformation,[mbOK],0);
+               Exit;
+          end;
+     end
+     else
+     Begin
+          With Query_Process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Select Distinct FRDE_ISFRACTIONLOCKED From HS_FRDE_FractionDetail where FRDE_BillNo='+#39+Query_ShowBillList.FieldByName('BIDE_BillNo').AsString+#39);
+               Open;
+          end;
+
+          if Query_Process.FieldByName('FRDE_ISFRACTIONLOCKED').AsString='N' then
+          begin
+               MessageDlg(' Sorry This Is In Already Unlock State. No Need To Unlock Again.',mtInformation,[mbOK],0);
+               Exit;
+          end;
+     End;
+
+     if Query_ShowBillList.FieldByName('BIDE_InpatientID').AsInteger > 0 then
+     Begin
+          With Query_Process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Update HS_FRDE_FractionDetail Set FRDE_ISFRACTIONLOCKED=''N'' where FRDE_InpatientId='+IntToStr(Query_ShowBillList.FieldByName('BIDE_InpatientID').AsInteger));
+               Open;
+
+               Close;
+               SQL.Clear;
+               SQL.Add(' Update HS_FRRD_FractionRefundDetail Set FRRD_ISFRACTIONLOCKED=''N'' where FRRD_InpatientId='+IntToStr(Query_ShowBillList.FieldByName('BIDE_InpatientID').AsInteger));
+               Open;
+
+               Close;
+               SQL.Clear;
+               SQL.Add(' Update HS_INRE_InpatientReg Set INRE_ISTRANSLOCKED=''N'' where INRE_InpatientId='+IntToStr(Query_ShowBillList.FieldByName('BIDE_InpatientID').AsInteger));
+               Open;
+          end;
+
+          IF RB_Internal.Checked=True Then
+          begin
+               With Query_Process do
+               begin
+                    Close;
+                    SQL.Clear;
+                    SQL.Add(' Update HS_SPDE_SpecialDeposit Set SPDE_ISTRANSLOCKED=''N'' where SPDE_InpatientId='+IntToStr(Query_ShowBillList.FieldByName('BIDE_InpatientID').AsInteger));
+                    Open;
+               end;
+          end;
+     End
+     else
+     begin
+          With Query_Process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Update HS_FRDE_FractionDetail Set FRDE_ISFRACTIONLOCKED=''N'' where FRDE_BillNo='+#39+Query_ShowBillList.FieldByName('BIDE_BillNo').AsString+#39);
+               Open;
+
+               Close;
+               SQL.Clear;
+               SQL.Add(' Update HS_FRRD_FractionRefundDetail Set FRRD_ISFRACTIONLOCKED=''N'' where FRRD_FractionDetailId In (');
+               SQL.Add(' Select FRDE_FractionDetailId From HS_FRDE_FractionDetail where FRDE_BillNo='+#39+Query_ShowBillList.FieldByName('BIDE_BillNo').AsString+#39+')');
+               Open;
+          end;
+     End;
+     ShowDoneMessage;
+end;
+
+procedure TForm_FractionLocking.BitBtn_FromClick(Sender: TObject);
+begin
+     ChangeDateSystem(DEX_From, BitBtn_From);
+     ChangeDateSystem(DEX_To, BitBtn_To);
+end;
+
+procedure TForm_FractionLocking.FormShow(Sender: TObject);
+begin
+     DEX_From.SystemOfDate := gi_DateSystem;
+     DEX_From.Text := ServerDate.TodaysDate;
+     ChangeCaption(BitBtn_From);
+     DEX_To.SystemOfDate := gi_DateSystem;
+     DEX_To.Text := ServerDate.TodaysDate;
+     ChangeCaption(BitBtn_To);
+     Query_Doctor.Close;
+     Query_Doctor.DatabaseName:=gs_DatabaseName;
+     Query_Doctor.Open;
+     //CreateTemp;
+end;
+
+procedure TForm_FractionLocking.RB_ExternalClick(Sender: TObject);
+begin
+     Edit_Billno.NumbersOnly:=False;
+
+     Edit_Billno.NumbersOnly:=True;
+     Edit_Billno.Hint:='Number Only';
+     Edit_Billno.ShowHint:=True;
+end;
+
+procedure TForm_FractionLocking.RB_InternalClick(Sender: TObject);
+begin
+     Edit_Billno.NumbersOnly:=True;
+     Edit_Billno.Hint:='Number Only';
+     Edit_Billno.ShowHint:=True;
+end;
+
+procedure TForm_FractionLocking.SPB_ShowFractionLockStatusClick(
+  Sender: TObject);
+Var li_PatientNo : Integer;
+    ls_BillNo : string;
+begin
+     if Trim(Edit_Billno.Text)<>'' then
+     begin
+          MessageDlg(' You Must Have To Put Hospital No./IP NO Or Bill No.',mtWarning,[mbOK]);
+          Edit_Billno.SetFocus;
+          Exit;
+     end;
+
+     Try
+          li_PatientNo:=StrToInt(Edit_Billno.Text);
+          ls_BillNo:='';
+     except
+          li_PatientNo:=0;
+          ls_BillNo:=Edit_Billno.Text;
+     End;
+
+     if RB_External.Checked=True then
+     Begin
+          With Query_ShowBillList do
+          begin
+               Close;
+               SQL.Clear;
+               DatabaseName:=gs_DatabaseName;
+               SQL.add(' Select Distinct BIDE_BillDate,BIDE_BillNo,BIDE_PatientId,BIDE_InpatientID,');
+               SQL.add(' (Select PAMA_PatientName From HS_PAMA_PatientMain where PAMA_PatientId=BIDE_PatientId) as PatientName,');
+               SQL.add(' Case when BIDE_InpatientID > 0 Then (Select INRE_ISTRANSLOCKED From HS_INRE_InpatientReg where INRE_InpatientId=BIDE_InpatientID)');
+               SQL.add(' Else (Select Distinct FRDE_ISFRACTIONLOCKED From HS_FRDE_FractionDetail where FRDE_BillNo=BIDE_BillNo and RowNum=1) End IsLocked');
+               SQL.add(' From HS_BIDE_BillDetail');
+               if li_PatientNo > 0 then
+               SQL.add(' where BIDE_PatientId='+IntToStr(li_PatientNo)+' or BIDE_InpatientID='+IntToStr(li_PatientNo))
+               else
+               SQL.add(' where BIDE_BillNo='+#39+ls_BillNo+#39);
+               SQL.add(' Order by BIDE_BillDate Desc');
+               Open;
+          end;
+     End
+     else
+     begin
+          With Query_ShowBillList do
+          begin
+               Close;
+               SQL.Clear;
+               DatabaseName:=gs_DatabaseName;
+               SQL.add(' Select Distinct INRE_DISINDEPOSITDATE as BIDE_BillDate,''Specail Discharge'' BIDE_BillNo,INRE_PatientId BIDE_PatientId,INRE_InpatientID BIDE_InpatientID,');
+               SQL.add(' (Select PAMA_PatientName From HS_PAMA_PatientMain where PAMA_PatientId=INRE_PatientId) as PatientName,');
+               SQL.add(' INRE_ISTRANSLOCKED as IsLocked');
+               SQL.add(' From HS_INRE_InpatientReg');
+               SQL.add(' where INRE_PatientId='+IntToStr(li_PatientNo)+' or INRE_InpatientID='+IntToStr(li_PatientNo));
+               SQL.add(' Order by INRE_DISINDEPOSITDATE Desc');
+               Open;
+          end;
+     end;
+
+     Label_Name.Caption:=Query_ShowBillList.FieldByName('PatientName').AsString;
+end;
+
+end.

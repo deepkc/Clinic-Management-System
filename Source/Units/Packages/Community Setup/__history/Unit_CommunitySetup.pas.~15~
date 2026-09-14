@@ -1,0 +1,342 @@
+unit Unit_CommunitySetup;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm, Unit_Master,
+     Dialogs, StdCtrls, Buttons, ExtCtrls, DBCtrls, Grids, DBGrids, ComCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError;
+
+type
+     TFormCommunity = class(TForm)
+          Panel1: TPanel;
+          BtnNew: TBitBtn;
+          BitBtnSave: TBitBtn;
+          BitBtnCancel: TBitBtn;
+          PageControlMedicine: TPageControl;
+          TabSheet1: TTabSheet;
+          Label9: TLabel;
+          DBGrid1: TDBGrid;
+          EditSearch: TEdit;
+          Button1: TButton;
+          TabSheet2: TTabSheet;
+          LabelMadicine: TLabel;
+          LabelMedicine: TLabel;
+          Bevel1: TBevel;
+          Bevel2: TBevel;
+          Label82: TLabel;
+          Label83: TLabel;
+          Label84: TLabel;
+          Label1: TLabel;
+          SpeedButtonEdu: TSpeedButton;
+          Label6: TLabel;
+          EditCommunity: TEdit;
+          EditCode: TEdit;
+          Edit_ContactPerson: TEdit;
+          Edit_Designation: TEdit;
+          Edit_Phone: TEdit;
+          DBLookupComboBox_Scheme: TDBLookupComboBox;
+          GroupBox3: TGroupBox;
+          Label2: TLabel;
+          Label4: TLabel;
+          Label_OPtDis: TLabel;
+          Label_OPtCredit: TLabel;
+          GroupBox4: TGroupBox;
+          Label3: TLabel;
+          Label5: TLabel;
+          Label_IPtDis: TLabel;
+          Label_IPtCredit: TLabel;
+          Edit_Priority: TEdit;
+          QueryCommunity: TOraQuery;
+          DataSourceCommunity: TDataSource;
+          Query_Process: TOraQuery;
+          Query_Scheme: TOraQuery;
+          DataSource_Scheme: TDataSource;
+    chk_IsActiveCommunity: TCheckBox;
+          procedure EditSearchChange(Sender: TObject);
+          procedure Button1Click(Sender: TObject);
+          procedure DBLookupComboBox_SchemeClick(Sender: TObject);
+          procedure SpeedButtonEduClick(Sender: TObject);
+          procedure BtnNewClick(Sender: TObject);
+          procedure PageControlMedicineChanging(Sender: TObject; var AllowChange: Boolean);
+          procedure BitBtnSaveClick(Sender: TObject);
+          procedure BitBtnCancelClick(Sender: TObject);
+          procedure DBGrid1DblClick(Sender: TObject);
+          procedure PageControlMedicineChange(Sender: TObject);
+          procedure FormShow(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+     private
+          pi_communityID:integer;
+          { Private declarations }
+
+     public
+          { Public declarations }
+          ltoappend: Boolean;
+     end;
+
+var
+     FormCommunity: TFormCommunity;
+
+implementation
+
+Procedure SaveCommunitySetup(ComCode, Community,IsActive,ContactPerson, Designation, Phone: string;
+     SchemeId, Priority: Integer); stdcall; external 'MidasFunction.bpl';
+Procedure UpdateCommunitySetup(ComCode, Community,IsActive, ContactPerson, Designation, Phone: string;
+     COMMUNITYID, SchemeId, Priority: Integer); stdcall; external 'MidasFunction.bpl';
+{$R *.dfm}
+
+procedure TFormCommunity.BitBtnCancelClick(Sender: TObject);
+begin
+     IF PageControlMedicine.ActivePageIndex = 0 Then
+          Close
+     Else
+     Begin
+
+          PageControlMedicine.ActivePageIndex := 0;
+          EditSearch.SetFocus;
+          BitBtnSave.Enabled := False;
+          BtnNew.Enabled := True;
+          QueryCommunity.Close;
+          QueryCommunity.Open;
+          BtnNew.Enabled := True;
+          BitBtnSave.Enabled := False;
+     End;
+end;
+
+procedure TFormCommunity.BitBtnSaveClick(Sender: TObject);
+Var
+     ComCode, Community, ContactPerson, Designation, Phone,ls_IsActive:String;
+     COMMUNITYID, SchemeId,Priority:Integer;
+begin
+     If Trim(EditCode.Text) = '' Then
+     Begin
+          Messagedlg('Plz. enter the community code.', mtInformation, [mbOk], 0);
+          EditCommunity.SetFocus;
+          Exit;
+     End;
+     If Trim(EditCommunity.Text) = '' Then
+     Begin
+          Messagedlg('Plz. enter the community .', mtInformation, [mbOk], 0);
+          EditCommunity.SetFocus;
+          Exit;
+     End;
+     ComCode:=EditCode.Text;
+     Community:=StringReplace(EditCommunity.Text, '''', '''''', [rfReplaceAll]);
+     ContactPerson:=StringReplace(Edit_ContactPerson.Text, '''', '''''', [rfReplaceAll]);
+     Designation:=StringReplace( Edit_Designation.Text, '''', '''''', [rfReplaceAll]) ;
+     Phone:=Edit_Phone.Text;
+     if DBLookupComboBox_Scheme.KeyValue>0 then
+     SchemeId:= DBLookupComboBox_Scheme.KeyValue
+     else
+     SchemeId:=0;
+     COMMUNITYID:=pi_communityID;
+     Priority:=StrToInt(Edit_Priority.Text);
+
+     if chk_IsActiveCommunity.Checked=True then
+     ls_IsActive:='Y'
+     else
+     ls_IsActive:='N';
+
+     try
+          if ltoappend then
+               SaveCommunitySetup(ComCode, Community,ls_IsActive,ContactPerson, Designation, Phone, SchemeId, Priority)
+          else
+               UpdateCommunitySetup(ComCode, Community,ls_IsActive, ContactPerson, Designation, Phone, COMMUNITYID, SchemeId,
+                    Priority);
+     Except
+          MsgBox(1005, 0, '', '', '');
+          Exit;
+     end;
+
+     ShowDoneMessage;
+
+     ClearAll(PageControlMedicine.Pages[1]);
+     ltoappend := True;
+     PageControlMedicine.ActivePageIndex:=0;
+     QueryCommunity.close;
+     QueryCommunity.session:=DM_hospital.db;
+     QueryCommunity.open;
+end;
+
+procedure TFormCommunity.BtnNewClick(Sender: TObject);
+begin
+     { IF PageControlMedicine.ActivePageIndex=1 Then
+       Begin
+       PageControlMedicine.ActivePageIndex:=0;
+       End }
+     // Else
+     // Begin
+     PageControlMedicine.ActivePageIndex := 1;
+     EditCode.Enabled := True;
+     EditCode.ReadOnly:=false;
+     EditCode.Color:=clWhite;
+     EditCode.SetFocus;
+     EditCode.Text := '';
+     EditCommunity.Text := '';
+     Edit_ContactPerson.Text := '';
+     Edit_Designation.Text := '';
+     Edit_Phone.Text := '';
+     DBLookupComboBox_Scheme.KeyValue := NULL;
+     Label_OPtDis.Caption := '.........';
+     Label_OPtCredit.Caption := '.........';
+     Label_IPtDis.Caption := '.........';
+     Label_IPtCredit.Caption := '.........';
+     BitBtnSave.Enabled := True;
+     BtnNew.Enabled := False;
+     ltoappend := True;
+     Query_Scheme.Close;
+     Query_Scheme.Open;
+     // End;
+end;
+
+procedure TFormCommunity.Button1Click(Sender: TObject);
+begin
+     // dmhospital.ExtendedSearch('Community',QueryCommunity,EditSearch);
+end;
+
+procedure TFormCommunity.DBGrid1DblClick(Sender: TObject);
+begin
+     ltoappend := False;
+
+     if QueryCommunity.FieldByName('COMMUNITYID').AsInteger <=0 then
+     Begin
+          MessageDlg('No Record to Modify !',mtWarning,[mbOK],0);
+          EditSearch.SetFocus;
+          Exit;
+     End;
+
+     PageControlMedicine.ActivePageIndex := 1;
+     pi_communityID := QueryCommunity.FieldbyName('CommunityId').AsInteger;
+
+     if Trim(QueryCommunity.FieldbyName('COMCODE').AsString)<>'' then
+     Begin
+          EditCode.Text := QueryCommunity.FieldbyName('COMCODE').AsString;
+          EditCode.ReadOnly:=True;
+          EditCode.Color:=clMenu;
+     End
+     Else
+     Begin
+          EditCode.ReadOnly:=False;
+          EditCode.Color:=clWhite;
+     End;
+
+     EditCommunity.Text := QueryCommunity.FieldbyName('COMMUNITY').AsString;
+     Edit_ContactPerson.Text := QueryCommunity.FieldbyName('CONTACTPERSON').AsString;
+     Edit_Designation.Text := QueryCommunity.FieldbyName('DESIGNATION').AsString;
+     Edit_Phone.Text := QueryCommunity.FieldbyName('PHONE').AsString;
+     Edit_Priority.Text := IntToStr(QueryCommunity.FieldbyName('PRIORITY').AsInteger);
+
+     if QueryCommunity.FieldbyName('IsActive').AsString='Y' then
+     chk_IsActiveCommunity.Checked:=True
+     else
+     chk_IsActiveCommunity.Checked:=False;
+
+     BtnNew.Enabled := False;
+     BitBtnSave.Enabled := True;
+end;
+
+procedure TFormCommunity.DBLookupComboBox_SchemeClick(Sender: TObject);
+begin
+     IF DBLookupComboBox_Scheme.KeyValue <> NULL Then
+     Begin
+          with Query_Scheme do
+          Begin
+               Label_OPtDis.Caption := FloatToStr(FieldbyName('SCHE_REGDISPER').AsFloat);
+               Label_OPtCredit.Caption := FieldbyName('SCHE_ISREGCRFACILITY').AsString;
+               Label_IPtDis.Caption := FloatToStr(FieldbyName('SCHE_OPBILLDISPER').AsFloat);
+               Label_IPtCredit.Caption := FieldbyName('SCHE_ISOPBILLCRFACILITY').AsString;
+          End;
+     End
+     Else
+     Begin
+          Label_OPtDis.Caption := '.........';
+          Label_OPtCredit.Caption := '.........';
+          Label_IPtDis.Caption := '.........';
+          Label_IPtCredit.Caption := '.........';
+     End;
+end;
+
+procedure TFormCommunity.EditSearchChange(Sender: TObject);
+begin
+     EditSearch.Text := StringReplace(EditSearch.Text, '''', '''''', [rfReplaceAll]);
+     with QueryCommunity do
+     Begin
+          IF Trim(EditSearch.Text) <> '' Then
+          Begin
+               Filter := 'ComCode =' + #39 + EditSearch.Text + '*' + #39 + ' Or Community =' + #39 + EditSearch.Text +
+                 '*' + #39;
+               Filtered := True;
+          End
+          Else
+               Filtered := False;
+     End;
+end;
+
+procedure TFormCommunity.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if key=27 then
+     BitBtnCancelClick(Sender);
+end;
+
+procedure TFormCommunity.FormShow(Sender: TObject);
+begin
+     PageControlMedicine.ActivePageIndex := 0;
+     EditSearch.SetFocus;
+     QueryCommunity.Close;
+     QueryCommunity.Open;
+end;
+
+procedure TFormCommunity.PageControlMedicineChange(Sender: TObject);
+begin
+     if PageControlMedicine.ActivePageIndex = 0 then
+          PageControlMedicine.ActivePageIndex := 1
+     else
+          PageControlMedicine.ActivePageIndex := 0;
+end;
+
+procedure TFormCommunity.PageControlMedicineChanging(Sender: TObject; var AllowChange: Boolean);
+begin
+     { IF PageControlMedicine.ActivePageIndex=1 Then
+       Begin
+       PageControlMedicine.ActivePageIndex:=0;
+       DMhospital.TableMedicine.Cancel;
+       PageControlMedicine.ActivePageIndex:=0;
+       BtnNew.Enabled:=True;
+       BitBtnSave.Enabled:=False;
+       End }
+     { Else
+       Begin
+       PageControlMedicine.ActivePageIndex:=1;
+       EditCode.Text:='';
+       EditCommunity.Text:='';
+       Edit_ContactPerson.Text:='';
+       Edit_Designation.Text:='';
+       Edit_Phone.Text:='';
+       DBLookupComboBox_Scheme.KeyValue:=NULL;
+       Label_OPtDis.Caption:='.........';
+       Label_OPtCredit.Caption:='.........';
+       Label_IPtDis.Caption:='.........';
+       Label_IPtCredit.Caption:='.........';
+       BitBtnSave.Enabled:=True;
+       BtnNew.Enabled:=False;
+       lToAppend:=True;
+       End; }
+end;
+
+
+procedure TFormCommunity.SpeedButtonEduClick(Sender: TObject);
+begin
+     // Form_Scheme := TForm_Scheme.Create(Self);
+     // with Form_Scheme do
+     // Begin
+     // Try
+     // Showmodal;
+     // Finally
+     // Free;
+     // End;
+     // End;
+     // Query_Scheme.Close;
+     // Query_Scheme.Open;
+end;
+
+end.

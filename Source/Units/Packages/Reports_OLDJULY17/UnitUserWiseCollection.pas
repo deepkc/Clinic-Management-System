@@ -1,0 +1,305 @@
+unit UnitUserWiseCollection;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm, serverdate,
+     Dialogs, StdCtrls, ExtCtrls, OleCtrls, DateEditXControl_TLB, ComCtrls,
+     DBCtrls,
+     DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Buttons;
+
+type
+     TFormUserWiseCollection = class(TForm)
+          StatusBar1: TStatusBar;
+          Panel1: TPanel;
+          Btn_Preview: TButton;
+          Panel2: TPanel;
+          Label3: TLabel;
+          DBLCB_UserName: TDBLookupComboBox;
+          GroupBox1: TGroupBox;
+          label2: TLabel;
+          DateEditXTo: TDateEditX;
+          Chk_Detail: TCheckBox;
+          QueryUserName: TOraQuery;
+          Ds_Username: TDataSource;
+          Label1: TLabel;
+          BtnTo: TSpeedButton;
+          BtnFrom: TSpeedButton;
+          DateEditxFrom: TDateEditX;
+          Rb_BillWise: TRadioButton;
+          Rb_TestWise: TRadioButton;
+          procedure Btn_PreviewClick(Sender: TObject);
+          procedure FormDestroy(Sender: TObject);
+          procedure BtnfromClick(Sender: TObject);
+          procedure BtnToClick(Sender: TObject);
+          procedure Btn_DepWiseClick(Sender: TObject);
+          procedure FormShow(Sender: TObject);
+          procedure Button1Click(Sender: TObject);
+          procedure DBLCB_UserNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure Chk_DetailClick(Sender: TObject);
+     private
+          { Private declarations }
+     public
+          { Public declarations }
+     end;
+
+var
+     FormUserWiseCollection: TFormUserWiseCollection;
+
+implementation
+
+uses UnitRepUserWiseCollection, UnitRepUserWiseDetail, UnitDeptWiseReport,
+     UnitRepDetailUserWise, UnitNoofTestDone;
+{$R *.dfm}
+
+procedure TFormUserWiseCollection.BtnToClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditXTo, BtnTo);
+end;
+
+procedure TFormUserWiseCollection.Btn_DepWiseClick(Sender: TObject);
+begin
+     try
+          FormDeptwiseCollection := TFormDeptwiseCollection.Create(nil);
+          FormDeptwiseCollection.ShowModal;
+     finally
+          FormDeptwiseCollection.Free;
+     end;
+end;
+
+procedure TFormUserWiseCollection.Btn_PreviewClick(Sender: TObject);
+begin
+     DateEditxFrom.SystemOfDate := gi_datesystem;
+     DateEditXTo.SystemOfDate := gi_datesystem;
+     BtnFrom.Caption := gs_DateCaption;
+     BtnTo.Caption := gs_DateCaption;
+     gs_From := DateEditxFrom.text;
+     gs_to := DateEditXTo.text;
+     if (Chk_Detail.Checked = True) and (DBLCB_UserName.KeyValue = Null) then
+     begin
+          ShowMessage('Please Select the User');
+          DBLCB_UserName.SetFocus;
+          exit;
+     end;
+
+     if Chk_Detail.Checked = false then
+     begin
+          try
+               FormRepUserWiseCollection := TFormRepUserWiseCollection.Create(nil);
+               with FormRepUserWiseCollection do
+               begin
+                    With QueryMain do
+                    begin
+                         close;
+                         Session:=Dm_Hospital.Db;
+                         Sql.Clear;
+                         Sql.Add(' Select UserID,UserName,Sum(CashAmount-CashDiscount)CashAmount,Sum(RefundAmount-CashDiscountRefund)RefundAmount ');
+                         Sql.Add(' ,Sum(DrAmount)DrAmount,Sum(Cramount)CrAmount ');
+                         Sql.Add(' ,Sum(CardAmount)CardAmount,Sum(CreditAmount-CreditRefundAmount-CreditDiscount-CreditDiscountRefund)CreditAmount ');
+                         Sql.Add(' from VW_User_Wise_Coll_Sum ');
+                         Sql.Add(' Where BillDate between ' + #39 + gs_From + #39' and ' + #39 + gs_to + #39);
+                         if DBLCB_UserName.KeyValue <> Null then
+                              Sql.Add('AND USERID = ' + IntToStr(DBLCB_UserName.KeyValue));
+                         Sql.Add('GROUP BY USERID,USERNAME');
+                         //Sql.SaveToFile('D:\tt.txt');
+                         Open;
+                    end;
+                    // QRLabel7.Caption:=
+                    QRLabel28.Caption := ServerDate.TodaysDate;
+                    QRLabel32.Caption := ServerDate.TodaysTime;
+                    QuickRep1.DataSet := QueryMain;
+                    QuickRep1.Preview;
+               end;
+          finally
+               FormRepUserWiseCollection.Free;
+          end;
+     end
+     else
+     begin
+          try
+               FormRepDetailUserWise := TFormRepDetailUserWise.Create(Nil);
+               With FormRepDetailUserWise Do
+               Begin
+                    With QueryCollection Do
+                    Begin
+                         close;
+                         Session:=Dm_Hospital.Db;
+                         Sql.Clear;
+                         SQL.Add(' Select BillNo,PayType ');
+                         if Rb_TestWise.Checked then
+                         SQL.Add(' ,ServiceType as Service,Qty ');
+                         SQL.Add(' ,PatientId,PatientName,RateType,BillDate ');
+                         SQL.Add(' ,Sum(Amount) as Amount,Sum(Discount) As Discount, Sum(VatAmt) as VatAmt,Sum(NetAmount) as NetAmount ');
+                         SQL.Add(' from VW_User_Wise_Coll_Detail where BillNo Like ''CS%'' ');
+                         Sql.Add('And BillDate between ' + #39 + gs_From + #39' and ' + #39 + gs_to + #39);
+                         Sql.Add('AND BillBy=' + IntToStr(DBLCB_UserName.KeyValue));
+                         SQL.Add(' Group By BillNo,PayType,PatientId,PatientName,RateType,BillDate ');
+                         if Rb_TestWise.Checked then
+                         SQL.Add(' ,ServiceType,Qty  ');
+                         SQL.Add(' Order By BillNo ');
+                         Open;
+                    End;
+
+                    With QueryRefund Do
+                    Begin
+                         close;
+                         Session:=Dm_Hospital.Db;
+                         Sql.Clear;
+                         SQL.Add(' Select BillNo,PayType ');
+                         if Rb_TestWise.Checked then
+                         SQL.Add(' ,ServiceType as Service,Qty ');
+                         SQL.Add(' ,PatientId,PatientName,RateType,BillDate ');
+                         SQL.Add(' ,Sum(Amount) as Amount,Sum(Discount) As Discount, Sum(VatAmt) as VatAmt,Sum(NetAmount) as NetAmount ');
+                         SQL.Add(' from VW_User_Wise_Coll_Detail where BillNo Like ''RF%'' ');
+                         Sql.Add('And BillDate between ' + #39 + gs_From + #39' and ' + #39 + gs_to + #39);
+                         Sql.Add('AND BillBy=' + IntToStr(DBLCB_UserName.KeyValue));
+                         SQL.Add(' Group By BillNo,PayType,PatientId,PatientName,RateType,BillDate ');
+                         if Rb_TestWise.Checked then
+                         SQL.Add(' ,ServiceType,Qty  ');
+                         SQL.Add(' Order By BillNo ');
+                         Open;
+                    End;
+
+                    With QueryCredit Do
+                    Begin
+                         close;
+                         Session:=Dm_Hospital.Db;
+                         Sql.Clear;
+                         SQL.Add(' Select BillNo,PayType ');
+                         if Rb_TestWise.Checked then
+                         SQL.Add(' ,ServiceType as Service,Qty ');
+                         SQL.Add(' ,PatientId,PatientName,RateType,BillDate ');
+                         SQL.Add(' ,Sum(Amount) as Amount,Sum(Discount) As Discount, Sum(VatAmt) as VatAmt,Sum(NetAmount) as NetAmount ');
+                         SQL.Add(' from VW_User_Wise_Coll_Detail where BillNo Like ''CR%'' ');
+                         Sql.Add('And BillDate between ' + #39 + gs_From + #39' and ' + #39 + gs_to + #39);
+                         Sql.Add('AND BillBy=' + IntToStr(DBLCB_UserName.KeyValue));
+                         SQL.Add(' Group By BillNo,PayType,PatientId,PatientName,RateType,BillDate ');
+                         if Rb_TestWise.Checked then
+                         SQL.Add(' ,ServiceType,Qty  ');
+                         SQL.Add(' Order By BillNo ');
+                         Open;
+                    End;
+
+                    With QueryDeposit Do
+                    Begin
+                         close;
+                         Session:=Dm_Hospital.Db;
+                         Sql.Clear;
+                         Sql.Add('Select PatientId,PatientName,Sum(DRAmount)as DR,BillDAte,BillTime,BillNo');
+                         Sql.Add('From VW_User_Wise_Coll_Detail ');
+                         Sql.Add('where BillDate>=' + #39 + DateEditxFrom.text + #39 + ' And BillDate<=' + #39 + DateEditXTo.text + #39);
+                         Sql.Add(' and DRAmount >0 and BillNo like ''DP%''');
+                         Sql.Add('AND(BillBy=' + IntToStr(DBLCB_UserName.KeyValue) + ')');
+                         Sql.Add('group by PatientId,BillDate,BillTime,BillNo,PatientName');
+                         Open;
+                    End;
+
+                    With QueryAdvanceRefund Do
+                    Begin
+                         close;
+                         Session:=Dm_Hospital.Db;
+                         Sql.Clear;
+                         Sql.Add('Select PatientId,PatientName,Sum(CRAmount) as CR,BillDate as ModifyDate,BillTime as ModifyTime,BillNo');
+                         Sql.Add('From VW_User_Wise_Coll_Detail Where((BillDAte>=' + #39 + DateEditxFrom.text + #39 + ') AND(BillDate<=' + #39 +
+                                DateEditXTo.text + #39 + ')) and CRAmount > 0');
+                         Sql.Add('And(BillBy=' + IntToStr(DBLCB_UserName.KeyValue) + ')');
+                         Sql.Add('group by patientid,PatientName, billdate, billtime,billno');
+                         Open;
+                    end;
+
+                    QRExpr2.Mask := '#0.00';
+                    QRExpr10.Mask := '#0.00';
+                    QRExpr7.Mask := '#0.00';
+                    QRLabelUser.Caption := DBLCB_UserName.text;
+                    QRLabelDate.Caption := serverdate.TodaysDate;
+                    QRLabelTime.Caption := serverdate.TodaysTime;
+                    Date1.Caption := DateEditxFrom.text;
+                    Date2.Caption := DateEditXTo.text;
+                    QuickRep1.Preview;
+                    QueryCollection.close;
+                    QueryCredit.close;
+                    QueryDeposit.close;
+                    QueryName.close;
+                    QueryTimeRange.close;
+                    QueryRefund.close;
+               End;
+
+          finally
+
+          end;
+     end;
+end;
+
+procedure TFormUserWiseCollection.Button1Click(Sender: TObject);
+begin
+     try
+          FormNoofTestDone := TFormNoofTestDone.Create(nil);
+          FormNoofTestDone.ShowModal;
+     finally
+          FormNoofTestDone.Free;
+     end;
+end;
+
+procedure TFormUserWiseCollection.Chk_DetailClick(Sender: TObject);
+begin
+     if Chk_Detail.Checked then
+     begin
+          Rb_BillWise.Visible := True;
+          Rb_TestWise.Visible := True;
+     end
+     else
+     begin
+          Rb_BillWise.Visible := false;
+          Rb_TestWise.Visible := false;
+     end;
+end;
+
+procedure TFormUserWiseCollection.DBLCB_UserNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = VK_DELETE then
+          DBLCB_UserName.KeyValue := Null;
+end;
+
+procedure TFormUserWiseCollection.BtnfromClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditxFrom, BtnFrom);
+end;
+
+procedure TFormUserWiseCollection.FormDestroy(Sender: TObject);
+begin
+     // FormRepUserWiseCollection.Free;
+end;
+
+procedure TFormUserWiseCollection.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = 27 then
+          close;
+end;
+
+procedure TFormUserWiseCollection.FormShow(Sender: TObject);
+begin
+     with QueryUserName do
+     begin
+          close;
+          Session:=Dm_Hospital.Db;
+          Open;
+     end;
+     DateEditxFrom.SystemOfDate := gi_datesystem;
+     DateEditXTo.SystemOfDate := gi_datesystem;
+     DateEditxFrom.text := serverdate.TodaysDate;
+     DateEditXTo.text := serverdate.TodaysDate;
+     BtnFrom.Caption := gs_DateCaption;
+     BtnTo.Caption := gs_DateCaption;
+end;
+
+// Initialization
+//
+// RegisterClass(TFormUserWiseCollection);
+//
+// Finalization
+//
+// UnRegisterClass(TFormUserWiseCollection);
+
+end.

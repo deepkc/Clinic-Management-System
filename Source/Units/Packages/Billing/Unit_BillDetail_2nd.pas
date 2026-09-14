@@ -1,0 +1,1322 @@
+unit Unit_BillDetail_2nd;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+     OleCtrls, DateEditXControl_TLB, DBCtrls, StdCtrls, Grids, DBGrids, Fxn_hos, ServerDate, Dm,
+     ComCtrls, Buttons, ExtCtrls, Db, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, jpeg, Gauges, SMDBGrid;
+
+type
+     TForm_BillDetail_2ND = class(TForm)
+          Query_Process: TOraQuery;
+          Query_GetReturnMedicine: TOraQuery;
+          Query_TempProcess: TOraQuery;
+          PageControlServiceCharge: TPageControl;
+          TabSheet2: TTabSheet;
+          Panel2: TPanel;
+          Label25: TLabel;
+          Label26: TLabel;
+          LabelNo: TLabel;
+          Labelname: TLabel;
+          DataSourceTablePTTestTemp: TDataSource;
+          Query_Community: TOraQuery;
+          DataSource_Community: TDataSource;
+          Label9: TLabel;
+          Query_User: TOraQuery;
+          LabelCommunity: TLabel;
+          StatusBar1: TStatusBar;
+          QueryPatientTestOLd: TOraQuery;
+          QueryPatientTestOLdCRMODIFYDATE: TStringField;
+          QueryPatientTestOLdBILLDETAILID: TFloatField;
+          QueryPatientTestOLdBILLNO: TStringField;
+          QueryPatientTestOLdRATETYPE: TStringField;
+          QueryPatientTestOLdBILLDATE: TStringField;
+          QueryPatientTestOLdPATIENTID: TFloatField;
+          QueryPatientTestOLdINPATIENTID: TFloatField;
+          QueryPatientTestOLdPATIENTTESTID: TFloatField;
+          QueryPatientTestOLdMODIFYBY: TFloatField;
+          QueryPatientTestOLdSERVICE: TStringField;
+          QueryPatientTestOLdSERVICETYPE: TStringField;
+          QueryPatientTestOLdQTY: TFloatField;
+          QueryPatientTestOLdAMOUNT: TFloatField;
+          QueryPatientTestOLdTOTALAMT: TFloatField;
+          QueryPatientTestOLdDIS: TFloatField;
+          QueryPatientTestOLdVATAMT: TFloatField;
+          QueryPatientTestOLdDISCOUNT: TFloatField;
+          QueryPatientTestOLdNETTOTAL: TFloatField;
+          QueryPatientTestOLdUser: TStringField;
+          Query_Subprocess: TOraQuery;
+          Query_ActDoctor: TOraQuery;
+          DS_ActulaDoctor: TDataSource;
+          Panel3: TPanel;
+          BtnSave: TBitBtn;
+          BtnCancel: TBitBtn;
+          Label3: TLabel;
+          Edi_DisPer: TEdit;
+          SPB_SetDiscount: TSpeedButton;
+          Queryblank: TOraQuery;
+          Query_ServiceCharge: TOraQuery;
+          DataSource_ServiceCharge: TDataSource;
+          QueryPatientTest: TOraQuery;
+          cb_amt: TCheckBox;
+          Label1: TLabel;
+          Edit5: TEdit;
+          GroupBox1: TGroupBox;
+          Label22: TLabel;
+          DateEditXSCDate: TDateEditX;
+          ButtonADVSregInvestigation: TButton;
+          DBGrid_ServiceCharge: TSMDBGrid;
+    Query_TestList: TOraQuery;
+    DS_TestList: TDataSource;
+    Table_TempDetailPTest: TTable;
+    Query_temp: TQuery;
+          procedure FormShow(Sender: TObject);
+          procedure Edit_InPatientNoKeyPress(Sender: TObject; var Key: Char);
+          procedure BtnCancelClick(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          Function GetTestNameCode(PatientTestId: LongInt): String;
+          procedure DBGrid_ServiceChargeKeyPress(Sender: TObject; var Key: Char);
+          procedure DBGrid_ServiceChargeCellClick(Column: TColumn);
+          procedure DBGrid_ServiceChargeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure BtnSaveClick(Sender: TObject);
+          Procedure CheckTestNameCode;
+          Procedure RefreshVatable;
+          procedure RefreshTotalPrice;
+          Function GetNonVatableAmount: Double;
+          Function GetVatableAmount: Double;
+          Function GetDiscountAmount: Double;
+          procedure CreateTempDetailPTest;
+          procedure FillPatientTest;
+          procedure ServiceChargeCalculation;
+          procedure BedChargeCalculation;
+          procedure MedicineChargeCalculation;
+          procedure Button7Click(Sender: TObject);
+          procedure Button8Click(Sender: TObject);
+          procedure Button2Click(Sender: TObject);
+          procedure Button4Click(Sender: TObject);
+          procedure ButtonADVSregInvestigationClick(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure FormClose(Sender: TObject; var Action: TCloseAction);
+          procedure FormDestroy(Sender: TObject);
+          procedure AvoidDisPerErrorInGridSFSLWGTNL;
+          procedure DBGrid_ServiceChargeColEnter(Sender: TObject);
+          procedure DBGrid_ServiceChargeDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+          procedure Edit_DisPerKeyPress(Sender: TObject; var Key: Char);
+          procedure BitBtn_SetDiscountClick(Sender: TObject);
+          procedure CB_SPDiscountClick(Sender: TObject);
+          procedure DBLCB_ActualDrTechClick(Sender: TObject);
+          procedure DBLCB_ActualDrTechKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure DBLCB_ActualDrTechKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_DisPerKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure BitBtn_SetDiscountKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure Edit_DisPerExit(Sender: TObject);
+          procedure SPB_SetDiscountClick(Sender: TObject);
+          procedure Edi_DisPerKeyPress(Sender: TObject; var Key: Char);
+          procedure cb_amtClick(Sender: TObject);
+          procedure DBGrid_ServiceChargeExit(Sender: TObject);
+          procedure Edi_DisPerChange(Sender: TObject); // SFSLWGTNL- save from same line without going to next line
+
+     private
+          i_UnitCost, i_Qty, i_Total, i_SvrTax, i_Disper, i_Discount, i_NetTotal: Integer;
+          { Private declarations }
+          Procedure CalculateData;
+     public
+          pi_InPatientId, pi_PatientId, pi_CommunityID, pi_SchemeId: LongInt;
+          pi_PanelShow, pi_TotDays, pi_NoOfDays: Integer;
+          ps_PName, ps_InptDate, ps_DisDate, ps_MemberNo, ps_DisInDeposit: String;
+          pf_DisPer: Double;
+          DateEditX_In, DateEditX_Out: TDateEditX;
+          b_IsDischargePt: Boolean;
+          pf_vat, actualcostprice, actualQty: Double;
+
+          pb_IsDischargedPt : Boolean;
+
+          ps_FormAccessFrom: String;
+
+          { Public declarations }
+     end;
+
+var
+     Form_BillDetail_2ND: TForm_BillDetail_2ND;
+
+implementation
+
+{$R *.DFM}
+
+procedure TForm_BillDetail_2ND.CreateTempDetailPTest;
+begin
+     IF FileExists(gs_TempPath + '\DetailPatientTest.db') Then
+     begin
+          with Table_TempDetailPTest do
+          begin
+               Close;
+               databasename := gs_TempPath;
+               tablename := 'DetailPatientTest.db';
+               DeleteTable;
+          end;
+     end;
+     With Table_TempDetailPTest do
+     begin
+          Close;
+          IF Active Then
+               Active := False;
+          databasename := gs_TempPath;
+          tablename := 'DetailPatientTest.db';
+          tableType := TTParadox;
+          FieldDefs.Clear;
+          FieldDefs.add('BillDetailId', ftInteger);
+          FieldDefs.add('ServiceBillDetailId', ftInteger);
+          FieldDefs.add('InPatientID', ftInteger);
+          FieldDefs.add('PatientTestID', ftInteger);
+          FieldDefs.add('TestNameID', ftInteger);
+          FieldDefs.add('SchemeId', ftInteger);
+          FieldDefs.add('CommunityId', ftInteger);
+          FieldDefs.add('DepID', ftInteger);
+          FieldDefs.add('BillDate', ftString, 10);
+          FieldDefs.add('CrModifyDate', ftString, 10);
+          FieldDefs.add('BillNo', ftString, 15);
+          FieldDefs.add('CrBillNo', ftString, 16);
+          FieldDefs.add('DepCode', ftString, 25);
+          FieldDefs.add('DocCode', ftString, 15);
+          FieldDefs.add('TestNameCode', ftString, 25);
+          FieldDefs.add('TestName', ftString, 50);
+          FieldDefs.add('TNCategoryCode', ftString, 10);
+          FieldDefs.add('Category', ftString, 5);
+          FieldDefs.add('ActualCostPrice', FtFloat);
+          FieldDefs.add('CostPrice', FtFloat);
+          FieldDefs.add('Qty', FtFloat);
+          FieldDefs.add('Total', FtFloat);
+          FieldDefs.add('DisPer', FtFloat);
+          FieldDefs.add('OldDisPer', FtFloat); { ****not round off value... }
+          FieldDefs.add('OrgDisPer', FtFloat);
+          FieldDefs.add('Discount', FtFloat);
+          FieldDefs.add('DiscountwithTax', FtFloat);
+          FieldDefs.add('OldDiscount', FtFloat);
+          FieldDefs.add('VatAmt', FtFloat);
+          FieldDefs.add('NetTotal', FtFloat);
+          FieldDefs.add('Payment', FtFloat);
+          FieldDefs.add('User', ftString, 20);
+          FieldDefs.add('IsVatable', ftString, 1);
+          FieldDefs.add('IsDiscountable', ftString, 1);
+          createtable;
+     End;
+End;
+
+procedure TForm_BillDetail_2ND.Edit_InPatientNoKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #8 Then
+          Exit;
+     IF Not(Key In ['0' .. '9']) Then
+     Begin
+          Key := #0;
+          Beep;
+     End;
+end;
+
+procedure TForm_BillDetail_2ND.BtnCancelClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_BillDetail_2ND.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = 27 Then
+          Close;
+
+     // IF (pi_PanelShow=1) and (Key=VK_F1) Then
+     // CB_SPDiscount.Checked:=Not(CB_SPDiscount.Checked);
+
+     { IF (pi_PanelShow=1) and (Key=VK_F2) and (BitBtn_SetDiscount.Enabled=True) Then
+       BitBtn_SetDiscountClick(Sender); }
+
+     IF (Key = VK_F12) and (BtnSave.Enabled = True) Then
+          BtnSaveClick(Sender);
+End;
+
+procedure TForm_BillDetail_2ND.FormShow(Sender: TObject);
+begin
+     (* Setting Dbgrid Index *)
+     i_UnitCost := 1;
+     i_Qty := 2;
+     i_SvrTax := 3;
+     i_Total := 4;
+     i_Disper := 5;
+     i_Discount := 6;
+     i_NetTotal := 7;
+     (* ******************** *)
+
+     if Gs_TaxRule='TBD' then
+          DBGrid_ServiceCharge.Columns[i_Total].Visible:=True
+     else
+          DBGrid_ServiceCharge.Columns[i_Total].Visible:=False;
+
+     StatusBar1.Panels[1].Text := 'Login Date :' + gs_UserLoginDate + '      Time :' + gs_UserLoginTime;
+     StatusBar1.Panels[2].Text := 'User :     ' + gs_UserName;
+     StatusBar1.Panels[0].Text := 'F12 -> Save ';
+
+     actualcostprice := 0;
+
+     PageControlServiceCharge.Visible := True;
+     PageControlServiceCharge.BringToFront;
+
+     LabelNo.Caption := IntToStr(gi_PatientID);
+     Labelname.Caption := Gs_PatientName;
+
+     DateEditXSCDate.SystemOfDate := gi_DateSystem;
+     DateEditXSCDate.Text := ServerDate.TodaysDate;
+
+     IF pi_CommunityID > 0 Then
+     Begin
+          With Query_Community Do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select SchemeName as Community From Scheme where SchemeId=' + IntToStr(pi_SchemeId));
+               Open;
+          End;
+          IF ps_MemberNo = '' Then
+               LabelCommunity.Caption := Query_Community.FieldByName('Community').AsString
+          Else
+               LabelCommunity.Caption := Query_Community.FieldByName('Community').AsString + '- MED.No. ' + ps_MemberNo;
+     End;
+
+     CreateTempDetailPTest;
+     FillPatientTest;
+     // ServiceChargeCalculation;
+     ActiveControl := DBGrid_ServiceCharge;
+     DBGrid_ServiceCharge.SelectedIndex := i_Disper;
+
+     { for Fraction Modification }
+     IF UpperCase(ps_FormAccessFrom) = 'FRACTIONMODIFY' Then
+     Begin
+          // GroupBox_Account.Visible:=False;
+          BtnSave.Enabled := False;
+          DBGrid_ServiceCharge.Height := 384;
+     End;
+End;
+
+procedure TForm_BillDetail_2ND.FillPatientTest;
+begin
+     { DateEditXDisDate.SystemOfDate:=gi_DateSystem;
+       DateEditXIPDate.SystemOfDate:=gi_DateSystem; }
+     Table_TempDetailPTest.databasename := gs_TempPath;
+     Table_TempDetailPTest.Close;
+     Table_TempDetailPTest.Exclusive := True;
+     Table_TempDetailPTest.EmptyTable;
+     Table_TempDetailPTest.Open;
+
+     IF b_IsDischargePt = True Then
+     Begin
+          With Query_Process do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select DisDate From InpatientReg where InpatientId=' + IntToStr(pi_InPatientId));
+               Open;
+          End;
+     End;
+
+     // with QueryPatientTest do
+     // Begin
+     // Close;
+     // DatabaseName:=gs_DatabaseName;
+     // ParamByName('pid').AsInteger:=pi_PatientId;
+     // Sql.savetofile('c:\tt.txt');
+     // Open;
+     // End;
+     { ***Previously this query brings from database but changed to temptable**** }
+
+
+
+     {with QueryPatientTest do
+     Begin
+          Close;
+          databasename := gs_TempPath;
+          sql.Clear;
+          sql.add('Select * from FinalBill');
+          // Sql.savetofile('c:\tt.txt');
+          Open;
+     End; }
+
+
+     with Query_TestList do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          if b_IsDischargePt = False then
+          Begin
+               sql.Add(' Select ServiceBillDetailId,PatientId,InpatientId,BillDate,Service,ServiceType,Amount,Amount*Qty as Total,Qty,');
+               sql.Add
+                 (' DisPer,VatAmt,((Amount*Qty * DisPer/100)) as Discount,((Amount*Qty)+VatAmt-(Amount*Qty * DisPer/100)) as NetTotal,');
+               sql.Add(
+                    ' (Select InitCap(TestNameCategory) From TestNameCategory where TNCategoryCode=TN.TNCategoryCode and RowNum=1) as TestNameCategory,');
+               sql.Add(
+                    ' (Select PatientTestId From PatientTest where ServiceBillDetailId=SBD.SERVICEBILLDETAILID and RowNum=1) as PatientTestId');
+               sql.Add(' FROM SERVICEBILLDETAIL SBD,TestName TN');
+               sql.Add(' WHERE SBD.Service=TN.TestNameCode and SBD.PatientId=' + IntToStr(pi_PatientId) + ' AND BillDetailId=0');
+               sql.Add(
+                    ' AND SBD.SERVICEBILLDETAILID NOT IN (SELECT SERVICEBILLDETAILID FROM TESTCANCEL WHERE SERVICEBILLDETAILID=SBD.SERVICEBILLDETAILID)');
+               sql.Add(' Order by SBD.SERVICEBILLDETAILID');
+          End
+          Else
+          Begin
+               sql.Add(
+                    ' Select ServiceBillDetailId,PatientTestId,PatientId,InpatientId,BillDate,Service,ServiceType,Amount,Amount*Qty as Total,Qty,');
+               sql.Add
+                 (' DisPer,VatAmt,((Amount*Qty * DisPer/100)) as Discount,((Amount*Qty)+VatAmt-(Amount*Qty * DisPer/100)) as NetTotal,');
+               sql.Add(
+                    ' (Select InitCap(TestNameCategory) From TestNameCategory where TNCategoryCode=TN.TNCategoryCode and RowNum=1) as TestNameCategory');
+               sql.Add(' FROM BILLDETAIL BD,TestName TN');
+               sql.Add(' WHERE BD.Service=TN.TestNameCode(+) and BD.InPatientId=' + IntToStr(pi_InpatientId));
+               sql.Add(' and BD.ServiceBillDetailId > 0 and BillType=''IP''');
+               // sql.Add(' and BD.BillNo='+#39+ps_BillNo+#39);
+               sql.Add(' Order by BILLDETAILID');
+               // sql.saveToFile('C:\FinalBillItem.Txt');
+          End;
+          Open;
+     End;
+
+
+     {QueryPatientTest.First;
+     while not QueryPatientTest.EOF Do
+     Begin
+          with Table_TempDetailPTest do
+          Begin
+               Append;
+               FieldByName('BillDetailId').AsInteger := QueryPatientTest.FieldByName('BillDetailId').AsInteger;
+               FieldByName('ServiceBillDetailId').AsInteger := QueryPatientTest.FieldByName('ServiceBillDetailId').AsInteger;
+               // FieldByName('BillDate').AsString := QueryPatientTest.FieldByName('BillDate').AsString;
+               // FieldByName('CrModifyDate').AsString:=QueryPatientTest.FieldByName('CrModifyDate').AsString;
+               FieldByName('BillNo').AsString := QueryPatientTest.FieldByName('BillNo').AsString;
+               // FieldByName('CrBillNo').AsString:=QueryPatientTest.FieldByName('CrBillNo').AsString;
+               FieldByName('TestNameCode').AsString := QueryPatientTest.FieldByName('TestNameCode').AsString;
+               // GetTestNameCode(QueryPatientTest.FieldByName('PatientTestId').AsVariant);
+               FieldByName('TestName').AsString := QueryPatientTest.FieldByName('TestName').AsString;
+               // FieldByName('Category').AsString:=QueryPatientTest.FieldByName('RateType').AsString;
+               // FieldByName('DocCode').AsString:=QueryPatientTest.FieldByName('DocCode').AsString;
+               // FieldByName('TNCategoryCode').AsString:=QueryPatientTest.FieldByName('TNCategoryCode').AsString;
+               FieldByName('ActualCostPrice').AsFloat := QueryPatientTest.FieldByName('TestPrice').AsFloat;
+               FieldByName('CostPrice').AsFloat := QueryPatientTest.FieldByName('TestPrice').AsFloat;
+               FieldByName('Qty').AsFloat := QueryPatientTest.FieldByName('Qty').AsFloat;
+               FieldByName('Total').AsFloat := QueryPatientTest.FieldByName('TotalPrice').AsFloat;
+               FieldByName('DisPer').AsFloat := QueryPatientTest.FieldByName('DisPer').AsFloat;
+               // FieldByName('OldDisPer').AsFloat:=QueryPatientTest.FieldByName('Dis').AsFloat;
+               // FieldByName('OrgDisPer').AsFloat:=QueryPatientTest.FieldByName('Dis').AsFloat;
+               FieldByName('Discount').AsFloat := QueryPatientTest.FieldByName('Discount').AsFloat;
+               // FieldByName('OldDiscount').AsFloat:=QueryPatientTest.FieldByName('Discount').AsFloat;
+               FieldByName('VatAmt').AsFloat := QueryPatientTest.FieldByName('SvrTax').AsFloat;
+               FieldByName('NetTotal').AsFloat := QueryPatientTest.FieldByName('NetTotal').AsFloat;
+
+               // FieldByName('Payment').AsFloat:=QueryPatientTest.FieldByName('Payment').AsFloat;
+               FieldByName('User').AsString := QueryPatientTest.FieldByName('User').AsString;
+               FieldByName('IsVatable').AsString := QueryPatientTest.FieldByName('IsVatable').AsString;
+               FieldByName('IsDiscountable').AsString := QueryPatientTest.FieldByName('IsDiscountable').AsString;
+               Post;
+          End;
+          QueryPatientTest.Next;
+     End;  }
+
+     { FOR GETTING THE PREVIOUS CREDIT CHARGE }
+     { ======================================= }
+     { With QueryPatientTestOLd Do
+       Begin
+       Close;
+       ParamByName('PatientID').AsInteger:=pi_PatientId;
+       ParamByName('Todate').AsString:=DateEditXDisDate.text;
+       ParamByName('FromDate').AsString:=DateEditXIPDate.Text;
+       Open;
+       First;
+       While Not Eof Do
+       Begin
+       With Table_TempDetailPTest do
+       Begin
+       Append;
+       FieldByName('BillDetailId').AsInteger:=QueryPatientTestOLd.FieldByName('BillDetailId').AsInteger;
+       FieldByName('InPatientId').AsInteger:=QueryPatientTestOLd.FieldByName('InPatientId').AsVariant;
+       FieldByName('BillDate').AsString:=QueryPatientTestOLd.FieldByName('BillDate').AsString;
+       FieldByName('CrModifyDate').AsString:=QueryPatientTestOLd.FieldByName('CrModifyDate').AsString;
+       FieldByName('BillNo').AsString:=QueryPatientTestOLd.FieldByName('BillNo').AsString;
+       FieldByName('TestNameCode').AsString:=QueryPatientTestOLd.FieldByName('Service').AsString;//GetTestNameCode(QueryPatientTest.FieldByName('PatientTestId').AsVariant);
+       FieldByName('TestName').AsString:=QueryPatientTestOLd.FieldByName('ServiceType').AsString;
+       FieldByName('Category').AsString:=QueryPatientTestOLd.FieldByName('RateType').AsString;
+       FieldByName('CostPrice').AsFloat:=QueryPatientTestOLd.FieldByName('Amount').AsFloat;
+       FieldByName('Qty').AsFloat:=QueryPatientTestOLd.FieldByName('Qty').AsFloat;
+       FieldByName('Total').AsFloat:=QueryPatientTestOLd.FieldByName('TotalAmt').AsFloat;
+       FieldByName('DisPer').AsFloat:=QueryPatientTestOLd.FieldByName('Dis').AsFloat;
+       FieldByName('OldDisPer').AsFloat:=QueryPatientTestOLd.FieldByName('Dis').AsFloat;
+       FieldByName('Discount').AsFloat:=QueryPatientTestOLd.FieldByName('Discount').AsFloat;
+       FieldByName('OldDiscount').AsFloat:=QueryPatientTestOLd.FieldByName('Discount').AsFloat;
+       FieldByName('VatAmt').AsFloat:=QueryPatientTestOLd.FieldByName('VatAmt').AsFloat;
+       FieldByName('NetTotal').AsFloat:=QueryPatientTestOLd.FieldByName('NetTotal').AsFloat;
+       FieldByName('User').AsString:=QueryPatientTestOLd.FieldByName('User').AsString;
+       Post;
+       End;
+       Next;
+       End;
+       End;
+       Table_TempDetailPTest.First; }
+End;
+
+procedure TForm_BillDetail_2ND.ServiceChargeCalculation;
+Begin
+     Query_Temp.databasename := gs_TempPath;
+     with Query_Temp do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select Sum(Total) as Total,Sum(Discount) as Discount,');
+          sql.add(' Sum(NetTotal) as NetTotal, Sum(VatAmt) as VatAmt From ');
+          sql.add(' DetailPatientTest.db Group by InPatientId');
+          Open;
+     End;
+     { EditTotal.Text:=FloatToStr(Query_TempProcess.FieldByName('Total').AsFloat);
+       LabelVTot.Caption:=FloatToStr(Query_TempProcess.FieldByName('VatAmt').AsFloat);
+       EditDisAmt.Text:=FloatToStr(Query_TempProcess.FieldByName('Discount').AsFloat);
+       LabelTotal.Caption:=FloatToStr((Query_TempProcess.FieldByName('Total').AsFloat+
+       Query_TempProcess.FieldByName('VatAmt').AsFloat) -
+       Query_TempProcess.FieldByName('Discount').AsFloat); }
+End;
+
+procedure TForm_BillDetail_2ND.BedChargeCalculation;
+Begin
+     //
+End;
+
+procedure TForm_BillDetail_2ND.MedicineChargeCalculation;
+Begin
+     //
+End;
+
+Function TForm_BillDetail_2ND.GetTestNameCode(PatientTestId: LongInt): String;
+Begin
+     with Query_Process do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select TestNameCode From PatientTest where PatientTestId=' + IntToStr(PatientTestId));
+          Open;
+     End;
+     Result := Query_Process.FieldByName('TestNameCode').AsString;
+End;
+
+procedure TForm_BillDetail_2ND.DBGrid_ServiceChargeKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 Then
+     Begin
+          CalculateData;
+     end;
+End;
+
+Procedure TForm_BillDetail_2ND.CheckTestNameCode;
+Var
+     TestNameCodeP: String;
+     TestPriceP, Discount: Double;
+Begin
+     { {  TestNameCodeP:=Uppercase(DBGrid_ServiceCharge.Fields[2].Text);
+       With QueryTestName Do
+       Begin
+       IF Not Active Then Active:=True;
+       IF Locate('TestNameCode',TestNameCodeP,[])Then
+       Begin
+       IF Not TablePTTestTemp.Active Then TablePTTestTemp.Active:=True;
+       TablePTTestTemp.Edit;
+       DBGrid_ServiceCharge.Fields[2].Text:=FieldByName('TestNameCode').asString;
+       DBGrid_ServiceCharge.Fields[3].Text:=FieldByName('TestName').asString;
+
+       DBGrid_ServiceCharge.Fields[4].Text:=Format('%.2f',[(ActualTestPrice)]);
+       IF DBGrid_ServiceCharge.Fields[5].Text='' Then
+       DBGrid_ServiceCharge.Fields[5].Text:=FloatToStr(1);
+
+       DBGrid_ServiceCharge.Fields[6].Text:=Format('%.2f',[((ActualTestPrice*DmHospital.GVat/100)*StrToFloat(DBGrid_ServiceCharge.Fields[5].Text))]);
+       DBGrid_ServiceCharge.Fields[7].Text:=Format('%.2f',[({FieldByName('Vat').AsFloat+ }
+     { {ActualTestPrice*StrToFloat(DBGrid_ServiceCharge.Fields[5].Text))]);
+       //DBGrid_ServiceCharge.Fields[7].Text:=Format('%.2f',[(FieldByName('Vat').AsFloat+FieldByName('TestPrice').AsFloat*StrToFloat(DBGrid_ServiceCharge.Fields[5].Text))]);
+       DBGrid_ServiceCharge.Fields[8].Text:='YES';
+       DBGrid_ServiceCharge.Fields[9].Text:='FALSE';
+       IF DBGrid_ServiceCharge.Fields[10].Text<>''  Then
+       Begin
+       Discount:=((StrToFloat(DBGrid_ServiceCharge.Fields[7].Text))*((DBGrid_ServiceCharge.Fields[10].Value)/100));
+       DBGrid_ServiceCharge.Fields[11].Text:=Format('%.2f',[Discount]);
+       DBGrid_ServiceCharge.Fields[12].Text:=(DBGrid_ServiceCharge.Fields[7].Value)-(DBGrid_ServiceCharge.Fields[11].Value);
+       End
+       Else
+       Begin
+       DBGrid_ServiceCharge.Fields[10].Value:=0;
+       DBGrid_ServiceCharge.Fields[11].Value:=0;
+       DBGrid_ServiceCharge.Fields[12].Value:=DBGrid_ServiceCharge.Fields[7].Value;
+       End;
+       TablePTTestTemp.FieldByName('DepID').AsInteger:=FieldByName('DepID').AsInteger;
+       TablePTTestTemp.FieldByName('TestNameID').AsInteger:=FieldByName('TestNameID').AsInteger;
+       TablePTTestTemp.FieldByName('TestName').AsString:=FieldByName('TestName').AsString;
+       //TablePTTestTemp.FieldByName('VatAmt').AsInteger:=FieldByName('Vat').AsInteger;
+       TablePTTestTemp.Post;
+       RefreshVatable;
+       End;
+       End; }
+End;
+
+Function TForm_BillDetail_2ND.GetVatableAmount: Double;
+Var
+     NTotalVatableAmt: Double;
+Begin
+     { {  With QueryGetVatAmount do
+       Begin
+       Close;
+       Open;
+       NTotalVatableAmt:=FieldByName('TotalVatableAmt').asFloat;
+       Result:=NTotalVatableAmt;
+       End;
+       }
+End;
+
+Function TForm_BillDetail_2ND.GetNonVatableAmount: Double;
+Var
+     NTotalVatableAmt: Double;
+Begin
+     { {  With QueryGetNonVatAmount do
+       Begin
+       Close;
+       Open;
+       NTotalVatableAmt:=FieldByName('TotalNonVatableAmt').asFloat;
+       Result:=NTotalVatableAmt;
+       End;
+       }
+End;
+
+Procedure TForm_BillDetail_2ND.RefreshVatable;
+Begin
+     { {  ISVatable:='V';
+       {
+       IF TablePTTestTemp.RecordCount=1 Then
+       Begin
+       IF NVat<=0 Then
+       ISVatable:='N'
+       Else IF NVat>0 Then
+       ISVatable:='V';
+       End;
+       }
+End;
+
+procedure TForm_BillDetail_2ND.RefreshTotalPrice;
+Begin
+     { {  IF DBGrid_ServiceCharge.SelectedIndex=5 Then
+       Begin
+       With TablePTTestTemp Do
+       Begin
+       Edit;
+       FieldByName('TestPrice').AsFloat:=FieldByName('CostPrice').AsFloat*StrToFloat(DBGrid_ServiceCharge.Fields[5].Text);
+       //FieldByName('TestPrice').AsFloat:=FieldByName('VatAmt').AsFloat*StrToFloat(DBGrid_ServiceCharge.Fields[5].Text)+FieldByName('CostPrice').AsFloat*StrToFloat(DBGrid_ServiceCharge.Fields[5].Text);
+       FieldByName('VatAmt').AsFloat:=(FieldByName('CostPrice').AsFloat*StrToFloat(DBGrid_ServiceCharge.Fields[5].Text)*DMhospital.GVat/100);
+       Post;
+       End;
+       EditTotal.Text:=Format('%.2f',[GetVatableAmount+GetNonVatableAmount]);
+       LabelGToatal.Caption:=Format('%.2f',[GetVatableAmount+GetNonVatableAmount]);
+       IF ISVatable='V' Then
+       //LabelVTot.Caption:=Format('%.2f',[(GetVatableAmount{+GetNonVatableAmount-StrToFloat(EditDisAmt.Text) } { {)*DMhospital.GVat/100])
+       {{    LabelVTot.Caption:=Format('%.2f',[(GetVatableAmount-(GetVatableAmount*StrToFloat(EditDisPer.Text)/100))*DMhospital.GVat/100])
+       Else
+       LabelVTot.Caption:='0';
+       LabelTotal.Caption:=Format('%.2f',[StrToFloat(LabelGToatal.Caption)+StrToFloat(LabelVTot.Caption)]);
+       End; }
+End;
+
+Function TForm_BillDetail_2ND.GetDiscountAmount: Double;
+Var
+     lf_DiscountAmt: Double;
+Begin
+     { With Query_GetDiscount do
+       Begin
+       Close;
+       Open;
+       lf_DiscountAmt:=FieldByName('Discount').asFloat;
+       IF lf_DiscountAmt > 0 Then
+       Begin
+       EditDisAmt.Enabled:=False;
+       EditDisPer.Enabled:=False;
+       EditDisAmt.Text:=FloatToStr(lf_DiscountAmt);
+       End
+       Else
+       Begin
+       EditDisAmt.Enabled:=True;
+       EditDisPer.Enabled:=True;
+       EditDisAmt.Text:='0';
+       End;
+       Result:=lf_DiscountAmt;
+       End; }
+End;
+
+procedure TForm_BillDetail_2ND.DBGrid_ServiceChargeCellClick(Column: TColumn);
+begin
+     if Not DBGrid_ServiceCharge.SelectedIndex in [2, 5, 6] then
+     Begin
+          DBGrid_ServiceCharge.SelectedIndex := 5;
+          Exit;
+     End;
+end;
+
+procedure TForm_BillDetail_2ND.DBGrid_ServiceChargeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Tab Then
+          BtnSave.SetFocus;
+end;
+
+procedure TForm_BillDetail_2ND.BtnSaveClick(Sender: TObject);
+Var
+     lf_VatAmt, lf_DisPer, lf_Discount, lf_TotAmt, lf_testprice, lf_net, lf_qty, lf_grandtotal,lf_DiscountTotal: Double;
+     Key: Char;
+     Qry:TQuery;
+begin
+     Exit;
+     lf_VatAmt:=0;
+     lf_DisPer:=0;
+     lf_Discount:=0;
+     lf_TotAmt:=0;
+     lf_testprice:=0;
+     lf_net:=0;
+     lf_qty:=0;
+     lf_grandtotal:=0;
+     lf_DiscountTotal:=0;
+     Gs_BillNo:='';
+
+     IF MessageDlg(' Are you sure to save the changes made in this bill ?', mtConfirmation, [mbyes, mbno], 0) = mrYes Then
+     Begin
+          with Table_TempDetailPTest do
+          begin
+               Close;
+               databasename := gs_TempPath;
+               Open;
+               While Not EOF do
+               begin
+                    if Table_TempDetailPTest.FieldByName('IsDiscountable').AsString = 'Y' then
+                    begin
+                         DBGrid_ServiceCharge.SelectedIndex := i_Disper;
+                         Key := #13;
+                         DBGrid_ServiceChargeKeyPress(Sender, Key);
+                    end
+                    else
+                    begin
+                         DBGrid_ServiceCharge.SelectedIndex := i_Disper;
+                         Edit;
+                         DBGrid_ServiceCharge.Fields[i_Disper].Value := 0;
+                         Post;
+                    end;
+                    Next;
+               end;
+          end;
+
+          Table_TempDetailPTest.First;
+          Try
+               DM_Hospital.Db.StartTransaction;
+               while not Table_TempDetailPTest.EOF do
+               Begin
+                    lf_DisPer := Table_TempDetailPTest.FieldByName('DisPer').AsFloat;
+                    lf_TotAmt := Table_TempDetailPTest.FieldByName('Total').AsFloat;
+                    lf_testprice := Table_TempDetailPTest.FieldByName('CostPrice').AsFloat;
+                    lf_net := Table_TempDetailPTest.FieldByName('NetTotal').AsFloat;
+                    lf_Discount := Table_TempDetailPTest.FieldByName('Discount').AsFloat;
+                    lf_qty := Table_TempDetailPTest.FieldByName('Qty').AsFloat;
+                    lf_VatAmt:=Table_TempDetailPTest.FieldByName('VatAmt').AsFloat;
+
+                    lf_grandtotal:=lf_grandtotal+lf_net;
+                    lf_DiscountTotal:=lf_DiscountTotal+lf_Discount;
+
+                    with Query_Process do
+                    Begin
+                         Close;
+                         Session := DM_Hospital.DB;
+                         sql.Clear;
+                         sql.add(' Update ServiceBillDetail set Disper=' + FloatToStr(lf_DisPer));
+                         // Table_TempDetailPTest.FieldByName('DisPer').AsFloat));
+                         // sql.Add(' ,CommunityId='+IntToStr(Table_TempDetailPTest.FieldByName('CommunityId').AsInteger));
+                         // sql.Add(' ,SchemeId='+IntToStr(Table_TempDetailPTest.FieldByName('SchemeId').AsInteger));
+                         sql.add(',DisperAdd=' + FloatToStr(lf_Discount));
+                         sql.add(',TotalAmount=' + FloatToStr(lf_net));
+                         // IF gs_GovtTaxRule='TAD' Then //
+                         sql.add(',VatAmt='+ FloatToStr(lf_VatAmt));
+                         // IF Table_TempDetailPTest.FieldByName('OrgDisPer').AsInteger<>Table_TempDetailPTest.FieldByName('DisPer').AsFloat Then
+                         // sql.Add(' ,FinalDiscountBy='+IntToStr(gi_UserId));
+                         //sql.add(' ,UnitCost=' + FloatToStr(lf_testprice));
+                         sql.add(' ,Qty=' + FloatToStr(lf_qty));
+                         sql.add(' where ServiceBillDetailID=' + #39 + Table_TempDetailPTest.FieldByName('ServiceBillDetailID').AsString + #39);
+                         ExecSQL;
+                    End;
+                    Table_TempDetailPTest.Next;
+               End;
+               Qry:=TQuery.Create(Nil);
+               with Qry do
+               begin
+                    Close;
+                    databasename:=gs_temppath;
+                    SQL.Clear;
+                    SQL.Add('Select Billno,Sum(Total)Total,Sum(Discount)Discount From DetailPatientTest Group By BillNo');
+                    Open;
+                    while not Eof do
+                    begin
+                         with Query_Process do
+                         begin
+                              Gs_BillNo:=Qry.FieldByName('BillNo').AsString;
+                              lf_grandtotal:=Qry.FieldByName('Total').AsFloat;
+                              lf_DiscountTotal:=Qry.FieldByName('Discount').AsFloat;
+                              (* Update In ServiceBillMaster *)
+                              Close;
+                              Session := DM_Hospital.DB;
+                              sql.Clear;
+                              sql.add(' Update ServiceBillMaster set GrossTotal=' + FloatToStr(lf_grandtotal));
+                              sql.add(',DiscountTotal =' + FloatToStr(lf_DiscountTotal));
+                              sql.add(',ModifyBy =' + FloatToStr(gi_UserID));
+                              sql.add(',ModifyDate =' +#39+TodaysDate+#39);
+                              sql.add(',ModifyTime =' +#39+TodaysTime+#39);
+                              sql.add(' where BillNo=' +#39+Gs_BillNo+#39);
+                              ExecSQL;
+                         end;
+                         Next;
+                    end;
+               end;
+               DM_Hospital.Db.Commit;
+          except
+               ShowMessage(' Filure to Update !');
+               DM_Hospital.Db.Rollback;
+               Exit;
+          End;
+          ShowDoneMessage;
+          Close;
+     End;
+End;
+
+procedure TForm_BillDetail_2ND.Button7Click(Sender: TObject);
+begin
+     // ChangeDateSystem(DateEditXBCIPDate,Button7);
+end;
+
+procedure TForm_BillDetail_2ND.Button8Click(Sender: TObject);
+begin
+     // ChangeDateSystem(DateEditXBCDisDate,Button8);
+end;
+
+procedure TForm_BillDetail_2ND.Button2Click(Sender: TObject);
+begin
+     // ChangeDateSystem(DateEditXIPDate,Button2);
+end;
+
+procedure TForm_BillDetail_2ND.Button4Click(Sender: TObject);
+begin
+     // ChangeDateSystem(DateEditXDisDate,Button4);
+end;
+
+procedure TForm_BillDetail_2ND.ButtonADVSregInvestigationClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditXSCDate, ButtonADVSregInvestigation);
+end;
+
+procedure TForm_BillDetail_2ND.CalculateData;
+var
+     lf_Discount, lf_NewDiscount, lf_DiscountPer, lf_BalaceAmt, lf_InterMediateAmt, lf_NewNetTotal, lf_Total, lf_TaxPer, lf_NewTax: Double;
+     SelIndex: Integer;
+     Key:Char;
+     Sender:Tobject;
+     UnitCost, Qty, Total, SvrTax, Disper, Discount, DisTax, NetTotal: Double;
+begin
+     (* Getting Dbgrig Index *)
+     UnitCost := DBGrid_ServiceCharge.Fields[i_UnitCost].Value { Unit Cost } ;
+     Qty := DBGrid_ServiceCharge.Fields[i_Qty].Value { Qty } ;
+     SvrTax := DBGrid_ServiceCharge.Fields[i_SvrTax].Value { Svr Tax } ;
+     Total := DBGrid_ServiceCharge.Fields[i_Total].Value { Total } ;
+     Disper := DBGrid_ServiceCharge.Fields[i_Disper].Value { Dis per } ;
+     Discount := DBGrid_ServiceCharge.Fields[i_Discount].Value { Discount } ;
+     NetTotal := DBGrid_ServiceCharge.Fields[i_NetTotal].Value { NetTotal } ;
+
+     SelIndex := DBGrid_ServiceCharge.SelectedIndex;
+
+     if not Table_TempDetailPTest.Active Then
+          Table_TempDetailPTest.Active := True;
+
+     if (SelIndex = i_Disper) and (Disper > 100) Then
+     Begin
+          MessageDlg('Sorry ! Discount Per. shouldn''t be greater than 100', mtWarning, [mbok], 0);
+          DBGrid_ServiceCharge.SelectedIndex := i_Disper;
+          Exit;
+     End;
+     if Discount > Total Then
+     Begin
+          MessageDlg('Sorry ! Discount amount shouldn''t be greater than total amount', mtWarning, [mbok], 0);
+          DBGrid_ServiceCharge.SelectedIndex := i_Discount;
+          Exit;
+     End;
+     if SelIndex in [i_Qty, i_Disper, i_Discount] then
+     begin
+          Table_TempDetailPTest.Edit;
+          if SelIndex = i_Qty then
+          begin
+               if Gs_TaxRule='TBD' then
+               begin
+                    if Table_TempDetailPTest.FieldByName('IsVatable').AsString = 'Y' then
+                    begin
+                         SvrTax := GetNoOfDecimalPartOfFloatNum((UnitCost * Qty) * (gf_TaxPercent / 100), 4);
+                         DBGrid_ServiceCharge.Fields[i_SvrTax].Value := SvrTax;
+                    end
+                    Else
+                         DBGrid_ServiceCharge.Fields[i_SvrTax].Value  := '0.00';
+
+                    DBGrid_ServiceCharge.Fields[i_Total].Value  := GetNoOfDecimalPartOfFloatNum(UnitCost * Qty + SvrTax, 4);
+                    Discount := GetNoOfDecimalPartOfFloatNum(((Disper / 100) * UnitCost) * Qty, 4);
+                    DBGrid_ServiceCharge.Fields[i_Discount].Value  := Discount;
+                    DBGrid_ServiceCharge.Fields[i_NetTotal].Value  := GetNoOfDecimalPartOfFloatNum((UnitCost * Qty + SvrTax - Discount), 4);
+               end
+               else if Gs_TaxRule='TAD' then
+               begin
+                    if Table_TempDetailPTest.FieldByName('IsVatable').AsString = 'Y' then
+                    begin
+                         UnitCost:=UnitCost-UnitCost*Disper/100;
+                         SvrTax := GetNoOfDecimalPartOfFloatNum((UnitCost * Qty) * (gf_TaxPercent / 100), 4);
+                         DBGrid_ServiceCharge.Fields[i_SvrTax].Value := SvrTax;
+                    end
+                    Else
+                         DBGrid_ServiceCharge.Fields[i_SvrTax].Value  := '0.00';
+
+                    Discount := GetNoOfDecimalPartOfFloatNum(((Disper / 100) * UnitCost) * Qty, 4);
+                    DBGrid_ServiceCharge.Fields[i_Discount].Value  := Discount;
+                    DBGrid_ServiceCharge.Fields[i_NetTotal].Value  := GetNoOfDecimalPartOfFloatNum((UnitCost * Qty + SvrTax), 4);
+               end;
+          end
+          else if SelIndex = i_Disper Then
+          begin
+               if Gs_TaxRule='TBD' then
+               begin
+                    if Table_TempDetailPTest.FieldByName('IsDiscountable').AsString = 'Y' then
+                    begin
+
+                         Discount := GetNoOfDecimalPartOfFloatNum(((Disper / 100) * UnitCost) * Qty, 4);
+                         DBGrid_ServiceCharge.Fields[i_Discount].Value:= Discount;
+
+                         DBGrid_ServiceCharge.Fields[i_Total].Value  := GetNoOfDecimalPartOfFloatNum(UnitCost * Qty + SvrTax, 4);
+                         DBGrid_ServiceCharge.Fields[i_NetTotal].Value:= GetNoOfDecimalPartOfFloatNum((UnitCost * Qty + SvrTax -Discount), 4);
+                    end
+                    else
+                    begin
+                         ShowMessage('Sorry, this item is not discountable');
+                         DBGrid_ServiceCharge.Fields[i_Disper].Value := 0;
+                         DBGrid_ServiceCharge.Fields[i_Discount].Value := 0;
+                    end;
+               end
+               else if Gs_TaxRule='TAD' then
+               begin
+                    if Table_TempDetailPTest.FieldByName('IsDiscountable').AsString = 'Y' then
+                    begin
+
+                         Discount := GetNoOfDecimalPartOfFloatNum(((Disper / 100) * UnitCost) * Qty, 4);
+                         DBGrid_ServiceCharge.Fields[i_Discount].Value:= Discount;
+
+                         UnitCost:=UnitCost-UnitCost*Disper/100;
+                         SvrTax := GetNoOfDecimalPartOfFloatNum((UnitCost * Qty) * (gf_TaxPercent / 100), 4);
+
+                         DBGrid_ServiceCharge.Fields[i_SvrTax].Value:=SvrTax;
+                         DBGrid_ServiceCharge.Fields[i_NetTotal].Value:= GetNoOfDecimalPartOfFloatNum((UnitCost * Qty + SvrTax), 4);
+                    end
+                    else
+                    begin
+                         ShowMessage('Sorry, this item is not discountable');
+                         DBGrid_ServiceCharge.Fields[i_Disper].Value := 0;
+                         DBGrid_ServiceCharge.Fields[i_Discount].Value := 0;
+                    end;
+               end;
+          end
+          else if SelIndex = i_Discount Then
+          begin
+               if Gs_TaxRule='TBD' then
+               begin
+                    if Table_TempDetailPTest.FieldByName('IsDiscountable').AsString = 'Y' then
+                    begin
+                         Disper:=GetNoOfDecimalPartOfFloatNum(Discount*100/(UnitCost*Qty),2);
+                         Discount := GetNoOfDecimalPartOfFloatNum(((Disper / 100) * UnitCost) * Qty, 4);
+
+                         DBGrid_ServiceCharge.Fields[i_Disper].Value:= Disper;
+                         DBGrid_ServiceCharge.Fields[i_Discount].Value:= Discount;
+
+                         DBGrid_ServiceCharge.Fields[i_Total].Value  := GetNoOfDecimalPartOfFloatNum(UnitCost * Qty + SvrTax, 4);
+                         DBGrid_ServiceCharge.Fields[i_NetTotal].Value:= GetNoOfDecimalPartOfFloatNum((UnitCost * Qty + SvrTax -Discount), 4);
+                    end
+                    else
+                    begin
+                         ShowMessage('Sorry, this item is not discountable');
+                         DBGrid_ServiceCharge.Fields[i_Disper].Value := 0;
+                         DBGrid_ServiceCharge.Fields[i_Discount].Value := 0;
+                    end;
+               end
+               else if Gs_TaxRule='TAD' then
+               begin
+                    if Table_TempDetailPTest.FieldByName('IsDiscountable').AsString = 'Y' then
+                    begin
+                         Disper:=GetNoOfDecimalPartOfFloatNum(Discount*100/(UnitCost*Qty),2);
+                         Discount := GetNoOfDecimalPartOfFloatNum(((Disper / 100) * UnitCost) * Qty, 4);
+
+                         DBGrid_ServiceCharge.Fields[i_Disper].Value:= Disper;
+                         DBGrid_ServiceCharge.Fields[i_Discount].Value:= Discount;
+
+                         UnitCost:=UnitCost-UnitCost*Disper/100;
+                         SvrTax := GetNoOfDecimalPartOfFloatNum((UnitCost * Qty) * (gf_TaxPercent / 100), 4);
+
+                         DBGrid_ServiceCharge.Fields[i_SvrTax].Value:=SvrTax;
+                         DBGrid_ServiceCharge.Fields[i_NetTotal].Value:= GetNoOfDecimalPartOfFloatNum((UnitCost * Qty + SvrTax), 4);
+                    end
+                    else
+                    begin
+                         ShowMessage('Sorry, this item is not discountable');
+                         DBGrid_ServiceCharge.Fields[i_Disper].Value := 0;
+                         DBGrid_ServiceCharge.Fields[i_Discount].Value := 0;
+                    end;
+               end;
+          end;
+          Table_TempDetailPTest.Post;
+          Table_TempDetailPTest.Next;
+     end;
+end;
+
+procedure TForm_BillDetail_2ND.FormCreate(Sender: TObject);
+begin
+     //DateEditX_In := TDateEditX.Create(nil);
+     //DateEditX_Out := TDateEditX.Create(nil);
+     { Application.CreateForm(TQR_HospitalChargeDetail,QR_HospitalChargeDetail);
+       Application.CreateForm(TQR_BedChargeDetail,QR_BedChargeDetail);
+       Application.CreateForm(TQR_MedicineChargeDetail,QR_MedicineChargeDetail); }
+end;
+
+procedure TForm_BillDetail_2ND.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+     { QR_HospitalChargeDetail.Free;
+       QR_BedChargeDetail.Free;
+       QR_MedicineChargeDetail.Free; }
+end;
+
+procedure TForm_BillDetail_2ND.FormDestroy(Sender: TObject);
+begin
+     //DateEditX_In.free;
+    // DateEditX_Out.free;
+end;
+
+Procedure TForm_BillDetail_2ND.AvoidDisPerErrorInGridSFSLWGTNL; // SFSLWGTNL- save from same line without going to next line
+Begin
+     IF pi_PanelShow = 1 Then { Service charge }
+     Begin
+          IF DBGrid_ServiceCharge.Fields[6].Value > 100 Then
+          Begin
+               MessageDlg('Sorry ! Discount Per. shouldn''t be greate than 100', mtWarning, [mbok], 0);
+               DBGrid_ServiceCharge.SelectedIndex := 6;
+               Exit;
+          End;
+          IF DBGrid_ServiceCharge.Fields[7].Value > DBGrid_ServiceCharge.Fields[4].Value Then
+          Begin
+               MessageDlg('Sorry ! Discount amount shouldn''t be greate than total amount', mtWarning, [mbok], 0);
+               DBGrid_ServiceCharge.SelectedIndex := 7;
+               Exit;
+          End;
+          Table_TempDetailPTest.Edit;
+          DBGrid_ServiceCharge.Fields[4].Value := (DBGrid_ServiceCharge.Fields[2].Value * DBGrid_ServiceCharge.Fields[3].Value);
+          IF DBGrid_ServiceCharge.Fields[6].Value = 0 Then
+               DBGrid_ServiceCharge.Fields[6].Value := ((DBGrid_ServiceCharge.Fields[7].Value * 100) / DBGrid_ServiceCharge.Fields[4].Value)
+          Else
+               DBGrid_ServiceCharge.Fields[7].Value := ((DBGrid_ServiceCharge.Fields[4].Value * DBGrid_ServiceCharge.Fields[6].Value) / 100);
+          IF Gs_TaxRule = 'TAD' Then // Tax after discount
+               DBGrid_ServiceCharge.Fields[5].Value := (((DBGrid_ServiceCharge.Fields[4].Value) - (DBGrid_ServiceCharge.Fields[7].Value))
+                      * gf_TaxPercent / 100);
+          Table_TempDetailPTest.Post;
+          ServiceChargeCalculation;
+     End
+End;
+
+procedure TForm_BillDetail_2ND.DBGrid_ServiceChargeColEnter(Sender: TObject);
+begin
+     if Not DBGrid_ServiceCharge.SelectedIndex in [2, 5, 6] then
+          DBGrid_ServiceCharge.SelectedIndex := 6;
+
+     if DBGrid_ServiceCharge.SelectedIndex = 2 then
+          actualQty := Table_TempDetailPTest.FieldByName('Qty').AsFloat;
+end;
+
+procedure TForm_BillDetail_2ND.DBGrid_ServiceChargeDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+     State: TGridDrawState);
+begin
+     if DataCol in [2, 5, 6] then
+     begin
+          DBGrid_ServiceCharge.Canvas.Brush.Color := clWebLightSteelBlue;
+          DBGrid_ServiceCharge.DefaultDrawDataCell(Rect, Column.Field, State);
+     end;
+     IF Table_TempDetailPTest.FieldByName('IsDiscountable').AsString = 'N' Then
+     Begin
+          DBGrid_ServiceCharge.Canvas.Font.Color := clRed;
+          DBGrid_ServiceCharge.DefaultDrawDataCell(Rect, Column.Field, State);
+     End;
+end;
+
+procedure TForm_BillDetail_2ND.Edit_DisPerKeyPress(Sender: TObject; var Key: Char);
+begin
+     // IF key=#13 Then BitBtn_SetDiscount.SetFocus;
+
+     IF Key in [#8] Then
+          Exit;
+     // AvoidMultipleDecimal(Edit_DisPer,key);
+     Key := Key;
+end;
+
+procedure TForm_BillDetail_2ND.BitBtn_SetDiscountClick(Sender: TObject);
+Var
+     lf_DisPer, lf_OldDisPer, lf_DisAmt, lf_IndivDocDisAmt, lf_ActualSetDis: Double;
+begin
+     // IF Trim(Edit_DisPer.Text)='' Then Edit_DisPer.Text:='0';
+
+     { IF StrToInt(Edit_DisPer.Text) > 100 Then
+       Begin
+       MessageDlg('Discount Percent Exceeds 100. Plz Check It Properly',mtWarning,[mbok],0);
+       Edit_DisPer.SetFocus;
+       Exit;
+       End; }
+
+     IF MessageDlg('Are You Sure To Set Discount For Doctor Part Only.', mtInformation, [mbyes, mbno], 0) = mrYes Then
+     Begin
+          { While Set Discount Due to Service(non Discountable) part chages Disper In billdetail
+            but what acutally set it is in InpatientDetail for e.g If set 10 Per In some case in
+            billdetail it changes into 9.56 or something like that . Plz reffer into Set Discount
+            of Discharge part . }
+          With Query_Process do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select Distinct DisPer From InpatientDetail where DisPer > 0 and InpatientId=' + IntToStr(pi_InPatientId));
+               Open;
+          End;
+
+          lf_ActualSetDis := Query_Process.FieldByName('DisPer').AsFloat;
+
+          lf_DisAmt := GetNoOfDecimalPartOfFloatNum((Query_ActDoctor.FieldByName('Amount').AsFloat * Query_ActDoctor.FieldByName('OrgDis').AsFloat)
+                 / 100, 4);
+
+          { IF Query_ActDoctor.FieldByName('COMMAMTA').AsFloat > 0 Then // some time in setup disper only exist so...
+            lf_IndivDocDisAmt:=(Query_ActDoctor.FieldByName('CommAmtA').AsFloat * (StrToFloat(Edit_DisPer.Text) - lf_ActualSetDis))/100
+            Else
+            lf_IndivDocDisAmt:=(Query_ActDoctor.FieldByName('NewCommAmt').AsFloat * (StrToFloat(Edit_DisPer.Text) - lf_ActualSetDis))/100; }
+
+          lf_DisAmt := lf_DisAmt + lf_IndivDocDisAmt;
+
+          lf_DisPer := GetNoOfDecimalPartOfFloatNum((lf_DisAmt / Query_ActDoctor.FieldByName('Amount').AsFloat) * 100, 4);
+
+          Try
+               DM_Hospital.Db.StartTransaction;
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update BillDetail BD set BD.Dis=' + FloatToStr(lf_DisPer) + ',OrgDis=' + FloatToStr(lf_DisPer));
+                    IF Gs_TaxRule = 'TAD' Then
+                    Begin
+                         sql.add(' ,VatAmt=((Qty*Amount)-((Qty*Amount)*' + FloatToStr(lf_DisPer) + '/100))*' + FloatToStr(gf_TaxPercent) + '/100');
+                         sql.add(' ,CurVatAmt=((Qty*Amount)-((Qty*Amount)*' + FloatToStr(lf_DisPer) + '/100))*' + FloatToStr(gf_TaxPercent) + '/100');
+                    End;
+                    sql.add(' where BillDetailId=' + IntToStr(Query_ActDoctor.FieldByName('BillDetailId').AsInteger));
+                    ExecSQL;
+
+                    { update DrProceduers }
+                    Close;
+                    sql.Clear;
+                    // sql.add(' Update DrProcedures set DisPer='+Edit_DisPer.Text);
+                    sql.add(' where InpatientId=' + IntToStr(pi_InPatientId));
+                    sql.add(' and BillDetailId=' + IntToStr(Query_ActDoctor.FieldByName('BillDetailId').AsInteger));
+                    sql.add(' and PositionWiseCommId=' + IntToStr(Query_ActDoctor.FieldByName('PositionWiseCommId').AsInteger));
+                    ExecSQL;
+               End;
+               DM_Hospital.Db.Commit;
+               ShowDoneMessage;
+          Except
+               DM_Hospital.Db.Rollback;
+               MessageDlg('Failure to set discount.', mtWarning, [mbok], 0);
+          End;
+     End;
+end;
+
+procedure TForm_BillDetail_2ND.CB_SPDiscountClick(Sender: TObject);
+begin
+     { IF CB_SPDiscount.Checked=True Then
+       Begin
+       Label21.Enabled:=True;
+       LabelTestName.Enabled:=True;
+       Label31.Enabled:=True;
+
+       DBLCB_ActualDrTech.KeyValue:=Null;
+       DBLCB_ActualDrTech.Enabled:=True;
+       DBLCB_ActualDrTech.Color:=clWhite;
+
+       Label30.Enabled:=True;
+
+       Edit_DisPer.ReadOnly:=False;
+       Edit_DisPer.Enabled:=True;
+       Edit_DisPer.Color:=clWhite;
+
+       Label41.Enabled:=True;
+       Label_FractionAmt.Enabled:=True;
+       Label43.Enabled:=True;
+       Label_DisAmount.Enabled:=True;
+
+       BitBtn_SetDiscount.Enabled:=True;
+       //DBGrid_ServiceChargeCellClick(Sender);
+       End
+       Else
+       Begin
+       Label21.Enabled:=False;
+       LabelTestName.Enabled:=False;
+       Label31.Enabled:=False;
+
+       DBLCB_ActualDrTech.KeyValue:=Null;
+       DBLCB_ActualDrTech.Enabled:=False;
+       DBLCB_ActualDrTech.Color:=clScrollBar;
+
+       Label30.Enabled:=False;
+
+       Edit_DisPer.ReadOnly:=True;
+       Edit_DisPer.Enabled:=False;
+       Edit_DisPer.Color:=clScrollBar;
+
+       Label41.Enabled:=False;
+       Label_FractionAmt.Enabled:=False;
+       Label43.Enabled:=False;
+       Label_DisAmount.Enabled:=False;
+
+       BitBtn_SetDiscount.Enabled:=False;
+       End; }
+end;
+
+procedure TForm_BillDetail_2ND.DBLCB_ActualDrTechClick(Sender: TObject);
+begin
+//     IF Query_ActDoctor.RecordCount > 0 Then
+//     Begin
+//          { IF Query_ActDoctor.FieldByName('CommAmtA').AsFloat > 0 Then
+//            Label_FractionAmt.Caption:=Query_ActDoctor.FieldByName('CommAmtA').AsString
+//            Else
+//            Label_FractionAmt.Caption:=FloatToStr((Query_ActDoctor.FieldByName('Amount').AsFloat *
+//            Query_ActDoctor.FieldByName('CommRateA').AsFloat ) / 100); }
+//     End;
+end;
+
+procedure TForm_BillDetail_2ND.DBLCB_ActualDrTechKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Delete Then
+     Begin
+          // Label_FractionAmt.Caption:='0.00';
+          // Label_DisAmount.Caption:='0.00';
+     End;
+
+     // IF key=VK_Prior Then CB_SPDiscount.SetFocus;
+end;
+
+procedure TForm_BillDetail_2ND.DBLCB_ActualDrTechKeyPress(Sender: TObject; var Key: Char);
+begin
+     // IF key=#13 Then Edit_DisPer.SetFocus;
+end;
+
+procedure TForm_BillDetail_2ND.Edit_DisPerKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     // IF key=VK_Prior Then DBLCB_ActualDrTech.SetFocus;
+end;
+
+procedure TForm_BillDetail_2ND.BitBtn_SetDiscountKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     // IF key=VK_Prior Then Edit_DisPer.SetFocus;
+end;
+
+procedure TForm_BillDetail_2ND.Edit_DisPerExit(Sender: TObject);
+begin
+     // IF Trim(Edit_DisPer.Text)='' Then Edit_DisPer.Text:='0';
+
+     { IF StrToFloat(Label_FractionAmt.Caption) > 0 Then
+       Label_DisAmount.Caption:=FloatToStr((StrToFloat(Label_FractionAmt.Caption) * StrToFloat(Edit_DisPer.Text))/100); }
+end;
+
+procedure TForm_BillDetail_2ND.SPB_SetDiscountClick(Sender: TObject);
+Var
+     UnitCost, Qty, Total, SvrTax, Disper, Discount, DisTax, NetTotal: Double;
+begin
+     Table_TempDetailPTest.Close;
+     Table_TempDetailPTest.Open;
+     with Query_temp do
+     begin
+          Close;
+          sql.Clear;
+          DatabaseName := gs_TempPath;
+          sql.add('Select sum(CostPrice)total from DetailPatientTest');
+          Open;
+          Total := FieldByName('Total').AsFloat;
+     end;
+
+     While not Table_TempDetailPTest.EOF do
+     begin
+          if Table_TempDetailPTest.FieldByName('IsDiscountable').AsString = 'Y' then
+          begin
+               Table_TempDetailPTest.Edit;
+               Begin
+                    if cb_amt.Checked = False then
+                         Disper := StrToFloat(Edi_DisPer.Text)
+                    else
+                    begin
+                         Disper := StrToFloat(Edi_DisPer.Text);
+                         Disper := GetNoOfDecimalPartOfFloatNum((Disper * 100) / Total, 2);
+                    end;
+                    begin
+                         if Table_TempDetailPTest.FieldByName('IsDiscountable').AsString = 'Y' then
+                         begin
+                              UnitCost := Table_TempDetailPTest.FieldByName('CostPrice').AsFloat;
+                              Qty := Table_TempDetailPTest.FieldByName('Qty').AsFloat;
+                              SvrTax := Table_TempDetailPTest.FieldByName('VatAmt').AsFloat;
+                              Discount := GetNoOfDecimalPartOfFloatNum(((Disper / 100) * UnitCost) * Qty, 4);
+                              DBGrid_ServiceCharge.Fields[i_Disper].Value := Disper;
+                              DBGrid_ServiceCharge.Fields[i_Discount].Value := Discount;
+                              DBGrid_ServiceCharge.Fields[i_NetTotal].Value := GetNoOfDecimalPartOfFloatNum((UnitCost * Qty + SvrTax - Discount), 4);
+                         end
+                         else
+                         begin
+                              ShowMessage('Sorry, this item is not discountable');
+                              DBGrid_ServiceCharge.Fields[i_Disper].Value := 0;
+                              DBGrid_ServiceCharge.Fields[i_Discount].Value := 0;
+                         end;
+                    end;
+               End;
+               Table_TempDetailPTest.Post;
+          end;
+          Table_TempDetailPTest.Next;
+     end;
+end;
+
+procedure TForm_BillDetail_2ND.Edi_DisPerChange(Sender: TObject);
+begin
+     if Edi_DisPer.Text <> '' then
+     begin
+          if StrToInt(Edi_DisPer.Text) > 100 then
+               SPB_SetDiscount.Enabled := False
+          else
+               SPB_SetDiscount.Enabled := True;
+     end;
+end;
+
+procedure TForm_BillDetail_2ND.Edi_DisPerKeyPress(Sender: TObject; var Key: Char);
+begin
+     if not(Key in ['0' .. '9', #8, #13, DecimalSeparator]) then
+          Key := #0;
+     if Key = #13 then
+          SPB_SetDiscountClick(Sender);
+end;
+
+procedure TForm_BillDetail_2ND.cb_amtClick(Sender: TObject);
+begin
+     if cb_amt.Checked = True then
+          Label3.Caption := 'Set Discount Amt'
+     else
+          Label3.Caption := 'Set Discount (%)';
+end;
+
+procedure TForm_BillDetail_2ND.DBGrid_ServiceChargeExit(Sender: TObject);
+Var
+     Key: Char;
+begin
+     Key := #13;
+     DBGrid_ServiceChargeKeyPress(Sender, Key);
+end;
+
+end.

@@ -1,0 +1,723 @@
+unit Unit_Broadcastpopup;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm, Unit_QrInvestigativeResult,Unit_Mangalam_QrInvestigativeResult, QuickRpt, QRCtrls, Unit_Master,
+     Dialogs, StdCtrls, Buttons, ExtCtrls, OleCtrls, DB, MemDS, DBAccess, Ora,
+  DBTables;
+
+type
+     TForm_Broadcastpopup = class(TForm)
+          Shape1: TShape;
+          Label1: TLabel;
+          bb_ok: TSpeedButton;
+          bb_cancel: TSpeedButton;
+          CB_Web: TCheckBox;
+          Cb_sms: TCheckBox;
+          cb_email: TCheckBox;
+          Le_Mobileno: TLabeledEdit;
+          le_email: TLabeledEdit;
+          bb_update: TSpeedButton;
+          Memo_Message: TMemo;
+          Label2: TLabel;
+          lbl_count: TLabel;
+          BB_SendSms: TSpeedButton;
+    CB_LetterHead: TCheckBox;
+    CB_REFDOC: TCheckBox;
+    oraqryPostSentMailStatus: TOraQuery;
+    QueryProcess2: TQuery;
+          procedure bb_cancelClick(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure FormCreate(Sender: TObject);
+          procedure bb_updateClick(Sender: TObject);
+          procedure bb_okClick(Sender: TObject);
+          procedure Memo_MessageChange(Sender: TObject);
+          procedure BB_SendSmsClick(Sender: TObject);
+    procedure CB_REFDOCClick(Sender: TObject);
+
+     private
+          { Private declarations }
+          Procedure Loaddata;
+          Procedure Updatedata;
+          Procedure BroadCast;
+          Procedure SendMail;
+     public
+           PatientEmail,RefDocEmail:String;
+          { Public declarations }
+     end;
+
+var
+     Form_Broadcastpopup: TForm_Broadcastpopup;
+
+implementation
+
+uses Unit_Verification,Unit_QrPathInvestigativeResult,Unit_QrDeptWiseNMCA4Report,Unit_QrDeptWiseNepalCancerReport,Unit_QrDeptWiseA4Reportkpl,Unit_QrFindingIntrepidReport;
+
+{Procedure SaveBroadcastdata(PATIENTID: Integer; WEB, SMS, EMAIL: Boolean; BILLNO, MOBILNO, EMAILID: STRING); stdcall;
+external 'MidasFunction.bpl';
+Function LoadBroadcastdata(PATIENTID: Integer; BILLNO: String): STRING; stdcall; external 'MidasFunction.bpl';
+Procedure SaveBroadcastdetail(PATIENTID: Integer; WEB, SMS, EMAIL: Boolean; BILLNO: STRING); stdcall;
+external 'MidasFunction.bpl';}
+{$R *.dfm}
+
+procedure TForm_Broadcastpopup.bb_cancelClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_Broadcastpopup.bb_okClick(Sender: TObject);
+
+begin
+     try
+          BroadCast;
+          Self.Close;
+     except
+          MsgBox(1005, 0, '', '', '');
+          exit;
+     end;
+
+end;
+
+procedure TForm_Broadcastpopup.BB_SendSmsClick(Sender: TObject);
+begin
+     Try
+          if SendSmsQueryCollection(Memo_Message.Text, gs_SampleNo, gi_PatientID) then
+          begin
+               ShowDoneMessage;
+               Self.Close;
+          end;
+     Except
+          ShowMessage('Sms Not Sent');
+     End;
+
+end;
+
+procedure TForm_Broadcastpopup.bb_updateClick(Sender: TObject);
+begin
+     Updatedata;
+     bb_ok.Enabled:= True;
+end;
+
+procedure TForm_Broadcastpopup.BroadCast;
+Var
+     PATIENTID: Integer;
+     WEB, SMS, EMAIL: Boolean;
+     BILLNO: STRING;
+begin
+     PATIENTID := gi_PatientID;
+
+     if CB_Web.Checked then
+          WEB := true
+     else
+          WEB := false;
+     if Cb_sms.Checked = true then
+          SMS := true
+     else
+          SMS := false;
+     if cb_email.Checked = true then
+          EMAIL := true
+     else
+          EMAIL := false;
+     BILLNO := Gs_BillNo;
+
+     {if (GetFinalBillno(BILLNO) = '') AND (Copy(BILLNO, 1, 2) <> 'CS') AND (Copy(BILLNO, 1, 2) <> 'CR') then
+     begin
+          MsgBox(1028, 0, '', '', '');
+          exit;
+     end;}
+
+     if gi_compileValue <> 14 then
+     begin
+          if (Copy(BILLNO, 1, 2) <> 'CS') AND (Copy(BILLNO, 1, 2) <> 'CR') then
+          begin
+               MsgBox(1028, 0, '', '', '');
+               exit;
+          end;
+     end;
+
+     SaveBroadcastdetail(PATIENTID, WEB, SMS, EMAIL, BILLNO);
+     if cb_email.Checked = true then
+          SendMail;
+end;
+
+procedure TForm_Broadcastpopup.CB_REFDOCClick(Sender: TObject);
+var gmailarray:array[0..2] of String;
+var i:integer;
+begin
+     if CB_REFDOC.Checked=True then
+     begin
+           le_email.Width:=335;
+           for i := 0 to 1 do
+           begin
+           gmailarray[0]:=Gs_Email;
+           gmailarray[1]:=LoadRefDocEmail(gi_PatientID,gi_PatientTestID);
+           end;
+           PatientEmail:=gmailarray[0];
+           RefDocEmail:=gmailarray[1];
+           le_email.Text:= PatientEmail+','+RefDocEmail;
+           pb_sendmailPatientANDRefdo:=True;
+     end
+     else
+     begin
+          le_email.Width:=160;
+          le_email.Text:=Gs_Email;
+          pb_sendmailPatientANDRefdo:=false;
+     end;
+end;
+
+procedure TForm_Broadcastpopup.FormCreate(Sender: TObject);
+begin
+     Loaddata;
+     LoadPatientData(gi_PatientID);
+     Le_Mobileno.Text := Gs_MobileNo;
+     le_email.Text := Gs_Email;
+     //le_email.EditLabel.Caption:=Gs_Email;
+    // Le_Mobileno.EditLabel.Caption:=Gs_MobileNo;
+     //LoadSmsMessage(Gs_PatientName, Gs_MobileNo, Memo_Message);
+     CB_Web.Checked := true;
+     Cb_sms.Checked := true;
+     cb_email.Checked := true;
+
+      if gi_compileValue=14 then
+      begin
+           CB_LetterHead.Enabled:=True;
+           CB_LetterHead.visible:=True;
+           CB_REFDOC.Visible:=True;
+      end
+      else
+      begin
+           CB_LetterHead.Enabled:=false;
+           CB_LetterHead.visible:=false;
+           CB_REFDOC.Visible:=False;
+      end;
+
+      if gi_compileValue=22 then
+      begin
+          CB_LetterHead.Enabled:=True;
+          CB_LetterHead.Visible:=true;
+      end;
+
+
+end;
+
+procedure TForm_Broadcastpopup.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = 27 then
+          bb_cancelClick(Sender);
+end;
+
+procedure TForm_Broadcastpopup.Loaddata;
+Var
+     RET: STRING;
+begin
+     RET := LoadBroadcastdata(gi_PatientID, Gs_BillNo);
+     if RET = 'WEB' then
+          CB_Web.Checked := true
+     else if RET = 'SMS' then
+          Cb_sms.Checked := true
+     else if RET = 'EMAIL' then
+          cb_email.Checked := true
+     else if RET = 'WEBSMSEMAIL' then
+     begin
+          CB_Web.Checked := true;
+          Cb_sms.Checked := true;
+          cb_email.Checked := true;
+     end
+     else if RET = 'WEBSMS' then
+     begin
+          CB_Web.Checked := true;
+          Cb_sms.Checked := true;
+     end
+     else if RET = 'SMSEMAIL' then
+     begin
+          cb_email.Checked := true;
+          Cb_sms.Checked := true;
+     end
+     else if RET = 'WEBEMAIL' then
+     begin
+          cb_email.Checked := true;
+          CB_Web.Checked := true;
+     end;
+     LoadPatientData(gi_PatientID);
+     Le_Mobileno.Text := Gs_MobileNo;
+     le_email.Text := Gs_Email;
+end;
+
+procedure TForm_Broadcastpopup.Memo_MessageChange(Sender: TObject);
+Var
+     i: Integer;
+begin
+     if Length(Memo_Message.Text) > 160 then
+     begin
+          ShowMessage('Message length is 160');
+     end;
+     i := 160 - Length(Memo_Message.Text);
+     lbl_count.Caption := IntToStr(i);
+end;
+
+procedure TForm_Broadcastpopup.SendMail;
+Var
+     BmpImage, JpgImage: String;
+     i,depid: Integer;
+begin
+     if not DirectoryExists(gs_temppath + '\InvRep') then
+          CreateDir(gs_temppath + '\InvRep');
+     gi_PatientID := Form_Verification.Query_SampleCollected.FieldByName('PatientID').AsInteger;
+     gi_PatientTestID := Form_Verification.Query_SampleCollected.FieldByName('PatientTestId').AsInteger;
+     gs_TestDate := Form_Verification.Query_SampleCollected.FieldByName('TestDate').AsString;
+     gs_patientNameForemail:=Form_Verification.Query_SampleCollected.FieldByName('Title').AsString+' '+Form_Verification.Query_SampleCollected.FieldByName('PatientName').AsString;
+     gb_PrintSelected := false;
+     gs_CalledFrom := 'VERIFICATION';
+     gb_QRHeadFoot:=True;
+
+
+    { if gi_compileValue=3 then
+     begin
+          try
+               Form_QrFinding_mangalam := TForm_QrFinding_mangalam.Create(nil);
+               with Form_QrFinding_mangalam do
+               begin
+                    lbl_verifiedby.Caption := Form_Verification.Query_SampleCollected.FieldByName('CollectedBy').AsString;
+                    QrFinding_mangalam.Prepare;
+                    lbl_totpage.Caption := IntToStr(QrFinding_mangalam.QRPrinter.PageCount);
+                    lbl_totpageh.Caption := IntToStr(QrFinding_mangalam.QRPrinter.PageCount);
+                    // Signature.Enabled:=true;
+
+                    // *****FTP ENGINE UPLOADS DATA FROM \\SERVERIP\SISDATA\FTP ******
+                    //******BUT EMAIL SENDS MAIL FROM
+                    //****** GS_TEMPPATH\INVREP SO **DO NOT CHANGE THIS FOLDER**
+
+                    SaveQrAsBmp(Form_QrFinding_mangalam.QrFinding_mangalam, gs_temppath + '\InvRep');
+                    for i := 1 to QrFinding_mangalam.QRPrinter.PageCount do
+                    begin
+                         BmpImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp';
+                         JpgImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg';
+                         BMPtoJPG(BmpImage, JpgImage);
+                         DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp');
+                    end;
+                    gi_ReportCount := i;
+                    if MailInvResult(gi_PatientID, Gs_BillNo) then
+                    begin
+                         for i := 1 to QrFinding_mangalam.QRPrinter.PageCount do
+                         begin
+                              DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg');
+                         end;
+                         ShowDoneMessage
+                    end;
+               end;
+          finally
+               Form_QrFinding_mangalam.Free;
+               Form_Verification.Query_SampleCollected.Close;
+               Form_Verification.Query_SampleCollected.Open;
+          end;
+     end
+     else  }
+
+
+
+     if gi_compileValue=3 then
+     begin
+          depid:= Form_Verification.Table_List.FieldByName('DepID').AsInteger;
+          if Not IsClinicalDep(depid) then
+          begin
+               try
+                    Form_QrFinding_mangalam := TForm_QrFinding_mangalam.Create(nil);
+                    with Form_QrFinding_mangalam do
+                    begin
+                         //gb_PrintSelected := True;
+                         lbl_verifiedby.Caption := Form_Verification.Query_SampleCollected.FieldByName('CollectedBy').AsString;
+                         Form_QrFinding_mangalam.QrFinding_mangalam.Prepare;
+                         lbl_totpage.Caption := IntToStr(QrFinding_mangalam.QRPrinter.PageCount);
+                         lbl_totpageh.Caption := IntToStr(QrFinding_mangalam.QRPrinter.PageCount);
+                         // Signature.Enabled:=true;
+
+                         // *****FTP ENGINE UPLOADS DATA FROM \\SERVERIP\SISDATA\FTP ******
+                         //******BUT EMAIL SENDS MAIL FROM
+                         //****** GS_TEMPPATH\INVREP SO **DO NOT CHANGE THIS FOLDER**
+                         //QrFinding_mangalam.Preview;
+                         //Form_QrFinding_mangalam.Close;
+
+                         //Exit;
+                         SaveQrAsBmp(Form_QrFinding_mangalam.QrFinding_mangalam, gs_temppath + '\InvRep');
+                         for i := 1 to QrFinding_mangalam.QRPrinter.PageCount do
+                         begin
+                              BmpImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp';
+                              JpgImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg';
+                              BMPtoJPG(BmpImage, JpgImage);
+                              DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp');
+                         end;
+                         gi_ReportCount := i;
+                         if MailInvResult(gi_PatientID, Gs_BillNo) then
+                         begin
+                              for i := 1 to QrFinding_mangalam.QRPrinter.PageCount do
+                              begin
+                                   DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg');
+                              end;
+                              ShowDoneMessage
+                         end;
+                    end;
+               finally
+                    Form_Verification.Table_Findings.EmptyTable;
+                    Form_QrFinding_mangalam.Free;
+                    Form_Verification.Query_SampleCollected.Close;
+                    Form_Verification.Query_SampleCollected.Open;
+               end;
+          end
+          else
+          begin
+              try
+                    Form_QrPathFinding := TForm_QrPathFinding.Create(nil);
+                    with Form_QrPathFinding do
+                    begin
+                         lbl_verifiedby.Caption := Form_Verification.Query_SampleCollected.FieldByName('CollectedBy').AsString;
+                         QrFinding.Prepare;
+                         //QrImage_Top.Enabled:= True;
+                         //QRImage_MangalamBottom.Enabled:= True;
+                         lbl_totpage.Caption := IntToStr(QrFinding.QRPrinter.PageCount);
+                         lbl_totpageh.Caption := IntToStr(QrFinding.QRPrinter.PageCount);
+                         // Signature.Enabled:=true;
+
+                         // *****FTP ENGINE UPLOADS DATA FROM \\SERVERIP\SISDATA\FTP ******
+                         //******BUT EMAIL SENDS MAIL FROM
+                         //****** GS_TEMPPATH\INVREP SO **DO NOT CHANGE THIS FOLDER**
+
+                         SaveQrAsBmp(Form_QrPathFinding.QrFinding, gs_temppath + '\InvRep');
+                         for i := 1 to QrFinding.QRPrinter.PageCount do
+                         begin
+                              BmpImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp';
+                              JpgImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg';
+                              BMPtoJPG(BmpImage, JpgImage);
+                              DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp');
+                         end;
+                         gi_ReportCount := i;
+                         if MailInvResult(gi_PatientID, Gs_BillNo) then
+                         begin
+                              for i := 1 to QrFinding.QRPrinter.PageCount do
+                              begin
+                                   DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg');
+                              end;
+                              ShowDoneMessage
+                         end;
+                    end;
+               finally
+                    Form_QrPathFinding.Free;
+                    Form_Verification.Query_SampleCollected.Close;
+                    Form_Verification.Query_SampleCollected.Open;
+               end;
+          end;
+     end
+     else if gi_compileValue=9 then
+     begin
+               try
+                    Form_QrDeptWiseNMCA4Report := TForm_QrDeptWiseNMCA4Report.Create(nil);
+                    with Form_QrDeptWiseNMCA4Report do
+                    begin
+                         lbl_verifiedby.Caption := Form_Verification.Query_SampleCollected.FieldByName('CollectedBy').AsString;
+                         Qr_NMCA4DeptWise.Prepare;
+                         lbl_totpage.Caption := IntToStr(Qr_NMCA4DeptWise.QRPrinter.PageCount);
+                         lbl_totpageh.Caption := IntToStr(Qr_NMCA4DeptWise.QRPrinter.PageCount);
+                         // Signature.Enabled:=true;
+
+                         // *****FTP ENGINE UPLOADS DATA FROM \\SERVERIP\SISDATA\FTP ******
+                         //******BUT EMAIL SENDS MAIL FROM
+                         //****** GS_TEMPPATH\INVREP SO **DO NOT CHANGE THIS FOLDER**
+
+                         SaveQrAsBmp(Form_QrDeptWiseNMCA4Report.Qr_NMCA4DeptWise, gs_temppath + '\InvRep');
+                         for i := 1 to Qr_NMCA4DeptWise.QRPrinter.PageCount do
+                         begin
+                              BmpImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp';
+                              JpgImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg';
+                              BMPtoJPG(BmpImage, JpgImage);
+                              DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp');
+                         end;
+                         gi_ReportCount := i;
+                         if MailInvResult(gi_PatientID, Gs_BillNo) then
+                         begin
+                              for i := 1 to Qr_NMCA4DeptWise.QRPrinter.PageCount do
+                              begin
+                                   DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg');
+                              end;
+                              ShowDoneMessage
+                         end;
+                    end;
+               finally
+                    Form_QrDeptWiseNMCA4Report.Free;
+                    Form_Verification.Query_SampleCollected.Close;
+                    Form_Verification.Query_SampleCollected.Open;
+                end;
+
+     end
+
+     else if gi_compileValue=11 then
+     begin
+               try
+                    Form_QrDeptWiseNepalCancerReport := TForm_QrDeptWiseNepalCancerReport.Create(nil);
+                    with Form_QrDeptWiseNepalCancerReport do
+                    begin
+                         lbl_verifiedby.Caption := Form_Verification.Query_SampleCollected.FieldByName('CollectedBy').AsString;
+                         Qr_NepalCancerDeptWise.Prepare;
+                         //lbl_totpage.Caption := IntToStr(Qr_NepalCancerDeptWise.QRPrinter.PageCount);
+                         //lbl_totpageh.Caption := IntToStr(Qr_NepalCancerDeptWise.QRPrinter.PageCount);
+                         // Signature.Enabled:=true;
+
+                         // *****FTP ENGINE UPLOADS DATA FROM \\SERVERIP\SISDATA\FTP ******
+                         //******BUT EMAIL SENDS MAIL FROM
+                         //****** GS_TEMPPATH\INVREP SO **DO NOT CHANGE THIS FOLDER**
+                         Form_QrDeptWiseNepalCancerReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseNepalCancerReport.Qr_NepalCancerDeptWise.QRPrinter.PageCount);
+                         Form_QrDeptWiseNepalCancerReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseNepalCancerReport.Qr_NepalCancerDeptWise.QRPrinter.PageCount);
+                         Form_QrDeptWiseNepalCancerReport.QRImage_TopNepalCancer.Enabled:=true;
+                         Form_QrDeptWiseNepalCancerReport.QRImage_BottomNepalCancer.Enabled:=true;
+                         Form_QrDeptWiseNepalCancerReport.QRLabel22.Caption:='Mail Sent Date/Time  : ' ;
+
+                         SaveQrAsBmp(Form_QrDeptWiseNepalCancerReport.Qr_NepalCancerDeptWise, gs_temppath + '\InvRep');
+                         for i := 1 to Qr_NepalCancerDeptWise.QRPrinter.PageCount do
+                         begin
+                              BmpImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp';
+                              JpgImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg';
+                              BMPtoJPG(BmpImage, JpgImage);
+                              DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp');
+                         end;
+                         gi_ReportCount := i;
+                         if MailInvResult(gi_PatientID, Gs_BillNo) then
+                         begin
+                              for i := 1 to Qr_NepalCancerDeptWise.QRPrinter.PageCount do
+                              begin
+                                   DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg');
+                              end;
+                              ShowDoneMessage
+                         end;
+                    end;
+               finally
+                    Form_QrDeptWiseNepalCancerReport.Free;
+                    Form_Verification.Query_SampleCollected.Close;
+                    Form_Verification.Query_SampleCollected.Open;
+                end;
+
+     end
+     else if gi_compileValue=22 then
+     begin
+               try
+                    Form_QrDeptWiseBioDiagReportKpl := TForm_QrDeptWiseBioDiagReportKpl.Create(nil);
+                    with Form_QrDeptWiseBioDiagReportKpl do
+                    begin
+                         //lbl_verifiedby.Caption := Form_Verification.Query_SampleCollected.FieldByName('CollectedBy').AsString;
+                         Qr_NMCA4DeptWise.Prepare;
+                         lbl_totpage.Caption := IntToStr(Qr_NMCA4DeptWise.QRPrinter.PageCount);
+                         lbl_totpageh.Caption := IntToStr(Qr_NMCA4DeptWise.QRPrinter.PageCount);
+
+                         if CB_LetterHead.Checked=True then
+                         begin
+                              QrImage_Top.Enabled:=True;
+                              QRImage_Bottom.Enabled:=True;
+                         end
+                         else
+                         begin
+                              QrImage_Top.Enabled:=false;
+                              QRImage_Bottom.Enabled:=false;
+                         end;
+                         // Signature.Enabled:=true;
+
+                         // *****FTP ENGINE UPLOADS DATA FROM \\SERVERIP\SISDATA\FTP ******
+                         //******BUT EMAIL SENDS MAIL FROM
+                         //****** GS_TEMPPATH\INVREP SO **DO NOT CHANGE THIS FOLDER**
+
+                         SaveQrAsBmp(Form_QrDeptWiseBioDiagReportKpl.Qr_NMCA4DeptWise, gs_temppath + '\InvRep');
+                         for i := 1 to Qr_NMCA4DeptWise.QRPrinter.PageCount do
+                         begin
+                              BmpImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp';
+                              JpgImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg';
+                              BMPtoJPG(BmpImage, JpgImage);
+                              DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp');
+                         end;
+                         gi_ReportCount := i;
+                         if MailInvResult(gi_PatientID, Gs_BillNo) then
+                         begin
+                              for i := 1 to Qr_NMCA4DeptWise.QRPrinter.PageCount do
+                              begin
+                                   DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg');
+                              end;
+                              ShowDoneMessage
+                         end;
+                    end;
+               finally
+                    Form_QrDeptWiseBioDiagReportKpl.Free;
+                    //Form_QrDeptWiseBioDiagReportKpl.Query_SampleCollected.Close;
+                    //Form_QrDeptWiseBioDiagReportKpl.Query_SampleCollected.Open;
+                end;
+
+     end
+     else if gi_compileValue=14 then
+     begin
+
+
+               try
+                    Form_QrFindingIntrepidReport := TForm_QrFindingIntrepidReport.Create(nil);
+                    with Form_QrFindingIntrepidReport do
+                    begin
+                         //lbl_verifiedby.Caption := Form_Verification.Query_SampleCollected.FieldByName('CollectedBy').AsString;
+                         Qr_IntrepidFinding.Prepare;
+                         lbl_totpage.Caption := IntToStr(Qr_IntrepidFinding.QRPrinter.PageCount);
+                         lbl_totpageh.Caption := IntToStr(Qr_IntrepidFinding.QRPrinter.PageCount);
+
+                         if CB_LetterHead.Checked=True then
+                         begin
+                              QRImage1.Enabled:=True;
+                              QRImage1.visible:=True;
+                              QRLabel55.Enabled:=True;
+                              QRLabel56.Enabled:=True;
+                              QRLabel57.Enabled:=True;
+                              QRLabel58.Enabled:=True;
+                              QRLabel59.Enabled:=True;
+                              QRLabel60.Enabled:=True;
+                              QRLabel61.Enabled:=False;
+                              QRLabel13.Enabled:=False;
+                              QRLabel14.Enabled:=false;
+                         end
+                         else
+                         begin
+                              QRImage1.Enabled:=False;
+                              QRImage1.Visible:=True;
+                              QRLabel61.Enabled:=True;
+                              QRLabel13.Enabled:=True;
+                              QRLabel14.Enabled:=True;
+                         end;
+                         // Signature.Enabled:=true;
+
+                         // *****FTP ENGINE UPLOADS DATA FROM \\SERVERIP\SISDATA\FTP ******
+                         //******BUT EMAIL SENDS MAIL FROM
+                         //****** GS_TEMPPATH\INVREP SO **DO NOT CHANGE THIS FOLDER**
+
+                         SaveQrAsBmp(Form_QrFindingIntrepidReport.Qr_IntrepidFinding, gs_temppath + '\InvRep');
+                         for i := 1 to Qr_IntrepidFinding.QRPrinter.PageCount do
+                         begin
+                              BmpImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp';
+                              JpgImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg';
+                              BMPtoJPG(BmpImage, JpgImage);
+                              DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp');
+                         end;
+                         gi_ReportCount := i;
+                         if MailInvResult(gi_PatientID, Gs_BillNo) then
+                         begin
+                              for i := 1 to Qr_IntrepidFinding.QRPrinter.PageCount do
+                              begin
+                                   DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg');
+                              end;
+                              ShowDoneMessage;
+
+                              //
+                               with QueryProcess2 do
+                               begin
+                                    close;
+                                    DatabaseName:=gs_temppath;
+                                    sql.clear;
+                                    sql.Add('select patienttestid from verification.db where state=True');
+                                    open;
+                               end;
+                               while not QueryProcess2.eof do
+                               begin
+
+                                   with oraqryPostSentMailStatus do
+                                   begin
+                                        Close;
+                                        Session:=DM_Hospital.DB;
+                                        sql.Clear;
+                                        sql.Add('Update patienttest set ISMAILSENT=''Y'' where PATIENTTESTID='+intToStr(QueryProcess2.FieldByName('patienttestid').AsInteger)+' and patientid='+intToStr(gi_PatientID));
+                                        ExecSQL;
+                                   end;
+                                   QueryProcess2.Next;
+                               end;
+
+                              //
+                         end;
+                    end;
+               finally
+                    Form_QrFindingIntrepidReport.Free;
+                    //Form_QrDeptWiseBioDiagReportKpl.Query_SampleCollected.Close;
+                    //Form_QrDeptWiseBioDiagReportKpl.Query_SampleCollected.Open;
+                end;
+
+
+     end
+     else
+     begin
+               try
+                    Form_QrFinding := TForm_QrFinding.Create(nil);
+                    with Form_QrFinding do
+                    begin
+                         lbl_verifiedby.Caption := Form_Verification.Query_SampleCollected.FieldByName('CollectedBy').AsString;
+                         QrFinding.Prepare;
+                         lbl_totpage.Caption := IntToStr(QrFinding.QRPrinter.PageCount);
+                         lbl_totpageh.Caption := IntToStr(QrFinding.QRPrinter.PageCount);
+                         // Signature.Enabled:=true;
+
+                         // *****FTP ENGINE UPLOADS DATA FROM \\SERVERIP\SISDATA\FTP ******
+                         //******BUT EMAIL SENDS MAIL FROM
+                         //****** GS_TEMPPATH\INVREP SO **DO NOT CHANGE THIS FOLDER**
+
+                         SaveQrAsBmp(Form_QrFinding.QrFinding, gs_temppath + '\InvRep');
+                         for i := 1 to QrFinding.QRPrinter.PageCount do
+                         begin
+                              BmpImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp';
+                              JpgImage := gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg';
+                              BMPtoJPG(BmpImage, JpgImage);
+                              DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.bmp');
+                         end;
+                         gi_ReportCount := i;
+                         if MailInvResult(gi_PatientID, Gs_BillNo) then
+                         begin
+                              for i := 1 to QrFinding.QRPrinter.PageCount do
+                              begin
+                                   DeleteFile(gs_temppath + '\InvRep\' + IntToStr(gi_PatientID) + '-' + IntToStr(i) + '.jpg');
+                              end;
+                              ShowDoneMessage
+                         end;
+                    end;
+               finally
+                    Form_QrFinding.Free;
+                    Form_Verification.Query_SampleCollected.Close;
+                    Form_Verification.Query_SampleCollected.Open;
+                end;
+
+     end;
+end;
+
+procedure TForm_Broadcastpopup.Updatedata;
+Var
+     PATIENTID: Integer;
+     WEB, SMS, EMAIL: Boolean;
+     BILLNO, MOBILNO, EMAILID: STRING;
+begin
+     if CB_Web.Checked = true then
+          WEB := true
+     else
+          WEB := false;
+     if Cb_sms.Checked = true then
+          SMS := true
+     else
+          SMS := false;
+     if cb_email.Checked = true then
+          EMAIL := true
+     else
+          EMAIL := false;
+     BILLNO := Gs_BillNo;
+     MOBILNO := Le_Mobileno.Text;
+
+     if CB_REFDOC.checked=True then
+     EMAILID:=PatientEmail
+     else
+     EMAILID := le_email.Text;
+
+     PATIENTID := gi_PatientID;
+     try
+          // if Copy(Billno,1,2)='CS' then
+          // BILLNO:=GetTpBillno(Billno);
+          SaveBroadcastdata(PATIENTID, WEB, SMS, EMAIL, BILLNO, MOBILNO, EMAILID);
+          ShowDoneMessage;
+     except
+          MsgBox(1005, 0, '', '', '');
+     end;
+end;
+
+end.

@@ -1,0 +1,2916 @@
+unit Unit_FindingFrame;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Fxn, ServerDate, Dm, Unit_SampleCollectionFrame, Unit_SelectTest, Unit_Master, Clipbrd,
+     Dialogs, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Grids, DBGrids, Mask, OleCtrls, DateEditXControl_TLB, StdCtrls, ExtCtrls, DBCtrls, Buttons,
+     CheckLst, ComCtrls, ToolWin, ActnMan, ActnCtrls;
+
+type
+     TFrame_Finding = class(TFrame)
+          Panel2: TPanel;
+          Label14: TLabel;
+          lbl_Name: TLabel;
+          Label18: TLabel;
+          SpeedButton2: TSpeedButton;
+          Label1: TLabel;
+          Lbl_Hosno: TLabel;
+          Label3: TLabel;
+          Lbl_AgeGender: TLabel;
+          Label5: TLabel;
+          Label6: TLabel;
+    DBLCB_RefHos: TDBLookupComboBox;
+          Dex_RptDate: TDateEditX;
+          Dex_SampleDate: TDateEditX;
+          Me_Time: TMaskEdit;
+          DBGrid1: TDBGrid;
+          DS_Findings: TDataSource;
+          Label2: TLabel;
+          lbl_SampleNo: TLabel;
+          DS_RefDoccode: TDataSource;
+          Query_RefDoccode: TOraQuery;
+          Panel1: TPanel;
+          BB_Save: TBitBtn;
+          SpeedButton1: TSpeedButton;
+          SpeedButton3: TSpeedButton;
+          Query_Data: TOraQuery;
+          Label4: TLabel;
+          Label7: TLabel;
+          SpeedButton4: TSpeedButton;
+          SpeedButton5: TSpeedButton;
+          btn_SensitivityResult: TSpeedButton;
+          Memo_SR: TMemo;
+          SpeedButton6: TSpeedButton;
+          Clb_ReportFooter: TCheckListBox;
+          Cb_Edit: TCheckBox;
+          SpeedButton7: TSpeedButton;
+          SpeedButton8: TSpeedButton;
+          SpeedButton9: TSpeedButton;
+          SpeedButton10: TSpeedButton;
+          SpeedButton15: TSpeedButton;
+          SpeedButton11: TSpeedButton;
+          SpeedButton12: TSpeedButton;
+          SpeedButton13: TSpeedButton;
+          SpeedButton14: TSpeedButton;
+          SpeedButton16: TSpeedButton;
+          Label9: TLabel;
+          Dblcb_TestName: TDBLookupComboBox;
+          Ds_TestName: TDataSource;
+          SpeedButton17: TSpeedButton;
+          Memo_Remarks: TMemo;
+          Label8: TLabel;
+          DBLCB_InactiveTest: TDBLookupComboBox;
+          SpeedButton18: TSpeedButton;
+          DS_InactiveTest: TDataSource;
+          Query_InactiveTest: TOraQuery;
+    Query_Finding: TQuery;
+    Table_Findings: TTable;
+    Table_SensitiveMedicine: TTable;
+    QuerySensitiveResult: TQuery;
+    Query_TestName: TQuery;
+    lbledt_labno: TLabeledEdit;
+    lbl1: TLabel;
+    lbl_remarks: TLabel;
+    memo_sampleremrk: TMemo;
+    OraQuery_CheckOnEdit: TOraQuery;
+    Query_Process: TOraQuery;
+    Edit1: TEdit;
+    OraQuery_FindingSaveAccess: TOraQuery;
+    Label10: TLabel;
+    DBLCB_RefDoc: TDBLookupComboBox;
+    OraQuery_Ward: TOraQuery;
+    DataSource_ward: TDataSource;
+    OraQuery_RefHos: TOraQuery;
+    OraQuery_RefDoc: TOraQuery;
+    DS_RefHos: TDataSource;
+    DS_RefDoc: TDataSource;
+    OraQuery_Process2: TOraQuery;
+    OraQuery_Process3: TOraQuery;
+    ToolBar1: TToolBar;
+    OraQuery_Process4: TOraQuery;
+    OraQuery_Process5: TOraQuery;
+    Label11: TLabel;
+    Edit_Height: TEdit;
+    Label12: TLabel;
+    Edit_Weight: TEdit;
+    Edit_BP: TEdit;
+    Label13: TLabel;
+    OraQuery_ToGetBodyMeasurement: TOraQuery;
+    OraQuery_check: TOraQuery;
+    OraQuery_CalcOne: TOraQuery;
+    OraQuery_Calcu: TOraQuery;
+          procedure DBGrid1KeyPress(Sender: TObject; var Key: Char);
+          procedure BB_SaveClick(Sender: TObject);
+          procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+          procedure SpeedButton4Click(Sender: TObject);
+          procedure SpeedButton5Click(Sender: TObject);
+          procedure btn_SensitivityResultClick(Sender: TObject);
+          procedure Query_FindingAfterScroll(DataSet: TDataSet);
+          procedure DBGrid1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure DBGrid1Exit(Sender: TObject);
+          procedure SpeedButton6Click(Sender: TObject);
+          procedure Cb_EditClick(Sender: TObject);
+          procedure SpeedButton7Click(Sender: TObject);
+          procedure SpeedButton16Click(Sender: TObject);
+          procedure SpeedButton17MouseEnter(Sender: TObject);
+          procedure SpeedButton17MouseLeave(Sender: TObject);
+          procedure SpeedButton18Click(Sender: TObject);
+          procedure makeItalicFinding(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBLCB_RefHosKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Dblcb_TestNameKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBGrid1Enter(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure DBLCB_RefDocKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_RefHosClick(Sender: TObject);
+    procedure DBGrid1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure Edit_HeightKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Edit_WeightKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+     private
+          isnew: Boolean;
+          OldRefHosCode: String;
+          LRange, HRange, Findings, CalcFinding: Double;
+          LSign, HSign: String;
+          TestNameId, TestId,OldRefDocid: Integer;
+          Qry: TQuery;
+          Neutrophils,Lympho, Mono, Eosinophils, Basophils, Band, Myeloblasts, Promyelocytes, Myelocytes, Metamyelocytes, Monoblasts, Lymphoblasts,
+            Prolymphocyes,Iron,TIBC,Ferritin,Transferrin,HBA1C,PT,CTRL1,BASONOPHILL,BASONOPHILLL: Double;
+
+          TotalCholesterol, HDLCholesterol, Ldl, Triglyceride,NEUTROPHILS2,LYMPHOCYTES,MONOCYTES,EOSINOPHILS2: Double;
+          TotalBilirubin, ConjugatedBilirubin,TotalBilirubin1,ConjugatedBil,UnconjugatedBil: Double;
+          Protein, Albumin, Globulin,TotalBilirubin2,ConjugatedBil2,UnconjugatedBi2: Double;
+          UrineCreatinine, UrineVolume, SerumCreatinine,Cretinine,Sodium,Potassium,Chlorine,NEUTROPHILS3,LYMPHOCYTES3,MONOCYTES3,EOSINOPHILS3: Double;
+          Urea,Bun,TotalBil,DirectBil,IndirectBil:Double;
+          DataLoading, pb_up: Boolean;
+          RightDlcTotal: Boolean;
+          ps_LoadedTestID, ps_LoadedTestNameID: String;
+
+          { Private declarations }
+          procedure CreateFindingsTable;
+          Procedure SaveFinding;
+          Procedure CalculateFormula(Query: TQuery);
+          Procedure CalculateFormulaOnload;
+          Function CalculatedField(TestNameId, TestId: Integer): Boolean;
+          procedure SaveSampleRemarks;
+          procedure MoveDownToRightResultRow;
+          Procedure MoveUpToRightResultRow;
+          procedure IdentifyingPendingTestResult;
+          Procedure SaveSensitiveResult;
+          Procedure SaveReportFooter;
+          Procedure CopySymbol(Sender: TObject);
+          Procedure LoadInactiveTest;
+     public
+           Ps_DepType:String;
+           Ps_HosCode: String;
+           pi_refdocid : Integer;
+           pb_FromSave:Boolean;
+           ps_sampleremarks:string;
+           Pi_testnameid,Pi_patienttestid:integer;
+           pb_isitalic:boolean;
+          { Public declarations }
+          constructor Create(AOwner: Tcomponent); Override;
+          destructor Destroy; Override;
+          Procedure RetriveDefFinding(NTestID:Integer);
+     end;
+
+const
+          TotalCholesterol=0.00;
+          HDLCholesterol=0.00;
+          Ldl=0.00;
+          Triglyceride=0.00;
+
+Var
+     Frame_SampleCollection: Unit_SampleCollectionFrame.TFrame_SampleCollection;
+
+implementation
+
+uses Unit_FindingComment, Unit_FindingFootnote, Unit_SensitivityResult,Unit_SensitivityResultNew,
+  Unit_SensitivityResultNeuroBrt;
+
+// Procedure SavePatientTestDetail(TestNameId, PatientTestId, PatientId, TestId: Integer; Extra, TestNameCode, TestUnit,
+// RefRange, SpecialRange, Finding, ExtraFinding, SensitivityNo: String); Stdcall; external 'MidasFunction.bpl';
+//
+// Procedure UpdatePatientTestDetail(PtDetailID: Integer; Finding: string); stdcall; external 'MidasFunction.bpl';
+// Procedure UpdateFindingsPostBy(PatientTestId: Integer); stdcall; external 'MidasFunction.bpl';
+// Procedure UpdateCollectedbyInSampleCollection(SampleNo: String; Collectedby: Integer); stdcall;
+// external 'MidasFunction.bpl';
+// Procedure UpdateTestProgressStatus(BILLNO, GroupPatientTestId: String; PatientTestId, TestProgressStatus: Integer);
+// stdcall; external 'MidasFunction.bpl';
+// Procedure SaveSensitivityResult(PatientTestId, PatientId, SMTWID, SensitivityNo, DATAPOSTBY: Integer;
+// RESULT, DATAPOSTDATE, DATAPOSTTIME: String); Stdcall; external 'MidasFunction.bpl';
+// Procedure UpdateSensitivityResult(SENSITIVITYRESULTID, DATAPOSTBY: Integer; RESULT, DATAPOSTDATE,
+// DATAPOSTTIME: String); Stdcall; external 'MidasFunction.bpl';
+// Procedure DeleteSensitiveResult(SENSITIVITYRESULTID: Integer); stdcall; external 'MidasFunction.bpl';
+// Procedure SavePatientReportFooter(SAMPLENO:String; DocID: Integer); Stdcall;External'MidasFunction.bpl';
+// Procedure DeletePatientReportFooter(SampleNo:String);Stdcall;External'MidasFunction.bpl';
+{$R *.dfm}
+{ TFrame1 }
+
+procedure TFrame_Finding.BB_SaveClick(Sender: TObject);
+Var
+     SS: TShiftState;
+     Key: Char;
+
+begin
+
+     pb_FromSave:=True;
+     Key := #13;
+     DBGrid1KeyPress(Sender, Key);
+     IdentifyingPendingTestResult;
+     if DBLCB_RefHos.KeyValue <> null then
+          Ps_HosCode := DBLCB_RefHos.KeyValue
+     else
+          Ps_HosCode := '';
+
+     if lbledt_labno.Text='' then
+     begin
+        lbledt_labno.Text:='0';
+     end;
+
+     if DBLCB_RefDoc.KeyValue<>null then
+          pi_refdocid:=(DBLCB_RefDoc.KeyValue)
+     else
+          pi_refdocid:=0;
+
+     try
+          DM_Hospital.DB.StartTransaction;
+          SaveFinding;
+          SaveSensitiveResult;
+          SaveReportFooter;
+
+          if ps_sampleremarks<>(memo_sampleremrk.Text) then     //Update Sample Remarks
+              SaveSampleRemarks;
+
+          if (OldRefHosCode <> Ps_HosCode) or (OldRefDocid<>pi_refdocid) then
+          begin
+
+//               UpdateRefDocCodeInPatientTest(gi_PatientTestID , DocCode);
+               //IncreaseDocReferralCount(DocCode);
+               //DecreaseDocReferralCount(OldRefDocCode);
+          end;
+          DM_Hospital.DB.Commit;
+          ShowDoneMessage;
+          GS_PATIENTTYPE:='';
+          SimulateKeyPress(Self.Parent.Handle, vk_escape);
+     except
+          DM_Hospital.DB.Rollback;
+          MsgBox(1005, 0, '', '', '');
+     end;
+
+
+end;
+
+procedure TFrame_Finding.btn_SensitivityResultClick(Sender: TObject);
+begin
+    if gi_compileValue in [1,14,21,22,23,24,25,26,27,28] then
+    begin
+         try
+          Form_SensitivityResultNeuroBrt:=TForm_SensitivityResultNeuroBrt.Create(Nil);
+          Form_SensitivityResultNeuroBrt.ShowModal;
+        finally
+           Form_SensitivityResultNeuroBrt.Free;
+        end;
+    end
+    else
+    begin
+         try
+          Form_SensitivityResultNew:=TForm_SensitivityResultNew.Create(Nil);
+          Form_SensitivityResultNew.ShowModal;
+        finally
+           Form_SensitivityResultNew.Free;
+        end;
+    end;
+
+end;
+
+function TFrame_Finding.CalculatedField(TestNameId, TestId: Integer): Boolean;
+begin
+     if (TestNameId = 4) and (TestId = 8) then
+          RESULT := true
+     //else if (TestNameId = 50) and (TestId = 89) then
+          //RESULT := true
+     else if (TestNameId = 39) and (TestId = 545) then
+          RESULT := true
+     else if (TestNameId = 39) and (TestId = 546) then
+          RESULT := true
+     //else if (TestNameId = 39) and (TestId = 544) then
+     //     RESULT := true
+     else if (TestNameId = 306) and (TestId = 245) then
+          RESULT := true
+     else if (TestNameId = 125) and (TestId = 229) then
+          RESULT := true
+     else if (TestNameId = 44) and (TestId = 976) then
+          RESULT := true
+     else if (TestNameId = 324) and (TestId = 399) then
+          RESULT := true
+     //else if (TestNameId = 598) and (TestId = 595) then
+     //      RESULT := true
+     else if (TestNameId = 598) and (TestId = 672) then
+           RESULT := true
+     else if (TestNameId = 599) and (TestId = 610) then
+           RESULT := true
+     else
+          RESULT := false;
+end;
+
+procedure TFrame_Finding.CalculateFormula(Query: TQuery);
+var Oraquery1:TOraQuery;
+begin
+     TestNameId := Query.FieldByName('TestNameID').AsInteger;
+     TestId := Query.FieldByName('TestID').AsInteger;
+
+      {if FormulaExists(TestId) then
+          PrepareCalculatedValue
+      else
+      exit;
+
+      if IsStrANumberExtended(Query.FieldByName('Finding').AsString) then
+      Findings := Query.FieldByName('Finding').AsInteger; }
+     Qry := TQuery.Create(nil);
+     Qry.DatabaseName := gs_temppath;
+
+     IF  not (gi_compileValue in [8, 2]) Then
+     //if (gi_compileValue<> 8) or (gi_compileValue<>2) or (gi_compileValue<>3) then
+     begin
+          if (TestNameId = 4) or (TestNameId = 306) or (TestNameId = 324) or (TestNameId = 598) or (TestNameId = 599) or (TestNameId = 597) then
+          // CBC , CBC Comment, CBC WITH MCV,MCH,MCHC
+          begin
+               if (TestId = 4) or (TestId = 242) or (TestId = 396) or (TestId = 669) or (TestId = 607) or (TestId = 696) then
+                    Lympho := Findings
+               else if (TestId = 5) or (TestId = 243) or (TestId = 397) or (TestId = 670) or (TestId = 608) or (TestId = 697) then
+                    Mono := Findings
+               else if (TestId = 7) or (TestId = 244) or (TestId = 398) or (TestId = 671) or (TestId = 609) or (TestId = 698) then
+                    Eosinophils := Findings
+               else if (TestId = 3) or (TestId = 241) or (TestId = 395) or (TestId = 668) or (TestId = 606) or (TestId = 695) then
+                    Neutrophils := Findings
+               else if (TestId = 9) or (TestId = 246) or (TestId = 410) or (TestId = 673) or (TestId = 611) or (TestId = 700) then
+                    Band := Findings
+               else if (TestId = 10) or (TestId = 418) or (TestId = 411) or (TestId = 674) or (TestId = 612) or (TestId = 702) then
+                    Myeloblasts := Findings
+               else if (TestId = 11) or (TestId = 419) or (TestId = 412) or (TestId = 675) or (TestId = 613) or (TestId = 607) then
+                    Promyelocytes := Findings
+               else if (TestId = 12) or (TestId = 420) or (TestId = 413) or (TestId = 676) then
+                    Myelocytes := Findings
+               else if (TestId = 13) or (TestId = 421) or (TestId = 414) or (TestId = 677) or (TestId = 614) then
+                    Metamyelocytes := Findings
+               else if (TestId = 15) or (TestId = 422) or (TestId = 415) or (TestId = 678) or (TestId = 615) or (TestId = 703) then
+                    Monoblasts := Findings
+               else if (TestId = 16) or (TestId = 423) or (TestId = 416) or (TestId = 679) or (TestId = 616) or (TestId = 704) then
+                    Lymphoblasts := Findings
+               else if (TestId = 17) or (TestId = 424) or (TestId = 417) or (TestId = 680) or (TestId = 617) or (TestId = 705) then
+                    Prolymphocyes := Findings;
+               //else if (TestId = 8) or (TestId = 245) or (TestId = 399) or (TestId = 672) or (TestId = 610) or (TestId = 699) then
+               //     Basophils := Findings
+//             CalcFinding := CalculateNeutrophils(Lympho, Mono, Eosinophils, Basophils, Band, Myeloblasts, Promyelocytes, Myelocytes, Metamyelocytes,
+//               Monoblasts, Lymphoblasts, Prolymphocyes);
+
+               CalcFinding := CalculateBasophils(Lympho, Mono, Eosinophils, Neutrophils, Band, Myeloblasts, Promyelocytes, Myelocytes, Metamyelocytes,
+               Monoblasts, Lymphoblasts, Prolymphocyes);
+
+               if CalcFinding + Lympho + Mono + Eosinophils + Neutrophils + Band + Myeloblasts + Promyelocytes + Myelocytes + Metamyelocytes + Monoblasts +
+                    Lymphoblasts + Prolymphocyes = 100 then
+                    RightDlcTotal := true
+               else
+                    RightDlcTotal := false;
+
+               with Qry do
+               begin
+                    Close;
+                    SQL.Clear;
+                    if TestNameId = 4 then
+                    SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+                    + #39 + ' Where TestID=8')
+                    else if TestNameId = 306 then
+                    SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+                    + #39 + ' Where TestID=245')
+                    else if TestNameId = 598 then
+                    SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+                    + #39 + ' Where TestID=672')
+                    else if TestNameId = 599 then
+                    SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+                    + #39 + ' Where TestID=610')
+                    else if TestNameId = 324 then
+                    SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+                    + #39 + ' Where TestID=399');
+                    ExecSQL;
+               end;
+          end;
+               //IF  not (gi_compileValue in [3]) Then
+               //begin
+
+          if gi_compileValue=23 then     //Cha N Dra     2018-07-19
+          begin
+               with OraQuery_check do
+               begin
+                    close;
+                    session:=DM_Hospital.DB;
+                    sql.Clear;
+                    sql.Add('select LARE_REGULATION from LARE_LabRegulation where LARE_REGULATIONTYPE=''Auto Calculation''');
+                    open;
+               end;
+               if OraQuery_check.FieldByName('LARE_REGULATION').AsString='Y' then
+               begin
+
+                    with OraQuery_CalcOne do
+                    begin
+                         close;
+                         Session:=DM_Hospital.DB;
+                         sql.Clear;
+                         sql.Add('select a1.*,(select cana_isactive from lb_cana_calculationname where cana_isactive=''Y'' and cana_testnameid=catn_testnameid)isactive from lb_catn_calculationtestname a1 where catn_testnameid='+IntToStr(TestNameId));
+                         sql.Add(' and CATN_TESTID=' + IntToStr(TestId)+' and catn_testnameid in (select cana_testnameid from lb_cana_calculationname where cana_isactive=''Y'')');
+                        //sql.savetofile('C:\abc11.txt');
+                         open;
+                    end;
+
+
+                    if OraQuery_CalcOne.FieldByName('CATN_SOURCETESTCODE').AsString='CBC' then         //cbc for mangalam
+                    begin
+                         if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='NEU' then
+                         NEUTROPHILS2:=Findings
+                         else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='LYM' then
+                         LYMPHOCYTES:=Findings
+                         else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='MON' then
+                         MONOCYTES:=Findings
+                         else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='EOS' then
+                         EOSINOPHILS2:=findings;
+                        // else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='BAS' then
+                        // BASONOPHILL:=findings;
+
+                         try
+                              if (NEUTROPHILS2<>0) or (LYMPHOCYTES<>0) or (EOSINOPHILS2<>0) then
+                              CalcFinding :=100-NEUTROPHILS2-LYMPHOCYTES-MONOCYTES-EOSINOPHILS2
+                              else
+                              CalcFinding:=0;
+                             // if CalcFinding=100 then
+                             // CalcFinding:=00;
+
+                         Except
+                              ShowMessage('Please Type Proper Results');
+                         end;
+
+                         with OraQuery_Process2 do
+                         begin
+                              close;
+                              session:=DM_hospital.db;
+                              sql.clear;
+                              sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''BAS''');
+                              open;
+                         end;
+
+                         with Qry do
+                         begin
+                              Close;
+                              SQL.Clear;
+                              if gi_compilevalue in  [23] then
+                              begin
+                                  begin
+
+                                    // SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                     SQL.Add('Update Findings Set Finding='+#39+FormatFloat('00', (CalcFinding))+#39 +
+                                      ' Where TestID='+intToStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+                                     ExecSQL;
+                                  end
+
+                              end
+
+                         end;
+
+                    end;
+                    if OraQuery_CalcOne.FieldByName('CATN_SOURCETESTCODE').AsString='DLC' then         //DLC for mangalam
+                    begin
+                         if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='NEU1' then
+                         NEUTROPHILS3:=Findings
+                         else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='LYM1' then
+                         LYMPHOCYTES3:=Findings
+                         else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='MON1' then
+                         MONOCYTES3:=Findings
+                         else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='ESO1' then
+                         EOSINOPHILS3:=findings;
+                        // else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='BAS1' then
+                       //  BASONOPHILLL:=findings;
+
+
+                         try
+
+                         if (NEUTROPHILS3<>0) or (LYMPHOCYTES3<>0) or (MONOCYTES3<>0) or (EOSINOPHILS3<>0) then
+                              CalcFinding :=100-NEUTROPHILS3-LYMPHOCYTES3-MONOCYTES3-EOSINOPHILS3
+                         else
+                         CalcFinding:=0;
+
+                        Except
+                         ShowMessage('Please Type Proper Results');
+                        end;
+
+                         with OraQuery_Process2 do
+                         begin
+                              close;
+                              session:=DM_hospital.db;
+                              sql.clear;
+                              sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''BAS1''');
+                              open;
+                         end;
+
+                         with Qry do
+                         begin
+                              Close;
+                              SQL.Clear;
+                              if gi_compilevalue in  [23] then
+                              begin
+
+                                  begin
+
+                                     SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+                                     + #39 + ' Where TestID='+intToStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+                                     ExecSQL;
+                                  end
+
+                              end
+
+                         end;
+
+                    end;
+                     if OraQuery_CalcOne.FieldByName('CATN_SOURCETESTCODE').AsString='LFTG' then         //LFT WITH GGT for mangalam
+                    begin
+                         if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='TOTB' then
+                         TotalBilirubin1:=Findings
+                         else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='CBIL' then
+                         ConjugatedBil:=Findings;
+//                         else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='UBIL' then
+//                         UnconjugatedBil:=Findings;
+
+
+                         try
+                         CalcFinding :=TotalBilirubin1-ConjugatedBil;
+                         Except
+                         ShowMessage('Please Type Proper Results');
+                         end;
+
+                         with OraQuery_Process2 do
+                         begin
+                              close;
+                              session:=DM_hospital.db;
+                              sql.clear;
+                              sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''UNBI''');
+                              open;
+                         end;
+
+                         with Qry do
+                         begin
+                              Close;
+                              SQL.Clear;
+                              if gi_compilevalue in  [23] then
+                              begin
+
+                                  begin
+
+                                     SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                     + #39 + ' Where TestID='+intToStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+                                     ExecSQL;
+                                  end ;
+
+                              end
+
+                         end;
+
+                    end;
+                     if OraQuery_CalcOne.FieldByName('CATN_SOURCETESTCODE').AsString='SEBIL' then         //SERUM BILRUBIN for mangalam
+                    begin
+                         if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='TOTB1' then
+                         TotalBilirubin2:=Findings
+                         else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='CBIL1' then
+                         ConjugatedBil2:=Findings;
+//                         else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='UBIL1' then
+//                         UnconjugatedBi2:=Findings;
+
+
+                         try
+                              if (TotalBilirubin2<>0) or (ConjugatedBil2<>0) then
+                              CalcFinding :=TotalBilirubin2-ConjugatedBil2
+                              else
+                              CalcFinding:=0;
+                         Except
+                         ShowMessage('Please Type Proper Results');
+                         end;
+
+                         with OraQuery_Process2 do
+                         begin
+                              close;
+                              session:=DM_hospital.db;
+                              sql.clear;
+                              sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''UNBI1''');
+                              open;
+                         end;
+
+                         with Qry do
+                         begin
+                              Close;
+                              SQL.Clear;
+                              if gi_compilevalue in  [23] then
+                              begin
+
+                                  begin
+
+                                     SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('0.0', (CalcFinding))
+                                     + #39 + ' Where TestID='+intToStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+                                     //SQL.SaveToFile('C:\mang.txt');
+                                     ExecSQL;
+                                  end ;
+
+                              end
+
+                         end;
+
+                    end;
+
+
+
+                   // if (TestNameId = 39) or (TestNameId = 598) or (TestNameId = 599) or (TestNameId = 597) or  (Testnameid=459) then //or (TestNameId=215)then // LIPID PROFILE
+                    if OraQuery_CalcOne.FieldByName('CATN_SOURCETESTCODE').AsString='LIP' then
+                    begin
+                        // if (TestId = 542) or (TestId = 593) or (TestId = 565) or (TestId = 650) or (Testid=84) or (TestId=37) then
+                         if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='CHOL' then
+                         TotalCholesterol := Findings
+                         //else if (TestId = 544) or (TestId = 594) or (TestId = 566) or (TestId = 561) or (Testid=86) or (TestId=39) then
+                         else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='HDLC' then
+                         HDLCholesterol := Findings
+                        // else if (TestId = 543) or (TestId = 591) or (TestId = 564) or (TestId = 648) or (Testid=85) or (TestId=38) then
+                         else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='TG' then
+                         Triglyceride := Findings;
+
+                         if gi_compileValue=3 then
+                         begin
+                              if (TestId<>547) and (TestId<>548) then // This is calculated value so shouldn't give to change manually.
+                              Begin
+                                   if (Triglyceride<>0.00) and (HDLCholesterol=0.00) then
+                                   begin
+                                        CalcFinding := CalculateVLDLCholesterol(Triglyceride);
+                                        with Qry do
+                                        begin
+                                             Close;
+                                             SQL.Clear;
+                                             //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=546');
+
+                                             SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             + #39 + ' Where TestID=476');
+                                              ExecSQL;
+                                        end;
+                                   end
+                                   else if (Triglyceride<>0.00) and (HDLCholesterol<>0.00) then
+                                   begin
+                                        CalcFinding := CalculateLDLCholesterol(TotalCholesterol, HDLCholesterol, Triglyceride);
+                                        Ldl := CalcFinding;
+                                        with Qry do
+                                        begin
+                                             Close;
+                                             SQL.Clear;
+                                             //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=545');
+
+
+                                             SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             + #39 + ' Where TestID=87');
+                                             ExecSQL;
+
+
+
+
+                                             //  SQL.Clear;
+                                             //  SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+                                             //  + #39 + ' Where TestID=595');
+                                             //  ExecSQL;
+                                             //      //  SQL.Clear;
+                                             //  SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+                                             //  + #39 + ' Where TestID=567');
+                                             //  ExecSQL;
+                                             //
+                                              //  SQL.Clear;
+                                              //  SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+                                              //  + #39 + ' Where TestID=652');
+                                              //  ExecSQL;
+                                              //
+                                             CalcFinding := CalculateLdlHdlRatio(Ldl, HDLCholesterol);
+
+                                             SQL.Clear;
+                                             //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=547');
+
+
+                                             SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             + #39 + ' Where TestID=477');
+                                             ExecSQL;
+
+                                             CalcFinding := CalculateCholesterolhdlRatio(TotalCholesterol, HDLCholesterol);
+
+                                             SQL.Clear;
+                                             //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=548');
+
+                                             SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             + #39 + ' Where TestID=475');
+                                             ExecSQL;
+
+                                             SQL.Clear;
+
+                                             CalcFinding := CalculateNonCholesterol(TotalCholesterol, HDLCholesterol);
+
+                                             SQL.Clear;
+                                             //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=548');
+                                             //ExecSQL;
+
+                                             SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             + #39 + ' Where TestID=474');
+                                             ExecSQL;
+                                             //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=548');
+                                        end;
+
+                                             //end;
+                                             //CalcFinding := CalculateNonHDLCholesterol(TotalCholesterol, HDLCholesterol);
+                                             //with Qry do
+                                             //begin
+                                             //Close;
+                                             //SQL.Clear;
+                                             //SQL.Add('Update Findings Set Fin   ding=' + #39 + FormatFloat('00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=64');
+                                             //ExecSQL;
+                                             //end;
+
+                                             //
+                                             //CalcFinding := CalculateLDLCholesterol(TotalCholesterol, HDLCholesterol, Triglyceride);
+                                             //Ldl := CalcFinding;
+                                            // with Qry do
+                                             //begin
+                                             //        //Close;
+                                             //SQL.Clear;
+                                             //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=545');
+                                             //ExecSQL;
+
+                                             //SQL.Clear;
+                                             //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=595');
+                                             //ExecSQL;
+
+                                             //SQL.Clear;
+                                             //      //                    SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+                                             //      //                    + #39 + ' Where TestID=567');
+//      //                                   ExecSQL;
+//      //
+//      //                                   SQL.Clear;
+//      //                                   SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+//      //                                   + #39 + ' Where TestID=652');
+//      //                                   ExecSQL;
+//      //
+//                                       CalcFinding := CalculateLdlHdlRatio(Ldl, HDLCholesterol);
+//
+//                                       SQL.Clear;
+//                                       SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+//                                           + #39 + ' Where TestID=547');
+//                                           ExecSQL;
+//
+//                                           CalcFinding := CalculateCholesterolLdlRatio(TotalCholesterol, Ldl);
+//
+//                                           SQL.Clear;
+//                                           SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+//                                           + #39 + ' Where TestID=548');
+//                                           ExecSQL;
+//                                           end;
+//                                           CalcFinding := CalculateVLDLCholesterol(Triglyceride);
+//                                           with Qry do
+//                                           begin
+//                                           Close;
+//                                           SQL.Clear;
+//                                           SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('00', (CalcFinding))
+//                                           + #39 + ' Where TestID=546');
+//                                           ExecSQL;
+                                             //end;
+      //                                      CalcFinding := CalculateNonHDLCholesterol(TotalCholesterol, HDLCholesterol);
+      //                                     with Qry do
+      //                                     begin
+      //                                     Close;
+      //                                     SQL.Clear;
+      //                                SQL.Add('Update Findings Set Fin   ding=' + #39 + FormatFloat('00', (CalcFinding))
+      //                                + #39 + ' Where TestID=64');
+      //                                     ExecSQL;
+                                        //                      end;
+                                   end;
+                              End;
+                         end
+                         else
+                         begin
+                              if (TestId<>547) and (TestId<>548) then // This is calculated value so shouldn't give to change manually.
+                              Begin
+                                   if (Triglyceride<>0.00) and (HDLCholesterol=0.00) then
+                                   begin
+                                        CalcFinding := CalculateVLDLCholesterol(Triglyceride);
+
+                                        with OraQuery_Process2 do
+                                        begin
+                                             close;
+                                             session:=DM_hospital.db;
+                                             sql.clear;
+                                             sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''VLDL''');
+                                             open;
+                                        end;
+
+                                        with Qry do
+                                        begin
+                                             Close;
+                                             SQL.Clear;
+                                             if gi_compilevalue in  [23] then
+                                             begin
+                                                 if Triglyceride<>0 then
+                                                 begin
+
+                                                    SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                                    + #39 + ' Where TestID='+intToStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+                                                    ExecSQL;
+                                                 end
+                                                 else
+                                                 begin
+                                                  SQL.Add('Update Findings Set Finding=' + #39 +'Cannot be Calculated'+ #39 + ' Where TestID='+intToStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+                                                  ExecSQL;
+                                                end;
+                                             end
+                                             else
+                                             begin
+                                                 if Triglyceride<=400 then
+                                                 begin
+                                                    SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                                    + #39 + ' Where TestID=476');
+                                                    ExecSQL;
+                                                 end
+                                                 else
+                                                 begin
+                                                      SQL.Add('Update Findings Set Finding=' + #39 +'Cannot be Calculated'+ #39 + ' Where TestID=476');
+                                                      ExecSQL;
+                                                 end;
+                                             end;
+                                        end;
+
+                                   end
+                                   else if (Triglyceride<>0.00) and (HDLCholesterol<>0.00) then
+                                   begin
+                                        CalcFinding := CalculateLDLCholesterol(TotalCholesterol, HDLCholesterol, Triglyceride);
+                                        Ldl := CalcFinding;
+
+                                       //LDL
+                                        with OraQuery_Process2 do
+                                        begin
+                                             close;
+                                             session:=DM_hospital.db;
+                                             sql.clear;
+                                             sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''LDL''');
+                                             open;
+                                        end;
+                                       { //L/HDLC
+                                        with OraQuery_Process3 do
+                                        begin
+                                             close;
+                                             session:=DM_hospital.db;
+                                             sql.clear;
+                                             sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''L/HDL''');  //HDLC
+                                             open;
+                                        end;}
+
+                                        //Total/HDL
+                                        with OraQuery_Process4 do
+                                        begin
+                                             close;
+                                             session:=DM_hospital.db;
+                                             sql.clear;
+                                             sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''T/HDL''');
+                                             open;
+                                        end;
+
+                                        //LDL/HDL
+                                        with OraQuery_Process5 do
+                                        begin
+                                             close;
+                                             session:=DM_hospital.db;
+                                             sql.clear;
+                                             sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''L/HDL''');
+                                             open;
+                                        end;
+
+
+                                        with Qry do
+                                       begin
+                                            Close;
+                                            SQL.Clear;
+                                            //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                            //+ #39 + ' Where TestID=545');
+                                            //ExecSQL;
+                                          //  if gi_compilevalue=22 then
+                                            begin
+//                                                 if Triglyceride<=400 then
+                                                       begin
+                                                          SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                                          + #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+                                                          ExecSQL;
+                                                       end
+//                                                  else
+//                                                  begin
+//                                                       begin
+//                                                            SQL.Add('Update Findings Set Finding=' + #39 +'Cannot be Calculated'+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+//                                                            ExecSQL;
+//                                                        end;
+//                                                  end;
+                                            end;
+
+                                           { if gi_compilevalue=25 then             //KMC
+                                            begin
+                                                if Triglyceride<=400 then
+                                                       begin
+                                                          SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                                          + #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+                                                          ExecSQL;
+                                                       end
+                                                  else
+                                                  begin
+                                                       begin
+                                                            SQL.Add('Update Findings Set Finding=' + #39 +'Cannot be Calculated'+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+                                                            ExecSQL;
+                                                        end;
+                                                  end;
+                                            end; }
+
+
+                                            CalcFinding := CalculateLdlHdlRatio(Ldl, HDLCholesterol);
+                                            SQL.Clear;
+                                           // SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                            //+ #39 + ' Where TestID=547');
+                                            //ExecSQL;
+//                                            if Triglyceride<=400 then
+                                            begin
+                                               SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                               + #39 + ' Where TestID='+IntTOStr(OraQuery_Process5.FieldByName('CATN_TESTID').AsInteger));
+                                               ExecSQL;
+                                            end;
+//                                            else
+//                                            begin
+//                                                 begin
+//                                                 SQL.Add('Update Findings Set Finding=' + #39 +'Cannot be Calculated'+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process5.FieldByName('CATN_TESTID').AsInteger));
+//                                                 ExecSQL;
+//                                            end;
+//                                            end;
+
+                                            CalcFinding := CalculateCholesterolhdlRatio(TotalCholesterol, HDLCholesterol);
+
+                                            SQL.Clear;
+                                            //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                            //+ #39 + ' Where TestID=548');
+                                            //ExecSQL;
+                                            //if Triglyceride<=400 then   //Lipid profile
+                                            begin
+                                               SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                               + #39 + ' Where TestID='+IntTOStr(OraQuery_Process4.FieldByName('CATN_TESTID').AsInteger));
+                                               ExecSQL;
+                                            end;
+//                                            else
+//                                            begin
+//                                                begin
+//                                                 SQL.Add('Update Findings Set Finding=' + #39 +'Cannot be Calculated'+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process4.FieldByName('CATN_TESTID').AsInteger));
+//                                                 ExecSQL;
+//                                            end;
+//                                            end;
+
+                                            CalcFinding := CalculateNonCholesterol(TotalCholesterol, HDLCholesterol);
+
+                                            SQL.Clear;
+                                            //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                            //+ #39 + ' Where TestID=548');
+                                            //ExecSQL;
+                                           { if TotalCholesterol<>0 then
+                                            begin
+                                                 SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                                 + #39 + ' Where TestID='+IntTOStr(OraQuery_Process5.FieldByName('CATN_TESTID').AsInteger));    //medicare
+                                                 ExecSQL;
+                                            end
+                                            else
+                                            begin
+                                                 begin
+                                                 SQL.Add('Update Findings Set Finding=' + #39 +'Value Not Calculated'+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process5.FieldByName('CATN_TESTID').AsInteger));
+                                                 ExecSQL;   //medicare
+                                            end;
+                                            end; }
+
+                                       end;
+
+                                        {with Qry do
+                                        begin
+                                             Close;
+                                             SQL.Clear;
+                                             //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=545');
+                                             //ExecSQL;
+                                             if Triglyceride<=400 then
+                                             begin
+                                                SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                                + #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+                                                ExecSQL;
+                                             end
+                                             else
+                                             begin
+                                                  begin
+                                                  SQL.Add('Update Findings Set Finding=' + #39 +'Cannot be Calculated'+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+                                                  ExecSQL;
+                                             end;
+                                             end;
+
+
+
+
+
+                                             CalcFinding := CalculateLdlHdlRatio(Ldl, HDLCholesterol);
+                                             SQL.Clear;
+                                            // SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=547');
+                                             //ExecSQL;
+                                             if Triglyceride<=400 then
+                                             begin
+                                                SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                                + #39 + ' Where TestID='+IntTOStr(OraQuery_Process3.FieldByName('CATN_TESTID').AsInteger));
+                                                ExecSQL;
+                                             end
+                                             else
+                                             begin
+                                                  begin
+                                                  SQL.Add('Update Findings Set Finding=' + #39 +'Cannot be Calculated'+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process3.FieldByName('CATN_TESTID').AsInteger));
+                                                  ExecSQL;
+                                             end;
+                                             end;
+
+                                             CalcFinding := CalculateCholesterolhdlRatio(TotalCholesterol, HDLCholesterol);
+
+                                             SQL.Clear;
+                                             //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=548');
+                                             //ExecSQL;
+                                             if Triglyceride<=400 then
+                                             begin
+                                                SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                                + #39 + ' Where TestID='+IntTOStr(OraQuery_Process4.FieldByName('CATN_TESTID').AsInteger));
+                                                ExecSQL;
+                                             end
+                                             else
+                                             begin
+                                                 begin
+                                                  SQL.Add('Update Findings Set Finding=' + #39 +'Cannot be Calculated'+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process4.FieldByName('CATN_TESTID').AsInteger));
+                                                  ExecSQL;
+                                             end;
+                                             end;
+
+                                             CalcFinding := CalculateNonCholesterol(TotalCholesterol, HDLCholesterol);
+
+                                             SQL.Clear;
+                                             //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                             //+ #39 + ' Where TestID=548');
+                                             //ExecSQL;
+                                             if TotalCholesterol<>0 then
+                                             begin
+                                                  SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('.00', (CalcFinding))
+                                                  + #39 + ' Where TestID=396');    //medicare
+                                                  ExecSQL;
+                                             end
+                                             else
+                                             begin
+                                                  begin
+                                                  SQL.Add('Update Findings Set Finding=' + #39 +'Value Not Calculated'+ #39 + ' Where TestID=396');
+                                                  ExecSQL;   //medicare
+                                             end;
+                                             end;
+
+                                        end;}
+
+                                   end;
+                              End;
+                         end;
+                    end;
+               //end;
+
+//               if (TestNameId = 44) or (TestNameId = 50) or (TestNameId = 326) or (Testnameid=481) or (TestNameId=214) then
+//               begin
+//                    if (TestId = 87) or (TestId = 78) or (TestId = 438) or (Testid=34) or (TestId=23) then
+//                         TotalBilirubin := Findings
+//                    else if (TestId = 88) or (TestId = 859) or (TestId = 439) or (Testid=35) or (TestId=24) then
+//                         ConjugatedBilirubin := Findings;
+//
+//                    CalcFinding := CalculateUnconjugatedBilirubin(TotalBilirubin, ConjugatedBilirubin);
+//                    if  ((TotalBilirubin<>0.00) and (ConjugatedBilirubin<>0.00)) then
+//                    begin
+//                         with Qry do
+//                         begin
+//                              Close;
+//                              SQL.Clear;
+//                              if TestNameId = 214 then //NeuroBrt
+//                              begin
+//                                   SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.0', (CalcFinding)) + #39 + ' Where TestID=310');
+//                              //else
+//                                   //SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.0', (CalcFinding)) + #39 + ' Where TestID=89');
+//                              ExecSQL;
+//                              end;
+//                              if TestNameId = 326 then
+//                              begin
+//                                   SQL.Clear;
+//                                   SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.0', (CalcFinding)) + #39 + ' Where TestID=440');
+//                                   ExecSQL;
+//                              end;
+//
+//                              if TestNameId = 481 then //NMC
+//                              begin
+//                                   SQL.Clear;
+//                                   if CalcFinding>0 then
+//                                   SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.0', (CalcFinding)) + #39 + ' Where TestID=471')
+//                                   else
+//                                   SQL.Add('Update Findings Set Finding=' + #39 +''+ #39 + ' Where TestID=471');
+//                                   ExecSQL;
+//                              end;
+//                         end;
+//                    end;
+//               end;
+
+        //  if (TestNameId = 44) or (TestNameId = 48) or (TestNameId = 85) or (TestNameId = 326) or (Testnameid=481) then
+               if OraQuery_CalcOne.FieldByName('CATN_SOURCETESTCODE').AsString='LFT' then     //LFT
+               begin
+                   // if (TestId = 84) or (TestId = 74) or (TestId = 434) or (Testid=472) then
+                   if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='PRO' then
+                         Protein := Findings
+                    //else if (TestId = 85) or (TestId = 75) or (TestId = 435) or (Testid=473) then
+                   else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='ALB' then
+                    Albumin := Findings;
+
+                   if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='TBIL' then
+                   TotalBil:=Findings
+                   else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='DIBI' then
+                   DirectBil:=Findings;
+
+                   try
+                         IndirectBil:=TotalBil-DirectBil;
+                   except
+                         ShowMessage('Please enter Proper Values');
+                   end;
+
+                   with OraQuery_Calcu do
+                   begin
+                         close;
+                         session:=DM_hospital.db;
+                         sql.clear;
+                         sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''INBI''');
+                         open;
+                   end;
+                    with Qry do
+                    begin
+                         if IndirectBil>0 then
+                         begin
+                              SQL.Clear;
+                              SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.0', (IndirectBil)) + #39 + ' Where TestID='+IntTOStr(OraQuery_Calcu.fieldbyname('CATN_TESTID').asinteger));
+                              ExecSQL;
+                         end;
+
+                    end;
+
+
+
+                    if Protein=Albumin then
+                    CalcFinding:=0.0
+                    else
+                    CalcFinding := CalculateGlobulin(Protein, Albumin);
+
+                    Globulin := CalcFinding;
+
+                     if (Protein=0) AND (Albumin=0) then
+                     CalcFinding:=0.0
+                     else
+                     CalcFinding := CalculateAGRation(Albumin, Globulin);
+
+                     with OraQuery_Process2 do
+                    begin
+                         close;
+                         session:=DM_hospital.db;
+                         sql.clear;
+                         sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''GLB''');
+                         open;
+                    end;
+                    //UIBC
+                    with OraQuery_Process3 do
+                    begin
+                         close;
+                         session:=DM_hospital.db;
+                         sql.clear;
+                         sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''AGR''');
+                         open;
+                    end;
+
+
+
+                    with Qry do
+                    begin
+                        { Close;
+                         SQL.Clear;
+                         if TestNameId = 44 then
+                              SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.0', (Globulin)) + #39 + ' Where TestID=976')
+                         else
+                              SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.0', (CalcFinding)) + #39 + ' Where TestID=246');
+                         ExecSQL;
+
+                         if TestNameId = 44 then
+                         Begin
+                              Close;
+                              SQL.Clear;
+                              SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.00', (CalcFinding)) + #39 + ' Where TestID=977');
+                              ExecSQL;
+                         End;
+                         if TestNameId = 326 then
+                         begin
+                              SQL.Clear;
+                              SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.0', (Globulin)) + #39 + ' Where TestID=436');
+                              ExecSQL;
+                              SQL.Clear;
+                              SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.0', (CalcFinding)) + #39 + ' Where TestID=437');
+                              ExecSQL;
+                         end; }
+
+
+                        // if TestNameId = 481 then  //NMC
+                         begin
+                              SQL.Clear;
+                              if Globulin>0 then
+                              SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.0', (Globulin)) + #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.fieldbyname('CATN_TESTID').asinteger))
+                              else
+                              SQL.Add('Update Findings Set Finding=' + #39 +''+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.fieldbyname('CATN_TESTID').asinteger));
+                              ExecSQL;
+                              SQL.Clear;
+                               if CalcFinding>0 then
+                              SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.0', (CalcFinding)) + #39 + ' Where TestID='+IntTOStr(OraQuery_Process3.fieldbyname('CATN_TESTID').asinteger))
+                              else
+                              SQL.Add('Update Findings Set Finding=' + #39 +''+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process3.fieldbyname('CATN_TESTID').asinteger));
+                              ExecSQL;
+                         end;
+
+                    end;
+               end;
+        //  if (TestNameId = 229) { or (TestNameId = 32) or (TestNameId = 221) or (TestNameId = 223)}  then
+               if OraQuery_CalcOne.FieldByName('CATN_SOURCETESTCODE').AsString='RFT' then   //RFT
+               begin
+                   // if TestId = 450 then
+                   if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='URA' then
+                         Urea := Findings
+                 else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='CRT' then
+                         cretinine := Findings
+                 else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='SDM' then
+                         Sodium := Findings
+                 else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='PTS' then
+                         Potassium := Findings
+                 else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='CLR' then
+                         Chlorine := Findings;
+
+                     with OraQuery_Process2 do
+                    begin
+                         close;
+                         session:=DM_hospital.db;
+                         sql.clear;
+                         sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''EGFR''');
+                         open;
+                    end;
+
+                   // CalcFinding := CalculateCreatinineclearance(UrineCreatinine, UrineVolume, SerumCreatinine);
+                   CalcFinding := CalculateEgfr(cretinine,Gs_Age);
+                    with Qry do
+                    begin
+                         Close;
+                         SQL.Clear;
+                         SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.00', (CalcFinding)) + #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.FieldByName('CATN_TESTID').AsInteger));
+                         ExecSQL;
+                    end;
+               end;
+               if (TestNameId=218) then
+               begin
+                    if (TestId=32) then
+                         Urea:=Findings;
+                    CalcFinding:=CalculateBun(Urea);
+                    if Urea>0.00 then
+                    begin
+                         with Qry do
+                         begin
+                              Close;
+                              SQL.clear;
+                              SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.00',(CalcFinding))+#39 +' Where Testid=309');
+                              ExecSQL;
+                         end;
+                    end;
+
+               end;
+
+              // if testnameid=1334(*Medicare*) then  // Iron Profile
+               if OraQuery_CalcOne.FieldByName('CATN_SOURCETESTCODE').AsString='IP' then    //IRON PROFILE
+               begin
+                   // if testid=64(*Medicare*) then
+                    if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='IRON' then
+                    iron:=Findings
+                  //  else if testid=66(*Medicare*) then
+                  else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='TIBC' then
+                    TIBC:=Findings
+                  //  else if testid=65(*Medicare*) then
+                  else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='FRTN' then
+                    Ferritin:=Findings;
+
+                    CalcFinding := CalculateTransferrinSaturation(iron, TIBC);
+                   // Transferrin:= CalculateTransferrin(TIBC);
+                   Transferrin:=CalculateBindingCapacity(Iron,TIBC);
+
+
+                  //TS
+                    with OraQuery_Process2 do
+                    begin
+                         close;
+                         session:=DM_hospital.db;
+                         sql.clear;
+                         sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''TS''');
+                         open;
+                    end;
+                    //UIBC
+                    with OraQuery_Process3 do
+                    begin
+                         close;
+                         session:=DM_hospital.db;
+                         sql.clear;
+                         sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''UIBC''');
+                         open;
+                    end;
+
+
+                  with Qry do
+                  begin
+                        Close;
+                        SQL.Clear;
+                        if CalcFinding>0 then
+                        SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.00', (CalcFinding)) + #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.fieldbyname('CATN_TESTID').asinteger))
+                        else
+                        SQL.Add('Update Findings Set Finding=' + #39 +''+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.fieldbyname('CATN_TESTID').asinteger));
+                        ExecSQL;
+                  end;
+
+                  with Qry do
+                  begin
+                        Close;
+                        SQL.Clear;
+                        if Transferrin>0 then
+                        SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.00', (Transferrin)) + #39 + ' Where TestID='+intToStr(OraQuery_Process3.FieldByName('CATN_TESTID').AsInteger))
+                        else
+                         SQL.Add('Update Findings Set Finding=' + #39 +FormatFloat('#0.00', (Transferrin))+ #39 + ' Where TestID='+intToStr(OraQuery_Process3.FieldByName('CATN_TESTID').AsInteger));
+                        ExecSQL;
+                  end;
+
+
+               end;
+
+
+               if OraQuery_CalcOne.FieldByName('CATN_SOURCETESTCODE').AsString='HBA1C' then    //HBA1C
+               begin
+                   // if testid=64(*Medicare*) then
+                    if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='HBA1C' then
+                    HBA1C:=Findings;
+
+                    CalcFinding := CalculateEstimatedGlucoseLevel(HBA1C);
+
+                    with OraQuery_Process2 do
+                    begin
+                         close;
+                         session:=DM_hospital.db;
+                         sql.clear;
+                         sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''EAG''');
+                         open;
+                    end;
+
+
+                  with Qry do
+                  begin
+                        Close;
+                        SQL.Clear;
+                        if CalcFinding>0 then
+                        SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.00', (CalcFinding)) + #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.fieldbyname('CATN_TESTID').asinteger))
+                        else
+                        SQL.Add('Update Findings Set Finding=' + #39 +''+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.fieldbyname('CATN_TESTID').asinteger));
+                        ExecSQL;
+                  end;
+
+               end;
+
+               if OraQuery_CalcOne.FieldByName('CATN_SOURCETESTCODE').AsString='PT' then    // PROTHROMSIN TIME
+               begin
+                   // if testid=64(*Medicare*) then
+                    if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='PT' then
+                    PT:=Findings
+                    else if OraQuery_CalcOne.FieldByName('CATN_TESTCODE').AsString='CTRL' then
+                    CTRL1:=Findings;
+
+                    if  (PT>0) AND (CTRL1>0) then
+                    begin
+                         CalcFinding := CalculateINX(PT,CTRL1);
+
+                         with OraQuery_Process2 do
+                         begin
+                              close;
+                              session:=DM_hospital.db;
+                              sql.clear;
+                              sql.add('select CATN_TESTID from lb_catn_calculationtestname where catn_testcode=''INR''');
+                              open;
+                         end;
+
+                       with Qry do
+                       begin
+                             Close;
+                             SQL.Clear;
+                             if CalcFinding>0 then
+                             SQL.Add('Update Findings Set Finding=' + #39 + FormatFloat('#0.00', (CalcFinding)) + #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.fieldbyname('CATN_TESTID').asinteger))
+                             else
+                             SQL.Add('Update Findings Set Finding=' + #39 +''+ #39 + ' Where TestID='+IntTOStr(OraQuery_Process2.fieldbyname('CATN_TESTID').asinteger));
+                             ExecSQL;
+                       end;
+                    end;
+
+
+               end;
+          end;
+        end;
+          Qry.Free;
+     end;
+end;
+
+procedure TFrame_Finding.CalculateFormulaOnload;
+Var
+     Sender: TObject;
+     Key: Char;
+     i: Integer;
+begin
+     for i := 0 to Query_Finding.RecordCount - 1 do
+     begin
+          DataLoading := true;
+          Key := #13;
+          DBGrid1KeyPress(Sender, Key);
+     end;
+     DataLoading := false;
+end;
+
+procedure TFrame_Finding.Cb_EditClick(Sender: TObject);
+begin
+     if Cb_Edit.Checked then
+     begin
+          DBGrid1.Columns[2].ReadOnly := false;
+          DBGrid1.Columns[3].ReadOnly := false;
+     end
+     else
+     begin
+          DBGrid1.Columns[2].ReadOnly := true;
+          DBGrid1.Columns[3].ReadOnly := true;
+     end;
+end;
+
+procedure TFrame_Finding.CopySymbol(Sender: TObject);
+Var
+     Str: String;
+     Cb: TClipboard;
+     Key: Word;
+     Shiftstate: TShiftState;
+begin
+     Str := (Sender as TSpeedButton).Caption;
+     Cb := TClipboard.Create;
+     Cb.AsText := Str;
+     // Shiftstate:=[ssCtrl];
+     // Key:=Ord('v');
+     // DBGrid1KeyDown(Sender,Key,Shiftstate);
+     Query_Finding.Edit;
+     DBGrid1.Fields[DBGrid1.SelectedIndex].Value := DBGrid1.Fields[DBGrid1.SelectedIndex].Value + Str;
+     Query_Finding.Post;
+
+end;
+
+constructor TFrame_Finding.Create(AOwner: Tcomponent);
+Var
+     ls_date: String;
+     i: Integer;
+     Sender: TObject;
+     Qry: TOraQuery;
+     TestPackageID: Integer;
+begin
+     inherited;
+     CreateQuery;
+     try
+          if not DirectoryExists(ExtractFilePath(Application.ExeName)+ gs_UserName  + 'Temp') then
+          GetTempPath;
+
+          //Ps_DepType:=GetUserDepType(gi_UserID);
+          Ps_DepType:=gs_DepType;
+
+          Label1.Caption := Gs_PatientIdCaption;
+
+          if gi_compileValue=3 then
+          begin
+              with Query_RefDoccode do
+              begin
+                close;
+                Session:=Dm_Hospital.Db;
+                sql.Clear;
+                sql.Add('select doccode,TRIM(REPLACE(REPLACE(REPLACE(replace(docname||'' ''||L_name,''DR''),''PROF''),''.''),''(MRS)''))/*||'' - ''||Nvl(referralcount,0)*/DOCNAME from doctor ');
+                sql.Add('order by Nvl(referralcount,0) desc');
+                Open;
+              end;
+          end
+          else if gi_compileValue in [1,2,3,4,5,6,7,8,11,14,12,16,17,18,19,20,21,22,23,24,25,26,27,28] then
+          begin
+              {with Query_RefDoccode do
+              begin
+                close;
+                Session:=Dm_Hospital.Db;
+                sql.Clear;
+                sql.Add('select doct_doccode as doccode,TRIM(REPLACE(REPLACE(REPLACE(replace(doct_docname,''DR''),''PROF''),''.''),''(MRS)''))/*||'' - ''||Nvl(referralcount,0)*/DOCNAME from hs_doct_doctor ');
+                //sql.Add('order by Nvl(referralcount,0) desc');
+                Open;
+              end;}
+          end
+          else if gi_compileValue in [15,20] then
+          begin
+               {with Query_RefDoccode do
+               begin
+                    close;
+                    Session:=Dm_Hospital.Db;
+                    sql.Clear;
+                    sql.Add('select doct_doccode as doccode,doct_desig||doct_DOCNAME as docname from hs_doct_doctor ');
+                    //sql.Add('order by Nvl(referralcount,0) desc');
+                    Open;
+               end;}
+          end;
+         { else
+          with Query_RefDoccode do
+          begin
+               close;
+               Session:=Dm_Hospital.Db;
+               sql.Clear;
+               sql.Add('select doccode,TRIM(REPLACE(REPLACE(REPLACE(replace(f_name||'' ''||L_name,''DR''),''PROF''),''.''),''(MRS)''))/*||'' - ''||Nvl(referralcount,0)*/DOCNAME from doctor ');
+               sql.Add('order by Nvl(referralcount,0) desc');
+               Open;
+          end;
+
+          with OraQuery_Ward do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               sql.Clear;
+               sql.Add('select wardid,wardname from ward order by wardname');
+               Open;
+          end;}
+          //DBLCB_Ward.KeyValue:=null;
+
+          LoadPatientData(gi_PatientID);
+          Lbl_AgeGender.Caption := Gs_CurrentAgeGender;
+          lbl_SampleNo.Caption := gs_SampleNo;
+          //Memo_Remarks.Text := MyPatient.Remarks;
+
+          lbledt_labno.Text:=GetLabnumberfromPatienttest(gs_SampleNo);
+          if gs_ReportFooterRegulation<>'C' then
+          begin
+            Clb_ReportFooter.Enabled:=false;
+          end;
+
+          lbl_Name.Caption := Gs_PatientName;
+          Lbl_Hosno.Caption := IntToStr(gi_PatientID);
+          // Lbl_TestName.Caption := gs_TestName;
+          // lbl_SampleNo.Caption := gs_SampleNo;
+          //Dex_SampleDate.ADDateAsText := TodaysDate;
+          Dex_SampleDate.SystemOfDate := gi_datesystem;
+          Dex_SampleDate.Text:=Copy(GetSampleRegesteredDate(gs_SampleNo),0,10);
+          //Dex_RptDate.SystemOfDate := gi_datesystem;
+          if gi_datesystem=0 then
+          Dex_RptDate.text := TodaysDateVS
+          else
+          Dex_RptDate.text := TodaysDate;
+          //Dex_RptDate.SystemOfDate := gi_datesystem;
+         // OldRefDocCode :=GetRefDoccodeFromPatientTest(gi_PatientTestID);
+         // DBLCB_RefDoc.KeyValue := OldRefDocCode;
+         OraQuery_RefHos.close;
+         OraQuery_RefHos.session:=DM_hospital.db;
+         OraQuery_RefHos.open;
+
+         OraQuery_RefDoc.close;
+         OraQuery_RefDoc.session:=DM_hospital.db;
+         OraQuery_RefDoc.open;
+
+       //  OldRefHosCode:= GetRefHosCodeFromPatientTest(gi_PatientTestid);
+         OldRefDocid:=GetRefDocidFromPatientTest(gi_PatientTestID);
+
+         DBLCB_RefHos.KeyValue:=OldRefHosCode;
+         DBLCB_RefDoc.KeyValue:= OldRefDocid;
+
+          memo_sampleremrk.text:=(getsampleremarks(gs_SampleNo));
+          ps_sampleremarks:=memo_sampleremrk.text;
+          if gs_patienttype='OPD' then
+          BEGIN
+          //dblcb_ward.keyvalue:=null;
+          //dblcb_ward.visible:=false;
+          //Label10.Visible:=false;
+          END
+          ELSE
+          BEGIN
+          //dblcb_ward.visible:=TRUE;
+          Label10.Visible:=TRUE;
+          END;
+
+          if gi_compileValue in [1,2,3,4,5,6,7,8,14,12,16,17,18,21,22,23,24,25,26,27,28] then
+          begin
+               if getupdatedrefdoccode(Gs_BillNo)='Y' then
+               begin
+                    //DBLCB_RefDoc.KeyValue:= GetRefDoccodeFromPatientTest(gi_PatientTestID);
+               end
+               else
+              // DBLCB_RefDoc.KeyValue:=GetRefDocCode(Gs_BillNo);
+          end;
+          //DBLCB_WARD.KEYVALUE:=NULL;
+          {if gi_compileValue=14 then
+          begin
+               if GetwardidFromPatientTest(gi_PatientTestID)<>'' then
+                    dblcb_ward.keyvalue:=GetwardidFromPatientTest(gi_PatientTestID)
+               else
+               if getwardidfrombill(Gs_BillNo)<>'' then
+               begin
+                 dblcb_ward.keyvalue:=getwardidfrombill(Gs_BillNo)
+               end
+               else
+               begin
+                 dblcb_ward.keyvalue:=null;
+                 //dblcb_ward.visible:=false;
+                 //Label10.Visible:=false;
+               end;
+               if DBLCB_WARD.KEYVALUE=0 then
+                    DBLCB_WARD.KEYVALUE:=NULL;
+
+          end; }
+
+          Me_Time.Text := TodaysTime;
+          Label6.Visible := true;
+          Dex_SampleDate.Visible := false;
+          Me_Time.Visible := false;
+          CreateFindingsTable;
+          if gi_datesystem = 0 then
+               ls_date := TodaysDateVS
+          else
+               ls_date := TodaysDate;
+
+          //.....For Number of test to be shown........//
+          with Query_Data do
+          begin
+               Close;
+               Session:=Dm_Hospital.Db;
+               SQL[5] := 'and patientid=' + IntToStr(gi_PatientID);
+               SQL[6] := 'and TestDate=' + #39 + gs_TestDate + #39 +' and sampleno='+#39+gs_SampleNo+#39;
+               if Gb_ShowTestWithoutResult then
+                    SQL[8] := 'and TestProgressStatus=' + IntToStr(gi_SampleColl)
+               else
+                   SQL[8] := 'and 1=1';
+               SQL[9]:='and sc.depid in ('+gs_UserDepId+')';
+
+               if gs_CalledFrom='VERIFICATION' then
+                SQL[10]:='and sc.patienttestid in ('+Gs_SelectedPatientTestID+')';
+                sql.SaveToFile('c:\Data.txt');
+               Open;
+            //********************************************//
+
+               //ShowMessage('1');
+              // Query_Data.first;
+               Setlength(Arr_TestIDForFooter, Query_Data.RecordCount);
+               i := 0;
+               Form_FindingFootnote := TForm_FindingFootnote.Create(nil);
+               Form_FindingFootnote.Clb_Footnote.Items.Clear;
+
+//               if gi_compilevalue=23 then
+//               begin
+//                    LoadReportFooterDocINCheckListBox(Clb_ReportFooter);
+//               end;
+               LoadPatientReportFooterDocINCheckListBox(gs_SampleNo,Ps_DepType, Clb_ReportFooter);
+               while not eof do
+               begin
+                    TestPackageID := FieldByName('TestpackageId').AsInteger;
+                    { ************************ Package Test ******************************************** }
+                    if FieldByName('IsPackageTest').AsString='Y' then
+                    begin
+                         Qry := TOraQuery.Create(Nil);
+                         with Qry do
+                         begin
+                              Close;
+                              SQL.Clear;
+                              Session:=Dm_Hospital.Db;
+                              SQL.Add('SELECT * FROM (');
+                              SQL.Add('Select (SELECT DEPORDER FROM '+gs_Hos_DB_UserName+'.DEPARTMENT WHERE DEPID=TN.DEPID)DEPORDER');
+                              SQL.Add(',TN.* from '+gs_Hos_DB_UserName+'.TestName TN Where TestNameID In');
+                              SQL.Add('(Select TestNameID from TestPackageDetail');
+                              SQL.Add('Where TestPackageID=' + IntToStr(TestPackageID) + '))');
+                              SQL.Add('ORDER BY DEPORDER,DISPLAYORDER');
+                              Open;
+                              while not eof do
+                              begin
+                                   // Adding Footnote
+                                   Setlength(Arr_TestIDForFooter[i], 2);
+                                   if Query_Data.FieldByName('FooterID').AsString <> '' then
+                                   begin
+                                        Arr_TestIDForFooter[i, 0] := Qry.FieldByName('TestNameID').AsString;
+                                        Arr_TestIDForFooter[i, 1] := Query_Data.FieldByName('PatientTestID').AsString;
+                                        Inc(i);
+                                        with Form_FindingFootnote do
+                                        begin
+                                             Clb_Footnote.Items.Add(Qry.FieldByName('TestName').AsString);
+                                        end;
+                                   end;
+                                   // end footnote
+                                   gi_PatientTestID := Query_Data.FieldByName('PatientTestID').AsInteger;
+                                   gi_TestNameId := Qry.FieldByName('TestNameID').AsInteger;
+                                   if LoadPatientFindings(Table_Findings, gi_PatientTestID, gi_TestNameId) then
+                                   begin
+                                        //LoadPatientReportFooterDocINCheckListBox(gs_SampleNo,Ps_DepType, Clb_ReportFooter);
+                                   end
+                                   else
+                                   begin
+                                        gi_TestNameId := Qry.FieldByName('TestNameID').AsInteger;
+                                        (*Fluid Analysis*)
+                                        if (Gi_DepID=36) then
+                                             LoadFindings(Table_Findings,gi_PatientID, 722, 1);
+
+                                        LoadFindings(Table_Findings,gi_PatientID, gi_TestNameId, 1);
+                                        //LoadReportFooterDocINCheckListBox(Clb_ReportFooter);
+                                   end;
+                                   if SensitiveTest(gi_TestNameId) then
+                                   begin
+                                        if not LoadPatientSensitiveMedicine(gi_PatientTestID, gi_TestNameId, Table_SensitiveMedicine) then
+                                        LoadSensitiveMedicine(gi_TestNameId, 1, Table_SensitiveMedicine);
+                                   end;
+                                   Next;
+                              end;
+                         end;
+                    end
+                    { ************************ Package Test End ******************************************** }
+                    else
+                    begin
+                         // Adding Footnote
+                         Setlength(Arr_TestIDForFooter[i], 2);
+                         if FieldByName('FooterID').AsString <> '' then
+                         begin
+                              Arr_TestIDForFooter[i, 0] := Query_Data.FieldByName('TestNameID').AsString;
+                              Arr_TestIDForFooter[i, 1] := Query_Data.FieldByName('PatientTestID').AsString;
+                              Inc(i);
+                              with Form_FindingFootnote do
+                              begin
+                                   Clb_Footnote.Items.Add(Query_Data.FieldByName('TestName').AsString);
+                              end;
+                         end;
+                         // end footnote
+                         gi_PatientTestID := FieldByName('PatientTestID').AsInteger;
+                         gi_TestNameId := FieldByName('TestNameID').AsInteger;
+
+                         (*Fluid Analysis*)
+//                         if (Gi_DepID=36) then
+//                         begin
+//                              LoadPatientFindings(Table_Findings, gi_PatientTestID, 722);
+//                         end;
+                         //LoadReportFooterDocINCheckListBox(Clb_ReportFooter);
+                         if LoadPatientFindings(Table_Findings, gi_PatientTestID, gi_TestNameId) then
+                         begin
+                              //LoadPatientReportFooterDocINCheckListBox(gs_SampleNo,Ps_DepType, Clb_ReportFooter);
+                         end
+                         else
+                         begin
+                              gi_TestNameId := FieldByName('TestNameID').AsInteger;
+//                              (*Fluid Analysis*)
+//                              if (Gi_DepID=36) then
+//                                   LoadFindings(Table_Findings,gi_PatientID, 722, 1);
+                              LoadFindings(Table_Findings,gi_PatientID, gi_TestNameId, 1);
+                              //LoadReportFooterDocINCheckListBox(Clb_ReportFooter);
+                         end;
+                         if SensitiveTest(gi_TestNameId) then
+                         begin
+                              if not LoadPatientSensitiveMedicine(gi_PatientTestID, gi_TestNameId, Table_SensitiveMedicine) then
+                                   LoadSensitiveMedicine(gi_TestNameId, 1, Table_SensitiveMedicine);
+                         end;
+                    end;
+                    with Table_Findings do
+                    begin
+                         Append;
+                         FieldByName('Test').AsString :=
+                           '----------------------------------------------------------------------------------------------';
+                         FieldByName('Finding').AsString := '-----------------------------------------------';
+                         FieldByName('RangeM').AsString := '-----------------------------------------------';
+                         FieldByName('RangeF').AsString := '-----------------------------------------------';
+                         FieldByName('Unit').AsString := '-----------------------------------------------';
+                         Post;
+                    end;
+                    Next;
+               end;
+          end;
+          with Query_Finding do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               Open;
+          end;
+          CalculateFormulaOnload;
+          Query_Finding.First;
+          RefreshQuery(Query_TestName, gs_temppath);
+          LoadInactiveTest;
+          Pi_testnameid:=gi_testnameid;
+          Pi_patienttestid:=gi_PatientTestID;
+          //Table_Findings.Free;
+          if gi_compileValue=14 then
+          begin
+               {if DBLCB_Ward.keyvalue<>null then
+               begin
+               DBLCB_Ward.Visible:=True;
+               Label10.Visible:=true;
+               end; }
+
+
+          end;
+     Except
+     end;
+     Qry.Free;
+
+     if gi_compileValue=14 then
+     begin
+          with OraQuery_ToGetBodyMeasurement do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               sql.Add('select * from patienttest where PATIENTID='+intToStr(gi_Patientid)+'and patienttestid='+IntTOStr(gi_PatientTestID)+' and testnameid='+inttoStr(gi_TestNameId));
+               open;
+          end;
+          Edit_Height.Text:=OraQuery_ToGetBodyMeasurement.FieldByName('HEIGHT').AsString;
+          Edit_Weight.Text:= OraQuery_ToGetBodyMeasurement.FieldByName('WEIGHT').AsString;
+          Edit_BP.Text:= OraQuery_ToGetBodyMeasurement.FieldByName('BLOODPRESSURE').AsString;
+
+          Edit_Height.Visible:=True;
+          Edit_BP.Visible:=True;
+          Edit_Weight.Visible:=True;
+          Label11.Visible:=True;
+          Label12.Visible:=True;
+          Label13.Visible:=True;
+
+
+     end;
+end;
+
+procedure TFrame_Finding.CreateFindingsTable;
+begin
+     if FileExists(gs_temppath + '\Findings.db') then
+     begin
+          with Table_Findings do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'Findings.db';
+               EmptyTable;
+               DeleteTable;
+          end;
+     end;
+
+     with Table_Findings do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          TableName := 'Findings.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('PTDetailId', ftInteger);
+          FieldDefs.Add('TestDate', ftString, 20);
+          FieldDefs.Add('TestName', ftString, 100);
+          FieldDefs.Add('TestNameId', ftInteger);
+          FieldDefs.Add('PatientTestId', ftInteger);
+          FieldDefs.Add('TestID', ftInteger);
+          FieldDefs.Add('Test', ftString, 64);
+          FieldDefs.Add('Finding', ftString, 255);
+          FieldDefs.Add('Finding_old', ftString, 255);
+          FieldDefs.Add('LRange', ftString, 100);
+          FieldDefs.Add('HRange', ftString, 100);
+          FieldDefs.Add('LRangeM', ftString, 100);
+          FieldDefs.Add('HRangeM', ftString, 100);
+          FieldDefs.Add('LRangeF', ftString, 100);
+          FieldDefs.Add('HRangeF', ftString, 100);
+          FieldDefs.Add('RangeReal', ftString, 100);
+          FieldDefs.Add('Range', ftString, 100);
+          FieldDefs.Add('Range_Old', ftString, 100);
+          FieldDefs.Add('SpecialRange', ftMemo);
+          FieldDefs.Add('SpecialRange_Old', ftMemo);
+          FieldDefs.Add('DisplayRange', ftString, 250);
+          FieldDefs.Add('RangeM', ftString, 100);
+          FieldDefs.Add('RangeF', ftString, 100);
+          FieldDefs.Add('Unit', ftString, 32);
+          FieldDefs.Add('Unit_Old', ftString, 32);
+          FieldDefs.Add('Extra', ftString, 100);
+          FieldDefs.Add('ExtraFinding', ftString, 100);
+          FieldDefs.Add('SampleNo', ftString, 32);
+          FieldDefs.Add('IsHeading', ftString, 1);
+          FieldDefs.Add('IsResultSave', ftString, 1);
+          FieldDefs.Add('IsNew', ftString, 1);
+          FieldDefs.Add('RepNo', ftInteger);
+          FieldDefs.Add('DepId', ftInteger);
+          FieldDefs.Add('IsDefaultFinding',ftString,1);
+          CreateTable;
+     end;
+
+     if FileExists(gs_temppath + '\SensitiveMedicine.db') then
+     begin
+          with Table_SensitiveMedicine do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'SensitiveMedicine.db';
+               DeleteTable;
+          end;
+     end;
+     with Table_SensitiveMedicine do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          TableName := 'SensitiveMedicine.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('ResultID', ftInteger);
+          FieldDefs.Add('PatientTestId', ftInteger);
+          FieldDefs.Add('TestNameID', ftInteger);
+          FieldDefs.Add('SMTWID', ftInteger);
+          FieldDefs.Add('Medicine', ftString, 32);
+          FieldDefs.Add('Medcode', ftString, 15);
+          FieldDefs.Add('Result', ftString, 32);
+          FieldDefs.Add('RepNo', ftInteger);
+          CreateTable;
+     end;
+
+end;
+
+procedure TFrame_Finding.DBGrid1CellClick(Column: TColumn);
+begin
+     RetriveDefFinding(Query_Finding.FieldByName('TestID').AsInteger);
+     DBGrid1.SelectedIndex:=2;
+end;
+
+procedure TFrame_Finding.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+Var
+     LRange, HRange, Finding: Double;
+     HSign, LSign, SFinding: String;
+begin
+     // makeItalicFinding(Sender,Rect,2,Column,State);
+
+     if not IsStrANumber(StringReplace(Query_Finding.FieldByName('finding').AsString, ',', '', [rfReplaceAll])) then
+          exit;
+     if Query_Finding.FieldByName('SpecialRange').AsString <> '' then
+          exit;
+     // if Query_Finding.FieldByName('LRange').AsString <> '' then
+     // LRange := StrToFloat(StringReplace(Query_Finding.FieldByName('LRange').AsString, ',', '', [rfReplaceAll]));
+     //
+     // if Query_Finding.FieldByName('HRange').AsString <> '' then
+     // HRange := StrToFloat(StringReplace(Query_Finding.FieldByName('HRange').AsString, ',', '', [rfReplaceAll]));
+     //
+     if Query_Finding.FieldByName('finding').AsString <> '' then
+          Finding := StrToFloat(StringReplace(Query_Finding.FieldByName('finding').AsString, ',', '', [rfReplaceAll]));
+
+     // if (Query_Finding.FieldByName('LRange').AsString = '') and (Query_Finding.FieldByName('HRange').AsString = '') then
+     // begin
+     // with DBGrid1.Canvas do
+     // begin
+     // Brush.Color := clWebSienna;
+     // Font.Color := clWhite;
+     // end;
+     // DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     // end;
+     if (Query_Finding.FieldByName('finding').AsString = '') then
+          exit;
+
+     if Query_Finding.FieldByName('LRange').AsString <> '' then
+     begin
+          if Copy(Query_Finding.FieldByName('LRange').AsString, 1, 1) = '>' then
+          begin
+               LSign := '>';
+               LRange := StrToFloat(Copy(Query_Finding.FieldByName('LRange').AsString, 2, 999));
+          end
+          else if Copy(Query_Finding.FieldByName('LRange').AsString, 1, 1) = '<' then
+          begin
+               LSign := '<';
+               LRange := StrToFloat(Copy(Query_Finding.FieldByName('LRange').AsString, 2, 999));
+          end
+          else
+               LRange := StrToFloat(StringReplace(Query_Finding.FieldByName('LRange').AsString, ',', '', [rfReplaceAll]));
+     end;
+
+     if Query_Finding.FieldByName('HRange').AsString <> '' then
+     begin
+          if Copy(Query_Finding.FieldByName('HRange').AsString, 1, 1) = '>' then
+          begin
+               HSign := '>';
+               HRange := StrToFloat(Copy(Query_Finding.FieldByName('HRange').AsString, 2, 999));
+          end
+          else if Copy(Query_Finding.FieldByName('HRange').AsString, 1, 1) = '<' then
+          begin
+               HSign := '<';
+               HRange := StrToFloat(Copy(Query_Finding.FieldByName('HRange').AsString, 2, 999));
+          end
+          else
+               HRange := StrToFloat(StringReplace(Query_Finding.FieldByName('HRange').AsString, ',', '', [rfReplaceAll]));
+     end;
+
+     if Query_Finding.FieldByName('finding').AsString <> '' then
+          Finding := StrToFloat(StringReplace(Query_Finding.FieldByName('finding').AsString, ',', '', [rfReplaceAll]));
+
+     // if (Query_Finding.FieldByName('LRange').AsString = '') and (Query_Finding.FieldByName('HRange').AsString = '') then
+     // begin
+     // if Query_Finding.FieldByName('Finding').AsString <> '' then
+     // begin
+     // Query_Finding.Edit;
+     // DBGrid1.Fields[1].Value := '';
+     // Query_Finding.Post;
+     // end;
+     //
+     // Query_Finding.Next;
+     // exit;
+     // end;
+     if LSign = '>' then
+     begin
+          if Finding <= LRange then
+          begin
+               with DBGrid1.Canvas do
+               begin
+                    Brush.Color := clWebTomato;
+                    Font.Color := clWhite;
+               end;
+               if State = [gdSelected] then
+               begin
+                    DBGrid1.Canvas.Brush.Color := clWebTeal;
+               end;
+               DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+          end;
+     end
+     else if LSign = '<' then
+     begin
+          if Finding >= LRange then
+          begin
+               with DBGrid1.Canvas do
+               begin
+                    Brush.Color := clWebTomato;
+                    Font.Color := clWhite;
+               end;
+               if State = [gdSelected] then
+               begin
+                    DBGrid1.Canvas.Brush.Color := clWebTeal;
+               end;
+               DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+          end;
+     end;
+     // else
+     // begin
+     // if Finding < LRange then
+     // begin
+     // with DBGrid1.Canvas do
+     // begin
+     // Brush.Color := clWebTomato;
+     // Font.Color := clWhite;
+     // end;
+     // if State = [gdSelected] then
+     // begin
+     // DBGrid1.Canvas.Brush.Color := clWebTeal;
+     // end;
+     // DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     // end;
+     // end;
+
+     if HSign = '>' then
+     begin
+          if Finding <= HRange then
+          begin
+               with DBGrid1.Canvas do
+               begin
+                    Brush.Color := clWebTomato;
+                    Font.Color := clWhite;
+               end;
+               if State = [gdSelected] then
+               begin
+                    DBGrid1.Canvas.Brush.Color := clWebTeal;
+               end;
+               DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+          end;
+     end
+     else if HSign = '<' then
+     begin
+          if Finding >= HRange then
+          begin
+               with DBGrid1.Canvas do
+               begin
+                    Brush.Color := clWebTomato;
+                    Font.Color := clWhite;
+               end;
+               if State = [gdSelected] then
+               begin
+                    DBGrid1.Canvas.Brush.Color := clWebTeal;
+               end;
+               DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+          end;
+     end;
+     // else
+     // begin
+     // if Finding > HRange then
+     // begin
+     // with DBGrid1.Canvas do
+     // begin
+     // Brush.Color := clWebTomato;
+     // Font.Color := clWhite;
+     // end;
+     // if State = [gdSelected] then
+     // begin
+     // DBGrid1.Canvas.Brush.Color := clWebTeal;
+     // end;
+     // DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     // end;
+     // end;
+
+     if ((LSign = '') and (HSign = '')) and ((Finding < LRange) or (Finding > HRange)) then
+     begin
+          with DBGrid1.Canvas do
+          begin
+               Brush.Color := clWebTomato;
+               Font.Color := clWhite;
+          end;
+
+          if State = [gdSelected] then
+          begin
+               DBGrid1.Canvas.Brush.Color := clWebTeal;
+          end;
+          DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     end;
+end;
+
+procedure TFrame_Finding.DBGrid1Enter(Sender: TObject);
+begin
+     RetriveDefFinding(Query_Finding.FieldByName('TestID').AsInteger);
+end;
+
+
+Procedure TFrame_Finding.RetriveDefFinding(NTestID:Integer);
+Begin
+     DBGrid1.Columns[2].PickList.Clear;
+     with Query_Process do
+     begin
+          Close;
+          Session:=Dm_Hospital.Db;
+          sql.Clear;
+          sql.Add(' Select TEFI_Findings From LB_TEFI_TestFinding');
+          sql.Add(' Where TEFI_TestId='+IntToStr(NTestID));
+          Open;
+          While Not Eof Do
+          Begin
+               DBGrid1.Columns[2].PickList.Add(Query_Process.FieldByName('TEFI_Findings').AsString);
+               Next;
+          End;
+     End;
+End;
+
+procedure TFrame_Finding.DBGrid1Exit(Sender: TObject);
+Var
+     Key: Char;
+begin
+    pb_FromSave:=True;
+    if DBGrid1.SelectedIndex=2 then
+    begin
+        Query_Finding.Edit;
+        Query_Finding.Post;
+    end;
+    // Key := #13;
+     DBGrid1KeyPress(Sender, Key);
+end;
+
+procedure TFrame_Finding.DBGrid1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+Var
+     MyKey: Char;
+begin
+     // if (Key = word('S')) and (Shift=[ssAlt]) then
+     if Key = VK_F12 then
+     begin
+          MyKey := #13;
+          DBGrid1KeyPress(Sender, MyKey);
+          // BB_SaveClick(Sender);
+     end;
+     if Key = vk_up then
+     begin
+          pb_up := true;
+     end;
+     if Key = vk_down then
+     begin
+          pb_up := false;
+     end;
+
+end;
+
+procedure TFrame_Finding.DBGrid1KeyPress(Sender: TObject; var Key: Char);
+Var
+     SFinding,ls_italicfinding: String;
+
+begin
+
+     LRange := 0;
+     HRange := 0;
+     Findings := 0;
+     LSign := '';
+     HSign := '';
+
+     if (Key = #13) then
+     begin
+
+          if gi_compileValue=3 then
+          begin
+               with OraQuery_CheckOnEdit do
+               begin
+                    Close;
+                    Session:=Dm_Hospital.Db;
+                    Open;
+                    ParamByName('patienttestid').AsInteger:=gi_PatientTestID ;
+               end;
+          if OraQuery_CheckOnEdit.recordcount=0 then
+          end;
+          begin
+               if CalculatedField((Query_Finding.FieldByName('TestNameID').AsInteger), (Query_Finding.FieldByName('TestID').AsInteger)) then
+               begin
+                    Query_Finding.Next;
+                    // MoveDownToRightResultRow;
+                    exit;
+               end;
+               // else if Copy(Query_Finding.FieldByName('Test').AsString, 1, 5) = '-----' then
+               // begin
+               // Query_Finding.Next;
+               // MoveDownToRightResultRow;
+               // exit;
+               // end
+               // else if Query_Finding.FieldByName('IsHeading').AsString = 'Y' then
+               // begin
+               // Query_Finding.Next;
+               // MoveDownToRightResultRow;
+               // exit;
+               // end;
+
+               if Query_Finding.FieldByName('SpecialRange').AsString <> '' then
+               begin
+                    SFinding := GetFindingFromCode(Query_Finding.FieldByName('finding').AsString);
+                    Query_Finding.Edit;
+                    Query_Finding.FieldByName('Finding').AsString := SFinding;
+                    Query_Finding.Post;
+                    Query_Finding.Next;
+                    // MoveDownToRightResultRow;
+                    exit;  //
+               end;
+
+               if not IsStrANumber(StringReplace((Query_Finding.FieldByName('finding').AsString), ',', '', [rfReplaceAll])) then
+               begin
+
+                    try
+                         Query_Finding.Edit;
+                         Query_Finding.FieldByName('Finding').AsString :=GetFindingFromCode(Query_Finding.FieldByName('finding').AsString);
+
+                         if DataLoading=false then
+                         Query_Finding.FieldByName('IsDefaultFinding').AsString := 'N';
+                         Query_Finding.Post;
+                    except
+                    end;
+                    Query_Finding.Next;
+                    // MoveDownToRightResultRow;
+                    exit;
+               end;
+
+               if Query_Finding.FieldByName('LRange').AsString <> '' then
+               begin
+                    if Copy(Query_Finding.FieldByName('LRange').AsString, 1, 1) = '>' then
+                    begin
+                         LSign := '>';
+                         LRange := StrToFloat(Copy(Query_Finding.FieldByName('LRange').AsString, 2, 999));
+                    end
+                    else if Copy(Query_Finding.FieldByName('LRange').AsString, 1, 1) = '<' then
+                    begin
+                         LSign := '<';
+                         LRange := StrToFloat(Copy(Query_Finding.FieldByName('LRange').AsString, 2, 999));
+                    end
+                    else
+                         LRange := StrToFloat(StringReplace(Query_Finding.FieldByName('LRange').AsString, ',', '', [rfReplaceAll]));
+               end;
+
+               if Query_Finding.FieldByName('HRange').AsString <> '' then
+               begin
+                    if Copy(Query_Finding.FieldByName('HRange').AsString, 1, 1) = '>' then
+                    begin
+                         HSign := '>';
+                         HRange := StrToFloat(Copy(Query_Finding.FieldByName('HRange').AsString, 2, 999));
+                    end
+                    else if Copy(Query_Finding.FieldByName('HRange').AsString, 1, 1) = '<' then
+                    begin
+                         HSign := '<';
+                         HRange := StrToFloat(Copy(Query_Finding.FieldByName('HRange').AsString, 2, 999));
+                    end
+                    else
+                         HRange := StrToFloat(StringReplace(Query_Finding.FieldByName('HRange').AsString, ',', '', [rfReplaceAll]));
+               end;
+
+               if Query_Finding.FieldByName('finding').AsString <> '' then
+               Begin
+
+                    Findings := StrToFloat(StringReplace(Trim(Query_Finding.FieldByName('finding').AsString), ',', '', [rfReplaceAll]));
+
+               End;
+
+               if (Query_Finding.FieldByName('LRange').AsString = '') and (Query_Finding.FieldByName('HRange').AsString = '') then
+               begin
+                    Query_Finding.Edit;
+                    // DBGrid1.Fields[1].Value := '';
+                    Query_Finding.Post;
+
+                    Query_Finding.Next;
+                    // MoveDownToRightResultRow;
+                    exit;  //
+               end;
+
+               if LSign = '>' then
+               begin
+                    if Findings <= LRange then
+                    begin
+                         if Not DataLoading then
+                         if (pb_fromsave=False) and (gi_compileValue in [4]) then //Only For Manipal Hospital
+                         begin
+                              MessageDlg('The value entered seems abnormal, Do you want to continue?',mtConfirmation,mbOKCancel,0);
+                         end;
+                        // MsgBox(1008, 0, '', '', '');
+                         CalculateFormula(Query_Finding);
+                         Query_Finding.Next;
+                         // MoveDownToRightResultRow;
+                         exit;
+                    end;
+               end
+               else if LSign = '<' then
+               begin
+                    if Findings >= LRange then
+                    begin
+                         if Not DataLoading then
+                         if (pb_fromsave=False) and (gi_compileValue in [4]) then //Only For Manipal Hospital
+                         begin
+                              MessageDlg('The value entered seems abnormal, Do you want to continue?',mtConfirmation,mbOKCancel,0);
+                         end;                        // MsgBox(1008, 0, '', '', '');
+                         CalculateFormula(Query_Finding);
+                         Query_Finding.Next;
+                         // MoveDownToRightResultRow;
+                         exit;
+                    end;
+               end
+               else
+               begin
+                    if (Findings < LRange) or (Findings > HRange) then
+                    begin
+                         if Not DataLoading then
+                         if (pb_fromsave=False) and (gi_compileValue in [4]) then //Only For Manipal Hospital
+                         begin
+                              MessageDlg('The value entered seems abnormal, Do you want to continue?',mtConfirmation,mbOKCancel,0);
+                         end;
+                         //MsgBox(1008, 0, '', '', '');
+                         CalculateFormula(Query_Finding);
+                         Query_Finding.Next;
+                    exit;
+                    end;
+               end;
+
+               if HSign = '>' then
+               begin
+                    if Findings <= HRange then
+                    begin
+                         if Not DataLoading then
+                         if (pb_fromsave=False) and (gi_compileValue in [4]) then //Only For Manipal Hospital
+                         begin
+                              MessageDlg('The value entered seems abnormal, Do you want to continue?',mtConfirmation,mbOKCancel,0);
+                         end;
+                         //MsgBox(1008, 0, '', '', '');
+                         CalculateFormula(Query_Finding);
+                         Query_Finding.Next;
+                         // MoveDownToRightResultRow;
+                         exit;
+                    end;
+               end
+               else if HSign = '<' then
+               begin
+                    if Findings >= HRange then
+                    begin
+                         if Not DataLoading then
+                         if (pb_fromsave=False) and (gi_compileValue in [4]) then //Only For Manipal Hospital
+                         begin
+                              MessageDlg('The value entered seems abnormal, Do you want to continue?',mtConfirmation,mbOKCancel,0);
+                         end;
+                         // MsgBox(1008, 0, '', '', '');
+                         CalculateFormula(Query_Finding);
+                         Query_Finding.Next;
+                         // MoveDownToRightResultRow;
+                         exit;
+                    end;
+               end;
+
+          end;
+          CalculateFormula(Query_Finding);
+     Query_Finding.Next;
+     // MoveDownToRightResultRow;
+     end;
+
+
+end;
+
+
+procedure TFrame_Finding.DBGrid1KeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if Key=VK_F2 then
+     pb_isitalic:=True;
+end;
+
+procedure TFrame_Finding.DBLCB_RefHosClick(Sender: TObject);
+begin
+     with OraQuery_RefDoc do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.clear;
+          sql.Add('select REDO_DOCID as docid,REDO_DOCCODE as doccode,TRIM(REPLACE(REPLACE(REPLACE(replace(REDO_DOCNAME,''DR''),''PROF''),''.''),''(MRS)''))DOCNAME ');
+          sql.Add('from HS_REDO_REFERALDOCTOR');
+          SQL.Add('where REDO_HOSPITALCODE='+QuotedStr(DBLCB_RefHos.KeyValue));
+          sql.Add(' and redo_dactive=''Y'' order by REDO_DOCNAME');
+          //sql.SaveToFile('D:\check.txt');
+          Open;
+     end;
+end;
+
+procedure TFrame_Finding.DBLCB_RefHosKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+if key=VK_DELETE then
+   DBLCB_RefDoc.KeyValue:=null;
+
+end;
+
+procedure TFrame_Finding.Dblcb_TestNameKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    if Key=VK_DELETE then
+       Dblcb_TestName.KeyValue:=null;
+end;
+
+procedure TFrame_Finding.DBLCB_RefDocKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+if key=VK_DELETE then
+   DBLCB_RefDoc.KeyValue:=null;
+end;
+
+destructor TFrame_Finding.Destroy;
+begin
+     ClearVariable;
+     Form_FindingFootnote.Free;
+     inherited;
+end;
+
+procedure TFrame_Finding.Edit_HeightKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if Key=VK_RETURN then
+     Edit_Weight.SetFocus;
+end;
+
+procedure TFrame_Finding.Edit_WeightKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if key=VK_RETURN then
+     Edit_BP.SetFocus;
+end;
+
+procedure TFrame_Finding.SaveFinding;
+Var
+     Range, SpecialRange,SpecialRange_Old: String;
+     li_PatientTestIdOld,countno: Integer;
+      Lb_IsSpecialTest:Boolean;
+begin
+     li_PatientTestIdOld := 0;
+     countno:=0;
+     with Table_Findings do
+     begin
+          Close;
+          Open;
+          { TestNameId,PatientTestId,PatientId,TestId:Integer; Extra,TestNameCode,TestUnit,RefRange,Finding
+            ,ExtraFinding,SensitivityNo:String }
+          while not eof do
+          begin
+               // if Copy(FieldByName('Unit').AsString, 1, 5) <> '-----' then
+               if Table_Findings.FieldByName('IsResultSave').AsString = 'Y' then
+               begin
+                    // if Gs_Gender = 'MALE' then
+                    // Range := FieldByName('RangeM').AsString
+                    // else
+                    // Range := FieldByName('RangeF').AsString;
+                    Range := FieldByName('RangeReal').AsString;
+                    SpecialRange := FieldByName('SpecialRange').AsString;
+                    if Table_Findings.FieldByName('IsNew').AsString = 'Y' then
+                    Begin
+                         if Not PatientTestDetailExist(FieldByName('TestNameId').AsInteger, FieldByName('PatientTestId').AsInteger, gi_PatientID,
+                              FieldByName('TestID').AsInteger, FieldByName('RepNo').AsInteger) then
+                         begin
+                              try
+                                   SavePatientTestDetail(FieldByName('TestNameId').AsInteger, FieldByName('PatientTestId').AsInteger, gi_PatientID,
+                                        FieldByName('TestID').AsInteger, FieldByName('RepNo').AsInteger, FieldByName('Extra').AsString,
+                                        gs_TestNameCode, FieldByName('Unit').AsString, Range, SpecialRange, StringReplace(FieldByName('Finding').AsString,'''','''''',[rfreplaceAll]),
+                                        FieldByName('ExtraFinding').AsString, '',lbledt_labno.Text);
+
+                              Except
+                                   SavePatientTestDetail(FieldByName('TestNameId').AsInteger, FieldByName('PatientTestId').AsInteger, gi_PatientID,
+                                        FieldByName('TestID').AsInteger, FieldByName('RepNo').AsInteger, FieldByName('Extra').AsString,
+                                        gs_TestNameCode, FieldByName('Unit').AsString, Range, SpecialRange, StringReplace(FieldByName('Finding').AsString,'''','''''',[rfreplaceAll]),
+                                        FieldByName('ExtraFinding').AsString, '',lbledt_labno.Text);
+                              end;
+                         end;
+
+                         
+                    End
+                    else
+                    begin
+                         if gi_compileValue=14 then
+                         begin
+                              with OraQuery_FindingSaveAccess do
+                              begin
+                                   Close;
+                                   SQL.Clear;
+                                   Session:=Dm_Hospital.Db;
+                                   SQL.Add('select testprogressstatus from patienttest where patienttestid ='+inttostr(Table_Findings.FieldByName('PatientTestId').AsInteger));
+                                   //SQL.SaveToFile('c:\EditAccess.txt');
+                                   Open;
+                              end;
+
+                              if (OraQuery_FindingSaveAccess.FieldByName('testprogressstatus').AsInteger) in [5,6] then
+                              begin
+                                   if not CheckAccess('REPORT EDIT') then
+                                   begin
+                                        ShowMessage('Access Denied. Only authorized person can edit Verified report.');
+                                        exit;
+                                   end
+                                   else
+                                   begin
+                                        UpdatePatientTestDetail(FieldByName('PtDetailID').AsInteger,FieldByName('PatienttestID').AsInteger, StringReplace(FieldByName('Finding').AsString,'''','''''',[rfreplaceAll]),
+                                        StringReplace(FieldByName('Finding_old').AsString,'''','''''',[rfreplaceAll]), FieldByName('Range').AsString,FieldByName('Range_Old').AsString,
+                                        SpecialRange,SpecialRange_Old,FieldByName('Unit').AsString,FieldByName('Unit_Old').AsString,lbledt_labno.text);
+                                        // UpdateFindingsPostBy(FieldByName('PatientTestId').AsInteger);
+                                        // UpdateCollectedbyInSampleCollection(FieldByName('PatientTestID').AsInteger, gi_UserID);
+
+                                   end;
+                              end
+                              else
+                              begin
+                              UpdatePatientTestDetail(FieldByName('PtDetailID').AsInteger,FieldByName('PatienttestID').AsInteger, StringReplace(FieldByName('Finding').AsString,'''','''''',[rfreplaceAll]),
+                              StringReplace(FieldByName('Finding_old').AsString,'''','''''',[rfreplaceAll]), FieldByName('Range').AsString,FieldByName('Range_Old').AsString,
+                              SpecialRange,SpecialRange_Old,FieldByName('Unit').AsString,FieldByName('Unit_Old').AsString,lbledt_labno.text);
+                              //UpdateFindingsPostBy(FieldByName('PatientTestId').AsInteger);
+                              //UpdateCollectedbyInSampleCollection(FieldByName('PatientTestID').AsInteger, gi_UserID);
+                              end;
+
+                             
+                         end
+                    else
+                    begin
+                         UpdatePatientTestDetail(FieldByName('PtDetailID').AsInteger,FieldByName('PatienttestID').AsInteger, StringReplace(FieldByName('Finding').AsString,'''','''''',[rfreplaceAll]),
+                         StringReplace(FieldByName('Finding_old').AsString,'''','''''',[rfreplaceAll]), FieldByName('Range').AsString,FieldByName('Range_Old').AsString,
+                         SpecialRange,SpecialRange_Old,FieldByName('Unit').AsString,FieldByName('Unit_Old').AsString,lbledt_labno.text);
+                         // UpdateFindingsPostBy(FieldByName('PatientTestId').AsInteger);
+                         // UpdateCollectedbyInSampleCollection(FieldByName('PatientTestID').AsInteger, gi_UserID);
+                    end;
+                    end;
+
+
+                    if (gi_compileValue=14) and (countno=0) then
+                    begin
+                         SavePatientbodyMeasurement(Table_Findings.FieldByName('TestNameId').AsInteger, Table_Findings.FieldByName('PatientTestId').AsInteger, gi_PatientID,Trim(Edit_Height.Text),Trim(Edit_Weight.Text),Trim(Edit_BP.text));
+                         countno:=countno+1;
+                    end;
+
+
+               end;
+               li_PatientTestIdOld := FieldByName('PatientTestId').AsInteger;
+               updatelabnumber(FieldByName('PatientTestId').AsInteger ,lbledt_labno.Text);
+               UpdateRefDocCodeInPatientTest(FieldByName('PatientTestId').AsInteger ,pi_refdocid);
+               UpdateRefHosCodeInPatientTest(FieldByName('PatientTestId').AsInteger ,ps_HosCode);
+
+               if gi_compileValue in [1,2,3,4,5,6,7,8,14,15,12,16,17,18,21,22,23,24,26,27,28] then
+               begin
+                    if DBLCB_RefDoc.KeyValue<>NULL then
+                    BEGIN
+                         UpdateRefDocStatusinBilldetail(Gs_BillNo , 'Y');
+                    END;
+               end;
+
+               if gi_compileValue in [14,21,22,23,24,25,26,27,28] then
+               begin
+                    Pi_testnameid:=FieldByName('testnameid').AsInteger;
+                    Lb_IsSpecialTest:=isSpecialTestCheck(Pi_testnameid);
+                    if Lb_IsSpecialTest=True then
+                    begin
+                         AddRemoveFootnote(gi_PatientID, FieldByName('patienttestid').AsInteger, 1);
+                    end;
+               end;
+
+               Next;
+          end;
+
+
+
+     end;
+end;
+
+procedure TFrame_Finding.SaveReportFooter;
+Var
+     i: Integer;
+     DocID: String;
+begin
+     DeletePatientReportFooter(gs_SampleNo,Ps_DepType);
+     for i := 0 to Clb_ReportFooter.Items.Count - 1 do
+     begin
+          if Clb_ReportFooter.State[i] = cbChecked then
+          begin
+               SavePatientReportFooter(gs_SampleNo,Ps_DepType, StrToInt(Arr_CLB_FooterDocID[i, 0]));
+          end;
+     end;
+end;
+
+procedure TFrame_Finding.SaveSensitiveResult;
+Var
+     SENSITIVITYRESULTID, PatientTestId, PatientId, SMTWID, SensitivityNo, RepNo, DATAPOSTBY: Integer;
+     RESULT, DATAPOSTDATE, DATAPOSTTIME: String;
+begin
+     PatientId := gi_PatientID;
+     with QuerySensitiveResult do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          Open;
+          while not eof do
+          begin
+               SMTWID := FieldByName('SMTWID').AsInteger;
+               RepNo := FieldByName('RepNo').AsInteger;
+               SensitivityNo := 0;
+               DATAPOSTBY := gi_UserID;
+               RESULT := FieldByName('Result').AsString;
+               SENSITIVITYRESULTID := FieldByName('ResultID').AsInteger;
+               PatientTestId := FieldByName('PatientTestID').AsInteger;
+               if gi_datesystem = 0 then
+                    DATAPOSTDATE := TodaysDateVS
+               else
+                    DATAPOSTDATE := TodaysDate;
+               DATAPOSTTIME := TodaysTime;
+               if (SENSITIVITYRESULTID = 0) AND (RESULT <> '') then
+                    SaveSensitivityResult(PatientTestId, PatientId, SMTWID, SensitivityNo, RepNo, DATAPOSTBY, RESULT, DATAPOSTDATE, DATAPOSTTIME)
+               else if (SENSITIVITYRESULTID > 0) AND (RESULT <> '') then
+                    UpdateSensitivityResult(SENSITIVITYRESULTID, DATAPOSTBY, RESULT, DATAPOSTDATE, DATAPOSTTIME)
+               else if RESULT = '' then
+                    DeleteSensitiveResult(SENSITIVITYRESULTID);
+               Next;
+          end;
+     end;
+end;
+
+procedure TFrame_Finding.SpeedButton16Click(Sender: TObject);
+Var
+     Qry: TQuery;
+     RepNo: Integer;
+begin
+     if Dblcb_TestName.KeyValue = Null then
+          exit;
+
+     Qry := TQuery.Create(Nil);
+     With Qry do
+     begin
+          Close;
+          SQL.Clear;
+          DatabaseName := gs_temppath;
+          SQL.Add('Select Max(RepNo)Mx From Findings Where TestNameId=' + IntToStr(Dblcb_TestName.KeyValue));
+          Open;
+          RepNo := FieldByName('Mx').AsInteger + 1;
+     end;
+     LoadFindings(Table_Findings,gi_PatientID, Dblcb_TestName.KeyValue, RepNo);
+     with Table_Findings do
+     begin
+          Append;
+          FieldByName('Test').AsString := '----------------------------------------------------------------------------------------------';
+          FieldByName('Finding').AsString := '-----------------------------------------------';
+          FieldByName('RangeM').AsString := '-----------------------------------------------';
+          FieldByName('RangeF').AsString := '-----------------------------------------------';
+          FieldByName('Unit').AsString := '-----------------------------------------------';
+          Post;
+     end;
+     RefreshQuery(Query_Finding, gs_temppath);
+     LoadSensitiveMedicine(gi_TestNameId, RepNo, Table_SensitiveMedicine);
+     Qry.Free;
+end;
+
+procedure TFrame_Finding.SpeedButton17MouseEnter(Sender: TObject);
+begin
+     Memo_Remarks.BringToFront;
+     Memo_Remarks.Visible := true;
+end;
+
+procedure TFrame_Finding.SpeedButton17MouseLeave(Sender: TObject);
+begin
+     Memo_Remarks.Visible := false;
+end;
+
+procedure TFrame_Finding.SpeedButton18Click(Sender: TObject);
+begin
+     AddInactiveTest(Table_Findings, gi_PatientTestID, DBLCB_InactiveTest.KeyValue);
+     RefreshQuery(Query_Finding, gs_temppath);
+end;
+
+procedure TFrame_Finding.SpeedButton4Click(Sender: TObject);
+begin
+     try
+          Form_FindingComment := TForm_FindingComment.Create(Nil);
+          Form_FindingComment.ShowModal;
+     finally
+          Form_FindingComment.Free;
+     end;
+end;
+
+procedure TFrame_Finding.SpeedButton5Click(Sender: TObject);
+begin
+     Form_FindingFootnote.Show;
+end;
+
+procedure TFrame_Finding.SpeedButton6Click(Sender: TObject);
+begin
+     Try
+          Form_SelectTest := TForm_SelectTest.Create(nil);
+          Form_SelectTest.ShowModal;
+     Finally
+          Form_SelectTest.Free;
+     End;
+end;
+
+procedure TFrame_Finding.MoveDownToRightResultRow;
+Begin
+     if (Query_Finding.FieldByName('IsHeading').AsString = 'Y') or (Copy(Query_Finding.FieldByName('Finding').AsString, 1, 5) = '-----') then
+     Begin
+          Query_Finding.Next;
+          if (Query_Finding.FieldByName('IsHeading').AsString = 'Y') or (Copy(Query_Finding.FieldByName('Finding').AsString, 1, 5) = '-----') then
+               Query_Finding.Next;
+          if (Query_Finding.FieldByName('IsHeading').AsString = 'Y') or (Copy(Query_Finding.FieldByName('Finding').AsString, 1, 5) = '-----') then
+               Query_Finding.Next;
+     End;
+End;
+
+procedure TFrame_Finding.MoveUpToRightResultRow;
+begin
+     if (Query_Finding.FieldByName('IsHeading').AsString = 'Y') or (Copy(Query_Finding.FieldByName('Finding').AsString, 1, 5) = '-----') then
+     Begin
+          Query_Finding.Prior;
+          if (Query_Finding.FieldByName('IsHeading').AsString = 'Y') or (Copy(Query_Finding.FieldByName('Finding').AsString, 1, 5) = '-----') then
+               Query_Finding.Prior;
+          if (Query_Finding.FieldByName('IsHeading').AsString = 'Y') or (Copy(Query_Finding.FieldByName('Finding').AsString, 1, 5) = '-----') then
+               Query_Finding.Prior;
+     End;
+end;
+
+procedure TFrame_Finding.Query_FindingAfterScroll(DataSet: TDataSet);
+begin
+     Try
+          if Query_Finding.FieldByName('SpecialRange').AsString <> '' then
+          begin
+               Memo_SR.Visible := true;
+               Memo_SR.Left := 489;
+               Memo_SR.Top := DBGrid1.Top + (19 * DBGrid1.DataSource.DataSet.RecNo);
+               Memo_SR.Text := Query_Finding.FieldByName('SpecialRange').AsString;
+          end
+          else
+               Memo_SR.Visible := false;
+          gi_TestNameId := Query_Finding.FieldByName('TestNameid').AsInteger;
+          Gi_RepNo := Query_Finding.FieldByName('RepNo').AsInteger;
+          gi_PatientTestID := Query_Finding.FieldByName('PatientTestId').AsInteger;
+          if SensitiveTest(gi_TestNameId) then
+               btn_SensitivityResult.Enabled := true
+          else
+               btn_SensitivityResult.Enabled := false;
+          if pb_up then
+               MoveUpToRightResultRow
+          else if not pb_up then
+               MoveDownToRightResultRow
+          else
+               MoveDownToRightResultRow;
+     Except
+     End;
+end;
+
+procedure TFrame_Finding.IdentifyingPendingTestResult;
+Var
+     Qry, Qry2nd: TQuery;
+Begin
+     Qry := TQuery.Create(nil);
+     Qry2nd := TQuery.Create(nil);
+     With Qry2nd do
+     Begin
+          Close;
+          DatabaseName := gs_temppath;
+          SQL.Clear;
+          //SQL.Add('Select PatientTestID from Findings Where Finding is not null and TestNameId is not null');
+          //Open;
+          SQL.Add(' Update Findings.db Set IsResultSave=''Y'' where PatientTestID in');
+          //SQL.Add(' (Select PatientTestID from Findings Where TestNameId is not null)');
+          SQL.Add(' (Select PatientTestID from Findings Where finding is not null and testnameid is not null and isdefaultfinding<>''Y'' )');
+          //sql.savetofile('C:\aXXXX.txt');
+          ExecSQL;
+     End;
+     Qry.Free;
+     Qry2nd.Free;
+End;
+
+procedure TFrame_Finding.LoadInactiveTest;
+begin
+     With Table_Findings do
+     begin
+          Close;
+          Open;
+          while not eof do
+          begin
+               if FieldByName('TestId').AsString <> '' then
+               begin
+                    if ps_LoadedTestID = '' then
+                         ps_LoadedTestID := FieldByName('TestId').AsString
+                    else
+                         ps_LoadedTestID := ps_LoadedTestID + ',' + FieldByName('TestId').AsString;
+               end;
+
+               if FieldByName('TestNameId').AsString <> '' then
+               begin
+                    if ps_LoadedTestNameID = '' then
+                         ps_LoadedTestNameID := FieldByName('TestNameId').AsString
+                    else
+                         ps_LoadedTestNameID := ps_LoadedTestNameID + ',' + FieldByName('TestNameId').AsString;
+               end;
+               Next;
+          end;
+     end;
+
+     if (ps_LoadedTestNameID<>'') and (ps_LoadedTestID<>'') then
+     begin
+          With Query_InactiveTest do
+          begin
+               Close;
+               Session:=Dm_Hospital.Db;
+               SQL[3] := 'And TN.tena_TestNameID in (' + ps_LoadedTestNameID + ')';
+               SQL[4] := 'And T.TestID Not in (' + ps_LoadedTestID + ')';
+               Open;
+          end;
+     end;
+end;
+
+procedure TFrame_Finding.makeItalicFinding(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+     {if pb_isitalic then
+     begin
+          DBGrid1.SelectedIndex:=2;
+          // dbgrid1.Canvas.Font.Color := clBlue;
+          dbgrid1.Canvas.Font.Style :=[fsItalic];
+          dbgrid1.Canvas.FillRect(Rect);
+          dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     end; }
+end;
+
+procedure TFrame_Finding.SpeedButton7Click(Sender: TObject);
+begin
+      DBGrid1Exit(sender);
+     CopySymbol(Sender);
+end;
+
+procedure TFrame_Finding.SaveSampleRemarks;
+var
+   QRy_remarks:TOraQuery;
+begin
+    try
+       QRy_remarks:=TOraQuery.Create(nil);
+       with QRy_remarks do
+       begin
+         close;
+         Session:=DM_Hospital.DB;
+         sql.Clear;
+         sql.Add('update samplecollection set remarks='+quotedstr(memo_sampleremrk.text));
+         sql.Add(' where sampleno='+quotedstr(gs_SampleNo));
+         ExecSQL;
+       end;
+    finally
+       QRy_remarks.Free;
+    end;
+end;
+
+
+end.

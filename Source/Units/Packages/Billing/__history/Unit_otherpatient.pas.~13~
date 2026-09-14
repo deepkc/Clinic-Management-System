@@ -1,0 +1,422 @@
+unit Unit_otherpatient;
+
+interface
+
+uses
+   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+   Dialogs, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, ExtDlgs, DB, StdCtrls, Buttons, Grids, DBGrids, DBCtrls,PatientClass,
+   Fxn, Serverdate, dm, ShellApi, Jpeg,OleCtrls, DateEditXControl_TLB,
+   ExtCtrls, ComCtrls, ImgList,Math, Unit_Master_Hos;
+
+type
+  TForm_otherPatient = class(TForm)
+    GB_BasicInformation: TGroupBox;
+    Label9: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label3: TLabel;
+    Label10: TLabel;
+    Label15: TLabel;
+    Label29: TLabel;
+    DBLCB_title: TDBLookupComboBox;
+    CB_Gender: TComboBox;
+    CB_MaritalStatus: TComboBox;
+    DEX_RegDate: TDateEditX;
+    SPB_RegDate: TSpeedButton;
+    Label2: TLabel;
+    Label19: TLabel;
+    DBLCB_Country: TDBLookupComboBox;
+    DBLCB_District: TDBLookupComboBox;
+    Label20: TLabel;
+    Label21: TLabel;
+    DBLCB_VDC: TDBLookupComboBox;
+    Label22: TLabel;
+    Edit_fname: TEdit;
+    Edit_lname: TEdit;
+    Label5: TLabel;
+    Edit_age: TEdit;
+    Edit_occupation: TEdit;
+    Label1: TLabel;
+    Edit_phoneNO: TEdit;
+    Label6: TLabel;
+    Edit_mobno: TEdit;
+    QueryCountry : TOraQuery;
+    DSCountry: TDataSource;
+    QueryDistrict: TOraQuery;
+    DSDistrict: TDataSource;
+    DSVDC: TDataSource;
+    QueryVDC: TOraQuery;
+    Edit_address: TEdit;
+    Panel1: TPanel;
+    QueryTitle: TOraQuery;
+    DSTitle: TDataSource;
+    Label12: TLabel;
+    Image2: TImage;
+    SPB_DOB: TSpeedButton;
+    Dex_Dob: TDateEditX;
+    CB_AgeType: TComboBox;
+    Label27: TLabel;
+    Label4: TLabel;
+    Label11: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label16: TLabel;
+    BB_Save: TBitBtn;
+    BB_Close: TBitBtn;
+    DBLCB_Scheme: TDBLookupComboBox;
+    Label17: TLabel;
+    QueryScheme: TOraQuery;
+    DS_Scheme: TDataSource;
+    Query_Void: TOraQuery;
+    procedure FormShow(Sender: TObject);
+    procedure SPB_RegDateClick(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure BB_CloseClick(Sender: TObject);
+    procedure BB_SaveClick(Sender: TObject);
+    procedure Edit_ageExit(Sender: TObject);
+    procedure Dex_DobExit(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure CB_AgeTypeExit(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+
+  end;
+
+var
+  Form_otherPatient: TForm_otherPatient;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_otherPatient.BB_CloseClick(Sender: TObject);
+begin
+    close;
+end;
+
+procedure TForm_otherPatient.BB_SaveClick(Sender: TObject);
+var
+  pb_isnew : Boolean;
+  ls_title,ls_fname,ls_lname,ls_gender,LS_DOBAD,LS_DOBVS,ls_maritalstatus,ls_job,ls_country,ps_todaysdate,ps_todaystime,
+  ls_dist,ls_vdc,LS_ADDRESS,ls_phone,ls_mobile,LS_PATIENTNAME,ls_regdate:string;Pi_PatientId,li_age,LI_DATAPOSTBY,LI_VDCID,LI_COUNTRYID,LI_DISTRICTID,LI_SCHEMEID:integer;
+begin
+     {
+     if Trim(DBLCB_title.Text)='' then
+     begin
+          MessageDlg('Please Put Title',mtWarning,[mbok],0);
+          DBLCB_title.SetFocus;
+          Exit;
+     end;   }
+
+
+     if Trim(Edit_fname.Text)='' then
+     begin
+          MessageDlg('Please Put First Name',mtWarning,[mbok],0);
+          Edit_fname.SetFocus;
+          Exit;
+     end;
+
+
+     if Trim(Edit_lname.Text)='' then
+     begin
+          MessageDlg('Please Put Last Name',mtWarning,[mbok],0);
+          Edit_lname.SetFocus;
+          Exit;
+     end;
+
+     if Trim(Edit_age.Text)='' then
+     begin
+          MessageDlg('Please Put Age',mtWarning,[mbok],0);
+          Edit_age.SetFocus;
+          Exit;
+     end;
+
+     if Trim(CB_AgeType.Text)='' then
+     begin
+          MessageDlg('Please Put Age Type',mtWarning,[mbok],0);
+          Edit_age.SetFocus;
+          Exit;
+     end;
+
+     pb_isnew := True;
+     LS_TITLE := DBLCB_title.Text;
+     LS_GENDER := CB_Gender.Text;
+     LS_FNAME := Edit_fname.Text;
+     LS_LNAME := Edit_lname.Text;
+     LI_AGE := strtoint(Edit_age.Text);
+     LS_MARITALSTATUS := CB_MaritalStatus.Text;
+     LS_ADDRESS := Edit_address.Text;
+     ls_phone := Edit_phoneNO.Text;
+     ls_mobile := Edit_mobno.Text;
+     ls_job := Edit_occupation.Text;
+     LS_PATIENTNAME := LS_FNAME + ' ' + LS_LNAME;
+     //LS_DOBVS := Dex_Dob.VSDateAsText;
+     //LS_DOBAD := Dex_Dob.ADDateAsText;
+     ls_regdate := DEX_RegDate.text;
+     Dex_Dob.SystemOfDate:=gi_datesystem;
+
+     if DBLCB_Country.KeyValue = null then
+          LI_COUNTRYID := 1
+     else
+          LI_COUNTRYID := DBLCB_Country.KeyValue;
+
+     if DBLCB_District.KeyValue = null then
+          LI_DISTRICTID := 27
+     else
+          LI_DISTRICTID := DBLCB_District.KeyValue;
+
+     if DBLCB_VDC.KeyValue = null then
+          LI_VDCID := 0
+     else
+          LI_VDCID := DBLCB_VDC.KeyValue;
+     if DBLCB_Scheme.KeyValue=null then
+          LI_SCHEMEID:=0
+     else
+          LI_SCHEMEID := DBLCB_Scheme.KeyValue;
+
+     if (gs_BillType='ERBILL') and (LI_SCHEMEID=0) then
+     begin
+          MessageDlg('Please Choose Scheme !',mtWarning,[mbok],0);
+          DBLCB_Scheme.SetFocus;
+          Exit;
+     end;
+
+     if LI_SCHEMEID>0 then
+     begin
+          with Query_Void do
+          begin
+               Close;
+               Session :=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('Select * From HS_Sche_Scheme Where Sche_IsActive=''Y''');
+               SQL.Add('and SCHE_SCHEMEID='+IntToStr(LI_SCHEMEID));
+               SQL.Add('Order By Sche_Scheme');
+               Open;
+          end;
+     end;
+
+
+     if MessageDlg('Are You Sure to Save ?',mtConfirmation,[mbYes,mbNo],0)=mrNo then Exit;
+
+     LI_DATAPOSTBY := gi_UserID;
+     ps_TodaysDate:=TodaysDate;
+     ps_TodaysTime:=TodaysTime;
+     try
+          DM_Hospital.DB.StartTransaction;
+          if pb_isnew then
+          begin
+               Try
+                    SavePatientOther(0, LI_AGE, LI_COUNTRYID, 0, LI_DISTRICTID,
+                         LI_VDCID, 0, 0, 0, 0, LI_DATAPOSTBY,
+                         0, LS_TITLE, LS_FNAME, '', LS_LNAME, LS_PATIENTNAME,LS_GENDER, CB_AgeType.Text,
+                         dex_dob.text,dex_dob.ADDateAsText,'',LS_MARITALSTATUS,LS_ADDRESS,LS_PHONE, LS_MOBILE, '',
+                         ls_job, 'GEN', '', '', '', ps_TodaysDate, ps_TodaysTime,
+                         ps_TodaysDate, ps_TodaysTime, gs_MacID, '');
+
+                    SavePatientVisit(gi_PatientID, 0 ,0, 0, 0,Gi_DepID,0,0,gi_DoctorId,0,0,0,
+                 0, 0,0,gi_UserID,0,0,0,0,0,0,
+                 '',ps_TodaysDate,ps_TodaysTime,'','', 'OUT', 'WNP',
+                 'B','','',ps_TodaysDate,ps_TodaysTime,'','','','','');
+
+               Except
+                    SavePatientOther(0, LI_AGE, LI_COUNTRYID, 0, LI_DISTRICTID,
+                         LI_VDCID, 0, 0, 0, 0, LI_DATAPOSTBY,
+                         0, LS_TITLE, LS_FNAME, '', LS_LNAME, LS_PATIENTNAME, LS_GENDER, CB_AgeType.Text,
+                         dex_dob.text,dex_dob.ADDateAsText,'',LS_MARITALSTATUS, LS_ADDRESS, LS_PHONE, LS_MOBILE, '',
+                         ls_job, 'GEN', '', '', '', ps_TodaysDate, ps_TodaysTime,
+                         ps_TodaysDate, ps_TodaysTime, gs_MacID, '');
+
+                    SavePatientVisit(gi_PatientID, 0 ,0, 0, 0,Gi_DepID,0,0,gi_DoctorId,0,0,0,
+                 0, 0,0,gi_UserID,0,0,0,0,0,0,
+                 '',ps_TodaysDate,ps_TodaysTime,'','', 'OUT', 'WNP',
+                 'B','','',ps_TodaysDate,ps_TodaysTime,'','','','','');
+               End;
+          end;
+
+          DM_Hospital.DB.Commit;
+          if gs_BillType='ERBILL' then
+          begin
+               UpdateCreditMemo(gi_PatientID,LI_SCHEMEID,Query_Void.FieldByName('SCHE_COMMUNITYID').AsInteger, True);
+          end;
+          ShowDoneMessage;
+          close;
+     except
+          DM_Hospital.DB.Rollback;
+          Gb_SuccessfullySaved := false;
+          MsgBox(1005, 0, '', '', '');
+     end;
+end;
+
+procedure TForm_otherPatient.CB_AgeTypeExit(Sender: TObject);
+Var Qry: TOraQuery;
+begin
+     if (Edit_age.Text <> '') then
+     begin
+          Qry := TOraQuery.Create(nil);
+          with Qry do
+          begin
+               Close;
+               Session := DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('SELECT GETDOBFROMAGE(' + Edit_age.Text + ',' + #39 +CB_AgeType.Text + #39 + ')DOB from Dual');
+               Open;
+               Dex_Dob.ADDateAsText := FieldByName('DOB').AsString;
+          end;
+          Qry.Free;
+     end
+     else
+     begin
+          if Edit_age.Text='' then Edit_age.Text:='0';
+          if StrToFloat(Edit_age.Text) <=0 then
+          begin
+               MessageDlg('You Must Have To Keep Age.',mtWarning,[mbok],0);
+               Edit_age.SetFocus;
+               Exit;
+          end;
+     end;
+end;
+procedure TForm_otherPatient.Dex_DobExit(Sender: TObject);
+var
+  Age1, Age2, Age3: Integer;
+  DEX_TodayDate: TDateEditX;
+begin
+     DEX_TodayDate := TDateEditX.Create(Nil);
+
+     DEX_TodayDate.SystemOfDate := gi_datesystem;
+     DEX_TodayDate.Text := TodaysDate;
+
+     Dex_Dob.SystemOfDate := gi_datesystem;
+     ChangeCaption(SPB_DOB);
+
+     Age1 := DEX_TodayDate.VSDateAsDays;
+     Age2 := Dex_Dob.VSDateAsDays;
+     Age3 := Round(Age1 - Age2);
+     if Age3 < 30 then
+     Begin
+          Age3 := Round((Age3));
+          Edit_age.Text := IntToStr(Age3);
+          CB_AgeType.ItemIndex := 2;
+     End
+     Else if Age3 < 365 then
+     Begin
+          Age3 := Round((Age3) / 30);
+          Edit_age.Text := IntToStr(Age3);
+          CB_AgeType.ItemIndex := 1;
+     End
+     Else
+     Begin
+          Age3 := Round((Age3) / 365);
+          Edit_age.Text := IntToStr(Age3);
+          CB_AgeType.ItemIndex := 0;
+     End;
+
+     DEX_TodayDate.Free;
+end;
+
+procedure TForm_otherPatient.Edit_ageExit(Sender: TObject);
+Var
+     Qry: TOraQuery;
+     Dex: TDateEditX;
+     diff: Integer;
+begin
+     if edit_Age.Text <> '' then
+     begin
+          Qry := TOraQuery.Create(nil);
+          with Qry do
+          begin
+               Close;
+               Session := DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('SELECT GETDOBFROMAGE(' + edit_Age.Text + ',' + #39 +
+                      CB_AgeType.Text + #39 + ')DOB from Dual');
+               Open;
+               Dex_Dob.SystemofDate:=1;
+               Dex_Dob.ADDateAsText := FieldByName('DOB').AsString;
+               Dex_Dob.SystemofDate:=gi_DateSystem;
+
+               Dex := TDateEditX.Create(nil);
+               Dex.SystemOfDate := gi_datesystem;
+               Dex.Text := TodaysDate;
+               Dex.VSDateAsDays := Dex.VSDateAsDays - DEX_RegDate.VSDateAsDays;
+               Dex_Dob.VSDateAsDays := Dex_Dob.VSDateAsDays - Dex.VSDateAsDays;
+               Dex.Free;
+          end;
+     end
+     Else
+     Begin
+          MessageDlg('Age is Compulsory.',mtWarning,[mbok],0);
+          Edit_age.SetFocus;
+     End;
+end;
+
+procedure TForm_otherPatient.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if key=13 then
+     keybd_event(9,13,0,0);
+
+     if key=VK_F12 then
+     BB_SaveClick(Sender);
+
+     if key=27 then Close;
+
+end;
+
+procedure TForm_otherPatient.FormShow(Sender: TObject);
+begin
+    with QueryCountry do
+    begin
+        close;
+        open;
+    end;
+    with QueryDistrict do
+    begin
+      close;
+      open;
+    end;
+    with QueryVDC do
+    begin
+      close;
+      open;
+    end;
+    with QueryTitle do
+    begin
+      close;
+      open;
+    end;
+    Dex_Dob.SystemOfDate := gi_datesystem;
+     Dex_Dob.Text := TodaysDateVs;
+
+     SPB_DOB.Caption := gs_DateCaption;
+     SPB_RegDate.Caption := gs_DateCaption;
+     DEX_RegDate.TExt := TodaysDateVS;
+     DEX_RegDate.SystemOfDate := gi_datesystem;
+     if gs_BillType='ERBILL' then
+     begin
+          Label17.Visible :=True;
+          DBLCB_Scheme.Visible:=True;
+          QueryScheme.Close;
+          QueryScheme.Open;
+     end;
+  //   Dex_Dob.ADDateAsText := TodaysDate;
+//     Dex_Dob.SystemOfDate := gi_datesystem;
+    // Dex_Dob.Visible := false;
+    // SpeedButton1.Visible := false;
+     //Label4.Visible := false;
+     CB_Gender.ItemIndex:=0;
+     Edit_fname.SetFocus;
+end;
+
+procedure TForm_otherPatient.SPB_RegDateClick(Sender: TObject);
+begin
+    ChangeDateSystem(DEX_RegDate, SPB_RegDate);
+end;
+
+procedure TForm_otherPatient.SpeedButton2Click(Sender: TObject);
+begin
+    ChangeDateSystem(Dex_Dob, SPB_DOB);
+end;
+
+end.

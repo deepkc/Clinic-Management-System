@@ -1,0 +1,2238 @@
+unit Unit_ClinicalPathFindingNew;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Fxn, PatientClass, ServerDate, Unit_Master, DM,
+     Dialogs, StdCtrls, CheckLst, Mask, OleCtrls, DateEditXControl_TLB, DBCtrls, Buttons, ExtCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, ComCtrls, TeCanvas, ToolWin, Grids,
+     DBGrids, Spin, RichEdit,UnitEditFindingAnalysis;
+
+type
+     TFrame_ClinicalPathFindingNew = class(TFrame)
+          Panel1: TPanel;
+          BB_Save: TBitBtn;
+          Panel2: TPanel;
+          Label14: TLabel;
+          lbl_Name: TLabel;
+          Label18: TLabel;
+          SpeedButton2: TSpeedButton;
+          Label1: TLabel;
+          Lbl_Hosno: TLabel;
+          Label3: TLabel;
+          Lbl_AgeGender: TLabel;
+          Label5: TLabel;
+          Label6: TLabel;
+          Label2: TLabel;
+          lbl_SampleNo: TLabel;
+          Label4: TLabel;
+          Label7: TLabel;
+          SpeedButton17: TSpeedButton;
+          DBLCB_RefDoc: TDBLookupComboBox;
+          Dex_RptDate: TDateEditX;
+          Dex_SampleDate: TDateEditX;
+          Me_Time: TMaskEdit;
+          Clb_ReportFooter: TCheckListBox;
+          DS_RefDoccode: TDataSource;
+          Query_RefDoccode: TOraQuery;
+          Memo_Remarks: TMemo;
+          Ds_ReportType: TDataSource;
+          Query_ReportType: TOraQuery;
+          Query_Listing: TOraQuery;
+          Panel3: TPanel;
+    Memo: TMemo;
+          ToolBar1: TToolBar;
+          ToolButton1: TToolButton;
+          ToolButton6: TToolButton;
+          ToolButton2: TToolButton;
+          ToolButton4: TToolButton;
+          ToolButton3: TToolButton;
+          ToolButton5: TToolButton;
+          ToolButton7: TToolButton;
+          ToolButton12: TToolButton;
+          ToolButton9: TToolButton;
+          Tbtn_Font: TToolButton;
+          ToolButton16: TToolButton;
+          ComboBox2: TComboBox;
+          ComboBox1: TComboBox;
+          ButtonColor1: TButtonColor;
+          DS_Listing: TDataSource;
+          FontDialog1: TFontDialog;
+          ColorDialog1: TColorDialog;
+          ToolButton8: TToolButton;
+          ToolButton10: TToolButton;
+          ToolButton11: TToolButton;
+    Edit_RefNo: TEdit;
+    Label8: TLabel;
+    Edit_CptCode: TEdit;
+    Label9: TLabel;
+    Table_ClinicalFinding: TTable;
+    Query_List: TQuery;
+    PanelTextEditAlternate: TPanel;
+    LabelTitleThree: TLabel;
+    LabelTitleTwo: TLabel;
+    LabelTitleOne: TLabel;
+    LabelTitleFour: TLabel;
+    LabelTitleSeven: TLabel;
+    LabelTitleSix: TLabel;
+    LabelTitleFive: TLabel;
+    LabelTitleEight: TLabel;
+    LabelTitleEleven: TLabel;
+    LabelTitleTen: TLabel;
+    LabelTitleNine: TLabel;
+    LabelTitleTwelve: TLabel;
+    LabelTitleFifteen: TLabel;
+    LabelTitleFourteen: TLabel;
+    LabelTitleThirteen: TLabel;
+    LabelTitleSixteen: TLabel;
+    Label19: TLabel;
+    Label20: TLabel;
+    Label21: TLabel;
+    SpeedButton10: TSpeedButton;
+    LabelTitleSeventeen: TLabel;
+    EditClinicalDiagnosis: TEdit;
+    EditExaminationRequested: TEdit;
+    PanelImpression: TPanel;
+    SpeedButton6: TSpeedButton;
+    SpeedButton7: TSpeedButton;
+    CBShowNote: TCheckBox;
+    Memo2: TMemo;
+    DBLC_TestNameID: TDBLookupComboBox;
+    Label13: TLabel;
+    DS_TestNameID: TDataSource;
+    Query_TestNameId: TOraQuery;
+    MemoResultOne: TRichEdit;
+    MemoResultTwo: TRichEdit;
+    MemoResultThree: TRichEdit;
+    MemoResultFour: TRichEdit;
+    MemoResultFive: TRichEdit;
+    MemoResultSix: TRichEdit;
+    MemoResultSeven: TRichEdit;
+    MemoResultEight: TRichEdit;
+    MemoResultNine: TRichEdit;
+    MemoResultTen: TRichEdit;
+    MemoResultEleven: TRichEdit;
+    MemoResultTwelve: TRichEdit;
+    MemoResultThirteen: TRichEdit;
+    MemoResultFourteen: TRichEdit;
+    MemoResultFifteen: TRichEdit;
+    MemoResultSixteen: TRichEdit;
+    MemoResultSeventeen: TRichEdit;
+    MemoRemarks: TMemo;
+    EditImpression: TEdit;
+    QryANid: TOraQuery;
+    Query_Process: TOraQuery;
+    QuerySpecial: TOraQuery;
+    SpeedButton5: TSpeedButton;
+    Query_Data: TOraQuery;
+          procedure SpeedButton17MouseEnter(Sender: TObject);
+          procedure SpeedButton17MouseLeave(Sender: TObject);
+
+          procedure RichEdit_TitleEnter(Sender: TObject);
+          procedure RichEdit_DefaultFindingEnter(Sender: TObject);
+          procedure BB_SaveClick(Sender: TObject);
+
+    procedure DBLCB_RefDocKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure SpeedButton10Click(Sender: TObject);
+    procedure DBLC_TestNameIDClick(Sender: TObject);
+    procedure MemoResultOneEnter(Sender: TObject);
+    procedure MemoResultOneExit(Sender: TObject);
+    procedure MemoResultTwoExit(Sender: TObject);
+    procedure MemoResultTwoEnter(Sender: TObject);
+    procedure MemoResultThreeEnter(Sender: TObject);
+    procedure MemoResultFourEnter(Sender: TObject);
+    procedure MemoResultFiveEnter(Sender: TObject);
+    procedure MemoResultSixEnter(Sender: TObject);
+    procedure MemoResultSevenEnter(Sender: TObject);
+    procedure MemoResultEightEnter(Sender: TObject);
+    procedure MemoResultNineEnter(Sender: TObject);
+    procedure MemoResultTenEnter(Sender: TObject);
+    procedure MemoResultElevenEnter(Sender: TObject);
+    procedure MemoResultTwelveEnter(Sender: TObject);
+    procedure MemoResultThirteenEnter(Sender: TObject);
+    procedure MemoResultFourteenEnter(Sender: TObject);
+    procedure MemoResultFifteenEnter(Sender: TObject);
+    procedure MemoResultSixteenEnter(Sender: TObject);
+    procedure MemoResultSeventeenEnter(Sender: TObject);
+    procedure MemoResultThreeExit(Sender: TObject);
+    procedure MemoResultFourExit(Sender: TObject);
+    procedure MemoResultFiveExit(Sender: TObject);
+    procedure MemoResultSixExit(Sender: TObject);
+    procedure MemoResultSevenExit(Sender: TObject);
+    procedure MemoResultEightExit(Sender: TObject);
+    procedure MemoResultNineExit(Sender: TObject);
+    procedure MemoResultTenExit(Sender: TObject);
+    procedure MemoResultElevenExit(Sender: TObject);
+    procedure MemoResultTwelveExit(Sender: TObject);
+    procedure MemoResultThirteenExit(Sender: TObject);
+    procedure MemoResultFourteenExit(Sender: TObject);
+    procedure MemoResultFifteenExit(Sender: TObject);
+    procedure MemoResultSixteenExit(Sender: TObject);
+    procedure MemoResultSeventeenExit(Sender: TObject);
+    procedure MemoResultOneChange(Sender: TObject);
+    procedure MemoResultOneClick(Sender: TObject);
+    procedure MemoResultTwoChange(Sender: TObject);
+    procedure MemoResultTwoClick(Sender: TObject);
+    procedure MemoResultThreeClick(Sender: TObject);
+    procedure MemoResultThreeChange(Sender: TObject);
+    procedure MemoResultFourChange(Sender: TObject);
+    procedure MemoResultFourClick(Sender: TObject);
+    procedure MemoResultFiveChange(Sender: TObject);
+    procedure MemoResultFiveClick(Sender: TObject);
+    procedure MemoResultSixClick(Sender: TObject);
+    procedure MemoResultSixChange(Sender: TObject);
+    procedure MemoResultSevenChange(Sender: TObject);
+    procedure MemoResultSevenClick(Sender: TObject);
+    procedure MemoResultEightClick(Sender: TObject);
+    procedure MemoResultEightChange(Sender: TObject);
+    procedure MemoResultNineChange(Sender: TObject);
+    procedure MemoResultNineClick(Sender: TObject);
+    procedure MemoResultTenClick(Sender: TObject);
+    procedure MemoResultTenChange(Sender: TObject);
+    procedure MemoResultElevenChange(Sender: TObject);
+    procedure MemoResultElevenClick(Sender: TObject);
+    procedure MemoResultTwelveClick(Sender: TObject);
+    procedure MemoResultTwelveChange(Sender: TObject);
+    procedure MemoResultThirteenChange(Sender: TObject);
+    procedure MemoResultThirteenClick(Sender: TObject);
+    procedure MemoResultFourteenClick(Sender: TObject);
+    procedure MemoResultFourteenChange(Sender: TObject);
+    procedure MemoResultFifteenChange(Sender: TObject);
+    procedure MemoResultFifteenClick(Sender: TObject);
+    procedure MemoResultSixteenClick(Sender: TObject);
+    procedure MemoResultSixteenChange(Sender: TObject);
+    procedure MemoResultSeventeenChange(Sender: TObject);
+    procedure MemoResultSeventeenClick(Sender: TObject);
+    procedure SpeedButton6Click(Sender: TObject);
+    procedure ToolButton1Click(Sender: TObject);
+    procedure ToolButton2Click(Sender: TObject);
+    procedure ToolButton3Click(Sender: TObject);
+    procedure ToolButton7Click(Sender: TObject);
+    procedure Tbtn_FontClick(Sender: TObject);
+    procedure ToolButton8Click(Sender: TObject);
+    procedure ToolButton10Click(Sender: TObject);
+    procedure ToolButton11Click(Sender: TObject);
+    procedure ComboBox2Change(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
+    procedure MemoResultOneSelectionChange(Sender: TObject);
+    procedure MemoResultTwoSelectionChange(Sender: TObject);
+    procedure MemoResultThreeSelectionChange(Sender: TObject);
+    procedure MemoResultFourSelectionChange(Sender: TObject);
+    procedure MemoResultFiveSelectionChange(Sender: TObject);
+    procedure MemoResultSixSelectionChange(Sender: TObject);
+    procedure MemoResultSevenSelectionChange(Sender: TObject);
+    procedure MemoResultEightSelectionChange(Sender: TObject);
+    procedure MemoResultNineSelectionChange(Sender: TObject);
+    procedure MemoResultTenSelectionChange(Sender: TObject);
+    procedure MemoResultElevenSelectionChange(Sender: TObject);
+    procedure MemoResultTwelveSelectionChange(Sender: TObject);
+    procedure MemoResultThirteenSelectionChange(Sender: TObject);
+    procedure MemoResultFourteenSelectionChange(Sender: TObject);
+    procedure MemoResultFifteenSelectionChange(Sender: TObject);
+    procedure MemoResultSixteenSelectionChange(Sender: TObject);
+    procedure MemoResultSeventeenSelectionChange(Sender: TObject);
+    procedure SpeedButton5Click(Sender: TObject);
+     private
+          pb_isnew: Boolean;
+          OldRefDocCode, NewRefDocCode: String;
+          Pi_TempID,Pi_Length, ClinicalTestId,WritingPadID,ClinicalTestDetailId: Integer;
+          Ps_RichName: String;
+          { Private declarations }
+          Procedure CreateTableClinicalFinding;
+
+          Procedure SaveReportFooter;
+          procedure ResizeMemoHeight(MyMemo: TRichEdit;ResizeType: String);
+     public
+          ps_DepType:String;
+          Arr_RIch:array Of TRichEdit;
+          CheckSpecial:Boolean;
+          { Public declarations }
+          Constructor Create(Aowner: Tcomponent); Override;
+          procedure FillSpeCial(PatientTestID,PatientID:Integer);
+          procedure RetriveSpeCial;
+     end;
+
+implementation
+ uses Unit_FindingFootnote;
+{$R *.dfm}
+{ TFrame_ClinicalPathFinding }
+
+procedure TFrame_ClinicalPathFindingNew.BB_SaveClick(Sender: TObject);
+var  NTestSpecialID,Docid:Integer;
+     QryTemp:TOraQuery;
+     RefNo,CptCode:string;
+     RMemoResultone,RMemoResultTwo,RMemoResultThree,RMemoResultFour,RMemoResultFive,RMemoResultSix,RMemoResultSeven,RMemoResultEight,RMemoResultNine,
+     RMemoResultTen,RMemoResultEleven,RMemoResultTwelve,RMemoResultThirteen,RMemoResultFourteen,RMemoResultFifteen,RMemoResultSixteen,
+     RMemoResultSeventeen:string;
+Begin
+     with QryAniD do
+     begin
+          close;
+          Session:=Dm_Hospital.Db;
+          with sql do
+          begin
+               clear;
+               add('select NVL(ISReportLocked,''N'') ISReportLocked from PatientTestSpecial_NEW');
+               add('where PatientTestid='+InttoStr(gi_patientTestId));
+              // SQL.SAVETOFILE('C:\PATIENTTESTSPECIAL_MANGALALM.TXT');
+          end;
+          open;
+          If fieldbyname('Isreportlocked').asstring='Y' then
+          begin
+               If MessageDLG('Report of the Patient has been locked!!!Do You want to change?',mtConfirmation,[mbyes,mbNo],0)=MrYes then
+               begin
+                    with Sql do
+                    begin
+                         clear;
+                         add(' Select isincharge from usermain');
+                         add('where userid='+inttostr(gi_userid));
+                    End;
+                    open;
+                    IF fieldbyname('isincharge').asstring<>'Y' then
+                    begin
+                         messageDLg('You don''t have the authority to change the report',mtInformation,[MbOK],0);
+                         Close;
+                         Free;
+                         exit;
+                    end;
+               end;
+          end
+          else
+          Begin
+               Close;
+               Free;
+               //exit;
+          End;
+     end;
+
+     NTestSpecialID:=GetMaxId('PatientTestSpecial_NEW','TestSpecialID');
+
+     RefNo:=Edit_RefNo.Text;
+     CptCode:= Edit_CptCode.Text;
+     //With QuerySaveEditReport Do
+     QryTemp:=TOraQuery.Create(Nil);
+     With QryTemp Do
+     Begin
+          Close;
+          Session:=Dm_Hospital.Db;
+          sql.Clear;
+          sql.Add('select NVL(PatientTestID,0) PatientTestID From PatientTestSpecial_NEW');
+          sql.Add(' Where PatientID='+IntToStr(gi_PatientID)+' And');
+          sql.Add(' PatientTestID='+IntToStr(gi_PatientTestID));
+         // SQL.SaveToFile('C:\PATIENTTESTID.TXT');
+          Open;
+          If Trim(FieldByName('PatientTestID').AsString)<>'' Then
+               CheckSpecial:=True
+          Else
+               CheckSpecial:=False;
+
+          Memo.Lines.Clear;
+          MemoResultOne.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultOne:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultTwo.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultTwo:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultThree.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultThree:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultFour.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultFour:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultFive.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultFive:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultSix.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultSix:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultSeven.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultSeven:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultEight.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultEight:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultNine.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultNine:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultTen.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultTen:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultEleven.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultEleven:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultTwelve.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultTwelve:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultThirteen.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultThirteen:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultFourteen.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultFourteen:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultFifteen.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultFifteen:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultSixteen.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultSixteen:=Memo.Text;
+
+          Memo.Lines.Clear;
+          MemoResultSeventeen.Lines.SaveToFile('tt.txt');
+          Memo.Lines.LoadFromFile('tt.txt');
+          RMemoResultSeventeen:=Memo.Text;
+
+          try
+          DM_Hospital.DB.StartTransaction;
+          Close;
+          sql.Clear;
+          IF CheckSpecial=True Then
+          Begin
+               sql.Add(' Update PatientTestSpecial_NEW');
+                //Add(' Set PTSpecial='+Chr(39)+StringReplace(StringReplace(MemoRemarks.Text,'''','''''',[rfReplaceAll])+Chr(39),'"','''''''''',[rfReplaceAll])+Chr(39)+','));
+               sql.Add(' Set PTSpecial='+Chr(39)+StringReplace(StringReplace(MemoRemarks.Text,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               If CBShowNote.Checked=True Then
+               sql.Add(' ShowNote=''T'',')
+               Else Sql.Add(' ShowNote=''F'',');
+               sql.Add(' Impression='+Chr(39)+StringReplace(EditImpression.Text,'''','''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultOne='+Chr(39)+StringReplace(StringReplace(RMemoResultOne,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultTwo='+Chr(39)+StringReplace(StringReplace(RMemoResultTwo,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultThree='+Chr(39)+StringReplace(StringReplace(RMemoResultThree,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultFour='+Chr(39)+StringReplace(StringReplace(RMemoResultFour,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultFive='+Chr(39)+StringReplace(StringReplace(RMemoResultFive,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultSix='+Chr(39)+StringReplace(StringReplace(RMemoResultSix,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultSeven='+Chr(39)+StringReplace(StringReplace(RMemoResultSeven,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultEight='+Chr(39)+StringReplace(StringReplace(RMemoResultEight,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultNine='+Chr(39)+StringReplace(StringReplace(RMemoResultNine,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultTen='+Chr(39)+StringReplace(StringReplace(RMemoResultTen,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultEleven='+Chr(39)+StringReplace(StringReplace(RMemoResultEleven,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultTwelve='+Chr(39)+StringReplace(StringReplace(RMemoResultTwelve,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultThirteen='+Chr(39)+StringReplace(StringReplace(RMemoResultThirteen,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultFourteen='+Chr(39)+StringReplace(StringReplace(RMemoResultFourteen,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultFifteen='+Chr(39)+StringReplace(StringReplace(RMemoResultFifteen,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultSixteen='+Chr(39)+StringReplace(StringReplace(RMemoResultSixteen,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(' ResultSeventeen='+Chr(39)+StringReplace(StringReplace(RMemoResultSeventeen,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39));
+               If DBLC_TestNameID.KeyValue<>NULL then
+               Sql.Add(' ,EditFindingID='+VarToStr(DBLC_TestNameID.KeyValue))
+               Else
+               Sql.Add(' ,IsImpressionUnderLine='+Char(39)+'N'+Char(39));
+               Sql.Add(' ,ClinalDiagnosis='+Char(39)+StringReplace(EditClinicalDiagnosis.Text,'''','''''',[rfReplaceAll])+Char(39));
+               Sql.Add(' ,ExaminationRequested='+Char(39)+StringReplace(EditExaminationRequested.Text,'''','''''',[rfReplaceAll])+Char(39));
+
+               Sql.Add(' Where PatientID='+IntToStr(gi_PatientID)+' And');
+               Sql.Add(' PatientTestID='+IntToStr(gi_PatientTestID));
+               Try
+               ExecSQL;
+               Except
+                   sql.SaveToFile(gs_TempPath+'Sql('+IntToStr(gi_PatientTestID)+'-'+IntToStr(gi_PatientID)+').txt');
+               End;
+          End
+          Else
+          Begin
+               Sql.Add(' Insert Into PatientTestSpecial_NEW(TESTSPECIALID,PATIENTTESTID,PatientID,TestID,PTDetailID,Impression,ShowNote');
+               Sql.Add(' ,PTSpecial,ResultOne,ResultTwo,ResultThree,ResultFour,ResultFive,ResultSix,ResultSeven,ResultEight,ResultNine');
+               Sql.Add(' ,ResultTen,ResultEleven,ResultTwelve,ResultThirteen,ResultFourteen,ResultFifteen,ResultSixteen,ResultSeventeen');
+               Sql.Add(' ,EditFindingID,IsImpressionBold,IsImpressionItalic,IsImpressionUnderline,ClinalDiagnosis,ExaminationRequested) Values(');
+               Sql.Add(IntToStr(NTestSpecialID)+','+IntToStr(gi_PatientTestID)+','+IntToStr(gi_PatientID)+',0,0,');
+               //Add(Chr(39)+EditImpression.Text+Chr(39)+','+Chr(39)+RichEditReport.Text+Chr(39)+',');
+               Sql.Add(Chr(39)+EditImpression.Text+Chr(39));
+               If CBShowNote.Checked=True Then
+               Sql.Add(' ,''T'' ')
+               Else Sql.Add(' ,''F'' ');
+               Sql.Add(' ,'+Chr(39)+StringReplace(StringReplace(MemoRemarks.Text,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Chr(39)+',');
+               Sql.Add(Char(39)+StringReplace(StringReplace(RMemoResultOne,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+','+Char(39)+StringReplace(StringReplace(RMemoResultTwo,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+',');
+               Sql.Add(Char(39)+StringReplace(StringReplace(RMemoResultThree,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+','+Char(39)+StringReplace(StringReplace(RMemoResultFour,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+',');
+               Sql.Add(Char(39)+StringReplace(StringReplace(RMemoResultFive,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+','+Char(39)+StringReplace(StringReplace(RMemoResultSix,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+',');
+               Sql.Add(Char(39)+StringReplace(StringReplace(RMemoResultSeven,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+','+Char(39)+StringReplace(StringReplace(RMemoResultEight,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+',');
+               Sql.Add(Char(39)+StringReplace(StringReplace(RMemoResultNine,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+','+Char(39)+StringReplace(StringReplace(RMemoResultTen,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+',');
+               Sql.Add(Char(39)+StringReplace(StringReplace(RMemoResultEleven,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+','+Char(39)+StringReplace(StringReplace(RMemoResultTwelve,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+',');
+               Sql.Add(Char(39)+StringReplace(StringReplace(RMemoResultThirteen,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+','+Char(39)+StringReplace(StringReplace(RMemoResultFourteen,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+',');
+               Sql.Add(Char(39)+StringReplace(StringReplace(RMemoResultFifteen,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+','+Char(39)+StringReplace(StringReplace(RMemoResultSixteen,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+',');
+               Sql.Add(Char(39)+StringReplace(StringReplace(RMemoResultSeventeen,'''','''''',[rfReplaceAll]),'"','''''''''',[rfReplaceAll])+Char(39)+',');
+               if DBLC_TestNameID.KeyValue>-1 then Sql.Add(VarToStr(DBLC_TestNameID.KeyValue)+',')
+               else Sql.Add(' 0,');
+               Sql.Add(Char(39)+'N'+Char(39));
+               Sql.Add(' ,'+Char(39)+'N'+Char(39));
+               Sql.Add(' ,'+Char(39)+'N'+Char(39));
+               Sql.Add(' ,'+Char(39)+StringReplace(EditClinicalDiagnosis.Text,'''','''''',[rfReplaceAll])+Char(39));
+               Sql.Add(' ,'+Char(39)+StringReplace(EditExaminationRequested.Text,'''','''''',[rfReplaceAll])+Char(39));
+               Sql.Add(' )');
+               Try
+               ExecSQL;
+               Except
+                   Sql.SaveToFile(gs_TempPath+'Sql('+IntToStr(gi_PatientTestID)+'-'+IntToStr(gi_PatientID)+').txt');
+               End;
+          End;
+
+          Close;
+          Free;
+          UpdateRefNoInPatientTest1(gi_PatientTestID,RefNo);
+          UpdateCptCodeInPatientTest(gi_PatientTestID,CptCode);
+          SaveReportFooter;
+          UpdateRefDocCodeInPatientTest(gi_PatientTestID, Docid);
+          UpdateTestProgressStatus('', '', gi_PatientTestID, gi_Investigation);
+          UpdateFindingsPostBy(gi_PatientTestID);
+          DM_Hospital.DB.Commit;
+          ShowDoneMessage;
+          SimulateKeyPress(Self.WindowHandle, vk_escape);
+          Except
+          DM_Hospital.DB.Rollback;
+     End;
+     end;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.ComboBox1Change(Sender: TObject);
+begin
+     SetFontSize(ComboBox1, Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.ComboBox2Change(Sender: TObject);
+begin
+     SetFontName(ComboBox2, Arr_RIch[0]);
+end;
+
+constructor TFrame_ClinicalPathFindingNew.Create(Aowner: Tcomponent);
+Var
+     Sender: TObject;
+     i:Integer;
+begin
+     inherited;
+
+     ps_DepType:=GetUserDepType(gi_UserID);
+     SetLength(Arr_RIch,1);
+
+     SetfontSizeValue(ComboBox1);
+     SetfontNameValue(ComboBox2);
+     CreateTableClinicalFinding;
+     Label1.Caption := Gs_PatientIdCaption;
+
+    // Query_RefDoccode.Close;
+    // Query_RefDoccode.Session:=Dm_Hospital.Db;
+    // Query_RefDoccode.Open;
+
+     if gi_compileValue in [23,11,12,24,25,26] then
+     begin
+         with Query_RefDoccode do
+         begin
+           close;
+           Session:=Dm_Hospital.Db;
+           sql.Clear;
+           sql.Add('select doct_docid docid,doct_DOCNAME DOCNAME from hs_doct_doctor ');
+           sql.Add('order by doct_docname');
+           Open;
+         end;
+     end
+     else
+     begin
+         with Query_RefDoccode do
+         begin
+           close;
+           Session:=Dm_Hospital.Db;
+           sql.Clear;
+           sql.Add('select doccode,TRIM(REPLACE(REPLACE(REPLACE(replace(f_name||'' ''||L_name,''DR''),''PROF''),''.''),''(MRS)''))/*||'' - ''||Nvl(referralcount,0)*/DOCNAME from doctor ');
+           sql.Add('order by Nvl(referralcount,0) desc');
+           Open;
+         end;
+     end;
+
+
+     With Query_TestNameID do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          ParambyName('TNID') .AsInteger:=gi_TestNameId;
+          Open;
+          DBLC_TestNameID.KeyValue:=Query_TestNameID.FieldbyName('EDITFINDINGID').AsInteger;
+          DBLC_TestNameIDClick(Sender);
+     end;
+
+     with Query_Data do
+     begin
+          Close;
+          Session:=Dm_Hospital.Db;
+          SQL[5] := 'and patientid=' + IntToStr(gi_PatientID);
+          SQL[6] := 'and TestDate=' + #39 + gs_TestDate + #39 +' and sampleno='+#39+gs_SampleNo+#39;
+          if Gb_ShowTestWithoutResult then
+               SQL[8] := 'and TestProgressStatus=' + IntToStr(gi_SampleColl)
+          else
+               SQL[8] := 'and 1=1';
+
+          if Gs_SelectedDepList='' then
+          Gs_SelectedDepList:=gs_UserDepId;
+          SQL[9]:='and sc.depid in ('+Gs_SelectedDepList+')';
+          if gs_CalledFrom='VERIFICATION' then
+          SQL[10]:='and sc.patienttestid in ('+Gs_SelectedPatientTestID+')';
+          Open;
+            //********************************************//
+          Setlength(Arr_TestIDForFooter, Query_Data.RecordCount);
+          i := 0;
+          Form_FindingFootnote := TForm_FindingFootnote.Create(nil);
+          Form_FindingFootnote.Clb_Footnote.Items.Clear;
+
+
+
+
+          // Adding Footnote
+          Setlength(Arr_TestIDForFooter[i], 2);
+          if FieldByName('FooterID').AsString <> '' then
+          begin
+               Arr_TestIDForFooter[i, 0] := Query_Data.FieldByName('TestNameID').AsString;
+               Arr_TestIDForFooter[i, 1] := Query_Data.FieldByName('PatientTestID').AsString;
+               Inc(i);
+               with Form_FindingFootnote do
+               begin
+                    Clb_Footnote.Items.Add(Query_Data.FieldByName('TestName').AsString);
+               end;
+          end;
+          // end footnote
+     end;
+
+
+
+     LoadPatientData(gi_PatientID);
+     MyPatient := TPatient.Create;
+     MyPatient.LoadData(gi_PatientID);
+     Lbl_AgeGender.Caption := MyPatient.AgeGender;
+     lbl_SampleNo.Caption := gs_SampleNo;
+     Memo_Remarks.Text := MyPatient.Remarks;
+     //RefreshQuery(Query_RefDoccode,gs_DatabaseName);
+
+     lbl_Name.Caption := Gs_PatientName;
+     Lbl_Hosno.Caption := IntToStr(gi_PatientID);
+     // Lbl_TestName.Caption := gs_TestName;
+     // lbl_SampleNo.Caption := gs_SampleNo;
+     Dex_SampleDate.ADDateAsText := TodaysDate;
+     Dex_SampleDate.SystemOfDate := gi_datesystem;
+//     Dex_RptDate.Visible:=False;
+//     Dex_RptDate.ADDateAsText := TodaysDate;
+//     Dex_RptDate.SystemOfDate := gi_datesystem;
+     OldRefDocCode := GetRefDoccodeFromPatientTest(gi_PatientTestID);
+     DBLCB_RefDoc.KeyValue := OldRefDocCode;
+     Me_Time.Text := TodaysTime;
+     //Label6.Visible := false;
+     Dex_SampleDate.Visible := false;
+//     Me_Time.Visible := false;
+
+
+
+     if gi_compileValue=23 then
+     begin
+         DBLCB_RefDoc.KeyValue:=GetRefDocCode(Gs_BillNo);
+     end;
+
+     with Query_ReportType do
+     begin
+          Close;
+          SQL[1] := 'Where TestNameID=' + IntToStr(gi_TestNameId);
+          Open;
+     end;
+
+     LoadReportFooterDocINCheckListBox(Clb_ReportFooter);
+     LoadPatientReportFooterDocINCheckListBox(gs_SampleNo,ps_DepType, Clb_ReportFooter);
+
+
+     Edit_RefNo.Text:=GetRefNoFromPatientTest(gi_PatientTestID);
+     Edit_CptCode.Text:=GetCptCode(gi_PatientTestID);
+
+end;
+
+procedure TFrame_ClinicalPathFindingNew.CreateTableClinicalFinding;
+begin
+     if FileExists(gs_temppath + '\ClinicalFindings.db') then
+     begin
+          with Table_ClinicalFinding do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'ClinicalFindings.db';
+               DeleteTable;
+          end;
+     end;
+     with Table_ClinicalFinding do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          TableName := 'ClinicalFindings.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('TempID', ftInteger);
+          FieldDefs.Add('PtClinicalTestDetailID', ftInteger);
+          FieldDefs.Add('TestName', ftString, 100);
+          FieldDefs.Add('TestNameId', ftInteger);
+          FieldDefs.Add('PatientTestId', ftInteger);
+          FieldDefs.Add('ReportFormatID', ftInteger);
+          FieldDefs.Add('ReportTitle', ftString, 100);
+          FieldDefs.Add('ReportTitle_Rich', ftMemo);
+          FieldDefs.Add('FindingTitle', ftString, 100);
+          FieldDefs.Add('FindingTitle_Rich', ftMemo);
+          FieldDefs.Add('Finding', ftString, 200);
+          FieldDefs.Add('Finding_Rich', ftMemo);
+          FieldDefs.Add('DisplayOrder', ftString, 100);
+          FieldDefs.Add('IsNew', ftString, 1);
+          CreateTable;
+     end;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.DBLCB_RefDocKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+if key=VK_DELETE then
+   DBLCB_RefDoc.KeyValue:=null;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.DBLC_TestNameIDClick(Sender: TObject);
+Var  Qry,QRY_TEST:TOraQuery;
+begin
+     Qry:=TOraQuery.Create(Nil);
+     QRY_TEST:=TOraQuery.Create(Nil);
+     Dex_RptDate.Width:=0;
+     With Qry Do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          With Sql Do
+          Begin
+               Clear;
+               Add('Select NVL(TestSpecialID,0) TestSpecialID From PatientTestSpecial_new Where PatientTestID='+IntToStr(gi_PatientTestID));
+          End;
+          Open;
+          If FieldByName('TestSpecialID').AsInteger>0 Then
+          Begin
+               FillSpeCial(gi_PatientTestID,gi_PatientID);
+               Exit;
+          End;
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleOne').AsString)<>'') Then
+     Begin
+          LabelTitleOne.Visible:=True;
+          MemoResultOne.Visible:=True;
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResOneDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultOne.Lines.LoadFromFile('tt.txt');
+          LabelTitleOne.Caption:=Query_TestNameID.FieldByName('TitleOne').AsString;
+     End
+     Else
+     Begin
+          LabelTitleOne.Visible:=False;
+          MemoResultOne.Visible:=False;
+          LabelTitleOne.Caption:='';
+          MemoResultOne.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleTwo').AsString)<>'') Then
+     Begin
+          LabelTitleTwo.Visible:=True;
+          MemoResultTwo.Visible:=True;
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResTwoDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultTwo.Lines.LoadFromFile('tt.txt');
+          LabelTitleTwo.Caption:=Query_TestNameID.FieldByName('TitleTwo').AsString;
+     End
+     Else
+     Begin
+          LabelTitleTwo.Visible:=False;
+          MemoResultTwo.Visible:=False;
+          LabelTitleTwo.Caption:='';
+          MemoResultTwo.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleThree').AsString)<>'') Then
+     Begin
+          LabelTitleThree.Visible:=True;
+          MemoResultThree.Visible:=True;
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResThreeDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultThree.Lines.LoadFromFile('tt.txt');
+          LabelTitleTwo.Caption:=Query_TestNameID.FieldByName('TitleTwo').AsString;
+          LabelTitleThree.Caption:=Query_TestNameID.FieldByName('TitleThree').AsString;
+     End
+     Else
+     Begin
+          LabelTitleThree.Visible:=False;
+          MemoResultThree.Visible:=False;
+          LabelTitleThree.Caption:='';
+          MemoResultThree.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleFour').AsString)<>'')  Then
+     Begin
+          LabelTitleFour.Visible:=True;
+          MemoResultFour.Visible:=True;
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResFourDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultFour.Lines.LoadFromFile('tt.txt');
+
+          LabelTitleFour.Caption:=Query_TestNameID.FieldByName('TitleFour').AsString;
+//          MemoResultFour.Text:=Query_TestNameID.FieldByName('ResFourDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleFour.Visible:=False;
+          MemoResultFour.Visible:=False;
+          LabelTitleFour.Caption:='';
+          MemoResultFour.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleFive').AsString)<>'')  Then
+     Begin
+          LabelTitleFive.Visible:=True;
+          MemoResultFive.Visible:=True;
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResFiveDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultFive.Lines.LoadFromFile('tt.txt');
+
+          LabelTitleFive.Caption:=Query_TestNameID.FieldByName('TitleFive').AsString;
+          //MemoResultFive.Text:=Query_TestNameID.FieldByName('ResFiveDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleFive.Visible:=False;
+          MemoResultFive.Visible:=False;
+          LabelTitleFive.Caption:='';
+          MemoResultFive.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleSix').AsString)<>'')  Then
+     Begin
+          LabelTitleSix.Visible:=True;
+          MemoResultSix.Visible:=True;
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResSixDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultSix.Lines.LoadFromFile('tt.txt');
+          LabelTitleSix.Caption:=Query_TestNameID.FieldByName('TitleSix').AsString;
+//          MemoResultSix.Text:=Query_TestNameID.FieldByName('ResSixDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleSix.Visible:=False;
+          MemoResultSix.Visible:=False;
+          LabelTitleSix.Caption:='';
+          MemoResultSix.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleSeven').AsString)<>'') Then
+     Begin
+          LabelTitleSeven.Visible:=True;
+          MemoResultSeven.Visible:=True;
+
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResSevenDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultSeven.Lines.LoadFromFile('tt.txt');
+
+          LabelTitleSeven.Caption:=Query_TestNameID.FieldByName('TitleSeven').AsString;
+//          MemoResultSeven.Text:=Query_TestNameID.FieldByName('ResSevenDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleSeven.Visible:=False;
+          MemoResultSeven.Visible:=False;
+          LabelTitleSeven.Caption:='';
+          MemoResultSeven.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleEight').AsString)<>'') Then
+     Begin
+          LabelTitleEight.Visible:=True;
+          MemoResultEight.Visible:=True;
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResEightDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultEight.Lines.LoadFromFile('tt.txt');
+          LabelTitleEight.Caption:=Query_TestNameID.FieldByName('TitleEight').AsString;
+          //MemoResultEight.Text:=Query_TestNameID.FieldByName('ResEightDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleEight.Visible:=False;
+          MemoResultEight.Visible:=False;
+          LabelTitleEight.Caption:='';
+          MemoResultEight.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleNine').AsString)<>'')  Then
+     Begin
+          LabelTitleNine.Visible:=True;
+          MemoResultNine.Visible:=True;
+
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResNineDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultNine.Lines.LoadFromFile('tt.txt');
+
+          LabelTitleNine.Caption:=Query_TestNameID.FieldByName('TitleNine').AsString;
+         // MemoResultNine.Text:=Query_TestNameID.FieldByName('ResNineDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleNine.Visible:=False;
+          MemoResultNine.Visible:=False;
+          LabelTitleNine.Caption:='';
+          MemoResultNine.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleTen').AsString)<>'')  Then
+     Begin
+          LabelTitleTen.Visible:=True;
+          MemoResultTen.Visible:=True;
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResTenDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultTen.Lines.LoadFromFile('tt.txt');
+          LabelTitleTen.Caption:=Query_TestNameID.FieldByName('TitleTen').AsString;
+          //MemoResultTen.Text:=Query_TestNameID.FieldByName('ResTenDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleTen.Visible:=False;
+          MemoResultTen.Visible:=False;
+          LabelTitleTen.Caption:='';
+          MemoResultTen.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleEleven').AsString)<>'') Then
+     Begin
+          LabelTitleEleven.Visible:=True;
+          MemoResultEleven.Visible:=True;
+
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResElevenDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultEleven.Lines.LoadFromFile('tt.txt');
+
+          LabelTitleEleven.Caption:=Query_TestNameID.FieldByName('TitleEleven').AsString;
+//          MemoResultEleven.Text:=Query_TestNameID.FieldByName('ResElevenDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleEleven.Visible:=False;
+          MemoResultEleven.Visible:=False;
+          LabelTitleEleven.Caption:='';
+          MemoResultEleven.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleTwelve').AsString)<>'') Then
+     Begin
+          LabelTitleTwelve.Visible:=True;
+          MemoResultTwelve.Visible:=True;
+
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResTwelveDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultTwelve.Lines.LoadFromFile('tt.txt');
+
+          LabelTitleTwelve.Caption:=Query_TestNameID.FieldByName('TitleTwelve').AsString;
+//          MemoResultTwelve.Text:=Query_TestNameID.FieldByName('ResTwelveDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleTwelve.Visible:=False;
+          MemoResultTwelve.Visible:=False;
+          LabelTitleTwelve.Caption:='';
+          MemoResultTwelve.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleThirteen').AsString)<>'')  Then
+     Begin
+          LabelTitleThirteen.Visible:=True;
+          MemoResultThirteen.Visible:=True;
+
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResThirteenDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultThirteen.Lines.LoadFromFile('tt.txt');
+
+          LabelTitleThirteen.Caption:=Query_TestNameID.FieldByName('TitleThirteen').AsString;
+//          MemoResultThirteen.Text:=Query_TestNameID.FieldByName('ResThirteenDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleThirteen.Visible:=False;
+          MemoResultThirteen.Visible:=False;
+          LabelTitleThirteen.Caption:='';
+          MemoResultThirteen.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleFourteen').AsString)<>'')  Then
+     Begin
+          LabelTitleFourteen.Visible:=True;
+          MemoResultFourteen.Visible:=True;
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResFourteenDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultFourteen.Lines.LoadFromFile('tt.txt');
+
+          LabelTitleFourteen.Caption:=Query_TestNameID.FieldByName('TitleFourteen').AsString;
+  //        MemoResultFourteen.Text:=Query_TestNameID.FieldByName('ResFourteenDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleFourteen.Visible:=False;
+          MemoResultFourteen.Visible:=False;
+          LabelTitleFourteen.Caption:='';
+          MemoResultFourteen.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleFifteen').AsString)<>'')  Then
+     Begin
+          LabelTitleFifteen.Visible:=True;
+          MemoResultFifteen.Visible:=True;
+
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResFifteenDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultFifteen.Lines.LoadFromFile('tt.txt');
+
+          LabelTitleFifteen.Caption:=Query_TestNameID.FieldByName('TitleFifteen').AsString;
+          //MemoResultFifteen.Text:=Query_TestNameID.FieldByName('ResFifteenDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleFifteen.Visible:=False;
+          MemoResultFifteen.Visible:=False;
+          LabelTitleFifteen.Caption:='';
+          MemoResultFifteen.Text:='';
+     End;
+
+     IF (Trim(Query_TestNameID.FieldByName('TitleSixteen').AsString)<>'')  Then
+     Begin
+          LabelTitleSixTeen.Visible:=True;
+          MemoResultSixTeen.Visible:=True;
+          Memo.Lines.Clear;
+          Memo.Text:=Query_TestNameID.FieldbyName('ResSixteenDesc').AsString;
+          Memo.Lines.SaveToFile('tt.txt');
+          MemoResultSixTeen.Lines.LoadFromFile('tt.txt');
+
+          LabelTitleSixTeen.Caption:=Query_TestNameID.FieldByName('TitleSixTeen').AsString;
+//          MemoResultSixTeen.Text:=Query_TestNameID.FieldByName('ResSixTeenDesc').AsString;
+     End
+     Else
+     Begin
+          LabelTitleSixTeen.Visible:=False;
+          MemoResultSixTeen.Visible:=False;
+          LabelTitleSixTeen.Caption:='';
+          MemoResultSixTeen.Text:='';
+     End;
+     MemoResultSeventeen.Visible:=False;
+     LabelTitleSeventeen.Visible:=False;
+
+end;
+
+procedure TFrame_ClinicalPathFindingNew.FillSpeCial(PatientTestID,
+  PatientID: Integer);
+Var  EditFineID,li_TestNameID:Integer;
+Begin
+      EditClinicalDiagnosis.Text:='';
+      EditExaminationRequested.Text:='';
+      With Query_Process do
+      begin
+           Close;
+           Sql.Clear;
+           Sql.Add('Select * From TESTEDITFINDING_NEW ');
+           Sql.Add(' Where TestNameID='+IntToStr(gi_TestNameId));
+           Open;
+           fetchall;
+      End;
+     If Trim(query_process.FieldByName('TestNameID').AsString)<>'' then
+     begin
+
+          EditFineID:=Query_Process.FieldbyName('EditFindingID').AsInteger;
+          DBLC_TestNameID.KeyValue:=EditFineID;
+          CheckSpecial:=True;
+          RetriveSpeCial;
+          EditImpression.Text:=QuerySpecial.FieldByName('Impression').AsString;
+
+          EditClinicalDiagnosis.Text:=QuerySpecial.FieldByName('ClinalDiagnosis').AsString;
+          EditExaminationRequested.Text:=QuerySpecial.FieldByName('ExaminationRequested').AsString;
+          EditImpression.Text:='';
+          IF (Trim(Query_Process.FieldByName('TitleOne').AsString)<>'')  Then
+          Begin
+               LabelTitleOne.Visible:=True;
+               MemoResultOne.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultOne').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultOne.Lines.LoadFromFile('tt.txt');
+
+               LabelTitleOne.Caption:=Query_Process.FieldByName('TitleOne').AsString;
+               //MemoResultOne.Text:=QuerySpecial.FieldByName('ResultOne').AsString;
+          End
+          Else
+          Begin
+               LabelTitleOne.Visible:=False;
+               MemoResultOne.Visible:=False;
+               LabelTitleOne.Caption:='';
+               MemoResultOne.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleTwo').AsString)<>'') Then
+          Begin
+               LabelTitleTwo.Visible:=True;
+               MemoResultTwo.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultTwo').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultTwo.Lines.LoadFromFile('tt.txt');
+               LabelTitleTwo.Caption:=Query_Process.FieldByName('TitleTwo').AsString;
+//               MemoResultTwo.Text:=QuerySpecial.FieldByName('ResultTwo').AsString;
+          End
+          Else
+          Begin
+               LabelTitleTwo.Visible:=False;
+               MemoResultTwo.Visible:=False;
+               LabelTitleTwo.Caption:='';
+               MemoResultTwo.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleThree').AsString)<>'') Then
+          Begin
+               LabelTitleThree.Visible:=True;
+               MemoResultThree.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultThree').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultThree.Lines.LoadFromFile('tt.txt');
+               LabelTitleThree.Caption:=Query_Process.FieldByName('TitleThree').AsString;
+               //MemoResultThree.Text:=QuerySpecial.FieldByName('ResultThree').AsString;
+          End
+          Else
+          Begin
+               LabelTitleThree.Visible:=False;
+               MemoResultThree.Visible:=False;
+               LabelTitleThree.Caption:='';
+               MemoResultThree.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleFour').AsString)<>'')  Then
+          Begin
+               LabelTitleFour.Visible:=True;
+               MemoResultFour.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultFour').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultFour.Lines.LoadFromFile('tt.txt');
+               LabelTitleFour.Caption:=Query_Process.FieldByName('TitleFour').AsString;
+               //MemoResultFour.Text:=QuerySpecial.FieldByName('ResultFour').AsString;
+          End
+          Else
+          Begin
+               LabelTitleFour.Visible:=False;
+               MemoResultFour.Visible:=False;
+               LabelTitleFour.Caption:='';
+               MemoResultFour.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleFive').AsString)<>'')  Then
+          Begin
+               LabelTitleFive.Visible:=True;
+               MemoResultFive.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultFive').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultFive.Lines.LoadFromFile('tt.txt');
+               LabelTitleFive.Caption:=Query_Process.FieldByName('TitleFive').AsString;
+//               MemoResultFive.Text:=QuerySpecial.FieldByName('ResultFive').AsString;
+          End
+          Else
+          Begin
+               LabelTitleFive.Visible:=False;
+               MemoResultFive.Visible:=False;
+               LabelTitleFive.Caption:='';
+               MemoResultFive.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleSix').AsString)<>'')  Then
+          Begin
+               LabelTitleSix.Visible:=True;
+               MemoResultSix.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultSix').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultSix.Lines.LoadFromFile('tt.txt');
+               LabelTitleSix.Caption:=Query_Process.FieldByName('TitleSix').AsString;
+              // MemoResultSix.Text:=QuerySpecial.FieldByName('ResultSix').AsString;
+          End
+          Else
+          Begin
+               LabelTitleSix.Visible:=False;
+               MemoResultSix.Visible:=False;
+               LabelTitleSix.Caption:='';
+               MemoResultSix.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleSeven').AsString)<>'')  Then
+          Begin
+               LabelTitleSeven.Visible:=True;
+               MemoResultSeven.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultSeven').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultSeven.Lines.LoadFromFile('tt.txt');
+               LabelTitleSeven.Caption:=Query_Process.FieldByName('TitleSeven').AsString;
+               //MemoResultSeven.Text:=QuerySpecial.FieldByName('ResultSeven').AsString;
+          End
+          Else
+          Begin
+               LabelTitleSeven.Visible:=False;
+               MemoResultSeven.Visible:=False;
+               LabelTitleSeven.Caption:='';
+               MemoResultSeven.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleEight').AsString)<>'')  Then
+          Begin
+               LabelTitleEight.Visible:=True;
+               MemoResultEight.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultEight').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultEight.Lines.LoadFromFile('tt.txt');
+               LabelTitleEight.Caption:=Query_Process.FieldByName('TitleEight').AsString;
+               //MemoResultEight.Text:=QuerySpecial.FieldByName('ResultEight').AsString;
+          End
+          Else
+          Begin
+               LabelTitleEight.Visible:=False;
+               MemoResultEight.Visible:=False;
+               LabelTitleEight.Caption:='';
+               MemoResultEight.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleNine').AsString)<>'')  Then
+          Begin
+               LabelTitleNine.Visible:=True;
+               MemoResultNine.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultNine').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultNine.Lines.LoadFromFile('tt.txt');
+               LabelTitleNine.Caption:=Query_Process.FieldByName('TitleNine').AsString;
+//               MemoResultNine.Text:=QuerySpecial.FieldByName('ResultNine').AsString;
+          End
+          Else
+          Begin
+               LabelTitleNine.Visible:=False;
+               MemoResultNine.Visible:=False;
+               LabelTitleNine.Caption:='';
+               MemoResultNine.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleTen').AsString)<>'')  Then
+          Begin
+               LabelTitleTen.Visible:=True;
+               MemoResultTen.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultTen').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultTen.Lines.LoadFromFile('tt.txt');
+               LabelTitleTen.Caption:=Query_Process.FieldByName('TitleTen').AsString;
+               //MemoResultTen.Text:=QuerySpecial.FieldByName('ResultTen').AsString;
+          End
+          Else
+          Begin
+               LabelTitleTen.Visible:=False;
+               MemoResultTen.Visible:=False;
+               LabelTitleTen.Caption:='';
+               MemoResultTen.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleEleven').AsString)<>'')  Then
+          Begin
+               LabelTitleEleven.Visible:=True;
+               MemoResultEleven.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultEleven').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultEleven.Lines.LoadFromFile('tt.txt');
+
+               LabelTitleEleven.Caption:=Query_Process.FieldByName('TitleEleven').AsString;
+//               MemoResultEleven.Text:=QuerySpecial.FieldByName('ResultEleven').AsString;
+          End
+          Else
+          Begin
+               LabelTitleEleven.Visible:=False;
+               MemoResultEleven.Visible:=False;
+               LabelTitleEleven.Caption:='';
+               MemoResultEleven.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleTwelve').AsString)<>'')  Then
+          Begin
+               LabelTitleTwelve.Visible:=True;
+               MemoResultTwelve.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultTwelve').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultTwelve.Lines.LoadFromFile('tt.txt');
+               LabelTitleTwelve.Caption:=Query_Process.FieldByName('TitleTwelve').AsString;
+//               MemoResultTwelve.Text:=QuerySpecial.FieldByName('ResultTwelve').AsString;
+          End
+          Else
+          Begin
+               LabelTitleTwelve.Visible:=False;
+               MemoResultTwelve.Visible:=False;
+               LabelTitleTwelve.Caption:='';
+               MemoResultTwelve.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleThirteen').AsString)<>'')  Then
+          Begin
+               LabelTitleThirteen.Visible:=True;
+               MemoResultThirteen.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultThirteen').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultThirteen.Lines.LoadFromFile('tt.txt');
+               LabelTitleThirteen.Caption:=Query_Process.FieldByName('TitleThirteen').AsString;
+//               MemoResultThirteen.Text:=QuerySpecial.FieldByName('ResultThirteen').AsString;
+          End
+          Else
+          Begin
+               LabelTitleThirteen.Visible:=False;
+               MemoResultThirteen.Visible:=False;
+               LabelTitleThirteen.Caption:='';
+               MemoResultThirteen.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleFourteen').AsString)<>'')  Then
+          Begin
+               LabelTitleFourTeen.Visible:=True;
+               MemoResultFourteen.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultFourteen').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultFourteen.Lines.LoadFromFile('tt.txt');
+               LabelTitleFourteen.Caption:=Query_Process.FieldByName('TitleFourteen').AsString;
+//               MemoResultFourteen.Text:=QuerySpecial.FieldByName('ResultFourteen').AsString;
+          End
+          Else
+          Begin
+               LabelTitleFourteen.Visible:=False;
+               MemoResultFourteen.Visible:=False;
+               LabelTitleFourteen.Caption:='';
+               MemoResultFourteen.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleFifteen').AsString)<>'')  Then
+          Begin
+               LabelTitleFifteen.Visible:=True;
+               MemoResultFifteen.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultFifteen').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultFifteen.Lines.LoadFromFile('tt.txt');
+               LabelTitleFifteen.Caption:=Query_Process.FieldByName('TitleFifteen').AsString;
+//               MemoResultFifteen.Text:=QuerySpecial.FieldByName('ResultFifteen').AsString;
+          End
+          Else
+          Begin
+               LabelTitleFifteen.Visible:=False;
+               MemoResultFifteen.Visible:=False;
+               LabelTitleFifteen.Caption:='';
+               MemoResultFifteen.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleSixteen').AsString)<>'')  Then
+          Begin
+               LabelTitleSixTeen.Visible:=True;
+               MemoResultSixTeen.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultSixteen').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultSixTeen.Lines.LoadFromFile('tt.txt');
+               LabelTitleSixTeen.Caption:=Query_Process.FieldByName('TitleSixteen').AsString;
+//               MemoResultSixTeen.Text:=QuerySpecial.FieldByName('ResultSixteen').AsString;
+          End
+          Else
+          Begin
+               LabelTitleSixTeen.Visible:=False;
+               MemoResultSixTeen.Visible:=False;
+               LabelTitleSixTeen.Caption:='';
+               MemoResultSixTeen.Text:='';
+          End;
+
+          IF (Trim(Query_Process.FieldByName('TitleSeventeen').AsString)<>'')  Then
+          Begin
+               LabelTitleSevenTeen.Visible:=True;
+               MemoResultSevenTeen.Visible:=True;
+               Memo.Lines.Clear;
+               Memo.Text:=QuerySpecial.FieldbyName('ResultSeventeen').AsString;
+               Memo.Lines.SaveToFile('tt.txt');
+               MemoResultSevenTeen.Lines.LoadFromFile('tt.txt');
+               LabelTitleSevenTeen.Caption:=Query_Process.FieldByName('TitleSeventeen').AsString;
+//               MemoResultSevenTeen.Text:=QuerySpecial.FieldByName('ResultSeventeen').AsString;
+          End
+          Else
+          Begin
+               LabelTitleSevenTeen.Visible:=False;
+               MemoResultSevenTeen.Visible:=False;
+               LabelTitleSevenTeen.Caption:='';
+               MemoResultSevenTeen.Text:='';
+          End;
+          MemoRemarks.Text:=QuerySpecial.FieldByName('PTSpecial').AsString;
+
+          CBShowNote.Checked:=False;
+     End;
+End;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultEightChange(Sender: TObject);
+begin
+     memo2.text:=MemoResultEight.Text;
+     WritingPadID:=8;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultEightClick(Sender: TObject);
+begin
+     memo2.text:=MemoResultEight.Text;
+     WritingPadID:=8;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultEightEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultEight,'I');
+     Arr_RIch[0]:=MemoResultEight;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultEightExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultEight,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultEightSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultElevenChange(Sender: TObject);
+begin
+     memo2.text:=MemoResultEleven.Text;
+     WritingPadID:=11;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultElevenClick(Sender: TObject);
+begin
+     memo2.text:=MemoResultEleven.Text;
+     WritingPadID:=11;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultElevenEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultEleven,'I');
+     Arr_RIch[0]:=MemoResultEleven;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultElevenExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultEleven,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultElevenSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFifteenChange(
+  Sender: TObject);
+begin
+     memo2.text:=MemoResultFifteen.Text;
+     WritingPadID:=15;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFifteenClick(Sender: TObject);
+begin
+     memo2.text:=MemoResultFifteen.Text;
+     WritingPadID:=15;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFifteenEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultFifteen,'I');
+     Arr_RIch[0]:=MemoResultFifteen;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFifteenExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultFifteen,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFifteenSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFiveChange(Sender: TObject);
+begin
+     memo2.text:=MemoResultFive.Text;
+     WritingPadID:=5;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFiveClick(Sender: TObject);
+begin
+     memo2.text:=MemoResultFive.Text;
+     WritingPadID:=5;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFiveEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultFive,'I');
+     Arr_RIch[0]:=MemoResultFive;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFiveExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultFive,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFiveSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFourChange(Sender: TObject);
+begin
+     memo2.text:=MemoResultFour.Text;
+     WritingPadID:=4;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFourClick(Sender: TObject);
+begin
+     memo2.text:=MemoResultFour.Text;
+     WritingPadID:=4;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFourEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultFour,'I');
+     Arr_RIch[0]:=MemoResultFour;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFourExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultFour,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFourSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFourteenChange(
+  Sender: TObject);
+begin
+     memo2.text:=MemoResultFourteen.Text;
+     WritingPadID:=14;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFourteenClick(
+  Sender: TObject);
+begin
+     memo2.text:=MemoResultFourteen.Text;
+     WritingPadID:=14;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFourteenEnter(
+  Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultFourteen,'I');
+     Arr_RIch[0]:=MemoResultFourteen;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFourteenExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultFourteen,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultFourteenSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultNineChange(Sender: TObject);
+begin
+     memo2.text:=MemoResultNine.Text;
+     WritingPadID:=9;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultNineClick(Sender: TObject);
+begin
+     memo2.text:=MemoResultNine.Text;
+     WritingPadID:=9;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultNineEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultNine,'I');
+     Arr_RIch[0]:=MemoResultNine;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultNineExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultNine,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultNineSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultOneChange(Sender: TObject);
+begin
+     Memo2.text:=MemoResultOne.Text;
+     WritingPadID:=1;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultOneClick(Sender: TObject);
+begin
+     memo2.text:=memoresultone.Text;
+     WritingPadID:=1;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultOneEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultOne,'I');
+     Arr_RIch[0]:=MemoResultOne;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultOneExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultOne,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultOneSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSevenChange(Sender: TObject);
+begin
+     memo2.text:=MemoResultSeven.Text;
+     WritingPadID:=7;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSevenClick(Sender: TObject);
+begin
+     memo2.text:=MemoResultSeven.Text;
+     WritingPadID:=7;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSevenEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultSeven,'I');
+     Arr_RIch[0]:=MemoResultSeven;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSevenExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultSeven,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSevenSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSeventeenChange(
+  Sender: TObject);
+begin
+     memo2.text:=MemoResultSeventeen.Text;
+     WritingPadID:=17;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSeventeenClick(
+  Sender: TObject);
+begin
+     memo2.text:=MemoResultSeventeen.Text;
+     WritingPadID:=17;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSeventeenEnter(
+  Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultSeventeen,'I');
+     Arr_RIch[0]:=MemoResultSeventeen;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSeventeenExit(
+  Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultSeventeen,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSeventeenSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSixChange(Sender: TObject);
+begin
+     memo2.text:=MemoResultSix.Text;
+     WritingPadID:=6;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSixClick(Sender: TObject);
+begin
+     memo2.text:=MemoResultSix.Text;
+     WritingPadID:=6;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSixEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultSix,'I');
+     Arr_RIch[0]:=MemoResultSix;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSixExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultSix,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSixSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSixteenChange(
+  Sender: TObject);
+begin
+     memo2.text:=MemoResultSixteen.Text;
+     WritingPadID:=16;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSixteenClick(Sender: TObject);
+begin
+    memo2.text:=MemoResultSixteen.Text;
+     WritingPadID:=16;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSixteenEnter(Sender: TObject);
+begin
+    ResizeMemoHeight(MemoResultSixteen,'I');
+    Arr_RIch[0]:=MemoResultSixteen;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSixteenExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultSixteen,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultSixteenSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTenChange(Sender: TObject);
+begin
+     memo2.text:=MemoResultTen.Text;
+     WritingPadID:=10;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTenClick(Sender: TObject);
+begin
+     memo2.text:=MemoResultTen.Text;
+     WritingPadID:=10;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTenEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultTen,'I');
+     Arr_RIch[0]:=MemoResultTen;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTenExit(Sender: TObject);
+begin
+    ResizeMemoHeight(MemoResultTen,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTenSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultThirteenChange(
+  Sender: TObject);
+begin
+     memo2.text:=MemoResultThirteen.Text;
+     WritingPadID:=13;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultThirteenClick(
+  Sender: TObject);
+begin
+     memo2.text:=MemoResultThirteen.Text;
+     WritingPadID:=13;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultThirteenEnter(
+  Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultThirteen,'I');
+     Arr_RIch[0]:=MemoResultThirteen;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultThirteenExit(Sender: TObject);
+begin
+    ResizeMemoHeight(MemoResultThirteen,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultThirteenSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultThreeChange(Sender: TObject);
+begin
+     memo2.text:=MemoResultThree.Text;
+     WritingPadID:=3;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultThreeClick(Sender: TObject);
+begin
+     memo2.text:=MemoResultThree.Text;
+     WritingPadID:=3;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultThreeEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultThree,'I');
+     Arr_RIch[0]:=MemoResultThree;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultThreeExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultThree,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultThreeSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTwelveChange(Sender: TObject);
+begin
+     memo2.text:=MemoResultTwelve.Text;
+     WritingPadID:=12;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTwelveClick(Sender: TObject);
+begin
+     memo2.text:=MemoResultTwelve.Text;
+     WritingPadID:=3;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTwelveEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultTwelve,'I');
+     Arr_RIch[0]:=MemoResultTwelve;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTwelveExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultTwelve,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTwelveSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTwoChange(Sender: TObject);
+begin
+     memo2.text:=MemoResultTwo.Text;
+     WritingPadID:=2;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTwoClick(Sender: TObject);
+begin
+     memo2.text:=MemoResultTwo.Text;
+     WritingPadID:=2;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTwoEnter(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultTwo,'I');
+     Arr_RIch[0]:=MemoResultTwo;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTwoExit(Sender: TObject);
+begin
+     ResizeMemoHeight(MemoResultTwo,'D');
+end;
+
+procedure TFrame_ClinicalPathFindingNew.MemoResultTwoSelectionChange(
+  Sender: TObject);
+begin
+     GetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]);
+     GetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]);
+     GetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]);
+     GetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]);
+     GetFontSize(ComboBox1,Arr_RIch[0]);
+     GetFontColor(ButtonColor1,Arr_RIch[0]);
+     GetFontName(ComboBox2,Arr_RIch[0]);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.ResizeMemoHeight(MyMemo: TRichEdit;ResizeType: String);
+begin
+     If ResizeType='I' Then
+     MyMemo.Height:=80
+     Else
+     MyMemo.Height:=21;
+     MyMemo.BringToFront;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.RetriveSpeCial;
+Begin
+     With QuerySpecial Do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          IF CheckSpecial=True Then
+          Begin
+               sql.Add('Select * From PatientTestSpecial_NEW');
+               sql.Add('Where(PatientID=:PatientID)And');
+               sql.Add('(PatientTestID=:PatientTestID)');
+               ParamByName('PatientID').AsInteger:=gi_PatientID;
+               ParamByName('PatientTestID').AsInteger:=gi_PatientTestID;
+               Open;
+          End
+          Else
+          Begin
+               sql.Add('Select * From TestEditFinding_NEW');
+               sql.Add('Where(TestNameID=:TestNameID)');
+               sql.Add('AND DEFFIND='+Chr(39)+'T'+Chr(39));
+               ParamByName('TestNameID').AsInteger:=gi_TestNameId;
+               Open;
+          End;
+     End;
+End;
+
+
+procedure TFrame_ClinicalPathFindingNew.RichEdit_DefaultFindingEnter(Sender: TObject);
+begin
+     Ps_RichName := 'Default';
+end;
+
+procedure TFrame_ClinicalPathFindingNew.RichEdit_TitleEnter(Sender: TObject);
+begin
+     Ps_RichName := 'Title';
+end;
+
+procedure TFrame_ClinicalPathFindingNew.SaveReportFooter;
+Var
+     i: Integer;
+     DocID: String;
+begin
+     DeletePatientReportFooter(gs_SampleNo,ps_DepType);
+     for i := 0 to Clb_ReportFooter.Items.Count - 1 do
+     begin
+          if Clb_ReportFooter.State[i] = cbChecked then
+          begin
+               SavePatientReportFooter(gs_SampleNo,ps_DepType, StrToInt(Arr_CLB_FooterDocID[i, 0]));
+          end;
+     end;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.SpeedButton10Click(Sender: TObject);
+begin
+     TRy
+     FormEditReportFindingAnalysis:=TFormEditReportFindingAnalysis.Create(nil);
+     With FormEditReportFindingAnalysis Do
+     Begin
+          Try
+               FormEditReportFindingAnalysis:=TFormEditReportFindingAnalysis.Create(Application);
+               Showmodal;
+          Finally
+               Free;
+          End;
+     End;
+     Finally
+     FormEditReportFindingAnalysis.Free;
+     End;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.SpeedButton17MouseEnter(Sender: TObject);
+begin
+     Memo_Remarks.BringToFront;
+     Memo_Remarks.Visible := True;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.SpeedButton17MouseLeave(Sender: TObject);
+begin
+     Memo_Remarks.Visible := false;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.SpeedButton5Click(Sender: TObject);
+begin
+    Form_FindingFootnote.Show;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.SpeedButton6Click(Sender: TObject);
+begin
+      If WritingPadID=1 Then
+     Begin
+          MemoResultOne.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=2 Then
+     Begin
+          MemoResultTwo.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=3 Then
+     Begin
+          MemoResultThree.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=4 Then
+     Begin
+          MemoResultFour.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=5 Then
+     Begin
+          MemoResultFive.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=6 Then
+     Begin
+          MemoResultSix.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=7 Then
+     Begin
+          MemoResultSeven.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=8 Then
+     Begin
+          MemoResultEight.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=9 Then
+     Begin
+          MemoResultNine.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=10 Then
+     Begin
+          MemoResultTen.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=11 Then
+     Begin
+          MemoResultEleven.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=12 Then
+     Begin
+          MemoResultTwelve.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=13 Then
+     Begin
+          MemoResultThirteen.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=14 Then
+     Begin
+          MemoResultFourteen.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=15 Then
+     Begin
+          MemoResultFifteen.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=16 Then
+     Begin
+          MemoResultSixteen.Text:=Memo2.Text;
+     End
+     Else If WritingPadID=17 Then
+     Begin
+          MemoResultSeventeen.Text:=Memo2.Text;
+     End;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.Tbtn_FontClick(Sender: TObject);
+begin
+     if FontDialog1.Execute then
+     begin
+         Arr_RIch[0].SelAttributes.Style:=FontDialog1.Font.Style;
+         Arr_RIch[0].SelAttributes.Name:=FontDialog1.Font.Name;
+         Arr_RIch[0].SelAttributes.Color:=FontDialog1.Font.Color;
+         Arr_RIch[0].SelAttributes.Size:=FontDialog1.Font.Size;
+     end;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.ToolButton10Click(Sender: TObject);
+begin
+     RichAlign(Arr_RIch[0], taLeftJustify);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.ToolButton11Click(Sender: TObject);
+begin
+     RichAlign(Arr_RIch[0], taRightJustify);
+end;
+
+procedure TFrame_ClinicalPathFindingNew.ToolButton1Click(Sender: TObject);
+begin
+     SetFontAttribute(ToolButton1,Arr_RIch[0],[fsBold]) ;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.ToolButton2Click(Sender: TObject);
+begin
+     SetFontAttribute(ToolButton2,Arr_RIch[0],[fsItalic]) ;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.ToolButton3Click(Sender: TObject);
+begin
+     SetFontAttribute(ToolButton3,Arr_RIch[0],[fsUnderline]) ;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.ToolButton7Click(Sender: TObject);
+begin
+     SetFontAttribute(ToolButton7,Arr_RIch[0],[fsStrikeOut]) ;
+end;
+
+procedure TFrame_ClinicalPathFindingNew.ToolButton8Click(Sender: TObject);
+begin
+     RichAlign(Arr_RIch[0], taCenter);
+end;
+
+end.
+
+
+

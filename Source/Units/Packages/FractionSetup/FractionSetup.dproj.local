@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2018/03/12 11:33:11.583.dproj,C:\Users\user\Documents\RAD Studio\Projects\Package1.dproj=C:\Users\user\Documents\RAD Studio\Projects\FractionSetup.dproj</Transaction>
+    <Transaction>2018/03/12 11:37:01.991.pas,F:\working chandra\LAB SOURCES\Delphi 10\A. Clinical Central Source(Aarogya,Biodiag etc)\Source\Units\Packages\FractionSetup\Unit_FractionSetup.pas=</Transaction>
+    <Transaction>2018/03/12 11:37:01.991.dfm,F:\working chandra\LAB SOURCES\Delphi 10\A. Clinical Central Source(Aarogya,Biodiag etc)\Source\Units\Packages\FractionSetup\Unit_FractionSetup.dfm=</Transaction>
+    <Transaction>2018/03/12 11:41:14.208.pas,F:\working chandra\LAB SOURCES\Delphi 10\A. Clinical Central Source(Aarogya,Biodiag etc)\Source\Units\Packages\FractionSetup\Unit_FractionSetup.pas=</Transaction>
+    <Transaction>2018/03/12 11:41:14.208.dfm,F:\working chandra\LAB SOURCES\Delphi 10\A. Clinical Central Source(Aarogya,Biodiag etc)\Source\Units\Packages\FractionSetup\Unit_FractionSetup.dfm=</Transaction>
+    <Transaction>2018/03/12 11:46:02.157.dproj,C:\Users\user\Documents\RAD Studio\Projects\FractionSetup.dproj=F:\working chandra\LAB SOURCES\Delphi 10\A. Clinical Central Source(Aarogya,Biodiag etc)\Source\Units\Packages\FractionSetup\FractionSetup.dproj</Transaction>
+    <Transaction>2018/03/12 12:14:47.330.pas,F:\working chandra\LAB SOURCES\Delphi 10\A. Clinical Central Source(Aarogya,Biodiag etc)\Source\Units\Packages\FractionSetup\Unit_DoctorIncomeChange.pas=</Transaction>
+    <Transaction>2018/03/12 12:14:47.330.dfm,F:\working chandra\LAB SOURCES\Delphi 10\A. Clinical Central Source(Aarogya,Biodiag etc)\Source\Units\Packages\FractionSetup\Unit_DoctorIncomeChange.dfm=</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -1,0 +1,54 @@
+package SampleCollection;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+{$DEFINE DEBUG}
+
+requires
+  rtl,
+  vclx,
+  vcl,
+  dbrtl,
+  vcldb,
+  VclSmp,
+  Tee,
+  BarcodeD10,
+  vclactnband,
+  SMCmpntD2010,
+  Global,
+  MidasFunction,
+  Billing;
+
+contains
+  Unit_SampleCollectionFrame in '..\..\Pathology\Unit_SampleCollectionFrame.pas' {Frame_SampleCollection: TFrame},
+  Unit_QrSticker in 'Unit_QrSticker.pas' {Form_Sticker},
+  Unit_SampleReceive in 'Unit_SampleReceive.pas' {Form_SampleReceive},
+  Unit_ServiceDetail in 'Unit_ServiceDetail.pas' {Form_ServiceDetail},
+  Unit_SampleRegister in 'Unit_SampleRegister.pas' {Form_SampleRegister},
+  UnitMonitorRegister in 'UnitMonitorRegister.pas' {FormMonitorRegister},
+  UnitReportRemaining in 'UnitReportRemaining.pas' {FormReportRemaining},
+  Unit_QrReportRemaining in 'Unit_QrReportRemaining.pas' {Form_QRreportremaining},
+  Unit_QrSampleCollectionreport in 'Unit_QrSampleCollectionreport.pas' {Form_QrSampleCollectionReport};
+
+end.

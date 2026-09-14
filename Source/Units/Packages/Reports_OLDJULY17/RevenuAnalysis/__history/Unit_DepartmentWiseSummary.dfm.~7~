@@ -1,0 +1,444 @@
+object Form_DepartmentWiseSummary: TForm_DepartmentWiseSummary
+  Left = 566
+  Top = 259
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Department Wise Summary'
+  ClientHeight = 373
+  ClientWidth = 570
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel2: TPanel
+    Left = 0
+    Top = 31
+    Width = 570
+    Height = 323
+    Align = alClient
+    TabOrder = 1
+    ExplicitWidth = 363
+    ExplicitHeight = 185
+    object Label1: TLabel
+      Left = 47
+      Top = 152
+      Width = 52
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'From Date:'
+    end
+    object Label2: TLabel
+      Left = 206
+      Top = 152
+      Width = 16
+      Height = 13
+      Caption = 'To:'
+    end
+    object Bevel1: TBevel
+      Left = 0
+      Top = 0
+      Width = 368
+      Height = 22
+    end
+    object Label3: TLabel
+      Left = 38
+      Top = 91
+      Width = 61
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Department :'
+      Visible = False
+    end
+    object DateEditX_FromDate: TDateEditX
+      Left = 106
+      Top = 148
+      Width = 93
+      Height = 21
+      TabOrder = 6
+      ControlData = {
+        545046300A5444617465456469745200044C656674026A03546F700394000577
+        69647468025D0B4461746541442E5965617203D6070C4461746541442E4D6F6E
+        746802010A4461746541442E44617902180B4461746556532E59656172030E08
+        0C4461746556532E4D6F6E7468020A0A4461746556532E446179020B0000}
+    end
+    object DateEditX_ToDate: TDateEditX
+      Left = 229
+      Top = 148
+      Width = 93
+      Height = 21
+      TabOrder = 7
+      ControlData = {
+        545046300A5444617465456469745200044C65667403E50003546F7003940005
+        7769647468025D0B4461746541442E5965617203D6070C4461746541442E4D6F
+        6E746802010A4461746541442E44617902180B4461746556532E59656172030E
+        080C4461746556532E4D6F6E7468020A0A4461746556532E446179020B0000}
+    end
+    object BitBtn_FromDate: TBitBtn
+      Left = 173
+      Top = 149
+      Width = 24
+      Height = 18
+      Caption = 'BS'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 9
+      TabStop = False
+      OnClick = BitBtn_FromDateClick
+    end
+    object BitBtn_ToDate: TBitBtn
+      Left = 297
+      Top = 148
+      Width = 24
+      Height = 18
+      Caption = 'BS'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 10
+      TabStop = False
+      OnClick = BitBtn_ToDateClick
+    end
+    object RadioButton_OPCollection: TRadioButton
+      Left = 139
+      Top = 50
+      Width = 111
+      Height = 17
+      Caption = '&OP Collection (F3)'
+      Enabled = False
+      TabOrder = 0
+      Visible = False
+      OnClick = RadioButton_OPCollectionClick
+    end
+    object RadioButton_IPCollection: TRadioButton
+      Left = 139
+      Top = 74
+      Width = 106
+      Height = 17
+      Caption = '&IP Collection (F4)'
+      Enabled = False
+      TabOrder = 1
+      Visible = False
+      OnClick = RadioButton_IPCollectionClick
+    end
+    object CheckBoxLandSacpe: TCheckBox
+      Left = 106
+      Top = 254
+      Width = 97
+      Height = 17
+      Caption = 'Print &Landscape'
+      Checked = True
+      Enabled = False
+      State = cbChecked
+      TabOrder = 8
+      Visible = False
+    end
+    object RadioButton_IPOPCollection: TRadioButton
+      Left = 139
+      Top = 27
+      Width = 127
+      Height = 17
+      Caption = 'OP+IP Collection(F5)'
+      Checked = True
+      Enabled = False
+      TabOrder = 2
+      TabStop = True
+      Visible = False
+      OnClick = RadioButton_IPOPCollectionClick
+    end
+    object DBLC_Department: TDBLookupComboBox
+      Left = 106
+      Top = 87
+      Width = 215
+      Height = 21
+      KeyField = 'DEPID'
+      ListField = 'DEPNAME'
+      ListSource = DataSource_Department
+      TabOrder = 5
+      Visible = False
+      OnKeyDown = DBLC_DepartmentKeyDown
+    end
+    object CheckBox_TaxAnalysis: TCheckBox
+      Left = 3
+      Top = 76
+      Width = 80
+      Height = 14
+      Caption = 'Tax Analysis'
+      TabOrder = 3
+      Visible = False
+      OnClick = CheckBox_TaxAnalysisClick
+    end
+    object RadioGroup_Tax: TRadioGroup
+      Left = -35
+      Top = 6
+      Width = 136
+      Height = 70
+      Enabled = False
+      Items.Strings = (
+        'Taxable'
+        'Non-Taxable'
+        'Taxable+Non-Taxable')
+      TabOrder = 4
+      Visible = False
+    end
+    object CB_ReferralDeptBasis: TCheckBox
+      Left = 4
+      Top = 93
+      Width = 146
+      Height = 17
+      Caption = 'Referral Department Basis'
+      TabOrder = 11
+      Visible = False
+    end
+    object CB_DirectPrint: TCheckBox
+      Left = 229
+      Top = 259
+      Width = 97
+      Height = 17
+      Caption = 'Direct Print'
+      TabOrder = 12
+      Visible = False
+    end
+    object CB_DayWiseRevenueReport: TCheckBox
+      Left = 81
+      Top = 6
+      Width = 183
+      Height = 17
+      Caption = 'Day Wise Revenue Report'
+      TabOrder = 13
+      Visible = False
+    end
+    object CBMergeDep: TCheckBox
+      Left = 107
+      Top = 224
+      Width = 121
+      Height = 17
+      Caption = 'Merge Department'
+      Checked = True
+      State = cbChecked
+      TabOrder = 14
+      Visible = False
+    end
+    object RG_IP: TRadioGroup
+      Left = 270
+      Top = 5
+      Width = 136
+      Height = 70
+      Items.Strings = (
+        'Final Bill Basis'
+        'Discharge In Deposit'
+        'Both')
+      TabOrder = 15
+      Visible = False
+    end
+    object RG_Category: TRadioGroup
+      Left = 38
+      Top = 187
+      Width = 292
+      Height = 31
+      Columns = 3
+      ItemIndex = 0
+      Items.Strings = (
+        'Both'
+        'BNB'
+        'BLK')
+      TabOrder = 16
+      Visible = False
+    end
+    object CheckListBox_Department: TCheckListBox
+      Left = 121
+      Top = 100
+      Width = 172
+      Height = 15
+      OnClickCheck = CheckListBox_DepartmentClickCheck
+      Enabled = False
+      ItemHeight = 13
+      TabOrder = 17
+      Visible = False
+    end
+    object CB_BNBSpl: TCheckBox
+      Left = 8
+      Top = 113
+      Width = 59
+      Height = 17
+      Caption = 'BNB Spl'
+      Checked = True
+      State = cbChecked
+      TabOrder = 18
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 570
+    Height = 31
+    Align = alTop
+    TabOrder = 0
+    ExplicitWidth = 363
+    object BitBtnPreview: TBitBtn
+      Left = 0
+      Top = 2
+      Width = 118
+      Height = 28
+      Caption = 'Preview'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+        0003377777777777777308888888888888807F33333333333337088888888888
+        88807FFFFFFFFFFFFFF7000000000000000077777777777777770F8F8F8F8F8F
+        8F807F333333333333F708F8F8F8F8F8F9F07F333333333337370F8F8F8F8F8F
+        8F807FFFFFFFFFFFFFF7000000000000000077777777777777773330FFFFFFFF
+        03333337F3FFFF3F7F333330F0000F0F03333337F77773737F333330FFFFFFFF
+        03333337F3FF3FFF7F333330F00F000003333337F773777773333330FFFF0FF0
+        33333337F3F37F3733333330F08F0F0333333337F7337F7333333330FFFF0033
+        33333337FFFF7733333333300000033333333337777773333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BitBtnPreviewClick
+    end
+    object BitBtn2: TBitBtn
+      Left = 255
+      Top = 2
+      Width = 115
+      Height = 28
+      Caption = '&Cancel (Esc)'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        333333333333333333333333333333333333333FFF33FF333FFF339993370733
+        999333777FF37FF377733339993000399933333777F777F77733333399970799
+        93333333777F7377733333333999399933333333377737773333333333990993
+        3333333333737F73333333333331013333333333333777FF3333333333910193
+        333333333337773FF3333333399000993333333337377737FF33333399900099
+        93333333773777377FF333399930003999333337773777F777FF339993370733
+        9993337773337333777333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = BitBtn2Click
+    end
+    object BitBtnExcel: TBitBtn
+      Left = 117
+      Top = 2
+      Width = 138
+      Height = 28
+      Caption = 'Send  To &Excel (F2)'
+      DoubleBuffered = True
+      Glyph.Data = {
+        F6010000424DF60100000000000076000000280000001F000000180000000100
+        04000000000080010000C40E0000C40E00001000000000000000000000000000
+        80000080000000808000800000008000800080800000C0C0C000808080000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FFFF44444444
+        44440000FFFFFFFFFFF0FFFF4000000000006666FFFFFFFFFFF0FFFF40888888
+        8806EEF0FFFFFFFFFFF0FFFF440E6666606EEF04FFFFFFFFFFF0FFFF4440E666
+        06EEF060FFFFFFFFFFF0FFFF44440E606EEF0000FFFFFFFFFFF0FFFF44444006
+        EEF04444FFFFFFFFFFF0FFFF4444406EEF004444FFFFFFFFFFF0FFFF444406EE
+        F0680444FFFFFFFFFFF0FFFF44406EEF0E668044FFFFFFFFFFF0FFFF4406EEF0
+        40E66804FFFFFFFFFFF0FFFF40FFFF04440EEEE0FFFFFFFFFFF0FFFF40000044
+        44400000FFFFFFFFFFF0FFFF4444444444444444FFFFFFFFFFF0FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFF0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0}
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BitBtnExcelClick
+    end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 354
+    Width = 570
+    Height = 19
+    Panels = <
+      item
+        Width = 50
+      end
+      item
+        Width = 50
+      end>
+    ExplicitTop = 216
+    ExplicitWidth = 363
+  end
+  object QueryDetail: TOraQuery
+    SQL.Strings = (
+      '')
+    Left = 40
+    Top = 312
+  end
+  object QueryProcess: TOraQuery
+    SQL.Strings = (
+      'update billmaster'
+      'set freeby='#39'OTHER'#39
+      'where freeby is NULL'
+      'and dis > 0')
+    Left = 64
+    Top = 296
+  end
+  object QuerySubProcess: TOraQuery
+    Left = 264
+    Top = 117
+  end
+  object Query_Department: TOraQuery
+    SQL.Strings = (
+      'Select Distinct DEPID,DepName From VW_HS_DEPT_WISE_REVENUE_BNB1'
+      'Order by DepName')
+    Left = 307
+    Top = 216
+  end
+  object DataSource_Department: TDataSource
+    DataSet = Query_Department
+    Left = 338
+    Top = 207
+  end
+  object QueryNetRealizedRev: TOraQuery
+    Left = 324
+    Top = 129
+  end
+  object Query_Total: TOraQuery
+    Left = 56
+    Top = 287
+  end
+  object Query_Checklist: TOraQuery
+    SQL.Strings = (
+      
+        'select * from hs_paca_patientcategory order by PACA_PATIENTCATEG' +
+        'ORYID')
+    Left = 32
+    Top = 48
+  end
+  object Table_DepartmentWiseSummary: TTable
+    Left = 448
+    Top = 168
+  end
+  object QueryTemp1: TQuery
+    Left = 392
+    Top = 264
+  end
+  object QueryTemp: TQuery
+    Left = 352
+    Top = 80
+  end
+  object Query_Void: TQuery
+    Left = 440
+    Top = 40
+  end
+end

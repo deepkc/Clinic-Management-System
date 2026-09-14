@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2011/12/07 16:36:36.390.pas,D:\Reports\UnitUserWiseCollection.pas=</Transaction>
+    <Transaction>2011/12/07 16:36:36.406.dfm,D:\Reports\UnitUserWiseCollection.dfm=</Transaction>
+    <Transaction>2011/12/08 10:25:16.734.pas,D:\Reports\Reports\Unit2.pas=D:\Reports\Reports\UnitDeptWiseReport.pas</Transaction>
+    <Transaction>2011/12/08 10:25:16.734.dfm,D:\Reports\Reports\Unit2.dfm=D:\Reports\Reports\UnitDeptWiseReport.dfm</Transaction>
+    <Transaction>2011/12/08 10:26:54.250.pas,D:\Reports\Reports\Unit2.pas=D:\Reports\Reports\UnitRepDeptWiseCollection.pas</Transaction>
+    <Transaction>2011/12/08 10:26:54.250.dfm,D:\Reports\Reports\Unit2.dfm=D:\Reports\Reports\UnitRepDeptWiseCollection.dfm</Transaction>
+    <Transaction>2011/12/08 12:35:04.906.pas,D:\Reports\Reports\Unit2.pas=D:\Reports\Reports\UnitRepDetailUserWise.pas</Transaction>
+    <Transaction>2011/12/08 12:35:04.921.dfm,D:\Reports\Reports\Unit2.dfm=D:\Reports\Reports\UnitRepDetailUserWise.dfm</Transaction>
+    <Transaction>2011/12/09 11:15:01.734.pas,D:\Reports\Reports\Unit2.pas=D:\Reports\Reports\UnitNoofTestDone.pas</Transaction>
+    <Transaction>2011/12/09 11:15:01.750.dfm,D:\Reports\Reports\Unit2.dfm=D:\Reports\Reports\UnitNoofTestDone.dfm</Transaction>
+    <Transaction>2011/12/09 11:32:11.750.pas,D:\Reports\Reports\Unit2.pas=D:\Reports\Reports\UnitRepNoofTestDone.pas</Transaction>
+    <Transaction>2011/12/09 11:32:11.750.dfm,D:\Reports\Reports\Unit2.dfm=D:\Reports\Reports\UnitRepNoofTestDone.dfm</Transaction>
+    <Transaction>2011/12/15 16:32:06.180.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Reports\Unit2.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Reports\Unit_QrPatientTestList.pas</Transaction>
+    <Transaction>2011/12/15 16:32:06.194.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Reports\Unit2.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Reports\Unit_QrPatientTestList.dfm</Transaction>
+    <Transaction>2011/12/16 13:02:32.743.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Reports\Unit2.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Reports\Unit_QrWorkList.pas</Transaction>
+    <Transaction>2011/12/16 13:02:32.743.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Reports\Unit2.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Reports\Unit_QrWorkList.dfm</Transaction>
+    <Transaction>2014/05/15 11:37:35.490.pas,F:\MiDas Project\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit3.pas=F:\MiDas Project\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit_SampleCollectionReport.pas</Transaction>
+    <Transaction>2014/05/15 11:37:35.490.dfm,F:\MiDas Project\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit3.dfm=F:\MiDas Project\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit_SampleCollectionReport.dfm</Transaction>
+    <Transaction>2014/06/04 14:58:40.471.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit_SampleCollectionReport.pas=</Transaction>
+    <Transaction>2014/06/04 14:58:40.471.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit_SampleCollectionReport.dfm=</Transaction>
+    <Transaction>2014/06/15 11:18:46.637.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit3.pas=E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit_Testsetupdetail.pas</Transaction>
+    <Transaction>2014/06/15 11:18:46.637.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit3.dfm=E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit_Testsetupdetail.dfm</Transaction>
+    <Transaction>2014/07/10 16:58:34.430.pas,E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit3.pas=E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit_PatientTestDetail.pas</Transaction>
+    <Transaction>2014/07/10 16:58:34.430.dfm,E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit3.dfm=E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Reports\Unit_PatientTestDetail.dfm</Transaction>
+    <Transaction>2016/06/12 11:43:51.134.pas,D:\working rahul\meridian\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Reports\Unit3.pas=D:\working rahul\meridian\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Reports\Unit_Doctorwisepatientcase.pas</Transaction>
+    <Transaction>2016/06/12 11:43:51.134.dfm,D:\working rahul\meridian\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Reports\Unit3.dfm=D:\working rahul\meridian\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Reports\Unit_Doctorwisepatientcase.dfm</Transaction>
+    <Transaction>2016/06/12 13:00:39.256.pas,D:\working rahul\meridian\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Reports\Unit3.pas=D:\working rahul\meridian\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Reports\Unit_QRDoctorWisePatientSummary.pas</Transaction>
+    <Transaction>2016/06/12 13:00:39.256.dfm,D:\working rahul\meridian\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Reports\Unit3.dfm=D:\working rahul\meridian\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Reports\Unit_QRDoctorWisePatientSummary.dfm</Transaction>
+    <Transaction>2016/06/12 16:51:17.213.pas,D:\working rahul\meridian\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Reports\Unit3.pas=D:\working rahul\meridian\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Reports\Unit_QrDoctorwiseCaseDetail.pas</Transaction>
+    <Transaction>2016/06/12 16:51:17.213.dfm,D:\working rahul\meridian\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Reports\Unit3.dfm=D:\working rahul\meridian\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Reports\Unit_QrDoctorwiseCaseDetail.dfm</Transaction>
+    <Transaction>2016/07/17 15:15:50.771.pas,D:\BNBLab\Source\Units\Packages\Reports\Unit_ReportTree.pas=</Transaction>
+    <Transaction>2016/07/17 15:15:50.771.dfm,D:\BNBLab\Source\Units\Packages\Reports\Unit_ReportTree.dfm=</Transaction>
+    <Transaction>2017/06/12 10:20:35.822.pas,F:\Gokul\Lab\INTREPID\Source\Units\Packages\Reports\RevenuAnalysis\Unit_DeptTestWiseReport.pas=</Transaction>
+    <Transaction>2017/06/12 10:20:35.822.dfm,F:\Gokul\Lab\INTREPID\Source\Units\Packages\Reports\RevenuAnalysis\Unit_DeptTestWiseReport.dfm=</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="-1" SortType="1"/>
+</BorlandProject>

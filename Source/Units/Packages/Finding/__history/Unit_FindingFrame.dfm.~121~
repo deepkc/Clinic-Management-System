@@ -1,0 +1,978 @@
+object Frame_Finding: TFrame_Finding
+  Left = 0
+  Top = 0
+  Width = 1056
+  Height = 499
+  TabOrder = 0
+  object Memo_Remarks: TMemo
+    Left = 79
+    Top = 132
+    Width = 330
+    Height = 133
+    Color = 13565951
+    TabOrder = 4
+    Visible = False
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 34
+    Width = 1056
+    Height = 148
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 0
+    object Label14: TLabel
+      Left = 8
+      Top = 28
+      Width = 27
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Name'
+    end
+    object lbl_Name: TLabel
+      Left = 79
+      Top = 28
+      Width = 72
+      Height = 13
+      Caption = '########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label18: TLabel
+      Left = 592
+      Top = 34
+      Width = 87
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Refered Hospital :'
+      Visible = False
+    end
+    object SpeedButton2: TSpeedButton
+      Left = 750
+      Top = 73
+      Width = 84
+      Height = 22
+      Caption = 'Change Date'
+      Enabled = False
+      Visible = False
+    end
+    object Label1: TLabel
+      Left = 8
+      Top = 49
+      Width = 65
+      Height = 13
+      Caption = 'Hospital No. :'
+    end
+    object Lbl_Hosno: TLabel
+      Left = 79
+      Top = 49
+      Width = 72
+      Height = 13
+      Caption = '########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 8
+      Top = 68
+      Width = 65
+      Height = 13
+      Caption = 'Age/Gender :'
+    end
+    object Lbl_AgeGender: TLabel
+      Left = 79
+      Top = 68
+      Width = 72
+      Height = 13
+      Caption = '########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label5: TLabel
+      Left = 615
+      Top = 78
+      Width = 66
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Report Date :'
+    end
+    object Label6: TLabel
+      Left = 587
+      Top = 5
+      Width = 92
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Sample Rec. Date :'
+    end
+    object Label2: TLabel
+      Left = 8
+      Top = 89
+      Width = 64
+      Height = 13
+      Caption = 'Sample No.  :'
+    end
+    object lbl_SampleNo: TLabel
+      Left = 79
+      Top = 89
+      Width = 72
+      Height = 13
+      Caption = '########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label4: TLabel
+      Left = 69
+      Top = 28
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object Label7: TLabel
+      Left = 69
+      Top = 49
+      Width = 4
+      Height = 13
+      Alignment = taRightJustify
+      Caption = ':'
+    end
+    object SpeedButton4: TSpeedButton
+      Left = 203
+      Top = 21
+      Width = 102
+      Height = 34
+      Caption = 'Comment'
+      OnClick = SpeedButton4Click
+    end
+    object SpeedButton5: TSpeedButton
+      Left = 203
+      Top = 57
+      Width = 102
+      Height = 34
+      Caption = 'Footnote'
+      OnClick = SpeedButton5Click
+    end
+    object btn_SensitivityResult: TSpeedButton
+      Left = 307
+      Top = 57
+      Width = 102
+      Height = 34
+      Caption = 'Sensitivity Result'
+      OnClick = btn_SensitivityResultClick
+    end
+    object SpeedButton6: TSpeedButton
+      Left = 307
+      Top = 21
+      Width = 102
+      Height = 34
+      Caption = 'Select Test'
+      OnClick = SpeedButton6Click
+    end
+    object SpeedButton7: TSpeedButton
+      Left = 203
+      Top = 97
+      Width = 23
+      Height = 22
+      Caption = #176
+      OnClick = SpeedButton7Click
+    end
+    object SpeedButton8: TSpeedButton
+      Left = 227
+      Top = 97
+      Width = 23
+      Height = 22
+      Caption = #189
+      OnClick = SpeedButton7Click
+    end
+    object SpeedButton9: TSpeedButton
+      Left = 251
+      Top = 97
+      Width = 23
+      Height = 22
+      Caption = #188
+      OnClick = SpeedButton7Click
+    end
+    object SpeedButton10: TSpeedButton
+      Left = 275
+      Top = 97
+      Width = 23
+      Height = 22
+      Caption = #190
+      OnClick = SpeedButton7Click
+    end
+    object SpeedButton15: TSpeedButton
+      Left = 299
+      Top = 97
+      Width = 23
+      Height = 22
+      Caption = #185
+      OnClick = SpeedButton7Click
+    end
+    object SpeedButton11: TSpeedButton
+      Left = 323
+      Top = 97
+      Width = 23
+      Height = 22
+      Caption = #178
+      OnClick = SpeedButton7Click
+    end
+    object SpeedButton12: TSpeedButton
+      Left = 347
+      Top = 97
+      Width = 23
+      Height = 22
+      Caption = #179
+      OnClick = SpeedButton7Click
+    end
+    object SpeedButton13: TSpeedButton
+      Left = 371
+      Top = 97
+      Width = 23
+      Height = 22
+      Caption = #181
+      OnClick = SpeedButton7Click
+    end
+    object SpeedButton14: TSpeedButton
+      Left = 395
+      Top = 97
+      Width = 23
+      Height = 22
+      Caption = #177
+      OnClick = SpeedButton7Click
+    end
+    object SpeedButton16: TSpeedButton
+      Left = 752
+      Top = 119
+      Width = 80
+      Height = 26
+      Caption = 'Add Test'
+      Glyph.Data = {
+        E6040000424DE604000000000000360000002800000014000000140000000100
+        180000000000B0040000120B0000120B00000000000000000000D8E9ECD8E9EC
+        D8E9ECD8E9ECD8E9ECD8E9ECDAEAEFDEEBF3E2EBF7E4EAF9E4EAF9E3EBF8E0EB
+        F5DBEAEFD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8
+        E9ECD9E9EDE0EBF4DAE7EDC1DED1A1D3AC8FD0998FD0999CD0A6BADBC8D8E6EB
+        E0ECF4D9EAEDD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD9E9EDE0EB
+        F5B5DAC262C4613AC03212BE0C00C60000C50008B9022EB9245BC25AA9D4B7DE
+        E8F3DAEAEED8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD9EAEDDAE8ED87C99030BD2C
+        0DBE0812BC1218C1191AC21C19C01B18C01812BB130DBE0823BB2379C481D6E5
+        E7DAEAEED8E9ECD8E9ECD8E9ECD9E9EEDFEBF38ECE9812BA1108C1091BBB2316
+        BB1C19B71D19B11A1AB11A19B71B14BA1A1FB9280AC40D06BF0675C77FDBE8EE
+        DBEAEFD8E9ECD8E9ECE1ECF6A9DBB120B1200FBB1B17B72A1AB5261CC1242FD1
+        3A3EE24A3EE14A2DCF371ABF221DB62318B6240BC01B0BB4198BD199DFECF3D9
+        E9EDDDEBF2CAE4DE40C7470BBB1920B4301DB72A17BD2307C318A9E4ADFFFFFF
+        FFFFFFA9E3AC06C21719BB221EBD291BB52D0DBA1F26BE37BADFCDE0ECF4E4EC
+        F799D8B104B81B0DBD291EBF3019C22809BE1F00BC15B8EEBFFFFFFFFFFFFFB8
+        EFC000BF180EBF2A0EC1280FBE2E11BE2900B4168DD4A0E2EBF6DEEAF17ECB92
+        05B51C12C33418C9321ED13B17D04000D31FAEF2BCFFFEFFFFFFFFB0F4BF00D9
+        261ED2401BCB3B11C92E1FC03E06B22360C46FD6E7E9D0E6E356C56604B91F0C
+        C33726D34BA9F9B5D8F9E5D7F8DEF0F9F3FFFEFDFFFEFDF1FAF4D9FADFDEFAE3
+        ABF5B926D44016BE3809C12D27C13EC4E3D8CCE4E147C0600FBD2E18C84223CF
+        49F3FEF1FFFDFFFFFFFFFEFFFEFDFEFDFDFEFDFEFFFEFFFFFFFFFEFFEFFFED24
+        D7471BC03F11C43F1DB63ABFE0D3CCE6E240C7680DBE3917CD4427C64FF0FBF3
+        FFFFFFFFFFFFFFFEFFF9FEFBF9FEFBFFFEFEFFFFFFFFFFFFEEFCF21CCD4F1ACA
+        4C0FC3411ABB40BFE2D6D9EAED73D39005BE380FD44724C7526ADC8C89E7A680
+        E39FD9F2E2FDFEFFFDFEFFD9F2E180E29F8AE6A575DE9417C54D11D44E05C83B
+        4ECB71CFE6E5E5EDF69DD7B900C03D1ADC5412CF5105CD4A00C74100C531B1EE
+        C1FFFFFFFFFFFFB1EEC200C53200CA3F04C8461AD05B14D75400C33B8BD7ACE2
+        ECF3DEEAF0C7E7E134C87302D04714D75812CF5D17D05D00CD49B0EECCFFFFFF
+        FFFFFFB0EECC00CD4A13D55813D15F18D26005D6521BC45CB6E1D1E1ECF3D8E9
+        ECE5EDF598DABC0CC85414DC521BD55A16D16003D05380E1A8D3F7E3D3F7E380
+        E1A803D05414D25920D75C17DD5C02CC537FD6AAE4ECF3D9E9EDD8E9ECD8E9EC
+        E4EDF487D9A901D24D0EE05813DC6817D65D13D15C0ED35A0ED35A13D15C17D6
+        5D19DD6912E75E00D64D65D596DEEBEFDAE9EDD8E9ECD8E9ECD8E9ECD8E9EDDE
+        EAEF7FE2AE0DCE610ED3641DE17016E36913E26413E26416E3691DE17011D767
+        02D15F64DD9FD5EAE8DBEAEFD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD9E9EDE1EB
+        F2A9E2CD48E28A00DA5E00D95C02DC6102DC6100D95C00DA6041E0829EE0C4DB
+        EBEFDCE9EFD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECDAE9EDE1EBF2
+        CAEBE3B6E6D4AAE6CC8BE4B98AE3B8A8E6CBB5E6D5C9EAE1E1ECF2DBE9EED8E9
+        ECD8E9ECD8E9ECD8E9EC}
+      OnClick = SpeedButton16Click
+    end
+    object Label9: TLabel
+      Left = 535
+      Top = 125
+      Width = 58
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Test Name :'
+    end
+    object SpeedButton17: TSpeedButton
+      Left = 3
+      Top = 108
+      Width = 70
+      Height = 25
+      Caption = 'Remarks    :'
+      Flat = True
+      Visible = False
+      OnMouseEnter = SpeedButton17MouseEnter
+      OnMouseLeave = SpeedButton17MouseLeave
+    end
+    object Label8: TLabel
+      Left = 196
+      Top = 126
+      Width = 97
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Add Inactive Tests :'
+    end
+    object SpeedButton18: TSpeedButton
+      Left = 451
+      Top = 119
+      Width = 54
+      Height = 26
+      Caption = 'Add'
+      Glyph.Data = {
+        E6040000424DE604000000000000360000002800000014000000140000000100
+        180000000000B0040000120B0000120B00000000000000000000D8E9ECD8E9EC
+        D8E9ECD8E9ECD8E9ECD8E9ECDAEAEFDEEBF3E2EBF7E4EAF9E4EAF9E3EBF8E0EB
+        F5DBEAEFD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8
+        E9ECD9E9EDE0EBF4DAE7EDC1DED1A1D3AC8FD0998FD0999CD0A6BADBC8D8E6EB
+        E0ECF4D9EAEDD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD9E9EDE0EB
+        F5B5DAC262C4613AC03212BE0C00C60000C50008B9022EB9245BC25AA9D4B7DE
+        E8F3DAEAEED8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD9EAEDDAE8ED87C99030BD2C
+        0DBE0812BC1218C1191AC21C19C01B18C01812BB130DBE0823BB2379C481D6E5
+        E7DAEAEED8E9ECD8E9ECD8E9ECD9E9EEDFEBF38ECE9812BA1108C1091BBB2316
+        BB1C19B71D19B11A1AB11A19B71B14BA1A1FB9280AC40D06BF0675C77FDBE8EE
+        DBEAEFD8E9ECD8E9ECE1ECF6A9DBB120B1200FBB1B17B72A1AB5261CC1242FD1
+        3A3EE24A3EE14A2DCF371ABF221DB62318B6240BC01B0BB4198BD199DFECF3D9
+        E9EDDDEBF2CAE4DE40C7470BBB1920B4301DB72A17BD2307C318A9E4ADFFFFFF
+        FFFFFFA9E3AC06C21719BB221EBD291BB52D0DBA1F26BE37BADFCDE0ECF4E4EC
+        F799D8B104B81B0DBD291EBF3019C22809BE1F00BC15B8EEBFFFFFFFFFFFFFB8
+        EFC000BF180EBF2A0EC1280FBE2E11BE2900B4168DD4A0E2EBF6DEEAF17ECB92
+        05B51C12C33418C9321ED13B17D04000D31FAEF2BCFFFEFFFFFFFFB0F4BF00D9
+        261ED2401BCB3B11C92E1FC03E06B22360C46FD6E7E9D0E6E356C56604B91F0C
+        C33726D34BA9F9B5D8F9E5D7F8DEF0F9F3FFFEFDFFFEFDF1FAF4D9FADFDEFAE3
+        ABF5B926D44016BE3809C12D27C13EC4E3D8CCE4E147C0600FBD2E18C84223CF
+        49F3FEF1FFFDFFFFFFFFFEFFFEFDFEFDFDFEFDFEFFFEFFFFFFFFFEFFEFFFED24
+        D7471BC03F11C43F1DB63ABFE0D3CCE6E240C7680DBE3917CD4427C64FF0FBF3
+        FFFFFFFFFFFFFFFEFFF9FEFBF9FEFBFFFEFEFFFFFFFFFFFFEEFCF21CCD4F1ACA
+        4C0FC3411ABB40BFE2D6D9EAED73D39005BE380FD44724C7526ADC8C89E7A680
+        E39FD9F2E2FDFEFFFDFEFFD9F2E180E29F8AE6A575DE9417C54D11D44E05C83B
+        4ECB71CFE6E5E5EDF69DD7B900C03D1ADC5412CF5105CD4A00C74100C531B1EE
+        C1FFFFFFFFFFFFB1EEC200C53200CA3F04C8461AD05B14D75400C33B8BD7ACE2
+        ECF3DEEAF0C7E7E134C87302D04714D75812CF5D17D05D00CD49B0EECCFFFFFF
+        FFFFFFB0EECC00CD4A13D55813D15F18D26005D6521BC45CB6E1D1E1ECF3D8E9
+        ECE5EDF598DABC0CC85414DC521BD55A16D16003D05380E1A8D3F7E3D3F7E380
+        E1A803D05414D25920D75C17DD5C02CC537FD6AAE4ECF3D9E9EDD8E9ECD8E9EC
+        E4EDF487D9A901D24D0EE05813DC6817D65D13D15C0ED35A0ED35A13D15C17D6
+        5D19DD6912E75E00D64D65D596DEEBEFDAE9EDD8E9ECD8E9ECD8E9ECD8E9EDDE
+        EAEF7FE2AE0DCE610ED3641DE17016E36913E26413E26416E3691DE17011D767
+        02D15F64DD9FD5EAE8DBEAEFD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD9E9EDE1EB
+        F2A9E2CD48E28A00DA5E00D95C02DC6102DC6100D95C00DA6041E0829EE0C4DB
+        EBEFDCE9EFD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECD8E9ECDAE9EDE1EBF2
+        CAEBE3B6E6D4AAE6CC8BE4B98AE3B8A8E6CBB5E6D5C9EAE1E1ECF2DBE9EED8E9
+        ECD8E9ECD8E9ECD8E9EC}
+      OnClick = SpeedButton18Click
+    end
+    object lbl_remarks: TLabel
+      Left = 853
+      Top = 13
+      Width = 85
+      Height = 13
+      Caption = 'Sample Remarks :'
+    end
+    object Label10: TLabel
+      Left = 598
+      Top = 55
+      Width = 81
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Refered Doctor :'
+    end
+    object Label11: TLabel
+      Left = 840
+      Top = 126
+      Width = 38
+      Height = 13
+      Caption = 'Height :'
+      Visible = False
+    end
+    object Label12: TLabel
+      Left = 936
+      Top = 126
+      Width = 41
+      Height = 13
+      Caption = 'Weight :'
+      Visible = False
+    end
+    object Label13: TLabel
+      Left = 1030
+      Top = 127
+      Width = 19
+      Height = 13
+      Caption = 'BP :'
+      Visible = False
+    end
+    object DBLCB_RefHos: TDBLookupComboBox
+      Left = 685
+      Top = 27
+      Width = 151
+      Height = 21
+      KeyField = 'HOSE_HOSPITALCODE'
+      ListField = 'HOSE_HOSPITALNAME'
+      ListSource = DS_RefHos
+      TabOrder = 0
+      Visible = False
+      OnClick = DBLCB_RefHosClick
+      OnKeyDown = DBLCB_RefHosKeyDown
+    end
+    object Dex_RptDate: TDateEditX
+      Left = 683
+      Top = 73
+      Width = 65
+      Height = 21
+      TabOrder = 1
+      ControlData = {
+        545046300A5444617465456469745200044C65667403AB0203546F7002490B44
+        61746541442E5965617203DB070C4461746541442E4D6F6E7468020C0A446174
+        6541442E44617902020B4461746556532E596561720314080C4461746556532E
+        4D6F6E746802080A4461746556532E44617902100000}
+    end
+    object Dex_SampleDate: TDateEditX
+      Left = 681
+      Top = 2
+      Width = 65
+      Height = 21
+      TabOrder = 2
+      ControlData = {
+        545046300A5444617465456469745200044C65667403A90203546F7002020B44
+        61746541442E5965617203DB070C4461746541442E4D6F6E7468020C0A446174
+        6541442E44617902020B4461746556532E596561720314080C4461746556532E
+        4D6F6E746802080A4461746556532E44617902100000}
+    end
+    object Me_Time: TMaskEdit
+      Left = 749
+      Top = 2
+      Width = 83
+      Height = 21
+      EditMask = '!90:00;1;_'
+      MaxLength = 5
+      TabOrder = 3
+      Text = '  :  '
+    end
+    object Clb_ReportFooter: TCheckListBox
+      Left = 422
+      Top = 4
+      Width = 147
+      Height = 113
+      ItemHeight = 13
+      TabOrder = 4
+    end
+    object Cb_Edit: TCheckBox
+      Left = 203
+      Top = 4
+      Width = 97
+      Height = 17
+      Caption = 'Edit Range/Unit'
+      TabOrder = 5
+      OnClick = Cb_EditClick
+    end
+    object Dblcb_TestName: TDBLookupComboBox
+      Left = 597
+      Top = 121
+      Width = 152
+      Height = 21
+      KeyField = 'TestNameId'
+      ListField = 'TestName'
+      ListSource = Ds_TestName
+      TabOrder = 6
+      OnKeyDown = Dblcb_TestNameKeyDown
+    end
+    object DBLCB_InactiveTest: TDBLookupComboBox
+      Left = 297
+      Top = 122
+      Width = 152
+      Height = 21
+      DropDownRows = 30
+      DropDownWidth = 500
+      KeyField = 'TestID'
+      ListField = 'TestList'
+      ListSource = DS_InactiveTest
+      TabOrder = 7
+    end
+    object lbledt_labno: TLabeledEdit
+      Left = 683
+      Top = 96
+      Width = 65
+      Height = 21
+      EditLabel.Width = 44
+      EditLabel.Height = 13
+      EditLabel.Caption = 'Lab No. :'
+      LabelPosition = lpLeft
+      TabOrder = 8
+    end
+    object memo_sampleremrk: TMemo
+      Left = 853
+      Top = 27
+      Width = 213
+      Height = 83
+      Lines.Strings = (
+        '')
+      TabOrder = 9
+    end
+    object DBLCB_RefDoc: TDBLookupComboBox
+      Left = 685
+      Top = 50
+      Width = 151
+      Height = 21
+      KeyField = 'DOCID'
+      ListField = 'DOCNAME'
+      ListSource = DS_RefDoc
+      TabOrder = 10
+      OnKeyDown = DBLCB_RefDocKeyDown
+    end
+    object ToolBar1: TToolBar
+      AlignWithMargins = True
+      Left = 907
+      Top = 121
+      Width = 22
+      Height = 20
+      Align = alNone
+      ButtonHeight = 19
+      ButtonWidth = 16
+      Caption = 'ToolBar1'
+      Color = clBtnHighlight
+      GradientEndColor = clGray
+      List = True
+      ParentColor = False
+      ShowCaptions = True
+      TabOrder = 11
+      Visible = False
+    end
+    object Edit_Height: TEdit
+      Left = 881
+      Top = 123
+      Width = 49
+      Height = 21
+      TabOrder = 12
+      Visible = False
+      OnKeyDown = Edit_HeightKeyDown
+    end
+    object Edit_Weight: TEdit
+      Left = 979
+      Top = 123
+      Width = 47
+      Height = 21
+      TabOrder = 13
+      Visible = False
+      OnKeyDown = Edit_WeightKeyDown
+    end
+    object Edit_BP: TEdit
+      Left = 1051
+      Top = 123
+      Width = 58
+      Height = 21
+      TabOrder = 14
+      Visible = False
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 182
+    Width = 1056
+    Height = 317
+    Align = alClient
+    DataSource = DS_Findings
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    OnCellClick = DBGrid1CellClick
+    OnDrawColumnCell = DBGrid1DrawColumnCell
+    OnEnter = DBGrid1Enter
+    OnExit = DBGrid1Exit
+    OnKeyDown = DBGrid1KeyDown
+    OnKeyPress = DBGrid1KeyPress
+    OnKeyUp = DBGrid1KeyUp
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'TestDate'
+        Title.Caption = 'Test Date'
+        Width = 114
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Test'
+        ReadOnly = True
+        Title.Caption = 'Tests'
+        Width = 227
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Finding'
+        Width = 143
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Range'
+        ReadOnly = True
+        Title.Caption = 'Ref. Range'
+        Width = 225
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Unit'
+        ReadOnly = True
+        Width = 65
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Extra'
+        ReadOnly = True
+        Width = 65
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ExtraFinding'
+        ReadOnly = True
+        Title.Caption = 'Extra Findings'
+        Width = 97
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DisplayRange'
+        Width = 100
+        Visible = True
+      end>
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1056
+    Height = 34
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 2
+    object SpeedButton1: TSpeedButton
+      Left = 872
+      Top = 0
+      Width = 92
+      Height = 34
+      Align = alRight
+      Caption = '<- Previous'
+      Visible = False
+      ExplicitLeft = 652
+      ExplicitTop = -6
+    end
+    object SpeedButton3: TSpeedButton
+      Left = 964
+      Top = 0
+      Width = 92
+      Height = 34
+      Align = alRight
+      Caption = 'Next ->'
+      Visible = False
+      ExplicitLeft = 749
+    end
+    object lbl1: TLabel
+      Left = 422
+      Top = 19
+      Width = 102
+      Height = 13
+      Caption = 'Report Footer Name:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsUnderline]
+      ParentFont = False
+    end
+    object BB_Save: TBitBtn
+      Left = 0
+      Top = 0
+      Width = 100
+      Height = 34
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alLeft
+      Caption = '&Save'
+      DoubleBuffered = True
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        1800000000000003000001000000010000000000000000000000000000975233
+        9A55359954349652339652339652339652339652339652339652339A55359B55
+        359853349451320000009451369D5534BD5A22BB5A24B75926C7B0A4C8B5ACC8
+        B5ACC8B5ACC8B5ACC8B5ACC9B5ABBF6532B759269B55358040408F5030A05633
+        C46127C46127C46127D3CDCBD4D4D5D4D4D5D4D4D5CB9373C7784AD3CFCDC66F
+        3BC461279D56348F50308F5030A15734CB672CCB672CCB672CDED8D5DFDFE0DF
+        DFE0DFDFE0D18A61CB672CDED8D5CD7541CB672C9E56348F50308F5030A15834
+        D26E30D26E30D26E30EAE5E1ECECECECECECECECECDA9367D26E30EAE5E1D57D
+        46D26E309E56358F50308F5030A25835D67233D67233D67233F3E7E0F7F7F7F7
+        F7F7F7F7F7F2E4DBF0DCD0F7F5F5DA824AD672339E57358F50308F5030A35935
+        DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB76
+        36DB76369F57358F50308F5030A35935DF7A39F2ECE8FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFDDCBBFDF7A399F57358F50308F5030A45A36
+        E4803EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE7DB
+        D3E4803E9F58368F50308F5030A45B37E98746FCFCFCFCFCFCFCFCFCFCFCFCFC
+        FCFCFCFCFCFCFCFCFCFCFCFCFCFCE5D9D1E98746A058368F50308F5030A55C38
+        EE9150F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3DED3
+        CCEE9150A059378F5030945231A55D3AF49C5DE5E5E5E5E5E5E5E5E5E5E5E5E5
+        E5E5E5E5E5E5E5E5E5E5E5E5E5E5DAD4CFF49C5DA059378F5030945231A65F3B
+        F8A668D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3CCC7
+        C3F8A668A05A389955339F5535A45D3BF9AC6FD0CECDD3D3D3D3D3D3D3D3D3D3
+        D3D3D3D3D3D3D3D3D3D3D3D3D3D3CCC7C4F9AC6F9E58378E55390000009C5534
+        9B55359B55359B55359B55359B55359B55359B55359B55359B55359B55359B55
+        359B55359C553400000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000}
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BB_SaveClick
+    end
+  end
+  object Memo_SR: TMemo
+    Left = 713
+    Top = 251
+    Width = 231
+    Height = 89
+    TabOrder = 3
+    Visible = False
+  end
+  object Edit1: TEdit
+    Left = 664
+    Top = 208
+    Width = 121
+    Height = 21
+    Enabled = False
+    TabOrder = 5
+    Text = 'Edit1'
+    Visible = False
+  end
+  object DS_Findings: TDataSource
+    DataSet = Query_Finding
+    Left = 336
+    Top = 280
+  end
+  object DS_RefDoccode: TDataSource
+    DataSet = Query_RefDoccode
+    Left = 624
+    Top = 312
+  end
+  object Query_RefDoccode: TOraQuery
+    SQL.Strings = (
+      
+        'select doct_doccode as doccode,doct_desig||doct_DOCNAME as docna' +
+        'me from hs_doct_doctor')
+    Left = 720
+    Top = 328
+  end
+  object Query_Data: TOraQuery
+    Session = DM_Hospital.DB
+    SQL.Strings = (
+      'SELECT SC.*'
+      
+        ',(Select Footerid from footer where testnameid=sc.testnameid and' +
+        ' isactive='#39'Y'#39' and rownum=1)footerid'
+      
+        ',(Select tena_DisplayOrder from hs_tena_testname where TENA_test' +
+        'nameid=sc.testnameid and rownum=1)dispalyorder'
+      'FROM VW_SAMPLE_COLLECTED SC,hs_dept_DEPARTMENT D'
+      'where sc.depid=d.dept_depid(+)'
+      'And 99=99'
+      'and 99=99'
+      'And 99=99'
+      'and 99=99'
+      'and 99=99'
+      'and 1=1 '
+      'ORDER BY D.dept_Deporder,TestDate,TestTime,dispalyorder')
+    ObjectView = True
+    Left = 496
+    Top = 272
+  end
+  object Ds_TestName: TDataSource
+    DataSet = Query_TestName
+    Left = 448
+    Top = 220
+  end
+  object DS_InactiveTest: TDataSource
+    DataSet = Query_InactiveTest
+    Left = 560
+    Top = 216
+  end
+  object Query_InactiveTest: TOraQuery
+    SQL.Strings = (
+      
+        'Select TestID,Cast(Tn.tena_TestName||'#39' - '#39'||Trim(Test) as varcha' +
+        'r2(100))TestList'
+      'from Test T,hs_tena_TestName Tn'
+      'Where T.TestNameID=Tn.tena_TestNameID'
+      'And T.TestNameid in (4)'
+      'and T.testid not in (8)'
+      'And T.IsActive='#39'N'#39
+      'Order by Tn.tena_TestnameID,Test')
+    Left = 648
+    Top = 256
+  end
+  object Query_Finding: TQuery
+    AfterScroll = Query_FindingAfterScroll
+    RequestLive = True
+    SQL.Strings = (
+      'Select * from Findings')
+    Left = 208
+    Top = 216
+  end
+  object Table_Findings: TTable
+    Left = 88
+    Top = 344
+  end
+  object Table_SensitiveMedicine: TTable
+    Left = 144
+    Top = 360
+  end
+  object QuerySensitiveResult: TQuery
+    SQL.Strings = (
+      'Select * from SensitiveMedicine')
+    Left = 368
+    Top = 368
+  end
+  object Query_TestName: TQuery
+    SQL.Strings = (
+      'Select Distinct TestName,TestNameId From Findings'
+      'Where TestNameID is not Null')
+    Left = 304
+    Top = 216
+  end
+  object OraQuery_CheckOnEdit: TOraQuery
+    Session = DM_Hospital.DB
+    SQL.Strings = (
+      'select * from patienttestdetail where'
+      'patienttestid=:patienttestid')
+    Left = 24
+    Top = 296
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'patienttestid'
+      end>
+  end
+  object Query_Process: TOraQuery
+    Session = DM_Hospital.DB
+    SQL.Strings = (
+      'SELECT SC.*'
+      
+        ',(Select Footerid from footer where testnameid=sc.testnameid and' +
+        ' isactive='#39'Y'#39' and rownum=1)footerid'
+      
+        ',(Select DisplayOrder from testname where testnameid=sc.testname' +
+        'id)dispalyorder'
+      'FROM VW_SAMPLE_COLLECTED SC,DEPARTMENT D'
+      'where sc.depid=d.depid(+)'
+      'And 99=99'
+      'and 99=99'
+      'And 99=99'
+      'and 99=99'
+      'and 99=99'
+      'and 1=1 '
+      'ORDER BY D.Deporder,TestDate,TestTime,dispalyorder')
+    ObjectView = True
+    Left = 576
+    Top = 264
+  end
+  object OraQuery_FindingSaveAccess: TOraQuery
+    Session = DM_Hospital.DB
+    Left = 1008
+    Top = 256
+  end
+  object OraQuery_Ward: TOraQuery
+    Session = DM_Hospital.DB
+    Left = 578
+    Top = 65533
+  end
+  object DataSource_ward: TDataSource
+    DataSet = OraQuery_Ward
+    Left = 530
+    Top = 65533
+  end
+  object OraQuery_RefHos: TOraQuery
+    Session = DM_Hospital.DB
+    SQL.Strings = (
+      'select * from hs_hose_hospitalsetup')
+    Left = 864
+    Top = 96
+  end
+  object OraQuery_RefDoc: TOraQuery
+    Session = DM_Hospital.DB
+    SQL.Strings = (
+      'select doct_docname docname,doct_docid docid from hs_doct_doctor')
+    Left = 744
+    Top = 16
+  end
+  object DS_RefHos: TDataSource
+    DataSet = OraQuery_RefHos
+    Left = 960
+    Top = 104
+  end
+  object DS_RefDoc: TDataSource
+    DataSet = OraQuery_RefDoc
+    Left = 1008
+    Top = 56
+  end
+  object OraQuery_Process2: TOraQuery
+    Session = DM_Hospital.DB
+    Left = 104
+    Top = 272
+  end
+  object OraQuery_Process3: TOraQuery
+    Session = DM_Hospital.DB
+    Left = 40
+    Top = 240
+  end
+  object OraQuery_Process4: TOraQuery
+    Session = DM_Hospital.DB
+    Left = 24
+    Top = 384
+  end
+  object OraQuery_Process5: TOraQuery
+    Session = DM_Hospital.DB
+    Left = 56
+    Top = 432
+  end
+  object OraQuery_ToGetBodyMeasurement: TOraQuery
+    Session = DM_Hospital.DB
+    Left = 504
+    Top = 360
+  end
+  object OraQuery_check: TOraQuery
+    Session = DM_Hospital.DB
+    Left = 632
+    Top = 416
+  end
+  object OraQuery_CalcOne: TOraQuery
+    Session = DM_Hospital.DB
+    Left = 232
+    Top = 320
+  end
+  object OraQuery_Calcu: TOraQuery
+    Session = DM_Hospital.DB
+    Left = 448
+    Top = 344
+  end
+end

@@ -1,0 +1,1221 @@
+
+ Start         Length     Name                   Class
+ 0001:00401000 000057C0H .text                   CODE
+ 0002:00407000 000001F8H .itext                  ICODE
+ 0003:00408000 00001424H .data                   DATA
+ 0004:0040A000 00000020H .bss                    BSS
+ 0005:00000000 00000000H .tls                    TLS
+
+
+Detailed map of segments
+
+ 0001:00000000 0000016E C=CODE     S=.text    G=(none)   M=System   ACBP=A9
+ 0001:00000170 000001C3 C=CODE     S=.text    G=(none)   M=SysInit  ACBP=A9
+ 0001:00000334 00000006 C=CODE     S=.text    G=(none)   M=DBTables ACBP=A9
+ 0001:0000033C 00000069 C=CODE     S=.text    G=(none)   M=Windows  ACBP=A9
+ 0001:000003A8 00000046 C=CODE     S=.text    G=(none)   M=SysUtils ACBP=A9
+ 0001:000003F0 00000006 C=CODE     S=.text    G=(none)   M=Math     ACBP=A9
+ 0001:000003F8 00000006 C=CODE     S=.text    G=(none)   M=SqlTimSt ACBP=A9
+ 0001:00000400 00000006 C=CODE     S=.text    G=(none)   M=Variants ACBP=A9
+ 0001:00000408 00000006 C=CODE     S=.text    G=(none)   M=VarUtils ACBP=A9
+ 0001:00000410 0000009E C=CODE     S=.text    G=(none)   M=Classes  ACBP=A9
+ 0001:000004B0 00000006 C=CODE     S=.text    G=(none)   M=TypInfo  ACBP=A9
+ 0001:000004B8 00000006 C=CODE     S=.text    G=(none)   M=DB       ACBP=A9
+ 0001:000004C0 00000006 C=CODE     S=.text    G=(none)   M=WideStrings ACBP=A9
+ 0001:000004C8 00000006 C=CODE     S=.text    G=(none)   M=FMTBcd   ACBP=A9
+ 0001:000004D0 00000006 C=CODE     S=.text    G=(none)   M=ComObj   ACBP=A9
+ 0001:000004D8 00000006 C=CODE     S=.text    G=(none)   M=Forms    ACBP=A9
+ 0001:000004E0 00000006 C=CODE     S=.text    G=(none)   M=UxTheme  ACBP=A9
+ 0001:000004E8 00000006 C=CODE     S=.text    G=(none)   M=SyncObjs ACBP=A9
+ 0001:000004F0 00000006 C=CODE     S=.text    G=(none)   M=TimeSpan ACBP=A9
+ 0001:000004F8 00000006 C=CODE     S=.text    G=(none)   M=HelpIntfs ACBP=A9
+ 0001:00000500 00000006 C=CODE     S=.text    G=(none)   M=MultiMon ACBP=A9
+ 0001:00000508 00000006 C=CODE     S=.text    G=(none)   M=ActnList ACBP=A9
+ 0001:00000510 00000056 C=CODE     S=.text    G=(none)   M=Graphics ACBP=A9
+ 0001:00000568 00000006 C=CODE     S=.text    G=(none)   M=Registry ACBP=A9
+ 0001:00000570 00000006 C=CODE     S=.text    G=(none)   M=IniFiles ACBP=A9
+ 0001:00000578 0000000E C=CODE     S=.text    G=(none)   M=IOUtils  ACBP=A9
+ 0001:00000588 00000006 C=CODE     S=.text    G=(none)   M=Themes   ACBP=A9
+ 0001:00000590 000001A6 C=CODE     S=.text    G=(none)   M=Controls ACBP=A9
+ 0001:00000738 00000006 C=CODE     S=.text    G=(none)   M=Menus    ACBP=A9
+ 0001:00000740 00000006 C=CODE     S=.text    G=(none)   M=Dialogs  ACBP=A9
+ 0001:00000748 00000006 C=CODE     S=.text    G=(none)   M=ComCtrls ACBP=A9
+ 0001:00000750 00000006 C=CODE     S=.text    G=(none)   M=GraphUtil ACBP=A9
+ 0001:00000758 00000006 C=CODE     S=.text    G=(none)   M=ExtCtrls ACBP=A9
+ 0001:00000760 00000006 C=CODE     S=.text    G=(none)   M=Printers ACBP=A9
+ 0001:00000768 00000006 C=CODE     S=.text    G=(none)   M=Clipbrd  ACBP=A9
+ 0001:00000770 00000006 C=CODE     S=.text    G=(none)   M=FlatSB   ACBP=A9
+ 0001:00000778 00000006 C=CODE     S=.text    G=(none)   M=Buttons  ACBP=A9
+ 0001:00000780 00000006 C=CODE     S=.text    G=(none)   M=OleCtrls ACBP=A9
+ 0001:00000788 00000006 C=CODE     S=.text    G=(none)   M=AxCtrls  ACBP=A9
+ 0001:00000790 00000006 C=CODE     S=.text    G=(none)   M=OleCtnrs ACBP=A9
+ 0001:00000798 00000006 C=CODE     S=.text    G=(none)   M=OleServer ACBP=A9
+ 0001:000007A0 00000006 C=CODE     S=.text    G=(none)   M=jpeg     ACBP=A9
+ 0001:000007A8 00000066 C=CODE     S=.text    G=(none)   M=QuickRpt ACBP=A9
+ 0001:00000810 00000006 C=CODE     S=.text    G=(none)   M=QRExpr   ACBP=A9
+ 0001:00000818 00000006 C=CODE     S=.text    G=(none)   M=QRExtra  ACBP=A9
+ 0001:00000820 00000006 C=CODE     S=.text    G=(none)   M=QRPrntr  ACBP=A9
+ 0001:00000828 00000006 C=CODE     S=.text    G=(none)   M=QRPDFFilt ACBP=A9
+ 0001:00000830 00000006 C=CODE     S=.text    G=(none)   M=pdfconst ACBP=A9
+ 0001:00000838 0000003E C=CODE     S=.text    G=(none)   M=QRCtrls  ACBP=A9
+ 0001:00000878 00000006 C=CODE     S=.text    G=(none)   M=QRExport ACBP=A9
+ 0001:00000880 00000006 C=CODE     S=.text    G=(none)   M=QRWebFilt ACBP=A9
+ 0001:00000888 00000006 C=CODE     S=.text    G=(none)   M=QRPrev   ACBP=A9
+ 0001:00000890 00000006 C=CODE     S=.text    G=(none)   M=QRXMLSFilt ACBP=A9
+ 0001:00000898 00000006 C=CODE     S=.text    G=(none)   M=QRPrnSu  ACBP=A9
+ 0001:000008A0 00000137 C=CODE     S=.text    G=(none)   M=bcchksum ACBP=A9
+ 0001:000009D8 00004110 C=CODE     S=.text    G=(none)   M=Barcode  ACBP=A9
+ 0001:00004AE8 00000837 C=CODE     S=.text    G=(none)   M=qrBarcode ACBP=A9
+ 0001:00005320 0000049F C=CODE     S=.text    G=(none)   M=.BarcodeD10 ACBP=A9
+ 0002:00000000 00000006 C=ICODE    S=.itext   G=(none)   M=System   ACBP=A9
+ 0002:00000008 00000006 C=ICODE    S=.itext   G=(none)   M=DBTables ACBP=A9
+ 0002:00000010 00000016 C=ICODE    S=.itext   G=(none)   M=Windows  ACBP=A9
+ 0002:00000028 0000001E C=ICODE    S=.itext   G=(none)   M=SysUtils ACBP=A9
+ 0002:00000048 00000006 C=ICODE    S=.itext   G=(none)   M=SqlTimSt ACBP=A9
+ 0002:00000050 00000006 C=ICODE    S=.itext   G=(none)   M=Variants ACBP=A9
+ 0002:00000058 00000006 C=ICODE    S=.itext   G=(none)   M=VarUtils ACBP=A9
+ 0002:00000060 0000000E C=ICODE    S=.itext   G=(none)   M=Classes  ACBP=A9
+ 0002:00000070 00000006 C=ICODE    S=.itext   G=(none)   M=TypInfo  ACBP=A9
+ 0002:00000078 00000006 C=ICODE    S=.itext   G=(none)   M=DB       ACBP=A9
+ 0002:00000080 00000006 C=ICODE    S=.itext   G=(none)   M=WideStrings ACBP=A9
+ 0002:00000088 00000006 C=ICODE    S=.itext   G=(none)   M=FMTBcd   ACBP=A9
+ 0002:00000090 00000006 C=ICODE    S=.itext   G=(none)   M=ComObj   ACBP=A9
+ 0002:00000098 00000006 C=ICODE    S=.itext   G=(none)   M=Forms    ACBP=A9
+ 0002:000000A0 00000006 C=ICODE    S=.itext   G=(none)   M=UxTheme  ACBP=A9
+ 0002:000000A8 00000006 C=ICODE    S=.itext   G=(none)   M=SyncObjs ACBP=A9
+ 0002:000000B0 00000006 C=ICODE    S=.itext   G=(none)   M=TimeSpan ACBP=A9
+ 0002:000000B8 00000006 C=ICODE    S=.itext   G=(none)   M=HelpIntfs ACBP=A9
+ 0002:000000C0 00000006 C=ICODE    S=.itext   G=(none)   M=MultiMon ACBP=A9
+ 0002:000000C8 00000006 C=ICODE    S=.itext   G=(none)   M=ActnList ACBP=A9
+ 0002:000000D0 00000006 C=ICODE    S=.itext   G=(none)   M=Graphics ACBP=A9
+ 0002:000000D8 00000006 C=ICODE    S=.itext   G=(none)   M=Registry ACBP=A9
+ 0002:000000E0 00000006 C=ICODE    S=.itext   G=(none)   M=IniFiles ACBP=A9
+ 0002:000000E8 0000000E C=ICODE    S=.itext   G=(none)   M=IOUtils  ACBP=A9
+ 0002:000000F8 00000006 C=ICODE    S=.itext   G=(none)   M=Themes   ACBP=A9
+ 0002:00000100 00000006 C=ICODE    S=.itext   G=(none)   M=Controls ACBP=A9
+ 0002:00000108 00000006 C=ICODE    S=.itext   G=(none)   M=Menus    ACBP=A9
+ 0002:00000110 00000006 C=ICODE    S=.itext   G=(none)   M=Dialogs  ACBP=A9
+ 0002:00000118 00000006 C=ICODE    S=.itext   G=(none)   M=ComCtrls ACBP=A9
+ 0002:00000120 00000006 C=ICODE    S=.itext   G=(none)   M=GraphUtil ACBP=A9
+ 0002:00000128 00000006 C=ICODE    S=.itext   G=(none)   M=ExtCtrls ACBP=A9
+ 0002:00000130 00000006 C=ICODE    S=.itext   G=(none)   M=Printers ACBP=A9
+ 0002:00000138 00000006 C=ICODE    S=.itext   G=(none)   M=Clipbrd  ACBP=A9
+ 0002:00000140 00000006 C=ICODE    S=.itext   G=(none)   M=FlatSB   ACBP=A9
+ 0002:00000148 00000006 C=ICODE    S=.itext   G=(none)   M=Buttons  ACBP=A9
+ 0002:00000150 00000006 C=ICODE    S=.itext   G=(none)   M=OleCtrls ACBP=A9
+ 0002:00000158 00000006 C=ICODE    S=.itext   G=(none)   M=AxCtrls  ACBP=A9
+ 0002:00000160 00000006 C=ICODE    S=.itext   G=(none)   M=OleCtnrs ACBP=A9
+ 0002:00000168 00000006 C=ICODE    S=.itext   G=(none)   M=OleServer ACBP=A9
+ 0002:00000170 00000006 C=ICODE    S=.itext   G=(none)   M=jpeg     ACBP=A9
+ 0002:00000178 00000006 C=ICODE    S=.itext   G=(none)   M=QuickRpt ACBP=A9
+ 0002:00000180 00000006 C=ICODE    S=.itext   G=(none)   M=QRExpr   ACBP=A9
+ 0002:00000188 00000006 C=ICODE    S=.itext   G=(none)   M=QRExtra  ACBP=A9
+ 0002:00000190 00000006 C=ICODE    S=.itext   G=(none)   M=QRPrntr  ACBP=A9
+ 0002:00000198 00000006 C=ICODE    S=.itext   G=(none)   M=QRPDFFilt ACBP=A9
+ 0002:000001A0 00000006 C=ICODE    S=.itext   G=(none)   M=pdfconst ACBP=A9
+ 0002:000001A8 00000006 C=ICODE    S=.itext   G=(none)   M=QRCtrls  ACBP=A9
+ 0002:000001B0 00000006 C=ICODE    S=.itext   G=(none)   M=QRExport ACBP=A9
+ 0002:000001B8 00000006 C=ICODE    S=.itext   G=(none)   M=QRWebFilt ACBP=A9
+ 0002:000001C0 00000006 C=ICODE    S=.itext   G=(none)   M=QRPrev   ACBP=A9
+ 0002:000001C8 00000006 C=ICODE    S=.itext   G=(none)   M=QRXMLSFilt ACBP=A9
+ 0002:000001D0 00000006 C=ICODE    S=.itext   G=(none)   M=QRPrnSu  ACBP=A9
+ 0002:000001D8 00000008 C=ICODE    S=.itext   G=(none)   M=bcchksum ACBP=A9
+ 0002:000001E0 00000008 C=ICODE    S=.itext   G=(none)   M=Barcode  ACBP=A9
+ 0002:000001E8 00000008 C=ICODE    S=.itext   G=(none)   M=qrBarcode ACBP=A9
+ 0002:000001F0 00000005 C=ICODE    S=.itext   G=(none)   M=.BarcodeD10 ACBP=A9
+ 0003:00000000 00000030 C=DATA     S=.data    G=DGROUP   M=SysInit  ACBP=A9
+ 0003:00000030 0000000C C=DATA     S=.data    G=DGROUP   M=Windows  ACBP=A9
+ 0003:0000003C 000013E8 C=DATA     S=.data    G=DGROUP   M=Barcode  ACBP=A9
+ 0004:00000000 0000000C C=BSS      S=.bss     G=DGROUP   M=SysInit  ACBP=A9
+ 0004:0000000C 00000008 C=BSS      S=.bss     G=DGROUP   M=Windows  ACBP=A9
+ 0004:00000014 00000004 C=BSS      S=.bss     G=DGROUP   M=bcchksum ACBP=A9
+ 0004:00000018 00000004 C=BSS      S=.bss     G=DGROUP   M=Barcode  ACBP=A9
+ 0004:0000001C 00000004 C=BSS      S=.bss     G=DGROUP   M=qrBarcode ACBP=A9
+
+
+  Address             Publics by Name
+
+ 0002:000001F0       .BarcodeD10..BarcodeD10
+ 0001:000057A0       .BarcodeD10.@GetPackageInfoTable
+ 0001:000057A8       .BarcodeD10.@PackageLoad
+ 0001:000057B4       .BarcodeD10.@PackageUnload
+ 0002:000000C8       ActnList.ActnList
+ 0001:00000508       ActnList.Finalization
+ 0002:00000158       AxCtrls.AxCtrls
+ 0001:00000788       AxCtrls.Finalization
+ 0004:00000018       Barcode..2
+ 0001:00000C90       Barcode..TAsBarcode
+ 0002:000001E0       Barcode.Barcode
+ 0003:0000003C       Barcode.BCdata
+ 0003:00000668       Barcode.code39x
+ 0003:00001020       Barcode.code93x
+ 0001:00001618       Barcode.Convert
+ 0001:00004A64       Barcode.Finalization
+ 0001:00002A64       Barcode.FindIdx
+ 0001:000036C4       Barcode.Find_Codabar
+ 0001:00002CAC       Barcode.Find_Code128AB
+ 0001:00002CE8       Barcode.Find_Code128C
+ 0001:0000315C       Barcode.Find_Code93
+ 0001:00003C78       Barcode.getSupp
+ 0001:000016A8       Barcode.quersumme
+ 0001:000048D4       Barcode.Register
+ 0001:000016D4       Barcode.Rotate2D
+ 0003:000007E8       Barcode.tabelle_128
+ 0003:000001E4       Barcode.tabelle_2_5
+ 0003:00000248       Barcode.tabelle_39
+ 0003:00000D8C       Barcode.tabelle_93
+ 0003:0000126C       Barcode.tabelle_cb
+ 0003:000000F4       Barcode.tabelle_EAN_A
+ 0003:00000144       Barcode.tabelle_EAN_B
+ 0003:0000011C       Barcode.tabelle_EAN_C
+ 0003:000011A0       Barcode.tabelle_MSI
+ 0003:0000016C       Barcode.tabelle_ParityEAN13
+ 0003:000011FC       Barcode.tabelle_PostNet
+ 0003:000013AC       Barcode.tabelle_UPC_E0
+ 0001:00001920       Barcode.TAsBarcode.Assign
+ 0001:00002D68       Barcode.TAsBarcode.Code_128
+ 0001:00002834       Barcode.TAsBarcode.Code_2_5_industrial
+ 0001:000026E4       Barcode.TAsBarcode.Code_2_5_interleaved
+ 0001:00002924       Barcode.TAsBarcode.Code_2_5_matrix
+ 0001:00002A80       Barcode.TAsBarcode.Code_39
+ 0001:00002BE8       Barcode.TAsBarcode.Code_39Extended
+ 0001:00003178       Barcode.TAsBarcode.Code_93
+ 0001:000033F4       Barcode.TAsBarcode.Code_93Extended
+ 0001:000036E0       Barcode.TAsBarcode.Code_Codabar
+ 0001:00002494       Barcode.TAsBarcode.Code_EAN13
+ 0001:000021C4       Barcode.TAsBarcode.Code_EAN8
+ 0001:000034B8       Barcode.TAsBarcode.Code_MSI
+ 0001:00003600       Barcode.TAsBarcode.Code_PostNet
+ 0001:00003F54       Barcode.TAsBarcode.Code_Supp2
+ 0001:00003DC0       Barcode.TAsBarcode.Code_Supp5
+ 0001:00003848       Barcode.TAsBarcode.Code_UPC_A
+ 0001:00003980       Barcode.TAsBarcode.Code_UPC_E0
+ 0001:00003AFC       Barcode.TAsBarcode.Code_UPC_E1
+ 0001:0000186C       Barcode.TAsBarcode.Create
+ 0001:000018F0       Barcode.TAsBarcode.Destroy
+ 0001:000047C8       Barcode.TAsBarcode.DoChange
+ 0001:00001FB8       Barcode.TAsBarcode.DoCheckSumming
+ 0001:00004240       Barcode.TAsBarcode.DoLines
+ 0001:000044B4       Barcode.TAsBarcode.DrawBarcode
+ 0001:000045C8       Barcode.TAsBarcode.DrawText
+ 0001:0000490C       Barcode.TAsBarcode.GetCanvasHeight
+ 0001:000049A0       Barcode.TAsBarcode.GetCanvasWidth
+ 0001:000019C4       Barcode.TAsBarcode.GetTypText
+ 0001:00001E78       Barcode.TAsBarcode.GetWidth
+ 0001:00001BC4       Barcode.TAsBarcode.MakeData
+ 0001:00004170       Barcode.TAsBarcode.MakeModules
+ 0001:000019FC       Barcode.TAsBarcode.OneBarProps
+ 0001:0000481C       Barcode.TAsBarcode.SetAngle
+ 0001:000048AC       Barcode.TAsBarcode.SetCheckSum
+ 0001:000048C0       Barcode.TAsBarcode.SetHeight
+ 0001:00004898       Barcode.TAsBarcode.SetLeft
+ 0001:000037E0       Barcode.TAsBarcode.SetLen
+ 0001:000019E0       Barcode.TAsBarcode.SetModul
+ 0001:000047DC       Barcode.TAsBarcode.SetRatio
+ 0001:00004870       Barcode.TAsBarcode.SetShowText
+ 0001:00004A34       Barcode.TAsBarcode.SetShowTextFont
+ 0001:00004A48       Barcode.TAsBarcode.SetShowTextPosition
+ 0001:00004848       Barcode.TAsBarcode.SetText
+ 0001:00004884       Barcode.TAsBarcode.SetTop
+ 0001:00004808       Barcode.TAsBarcode.SetTyp
+ 0001:00001F0C       Barcode.TAsBarcode.SetWidth
+ 0001:00001740       Barcode.Translate2D
+ 0001:00001770       Barcode.TranslateQuad2D
+ 0004:00000014       bcchksum..1
+ 0002:000001D8       bcchksum.bcchksum
+ 0001:000008A0       bcchksum.CheckSumModulo10
+ 0001:000009D0       bcchksum.Finalization
+ 0002:00000148       Buttons.Buttons
+ 0001:00000778       Buttons.Finalization
+ 0002:00000068       Classes.Classes
+ 0001:000004A8       Classes.Finalization
+ 0001:00000410       Classes.Point
+ 0001:00000418       Classes.RegisterComponents
+ 0001:00000448       Classes.TComponent.BeforeDestruction
+ 0001:00000438       Classes.TComponent.Create
+ 0001:00000458       Classes.TComponent.DefineProperties
+ 0001:00000440       Classes.TComponent.Destroy
+ 0001:00000460       Classes.TComponent.Loaded
+ 0001:00000450       Classes.TComponent.Notification
+ 0001:000004A0       Classes.TComponent.QueryInterface
+ 0001:00000468       Classes.TComponent.ReadState
+ 0001:00000490       Classes.TComponent.SafeCallException
+ 0001:00000480       Classes.TComponent.SetName
+ 0001:00000488       Classes.TComponent.UpdateAction
+ 0001:00000498       Classes.TComponent.UpdateRegistry
+ 0001:00000478       Classes.TComponent.ValidateRename
+ 0001:00000470       Classes.TComponent.WriteState
+ 0001:00000420       Classes.TPersistent.Assign
+ 0001:00000428       Classes.TPersistent.AssignTo
+ 0002:00000060       Classes.TThread.Create@
+ 0001:00000430       Classes.TThread.Destroy@
+ 0002:00000138       Clipbrd.Clipbrd
+ 0001:00000768       Clipbrd.Finalization
+ 0002:00000118       ComCtrls.ComCtrls
+ 0001:00000748       ComCtrls.Finalization
+ 0002:00000090       ComObj.ComObj
+ 0001:000004D0       ComObj.Finalization
+ 0002:00000100       Controls.Controls
+ 0001:00000730       Controls.Finalization
+ 0001:000005F8       Controls.TControl.CreateTouchManager
+ 0001:000005E8       Controls.TControl.DoGesture
+ 0001:000005F0       Controls.TControl.DoGetGestureOptions
+ 0001:000005A0       Controls.TControl.GetAction
+ 0001:00000590       Controls.TControl.GetDragImages
+ 0001:00000598       Controls.TControl.GetEnabled
+ 0001:00000600       Controls.TControl.GetFloating
+ 0001:00000608       Controls.TControl.GetFloatingDockSiteClass
+ 0001:00000610       Controls.TControl.InitiateAction
+ 0001:000005B0       Controls.TControl.Resize
+ 0001:000005D8       Controls.TControl.SetBiDiMode
+ 0001:000005A8       Controls.TControl.SetDragMode
+ 0001:000005D0       Controls.TControl.SetEnabled
+ 0001:000005C0       Controls.TControl.SetHeight
+ 0001:000005C8       Controls.TControl.SetName
+ 0001:000005E0       Controls.TControl.SetParentBiDiMode
+ 0001:000005B8       Controls.TControl.SetWidth
+ 0001:00000728       Controls.TCustomControl.PaintWindow
+ 0001:00000620       Controls.TWinControl.AdjustClientRect
+ 0001:00000628       Controls.TWinControl.AlignControls
+ 0001:00000700       Controls.TWinControl.AssignTo
+ 0001:00000708       Controls.TWinControl.CanAutoSize
+ 0001:000006F0       Controls.TWinControl.CanResize
+ 0001:000006F8       Controls.TWinControl.ConstrainedResize
+ 0001:00000668       Controls.TWinControl.CreateHandle
+ 0001:00000638       Controls.TWinControl.CreateParams
+ 0001:00000648       Controls.TWinControl.CreateWindowHandle
+ 0001:00000640       Controls.TWinControl.CreateWnd
+ 0001:00000670       Controls.TWinControl.CustomAlignInsertBefore
+ 0001:00000678       Controls.TWinControl.CustomAlignPosition
+ 0001:00000698       Controls.TWinControl.DefaultHandler
+ 0001:00000650       Controls.TWinControl.DefineProperties
+ 0001:00000680       Controls.TWinControl.DestroyHandle
+ 0001:00000660       Controls.TWinControl.DestroyWindowHandle
+ 0001:00000658       Controls.TWinControl.DestroyWnd
+ 0001:00000718       Controls.TWinControl.DockReplaceDockClient
+ 0001:000006E0       Controls.TWinControl.GetClientOrigin
+ 0001:000006E8       Controls.TWinControl.GetClientRect
+ 0001:000006D8       Controls.TWinControl.GetControlExtents
+ 0001:000006B0       Controls.TWinControl.GetDeviceContext
+ 0001:000006B8       Controls.TWinControl.Invalidate
+ 0001:00000630       Controls.TWinControl.Notification
+ 0001:00000618       Controls.TWinControl.ReadState
+ 0001:000006C8       Controls.TWinControl.Repaint
+ 0001:000006A0       Controls.TWinControl.RequestAlign
+ 0001:000006D0       Controls.TWinControl.SetFocus
+ 0001:00000710       Controls.TWinControl.SetParentBackground
+ 0001:00000688       Controls.TWinControl.SetParentDoubleBuffered
+ 0001:000006A8       Controls.TWinControl.ShowControl
+ 0001:000006C0       Controls.TWinControl.Update
+ 0001:00000720       Controls.TWinControl.UpdateControlOriginalParentSize
+ 0001:00000690       Controls.TWinControl.WndProc
+ 0002:00000078       DB.DB
+ 0001:000004B8       DB.Finalization
+ 0002:00000008       DBTables.DBTables
+ 0001:00000334       DBTables.Finalization
+ 0002:00000110       Dialogs.Dialogs
+ 0001:00000740       Dialogs.Finalization
+ 0002:00000128       ExtCtrls.ExtCtrls
+ 0001:00000758       ExtCtrls.Finalization
+ 0001:00000770       FlatSB.Finalization
+ 0002:00000140       FlatSB.FlatSB
+ 0001:000004C8       FMTBcd.Finalization
+ 0002:00000088       FMTBcd.FMTBcd
+ 0001:000004D8       Forms.Finalization
+ 0002:00000098       Forms.Forms
+ 0001:00000560       Graphics.Finalization
+ 0002:000000D0       Graphics.Graphics
+ 0001:00000540       Graphics.TBrush.Create
+ 0001:00000548       Graphics.TBrush.SetColor
+ 0001:00000550       Graphics.TCustomCanvas.TextHeight
+ 0001:00000558       Graphics.TCustomCanvas.TextWidth
+ 0001:00000510       Graphics.TFont.Create
+ 0001:00000518       Graphics.TFont.GetHeight
+ 0001:00000520       Graphics.TPen.Create
+ 0001:00000528       Graphics.TPen.GetColor
+ 0001:00000530       Graphics.TPen.SetColor
+ 0001:00000538       Graphics.TPen.SetWidth
+ 0001:00000750       GraphUtil.Finalization
+ 0002:00000120       GraphUtil.GraphUtil
+ 0001:000004F8       HelpIntfs.Finalization
+ 0002:000000B8       HelpIntfs.HelpIntfs
+ 0001:00000570       IniFiles.Finalization
+ 0002:000000E0       IniFiles.IniFiles
+ 0001:00000580       IOUtils.Finalization
+ 0002:000000F0       IOUtils.IOUtils
+ 0002:000000E8       IOUtils.TPath.Create@
+ 0001:00000578       IOUtils.TPath.Destroy@
+ 0001:000007A0       jpeg.Finalization
+ 0002:00000170       jpeg.jpeg
+ 0001:000003F0       Math.SinCos
+ 0001:00000738       Menus.Finalization
+ 0002:00000108       Menus.Menus
+ 0001:00000500       MultiMon.Finalization
+ 0002:000000C0       MultiMon.MultiMon
+ 0001:00000790       OleCtnrs.Finalization
+ 0002:00000160       OleCtnrs.OleCtnrs
+ 0001:00000780       OleCtrls.Finalization
+ 0002:00000150       OleCtrls.OleCtrls
+ 0001:00000798       OleServer.Finalization
+ 0002:00000168       OleServer.OleServer
+ 0001:00000830       pdfconst.Finalization
+ 0002:000001A0       pdfconst.pdfconst
+ 0001:00000760       Printers.Finalization
+ 0002:00000130       Printers.Printers
+ 0004:0000001C       qrBarcode..2
+ 0001:00004AE8       qrBarcode..TQRAsBarcode
+ 0001:00005318       qrBarcode.Finalization
+ 0002:000001E8       qrBarcode.qrBarcode
+ 0001:00004F58       qrBarcode.Register
+ 0001:00004F90       qrBarcode.TQRAsBarcode.BarcodeToCanvas
+ 0001:00004FC0       qrBarcode.TQRAsBarcode.Create
+ 0001:0000502C       qrBarcode.TQRAsBarcode.FixupSize
+ 0001:000050A4       qrBarcode.TQRAsBarcode.GetAngle
+ 0001:000050C0       qrBarcode.TQRAsBarcode.GetBarcode
+ 0001:000050C8       qrBarcode.TQRAsBarcode.GetBarcodeHeight
+ 0001:000050D8       qrBarcode.TQRAsBarcode.GetBarcodeWidth
+ 0001:000050EC       qrBarcode.TQRAsBarcode.GetCheckSum
+ 0001:000050FC       qrBarcode.TQRAsBarcode.GetCheckSumMethod
+ 0001:0000510C       qrBarcode.TQRAsBarcode.GetColor
+ 0001:0000511C       qrBarcode.TQRAsBarcode.GetColorBar
+ 0001:0000512C       qrBarcode.TQRAsBarcode.GetModul
+ 0001:0000513C       qrBarcode.TQRAsBarcode.GetRatio
+ 0001:00005160       qrBarcode.TQRAsBarcode.GetShowText
+ 0001:00005170       qrBarcode.TQRAsBarcode.GetText
+ 0001:0000518C       qrBarcode.TQRAsBarcode.GetTyp
+ 0001:0000519C       qrBarcode.TQRAsBarcode.Loaded
+ 0001:000051B0       qrBarcode.TQRAsBarcode.OnBarcodeChange
+ 0001:000051C8       qrBarcode.TQRAsBarcode.Resize
+ 0001:000051DC       qrBarcode.TQRAsBarcode.SetAngle
+ 0001:000051FC       qrBarcode.TQRAsBarcode.SetBarcode
+ 0001:00005214       qrBarcode.TQRAsBarcode.SetBarcodeHeight
+ 0001:0000522C       qrBarcode.TQRAsBarcode.SetBarcodeWidth
+ 0001:00005244       qrBarcode.TQRAsBarcode.SetCheckSum
+ 0001:0000525C       qrBarcode.TQRAsBarcode.SetCheckSumMethod
+ 0001:00005270       qrBarcode.TQRAsBarcode.SetColor
+ 0001:00005284       qrBarcode.TQRAsBarcode.SetColorBar
+ 0001:00005298       qrBarcode.TQRAsBarcode.SetModul
+ 0001:000052B0       qrBarcode.TQRAsBarcode.SetRatio
+ 0001:000052D0       qrBarcode.TQRAsBarcode.SetShowText
+ 0001:000052E8       qrBarcode.TQRAsBarcode.SetText
+ 0001:00005300       qrBarcode.TQRAsBarcode.SetTyp
+ 0001:00000870       QRCtrls.Finalization
+ 0002:000001A8       QRCtrls.QRCtrls
+ 0001:00000838       QRCtrls.TQRImage.Create
+ 0001:00000840       QRCtrls.TQRImage.Destroy
+ 0001:00000860       QRCtrls.TQRImage.GetCanvas
+ 0001:00000850       QRCtrls.TQRImage.Paint
+ 0001:00000858       QRCtrls.TQRImage.Print
+ 0001:00000848       QRCtrls.TQRImage.SetAutoSize
+ 0001:00000868       QRCtrls.TQRImage.SetPicture
+ 0001:00000878       QRExport.Finalization
+ 0002:000001B0       QRExport.QRExport
+ 0001:00000810       QRExpr.Finalization
+ 0002:00000180       QRExpr.QRExpr
+ 0001:00000818       QRExtra.Finalization
+ 0002:00000188       QRExtra.QRExtra
+ 0001:00000828       QRPDFFilt.Finalization
+ 0002:00000198       QRPDFFilt.QRPDFFilt
+ 0001:00000888       QRPrev.Finalization
+ 0002:000001C0       QRPrev.QRPrev
+ 0001:00000898       QRPrnSu.Finalization
+ 0002:000001D0       QRPrnSu.QRPrnSu
+ 0001:00000820       QRPrntr.Finalization
+ 0002:00000190       QRPrntr.QRPrntr
+ 0001:00000880       QRWebFilt.Finalization
+ 0002:000001B8       QRWebFilt.QRWebFilt
+ 0001:00000890       QRXMLSFilt.Finalization
+ 0002:000001C8       QRXMLSFilt.QRXMLSFilt
+ 0001:00000808       QuickRpt.Finalization
+ 0002:00000178       QuickRpt.QuickRpt
+ 0001:000007D0       QuickRpt.TQRPrintable.AlignIt
+ 0001:000007C8       QuickRpt.TQRPrintable.GetEditorClass
+ 0001:000007B0       QuickRpt.TQRPrintable.GetExpandedHeight
+ 0001:000007B8       QuickRpt.TQRPrintable.GetFieldString
+ 0001:000007C0       QuickRpt.TQRPrintable.IsEnabled
+ 0001:000007A8       QuickRpt.TQRPrintable.Loaded
+ 0001:000007D8       QuickRpt.TQRPrintable.Prepare
+ 0001:000007E8       QuickRpt.TQRPrintable.QRNotification
+ 0001:000007E0       QuickRpt.TQRPrintable.SetAlignment
+ 0001:000007F0       QuickRpt.TQRPrintable.SetBounds
+ 0001:000007F8       QuickRpt.TQRPrintable.SetParent
+ 0001:00000800       QuickRpt.TQRPrintable.UnPrepare
+ 0001:00000568       Registry.Finalization
+ 0002:000000D8       Registry.Registry
+ 0001:000003F8       SqlTimSt.Finalization
+ 0002:00000048       SqlTimSt.SqlTimSt
+ 0001:000004E8       SyncObjs.Finalization
+ 0002:000000A8       SyncObjs.SyncObjs
+ 0001:000002B8       SysInit.@InitPkg
+ 0001:0000031C       SysInit.@PackageLoad
+ 0001:00000328       SysInit.@PackageUnload
+ 0001:000001A8       SysInit.AllocTlsBuffer
+ 0001:00000264       SysInit.ExitProcessTLS
+ 0001:0000022C       SysInit.ExitThreadTLS
+ 0001:00000170       SysInit.FreeLibrary
+ 0001:000001B4       SysInit.GetTlsSize
+ 0004:00000004       SysInit.HInstance
+ 0001:00000288       SysInit.InitializeModule
+ 0001:00000200       SysInit.InitProcessTLS
+ 0001:000001BC       SysInit.InitThreadTLS
+ 0001:00000178       SysInit.LocalAlloc
+ 0001:00000180       SysInit.LocalFree
+ 0003:00000004       SysInit.Module
+ 0004:00000000       SysInit.ModuleIsLib
+ 0004:00000001       SysInit.ModuleIsPackage
+ 0001:00000188       SysInit.TlsAlloc
+ 0004:00000008       SysInit.tlsBuffer
+ 0001:00000190       SysInit.TlsFree
+ 0001:00000198       SysInit.TlsGetValue
+ 0003:00000000       SysInit.TlsIndex
+ 0005:00000000       SysInit.TlsLast
+ 0003:00000020       SysInit.TlsProc
+ 0001:000001A0       SysInit.TlsSetValue
+ 0001:00000294       SysInit.UninitializeModule
+ 0001:00000088       System.@AfterConstruction
+ 0001:000000C0       System.@Assert
+ 0001:00000090       System.@BeforeDestruction
+ 0001:00000078       System.@ClassCreate
+ 0001:00000080       System.@ClassDestroy
+ 0001:000000C8       System.@EnsureUnicodeString
+ 0001:00000150       System.@FinalizeArray
+ 0001:00000098       System.@HandleFinally
+ 0001:00000050       System.@IsClass
+ 0001:000000A8       System.@PackageLoad
+ 0001:000000B0       System.@PackageUnload
+ 0001:000000A0       System.@RaiseExcept
+ 0001:00000010       System.@ROUND
+ 0001:000000B8       System.@RunError
+ 0001:00000018       System.@TRUNC
+ 0001:00000148       System.@UniqueStringU
+ 0001:000000D8       System.@UStrAddRef
+ 0001:000000E8       System.@UStrArrayClr
+ 0001:000000F0       System.@UStrAsg
+ 0001:00000120       System.@UStrCat
+ 0001:00000128       System.@UStrCat3
+ 0001:00000130       System.@UStrCatN
+ 0001:000000E0       System.@UStrClr
+ 0001:00000140       System.@UStrCopy
+ 0001:00000138       System.@UStrEqual
+ 0001:00000110       System.@UStrFromString
+ 0001:00000108       System.@UStrFromWArray
+ 0001:00000100       System.@UStrFromWChar
+ 0001:000000F8       System.@UStrLAsg
+ 0001:00000118       System.@UStrLen
+ 0001:00000000       System.Cos
+ 0001:00000168       System.Finalization
+ 0001:00000158       System.RegisterModule
+ 0001:00000008       System.Sin
+ 0001:000000D0       System.StringOfChar
+ 0002:00000000       System.System
+ 0001:00000068       System.TObject.AfterConstruction
+ 0001:00000020       System.TObject.ClassName
+ 0001:00000060       System.TObject.DefaultHandler
+ 0001:00000070       System.TObject.Dispatch
+ 0001:00000040       System.TObject.Equals
+ 0001:00000038       System.TObject.Free
+ 0001:00000030       System.TObject.FreeInstance
+ 0001:00000048       System.TObject.GetHashCode
+ 0001:00000028       System.TObject.NewInstance
+ 0001:00000058       System.TObject.ToString
+ 0001:00000160       System.UnregisterModule
+ 0001:000003C0       SysUtils.Exception.Create
+ 0002:00000038       SysUtils.Exception.Create@
+ 0001:000003C8       SysUtils.Exception.CreateFmt
+ 0001:000003D0       SysUtils.Exception.Destroy@
+ 0001:000003E8       SysUtils.Finalization
+ 0001:000003B0       SysUtils.IntToStr
+ 0001:000003B8       SysUtils.StrToInt
+ 0002:00000040       SysUtils.SysUtils
+ 0002:00000030       SysUtils.TEncoding.Create@
+ 0001:000003E0       SysUtils.TEncoding.Destroy@
+ 0002:00000028       SysUtils.TLanguages.Create@
+ 0001:000003D8       SysUtils.TLanguages.Destroy@
+ 0001:000003A8       SysUtils.Trim
+ 0001:00000588       Themes.Finalization
+ 0002:000000F8       Themes.Themes
+ 0002:000000B0       TimeSpan.TTimeSpan.Create@
+ 0001:000004F0       TimeSpan.TTimeSpan.Destroy@
+ 0001:000004B0       TypInfo.Finalization
+ 0002:00000070       TypInfo.TypInfo
+ 0001:000004E0       UxTheme.Finalization
+ 0002:000000A0       UxTheme.UxTheme
+ 0001:00000400       Variants.Finalization
+ 0002:00000050       Variants.Variants
+ 0001:00000408       VarUtils.Finalization
+ 0002:00000058       VarUtils.VarUtils
+ 0001:000004C0       WideStrings.Finalization
+ 0002:00000080       WideStrings.WideStrings
+ 0004:0000000C       Windows..2
+ 0001:00000388       Windows.Finalization
+ 0001:0000033C       Windows.FreeLibrary
+ 0001:00000344       Windows.GetVersionEx
+ 0004:00000010       Windows.HtmlHelpModule
+ 0001:0000034C       Windows.InitVersionInfo
+ 0003:00000030       Windows.Win32MajorVersion
+ 0003:00000034       Windows.Win32MinorVersion
+ 0003:00000038       Windows.Win32Platform
+ 0002:00000010       Windows.Windows
+
+
+  Address             Publics by Value
+
+ 0001:00000000       System.Cos
+ 0001:00000008       System.Sin
+ 0001:00000010       System.@ROUND
+ 0001:00000018       System.@TRUNC
+ 0001:00000020       System.TObject.ClassName
+ 0001:00000028       System.TObject.NewInstance
+ 0001:00000030       System.TObject.FreeInstance
+ 0001:00000038       System.TObject.Free
+ 0001:00000040       System.TObject.Equals
+ 0001:00000048       System.TObject.GetHashCode
+ 0001:00000050       System.@IsClass
+ 0001:00000058       System.TObject.ToString
+ 0001:00000060       System.TObject.DefaultHandler
+ 0001:00000068       System.TObject.AfterConstruction
+ 0001:00000070       System.TObject.Dispatch
+ 0001:00000078       System.@ClassCreate
+ 0001:00000080       System.@ClassDestroy
+ 0001:00000088       System.@AfterConstruction
+ 0001:00000090       System.@BeforeDestruction
+ 0001:00000098       System.@HandleFinally
+ 0001:000000A0       System.@RaiseExcept
+ 0001:000000A8       System.@PackageLoad
+ 0001:000000B0       System.@PackageUnload
+ 0001:000000B8       System.@RunError
+ 0001:000000C0       System.@Assert
+ 0001:000000C8       System.@EnsureUnicodeString
+ 0001:000000D0       System.StringOfChar
+ 0001:000000D8       System.@UStrAddRef
+ 0001:000000E0       System.@UStrClr
+ 0001:000000E8       System.@UStrArrayClr
+ 0001:000000F0       System.@UStrAsg
+ 0001:000000F8       System.@UStrLAsg
+ 0001:00000100       System.@UStrFromWChar
+ 0001:00000108       System.@UStrFromWArray
+ 0001:00000110       System.@UStrFromString
+ 0001:00000118       System.@UStrLen
+ 0001:00000120       System.@UStrCat
+ 0001:00000128       System.@UStrCat3
+ 0001:00000130       System.@UStrCatN
+ 0001:00000138       System.@UStrEqual
+ 0001:00000140       System.@UStrCopy
+ 0001:00000148       System.@UniqueStringU
+ 0001:00000150       System.@FinalizeArray
+ 0001:00000158       System.RegisterModule
+ 0001:00000160       System.UnregisterModule
+ 0001:00000168       System.Finalization
+ 0001:00000170       SysInit.FreeLibrary
+ 0001:00000178       SysInit.LocalAlloc
+ 0001:00000180       SysInit.LocalFree
+ 0001:00000188       SysInit.TlsAlloc
+ 0001:00000190       SysInit.TlsFree
+ 0001:00000198       SysInit.TlsGetValue
+ 0001:000001A0       SysInit.TlsSetValue
+ 0001:000001A8       SysInit.AllocTlsBuffer
+ 0001:000001B4       SysInit.GetTlsSize
+ 0001:000001BC       SysInit.InitThreadTLS
+ 0001:00000200       SysInit.InitProcessTLS
+ 0001:0000022C       SysInit.ExitThreadTLS
+ 0001:00000264       SysInit.ExitProcessTLS
+ 0001:00000288       SysInit.InitializeModule
+ 0001:00000294       SysInit.UninitializeModule
+ 0001:000002B8       SysInit.@InitPkg
+ 0001:0000031C       SysInit.@PackageLoad
+ 0001:00000328       SysInit.@PackageUnload
+ 0001:00000334       DBTables.Finalization
+ 0001:0000033C       Windows.FreeLibrary
+ 0001:00000344       Windows.GetVersionEx
+ 0001:0000034C       Windows.InitVersionInfo
+ 0001:00000388       Windows.Finalization
+ 0001:000003A8       SysUtils.Trim
+ 0001:000003B0       SysUtils.IntToStr
+ 0001:000003B8       SysUtils.StrToInt
+ 0001:000003C0       SysUtils.Exception.Create
+ 0001:000003C8       SysUtils.Exception.CreateFmt
+ 0001:000003D0       SysUtils.Exception.Destroy@
+ 0001:000003D8       SysUtils.TLanguages.Destroy@
+ 0001:000003E0       SysUtils.TEncoding.Destroy@
+ 0001:000003E8       SysUtils.Finalization
+ 0001:000003F0       Math.SinCos
+ 0001:000003F8       SqlTimSt.Finalization
+ 0001:00000400       Variants.Finalization
+ 0001:00000408       VarUtils.Finalization
+ 0001:00000410       Classes.Point
+ 0001:00000418       Classes.RegisterComponents
+ 0001:00000420       Classes.TPersistent.Assign
+ 0001:00000428       Classes.TPersistent.AssignTo
+ 0001:00000430       Classes.TThread.Destroy@
+ 0001:00000438       Classes.TComponent.Create
+ 0001:00000440       Classes.TComponent.Destroy
+ 0001:00000448       Classes.TComponent.BeforeDestruction
+ 0001:00000450       Classes.TComponent.Notification
+ 0001:00000458       Classes.TComponent.DefineProperties
+ 0001:00000460       Classes.TComponent.Loaded
+ 0001:00000468       Classes.TComponent.ReadState
+ 0001:00000470       Classes.TComponent.WriteState
+ 0001:00000478       Classes.TComponent.ValidateRename
+ 0001:00000480       Classes.TComponent.SetName
+ 0001:00000488       Classes.TComponent.UpdateAction
+ 0001:00000490       Classes.TComponent.SafeCallException
+ 0001:00000498       Classes.TComponent.UpdateRegistry
+ 0001:000004A0       Classes.TComponent.QueryInterface
+ 0001:000004A8       Classes.Finalization
+ 0001:000004B0       TypInfo.Finalization
+ 0001:000004B8       DB.Finalization
+ 0001:000004C0       WideStrings.Finalization
+ 0001:000004C8       FMTBcd.Finalization
+ 0001:000004D0       ComObj.Finalization
+ 0001:000004D8       Forms.Finalization
+ 0001:000004E0       UxTheme.Finalization
+ 0001:000004E8       SyncObjs.Finalization
+ 0001:000004F0       TimeSpan.TTimeSpan.Destroy@
+ 0001:000004F8       HelpIntfs.Finalization
+ 0001:00000500       MultiMon.Finalization
+ 0001:00000508       ActnList.Finalization
+ 0001:00000510       Graphics.TFont.Create
+ 0001:00000518       Graphics.TFont.GetHeight
+ 0001:00000520       Graphics.TPen.Create
+ 0001:00000528       Graphics.TPen.GetColor
+ 0001:00000530       Graphics.TPen.SetColor
+ 0001:00000538       Graphics.TPen.SetWidth
+ 0001:00000540       Graphics.TBrush.Create
+ 0001:00000548       Graphics.TBrush.SetColor
+ 0001:00000550       Graphics.TCustomCanvas.TextHeight
+ 0001:00000558       Graphics.TCustomCanvas.TextWidth
+ 0001:00000560       Graphics.Finalization
+ 0001:00000568       Registry.Finalization
+ 0001:00000570       IniFiles.Finalization
+ 0001:00000578       IOUtils.TPath.Destroy@
+ 0001:00000580       IOUtils.Finalization
+ 0001:00000588       Themes.Finalization
+ 0001:00000590       Controls.TControl.GetDragImages
+ 0001:00000598       Controls.TControl.GetEnabled
+ 0001:000005A0       Controls.TControl.GetAction
+ 0001:000005A8       Controls.TControl.SetDragMode
+ 0001:000005B0       Controls.TControl.Resize
+ 0001:000005B8       Controls.TControl.SetWidth
+ 0001:000005C0       Controls.TControl.SetHeight
+ 0001:000005C8       Controls.TControl.SetName
+ 0001:000005D0       Controls.TControl.SetEnabled
+ 0001:000005D8       Controls.TControl.SetBiDiMode
+ 0001:000005E0       Controls.TControl.SetParentBiDiMode
+ 0001:000005E8       Controls.TControl.DoGesture
+ 0001:000005F0       Controls.TControl.DoGetGestureOptions
+ 0001:000005F8       Controls.TControl.CreateTouchManager
+ 0001:00000600       Controls.TControl.GetFloating
+ 0001:00000608       Controls.TControl.GetFloatingDockSiteClass
+ 0001:00000610       Controls.TControl.InitiateAction
+ 0001:00000618       Controls.TWinControl.ReadState
+ 0001:00000620       Controls.TWinControl.AdjustClientRect
+ 0001:00000628       Controls.TWinControl.AlignControls
+ 0001:00000630       Controls.TWinControl.Notification
+ 0001:00000638       Controls.TWinControl.CreateParams
+ 0001:00000640       Controls.TWinControl.CreateWnd
+ 0001:00000648       Controls.TWinControl.CreateWindowHandle
+ 0001:00000650       Controls.TWinControl.DefineProperties
+ 0001:00000658       Controls.TWinControl.DestroyWnd
+ 0001:00000660       Controls.TWinControl.DestroyWindowHandle
+ 0001:00000668       Controls.TWinControl.CreateHandle
+ 0001:00000670       Controls.TWinControl.CustomAlignInsertBefore
+ 0001:00000678       Controls.TWinControl.CustomAlignPosition
+ 0001:00000680       Controls.TWinControl.DestroyHandle
+ 0001:00000688       Controls.TWinControl.SetParentDoubleBuffered
+ 0001:00000690       Controls.TWinControl.WndProc
+ 0001:00000698       Controls.TWinControl.DefaultHandler
+ 0001:000006A0       Controls.TWinControl.RequestAlign
+ 0001:000006A8       Controls.TWinControl.ShowControl
+ 0001:000006B0       Controls.TWinControl.GetDeviceContext
+ 0001:000006B8       Controls.TWinControl.Invalidate
+ 0001:000006C0       Controls.TWinControl.Update
+ 0001:000006C8       Controls.TWinControl.Repaint
+ 0001:000006D0       Controls.TWinControl.SetFocus
+ 0001:000006D8       Controls.TWinControl.GetControlExtents
+ 0001:000006E0       Controls.TWinControl.GetClientOrigin
+ 0001:000006E8       Controls.TWinControl.GetClientRect
+ 0001:000006F0       Controls.TWinControl.CanResize
+ 0001:000006F8       Controls.TWinControl.ConstrainedResize
+ 0001:00000700       Controls.TWinControl.AssignTo
+ 0001:00000708       Controls.TWinControl.CanAutoSize
+ 0001:00000710       Controls.TWinControl.SetParentBackground
+ 0001:00000718       Controls.TWinControl.DockReplaceDockClient
+ 0001:00000720       Controls.TWinControl.UpdateControlOriginalParentSize
+ 0001:00000728       Controls.TCustomControl.PaintWindow
+ 0001:00000730       Controls.Finalization
+ 0001:00000738       Menus.Finalization
+ 0001:00000740       Dialogs.Finalization
+ 0001:00000748       ComCtrls.Finalization
+ 0001:00000750       GraphUtil.Finalization
+ 0001:00000758       ExtCtrls.Finalization
+ 0001:00000760       Printers.Finalization
+ 0001:00000768       Clipbrd.Finalization
+ 0001:00000770       FlatSB.Finalization
+ 0001:00000778       Buttons.Finalization
+ 0001:00000780       OleCtrls.Finalization
+ 0001:00000788       AxCtrls.Finalization
+ 0001:00000790       OleCtnrs.Finalization
+ 0001:00000798       OleServer.Finalization
+ 0001:000007A0       jpeg.Finalization
+ 0001:000007A8       QuickRpt.TQRPrintable.Loaded
+ 0001:000007B0       QuickRpt.TQRPrintable.GetExpandedHeight
+ 0001:000007B8       QuickRpt.TQRPrintable.GetFieldString
+ 0001:000007C0       QuickRpt.TQRPrintable.IsEnabled
+ 0001:000007C8       QuickRpt.TQRPrintable.GetEditorClass
+ 0001:000007D0       QuickRpt.TQRPrintable.AlignIt
+ 0001:000007D8       QuickRpt.TQRPrintable.Prepare
+ 0001:000007E0       QuickRpt.TQRPrintable.SetAlignment
+ 0001:000007E8       QuickRpt.TQRPrintable.QRNotification
+ 0001:000007F0       QuickRpt.TQRPrintable.SetBounds
+ 0001:000007F8       QuickRpt.TQRPrintable.SetParent
+ 0001:00000800       QuickRpt.TQRPrintable.UnPrepare
+ 0001:00000808       QuickRpt.Finalization
+ 0001:00000810       QRExpr.Finalization
+ 0001:00000818       QRExtra.Finalization
+ 0001:00000820       QRPrntr.Finalization
+ 0001:00000828       QRPDFFilt.Finalization
+ 0001:00000830       pdfconst.Finalization
+ 0001:00000838       QRCtrls.TQRImage.Create
+ 0001:00000840       QRCtrls.TQRImage.Destroy
+ 0001:00000848       QRCtrls.TQRImage.SetAutoSize
+ 0001:00000850       QRCtrls.TQRImage.Paint
+ 0001:00000858       QRCtrls.TQRImage.Print
+ 0001:00000860       QRCtrls.TQRImage.GetCanvas
+ 0001:00000868       QRCtrls.TQRImage.SetPicture
+ 0001:00000870       QRCtrls.Finalization
+ 0001:00000878       QRExport.Finalization
+ 0001:00000880       QRWebFilt.Finalization
+ 0001:00000888       QRPrev.Finalization
+ 0001:00000890       QRXMLSFilt.Finalization
+ 0001:00000898       QRPrnSu.Finalization
+ 0001:000008A0       bcchksum.CheckSumModulo10
+ 0001:000009D0       bcchksum.Finalization
+ 0001:00000C90       Barcode..TAsBarcode
+ 0001:00001618       Barcode.Convert
+ 0001:000016A8       Barcode.quersumme
+ 0001:000016D4       Barcode.Rotate2D
+ 0001:00001740       Barcode.Translate2D
+ 0001:00001770       Barcode.TranslateQuad2D
+ 0001:0000186C       Barcode.TAsBarcode.Create
+ 0001:000018F0       Barcode.TAsBarcode.Destroy
+ 0001:00001920       Barcode.TAsBarcode.Assign
+ 0001:000019C4       Barcode.TAsBarcode.GetTypText
+ 0001:000019E0       Barcode.TAsBarcode.SetModul
+ 0001:000019FC       Barcode.TAsBarcode.OneBarProps
+ 0001:00001BC4       Barcode.TAsBarcode.MakeData
+ 0001:00001E78       Barcode.TAsBarcode.GetWidth
+ 0001:00001F0C       Barcode.TAsBarcode.SetWidth
+ 0001:00001FB8       Barcode.TAsBarcode.DoCheckSumming
+ 0001:000021C4       Barcode.TAsBarcode.Code_EAN8
+ 0001:00002494       Barcode.TAsBarcode.Code_EAN13
+ 0001:000026E4       Barcode.TAsBarcode.Code_2_5_interleaved
+ 0001:00002834       Barcode.TAsBarcode.Code_2_5_industrial
+ 0001:00002924       Barcode.TAsBarcode.Code_2_5_matrix
+ 0001:00002A64       Barcode.FindIdx
+ 0001:00002A80       Barcode.TAsBarcode.Code_39
+ 0001:00002BE8       Barcode.TAsBarcode.Code_39Extended
+ 0001:00002CAC       Barcode.Find_Code128AB
+ 0001:00002CE8       Barcode.Find_Code128C
+ 0001:00002D68       Barcode.TAsBarcode.Code_128
+ 0001:0000315C       Barcode.Find_Code93
+ 0001:00003178       Barcode.TAsBarcode.Code_93
+ 0001:000033F4       Barcode.TAsBarcode.Code_93Extended
+ 0001:000034B8       Barcode.TAsBarcode.Code_MSI
+ 0001:00003600       Barcode.TAsBarcode.Code_PostNet
+ 0001:000036C4       Barcode.Find_Codabar
+ 0001:000036E0       Barcode.TAsBarcode.Code_Codabar
+ 0001:000037E0       Barcode.TAsBarcode.SetLen
+ 0001:00003848       Barcode.TAsBarcode.Code_UPC_A
+ 0001:00003980       Barcode.TAsBarcode.Code_UPC_E0
+ 0001:00003AFC       Barcode.TAsBarcode.Code_UPC_E1
+ 0001:00003C78       Barcode.getSupp
+ 0001:00003DC0       Barcode.TAsBarcode.Code_Supp5
+ 0001:00003F54       Barcode.TAsBarcode.Code_Supp2
+ 0001:00004170       Barcode.TAsBarcode.MakeModules
+ 0001:00004240       Barcode.TAsBarcode.DoLines
+ 0001:000044B4       Barcode.TAsBarcode.DrawBarcode
+ 0001:000045C8       Barcode.TAsBarcode.DrawText
+ 0001:000047C8       Barcode.TAsBarcode.DoChange
+ 0001:000047DC       Barcode.TAsBarcode.SetRatio
+ 0001:00004808       Barcode.TAsBarcode.SetTyp
+ 0001:0000481C       Barcode.TAsBarcode.SetAngle
+ 0001:00004848       Barcode.TAsBarcode.SetText
+ 0001:00004870       Barcode.TAsBarcode.SetShowText
+ 0001:00004884       Barcode.TAsBarcode.SetTop
+ 0001:00004898       Barcode.TAsBarcode.SetLeft
+ 0001:000048AC       Barcode.TAsBarcode.SetCheckSum
+ 0001:000048C0       Barcode.TAsBarcode.SetHeight
+ 0001:000048D4       Barcode.Register
+ 0001:0000490C       Barcode.TAsBarcode.GetCanvasHeight
+ 0001:000049A0       Barcode.TAsBarcode.GetCanvasWidth
+ 0001:00004A34       Barcode.TAsBarcode.SetShowTextFont
+ 0001:00004A48       Barcode.TAsBarcode.SetShowTextPosition
+ 0001:00004A64       Barcode.Finalization
+ 0001:00004AE8       qrBarcode..TQRAsBarcode
+ 0001:00004F58       qrBarcode.Register
+ 0001:00004F90       qrBarcode.TQRAsBarcode.BarcodeToCanvas
+ 0001:00004FC0       qrBarcode.TQRAsBarcode.Create
+ 0001:0000502C       qrBarcode.TQRAsBarcode.FixupSize
+ 0001:000050A4       qrBarcode.TQRAsBarcode.GetAngle
+ 0001:000050C0       qrBarcode.TQRAsBarcode.GetBarcode
+ 0001:000050C8       qrBarcode.TQRAsBarcode.GetBarcodeHeight
+ 0001:000050D8       qrBarcode.TQRAsBarcode.GetBarcodeWidth
+ 0001:000050EC       qrBarcode.TQRAsBarcode.GetCheckSum
+ 0001:000050FC       qrBarcode.TQRAsBarcode.GetCheckSumMethod
+ 0001:0000510C       qrBarcode.TQRAsBarcode.GetColor
+ 0001:0000511C       qrBarcode.TQRAsBarcode.GetColorBar
+ 0001:0000512C       qrBarcode.TQRAsBarcode.GetModul
+ 0001:0000513C       qrBarcode.TQRAsBarcode.GetRatio
+ 0001:00005160       qrBarcode.TQRAsBarcode.GetShowText
+ 0001:00005170       qrBarcode.TQRAsBarcode.GetText
+ 0001:0000518C       qrBarcode.TQRAsBarcode.GetTyp
+ 0001:0000519C       qrBarcode.TQRAsBarcode.Loaded
+ 0001:000051B0       qrBarcode.TQRAsBarcode.OnBarcodeChange
+ 0001:000051C8       qrBarcode.TQRAsBarcode.Resize
+ 0001:000051DC       qrBarcode.TQRAsBarcode.SetAngle
+ 0001:000051FC       qrBarcode.TQRAsBarcode.SetBarcode
+ 0001:00005214       qrBarcode.TQRAsBarcode.SetBarcodeHeight
+ 0001:0000522C       qrBarcode.TQRAsBarcode.SetBarcodeWidth
+ 0001:00005244       qrBarcode.TQRAsBarcode.SetCheckSum
+ 0001:0000525C       qrBarcode.TQRAsBarcode.SetCheckSumMethod
+ 0001:00005270       qrBarcode.TQRAsBarcode.SetColor
+ 0001:00005284       qrBarcode.TQRAsBarcode.SetColorBar
+ 0001:00005298       qrBarcode.TQRAsBarcode.SetModul
+ 0001:000052B0       qrBarcode.TQRAsBarcode.SetRatio
+ 0001:000052D0       qrBarcode.TQRAsBarcode.SetShowText
+ 0001:000052E8       qrBarcode.TQRAsBarcode.SetText
+ 0001:00005300       qrBarcode.TQRAsBarcode.SetTyp
+ 0001:00005318       qrBarcode.Finalization
+ 0001:000057A0       .BarcodeD10.@GetPackageInfoTable
+ 0001:000057A8       .BarcodeD10.@PackageLoad
+ 0001:000057B4       .BarcodeD10.@PackageUnload
+ 0002:00000000       System.System
+ 0002:00000008       DBTables.DBTables
+ 0002:00000010       Windows.Windows
+ 0002:00000028       SysUtils.TLanguages.Create@
+ 0002:00000030       SysUtils.TEncoding.Create@
+ 0002:00000038       SysUtils.Exception.Create@
+ 0002:00000040       SysUtils.SysUtils
+ 0002:00000048       SqlTimSt.SqlTimSt
+ 0002:00000050       Variants.Variants
+ 0002:00000058       VarUtils.VarUtils
+ 0002:00000060       Classes.TThread.Create@
+ 0002:00000068       Classes.Classes
+ 0002:00000070       TypInfo.TypInfo
+ 0002:00000078       DB.DB
+ 0002:00000080       WideStrings.WideStrings
+ 0002:00000088       FMTBcd.FMTBcd
+ 0002:00000090       ComObj.ComObj
+ 0002:00000098       Forms.Forms
+ 0002:000000A0       UxTheme.UxTheme
+ 0002:000000A8       SyncObjs.SyncObjs
+ 0002:000000B0       TimeSpan.TTimeSpan.Create@
+ 0002:000000B8       HelpIntfs.HelpIntfs
+ 0002:000000C0       MultiMon.MultiMon
+ 0002:000000C8       ActnList.ActnList
+ 0002:000000D0       Graphics.Graphics
+ 0002:000000D8       Registry.Registry
+ 0002:000000E0       IniFiles.IniFiles
+ 0002:000000E8       IOUtils.TPath.Create@
+ 0002:000000F0       IOUtils.IOUtils
+ 0002:000000F8       Themes.Themes
+ 0002:00000100       Controls.Controls
+ 0002:00000108       Menus.Menus
+ 0002:00000110       Dialogs.Dialogs
+ 0002:00000118       ComCtrls.ComCtrls
+ 0002:00000120       GraphUtil.GraphUtil
+ 0002:00000128       ExtCtrls.ExtCtrls
+ 0002:00000130       Printers.Printers
+ 0002:00000138       Clipbrd.Clipbrd
+ 0002:00000140       FlatSB.FlatSB
+ 0002:00000148       Buttons.Buttons
+ 0002:00000150       OleCtrls.OleCtrls
+ 0002:00000158       AxCtrls.AxCtrls
+ 0002:00000160       OleCtnrs.OleCtnrs
+ 0002:00000168       OleServer.OleServer
+ 0002:00000170       jpeg.jpeg
+ 0002:00000178       QuickRpt.QuickRpt
+ 0002:00000180       QRExpr.QRExpr
+ 0002:00000188       QRExtra.QRExtra
+ 0002:00000190       QRPrntr.QRPrntr
+ 0002:00000198       QRPDFFilt.QRPDFFilt
+ 0002:000001A0       pdfconst.pdfconst
+ 0002:000001A8       QRCtrls.QRCtrls
+ 0002:000001B0       QRExport.QRExport
+ 0002:000001B8       QRWebFilt.QRWebFilt
+ 0002:000001C0       QRPrev.QRPrev
+ 0002:000001C8       QRXMLSFilt.QRXMLSFilt
+ 0002:000001D0       QRPrnSu.QRPrnSu
+ 0002:000001D8       bcchksum.bcchksum
+ 0002:000001E0       Barcode.Barcode
+ 0002:000001E8       qrBarcode.qrBarcode
+ 0002:000001F0       .BarcodeD10..BarcodeD10
+ 0003:00000000       SysInit.TlsIndex
+ 0003:00000004       SysInit.Module
+ 0003:00000020       SysInit.TlsProc
+ 0003:00000030       Windows.Win32MajorVersion
+ 0003:00000034       Windows.Win32MinorVersion
+ 0003:00000038       Windows.Win32Platform
+ 0003:0000003C       Barcode.BCdata
+ 0003:000000F4       Barcode.tabelle_EAN_A
+ 0003:0000011C       Barcode.tabelle_EAN_C
+ 0003:00000144       Barcode.tabelle_EAN_B
+ 0003:0000016C       Barcode.tabelle_ParityEAN13
+ 0003:000001E4       Barcode.tabelle_2_5
+ 0003:00000248       Barcode.tabelle_39
+ 0003:00000668       Barcode.code39x
+ 0003:000007E8       Barcode.tabelle_128
+ 0003:00000D8C       Barcode.tabelle_93
+ 0003:00001020       Barcode.code93x
+ 0003:000011A0       Barcode.tabelle_MSI
+ 0003:000011FC       Barcode.tabelle_PostNet
+ 0003:0000126C       Barcode.tabelle_cb
+ 0003:000013AC       Barcode.tabelle_UPC_E0
+ 0004:00000000       SysInit.ModuleIsLib
+ 0004:00000001       SysInit.ModuleIsPackage
+ 0004:00000004       SysInit.HInstance
+ 0004:00000008       SysInit.tlsBuffer
+ 0004:0000000C       Windows..2
+ 0004:00000010       Windows.HtmlHelpModule
+ 0004:00000014       bcchksum..1
+ 0004:00000018       Barcode..2
+ 0004:0000001C       qrBarcode..2
+ 0005:00000000       SysInit.TlsLast
+
+
+Line numbers for bcchksum(bcchksum.pas) segment .text
+
+    35 0001:000008A0    36 0001:000008D0    37 0001:000008D5    38 0001:000008E4
+    40 0001:000008FC    41 0001:0000090E    43 0001:0000092B    44 0001:00000949
+    45 0001:0000094A    38 0001:0000094B    46 0001:0000094E    47 0001:0000095F
+    49 0001:00000971    50 0001:0000098E
+
+Line numbers for bcchksum(bcchksum.pas) segment .itext
+
+    55 0002:000001D8
+
+Line numbers for Barcode(Barcode.pas) segment .text
+
+   413 0001:00001618   414 0001:0000163D   415 0001:00001648   417 0001:00001660
+   419 0001:00001669   420 0001:0000166E   421 0001:00001671   422 0001:0000167E
+   415 0001:0000167F   423 0001:00001682   432 0001:000016A8   433 0001:000016AC
+   435 0001:000016AE   437 0001:000016B2   438 0001:000016BE   435 0001:000016CA
+   440 0001:000016CE   441 0001:000016D0   450 0001:000016D4   456 0001:000016E6
+   458 0001:000016FB   459 0001:00001714   460 0001:00001736   466 0001:00001740
+   467 0001:00001754   468 0001:0000175D   469 0001:00001768   499 0001:00001770
+   500 0001:0000177F   507 0001:00001794   509 0001:000017A3   512 0001:000017B2
+   513 0001:000017B7   518 0001:000017CB   519 0001:000017DC   524 0001:000017F7
+   527 0001:00001806   528 0001:00001818   533 0001:0000181F   534 0001:00001841
+   537 0001:00001853   538 0001:0000185F   542 0001:0000186C   543 0001:0000187E
+   544 0001:00001887   545 0001:0000188F   546 0001:0000189B   547 0001:000018A2
+   548 0001:000018A6   549 0001:000018AA   550 0001:000018AE   551 0001:000018B2
+   552 0001:000018B9   553 0001:000018BE   554 0001:000018CD   555 0001:000018D4
+   558 0001:000018F0   559 0001:000018FB   560 0001:00001903   561 0001:0000190F
+   566 0001:00001920   567 0001:00001926   570 0001:00001937   571 0001:0000193D
+   572 0001:00001948   573 0001:0000194E   574 0001:00001954   575 0001:0000195A
+   576 0001:00001966   577 0001:0000196D   578 0001:00001974   579 0001:0000197B
+   580 0001:00001988   581 0001:00001994   582 0001:0000199A   583 0001:000019A0
+   584 0001:000019A7   587 0001:000019B6   588 0001:000019BF   592 0001:000019C4
+   593 0001:000019CA   594 0001:000019DC   600 0001:000019E0   601 0001:000019E3
+   603 0001:000019ED   604 0001:000019F0   606 0001:000019F7   629 0001:000019FC
+   630 0001:00001A18   631 0001:00001A82   632 0001:00001A93   633 0001:00001AA4
+   634 0001:00001AB5   637 0001:00001AC6   638 0001:00001AD7   639 0001:00001AE8
+   640 0001:00001AF6   642 0001:00001B04   643 0001:00001B12   644 0001:00001B20
+   645 0001:00001B2E   650 0001:00001B3C   653 0001:00001B6C   659 0001:00001BC4
+   661 0001:00001BE7   665 0001:00001BEE   667 0001:00001BFC   668 0001:00001C12
+   669 0001:00001C25   670 0001:00001C39   668 0001:00001C50   675 0001:00001C53
+   676 0001:00001CC3   677 0001:00001CD1   678 0001:00001CDF   679 0001:00001CED
+   680 0001:00001CFB   686 0001:00001D09   687 0001:00001D17   688 0001:00001D25
+   689 0001:00001D33   690 0001:00001D41   691 0001:00001D4F   692 0001:00001D5A
+   693 0001:00001D65   694 0001:00001D70   695 0001:00001D7B   696 0001:00001D86
+   697 0001:00001D91   698 0001:00001D9C   700 0001:00001DA7   706 0001:00001DD7
+   716 0001:00001E78   717 0001:00001E96   720 0001:00001E9B   722 0001:00001EA5
+   724 0001:00001EBD   725 0001:00001ED8   726 0001:00001EDE   722 0001:00001EDF
+   727 0001:00001EE2   735 0001:00001F0C   736 0001:00001F2D   739 0001:00001F32
+   741 0001:00001F3C   743 0001:00001F54   744 0001:00001F6F   745 0001:00001F75
+   741 0001:00001F76   756 0001:00001F79   757 0001:00001F7F   758 0001:00001F92
+   763 0001:00001FB8   764 0001:00001FBE   767 0001:00001FCA   769 0001:00001FD6
+   772 0001:00001FDF   823 0001:000021C4   824 0001:000021E1   826 0001:000021E7
+   827 0001:000021F3   830 0001:00002230   833 0001:0000223C   835 0001:00002262
+   837 0001:0000226E   838 0001:00002273   837 0001:0000228A   840 0001:0000228F
+   842 0001:0000229B   843 0001:000022A0   842 0001:000022B7   845 0001:000022BC
+   846 0001:000022C8   885 0001:00002494   886 0001:000024B2   888 0001:000024B8
+   889 0001:000024C4   892 0001:000024DE   895 0001:000024EA   898 0001:00002510
+   899 0001:00002529   901 0001:0000253F   903 0001:0000254B   905 0001:00002555
+   906 0001:00002572   907 0001:0000258A   908 0001:000025A2   910 0001:000025B8
+   903 0001:000025BC   912 0001:000025C1   914 0001:000025CD   915 0001:000025D2
+   914 0001:000025E9   917 0001:000025EE   918 0001:000025FA   940 0001:000026E4
+   941 0001:00002708   943 0001:00002714   945 0001:00002738   947 0001:00002744
+   948 0001:00002762   950 0001:00002768   951 0001:0000276C   952 0001:00002780
+   953 0001:0000279E   955 0001:000027A4   956 0001:000027A8   957 0001:000027BC
+   945 0001:000027BF   958 0001:000027C4   943 0001:000027C7   960 0001:000027D0
+   961 0001:000027DC   967 0001:00002834   968 0001:00002840   970 0001:0000284C
+   972 0001:00002864   974 0001:0000286E   975 0001:00002887   977 0001:00002895
+   978 0001:000028A1   972 0001:000028A4   979 0001:000028A7   970 0001:000028A8
+   981 0001:000028AE   982 0001:000028BA   988 0001:00002924   989 0001:00002946
+   991 0001:00002953   993 0001:00002970   995 0001:0000297A   996 0001:00002996
+   998 0001:0000299C  1001 0001:000029A0  1002 0001:000029A8  1003 0001:000029B0
+  1004 0001:000029C8   993 0001:000029CC  1005 0001:000029D1  1006 0001:000029E1
+   991 0001:000029E4  1008 0001:000029E9  1009 0001:000029F9  1073 0001:00002A64
+  1075 0001:00002A6B  1077 0001:00002A70  1078 0001:00002A72  1080 0001:00002A73
+  1073 0001:00002A77  1081 0001:00002A7C  1082 0001:00002A7F  1088 0001:00002A80
+  1089 0001:00002AA7  1091 0001:00002AAC  1093 0001:00002ACB  1095 0001:00002AE2
+  1096 0001:00002AF4  1098 0001:00002AF8  1099 0001:00002B19  1100 0001:00002B27
+  1093 0001:00002B28  1103 0001:00002B2D  1105 0001:00002B36  1106 0001:00002B44
+  1107 0001:00002B4E  1109 0001:00002B56  1110 0001:00002B7C  1111 0001:00002B7E
+  1106 0001:00002B81  1115 0001:00002B84  1116 0001:00002BAE  1144 0001:00002BE8
+  1145 0001:00002C07  1146 0001:00002C12  1148 0001:00002C1C  1150 0001:00002C34
+  1151 0001:00002C42  1152 0001:00002C66  1148 0001:00002C67  1153 0001:00002C6A
+  1154 0001:00002C74  1155 0001:00002C7F  1289 0001:00002CAC  1290 0001:00002CB1
+  1292 0001:00002CB8  1293 0001:00002CC4  1295 0001:00002CC9  1297 0001:00002CCD
+  1299 0001:00002CD2  1300 0001:00002CD4  1302 0001:00002CD6  1290 0001:00002CDA
+  1303 0001:00002CDF  1304 0001:00002CE2  1309 0001:00002CE8  1310 0001:00002D0E
+  1311 0001:00002D15  1312 0001:00002D2C  1313 0001:00002D2E  1315 0001:00002D30
+  1310 0001:00002D34  1316 0001:00002D39  1317 0001:00002D3C  1326 0001:00002D68
+  1327 0001:00002D8E  1329 0001:00002DCD  1331 0001:00002DE3  1333 0001:00002DF9
+  1335 0001:00002E0F  1338 0001:00002E42  1339 0001:00002E4C  1341 0001:00002E53
+  1351 0001:00002E60  1352 0001:00002E77  1353 0001:00002E7E  1358 0001:00002E81
+  1362 0001:00002EA9  1364 0001:00002EBC  1365 0001:00002EED  1367 0001:00002F10
+  1368 0001:00002F19  1369 0001:00002F39  1370 0001:00002F49  1371 0001:00002F6C
+  1372 0001:00002F73  1373 0001:00002F76  1365 0001:00002F79  1376 0001:00002F7E
+  1378 0001:00002F96  1379 0001:00002FAD  1380 0001:00002FB1  1381 0001:00002FBE
+  1382 0001:00002FE1  1383 0001:00002FE8  1384 0001:00002FEB  1376 0001:00002FEE
+  1386 0001:00002FF1  1387 0001:00002FFF  1389 0001:00003025  1390 0001:00003031
+  1391 0001:00003045  1460 0001:0000315C  1462 0001:00003163  1464 0001:00003168
+  1465 0001:0000316A  1467 0001:0000316B  1460 0001:0000316F  1468 0001:00003174
+  1469 0001:00003177  1478 0001:00003178  1480 0001:000031A5  1482 0001:000031B2
+  1484 0001:000031CA  1485 0001:000031D9  1486 0001:000031DD  1487 0001:00003217
+  1488 0001:00003243  1482 0001:00003244  1490 0001:00003249  1491 0001:0000324E
+  1493 0001:00003253  1494 0001:0000325A  1496 0001:00003261  1498 0001:00003270
+  1500 0001:0000327F  1501 0001:00003287  1503 0001:0000328E  1504 0001:00003291
+  1505 0001:0000329E  1507 0001:000032A1  1508 0001:000032AE  1496 0001:000032AF
+  1510 0001:000032B3  1512 0001:000032B9  1513 0001:000032C7  1515 0001:000032D5
+  1518 0001:0000332F  1519 0001:0000333F  1520 0001:00003357  1550 0001:000033F4
+  1553 0001:00003413  1554 0001:0000341E  1557 0001:00003428  1559 0001:00003440
+  1560 0001:0000344E  1561 0001:00003472  1557 0001:00003473  1565 0001:00003476
+  1566 0001:00003480  1567 0001:0000348B  1589 0001:000034B8  1590 0001:000034DB
+  1591 0001:000034E7  1592 0001:000034EC  1594 0001:000034F1  1596 0001:00003505
+  1597 0001:0000350C  1599 0001:00003523  1601 0001:0000352E  1602 0001:00003551
+  1594 0001:00003552  1604 0001:00003557  1606 0001:00003566  1607 0001:00003572
+  1608 0001:00003576  1610 0001:0000357F  1612 0001:000035A0  1613 0001:000035AC
+  1633 0001:00003600  1634 0001:00003621  1636 0001:0000362D  1638 0001:00003643
+  1639 0001:00003669  1636 0001:0000366A  1640 0001:0000366D  1641 0001:00003679
+  1681 0001:000036C4  1683 0001:000036CB  1685 0001:000036D0  1686 0001:000036D2
+  1688 0001:000036D3  1681 0001:000036D7  1689 0001:000036DC  1690 0001:000036DF
+  1694 0001:000036E0  1695 0001:00003704  1696 0001:00003722  1698 0001:00003738
+  1699 0001:0000374B  1700 0001:0000377A  1696 0001:0000377B  1701 0001:0000377E
+  1702 0001:000037A7  1710 0001:000037E0  1711 0001:000037FC  1720 0001:00003822
+  1728 0001:00003848  1729 0001:00003865  1730 0001:0000387C  1731 0001:000038A5
+  1732 0001:000038C3  1733 0001:000038CF  1734 0001:000038D4  1733 0001:000038EB
+  1735 0001:000038F0  1736 0001:000038FC  1737 0001:00003901  1736 0001:00003918
+  1738 0001:0000391D  1739 0001:00003929  1761 0001:00003980  1762 0001:000039A0
+  1763 0001:000039B7  1764 0001:000039DA  1765 0001:000039EA  1766 0001:00003A08
+  1767 0001:00003A14  1769 0001:00003A20  1771 0001:00003A35  1775 0001:00003A6F
+  1777 0001:00003A85  1767 0001:00003A8A  1778 0001:00003A8F  1779 0001:00003A9B
+  1785 0001:00003AFC  1786 0001:00003B1C  1787 0001:00003B33  1788 0001:00003B56
+  1789 0001:00003B66  1790 0001:00003B84  1791 0001:00003B90  1793 0001:00003B9C
+  1795 0001:00003BB1  1799 0001:00003BC9  1801 0001:00003C01  1791 0001:00003C06
+  1802 0001:00003C0B  1803 0001:00003C17  1809 0001:00003C78  1810 0001:00003CAB
+  1811 0001:00003CB0  1812 0001:00003CD1  1813 0001:00003CE0  1815 0001:00003CF8
+  1816 0001:00003D0A  1818 0001:00003D2A  1819 0001:00003D48  1820 0001:00003D49
+  1813 0001:00003D4A  1821 0001:00003D4D  1822 0001:00003D6F  1823 0001:00003D88
+  1829 0001:00003DC0  1830 0001:00003DDF  1831 0001:00003DF6  1832 0001:00003E24
+  1833 0001:00003E34  1834 0001:00003E52  1835 0001:00003E5E  1837 0001:00003E63
+  1839 0001:00003E7F  1843 0001:00003EB9  1845 0001:00003ECF  1846 0001:00003EE0
+  1835 0001:00003EE1  1847 0001:00003EEA  1852 0001:00003F54  1853 0001:00003F73
+  1854 0001:00003F8A  1855 0001:00003F94  1856 0001:00003FAE  1857 0001:00003FBD
+  1858 0001:00003FCC  1859 0001:00003FDB  1861 0001:00003FE8  1863 0001:00004016
+  1864 0001:00004034  1865 0001:00004040  1867 0001:00004045  1869 0001:00004055
+  1873 0001:0000408F  1875 0001:000040A5  1876 0001:000040B6  1865 0001:000040B7
+  1877 0001:000040BC  1885 0001:00004170  1886 0001:00004174  1901 0001:00004189
+  1902 0001:000041A6  1907 0001:000041C5  1908 0001:000041E2  1920 0001:000041FF
+  1921 0001:00004206  1922 0001:00004216  1923 0001:00004226  1924 0001:0000422F
+  1962 0001:00004240  1963 0001:00004267  1964 0001:00004269  1965 0001:0000426F
+  1967 0001:00004275  1970 0001:0000428A  1973 0001:000042BC  1975 0001:000042CC
+  1982 0001:000042EB  1984 0001:00004309  1986 0001:00004315  1990 0001:00004325
+  1992 0001:00004333  1994 0001:0000434B  1995 0001:00004351  1997 0001:00004360
+  2003 0001:00004363  2004 0001:00004366  2006 0001:0000436B  2007 0001:0000436E
+  2010 0001:00004371  2011 0001:0000437A  2014 0001:0000437D  2015 0001:00004380
+  2021 0001:00004385  2022 0001:000043B0  2023 0001:000043DB  2024 0001:00004406
+  2027 0001:00004431  2029 0001:00004471  2030 0001:00004474  1975 0001:00004477
+  2032 0001:00004480  2042 0001:000044B4  2043 0001:000044D3  2044 0001:000044E2
+  2045 0001:000044F1  2049 0001:00004500  2052 0001:0000450A  2054 0001:00004518
+  2055 0001:00004523  2056 0001:0000452E  2058 0001:00004539  2060 0001:00004545
+  2061 0001:0000454B  2065 0001:00004554  2066 0001:0000455F  2067 0001:0000456A
+  2069 0001:00004582  2070 0001:0000458A  2071 0001:00004592  2073 0001:000045A2
+  2097 0001:000045C8  2107 0001:000045E9  2108 0001:000045F8  2109 0001:00004606
+  2110 0001:00004614  2111 0001:00004622  2112 0001:00004636  2117 0001:00004646
+  2118 0001:0000464B  2120 0001:00004651  2121 0001:00004663  2123 0001:00004667
+  2124 0001:00004673  2127 0001:0000468E  2128 0001:00004696  2130 0001:000046C2
+  2131 0001:000046D0  2133 0001:000046D8  2134 0001:000046DE  2136 0001:000046F4
+  2138 0001:00004700  2139 0001:00004714  2140 0001:0000471E  2142 0001:00004768
+  2145 0001:0000478B  2148 0001:0000479B  2152 0001:000047C8  2153 0001:000047C9
+  2154 0001:000047D0  2155 0001:000047DA  2158 0001:000047DC  2159 0001:000047E2
+  2161 0001:000047EE  2162 0001:000047FA  2164 0001:00004801  2167 0001:00004808
+  2168 0001:0000480B  2170 0001:00004810  2171 0001:00004813  2173 0001:0000481A
+  2176 0001:0000481C  2177 0001:00004822  2179 0001:0000482E  2180 0001:0000483A
+  2182 0001:00004841  2185 0001:00004848  2186 0001:0000484E  2188 0001:0000485A
+  2189 0001:00004864  2191 0001:0000486B  2194 0001:00004870  2195 0001:00004873
+  2197 0001:00004878  2198 0001:0000487B  2200 0001:00004882  2203 0001:00004884
+  2204 0001:00004887  2206 0001:0000488C  2207 0001:0000488F  2209 0001:00004896
+  2212 0001:00004898  2213 0001:0000489B  2215 0001:000048A0  2216 0001:000048A3
+  2218 0001:000048AA  2221 0001:000048AC  2222 0001:000048AF  2224 0001:000048B4
+  2225 0001:000048B7  2227 0001:000048BE  2230 0001:000048C0  2231 0001:000048C3
+  2233 0001:000048C8  2234 0001:000048CB  2236 0001:000048D2  2239 0001:000048D4
+  2246 0001:000048D5  2247 0001:000048EB  2252 0001:0000490C  2253 0001:00004912
+  2254 0001:00004927  2255 0001:00004986  2260 0001:000049A0  2261 0001:000049A6
+  2262 0001:000049BB  2263 0001:00004A1A  2267 0001:00004A34  2268 0001:00004A37
+  2269 0001:00004A3F  2270 0001:00004A46  2273 0001:00004A48  2274 0001:00004A4B
+  2276 0001:00004A53  2277 0001:00004A59  2279 0001:00004A60
+
+Line numbers for Barcode(Barcode.pas) segment .itext
+
+  2281 0002:000001E0
+
+Line numbers for qrBarcode(qrBarcode.pas) segment .text
+
+   115 0001:00004F58   118 0001:00004F59   120 0001:00004F6F   125 0001:00004F90
+   127 0001:00004F93   129 0001:00004FA0   130 0001:00004FA7   131 0001:00004FBC
+   134 0001:00004FC0   135 0001:00004FD7   148 0001:00004FE0   149 0001:00004FF6
+   150 0001:00005000   152 0001:0000500C   170 0001:0000502C   171 0001:00005033
+   173 0001:0000503C   174 0001:00005046   176 0001:00005054   177 0001:0000506B
+   179 0001:0000508F   182 0001:000050A1   185 0001:000050A4   186 0001:000050A7
+   187 0001:000050BA   191 0001:000050C0   192 0001:000050C6   195 0001:000050C8
+   196 0001:000050CB   197 0001:000050D5   200 0001:000050D8   201 0001:000050DB
+   202 0001:000050E7   205 0001:000050EC   206 0001:000050EF   207 0001:000050FA
+   210 0001:000050FC   211 0001:000050FF   212 0001:0000510A   215 0001:0000510C
+   216 0001:0000510F   217 0001:00005119   220 0001:0000511C   221 0001:0000511F
+   222 0001:00005129   225 0001:0000512C   226 0001:0000512F   227 0001:00005139
+   230 0001:0000513C   231 0001:00005142   232 0001:00005156   235 0001:00005160
+   236 0001:00005163   237 0001:0000516E   240 0001:00005170   241 0001:00005176
+   242 0001:00005187   245 0001:0000518C   246 0001:0000518F   247 0001:0000519A
+   250 0001:0000519C   251 0001:0000519F   252 0001:000051A6   253 0001:000051AD
+   257 0001:000051B0   259 0001:000051B9   260 0001:000051BF   261 0001:000051C4
+   264 0001:000051C8   265 0001:000051CB   266 0001:000051D2   267 0001:000051D9
+   270 0001:000051DC   271 0001:000051E2   272 0001:000051F4   275 0001:000051FC
+   276 0001:00005202   277 0001:0000520F   280 0001:00005214   281 0001:0000521A
+   282 0001:00005228   285 0001:0000522C   286 0001:00005232   287 0001:00005240
+   290 0001:00005244   291 0001:0000524A   292 0001:00005258   295 0001:0000525C
+   296 0001:00005262   297 0001:0000526C   300 0001:00005270   301 0001:00005276
+   302 0001:00005280   305 0001:00005284   306 0001:0000528A   307 0001:00005294
+   310 0001:00005298   311 0001:0000529E   312 0001:000052AC   315 0001:000052B0
+   316 0001:000052B6   317 0001:000052C8   320 0001:000052D0   321 0001:000052D6
+   322 0001:000052E4   325 0001:000052E8   326 0001:000052EE   327 0001:000052FC
+   330 0001:00005300   331 0001:00005306   332 0001:00005314
+
+Line numbers for qrBarcode(qrBarcode.pas) segment .itext
+
+   334 0002:000001E8
+
+Line numbers for .BarcodeD10(D:\Utility\BarCode\BarcodeD10.dpk) segment .itext
+
+    40 0002:000001F0
+
+Bound resource files
+
+D:\Utility\BarCode\barcode.d32
+D:\Utility\BarCode\BarcodeD10.res
+BarcodeD10.drf
+
+
+Program entry point at 0002:000001F0

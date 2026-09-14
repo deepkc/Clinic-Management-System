@@ -1,0 +1,159 @@
+unit Unit_QRUserWiseColnSummaryManipalOP;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,fxn,dm,serverdate,
+  Dialogs, QuickRpt, QRCtrls, ExtCtrls, DB, DBTables;
+
+type
+  TForm_QRUserWiseColnSummaryManipalOP = class(TForm)
+    QuickRepUsercollection: TQuickRep;
+    PageHeaderBand1: TQRBand;
+    QRLabel1: TQRLabel;
+    lbl_hosname: TQRLabel;
+    lbl_Address: TQRLabel;
+    QRLabel2: TQRLabel;
+    QRLabel5: TQRLabel;
+    QRLabel_To: TQRLabel;
+    QRLabel_FromDate: TQRLabel;
+    QRLabel6: TQRLabel;
+    QRLabelDate: TQRLabel;
+    QRLabel27: TQRLabel;
+    QRSysData1: TQRSysData;
+    QRLabel7: TQRLabel;
+    QRLabel12: TQRLabel;
+    QRLabelTime: TQRLabel;
+    DetailBand1: TQRBand;
+    QRDBText1: TQRDBText;
+    QRDBText2: TQRDBText;
+    QRDBText4: TQRDBText;
+    QRShape7: TQRShape;
+    QRShape8: TQRShape;
+    QRShape29: TQRShape;
+    QRShape34: TQRShape;
+    QRDBText3: TQRDBText;
+    QRDBText9: TQRDBText;
+    QRShape17: TQRShape;
+    QRDBText8: TQRDBText;
+    QRDBText10: TQRDBText;
+    QRDBText11: TQRDBText;
+    QRShape12: TQRShape;
+    QRDBText15: TQRDBText;
+    QRShape40: TQRShape;
+    QRShape41: TQRShape;
+    QRShape42: TQRShape;
+    ColumnHeaderBand1: TQRBand;
+    QRLabel11: TQRLabel;
+    QRLabel13: TQRLabel;
+    QRLabel17: TQRLabel;
+    QRLabel20: TQRLabel;
+    QRShape1: TQRShape;
+    QRLabel3: TQRLabel;
+    QRShape2: TQRShape;
+    QRLabel8: TQRLabel;
+    QRLabel9: TQRLabel;
+    QRLabel10: TQRLabel;
+    QRLabel23: TQRLabel;
+    QRShape9: TQRShape;
+    QRShape13: TQRShape;
+    QRLabel26: TQRLabel;
+    QRShape28: TQRShape;
+    QRShape36: TQRShape;
+    QRShape37: TQRShape;
+    QRShape38: TQRShape;
+    QRShape39: TQRShape;
+    SummaryBand1: TQRBand;
+    QRLabel15: TQRLabel;
+    QRExpr1: TQRExpr;
+    QRExpr3: TQRExpr;
+    QRExpr5: TQRExpr;
+    QRShape18: TQRShape;
+    QRShape19: TQRShape;
+    QRShape20: TQRShape;
+    QRShape21: TQRShape;
+    QRShape14: TQRShape;
+    QRExpr7: TQRExpr;
+    QRShape27: TQRShape;
+    QRExpr8: TQRExpr;
+    QRExpr9: TQRExpr;
+    QRShape30: TQRShape;
+    QRExpr2: TQRExpr;
+    QRShape3: TQRShape;
+    QRShape5: TQRShape;
+    QRShape16: TQRShape;
+    QRShape23: TQRShape;
+    QRExpr10: TQRExpr;
+    QueryMain: TQuery;
+    QRShape6: TQRShape;
+    QRShape10: TQRShape;
+    QRShape15: TQRShape;
+    QRLabel19: TQRLabel;
+    QRLabel21: TQRLabel;
+    QRShape25: TQRShape;
+    QRShape26: TQRShape;
+    QRShape50: TQRShape;
+    QRLabel25: TQRLabel;
+    QRDBText14: TQRDBText;
+    QRExpr11: TQRExpr;
+    procedure QRLabel1Print(sender: TObject; var Value: string);
+    procedure QRLabel10Print(sender: TObject; var Value: string);
+    procedure QRLabel21Print(sender: TObject; var Value: string);
+    procedure lbl_AddressPrint(sender: TObject; var Value: string);
+    procedure FormCreate(Sender: TObject);
+    procedure QRLabel12Print(sender: TObject; var Value: string);
+    procedure QRLabel7Print(sender: TObject; var Value: string);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_QRUserWiseColnSummaryManipalOP: TForm_QRUserWiseColnSummaryManipalOP;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_QRUserWiseColnSummaryManipalOP.QRLabel10Print(sender: TObject;
+  var Value: string);
+begin
+    // Value:=ServerDate.TodaysTime;
+end;
+
+procedure TForm_QRUserWiseColnSummaryManipalOP.QRLabel12Print(sender: TObject; var Value: string);
+begin
+     Value:=gs_HosSloganTitleBill;
+end;
+
+procedure TForm_QRUserWiseColnSummaryManipalOP.QRLabel1Print(sender: TObject;
+  var Value: string);
+begin
+     Value:=gs_HospitalName;
+end;
+
+procedure TForm_QRUserWiseColnSummaryManipalOP.QRLabel21Print(sender: TObject;
+  var Value: string);
+begin
+     Value:=gs_UserName;
+end;
+
+procedure TForm_QRUserWiseColnSummaryManipalOP.QRLabel7Print(sender: TObject; var Value: string);
+begin
+     Value:=gs_HosPhoneBill;
+end;
+
+procedure TForm_QRUserWiseColnSummaryManipalOP.FormCreate(Sender: TObject);
+begin
+     lbl_hosname.Caption:=gs_HospitalName;
+     lbl_Address.Caption:=gs_HospitalAddress;
+end;
+
+procedure TForm_QRUserWiseColnSummaryManipalOP.lbl_AddressPrint(sender: TObject;
+  var Value: string);
+begin
+     Value:=gs_HospitalAddress;
+end;
+
+end.

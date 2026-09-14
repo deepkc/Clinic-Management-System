@@ -1,0 +1,671 @@
+object Form_ViewLabReport: TForm_ViewLabReport
+  Left = 264
+  Top = 65
+  Caption = 'View Lab Report'
+  ClientHeight = 565
+  ClientWidth = 872
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  WindowState = wsMaximized
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 872
+    Height = 32
+    Align = alTop
+    Color = clInactiveCaption
+    TabOrder = 0
+    object BtnCancel: TBitBtn
+      Left = 782
+      Top = 1
+      Width = 89
+      Height = 30
+      Align = alRight
+      Caption = '&Cancel (ESC)'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        333333333333333333333333333333333333333FFF33FF333FFF339993370733
+        999333777FF37FF377733339993000399933333777F777F77733333399970799
+        93333333777F7377733333333999399933333333377737773333333333990993
+        3333333333737F73333333333331013333333333333777FF3333333333910193
+        333333333337773FF3333333399000993333333337377737FF33333399900099
+        93333333773777377FF333399930003999333337773777F777FF339993370733
+        9993337773337333777333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 0
+      OnClick = BtnCancelClick
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 32
+    Width = 872
+    Height = 86
+    Align = alTop
+    TabOrder = 1
+    object Label1: TLabel
+      Left = 7
+      Top = 7
+      Width = 75
+      Height = 13
+      Caption = 'Hospital No :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label2: TLabel
+      Left = 7
+      Top = 32
+      Width = 73
+      Height = 13
+      Caption = 'InPatient ID:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 169
+      Top = 7
+      Width = 37
+      Height = 13
+      Caption = 'Name:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label4: TLabel
+      Left = 170
+      Top = 32
+      Width = 58
+      Height = 13
+      Caption = 'Age/ Sex:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label5: TLabel
+      Left = 447
+      Top = 7
+      Width = 61
+      Height = 13
+      Caption = 'Ward Info:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label6: TLabel
+      Left = 447
+      Top = 32
+      Width = 43
+      Height = 13
+      Caption = 'Doctor:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label_PatientID: TLabel
+      Left = 81
+      Top = 7
+      Width = 54
+      Height = 13
+      Caption = 'PatientID'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label_InPatientID: TLabel
+      Left = 81
+      Top = 32
+      Width = 31
+      Height = 13
+      Caption = 'IPNO'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label_Name: TLabel
+      Left = 229
+      Top = 7
+      Width = 33
+      Height = 13
+      Caption = 'Name'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label_Age: TLabel
+      Left = 229
+      Top = 32
+      Width = 23
+      Height = 13
+      Caption = 'Age'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label_Ward: TLabel
+      Left = 510
+      Top = 7
+      Width = 31
+      Height = 13
+      Caption = 'Ward'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label_Doctor: TLabel
+      Left = 510
+      Top = 32
+      Width = 39
+      Height = 13
+      Caption = 'Doctor'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label7: TLabel
+      Left = 26
+      Top = 67
+      Width = 108
+      Height = 13
+      Caption = '< - Pending Report'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Shape1: TShape
+      Left = 8
+      Top = 67
+      Width = 15
+      Height = 14
+      Brush.Color = clBlue
+      Pen.Style = psClear
+    end
+    object GroupBox2: TGroupBox
+      Left = 605
+      Top = 1
+      Width = 134
+      Height = 84
+      Align = alRight
+      TabOrder = 0
+      object Label28: TLabel
+        Left = 5
+        Top = 25
+        Width = 23
+        Height = 13
+        Caption = 'From'
+      end
+      object Label29: TLabel
+        Left = 15
+        Top = 47
+        Width = 13
+        Height = 13
+        Caption = 'To'
+      end
+      object CB_SearchByDate: TCheckBox
+        Left = 8
+        Top = -1
+        Width = 96
+        Height = 15
+        Caption = 'Search By Date'
+        TabOrder = 0
+        OnClick = CB_SearchByDateClick
+      end
+      object Dex_From: TDateEditX
+        Left = 31
+        Top = 21
+        Width = 101
+        Height = 21
+        TabOrder = 1
+        ControlData = {
+          545046300A5444617465456469745200044C656674021F03546F700215057769
+          64746802650B4461746541442E5965617203DB070C4461746541442E4D6F6E74
+          6802040A4461746541442E446179020B0B4461746556532E596561720313080C
+          4461746556532E4D6F6E7468020C0A4461746556532E446179021C07456E6162
+          6C6564080000}
+      end
+      object Dex_To: TDateEditX
+        Left = 31
+        Top = 43
+        Width = 101
+        Height = 21
+        TabOrder = 2
+        ControlData = {
+          545046300A5444617465456469745200044C656674021F03546F70022B057769
+          64746802650B4461746541442E5965617203DB070C4461746541442E4D6F6E74
+          6802040A4461746541442E446179020B0B4461746556532E596561720313080C
+          4461746556532E4D6F6E7468020C0A4461746556532E446179021C0000}
+      end
+      object Btn_From: TButton
+        Left = 108
+        Top = 22
+        Width = 22
+        Height = 19
+        Caption = 'AD'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 3
+        TabStop = False
+        OnClick = Btn_FromClick
+      end
+      object Btn_To: TButton
+        Left = 108
+        Top = 44
+        Width = 22
+        Height = 19
+        Caption = 'AD'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 4
+        TabStop = False
+        OnClick = Btn_ToClick
+      end
+    end
+    object Chk_SensitiveResult: TCheckBox
+      Left = 420
+      Top = 65
+      Width = 127
+      Height = 17
+      Caption = 'Sensitivity Result (F2)'
+      TabOrder = 1
+      Visible = False
+      OnClick = Chk_SensitiveResultClick
+    end
+    object CB_BeforeAdmission: TCheckBox
+      Left = 226
+      Top = 63
+      Width = 152
+      Height = 17
+      Caption = 'Test Before Admission (F1)'
+      Enabled = False
+      TabOrder = 2
+      Visible = False
+      OnClick = CB_BeforeAdmissionClick
+    end
+    object BB_Refresh: TBitBtn
+      Left = 739
+      Top = 1
+      Width = 132
+      Height = 84
+      Align = alRight
+      Caption = '&Refresh (F5)'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        18000000000000030000120B0000120B00000000000000000000FFFFFFC59D7E
+        FFFEFEFFFFFFFFFFFFFDFCFBE1CDBDBD906CAE7649A66939B07A4FC49C7CF2E9
+        E2FFFFFFFFFFFFFFFFFFFFFFFFA46534CBA78BFFFFFFE1CCBCAC7144B8865DCE
+        A684D8B697DBB999D3AC8AC3956FA96D3FDFC8B7FFFFFFFFFFFFFFFFFFA56838
+        B98860B48158B48056E3CAB4ECDAC9E7D1BCE3C9B0DEBEA0D2AB88CEA582D3AE
+        8EA96E40F0E6DEFFFFFFFFFFFFA7693AF1E4D8D4B295F4E9E0F3E8DDEDDCCCD2
+        AD8FB37D53A66838A66939A66A3AA96D3DB0784CC59D7DFFFFFFFFFFFFA66839
+        F6EEE6F5ECE3F5EDE4E6D2C1B37E54B88861ECDED4FFFFFFD9BFABAF754AB67C
+        4FA76B3BA76B3BFFFFFFFFFFFFA56837F6EEE6EBD7C4EAD9C9A46635D9BFABFF
+        FFFFFFFFFFFFFFFFFBF8F6AD7346E1C4AEC89E7CA46534FDFCFBFFFFFFA56736
+        F5EDE5F6EDE5F5ECE4D7B89DB17A4FF9F5F2FFFFFFFFFFFFFFFFFFFFFFFFFBF6
+        F2F4E8DFA56736FBF8F5FFFFFFA66939A46635A46635A56636A56736A56737BD
+        8F6CF5EDE8F6F1ECF6F1ECF6F1ECF6F1ECF6F1ECF5EEE9FFFFFFFFFFFFFAF7F5
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC69E80A46534AF784CB27B52B27B
+        52B27C52A46534FCFAF9FFFFFFA56736D9BDA7F7EEE8FAF6F2FEFEFDFFFFFFFF
+        FFFFFEFDFCBB8B66D1AE91F6EEE7F2E6DBF6EEE6A76C3DFCFAF8FFFFFFA46636
+        A86C3DDDBBA2AE764BF3EAE3FFFFFFFFFFFFFFFFFFDDC5B3A46635E9D7C7EBD8
+        C6F5ECE3A86D3EFBF9F7FFFFFFAA6F41AB7041A96D3DAA7042D5B8A2F6F0EBE6
+        D5C8B7865FBC8D67EBDBCDF5EBE2F6EEE6F6EEE6A96D3EFBF8F6FFFFFFCAA487
+        C0916AC59872A86B3CA46635A86C3CBA8B65D9BBA1F1E4D8F2E6DBF3E8DDCEA8
+        89EAD8C8A96E3FFAF7F5FFFFFFF0E6DEA96F41D3AD8CDCBD9DDDBEA1E5CBB4E9
+        D3BFEEDDCCF0E2D5E7D2BFB27C52BB8D68AE7549A56837FAF7F4FFFFFFFFFFFF
+        E2CFC0A96D3FC1926BD3B08FDFC2A8DEC1A8D4B193BC8C66AA7043E0CAB9FFFF
+        FFDBC2AEA46534FAF6F3FFFFFFFFFFFFFFFFFFF5EDE8C8A184B27D53A86C3DB0
+        784DBE916EE1CDBDFDFCFBFFFFFFFFFFFFFFFFFFD4B69FF9F5F2}
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 3
+      OnClick = BB_RefreshClick
+    end
+    object GroupBox1: TGroupBox
+      Left = 551
+      Top = 1
+      Width = 54
+      Height = 84
+      Align = alRight
+      TabOrder = 4
+      object Label8: TLabel
+        Left = 10
+        Top = 67
+        Width = 24
+        Height = 13
+        Caption = 'Days'
+      end
+      object Label9: TLabel
+        Left = 9
+        Top = 6
+        Width = 24
+        Height = 26
+        Alignment = taCenter
+        Caption = 'More than'
+        WordWrap = True
+      end
+      object SPE_NoofDays: TSpinEdit
+        Left = 5
+        Top = 41
+        Width = 38
+        Height = 22
+        MaxValue = 0
+        MinValue = 0
+        TabOrder = 0
+        Value = 0
+        OnChange = SPE_NoofDaysChange
+      end
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 118
+    Width = 872
+    Height = 447
+    Align = alClient
+    Caption = 'Panel3'
+    TabOrder = 2
+    object DBGrid1: TDBGrid
+      Left = 1
+      Top = 1
+      Width = 870
+      Height = 445
+      Align = alClient
+      DataSource = DS_GetPatientTest
+      FixedColor = clInactiveCaption
+      ReadOnly = True
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Style = []
+      OnCellClick = DBGrid1CellClick
+      OnDrawColumnCell = DBGrid1DrawColumnCell
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'TestDate'
+          Title.Caption = 'Test Date'
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -11
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Width = 71
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'TestTime'
+          Title.Caption = 'Test Time'
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -11
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'BillNo'
+          Title.Caption = 'Bill No'
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -11
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Width = 104
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'TestName'
+          Title.Caption = 'Test Name'
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -11
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Width = 174
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Finding'
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -11
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Width = 219
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'RefRange'
+          Title.Caption = 'Ref. Range'
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -11
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Width = 116
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Unit'
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -11
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Width = 58
+          Visible = True
+        end>
+    end
+    object DBGrid_SensitivityResult: TDBGrid
+      Left = 403
+      Top = 34
+      Width = 377
+      Height = 359
+      DataSource = DataSource_SensitiveMedicine
+      FixedColor = clInactiveCaption
+      TabOrder = 1
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Style = []
+      Visible = False
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Medicine'
+          Title.Alignment = taCenter
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -12
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Width = 150
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Sensitive'
+          Title.Alignment = taCenter
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -12
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Intermediate'
+          Title.Alignment = taCenter
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -12
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Width = 78
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Resistant'
+          Title.Alignment = taCenter
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -12
+          Title.Font.Name = 'MS Sans Serif'
+          Title.Font.Style = [fsBold]
+          Width = 58
+          Visible = True
+        end>
+    end
+  end
+  object Query_GetPatientTest: TOraQuery
+    SQL.Strings = (
+      
+        'SELECT distinct PT.PatientTestID, PT.DepCode,PD.TestID,tena_DepI' +
+        'D,PT.TestNameID, PT.TestNameCode, PT.PatientID,SubStr( PT.FINDIN' +
+        'GPOSTDATETIME,0,10)TestDate,SubStr( PT.FINDINGPOSTDATETIME,11,10' +
+        ')TestTime,'
+      
+        ' PT.WorkingStatus, PT.Special, TENA_REPORTINGTYPE, TENA_DISPLAYO' +
+        'RDER,PR.SAMPLETAKENDATE, PR.SAMPLETAKENTIME,'
+      
+        ' tena_TestName NTestName, PT.BillNo,PT.InpatientId,PR.sampleno,P' +
+        'D.Finding,PD.Unit,PD.RefRange,'
+      
+        ' (Select Test From Test Where TestID=PD.TestID) Test,tena_TestNa' +
+        'me as TestName'
+      
+        ' FROM PatientTest PT,hs_tena_Testname TN,hs_pama_Patientmain PM,' +
+        'samplecollection PR,PatientTestDetail PD,Test T'
+      
+        ' WHERE  (PT.TestNameID = tena_TestNameID(+)) AND (PT.PatientID =' +
+        ' pama_PatientID(+)) AND'
+      
+        '                PT.PatientTestID=PD.PatientTestID(+) And PT.Test' +
+        'NameID=PD.TestNameID(+)  And (PT.PatientTestID=PR.PatientTestID)' +
+        ' And'
+      'PT.InPatientID=141 And'
+      
+        '                (PT.TestDate >='#39'2072/04/01'#39' and PT.TestDate <='#39'2' +
+        '072/04/01'#39')'
+      '                AND(39=39 )'
+      '                AND  (39=39)'
+      '                And (39=39)'
+      
+        'Order By PR.SAMPLETAKENDATE Desc, PR.SAMPLETAKENTIME,tena_TestNa' +
+        'me')
+    Left = 227
+    Top = 226
+  end
+  object DS_GetPatientTest: TDataSource
+    DataSet = TempTable_LabReport
+    Left = 263
+    Top = 239
+  end
+  object TempTable_LabReport: TOraTable
+    Left = 223
+    Top = 335
+  end
+  object Query_Process: TOraQuery
+    Left = 151
+    Top = 271
+  end
+  object Table_SensitivityResult: TOraTable
+    TableName = 'SensitivityResult.db'
+    Left = 641
+    Top = 229
+  end
+  object DataSource_SensitiveMedicine: TDataSource
+    DataSet = Table_SensitivityResult
+    Left = 673
+    Top = 229
+  end
+end

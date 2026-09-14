@@ -1,0 +1,1176 @@
+unit Unit_DischargeInDeposit;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ComCtrls, ExtCtrls, StdCtrls, Buttons, DBCtrls, Db, DBTables, OleCtrls,
+  DateEditXControl_TLB,ServerDate, Grids, DBGrids, Fxn,DM,Variants,Unit_Master,Unit_MasterFxnFraction;
+
+type
+  TForm_DischargeInDeposit = class(TForm)
+    Panel1: TPanel;
+    StatusBar1: TStatusBar;
+    BtnSave: TBitBtn;
+    BtnCancel: TBitBtn;
+    Panel2: TPanel;
+    Label2: TLabel;
+    DateEditXDisDate: TDateEditX;
+    BitBtn_FromDate: TBitBtn;
+    Query_Void: TQuery;
+    Edit_InpatientId: TEdit;
+    Label8: TLabel;
+    Label1: TLabel;
+    LabelPtName: TLabel;
+    Label3: TLabel;
+    LabelPtNo: TLabel;
+    CB_DisInDeposit: TCheckBox;
+    Query_InpatientInfo: TQuery;
+    Label5: TLabel;
+    LabelDisDate: TLabel;
+    LabelDisPt: TLabel;
+    Label4: TLabel;
+    LabelInptDate: TLabel;
+    Label6: TLabel;
+    Edit_CareOf: TEdit;
+    Query_Process: TQuery;
+    Label7: TLabel;
+    DEX_Today: TDateEditX;
+    Btn_Today: TBitBtn;
+    Label_AddScheme: TLabel;
+    DBLC_AddScheme: TDBLookupComboBox;
+    CheckBox_AddScheme: TCheckBox;
+    Query_Scheme: TQuery;
+    DataSource_Scheme: TDataSource;
+    Query_discharge: TQuery;
+    Label_Amount: TLabel;
+    SPB_MakeUptodate: TSpeedButton;
+    Query_SubProcess: TQuery;
+    Query_MutualDocForShare: TQuery;
+    GroupBox1: TGroupBox;
+    Label9: TLabel;
+    DEX_CashReceivedDate: TDateEditX;
+    Btn_CashReceivedDate: TBitBtn;
+    CB_IsCashedReceived: TCheckBox;
+    SPB_SetDiscount: TSpeedButton;
+    Label_DisInDepositDate: TLabel;
+    Label_CashReceivedDate: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    procedure BtnCancelClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BtnSaveClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure BitBtn_FromDateClick(Sender: TObject);
+    procedure Edit_InpatientIdKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_InpatientIdExit(Sender: TObject);
+    procedure Edit_InpatientIdKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Edit_CareOfKeyPress(Sender: TObject; var Key: Char);
+    procedure Btn_TodayClick(Sender: TObject);
+    procedure CheckBox_AddSchemeClick(Sender: TObject);
+    procedure SPB_MakeUptodateClick(Sender: TObject);
+    procedure CB_IsCashedReceivedClick(Sender: TObject);
+    procedure SPB_SetDiscountClick(Sender: TObject);
+    procedure Btn_CashReceivedDateClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+        b_FlagNew, pb_MutualDocForShare, pb_ISPHARAPPROVALGRANTED:Boolean;
+        pi_PatientId, pi_InpatientId, pi_OldDocPaymentId,pi_DisInDepositTransId,pi_disindepositscheme :Integer;
+        ps_AccessFrom,ps_DepositStatus, ps_TodaysDate, ps_TodaysTime, ps_PatientTypeCode, ps_BillDate, ps_BillNo:String;
+        pf_SpecialDeposit:Double;
+
+        ps_DepositType : String;
+
+
+        procedure PostRoundVisitSharingSpecailCase;
+        Function Mutually_Share_Fraction(DOCID: Integer; ServiceType: string):Boolean;
+        procedure PostDepositAdjustmentIFNotExist;
+
+    { Public declarations }
+  end;
+
+var
+  Form_DischargeInDeposit: TForm_DischargeInDeposit;
+
+implementation
+
+{$R *.DFM}
+
+procedure TForm_DischargeInDeposit.BtnCancelClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_DischargeInDeposit.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     IF key=27 Then Close;
+     IF (key=13) and (ActiveControl=DateEditXDisDate) Then
+     Edit_InpatientId.SetFocus;
+
+     IF (key=VK_F12) and (BtnSave.Enabled=True) Then
+     BtnSaveClick(Sender);
+
+     IF (key=VK_F1) and (CB_DisInDeposit.Enabled=True) Then
+     CB_DisInDeposit.Checked:=Not(CB_DisInDeposit.Checked);
+
+end;
+
+procedure TForm_DischargeInDeposit.BtnSaveClick(Sender: TObject);
+Var li_DRIncomeCorrectionLogId,li_PatientId,Li_RoomTypeId,Li_WardId:Integer;
+    ls_ServiceType,ls_BedNo,ls_RoomTypeCode,ls_WardCode,ls_LogRemarks,ls_TodaysDate,ls_TodaysTime:String;
+    DrAmount,CrAmount: Double;
+begin
+     if (Query_InpatientInfo.FieldByName('INRE_IsTransLocked').AsString='Y') Then
+     Begin
+          MessageDlg(' Sorry ! Transaction Is Already Locked.', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     if ps_DepositStatus='DEPOSIT' then
+     Begin
+          if pf_SpecialDeposit>0 then
+               DrAmount:=strtofloat(Label_Amount.Caption)-pf_SpecialDeposit
+          Else
+               DrAmount:=strtofloat(Label_Amount.Caption);
+          CrAmount:=0;
+          ps_DepositType:='DEPOSIT';
+     End
+     Else
+     Begin
+          DrAmount:=0;
+          CrAmount:=strtofloat(Label_Amount.Caption);
+          ps_DepositType:='DEPOSIT REFUND';
+     End;
+
+     ls_LogRemarks:='Remove Discharge in Deposit for InpatientNo->'+Query_InpatientInfo.FieldByName('InpatientId').AsString;
+
+     IF Trim(Edit_InpatientId.Text)='' Then
+     Begin
+          MessageDlg(' You Must Have To Put Inpatient No.',mtWarning,[mbok],0);
+          Edit_InpatientId.SetFocus;
+          Exit;
+     End;
+
+     IF (Trim(Edit_CareOf.Text)='') and (CB_DisInDeposit.Checked=False) Then
+     Begin
+          MessageDlg('You Must Have to Mention "In Care of" for Discharge In Deposit.',mtWarning,[mbok],0);
+          Edit_CareOf.SetFocus;
+          Exit;
+     End;
+
+     With Query_InpatientInfo do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select Inre_InpatientId Inpatientid,Inre_PatientId PatientId,Inre_AdmnDate AdmnDate,Inre_DisDate DisDate,Inre_IsDischarged IsDischarged,Inre_IsDisInDeposit DisInDeposit,');
+          SQL.Add(' INRE_DISINDEPOSITESCHEME DISINDEPOSITESCHEME,INRE_DISINDEPOSITDATE DISINDEPOSITDATE,NVl(INRE_DISINDEPOSITESCHEME,0) disindepositscheme,');
+          sql.add(' INRE_SPLDISINDEPOCASHDATE,(Select PAMA_PatientName From HS_PAMA_PatientMain where PAMA_PatientId=Hs_Inre_InpatientReg.Inre_InpatientId) as PtName, ');
+          sql.add(' Inre_DisInCareOf DisInCareOf,Inre_DISINDEPOSITTRANSID DISINDEPOSITTRANSID,INRE_IsTransLocked From Hs_Inre_InpatientReg where Inre_InpatientId='+Edit_InpatientId.Text);
+          //sql.savetofile('D:\abc.txt');
+          Open;
+     End;
+
+     pi_DisInDepositTransId:=Query_InpatientInfo.FieldByName('DISINDEPOSITTRANSID').AsInteger;
+     pi_disindepositscheme:=Query_InpatientInfo.FieldByName('disindepositscheme').AsInteger;
+
+     IF Query_InpatientInfo.FieldByName('ISDischarged').AsString='C' Then
+     Begin
+          MessageDlg(' Admission Cancel Patient So You Cannot Do Deposit Discharge',mtWarning,[mbok],0);
+          DateEditXDisDate.SetFocus;
+          Exit;
+     End;
+
+
+     IF Query_InpatientInfo.FieldByName('ISDischarged').AsString='Y' Then
+     Begin
+          MessageDlg(' Patient Is Already Discharged.',mtWarning,[mbok],0);
+          DateEditXDisDate.SetFocus;
+          Exit;
+     End;
+
+     IF (Query_InpatientInfo.FieldByName('DisInDeposit').AsString='Y') and (CB_DisInDeposit.Checked=False) Then
+     Begin
+          MessageDlg(' Already Set Discharged In Deposit .',mtWarning,[mbok],0);
+          //CB_DisInDeposit.SetFocus;
+          Exit;
+     End;
+
+     DateEditXDisDate.SystemOfDate:=gi_DateSystem;
+     IF DateEditXDisDate.Text < Query_InpatientInfo.FieldByName('AdmnDate').AsString Then
+     Begin
+          MessageDlg('Discharge In Deposit Date (  '+DateEditXDisDate.Text+'  ) Should Not Be Less Than Inpatient Date (  '+
+          Query_InpatientInfo.FieldByName('AdmnDate').AsString+' ).',mtWarning,[mbok],0);
+          DateEditXDisDate.SetFocus;
+          Exit;
+     End;
+
+     DEX_Today.SystemOfDate:=gi_DateSystem;
+     DEX_Today.text:=TodaysDate;
+
+     IF DateEditXDisDate.Text > DEX_Today.text Then
+     Begin
+          MessageDlg('Discharge In Deposit Date (  '+DateEditXDisDate.Text+'  ) Should Not be Greater Than Current Date (  '+
+          DEX_Today.text+' ).',mtWarning,[mbok],0);
+          DateEditXDisDate.SetFocus;
+          Exit;
+     End;
+
+
+     DateEditXDisDate.SystemOfDate:=gi_DateSystem;
+     IF (DateEditXDisDate.Text > Query_InpatientInfo.FieldByName('INRE_SPLDISINDEPOCASHDATE').AsString)
+     and (Trim(Query_InpatientInfo.FieldByName('INRE_SPLDISINDEPOCASHDATE').AsString)<>'') Then
+     Begin
+          MessageDlg('Discharge In Deposit Date (  '+DateEditXDisDate.Text+'  ) Should Not Be Greater Than Cash Received Date (  '+
+          Query_InpatientInfo.FieldByName('INRE_SPLDISINDEPOCASHDATE').AsString+' ).',mtWarning,[mbok],0);
+          DateEditXDisDate.SetFocus;
+          Exit;
+     End;
+
+     with Query_Process do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select Inre_InpatientId InpatientId,Inre_AdmnDate Admndate From Hs_Inre_InpatientReg where Inre_InpatientId > '+Edit_InpatientId.Text+' and Inre_PatientId='+LabelPtNo.Caption);
+          Open;
+     End;
+
+     IF (Query_Process.FieldByName('InpatientId').AsInteger > 0 ) and (CB_DisInDeposit.Checked=True) Then
+     Begin
+          Query_Process.Last;
+          MessageDlg('Sorry ! You Cannot Change The Deposit Discharge Status.'+Char(10)+Char(10)+
+                    '    Reason : This Patient Again Admitted with IP No.  " '+Query_Process.FieldByName('InpatientId').AsString+'  "  on Date  "  '+
+                    Query_Process.FieldByName('AdmnDate').AsString,mtWarning,[mbok],0);
+          Exit;
+     End;
+
+     (*if (CB_DisInDeposit.Checked=True) and (serverdate.TodaysDate<>Query_InpatientInfo.fieldbyname('DISINDEPOSITDATE').AsString)
+          and (pi_disindepositscheme=22) then
+     Begin
+          MessageDlg('Sorry ! You Can Remove Discharge In Deposit on The Same Date Only !',mtWarning,[mbok],0);
+          Exit;
+     End;*)
+
+
+
+     (*IF CB_DisInDeposit.Checked=True Then // Remove Discharge In Deposit.
+     Begin
+          ls_LogRemarks:='Remove Dis. In Deposit of IP NO : '+IntToStr(pi_InpatientId)+', DisInDepNo : '+IntToStr(pi_DisInDepositTransId)
+          +' , Prev. In Care of : '+Query_InpatientInfo.FieldByName('DisInCareOf').AsString;
+          With Query_Void do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select * From Bed where BedNo In (Select BedNo From InpatientDetail where InpatientDID In ( ');
+               sql.add(' Select Max(InpatientDID) From InpatientDetail where InpatientId='+IntToStr(Query_InpatientInfo.FieldByName('InpatientId').AsInteger)+'))');
+               Open;
+          End;
+
+          IF Query_Void.FieldByName('Vacant').AsString='F' Then
+          Begin
+               MessageDlg('Sorry ! Previously Bed No " '+Query_Void.FieldByName('BedNo').AsString+' " Occupied by " '+LabelPtName.Caption+' ".'+
+               Char(10)+' But Currently it is occupied by some other person. '+Char(10)+' So you cannot remove discharge in deposit status without '+
+               'Bed No " '+Query_Void.FieldByName('BedNo').AsString+' is vaccant.',mtWarning,[mbok],0);
+               Exit;
+          End;
+     End;*)
+
+     IF CB_DisInDeposit.Checked=False Then
+     begin
+          if (gs_ISINTEGRATEDPHARMACY = 'Y') Or (gs_IsPHClearanceB4DisBill = 'Y') then
+          begin
+               IF (pb_ISPHARAPPROVALGRANTED=False) and (IsCreditAmountExistInPharmacy(pi_PatientId,pi_InpatientId)=True) Then
+               Begin
+                    MessageDlg('Pharmacy Clearance Yet Not Done. Please Contact at Pharmacy.' , mtWarning, [mbOK], 0);
+                    Edit_InpatientId.SetFocus;
+                    Exit;
+               End;
+          end;
+     end;
+
+
+     if (DBLC_AddScheme.KeyValue=22) and (CB_DisInDeposit.Checked=False) then //Specail Case
+     Begin
+
+     End;
+
+     Edit_CareOf.Text:=StringReplace(Edit_CareOf.Text,'''','''''',[rfReplaceAll]);
+     Try
+          DM_Hospital.DB.StartTransaction;
+          With Query_Void do
+          Begin
+               IF CB_DisInDeposit.Checked=False Then
+               Begin
+                    pi_DisInDepositTransId:=GetMaxId('Hs_InRe_InpatientReg','Inre_DISINDEPOSITTRANSID');
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update Hs_InRe_InpatientReg Set InRe_IsDisInDeposit=''Y'',InRe_DisInDepositDate='+#39+DateEditXDisDate.Text+#39);
+                    sql.add(',InRe_DisInCareOf='+#39+Edit_CareOf.Text+#39);
+                    if DBLC_AddScheme.KeyValue<>null then
+                         sql.add(',INRE_DISINDEPOSITESCHEME='+inttostr(DBLC_AddScheme.KeyValue))
+                    else
+                         sql.add(',INRE_DISINDEPOSITESCHEME=0');
+                    sql.add(' ,InRe_DisInDepositBy='+IntToStr(gi_UserId)+',InRe_DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                    sql.add(' where InRe_InpatientId='+Query_InpatientInfo.FieldByName('InpatientId').AsString);
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Select Inde_RoomTypeId RoomTypeId,Inde_BedNo BedNo,Inde_WardId WardId From Hs_Inde_InpatientDetail where Inde_InpatientDID In (');
+                    sql.add(' Select Max(Inde_InpatientDID) From Hs_Inde_InpatientDetail Where Inde_InpatientId='+Query_InpatientInfo.FieldByName('InpatientId').AsString);
+                    sql.add(' )');
+                    Open;
+
+                    ls_BedNo:=FieldByName('BedNo').AsString;
+                    li_RoomTypeId:=FieldByName('RoomTypeId').AsInteger;
+                    li_WardID:=FieldByName('WardId').AsInteger;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update Bed Set Vacant=''T'' where BedNo='+#39+ls_BedNo+#39);
+                    //sql.add(' and RoomTypeCode='+#39+ls_RoomTypeCode+#39);// and WardCode='+#39+ls_WardCode+#39);
+                    ExecSQL;
+
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update Hs_Inde_InpatientDetail Set Inde_DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                    sql.add(' where Inde_InpatientId='+IntToStr(Query_InpatientInfo.FieldByName('InpatientId').AsInteger));
+                    ExecSQL;
+
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update HS_DEPO_Deposit Set DEPO_DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                     if DBLC_AddScheme.KeyValue<>null then
+                         sql.Add(',DEPO_DISINDEPOSITESCHEME=' + QuotedStr(DBLC_AddScheme.KeyValue))
+                    else
+                         sql.add(',depo_DISINDEPOSITESCHEME=''0''');
+                    sql.add(' where DEPO_PatientId='+IntToStr(pi_PatientId));
+                    sql.add(' and DEPO_InPatientId='+IntToStr(pi_InPatientId));
+                    sql.Add(' and NVL(DEPO_DISINDEPOSITTRANSID,0)=0');
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update HS_SEBD_ServiceBillDetail Set SEBD_DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                    sql.add(' where SEBD_PatientId='+IntToStr(pi_PatientId));
+                    sql.add(' and SEBD_InPatientId='+IntToStr(pi_InPatientId));
+                    sql.Add(' and SEBD_BillDetailId=0 and NVL(SEBD_DISINDEPOSITTRANSID,0)=0');
+                    ExecSQL;
+
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add(' Update DoctorRoundVisit Set DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                    SQL.Add(' where InpatientId='+IntToStr(pi_InpatientId));
+                    SQL.Add(' and patientId='+IntToStr(pi_PatientId));
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update SaleMaster Set DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                    sql.add(' where CustomerId='+IntToStr(pi_PatientId));
+                    sql.add(' and InPatientId='+IntToStr(pi_InPatientId));
+                    sql.Add(' and Cashed=''N'' and NVL(DISINDEPOSITTRANSID,0)=0');
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update ReturnMaster Set DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                    sql.add(' where CustomerId='+IntToStr(pi_PatientId));
+                    sql.add(' and InPatientId='+IntToStr(pi_InPatientId));
+                    sql.Add(' and Cashed=''N'' and NVL(DISINDEPOSITTRANSID,0)=0');
+                    ExecSQL;
+
+                    if gs_HospitalNameForCode='BNB' then
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Update BNB_OT.SaleMaster Set DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                         sql.add(' where CustomerId='+IntToStr(pi_PatientId));
+                         sql.add(' and InPatientId='+IntToStr(pi_InPatientId));
+                         sql.Add(' and Cashed=''N'' and NVL(DISINDEPOSITTRANSID,0)=0');
+                         ExecSQL;
+
+                         Close;
+                         sql.Clear;
+                         sql.add(' Update BNB_OT.ReturnMaster Set DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                         sql.add(' where CustomerId='+IntToStr(pi_PatientId));
+                         sql.add(' and InPatientId='+IntToStr(pi_InPatientId));
+                         sql.Add(' and Cashed=''N'' and NVL(DISINDEPOSITTRANSID,0)=0');
+                         ExecSQL;
+
+
+                         if DBLC_AddScheme.KeyValue=22 then //Specail Case
+                         Begin
+                             ls_TodaysDate:=DateEditXDisDate.Text;
+                             ls_TodaysTime:=TodaysTime;
+
+                             Try
+                                   SaveSpecialDeposit(0, pi_InPatientID, pi_PatientId, 0, gi_UserID,0, DrAmount,CrAmount,
+                                        ps_DepositType , 'FINAL DISCHARGE COLN', '', '', '', ls_TodaysDate, ls_TodaysTime,ls_TodaysDate, ls_TodaysTime,'N',GetPatientCagetory(Pi_PatientId),'N');
+                             except
+                                   SaveSpecialDeposit(0, pi_InPatientID, pi_PatientId, 0, gi_UserID,0, DrAmount,CrAmount,
+                                        ps_DepositType , 'FINAL DISCHARGE COLN', '', '', '', ls_TodaysDate, ls_TodaysTime,ls_TodaysDate, ls_TodaysTime,'N',GetPatientCagetory(Pi_PatientId),'N');
+                             End;
+
+                             if ps_DepositStatus='DEPOSIT' then
+                             Begin
+                                   DrAmount := 0;
+                                   CrAmount := strtofloat(Label_Amount.Caption);
+                                   SaveSpecialDeposit(0, pi_InpatientId, pi_PatientId, 0, gi_UserId, 0,DrAmount, CrAmount, 'DIS ADJ DEP REFUND',
+                                                  'DISCHARGE ADJUSTED DEPOSIT', '', '', '', ls_TodaysDate,ls_TodaysTime,ls_TodaysDate, ls_TodaysTime,'N',GetPatientCagetory(pi_PatientId),'N');
+                             End;
+
+                             Close;
+                             sql.Clear;
+                             sql.add(' Delete From HS_DEPO_Deposit where DEPO_InpatientId='+IntToStr(pi_InpatientId));
+                             sql.add(' and SPDE_REFERENCETYPE=''FINALDISADJ'' and SPDE_REFERENCETYPE=''ADJ. IN DISCHARGE''');
+                             sql.add(' and SPDE_PatientId='+IntToStr(pi_PatientId));
+                             ExecSQL;
+
+                             PostRoundVisitSharingSpecailCase;
+                         End;
+                    End;
+               End
+               Else
+               begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update Hs_Inre_InpatientReg Set Inre_IsDisInDeposit=''N'',Inre_DisInDepositDate='''', Inre_DisInCareOf='''',Inre_DisInDepositBy=NULL');
+                    sql.Add(' ,Inre_DISINDEPOSITTRANSID=0,INRE_DISINDEPOSITESCHEME=0');
+                    sql.add(' where Inre_InpatientId='+Query_InpatientInfo.FieldByName('InpatientId').AsString);
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update Bed Set Vacant=''F'' where BedNo='+#39+ls_BedNo+#39);
+                    sql.add(' and RoomTypeCode='+#39+ls_RoomTypeCode+#39);// and WardCode='+#39+ls_WardCode+#39);
+                    ExecSQL;
+
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update Hs_Inde_InpatientDetail Set Inde_DISINDEPOSITTRANSID=0');
+                    sql.add(' where Inde_DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                    sql.add(' and Inde_InpatientId='+IntToStr(pi_InpatientId));
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update HS_DEPO_Deposit Set DEPO_DISINDEPOSITTRANSID=0');
+                    sql.add(' where DEPO_PatientId='+IntToStr(pi_PatientId));
+                    sql.add(' and DEPO_InPatientId='+IntToStr(pi_InPatientId));
+                    sql.Add(' and DEPO_DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update HS_SEBD_ServiceBillDetail Set SEBD_DISINDEPOSITTRANSID=0');
+                    sql.add(' where SEBD_DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                    sql.Add(' and SEBD_BillDetailId=0');
+                    sql.add(' and SEBD_InPatientId='+IntToStr(pi_InPatientId));
+                    sql.add(' and SEBD_PatientId='+IntToStr(pi_PatientId));
+                    ExecSQL;
+
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add(' Update DoctorRoundVisit Set DISINDEPOSITTRANSID=0');
+                    SQL.Add(' where InpatientId='+IntToStr(pi_InpatientId));
+                    SQL.Add(' and patientId='+IntToStr(pi_PatientId));
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Delete From HS_FRDE_FractionDetail');
+                    sql.add(' where FRDE_PatientId='+IntToStr(pi_PatientId));
+                    sql.add(' and FRDE_InPatientId='+IntToStr(pi_InPatientId));
+                    sql.Add(' and FRDE_TESTNAMECODE=''IPCON'' and FRDE_BILLNO=''Dis.In Depo.''');
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update SaleMaster Set DISINDEPOSITTRANSID=0');
+                    sql.add(' where Cashed=''N'' and DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                    sql.add(' and CustomerId='+IntToStr(pi_PatientId));
+                    sql.add(' and InPatientId='+IntToStr(pi_InPatientId));
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update ReturnMaster Set DISINDEPOSITTRANSID=0');
+                    sql.add(' where Cashed=''N'' and DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                    sql.add(' and CustomerId='+IntToStr(pi_PatientId));
+                    sql.add(' and InPatientId='+IntToStr(pi_InPatientId));
+                    ExecSQL;
+
+                    if gs_HospitalNameForCode='BNB' then
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Update BNB_OT.SaleMaster Set DISINDEPOSITTRANSID=0');
+                         sql.add(' where Cashed=''N'' and DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                         sql.add(' and CustomerId='+IntToStr(pi_PatientId));
+                         sql.add(' and InPatientId='+IntToStr(pi_InPatientId));
+                         ExecSQL;
+
+                         Close;
+                         sql.Clear;
+                         sql.add(' Update BNB_OT.ReturnMaster Set DISINDEPOSITTRANSID=0');
+                         sql.add(' where Cashed=''N'' and DISINDEPOSITTRANSID='+IntToStr(pi_DisInDepositTransId));
+                         sql.add(' and CustomerId='+IntToStr(pi_PatientId));
+                         sql.add(' and InPatientId='+IntToStr(pi_InPatientId));
+                         ExecSQL;
+                    End;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Delete From HS_SPDE_SPECIALDEPOSIT where SPDE_InpatientId='+IntToStr(pi_InpatientId));
+                    sql.add(' and SPDE_REFERENCETYPE In (''FINAL DISCHARGE COLN'',''DISCHARGE ADJUSTED DEPOSIT'')');
+                    sql.add(' and SPDE_PatientId='+IntToStr(pi_PatientId));
+                    ExecSQL;
+
+                    SaveLogGlobal(gi_UserId,'INDOOR',ls_LogRemarks);
+               End;
+          End;
+
+          DM_Hospital.DB.Commit;
+     Except
+          DM_Hospital.DB.RollBack;
+          MessageDlg('Failure To Save To Data.',mtWarning,[mbok],0);
+          Exit;
+     End;
+     ShowDoneMessage;
+End;
+
+
+procedure TForm_DischargeInDeposit.PostDepositAdjustmentIFNotExist;
+Var ls_TodaysDate,ls_TodaysTime : string;
+    DrAmount,CrAmount : Double;
+begin
+     if DBLC_AddScheme.KeyValue=22 then //Specail Case
+     Begin
+          ls_TodaysDate:=TodaysDate;
+          ls_TodaysTime:=TodaysTime;
+
+          DrAmount := strtofloat(Label_Amount.Caption);
+          CrAmount :=0;
+
+          Try
+               SaveSpecialDeposit(0, pi_InPatientID, pi_PatientId, 0, gi_UserID,0, DrAmount,CrAmount,
+                    ps_DepositType , 'FINAL DISCHARGE COLN', '', '', '', ls_TodaysDate, ls_TodaysTime,ls_TodaysDate, ls_TodaysTime,'N',GetPatientCagetory(Pi_PatientId),'N');
+          except
+               SaveSpecialDeposit(0, pi_InPatientID, pi_PatientId, 0, gi_UserID,0, DrAmount,CrAmount,
+                    ps_DepositType , 'FINAL DISCHARGE COLN', '', '', '', ls_TodaysDate, ls_TodaysTime,ls_TodaysDate, ls_TodaysTime,'N',GetPatientCagetory(Pi_PatientId),'N');
+          End;
+
+          if ps_DepositStatus='DEPOSIT' then
+          Begin
+               DrAmount := 0;
+               CrAmount := strtofloat(Label_Amount.Caption);
+               SaveSpecialDeposit(0, pi_InpatientId, pi_PatientId, 0, gi_UserId, 0,DrAmount, CrAmount, 'DIS ADJ DEP REFUND',
+                         'DISCHARGE ADJUSTED DEPOSIT', '', '', '', ls_TodaysDate,ls_TodaysTime,ls_TodaysDate, ls_TodaysTime,'N',GetPatientCagetory(pi_PatientId),'N');
+          End;
+     End;
+end;
+
+
+procedure TForm_DischargeInDeposit.PostRoundVisitSharingSpecailCase;
+Var
+  ls_Description, ls_PayType, ls_DocCode, ls_RoomTypeCode: String;
+  lf_FractionRate, lf_FractionAmt, lf_CostPrice, lf_DisPer,lf_fractionId: Double;
+  li_Qty, li_DocId, li_Roomtypeid,li_fractionId: Integer;
+
+Begin
+     ls_Description := 'IP CONSULTATION';
+     ls_PayType := 'CASH';
+
+     gs_ISROOMTYPEWISEIPROUNDSHARE := 'Y';
+     li_fractionId :=800;
+
+     ps_BillDate:=DateEditXDisDate.Text;
+     ps_BillNo:='Dis.In Depo.';
+
+     ps_TodaysDate:=TodaysDate;
+     ps_TodaysTime:=TodaysTime;
+
+     if (gs_ISROOMTYPEWISEIPROUNDSHARE = 'N') and (0=1) Then
+     Begin
+          With Query_SubProcess Do
+          Begin
+               Close;
+               DatabaseName := gs_DatabaseName;
+               sql.Clear;
+               sql.Add(' Select * From HS_FRAC_Fraction');
+               sql.Add(' where FRAC_Description=''IPD ROUND SHARE''');
+               Open;
+          End;
+          lf_FractionRate := Query_SubProcess.FieldByName('FRAC_FractionRate').AsFloat;
+     End;
+
+     With Query_Process Do
+     Begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          sql.Clear;
+          sql.Add(' Select R.*,Round((DisAmount/VisitCharge)*100,4) as DisPer,(DoctorPart/VisitCharge)*100 as DocRatePer,(Select FRDE_FractionDetailID From HS_FRDE_FractionDetail');
+          sql.Add(' where FRDE_InpatientId=' + IntToStr(pi_InpatientId) + ' and FRDE_TestNameCode=''IPCON'' and FRDE_DOCID=R.DocId and RowNum=1) FractionDetailId From (');
+          //sql.Add(' Select DocId,Sum(VisitCharge)/Count(DoctorRoundVisitID) VisitCharge,Sum(VisitCharge*DisPer/100)/Count(DoctorRoundVisitID) as DisAmount,');
+          //sql.Add(' Sum(VatAmt)/Count(DoctorRoundVisitID) as VatAmt,Sum(DoctorPart)/Count(DoctorRoundVisitID) as DoctorPart,Count(DoctorRoundVisitID) as TotalDays');
+          sql.Add(' Select DocId,Round(Sum(VisitCharge),4) VisitCharge,Round(Sum(VisitCharge*DisPer/100),4) as DisAmount,');
+          sql.Add(' Round(Sum(VatAmt),4) as VatAmt,Round(Sum(DoctorPart),4) as DoctorPart,1 as TotalDays');
+          sql.Add(' From DOCTORROUNDVISIT DRV Where InPatientID=' + IntToStr(pi_InpatientId) + ' and VisitCharge > 0');
+          sql.Add(' and VISITDATE <='+#39+DateEditXDisDate.Text+#39);
+          sql.Add(' Group By DOCID,VisitCharge,DisPer) R');
+          sql.Add(' Order By DOCID');
+          Open;
+          First;
+          While Not eof Do
+          Begin
+               li_DocId := Query_Process.FieldByName('DocID').AsInteger;
+               if Query_Process.FieldByName('FractionDetailId').AsInteger=0 then
+               Begin
+                    if (gs_ISROOMTYPEWISEIPROUNDSHARE = 'Y') and (0=1) Then // Now Block To Use This Part
+                    Begin
+                         With Query_SubProcess Do
+                         Begin
+                              Close;
+                              sql.Clear;
+                              sql.Add(' Select 100-ROTP_HosPartPercent as DocRatePer from HS_ROTP_ROOMTYPEPRICE');
+                              sql.Add(' where ROTP_RoomTypeId In (Select ROOMTYPEID From RoomType ');
+                              sql.Add(' where RoomTypeId=' + IntToStr(Query_Process.FieldByName('RoomTypeId').AsInteger) + ')');
+                              sql.Add(' and ROTP_PatientTypeCode=' + #39 + ps_PatientTypeCode +#39);
+                              Open;
+                         End;
+                         lf_FractionRate := Query_SubProcess.FieldByName('DocRatePer').AsFloat;
+                    End
+                    Else
+                    lf_FractionRate := Query_Process.FieldByName('DocRatePer').AsFloat;
+
+                    lf_FractionAmt := Query_Process.FieldByName('VisitCharge').AsFloat * (lf_FractionRate / 100);
+                    lf_CostPrice := Query_Process.FieldByName('VisitCharge').AsFloat;
+                    lf_DisPer := Query_Process.FieldByName('DisPer').AsFloat;
+                    li_Qty := Query_Process.FieldByName('TotalDays').AsInteger;
+                    li_DocId := Query_Process.FieldByName('DocID').AsInteger;
+
+                    (* SaveFractiondetail(PATIENTID,INPATIENTID,BILLDETAILID,SERVICEBILLDETAILID,FRACTIONID,POSITIONWISEFRACTIONID,DEPID,DATAPOSTBY : Integer;
+                         UNITTESTCOST,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+                         DOCCODE,TESTNAMECODE,BILLNO,BILLDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+                         ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME :String); *)
+                    pb_MutualDocForShare:=Mutually_Share_Fraction(li_DocId,'ROUND');
+                    if pb_MutualDocForShare = False then
+                    Begin
+                         SaveFractiondetail(pi_PatientId, pi_InpatientId, li_DocId,0, 5, li_DocId, 0, li_fractionId, 0,
+                              gi_UserId,0, lf_CostPrice, lf_CostPrice, li_Qty, lf_FractionAmt,lf_FractionRate, lf_DisPer, 'IPCON', ps_BillNo,
+                              ps_BillDate, 'IP',ls_PayType, 'Y', 'IP CONSULTATION', 'N', 'N', '', ps_TodaysDate, ps_TodaysTime,'N');
+                    end
+                    else
+                    begin
+                         Query_MutualDocForShare.First;
+                         While not Query_MutualDocForShare.eof do
+                         begin
+                              IF Query_MutualDocForShare.FieldByName('DocRate').AsFloat > 0 Then
+                              Begin
+                                   SaveFractiondetail(gi_PatientId, 0, Query_MutualDocForShare.FieldByName('docID').AsInteger, 0, 5, Query_MutualDocForShare.FieldByName('docID').AsInteger,
+                                        0, li_fractionId, 0, gi_UserId,0, lf_CostPrice, lf_CostPrice, li_Qty,
+                                        lf_FractionAmt * Query_MutualDocForShare.FieldByName('DocRate').AsFloat / 100,
+                                        lf_FractionRate * Query_MutualDocForShare.FieldByName('DocRate').AsFloat / 100,
+                                        lf_DisPer, 'IPCON', ps_BillNo, ps_BillDate,'IP', ls_PayType, 'Y', 'IP CONSULTATION', 'N', 'N', '',
+                                        ps_TodaysDate,ps_TodaysTime,'N');
+
+                              End;
+                              Query_MutualDocForShare.Next;
+                         end;
+                    end;
+               End;
+               Query_Process.Next;
+          End;
+     End;
+end;
+
+procedure TForm_DischargeInDeposit.Btn_CashReceivedDateClick(Sender: TObject);
+begin
+     ChangeDateSystem(DEX_CashReceivedDate,Btn_CashReceivedDate);
+end;
+
+procedure TForm_DischargeInDeposit.Btn_TodayClick(Sender: TObject);
+begin
+     ChangeDateSystem(DEX_Today,Btn_Today);
+end;
+
+procedure TForm_DischargeInDeposit.CB_IsCashedReceivedClick(Sender: TObject);
+begin
+     if CB_IsCashedReceived.Checked=True then
+     begin
+          Label9.Enabled:=True;
+          DEX_CashReceivedDate.Enabled:=True;
+          DEX_CashReceivedDate.SystemOfDate:=gi_datesystem;
+          DEX_CashReceivedDate.Text:=TodaysDate;
+          Btn_CashReceivedDate.Enabled:=True;
+     end
+     else
+     begin
+          Label9.Enabled:=False;
+          DEX_CashReceivedDate.Enabled:=False;
+          DEX_CashReceivedDate.SystemOfDate:=gi_datesystem;
+          DEX_CashReceivedDate.Text:='';
+          Btn_CashReceivedDate.Enabled:=False;
+     end;
+end;
+
+procedure TForm_DischargeInDeposit.CheckBox_AddSchemeClick(Sender: TObject);
+begin
+     if  CheckBox_AddScheme.Checked=true then
+     begin
+          DBLC_AddScheme.Visible:=true;
+          Label_AddScheme.Visible:=true;
+     end
+     else
+     begin
+          DBLC_AddScheme.Visible:=false;
+          Label_AddScheme.Visible:=false;
+     end;
+end;
+
+procedure TForm_DischargeInDeposit.FormShow(Sender: TObject);
+begin
+     DateEditXDisDate.SystemOfDate:=gi_DateSystem;
+     DateEditXDisDate.text:=ServerDate.TodaysDate;
+     ChangeCaption(BitBtn_FromDate);
+
+     DEX_Today.SystemOfDate:=gi_DateSystem;
+     DEX_Today.text:=DateEditXDisDate.text;
+     ChangeCaption(Btn_Today);
+
+     DEX_CashReceivedDate.SystemOfDate:=gi_DateSystem;
+     DEX_CashReceivedDate.text:=TodaysDate;
+     ChangeCaption(Btn_CashReceivedDate);
+
+     DateEditXDisDate.SetFocus;
+
+     //if gs_IsDisInDepositStatusRemove='Y' then
+     //CB_DisInDeposit.Enabled:=True;
+     {Else
+     Begin
+          CB_DisInDeposit.Enabled:=False;
+          CB_DisInDeposit.Checked:=False;
+          CB_DisInDeposit.Visible:=False;
+     End;}
+     with Query_discharge do
+     begin
+          Close;
+          databasename:=gs_databasename;
+          Open;
+     end;
+     With Query_Scheme do
+     begin
+          Close;
+          databasename:=gs_databasename;
+          Open;
+     end;
+
+     DBLC_AddScheme.Visible:=false;
+     Label_AddScheme.Visible:=false;
+
+     Edit_InpatientIdExit(Sender);
+
+     with Query_discharge do
+     begin
+          Close;
+          databasename:=gs_databasename;
+          sql.Clear;
+          sql.Add(' select * from Hs_Inre_InpatientReg');
+          sql.Add(' where INRE_InpatientId='+inttostr(gi_Inpatientid));
+          //sql.SaveToFile('d:\show.txt');
+          open;
+     end;
+
+     (*if ((Query_discharge.FieldByName('INRE_ISDISINDEPOSIT').AsString='Y') and (Query_discharge.FieldByName('INRE_DISINDEPOSITESCHEME').AsInteger > 0 ) and( Query_discharge.FieldByName('INRE_DISINDEPOSITDATE').AsString=ServerDate.TodaysDate) ) then
+     begin
+          CB_DisInDeposit.enabled:=true;
+     end
+     else if ((Query_discharge.FieldByName('INRE_ISDISINDEPOSIT').AsString='Y') and (Query_discharge.FieldByName('INRE_DISINDEPOSITESCHEME').AsInteger = 0 )) then
+     begin
+          CB_DisInDeposit.enabled:=true;
+     end
+     else
+     CB_DisInDeposit.enabled:=false;*)
+
+     if ((Query_discharge.FieldByName('INRE_ISDISINDEPOSIT').AsString='Y') and (Query_discharge.FieldByName('INRE_DISINDEPOSITESCHEME').AsInteger > 0 )) then
+     begin
+          CheckBox_AddScheme.Checked:=true;
+          DBLC_AddScheme.KeyValue:=Query_discharge.FieldByName('INRE_DISINDEPOSITESCHEME').AsString;
+     end;
+end;
+
+procedure TForm_DischargeInDeposit.SPB_MakeUptodateClick(Sender: TObject);
+Var ls_DisInDepositDate : string;
+    li_DISINDEPOSITTRANSID,li_SchemeId  : Integer;
+    lb_IsFinalDisColnExist : Boolean;
+begin
+     if (Query_InpatientInfo.FieldByName('INRE_IsTransLocked').AsString='Y') Then
+     Begin
+          MessageDlg(' Sorry ! Transaction Is Already Locked.', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     IF ISDischargedPatient(pi_InpatientId) = True Then
+     Begin
+          MessageDlg('Sorry ! Patient is already discharged.', mtWarning, [mbOK], 0);
+          Exit;
+     End;
+
+     With Query_Process do
+     begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add(' Select INRE_DisInDepositDate,INRE_DISINDEPOSITESCHEME,INRE_DISINDEPOSITTRANSID ');
+          SQL.Add(' From HS_INRE_InpatientReg where INRE_InpatientId='+IntToStr(pi_InpatientId));
+          Open;
+     end;
+
+     (*if Query_Process.FieldByName('INRE_DISINDEPOSITESCHEME').AsInteger<>22 then
+     begin
+          MessageDlg('Sorry ! This Indoor Patient Is Not Related With Special Deposit Case.',mtWarning,[mbOK],0);
+          Exit;
+     end;*)
+     li_SchemeId:=Query_Process.FieldByName('INRE_DISINDEPOSITESCHEME').AsInteger;
+     ls_DisInDepositDate:=Query_Process.FieldByName('INRE_DisInDepositDate').AsString;
+     li_DISINDEPOSITTRANSID:=Query_Process.FieldByName('INRE_DISINDEPOSITTRANSID').AsInteger;
+
+     With Query_Process do
+     begin
+          Close;
+          SQL.Clear;
+          SQL.Add(' Select SPDE_DRAMOUNT From HS_SPDE_SpecialDeposit where SPDE_REFERENCETYPE=''FINAL DISCHARGE COLN''');
+          SQL.Add(' and SPDE_DEPOSITTYPE=''DEPOSIT'' and SPDE_InpatientId='+IntToStr(pi_InpatientId));
+          Open;
+     end;
+
+     if Query_Process.FieldByName('SPDE_DRAMOUNT').AsFloat=0 then
+     lb_IsFinalDisColnExist:=False
+     else
+     lb_IsFinalDisColnExist:=True;
+
+     Try
+          DM_Hospital.DB.StartTransaction;
+          With Query_Process do
+          begin
+               Close;
+               DatabaseName:=gs_DatabaseName;
+               SQL.Clear;
+               SQL.Add(' Update HS_SEBD_ServiceBillDetail Set SEBD_BillDate='+#39+ls_DisInDepositDate+#39);
+               SQL.Add(' ,SEBD_DISINDEPOSITTRANSID='+IntToStr(li_DISINDEPOSITTRANSID));
+               SQL.Add(' where SEBD_BillDetailId=0 and SEBD_InpatientId='+IntToStr(pi_InpatientId));
+               SQL.Add(' and SEBD_BillDate >='+#39+ls_DisInDepositDate+#39+' and SEBD_patientId='+IntToStr(pi_PatientId));
+               ExecSQL;
+
+
+               Close;
+               DatabaseName:=gs_DatabaseName;
+               SQL.Clear;
+               SQL.Add(' Update DoctorRoundVisit Set DISINDEPOSITTRANSID='+IntToStr(li_DISINDEPOSITTRANSID));
+               SQL.Add(' where InpatientId='+IntToStr(pi_InpatientId));
+               SQL.Add(' and patientId='+IntToStr(pi_PatientId));
+               ExecSQL;
+
+               if (li_SchemeId=22) then
+               Begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add(' Update HS_SPDE_SpecialDeposit Set SPDE_DepositDate='+#39+ls_DisInDepositDate+#39+' where SPDE_InpatientId='+IntToStr(pi_InpatientId));
+                    SQL.Add(' and SPDE_patientId='+IntToStr(pi_PatientId));
+                    SQL.Add(' and SPDE_DepositDate > '+#39+ls_DisInDepositDate+#39);
+                    ExecSQL;
+               End;
+          end;
+
+          ps_DepositType:='DEPOSIT';
+          IF lb_IsFinalDisColnExist=False Then
+          PostDepositAdjustmentIFNotExist;
+
+          DM_Hospital.DB.Commit;
+     Except
+          DM_Hospital.DB.Rollback;
+          MessageDlg('Failure To Database.',mtWarning,[mbOK],0);
+          Exit;
+     End;
+     ShowDoneMessage;
+end;
+
+procedure TForm_DischargeInDeposit.SPB_SetDiscountClick(Sender: TObject);
+Var ls_DEPOSITDATE,ls_DEPOSITTIME : String;
+    lf_CRAMOUNT:Double;
+begin
+     if (Query_InpatientInfo.FieldByName('INRE_IsTransLocked').AsString='Y') Then
+     Begin
+          MessageDlg(' Sorry ! Transaction Is Already Locked.', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     ChangeToDefaultDate(DEX_CashReceivedDate);
+     With Query_Process do
+     begin
+          Close;
+          SQL.Clear;
+          SQL.Add(' Select INRE_IsDischarged,INRE_DisDate,INRE_IsDisInDeposit,INRE_DisInDepositDate,INRE_DISINDEPOSITESCHEME,INRE_SPLDISINDEPOCASHDATE');
+          SQL.Add(' From HS_INRE_InpatientReg where INRE_InpatientId='+IntToStr(pi_InpatientId));
+          Open;
+     end;
+
+     if Query_Process.FieldByName('INRE_IsDischarged').AsString='Y' then
+     Begin
+          MessageDlg('Sorry ! This Patient Is Already Financially Cleared Throguh Discharge Billing.',mtWarning,[mbok],0);
+          Exit;
+     End;
+
+     if (Query_Process.FieldByName('INRE_DISINDEPOSITESCHEME').AsInteger<>22) Then
+     begin
+          MessageDlg('Sorry ! This Patient Is Not In Specail Deposit Case.',mtWarning,[mbok],0);
+          Exit;
+     end;
+
+
+     if (Query_Process.FieldByName('INRE_IsDisInDeposit').AsString='Y') and (Query_Process.FieldByName('INRE_SPLDISINDEPOCASHDATE').AsString<>'') then
+     Begin
+          IF Not (MessageDlg('Sorry ! This Patient Has Already Set Cash Receipt Date. Do You Want To Change Cash Receipt Date Again ?',mtConfirmation,[mbYes,mbNo],0)=mrYes) Then Exit;
+     End;
+
+     if Query_Process.FieldByName('INRE_DisInDepositDate').AsString > DEX_CashReceivedDate.Text then
+     Begin
+          MessageDlg('Sorry ! Discharged In Deposit Date Should Not Be Greater Than Cash Received Date.',mtWarning,[mbok],0);
+          DEX_CashReceivedDate.SetFocus;
+          Exit;
+     End;
+
+     With Query_Process do
+     begin
+          Close;
+          SQL.Clear;
+          SQL.Add(' Select SPDE_DEPOSITDATE,SPDE_DEPOSITTIME,SPDE_CRAMOUNT From HS_SPDE_SpecialDeposit where SPDE_InpatientId='+IntToStr(pi_InpatientId));
+          SQL.Add(' and SPDE_DEPOSITTYPE=''DIS ADJ DEP REFUND''');
+          Open;
+     end;
+
+     ls_DEPOSITDATE:=Query_Process.FieldByName('SPDE_DEPOSITDATE').AsString;
+     ls_DEPOSITTIME:=Query_Process.FieldByName('SPDE_DEPOSITTIME').AsString;
+     lf_CRAMOUNT:=Query_Process.FieldByName('SPDE_CRAMOUNT').AsFloat;
+
+     if (CB_IsCashedReceived.Checked=False) then
+     Begin
+          IF Not (MessageDlg('Sorry ! Do You Want To Remove Cash Received Date of This Discharge In Deposit Patient ?',mtConfirmation,[mbYes,mbNo],0)=mrYes) Then Exit;
+          With Query_Process do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Update HS_INRE_InpatientReg Set INRE_SPLDISINDEPOCASHDATE='''',INRE_CashRecDateAddRemoveBy='+IntToStr(gi_UserID));
+               SQL.Add(' Where INRE_InpatientID='+IntToStr(gi_InPatientID));
+               ExecSQL;
+          end;
+     End
+     else
+     begin
+          if MessageDlg('Are You Sure To Set Cash Received Date ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+          begin
+               With Query_Process do
+               begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add(' Update HS_INRE_InpatientReg Set INRE_SPLDISINDEPOCASHDATE='+#39+DEX_CashReceivedDate.text+#39+',INRE_CashRecDateAddRemoveBy='+IntToStr(gi_UserID));
+                    SQL.Add(' Where INRE_InpatientID='+IntToStr(gi_InPatientID));
+                    ExecSQL;
+
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add(' Update HS_SPDE_SpecialDeposit Set SPDE_DepositDate='+#39+DEX_CashReceivedDate.text+#39+' where SPDE_InpatientId='+IntToStr(pi_InpatientId));
+                    SQL.Add(' and SPDE_patientId='+IntToStr(pi_PatientId));
+                    SQL.Add(' and SPDE_DepositDate='+#39+ls_DEPOSITDATE+#39);
+                    SQL.Add(' and SPDE_DEPOSITTIME='+#39+ls_DEPOSITTIME+#39);
+                    SQL.Add(' and (SPDE_CRAMOUNT='+FloatToStr(lf_CRAMOUNT)+' or SPDE_DRAMOUNT='+FloatToStr(lf_CRAMOUNT)+')');
+                    ExecSQL;
+
+
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add(' Update HS_FRDE_FractionDetail Set FRDE_BILLDATE='+#39+DEX_CashReceivedDate.text+#39+' where FRDE_InpatientId='+IntToStr(pi_InpatientId));
+                    SQL.Add(' and FRDE_patientId='+IntToStr(pi_PatientId));
+                    ExecSQL;
+               end;
+          end;
+     end;
+     ShowDoneMessage;
+end;
+
+procedure TForm_DischargeInDeposit.BitBtn_FromDateClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditXDisDate,BitBtn_FromDate);
+end;
+
+procedure TForm_DischargeInDeposit.Edit_InpatientIdKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF key=#8 Then Exit;
+     
+     IF key=#13 Then
+     Begin
+          Edit_InpatientIdExit(Sender);
+          Edit_CareOf.SetFocus;
+     End;
+
+     IF Not (Key In['0'..'9']) Then key:=#0;
+     
+end;
+
+procedure TForm_DischargeInDeposit.Edit_InpatientIdExit(Sender: TObject);
+begin
+     IF Trim(Edit_InpatientId.Text)<>'' Then
+     Begin
+          With Query_InpatientInfo do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select Inre_InpatientId InpatientId,Inre_PatientId PatientId,Inre_AdmnDate Admndate,Inre_DisDate DisDate,Inre_IsDischarged Discharged,Inre_DisInCareOf DisInCareOf,');
+               sql.add(' INRE_ISDISINDEPOSIT DisInDeposit,(Select Pama_PatientName From Hs_Pama_PatientMain where pama_PatientId=Hs_Inre_InpatientReg.Inre_PatientId) as PtName,');
+               sql.add(' Inre_DisInDepositDate DisInDepositDate,INRE_SPLDISINDEPOCASHDATE SPLDISINDEPOCASHDATE, INRE_ISPHARAPPROVALGRANTED, INRE_IsTransLocked');
+               sql.add(' From Hs_Inre_InpatientReg where Inre_InpatientId='+Edit_InpatientId.Text);
+               Open;
+          End;
+
+          IF Query_InpatientInfo.RecordCount <=0 Then
+          Begin
+               MessageDlg('No Record Found With This Inpatient No., Plz Verify Inpatient No Again.',mtInformation,[mbok],0);
+               Edit_InpatientId.SetFocus;
+               Exit;
+          End;
+
+          pb_ISPHARAPPROVALGRANTED:=False;
+          IF Query_InpatientInfo.FieldByName('INRE_ISPHARAPPROVALGRANTED').AsString='Y' Then
+          pb_ISPHARAPPROVALGRANTED:=True;
+
+          LabelPtName.Caption:=Query_InpatientInfo.FieldByName('PtName').AsString;
+
+          LabelPtNo.Caption:=Query_InpatientInfo.FieldByName('PatientId').AsString;
+          pi_PatientId:=Query_InpatientInfo.FieldByName('PatientId').AsInteger;
+
+          pi_InPatientId:=Query_InpatientInfo.FieldByName('InPatientId').AsInteger;
+
+          LabelInptDate.Caption:=Query_InpatientInfo.FieldByName('AdmnDate').AsString;
+          Edit_CareOf.Text:=Query_InpatientInfo.FieldByName('DisInCareOf').AsString;
+
+          DateEditXDisDate.SystemOfDate:=gi_DateSystem;
+          ChangeToDefaultCaption(BitBtn_FromDate,BitBtn_FromDate);
+          IF Query_InpatientInfo.FieldByName('DisInDeposit').AsString='Y' Then
+          DateEditXDisDate.Text:=Query_InpatientInfo.FieldByName('DisInDepositDate').AsString
+          else
+          DateEditXDisDate.Text:=TodaysDate;
+
+          IF (Query_InpatientInfo.FieldByName('Discharged').AsString='Y') or (Query_InpatientInfo.FieldByName('DisInDeposit').AsString='Y') Then
+          Begin
+               IF Query_InpatientInfo.FieldByName('DisInDeposit').AsString='Y' Then
+               Begin
+                    LabelDisDate.Caption:=Query_InpatientInfo.FieldByName('DisInDepositDate').AsString;
+                    LabelDisPt.Caption:='Discharged In Deposit';
+                    Label5.Caption:='Dis. In Deposit Date :';
+
+                    Label_DisInDepositDate.Caption:=Query_InpatientInfo.FieldByName('DisInDepositDate').AsString;
+                    if Query_InpatientInfo.FieldByName('SPLDISINDEPOCASHDATE').AsString<>'' then
+                    Label_CashReceivedDate.Caption:=Query_InpatientInfo.FieldByName('SPLDISINDEPOCASHDATE').AsString
+                    Else
+                    Label_CashReceivedDate.Caption:='Not Received.';
+
+               End
+               Else
+               Begin
+                    LabelDisDate.Caption:=Query_InpatientInfo.FieldByName('DisDate').AsString;
+                    LabelDisPt.Caption:='Discharged Patient';
+                    Label5.Caption:='Dis. Date :';
+                    BtnSave.Enabled:=False;
+                    CB_DisInDeposit.Enabled:=False;
+               End;
+               LabelDisDate.Visible:=True;
+               Label5.Visible:=True;
+               LabelDisPt.Visible:=True;
+          End
+          Else
+          Begin
+               LabelDisDate.Visible:=False;
+               Label5.Visible:=False;
+               LabelDisPt.Visible:=False;
+               CB_DisInDeposit.Enabled:=True;
+               BtnSave.Enabled:=True;
+          End;
+     End;
+end;
+
+procedure TForm_DischargeInDeposit.Edit_InpatientIdKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_Prior Then DateEditXDisDate.SetFocus;
+end;
+
+procedure TForm_DischargeInDeposit.Edit_CareOfKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF (BtnSave.Enabled=True) and (key=#13) Then
+     BtnSave.SetFocus;
+end;
+
+
+Function TForm_DischargeInDeposit.Mutually_Share_Fraction(DOCID: Integer; ServiceType: string):Boolean;
+begin
+	With Query_MutualDocForShare do
+	Begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add(' select DSBD_DOCSHAREBREAKDOWNID,DSBD_DOCID DOCID,DSBD_DOCRATE DOCRATE,DSBD_ISREFCHRGDIVIDE ISREFCHRGDIVIDE');
+          SQL.Add(' From HS_DSBD_DOCSHAREBREAKDOWN where DSBD_DOCSHAREBREAKDOWNID=(select DSBD_DOCSHAREBREAKDOWNID From HS_DSBD_DOCSHAREBREAKDOWN ');
+          SQL.Add(' Where DSBD_DOCID=' + IntToStr(DOCID)+ ' and DSBD_SERVICETYPE=' + #39 + ServiceType + #39 + ')');
+          SQL.Add(' and DSBD_SERVICETYPE=' + #39 + ServiceType + #39 +' Order by DSBD_DOCRATE Desc');
+          Open;
+     end;
+
+     IF Query_MutualDocForShare.FieldByName('DSBD_DOCSHAREBREAKDOWNID').AsInteger >= 1 Then
+     Result := True
+     else
+     Result := False;
+end;
+
+
+(*
+
+Declare
+    vDISINDEPOSITTRANSID Number;
+Begin
+    For Rec In (Select * From InpatientReg where Patientid In (Select Patientid From (Select PatientId,Count(PatientId) as Total
+        From InpatientReg where DisInDeposit='Y' and Discharged='N'
+        Group By PatientId Having Count(PatientId) = 1)) and DisInDeposit='Y' and Discharged='N' and DISINDEPOSITTRANSID=0)
+    Loop
+        Select Max(NVL(DISINDEPOSITTRANSID,0))+1 Into vDISINDEPOSITTRANSID From InpatientReg;
+        Update InpatientReg set DISINDEPOSITTRANSID=vDISINDEPOSITTRANSID where InpatientId=Rec.InpatientId;
+        Update InpatientDetail set DISINDEPOSITTRANSID=vDISINDEPOSITTRANSID where InpatientId=Rec.InpatientId;
+        Update ServiceBillDetail set DISINDEPOSITTRANSID=vDISINDEPOSITTRANSID where PatientId=Rec.PatientId and NVL(DISINDEPOSITTRANSID,0)=0
+        and BillDetailId=0;
+        Update DoctorRoundVisit set DISINDEPOSITTRANSID=vDISINDEPOSITTRANSID where InpatientId=Rec.InpatientId;
+        Update SaleMaster set DISINDEPOSITTRANSID=vDISINDEPOSITTRANSID where CustomerId=Rec.PatientId and Cashed='N' and NVL(DISINDEPOSITTRANSID,0)=0;
+        Update ReturnMaster set DISINDEPOSITTRANSID=vDISINDEPOSITTRANSID where CustomerId=Rec.PatientId and Cashed='N' and NVL(DISINDEPOSITTRANSID,0)=0;
+    End Loop;
+End;
+
+
+Commit
+
+
+*)
+
+end.

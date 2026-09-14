@@ -1,0 +1,705 @@
+unit Unit_AgeUpdate;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ExtCtrls, StdCtrls, OleCtrls, DateEditXControl_TLB, Buttons, Db, DBTables,
+  DBCtrls,Variants, MemDS, DBAccess, Ora;
+
+type
+  TForm_AgeUpdate = class(TForm)
+    Panel1: TPanel;
+    Label1: TLabel;
+    Edit_PatientId: TEdit;
+    SBSearch: TSpeedButton;
+    Label2: TLabel;
+    Edit_FirstName: TEdit;
+    Label4: TLabel;
+    Edit_LastName: TEdit;
+    Label3: TLabel;
+    Labelage: TLabel;
+    Label5: TLabel;
+    EditAge: TEdit;
+    CmbAgeType: TComboBox;
+    Label90: TLabel;
+    DateEditXDOB: TDateEditX;
+    DateEditXRegAge: TDateEditX;
+    LabelName: TLabel;
+    Label38: TLabel;
+    CMBCountry: TDBLookupComboBox;
+    Label10: TLabel;
+    CmbDistrict: TDBLookupComboBox;
+    Label9: TLabel;
+    CmbVdc: TDBLookupComboBox;
+    Label11: TLabel;
+    CMBWardNo: TEdit;
+    EditAddress: TEdit;
+    Label12: TLabel;
+    EditPhone: TEdit;
+    BitBtn_Update: TBitBtn;
+    PostingTable: TTable;
+    DataSourceDistrict: TDataSource;
+    DataSourceCountry: TDataSource;
+    DataSourceVDC: TDataSource;
+    ButtonDOB: TButton;
+    ComboBoxGender: TComboBox;
+    lbl1: TLabel;
+    edt_remarkupdate: TEdit;
+    Edit_MobileNo: TEdit;
+    Label6: TLabel;
+    Query_Save: TOraQuery;
+    Query_SubProcess: TOraQuery;
+    QueryProcess: TOraQuery;
+    Query_Search: TOraQuery;
+    QueryCountry: TOraQuery;
+    QueryVDC: TOraQuery;
+    QueryDistrict: TOraQuery;
+    Edit_Email: TEdit;
+    Label7: TLabel;
+    QryPost: TOraQuery;
+    Qry: TOraQuery;
+    Label8: TLabel;
+    dblcb_title: TDBLookupComboBox;
+    OraQueryTitle: TOraQuery;
+    DS_title: TDataSource;
+    procedure EditAgeKeyPress(Sender: TObject; var Key: Char);
+    procedure EditAgeExit(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure SBSearchClick(Sender: TObject);
+    procedure Edit_PatientIdKeyPress(Sender: TObject; var Key: Char);
+    procedure BitBtn_UpdateClick(Sender: TObject);
+    procedure CmbAgeTypeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure SpeedButton6Click(Sender: TObject);
+    procedure PasswordVerification;
+    procedure SpeedButton4Click(Sender: TObject);
+    procedure SpeedButton13Click(Sender: TObject);
+    procedure PatientRecordModificationLog(pi_PatientID:Integer);
+    procedure PatientModifiedRecord(pi_PatientID:Integer);
+    procedure CmbDistrictClick(Sender: TObject);
+    procedure CmbVdcClick(Sender: TObject);
+    procedure CmbDistrictKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CmbDistrictKeyPress(Sender: TObject; var Key: Char);
+    procedure CmbVdcKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CmbVdcKeyPress(Sender: TObject; var Key: Char);
+    procedure EditAgeChange(Sender: TObject);
+    procedure CmbAgeTypeChange(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+   pi_PatientID,pi_SetAgeCount,pi_agetype:Integer;
+    Ps_DOBAD,ps_age:String;
+  end;
+
+var
+  Form_AgeUpdate: TForm_AgeUpdate;
+
+implementation
+
+uses Fxn,serverdate, dm,  UnitVDC;
+
+{$R *.DFM}
+
+procedure TForm_AgeUpdate.EditAgeKeyPress(Sender: TObject; var Key: Char);
+begin
+     If key=#8 then exit;
+     IF Key=#13 Then
+     Begin
+     IF EditAge.Text<>'' Then
+          CmbAgeType.SetFocus
+     End;
+     If (key<'0') or (key>'9')then
+     begin
+          key:=#0;
+          exit;
+     End;
+end;
+
+procedure TForm_AgeUpdate.EditAgeChange(Sender: TObject);
+begin
+     EditAgeExit(Sender);
+end;
+
+procedure TForm_AgeUpdate.EditAgeExit(Sender: TObject);
+Var li_DOBADCAlc:Integer;
+DateEditXDOBAD:TDateEditX;
+begin
+   if ps_age<>EditAge.Text then
+   begin
+        DateEditXDOBAD:=TDateEditX.Create(nil);
+        DateEditXDOBAD.SystemOfDate:=gi_DateSystem;
+        IF ((Trim(EditAge.Text)='') or (Trim(EditAge.Text)='0')) and (pi_SetAgeCount <= 2) Then
+        Begin
+           pi_SetAgeCount:=pi_SetAgeCount+1;
+           MessageDlg('Plz. put patient age.',mtWarning,[mbok],0);
+           EditAge.Text:='0';
+           EditAge.SetFocus;
+        End;
+        IF (Trim(EditAge.Text)<>'') Then
+        Begin
+           IF StrToInt(EditAge.Text) > 0 Then
+           Begin
+                DateEditXRegAge.SystemOfDate:=gi_DateSystem;
+                //DateEditXDOB.SystemOfDate:=gi_DateSystem;
+                DateEditXRegAge.Text:=ServerDate.TodaysDate;
+                //ChangeCaption(ButtonDOB);
+                if CmbAgeType.Text='Year' then
+                DateEditXRegAge.ADDateAsDate:=DateEditXRegAge.ADDateAsDate-StrToInt(EditAge.Text)*365
+                Else if CmbAgeType.Text='Month' then
+                DateEditXRegAge.ADDateAsDate:=DateEditXRegAge.ADDateAsDate-StrToInt(EditAge.Text)*30
+                Else if CmbAgeType.Text='Day' then
+                DateEditXRegAge.ADDateAsDate:=DateEditXRegAge.ADDateAsDate-StrToInt(EditAge.Text);
+                //DateEditXDOB.Text:=ADToVS(DateEditXRegAge.VSDateAsText);
+                //DateEditXDOB.VSDateAsText:=DateEditXRegAge.VSDateAsText;
+                //DateEditXDOB.Text:=DateEditXRegAge.Text;
+                DateEditXDOBAD.TExt:= DateEditXRegAge.Text; //Subtracting 56 Yrs 08 Months and 16 Days to get ADDOB from DOB
+                DateEditXDOBAD.SystemOfDate:=1;
+                Ps_DOBAD:= DateEditXDOBAD.TExt;
+                DateEditXRegAge.Visible:=False;
+                DateEditXDOB.text:=DateEditXDOBAD.VSDateAsText;
+           End;
+        End;
+   end
+   else
+   begin
+        DateEditXDOB.text:=Query_Search.FieldByName('dobvs').AsString;
+        Ps_DOBAD:=Query_Search.FieldByName('dobad').AsString;
+   end;
+end;
+
+procedure TForm_AgeUpdate.FormShow(Sender: TObject);
+begin
+     pi_SetAgeCount:=0;
+     DateEditXRegAge.Visible:=False;
+     DateEditXDOB.text:=Serverdate.TodaysDate;
+     QueryCountry.Close;
+     QueryCountry.Open;
+     QueryDistrict.Close;
+     QueryDistrict.Open;
+     QueryVDC.Close;
+     QueryVDC.Open;
+     if gi_UserId=97 THEN
+     BEGIN
+          Edit_FirstName.Enabled:=TRUE;
+          Edit_LastName.Enabled:=TRUE;
+          DateEditXDOB.Enabled:=TRUE;
+          CMBCountry.Enabled:=TRUE;
+          CmbDistrict.Enabled:=TRUE;
+          CmbDistrict.Enabled:=TRUE;
+          EditAddress.Enabled:=TRUE;
+          EditPhone.Enabled:=TRUE;
+          //EditRPhone.Enabled:=TRUE;
+          ComboBoxGender.Enabled:=TRUE;
+     END;
+
+    //Edit_PatientId.EditLabel.Caption := Gs_HosNoCaptionName;
+    Edit_PatientId.Text := Gs_PatientIdCaption;
+
+
+
+end;
+
+procedure TForm_AgeUpdate.SBSearchClick(Sender: TObject);
+begin
+     With Query_Search Do
+     Begin
+          close;
+          Session:=DM_Hospital.DB;
+          Sql.clear;
+          sql.add(' Select title,(select titl_titleid from hs_titl_title where titl_titlename=title)titleid,PatientId,fname,Lname,Fname||'' ''||LName as Name,dobvs,dobad,PHONENO,MOBILENO,WARDNO,address,EMAIL,countryid,districtid,VDCMCPTID,REMARKS,');
+          sql.add('CURRENTAGEGENDER,trim(substr(CURRENTAGEGENDER,0,2)) as CAge,trim(substr(CURRENTAGEGENDER,4,1)) as CAgettype,Gender');
+          Sql.add('From VW_HS_PATIENTMAIN where');
+          sql.add('patientid='+Edit_PatientId.Text);
+         // SQL.SaveToFile('C:\abcd.TXT');
+          Open;
+     End;
+     with OraQueryTitle do
+     begin
+          Close;
+          session:=DM_Hospital.DB;
+          Open;
+     end;
+     If Query_Search.RecordCount=0 then
+     Begin
+          MessageDlg('There is no any patient with This Patientid.',mtInformation,[mbok],0);
+          Edit_PatientId.SetFocus;
+          Exit;
+     End;
+
+     dblcb_title.KeyValue:=query_search.fieldbyname('titleid').AsString;
+     Ps_DOBAD:=Query_Search.FieldByName('dobad').AsString;
+     pi_PatientID:= query_search.fieldbyname('PatientId').asinteger;
+     LabelName.caption:=Query_Search.Fieldbyname('Name').AsString;
+     Labelage.caption:=Query_Search.Fieldbyname('CURRENTAGEGENDER').AsString;
+     Edit_FirstName.text:=Query_Search.Fieldbyname('fname').AsString;
+     Edit_LastName.text:=Query_Search.Fieldbyname('Lname').AsString;
+     EditAge.Text:=Query_Search.Fieldbyname('CAge').AsString;
+     ps_age:=Query_Search.Fieldbyname('CAge').AsString;
+     Edit_Email.text:=Query_Search.Fieldbyname('Email').AsString;
+     edt_remarkupdate.Text:= Query_Search.Fieldbyname('Remarks').AsString;
+     if Query_Search.Fieldbyname('CAgettype').AsString='Y' then
+          CmbAgeType.ItemIndex:=0
+     else If Query_Search.Fieldbyname('CAgettype').AsString='M' then
+          CmbAgeType.ItemIndex:=1
+     else
+          CmbAgeType.ItemIndex:=2;
+
+     pi_agetype:=CmbAgeType.ItemIndex;
+     if Query_Search.Fieldbyname('Gender').AsString='MALE' then
+     ComboBoxGender.ItemIndex:=0
+     else if Query_Search.Fieldbyname('Gender').AsString='FEMALE' then
+     ComboBoxGender.ItemIndex:=1;
+
+     DateEditXDOB.text:=Query_Search.Fieldbyname('Dobvs').AsString;
+
+     if Query_Search.Fieldbyname('countryid').AsInteger>0 then
+     CMBCountry.KeyValue:=Query_Search.Fieldbyname('countryid').Asinteger;
+
+     //if Query_Search.Fieldbyname('districtid').Asinteger>0 then
+     CmbDistrict.KeyValue:=Query_Search.Fieldbyname('districtid').Asinteger;
+
+     With QueryVDC do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' select * from HS_VDCMCPT');
+          if Query_Search.Fieldbyname('districtid').Asinteger > 0 then
+          sql.add(' where DistrictID='+IntToStr(CmbDistrict.KeyValue));
+          sql.add(' Order By VDCName');
+          Open;
+     End;
+
+     cmbvdc.KeyValue:=Query_Search.FieldByName('vdcmcptid').AsInteger;
+
+     CMBWardNo.Text:=Query_Search.Fieldbyname('WARDNO').AsString;
+     EditAddress.text:= Query_Search.Fieldbyname('Address').AsString;
+
+     EditPhone.Text:=Query_Search.Fieldbyname('PHONENO').AsString;
+     Edit_MobileNo.Text:=Query_Search.Fieldbyname('MOBILENO').AsString;
+     //EditRPhone.Text:=Query_Search.Fieldbyname('RPHONENO').AsString;
+
+end;
+
+procedure TForm_AgeUpdate.Edit_PatientIdKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     If key=#13 then
+     Begin
+          IF Edit_PatientId.Text<>'' Then
+          Begin
+               SBSearchClick(Sender);
+               EditAge.SetFocus;
+          End
+          Else
+          Begin
+               MessageDlg('Please Enter The Patientid To Search.',mtInformation,[mbok],0);
+               Edit_PatientId.SetFocus;
+               Exit;
+          End;
+     End;
+end;
+
+procedure TForm_AgeUpdate.BitBtn_UpdateClick(Sender: TObject);
+begin
+     if (EditAge.Text='') or (EditAge.text='0') then
+     Begin
+          MessageDlg('Please put The Patient Age.',mtInformation,[mbok],0);
+          EditAge.SetFocus;
+          Exit;
+     End;
+     if (Edit_PatientId.text='') or (Edit_PatientId.text='0') then
+     Begin
+          MessageDlg('Please Enter The Patientid To Search.',mtInformation,[mbok],0);
+          Edit_PatientId.SetFocus;
+          Exit;
+     End;
+     
+
+     if (edt_remarkupdate.Text='') or (edt_remarkupdate.text='0') then
+     Begin
+          MessageDlg('Please put Remark for Modification.',mtInformation,[mbok],0);
+          edt_remarkupdate.SetFocus;
+          Exit;
+     End;
+
+     If messageDlg('Are You Sure To Change The Patient Information?', mtconfirmation, [mbyes,mbno], 0)=mryes then
+     Begin
+          Try
+               DM_Hospital.DB.StartTransaction;
+               PatientRecordModificationLog(pi_PatientID);
+               With Query_Save Do
+               Begin
+                    close;
+                    Session:=DM_Hospital.DB;
+                    Sql.clear;
+                    sql.add('Update hs_pama_patientmain set pama_age='+QuotedStr(EditAge.Text)+',pama_agetype='+Quotedstr(CmbAgeType.Text));
+                    sql.add(',pama_title='+Quotedstr(dblcb_title.Text));
+                    sql.add(',pama_GENDER='+Quotedstr(ComboBoxGender.text));
+                    sql.add(',pama_dobvs='+QuotedStr(DateEditXDOB.text)+',pama_Dobad='+QuotedStr(Ps_DOBAD));
+                    sql.add(',pama_fname='+Quotedstr(Edit_FirstName.text));
+                    sql.add(',pama_Lname='+Quotedstr(Edit_LastName.text));
+                    if CMBCountry.keyvalue>0 then
+                    sql.add(',pama_countryid='+IntToStr(CMBCountry.keyvalue));
+                    if CmbDistrict.keyvalue>0 then
+                    sql.add(',pama_districtid='+IntToStr(CmbDistrict.keyvalue));
+                    if CmbVdc.keyvalue>0 then
+                    sql.add(',PAMA_VDCMCPTID='+IntToStr(CmbVdc.keyvalue));
+                    sql.add(',pama_WARDNO='+Quotedstr(CMBWardNo.text));
+                    sql.add(',pama_Address='+Quotedstr(EditAddress.text));
+                    sql.add(',pama_PHONENO='+Quotedstr(EditPhone.text));
+                    sql.add(',pama_MOBILENO='+Quotedstr(Edit_MobileNo.text));
+                    //ssql.add(',RPHONENO='+Quotedstr(EditRPhone.text));
+                    sql.add(',pama_PATIENTNAME='+#39+Edit_FirstName.text+' '+Edit_LastName.text+#39);
+                    sql.add(',pama_remarks='+Quotedstr(edt_remarkupdate.text));
+                    sql.Add(',PAMA_EMAIL='+QuotedStr(Edit_Email.Text));
+                    sql.add(' where pama_patientid='+Edit_PatientId.Text);
+                    sql.saveToFile('C:\update.Txt');
+                    Execsql;
+               End;
+               DM_Hospital.DB.Commit;
+               PatientModifiedRecord(pi_PatientID);
+               ShowDoneMessage;
+          Except
+               DM_Hospital.DB.Rollback;
+               ShowMessage('Failure to save data !');
+               Exit;
+          End;
+     End;
+     Edit_PatientId.text:='';
+     LabelName.Caption:='Name';
+     Labelage.caption:='Age';
+     EditAge.Text:='0';
+     Edit_FirstName.text:='';
+     Edit_LastName.text:='';
+     CmbAgeType.ItemIndex:=0;
+     ComboBoxGender.ItemIndex:=0;
+     DateEditXDOB.text:=Serverdate.TodaysDate;
+     CMBCountry.KeyValue:=NULL;
+     CmbDistrict.KeyValue:=null;
+     CmbVdc.KeyValue:=null;
+     CMBWardNo.Text:='';
+     EditAddress.text:= '';
+     EditPhone.Text:= '';
+     Edit_MobileNo.text:='';
+     Edit_Email.text:='';
+     //EditRPhone.Text:='';
+     edt_remarkupdate.Text:='';
+     dblcb_title.KeyValue:=null;
+end;
+
+procedure TForm_AgeUpdate.CmbAgeTypeChange(Sender: TObject);
+Var li_DOBADCAlc:Integer;
+DateEditXDOBAD:TDateEditX;
+begin
+     if pi_agetype<>CmbAgeType.ItemIndex then
+     begin
+          DateEditXDOBAD:=TDateEditX.Create(nil);
+          DateEditXDOBAD.SystemOfDate:=gi_DateSystem;
+          DateEditXRegAge.SystemOfDate:=gi_DateSystem;
+          //DateEditXDOB.SystemOfDate:=gi_DateSystem;
+          DateEditXRegAge.Text:=ServerDate.TodaysDate;
+          IF EditAge.Text='' Then
+          EditAge.Text:='0';
+          if CmbAgeType.Text='Year' then
+          DateEditXRegAge.ADDateAsDate:=DateEditXRegAge.ADDateAsDate-StrToInt(EditAge.Text)*365
+          Else if CmbAgeType.Text='Month' then
+          DateEditXRegAge.ADDateAsDate:=DateEditXRegAge.ADDateAsDate-StrToInt(EditAge.Text)*30
+          Else if CmbAgeType.Text='Day' then
+          DateEditXRegAge.ADDateAsDate:=DateEditXRegAge.ADDateAsDate-StrToInt(EditAge.Text);
+          //DateEditXDOB.VSDateAsText:=DateEditXRegAge.VSDateAsText;
+          //DateEditXDOB.Text:=DateEditXRegAge.Text;
+          DateEditXDOBAD.TExt:= DateEditXRegAge.Text; //Subtracting 56 Yrs 08 Months and 16 Days to get ADDOB from DOB
+          DateEditXDOBAD.SystemOfDate:=1;
+          Ps_DOBAD:= DateEditXDOBAD.TExt;
+          DateEditXDOB.text:=DateEditXDOBAD.VSDateAsText;
+     end
+     else
+     begin
+          DateEditXDOB.text:=Query_Search.FieldByName('dobvs').AsString;
+          Ps_DOBAD:=Query_Search.FieldByName('dobad').AsString;
+     end;
+end;
+
+procedure TForm_AgeUpdate.CmbAgeTypeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     IF key=VK_Prior Then
+     EditAge.SetFocus;
+end;
+
+procedure TForm_AgeUpdate.SpeedButton6Click(Sender: TObject);
+begin
+ PasswordVerification;
+end;
+
+procedure TForm_AgeUpdate.PasswordVerification;
+begin
+     {b_InchVerified:=False;
+   Form_InchargeVerification:=TForm_InchargeVerification.Create(Self);
+   with Form_InchargeVerification do
+   Begin
+     Try
+       Showmodal;
+     Finally
+       Free;
+     End;
+   End; }
+end;
+
+procedure TForm_AgeUpdate.SpeedButton4Click(Sender: TObject);
+begin
+      //PasswordVerification;
+   //IF b_InchVerified=True Then
+   //Begin
+     With FormVDC Do
+     Begin
+        Try
+          FormVDC:=TFormVDC.Create(Application);
+          Showmodal;
+        Finally
+          Free;
+        End;
+     End;
+     CmbVdc.SetFocus;
+     QueryVDC.Close;
+     QueryVDC.Open;
+   //End;
+end;
+
+procedure TForm_AgeUpdate.SpeedButton13Click(Sender: TObject);
+begin
+ {Application.CreateForm(TForm_NameAddCorrection,Form_NameAddCorrection);
+     With Form_NameAddCorrection Do
+     Begin
+          Try
+               ps_Info:='Address';
+               Showmodal;
+          Finally
+               Free;
+          End;
+     End; }
+end;
+
+procedure TForm_AgeUpdate.PatientRecordModificationLog(pi_PatientID: Integer);
+Var
+     Maxid:Integer;
+begin
+
+
+     With Qry Do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+         // With Sql Do
+        //  Begin
+               sql.Clear;
+              sql.Add('Select * From VW_HS_PATIENTMAIN ');
+               sql.add(' Where patientID='+IntToStr(pi_PatientID));
+               sql.savetofile('C:\tt23.txt');
+
+         // End;
+          Open;
+     End;
+
+     {PostingTable.close;
+     PostingTable.databasename:=gs_DatabaseName;
+     Postingtable.TableName:='HS_LOG_PATIENTINFOMODIFICATION';
+     PostingTable.Open;
+
+     With PostingTable Do
+     Begin
+          Append;
+          FieldByName('PIMID').AsInteger:=GetMaxId('HS_LOG_PATIENTINFOMODIFICATION','PIMID');
+          FieldByName('PATIENTID').AsInteger:=Qry.FieldByName('PATIENTID').AsInteger;
+          FieldByName('TITLE').AsString:=Qry.FieldByName('TITLE').AsString;
+          FieldByName('PATIENTNAME').AsString:=Qry.FieldByName('PATIENTNAME').AsString;
+          FieldByName('GENDER').AsString:=Qry.FieldByName('GENDER').AsString;
+          FieldByName('AGE').AsString:=Qry.FieldByName('AGE').AsString;
+          FieldByName('AGETYPE').AsString:=Qry.FieldByName('AGETYPE').AsString;
+          FieldByName('DOBVS').AsString:=Qry.FieldByName('DOBVS').AsString;
+          FieldByName('DOBAD').AsString:=Qry.FieldByName('DOBAD').AsString;
+          FieldByName('REGBY').AsString:=Qry.FieldByName('REGBY').AsString;
+          //FieldByName('MODIFYDATE').AsString:=Qry.FieldByName('MODIFYDATE').AsString;
+          //FieldByName('MODIFYTIME').AsString:=Qry.FieldByName('MODIFYTIME').AsString;
+          //FieldByName('DEPCODE').AsString:=Qry.FieldByName('DEPCODE').AsString;
+          FieldByName('REGDATE').AsString:=Qry.FieldByName('REGDATE').AsString;
+          FieldByName('ADDRESS').AsString:=Qry.FieldByName('ADDRESS').AsString;
+          //FieldByName('DOCCODE').AsString:=Qry.FieldByName('DOCCODE').AsString;
+          FieldByName('COMMUNITYID').AsString:=Qry.FieldByName('COMMUNITYid').AsString;
+          FieldByName('REGTIME').AsString:=Qry.FieldByName('REGTIME').AsString;
+          //FieldByName('CURRENTAGE').AsString:=Qry.FieldByName('CURRENTAGE').AsString;
+          FieldByName('SCHEMEID').AsString:=Qry.FieldByName('SCHEMEID').AsString;
+          //FieldByName('MemberNo').AsString:=Qry.FieldByName('MemberNo').AsString;
+          FieldByName('WARDNO').AsString:=Qry.FieldByName('WARDNO').AsString;
+          FieldByName('DISTRICTID').AsString:=Qry.FieldByName('DISTRICTID').AsString;
+          FieldByName('VDCMCPTID').AsString:=Qry.FieldByName('VDCMCPTID').AsString;
+          Post;
+     End;}
+     //QryPost:=Toraquery.create(nil);
+
+     Maxid:=GetMaxId('HS_LOG_PATIENTINFOMODIFICATION','PIMID');
+     with QryPost do
+     begin
+          close;
+          Session:=DM_Hospital.DB;
+          SQL.Clear;
+          sql.Add('insert into HS_LOG_PATIENTINFOMODIFICATION (');
+          sql.Add('PIMID,PATIENTID,TITLE,PATIENTNAME,GENDER,AGE,AGETYPE,DOBVS,DOBAD,REGBY,MODIFYDATE,MODIFYTIME,DEPCODE,REGDATE,ADDRESS,DOCCODE,COMMUNITYID,REGTIME,CURRENTAGE,SCHEMEID,MemberNo,WARDNO');
+          sql.Add(',DISTRICTID,VDCMCPTID,MACID,MODIFIEDBY) values(');
+          SQL.Add(IntToStr(Maxid)+','+intToStr(Qry.FieldByName('PATIENTID').AsInteger)+','+QuotedStr(Qry.FieldByName('TITLE').AsString));
+          sql.Add(','+QuotedStr(Qry.FieldByName('PATIENTNAME').AsString)+','+QuotedStr(Qry.FieldByName('GENDER').AsString)+','+QuotedStr(Qry.FieldByName('AGE').AsString));
+          sql.Add(','+QuotedStr(Qry.FieldByName('AGETYPE').AsString)+','+QuotedStr(Qry.FieldByName('DOBVS').AsString)+','+Quotedstr(Qry.FieldByName('DOBAD').AsString));
+          sql.Add(','+Quotedstr(Qry.FieldByName('REGBY').AsString)+','+QuotedStr(serverdate.TodaysDate)+','+QuotedStr(serverdate.TodaysTime));
+          sql.Add(','+QuotedStr(Qry.FieldByName('DEPCODE').AsString)+','+QuotedStr(Qry.FieldByName('REGDATE').AsString)+','+QuotedStr(Qry.FieldByName('ADDRESS').AsString));
+          sql.Add(','+QuotedStr(Qry.FieldByName('DOCCODE').AsString)+','+QuotedStr(Qry.FieldByName('COMMUNITYid').AsString)+','+QuotedStr(Qry.FieldByName('REGTIME').AsString));
+          sql.Add(','+QuotedStr(Qry.FieldByName('CURRENTAGE').AsString)+','+QuotedStr(Qry.FieldByName('SCHEMEID').AsString)+','+QuotedStr(Qry.FieldByName('MemberNo').AsString));
+          sql.Add(','+QuotedStr(Qry.FieldByName('WARDNO').AsString)+','+QuotedStr(Qry.FieldByName('DISTRICTID').AsString)+','+quotedStr(Qry.FieldByName('VDCMCPTID').AsString));
+          sql.Add(','+QuotedStr(gs_MacID)+','+intTOStr(gi_UserID));
+          sql.Add(')');
+          //SQL.savetofile('C:\abct1.txt');
+          ExecSQL;
+     end;
+
+end;
+
+procedure TForm_AgeUpdate.PatientModifiedRecord(pi_PatientID: Integer);
+Var  MaxID:Integer;
+begin
+      With Query_SubProcess Do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.Add('Select * From VW_HS_PATIENTMAIN ');
+          sql.add(' Where patientID='+IntToStr(pi_PatientID));
+          Open;
+     End;
+
+     With QueryProcess Do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.Add('Select Max(PIMID) MaxPRMID From HS_LOG_PATIENTINFOMODIFICATION Where patientID='+IntToStr(pi_PatientID));
+          Open;
+          MaxID:=QueryProcess.FieldByName('MaxPRMID').AsInteger;
+
+          Close;
+          sql.Clear;
+          sql.Add(' Update HS_LOG_PATIENTINFOMODIFICATION Set');
+          sql.Add(' PRETITLE='+Chr(39)+Query_SubProcess.FieldByName('TITLE').AsString+Chr(39));
+          sql.Add(' ,PREPATIENTNAME= '+Chr(39)+Query_SubProcess.FieldByName('FNAME').AsString+Query_SubProcess.FieldByName('LNAME').AsString+chr(39));
+          sql.Add(' ,PREGENDER='+Chr(39)+Query_SubProcess.FieldByName('GENDER').AsString+Chr(39));
+          sql.Add(' ,PREAGE='+Chr(39)+Query_SubProcess.FieldByName('AGE').AsString+Chr(39));
+          sql.Add(' ,PREAGETYPE='+Chr(39)+Query_SubProcess.FieldByName('AGETYPE').AsString+Chr(39));
+          sql.Add(' ,PREDOBVS='+Chr(39)+Query_SubProcess.FieldByName('DOBVS').AsString+Chr(39));
+          sql.Add(' ,PREDOBAD='+Chr(39)+Query_SubProcess.FieldByName('DOBAD').AsString+Chr(39));
+          sql.Add(' ,PREREGBY='+IntToStr(gi_userID));
+          sql.Add(' ,PREREGDATE='+Chr(39)+TodaysDate+Chr(39));
+          sql.Add(' ,PREREGTIME='+Chr(39)+TodaysTime+Chr(39));
+          sql.Add(' ,PREADDRESS='+Chr(39)+Query_SubProcess.FieldByName('ADDRESS').AsString+Chr(39));
+          if Query_SubProcess.FieldByName('COMMUNITYid').AsInteger<>NULL then
+               sql.Add(' ,PRECOMMUNITYID='+Query_SubProcess.FieldByName('COMMUNITYid').AsString)
+          Else
+               sql.Add(' ,PRECOMMUNITYID=0');
+          if Query_SubProcess.FieldByName('SCHEMEID').AsInteger<>NULL then
+          sql.Add(' ,PRESCHEMEID='+Query_SubProcess.FieldByName('SCHEMEID').AsString)
+          Else
+          Sql.add(',Preschemeid=0');
+          //sql.Add(' ,MemberNo='+Query_SubProcess.FieldByName('MemberNo').AsString);
+          sql.Add(' ,PREWARDNO='+Chr(39)+Query_SubProcess.FieldByName('WARDNO').AsString+Chr(39));
+          sql.Add(' ,PREDISTRICTID='+Query_SubProcess.FieldByName('DISTRICTID').AsString);
+          if Query_SubProcess.FieldByName('VDCMCPTID').AsInteger<>NULL then
+               sql.Add(' ,PREVDCMCPTID='+Query_SubProcess.FieldByName('VDCMCPTID').AsString)
+          Else
+               sql.Add(' ,PREVDCMCPTID=0');
+          sql.Add(' Where patientID='+IntToStr(pi_PatientID));
+          sql.Add(' And PIMID='+IntToStr(MaxID));
+          //sql.saveToFile('C:\PtModify.Txt');
+          ExecSQL;
+     End;
+end;
+
+procedure TForm_AgeUpdate.CmbDistrictClick(Sender: TObject);
+begin
+      IF CmbDistrict.KeyValue<>NULL Then
+      Begin
+           With QueryVDC do
+           Begin
+              Close;
+              sql.Clear;
+              sql.add(' select * from HS_VDCMCPT');
+              sql.add(' where DistrictID='+IntToStr(CmbDistrict.KeyValue));
+              sql.add(' Order By VDCName');
+              Open;
+           End;
+      End;
+end;
+
+procedure TForm_AgeUpdate.CmbVdcClick(Sender: TObject);
+begin
+With QueryVDC Do
+  Begin
+    Close;
+    Open;
+  End;
+end;
+
+procedure TForm_AgeUpdate.CmbDistrictKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+IF key=VK_Delete Then
+  CmbDistrict.KeyValue:=NULL;
+
+  IF key=VK_Prior Then
+  EditAge.SetFocus;
+  //CMBCountry.SetFocus;
+end;
+
+procedure TForm_AgeUpdate.CmbDistrictKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+ IF Key=#13 Then
+    Begin
+         IF CmbDistrict.Text<>' ' Then
+         Begin
+            IF gi_compileValue=5 Then
+            CmbVdc.SetFocus
+            Else
+            EditAddress.SetFocus;
+         End
+         Else
+         CmbDistrict.SetFocus;
+    End;
+  
+end;
+
+procedure TForm_AgeUpdate.CmbVdcKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+IF key=VK_F1 Then
+   Begin
+      SpeedButton4Click(Sender);
+      CmbVdc.SetFocus;
+   End;
+   IF key=VK_Delete Then
+   CmbVdc.KeyValue:=NULL;
+
+  IF key=VK_Prior Then
+  CmbDistrict.SetFocus;
+
+end;
+
+procedure TForm_AgeUpdate.CmbVdcKeyPress(Sender: TObject; var Key: Char);
+begin
+IF Key=#13 Then
+     Begin
+          CMBWardNo.SetFocus;
+     End;
+end;
+
+end.

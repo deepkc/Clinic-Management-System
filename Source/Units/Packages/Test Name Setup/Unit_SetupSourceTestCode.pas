@@ -1,0 +1,198 @@
+unit Unit_SetupSourceTestCode;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, ExtCtrls,DM,ComCtrls, Grids, DBGrids, DB, MemDS,
+  DBAccess, Ora,fxn;
+
+type
+  TForm_SourceSetupTestCode = class(TForm)
+    Panel1: TPanel;
+    BitBtn_New: TBitBtn;
+    BitBtn_Save: TBitBtn;
+    BitBtn_Close: TBitBtn;
+    Panel2: TPanel;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    DBGrid1: TDBGrid;
+    Edit_SourceTestCode: TEdit;
+    Label1: TLabel;
+    OraQuery_SaveOrUpdate: TOraQuery;
+    OraQuery_DbGrid: TOraQuery;
+    DS_DbGrid: TDataSource;
+    procedure BitBtn_SaveClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure BitBtn_CloseClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure BitBtn_NewClick(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+  var pb_isNew:boolean;
+    { Public declarations }
+  end;
+
+var
+  Form_SourceSetupTestCode: TForm_SourceSetupTestCode;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_SourceSetupTestCode.BitBtn_CloseClick(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex=0 then
+     begin
+          pb_isNew:=false;
+          close;
+
+     end
+     else
+     begin
+          pb_isNew:=False;
+          PageControl1.ActivePageIndex:=0;
+          BitBtn_New.Enabled:=True;
+          BitBtn_Save.enabled:=False;
+     end;
+end;
+
+procedure TForm_SourceSetupTestCode.BitBtn_NewClick(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex:=1;
+     BitBtn_New.Enabled:=false;
+     BitBtn_Save.Enabled:=True;
+     Edit_SourceTestCode.text:='';
+end;
+
+procedure TForm_SourceSetupTestCode.BitBtn_SaveClick(Sender: TObject);
+var MaxIdVar:Integer;
+var oraQueryCheck:TOraquery;
+begin
+     if Edit_SourceTestCode.Text='' then
+     begin
+          ShowMessage('Please Enter the Source TestCode');
+          Edit_SourceTestCode.SetFocus;
+          Exit;
+     end;
+     oraQueryCheck:=ToraQuery.create(nil);
+     with  oraQueryCheck do
+     begin
+          close;
+          session:=DM_Hospital.Db;
+          sql.clear;
+          sql.add('select * from hs_SOTC_sourcetestcode where SOTC_SOURCETESTCODE='+QuotedStr(Edit_SourceTestCode.text));
+          open;
+     end;
+
+     if oraQueryCheck.RecordCount>0 then
+     begin
+          ShowMessage('The Source TestCode you have entered is already Present !!!');
+           Edit_SourceTestCode.SetFocus;
+          exit;
+     end;
+
+
+     if pb_isNew=False then
+     begin
+          MaxIdVar:=GetMaxId('hs_SOTC_sourcetestcode','sotc_sourcetestcodeid');
+          with OraQuery_SaveOrUpdate do
+          begin
+               close;
+               Session:=DM_Hospital.DB;
+               sql.Clear;
+               sql.Add('insert into hs_SOTC_sourcetestcode values(');
+               sql.Add(IntToStr(MaxIdVar)+','+QuotedStr(Edit_SourceTestCode.Text));
+               sql.Add(')');
+               //sql.savetofile('C:\abc55.txt');
+               ExecSQL;
+          end;
+
+     end
+     else
+     begin
+          with OraQuery_SaveOrUpdate do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               sql.Add('Update hs_SOTC_sourcetestcode set SOTC_SOURCETESTCODE='+QuotedStr(Edit_SourceTestCode.text));
+               sql.Add(' where SOTC_SOURCETESTCODEID='+intTOStr(OraQuery_DbGrid.FieldByName('SOTC_SOURCETESTCODEID').AsInteger));
+               ExecSQL;
+          end;
+
+     end;
+     OraQuery_DbGrid.Close;
+     OraQuery_DbGrid.Session:=DM_Hospital.DB;
+     OraQuery_DbGrid.Open;
+     PageControl1.ActivePageIndex:=0;
+     BitBtn_Save.Enabled:=False;
+     BitBtn_New.Enabled:=True;
+     ShowDoneMessage;
+end;
+
+procedure TForm_SourceSetupTestCode.DBGrid1DblClick(Sender: TObject);
+begin
+     if OraQuery_DbGrid.RecordCount>0 then
+     begin
+          pb_isNew:=True;
+          PageControl1.ActivePageIndex:=1;
+          BitBtn_New.Enabled:=false;
+          BitBtn_Save.Enabled:=True;
+          Edit_SourceTestCode.text:=OraQuery_DbGrid.FieldByName('sotc_sourcetestcode').AsString;
+
+     end
+     else
+     begin
+          ShowMessage('No Records Found !!!');
+          PageControl1.ActivePageIndex:=0;
+          Exit;
+     end;
+end;
+
+procedure TForm_SourceSetupTestCode.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if Key=VK_ESCAPE then
+     close;
+end;
+
+procedure TForm_SourceSetupTestCode.FormKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if Key=#27 then
+     Close;
+end;
+
+procedure TForm_SourceSetupTestCode.FormShow(Sender: TObject);
+begin
+     With OraQuery_DbGrid do
+     begin
+          close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.Add('select * from hs_SOTC_sourcetestcode order by SOTC_SOURCETESTCODEID');
+          open;
+     end;
+
+     PageControl1.ActivePageIndex:=0;
+     BitBtn_Save.Enabled:=false;
+     pb_isNew:=false;
+
+end;
+
+procedure TForm_SourceSetupTestCode.PageControl1Change(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex=1 then
+     PageControl1.ActivePageIndex:=0
+     else
+     PageControl1.ActivePageIndex:=1;
+
+end;
+
+end.

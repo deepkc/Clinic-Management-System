@@ -1,0 +1,1118 @@
+unit Unit_DoctorRoutine;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ComCtrls, StdCtrls, Grids, DBGrids, ExtCtrls, Buttons, DBCtrls, Db, Variants,
+  DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Fxn, ServerDate, Mask,DM;
+
+type
+  TForm_DoctorRoutine = class(TForm)
+    PageControlDocRoutine: TPageControl;
+    TabSheetDocRoutine: TTabSheet;
+    TabSheetNewRoutine: TTabSheet;
+    DBGrid1: TDBGrid;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    DBLCB_Dep: TDBLookupComboBox;
+    QueryDep: TOraQuery;
+    QueryDoc: TOraQuery;
+    DataSourceQueryDep: TDataSource;
+    DS_QueryDoc: TDataSource;
+    CB_IsRoutineActive: TCheckBox;
+    Shape1: TShape;
+    ComboBoxUnit: TComboBox;
+    Query_DoctorRoutine: TOraQuery;
+    DS_DoctorRoutine: TDataSource;
+    DBLCB_DepName: TDBLookupComboBox;
+    Query_DepName: TOraQuery;
+    DS_DOCName: TDataSource;
+    DBLCB_DocName: TDBLookupComboBox;
+    DBLookupComboBoxUnit: TDBLookupComboBox;
+    Query_DocName: TOraQuery;
+    QueryUnit: TOraQuery;
+    DS_DEPNAME: TDataSource;
+    DataSourceQueryUnit: TDataSource;
+    Query_Blank: TOraQuery;
+    DBLCB_Doctor: TDBLookupComboBox;
+    GroupBox1: TGroupBox;
+    CheckSun: TCheckBox;
+    CheckMon: TCheckBox;
+    CheckTues: TCheckBox;
+    CheckWed: TCheckBox;
+    CheckThus: TCheckBox;
+    CheckFri: TCheckBox;
+    CheckSat: TCheckBox;
+    CmbBoxSunday: TComboBox;
+    Label4: TLabel;
+    Label5: TLabel;
+    CmbBoxMonday: TComboBox;
+    CmbBoxTuesday: TComboBox;
+    CmbBoxWednesday: TComboBox;
+    CmbBoxThursday: TComboBox;
+    CmbBoxFriday: TComboBox;
+    CmbBoxSaturday: TComboBox;
+    CB_ShiftSystem: TCheckBox;
+    SpeedButton4: TSpeedButton;
+    SpeedButton1: TSpeedButton;
+    Panel2: TPanel;
+    BB_Save: TBitBtn;
+    BB_Close: TBitBtn;
+    BB_New: TBitBtn;
+    CB_ShowDeptWiseDoctor: TCheckBox;
+    lbl_Time: TLabel;
+    medt_Sunday: TMaskEdit;
+    medt_Monday: TMaskEdit;
+    medt_Tuesday: TMaskEdit;
+    medt_Wednesday: TMaskEdit;
+    medt_thursday: TMaskEdit;
+    medt_Friday: TMaskEdit;
+    medt_saturday: TMaskEdit;
+    procedure FormShow(Sender: TObject);
+    procedure DBLCB_DepKeyPress(Sender: TObject; var Key: Char);
+    procedure ComboBoxUnitKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLookupComboBoxDocKeyPress(Sender: TObject; var Key: Char);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure BitBtnNewKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLookupComboBoxUnitKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_DepNameClick(Sender: TObject);
+    procedure DBLookupComboBoxUnitClick(Sender: TObject);
+    procedure DBLCB_DocNameClick(Sender: TObject);
+    procedure DBLookupComboBoxDayClick(Sender: TObject);
+    procedure DBLookupComboBoxShiftClick(Sender: TObject);
+    procedure PageControlDocRoutineChange(Sender: TObject);
+    procedure CB_ShiftSystemClick(Sender: TObject);
+    procedure CmbBoxSundayKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CmbBoxMondayKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CmbBoxTuesdayKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CmbBoxWednesdayKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CmbBoxThursdayKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CmbBoxFridayKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CmbBoxSaturdayKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CheckSunClick(Sender: TObject);
+    procedure CheckMonClick(Sender: TObject);
+    procedure CheckTuesClick(Sender: TObject);
+    procedure CheckWedClick(Sender: TObject);
+    procedure CheckThusClick(Sender: TObject);
+    procedure CheckFriClick(Sender: TObject);
+    procedure CheckSatClick(Sender: TObject);
+    procedure SpeedButton4Click(Sender: TObject);
+    procedure DBLCB_DoctorKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure BB_NewClick(Sender: TObject);
+    procedure BB_SaveClick(Sender: TObject);
+    procedure BB_CloseClick(Sender: TObject);
+    procedure DBLCB_DepNameKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_DocNameKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_DepNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBLCB_DocNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBLookupComboBoxUnitKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_DepClick(Sender: TObject);
+    procedure CB_ShowDeptWiseDoctorClick(Sender: TObject);
+  private
+
+          Function CheckDaysShift: Boolean;
+          Procedure ShiftDisplay(ComboBox:TCombobox; Shift :String);
+    { Private declarations }
+  public
+      b_IsNew:Boolean;
+      pi_DoctorRountineId : Integer;
+      Procedure Search;
+    { Public declarations }
+  end;
+
+var
+  Form_DoctorRoutine: TForm_DoctorRoutine;
+  csql:String;
+
+implementation
+
+uses Unit_DoctorSetup;
+
+{$R *.DFM}
+
+procedure TForm_DoctorRoutine.BB_CloseClick(Sender: TObject);
+begin
+     If TabSheetDocRoutine.Visible=True then
+         Close
+     Else
+     begin
+        //TabSheetDocRoutine.Visible:=True;
+        //TabSheetNewRoutine.Visible:=False;
+        PageControlDocRoutine.ActivePageIndex:=0;
+        BB_NEW.Enabled:=True;
+        BB_SAVE.Enabled:=False;
+     End;
+end;
+
+procedure TForm_DoctorRoutine.BB_NewClick(Sender: TObject);
+begin
+   b_IsNew:=True;
+   PageControlDocRoutine.ActivePageIndex:=1;
+   BB_NEW.Enabled:=False;
+   BB_SAVE.Enabled:=True;
+   DBLCB_Dep.KeyValue:=Null;
+   DBLCB_Doctor.KeyValue:=Null;
+   CheckSun.Checked:=False;
+   CheckMon.Checked:=False;
+   CheckTues.Checked:=False;
+   CheckWed.Checked:=False;
+   CheckThus.Checked:=False;
+   CheckFri.Checked:=False;
+   CheckSat.Checked:=False;
+   CmbBoxSunday.ItemIndex:=-1;
+   CmbBoxMonday.ItemIndex:=-1;
+   CmbBoxTuesday.ItemIndex:=-1;
+   CmbBoxWednesday.ItemIndex:=-1;
+   CmbBoxThursday.ItemIndex:=-1;
+   CmbBoxFriday.ItemIndex:=-1;
+   CmbBoxSaturday.ItemIndex:=-1;
+   CB_ShowDeptWiseDoctor.Checked:=True;
+   DBLCB_Dep.SetFocus;
+end;
+
+procedure TForm_DoctorRoutine.BB_SaveClick(Sender: TObject);
+Var ls_RoomNo,ls_IsRoutineActive,ls_IsShiftSystem:String;
+    li_DocID,li_DepID : Integer;
+begin
+     if Trim(DBLCB_Dep.Text)='' then
+     Begin
+          ShowMessage('Please Select Department');
+          DBLCB_Dep.SetFocus;
+          Exit;
+     End;
+
+     if Trim(DBLCB_Doctor.Text)='' then
+     Begin
+          ShowMessage('Please Select Doctor');
+          DBLCB_Doctor.SetFocus;
+          Exit;
+     End;
+
+     IF CB_ShiftSystem.Checked=True Then
+     Begin
+          IF CheckDaysShift=False Then Exit;
+     End;
+
+     li_DocID:=DBLCB_Doctor.KeyValue;
+     li_DepID:=DBLCB_Dep.KeyValue;
+
+     ls_RoomNo:='';
+     if CB_IsRoutineActive.Checked=True then
+     ls_IsRoutineActive:='Y'
+     else
+     ls_IsRoutineActive:='N';
+
+
+     if CB_ShiftSystem.Checked=True then
+     ls_IsShiftSystem:='Y'
+     else
+     ls_IsShiftSystem:='N';
+
+
+     IF b_IsNew Then
+     Begin
+          With Query_Blank do
+          Begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.add(' Select DORO_DOCTORROUTINEID DOCTORROUTINEID From HS_DORO_DOCTORROUTINE where DORO_DOCID='+IntToStr(li_DocId));
+               sql.add(' and DORO_DEPID='+IntToStr(DBLCB_Dep.KeyValue));
+               Open;
+          End;
+
+          IF Query_Blank.FieldByName('DOCTORROUTINEID').AsInteger  > 0 Then
+          Begin
+               MessageDlg('Doctor Routine of the Doctor " '+DBLCB_Doctor.Text+
+                              ' " is already set in department " '+DBLCB_Dep.Text+' ".',mtWarning,[mbok],0);
+               BB_CloseClick(Sender);
+               DBLCB_DocName.keyValue:=Null;
+               DBLCB_DepName.KeyValue:=Null;
+               DBLookupComboBoxUnit.KeyValue:=Null;
+               Search;
+               Query_DoctorRoutine.Locate('DocID',li_DocID,[]);
+               Exit;
+          End;
+
+          pi_DoctorRountineId:=GetMaxId('HS_DORO_DOCTORROUTINE','DORO_DOCTORROUTINEID');
+          with Query_Blank do
+          Begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.add(' Insert Into HS_DORO_DOCTORROUTINE(DORO_DOCTORROUTINEID,DORO_DEPID,DORO_DOCID,DORO_UNIT,DORO_ROOMNO,');
+               sql.add(' DORO_ISROUTINEACTIVE,DORO_ISSHIFTSYSTEM,DORO_IsSundayCheckup,DORO_SUNSHIFT,DORO_IsMondayCheckup,DORO_MONSHIFT,');
+               sql.add(' DORO_IsTuesdayCheckup,DORO_TUESHIFT,DORO_IsWednesdayCheckup,DORO_WEDSHIFT,DORO_IsThursdayCheckup,DORO_THUSHIFT,');
+               sql.add(' DORO_IsFridayCheckup,DORO_FRISHIFT,DORO_IsSaturdayCheckup,DORO_SATSHIFT,DORO_DataPostBy,DORO_DataPostDate,');
+               SQL.Add(' doro_Sundaycheckuptime,doro_Mondaycheckuptime,doro_Tuesdaycheckuptime,');
+               SQL.Add(' doro_Wednesdaycheckuptime,doro_Thursdaycheckuptime,doro_Fridaycheckuptime,doro_Saturdaycheckuptime,');
+               sql.add(' DORO_DataPostTime,DORO_MacId,DORO_ORGID) Values ('+IntToStr(pi_DoctorRountineId)+','+IntToStr(li_DepID)+','+IntToStr(li_DocID));
+               sql.add(' ,'+#39+ComboBoxUnit.Text+#39+','+#39+ls_RoomNo+#39+','+#39+ls_IsRoutineActive+#39+','+#39+ls_IsShiftSystem+#39);
+               If CheckSun.Checked then
+               Begin
+                   sql.add(',''Y'' ');
+                   sql.add(','+#39+CmbBoxSunday.Text+#39);
+               End
+               Else
+               Begin
+                   sql.add(',''N'' ');
+                   sql.add(' ,'''' ');
+               End;
+
+               If CheckMon.Checked then
+               Begin
+                   sql.add(',''Y'' ');
+                   sql.add(','+#39+CmbBoxMonday.Text+#39);
+               End
+               Else
+               Begin
+                   sql.add(',''N'' ');
+                   sql.add(' ,'''' ');
+               End;
+
+               If CheckTues.Checked then
+               Begin
+                   sql.add(',''Y'' ');
+                   sql.add(','+#39+CmbBoxTuesday.Text+#39)
+               End
+               Else
+               Begin
+                   sql.add(',''N'' ');
+                   sql.add(' ,'''' ');
+               End;
+
+               If CheckWed.Checked then
+               Begin
+                   sql.add(',''Y'' ');
+                   sql.add(','+#39+CmbBoxWednesday.Text+#39)
+               End
+               Else
+               begin
+                   sql.add(',''N'' ');
+                   sql.add(' ,'''' ');
+               end;
+
+               If CheckThus.Checked then
+               Begin
+                   sql.add(',''Y'' ');
+                   sql.add(','+#39+CmbBoxThursday.Text+#39);
+               End
+               Else
+               Begin
+                   sql.add(',''N'' ');
+                   sql.add(' ,'''' ');
+               End;
+
+               If CheckFri.Checked then
+               Begin
+                   sql.add(',''Y'' ');
+                   sql.add(','+#39+CmbBoxFriday.Text+#39)
+               End
+               Else
+               Begin
+                   sql.add(',''N'' ');
+                   sql.add(' ,'''' ');
+               End;
+
+               If CheckSat.Checked then
+               Begin
+                   sql.add(',''Y'' ');
+                   sql.add(','+#39+CmbBoxSaturday.Text+#39)
+               End
+               Else
+               Begin
+                   sql.add(',''N'' ');
+                   sql.add(' ,'''' ');
+               End;
+               SQL.Add(' ,'+IntToStr(gi_UserID)+ ',' + #39 +TodaysDate + #39);
+               SQL.Add(',' +Quotedstr(medt_Sunday.Text));
+               SQL.Add(','+ #39 + medt_Monday.Text + #39);
+               SQL.Add(','+ #39 + medt_Tuesday.Text + #39);
+               SQL.Add(','+ #39 + medt_Wednesday.Text + #39);
+               SQL.Add(','+ #39 + medt_thursday .Text+ #39);
+               SQL.Add(','+ #39 + medt_Friday.Text + #39);
+               SQL.Add(','+ #39 + medt_saturday.Text + #39);
+               SQL.Add (',' + #39 + TodaysTime + #39);
+               SQL.Add(' ,'+#39 + gs_MACID +#39 + ',' + IntToStr(gi_compileValue));
+               sql.add(')');
+               ExecSQL;
+          End;
+     End
+     Else
+     Begin
+          with Query_Blank do
+          Begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.add(' Update HS_DORO_DOCTORROUTINE Set DORO_DEPID='+IntToStr(li_DepID)+',DORO_DOCID='+IntToStr(li_DocID));
+               sql.add(' ,DORO_UNIT='+#39+ComboBoxUnit.Text+#39+',DORO_ROOMNO='+#39+ls_RoomNo+#39);
+               sql.add(' ,DORO_ISROUTINEACTIVE='+#39+ls_IsRoutineActive+#39+',DORO_ISSHIFTSYSTEM='+#39+ls_IsShiftSystem+#39);
+               If CheckSun.Checked then
+               Begin
+                   sql.add(',DORO_IsSundayCheckup=''Y'' ');
+                   sql.add(',DORO_SUNSHIFT='+#39+CmbBoxSunday.Text+#39);
+               End
+               Else
+               Begin
+                   sql.add(',DORO_IsSundayCheckup=''N'' ');
+                   sql.add(' ,DORO_SUNSHIFT='''' ');
+               End;
+
+               If CheckMon.Checked then
+               Begin
+                   sql.add(',DORO_IsMondayCheckup=''Y'' ');
+                   sql.add(',DORO_MONSHIFT='+#39+CmbBoxMonday.Text+#39);
+               End
+               Else
+               Begin
+                   sql.add(',DORO_IsMondayCheckup=''N'' ');
+                   sql.add(' ,DORO_MONSHIFT='''' ');
+               End;
+
+               If CheckTues.Checked then
+               Begin
+                   sql.add(',DORO_IsTuesdayCheckup=''Y'' ');
+                   sql.add(',DORO_TUESHIFT='+#39+CmbBoxTuesday.Text+#39)
+               End
+               Else
+               Begin
+                   sql.add(',DORO_IsTuesdayCheckup=''N'' ');
+                   sql.add(' ,DORO_TUESHIFT='''' ');
+               End;
+
+               If CheckWed.Checked then
+               Begin
+                   sql.add(',DORO_IsWednesdayCheckup=''Y'' ');
+                   sql.add(',DORO_WEDSHIFT='+#39+CmbBoxWednesday.Text+#39)
+               End
+               Else
+               begin
+                   sql.add(',DORO_IsWednesdayCheckup=''N'' ');
+                   sql.add(' ,DORO_WEDSHIFT='''' ');
+               end;
+
+               If CheckThus.Checked then
+               Begin
+                   sql.add(',DORO_IsThursdayCheckup=''Y'' ');
+                   sql.add(',DORO_THUSHIFT='+#39+CmbBoxThursday.Text+#39);
+
+               End
+               Else
+               Begin
+                   sql.add(',DORO_IsThursdayCheckup=''N'' ');
+                   sql.add(' ,DORO_THUSHIFT='''' ');
+               End;
+
+               If CheckFri.Checked then
+               Begin
+                   sql.add(',DORO_IsFridayCheckup=''Y'' ');
+                   sql.add(',DORO_FRISHIFT='+#39+CmbBoxFriday.Text+#39)
+               End
+               Else
+               Begin
+                   sql.add(',DORO_IsFridayCheckup=''N'' ');
+                   sql.add(',DORO_FRISHIFT='''' ');
+               End;
+
+               If CheckSat.Checked then
+               Begin
+                   sql.add(',DORO_IsSaturdayCheckup=''Y'' ');
+                   sql.add(',DORO_SATSHIFT='+#39+CmbBoxSaturday.Text+#39)
+               End
+               Else
+               Begin
+                   sql.add(',DORO_IsSaturdayCheckup=''N'' ');
+                   sql.add(' ,DORO_SATSHIFT='''' ');
+               End;
+               SQL.Add(' ,DORO_DataPostBy='+IntToStr(gi_UserID)+ ',DORO_DataPostDate=' + #39 + TodaysDate + #39);
+               SQL.Add(',doro_Sundaycheckuptime=' + #39 +medt_Sunday.Text + #39);
+               SQL.Add(',doro_Mondaycheckuptime=' + #39 +medt_Monday.Text + #39);
+               SQL.Add(',doro_Tuesdaycheckuptime=' + #39 +medt_Tuesday.Text + #39);
+               SQL.Add(',doro_Wednesdaycheckuptime=' + #39 +medt_Wednesday.Text + #39);
+               SQL.Add(',doro_thursdaycheckuptime=' + #39 +medt_thursday.Text + #39);
+               SQL.Add(',doro_Fridaycheckuptime=' + #39 +medt_Friday.Text + #39);
+               SQL.Add(',doro_saturdaycheckuptime=' + #39 +medt_saturday.Text + #39);
+               SQL.Add(' ,DORO_DataPostTime=' + #39 +TodaysTime + #39+' ,DORO_MacId='+#39 + gs_MACID +#39);
+               sql.add(' where DORO_DOCTORROUTINEID='+IntToStr(pi_DoctorRountineId));
+               //sql.saveToFile('C:\DoctorRoutine.Txt');
+               ExecSQL;
+          End;
+     End;
+
+     with Query_DoctorRoutine do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          Open;
+     End;
+
+     Query_DepName.Close;
+     Session := DM_Hospital.DB;
+     Query_DepName.Open;
+
+     QueryUnit.Close;
+     Session := DM_Hospital.DB;
+     QueryUnit.Open;
+
+     Query_DocName.Close;
+     Session := DM_Hospital.DB;
+     Query_DocName.Open;
+
+     ShowDoneMessage;
+
+     PageControlDocRoutine.ActivePageIndex:=0;
+     BB_NEW.Enabled:=True;
+     BB_SAVE.Enabled:=False;
+end;
+
+procedure TForm_DoctorRoutine.FormShow(Sender: TObject);
+begin
+     b_IsNew:=True;
+     DBLCB_DepName.KeyValue:=Null;
+     DBLCB_DocName.KeyValue:=Null;
+     DBLookupComboBoxUnit.KeyValue:=Null;
+     with Query_DepName do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          Open;
+     End;
+     with Query_DocName do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          Open;
+     End;
+
+     with QueryUnit do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          Open;
+     End;
+
+     with QueryDep do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          Open;
+     End;
+     With QueryDoc do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          Open;
+     End;
+
+     With Query_DoctorRoutine do
+     begin
+          Close;
+          Session := DM_Hospital.DB;
+          sql.clear;
+          sql.add (' Select * From VW_HS_SETUP_DOCTORROUTINE');
+          Open;
+     end;
+
+
+     PageControlDocRoutine.ActivePageIndex:=0;
+     BB_NEW.SetFocus;
+     BB_NEW.Enabled:=True;
+     BB_SAVE.Enabled:=False;
+end;
+
+procedure TForm_DoctorRoutine.DBLCB_DepClick(Sender: TObject);
+begin
+     With QueryDoc do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          if (CB_ShowDeptWiseDoctor.Checked=True) and (Trim(DBLCB_Dep.Text)<>'') then
+          sql[2]:=' And DOCT_DEPID='+IntToStr(DBLCB_Dep.KeyValue)
+          Else
+          sql[2]:=' ';
+          Open;
+     End;
+end;
+
+procedure TForm_DoctorRoutine.DBLCB_DepKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   If key=#13 then
+   Begin
+    IF Trim(DBLCB_Dep.Text)='' Then
+       DBLCB_Dep.SetFocus
+    Else
+       ComboBoxUnit.SetFocus;
+  End;
+
+  if Key=#8 then
+  DBLCB_DepClick(Sender);
+
+end;
+
+procedure TForm_DoctorRoutine.ComboBoxUnitKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  If key=#13 then
+  Begin
+    {IF ComboBoxUnit.Text='' Then
+       ComboBoxUnit.SetFocus
+    Else}
+       DBLCB_Doctor.SetFocus;
+  End;
+end;
+
+procedure TForm_DoctorRoutine.DBLookupComboBoxDocKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   If key=#13 then
+   Begin
+      IF Trim(DBLCB_Doctor.Text)='' Then
+      DBLCB_Doctor.SetFocus
+      Else
+      //ComboBoxDay.SetFocus;
+      BB_SAVE.SetFocus;
+   End;
+end;
+
+procedure TForm_DoctorRoutine.DBGrid1DblClick(Sender: TObject);
+begin
+     if Query_DoctorRoutine.FieldByname('DOCTORROUTINEID').AsInteger <=0 then
+     Begin
+          MessageDlg('No Record to Modify !',mtWarning,[mbok],0);
+          Exit;
+     End;
+     b_IsNew:=False;
+     PageControlDocRoutine.ActivePageIndex:=1;
+     pi_DoctorRountineId:=Query_DoctorRoutine.FieldByname('DOCTORROUTINEID').AsInteger;
+
+     if Query_DoctorRoutine.FieldByname('DOCID').AsInteger > 0 then
+     CB_ShowDeptWiseDoctor.Checked:=False;
+
+     DBLCB_Dep.KeyValue:=Query_DoctorRoutine.FieldByname('DEPID').AsInteger;
+     DBLCB_DepClick(Sender);
+     DBLCB_Doctor.KeyValue:=Query_DoctorRoutine.FieldByname('DOCID').AsInteger;
+     ComboBoxUnit.ItemIndex:=ComboBoxUnit.Items.IndexOf(Query_DoctorRoutine.FieldByname('UNIT').AsString);
+
+     If Query_DoctorRoutine.FieldByName('ISROUTINEACTIVE').AsString='Y' then
+          CB_IsRoutineActive.Checked:=True
+     Else
+          CB_IsRoutineActive.Checked:=False;
+
+     If Query_DoctorRoutine.FieldByName('ISSHIFTSYSTEM').AsString='Y' then
+          CB_ShiftSystem.Checked:=True
+     Else
+          CB_ShiftSystem.Checked:=False;
+
+     If Query_DoctorRoutine.FieldByName('ISSUNDAYCHECKUP').AsString='Y' then
+          CheckSun.Checked:=True
+     Else
+          CheckSun.Checked:=False;
+
+     If Query_DoctorRoutine.FieldByName('ISMONDAYCHECKUP').AsString='Y' then
+          CheckMon.Checked:=True
+     Else
+          CheckMon.Checked:=False;
+
+     If Query_DoctorRoutine.FieldByName('ISTUESDAYCHECKUP').AsString='Y' then
+          CheckTues.Checked:=True
+     Else
+          CheckTues.Checked:=False;
+
+     If Query_DoctorRoutine.FieldByName('ISWEDNESDAYCHECKUP').AsString='Y' then
+          CheckWed.Checked:=True
+     Else
+          CheckWed.Checked:=False;
+
+     If Query_DoctorRoutine.FieldByName('ISTHURSDAYCHECKUP').AsString='Y' then
+          CheckThus.Checked:=True
+     Else
+          CheckThus.Checked:=False;
+
+     If Query_DoctorRoutine.FieldByName('ISFRIDAYCHECKUP').AsString='Y' then
+          CheckFri.Checked:=True
+     Else
+          CheckFri.Checked:=False;
+
+     If Query_DoctorRoutine.FieldByName('ISSATURDAYCHECKUP').AsString='Y' then
+          CheckSat.Checked:=True
+     Else
+          CheckSat.Checked:=False;
+
+     ShiftDisplay(CmbBoxSunday,Query_DoctorRoutine.FieldByName('SUNSHIFT').AsString);
+     ShiftDisplay(CmbBoxMonday,Query_DoctorRoutine.FieldByName('MonShift').AsString);
+     ShiftDisplay(CmbBoxTuesday,Query_DoctorRoutine.FieldByName('TueShift').AsString);
+     ShiftDisplay(CmbBoxWednesday,Query_DoctorRoutine.FieldByName('WedShift').AsString);
+     ShiftDisplay(CmbBoxThursday,Query_DoctorRoutine.FieldByName('ThuShift').AsString);
+     ShiftDisplay(CmbBoxFriday,Query_DoctorRoutine.FieldByName('FriShift').AsString);
+     ShiftDisplay(CmbBoxSaturday,Query_DoctorRoutine.FieldByName('SatShift').AsString);
+
+     medt_Sunday.Text:=Query_DoctorRoutine.FieldByName('SUNDAYCHECKUPTIME').AsString;
+     medt_Monday.Text:=Query_DoctorRoutine.FieldByName('Mondaycheckuptime').AsString;
+     medt_Tuesday.Text:=Query_DoctorRoutine.FieldByName('Tuesdaycheckuptime').AsString;
+     medt_Wednesday.Text:=Query_DoctorRoutine.FieldByName('Wednesdaycheckuptime').AsString;
+     medt_thursday.Text:=Query_DoctorRoutine.FieldByName('thursdaycheckuptime').AsString;
+     medt_Friday.Text:=Query_DoctorRoutine.FieldByName('Fridaycheckuptime').AsString;
+     medt_saturday.Text:=Query_DoctorRoutine.FieldByName('saturdaycheckuptime').AsString;
+     BB_NEW.Enabled:=False;
+     BB_SAVE.Enabled:=True;
+end;
+
+procedure TForm_DoctorRoutine.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+   if Key=#27 then
+   Close;
+end;
+
+procedure TForm_DoctorRoutine.BitBtnNewKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#27 then
+     BB_CloseClick(Sender);
+end;
+
+procedure TForm_DoctorRoutine.DBLCB_DepNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_Right Then DBLookupComboBoxUnit.SetFocus;
+end;
+
+procedure TForm_DoctorRoutine.DBLCB_DepNameKeyPress(Sender: TObject; var Key: Char);
+begin
+   IF Key=#8 Then
+   Begin
+        DBLCB_DepName.KeyValue:=Null;
+        Search;
+   End;
+end;
+
+procedure TForm_DoctorRoutine.DBLCB_DocNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_Left Then DBLookupComboBoxUnit.SetFocus;
+end;
+
+procedure TForm_DoctorRoutine.DBLCB_DocNameKeyPress(Sender: TObject; var Key: Char);
+begin
+   IF key=#8 Then
+   Begin
+        DBLCB_DocName.KeyValue:=Null;
+        Search;
+   End;
+end;
+
+procedure TForm_DoctorRoutine.DBLookupComboBoxUnitKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+   IF key=VK_Right Then DBLCB_DocName.SetFocus;
+   IF key=VK_Left Then DBLCB_DepName.SetFocus;
+end;
+
+procedure TForm_DoctorRoutine.DBLookupComboBoxUnitKeyPress(Sender: TObject; var Key: Char);
+begin
+   IF key=#8 Then
+   Begin
+        DBLookupComboBoxUnit.KeyValue:=-1;
+        Search;
+   End;
+end;
+
+procedure TForm_DoctorRoutine.DBLCB_DepNameClick(Sender: TObject);
+begin
+     Search;
+end;
+
+procedure TForm_DoctorRoutine.DBLookupComboBoxUnitClick(Sender: TObject);
+begin
+     Search;
+end;
+
+procedure TForm_DoctorRoutine.DBLCB_DocNameClick(Sender: TObject);
+begin
+     Search;
+end;
+
+
+Procedure TForm_DoctorRoutine.Search;
+Var ls_sqlStr:String;
+Begin
+   ls_sqlStr:='';
+   With Query_DoctorRoutine do
+   begin
+      close;
+      Session := DM_Hospital.DB;
+      sql.Clear;
+      sql.add (' Select * From VW_HS_SETUP_DOCTORROUTINE');
+      IF Trim(DBLCB_DepName.Text)<>'' then ls_sqlStr:=ls_sqlStr+'(DepID ='+IntToStr(DBLCB_DepName.KeyValue)+') AND  ';
+      If Trim(DBLCB_DocName.Text)<>'' then ls_sqlStr:=ls_sqlStr+'(DocID ='+IntToStr(DBLCB_DocName.KeyValue)+') AND  ';
+      If Trim(DBLookupComboBoxUnit.Text)<>'' then ls_sqlStr:=ls_sqlStr+'(Unit ='+chr(39)+DBLookupComboBoxUnit.KeyValue+chr(39)+') AND  ';
+      IF Trim(ls_sqlStr)<>'' Then
+      Begin
+         ls_sqlStr:=' Where '+ls_sqlStr+' (0=0)';
+         sql.add(ls_sqlStr);
+      End;
+      Open;
+   End;
+End;
+
+procedure TForm_DoctorRoutine.DBLookupComboBoxDayClick(Sender: TObject);
+begin
+   Search;
+end;
+
+procedure TForm_DoctorRoutine.DBLookupComboBoxShiftClick(Sender: TObject);
+begin
+   Search;
+end;
+
+procedure TForm_DoctorRoutine.PageControlDocRoutineChange(Sender: TObject);
+begin
+   IF PageControlDocRoutine.ActivePageIndex=1 Then
+   Begin
+      BB_NEW.Enabled:=False;
+      BB_SAVE.Enabled:=True;
+   End
+   Else
+   Begin
+      BB_NEW.Enabled:=True;
+      BB_SAVE.Enabled:=False;
+   End;
+end;
+
+procedure TForm_DoctorRoutine.CB_ShiftSystemClick(Sender: TObject);
+begin
+     IF CB_ShiftSystem.Checked=True Then
+     Begin
+          CmbBoxSunday.Enabled:=True;
+          CmbBoxSunday.Color:=clWhite;
+
+          CmbBoxMonday.Enabled:=True;
+          CmbBoxMonday.Color:=clWhite;
+
+          CmbBoxTuesday.Enabled:=True;
+          CmbBoxTuesday.Color:=clWhite;
+
+          CmbBoxWednesday.Enabled:=True;
+          CmbBoxWednesday.Color:=clWhite;
+
+          CmbBoxThursday.Enabled:=True;
+          CmbBoxThursday.Color:=clWhite;
+
+
+          CmbBoxFriday.Enabled:=True;
+          CmbBoxFriday.Color:=clWhite;
+
+          CmbBoxSaturday.Enabled:=True;
+          CmbBoxSaturday.Color:=clWhite;
+     End
+     Else
+     Begin
+          CmbBoxSunday.Enabled:=False;
+          CmbBoxSunday.Color:=clMenu;
+          CmbBoxSunday.ItemIndex:=-1;
+
+          CmbBoxMonday.Enabled:=False;
+          CmbBoxMonday.Color:=clMenu;
+          CmbBoxMonday.ItemIndex:=-1;
+
+          CmbBoxTuesday.Enabled:=False;
+          CmbBoxTuesday.Color:=clMenu;
+          CmbBoxTuesday.ItemIndex:=-1;
+
+          CmbBoxWednesday.Enabled:=False;
+          CmbBoxWednesday.Color:=clMenu;
+          CmbBoxWednesday.ItemIndex:=-1;
+
+          CmbBoxThursday.Enabled:=False;
+          CmbBoxThursday.Color:=clMenu;
+          CmbBoxThursday.ItemIndex:=-1;
+
+          CmbBoxFriday.Enabled:=False;
+          CmbBoxFriday.Color:=clMenu;
+          CmbBoxFriday.ItemIndex:=-1;
+
+          CmbBoxSaturday.Enabled:=False;
+          CmbBoxSaturday.Color:=clMenu;
+          CmbBoxSaturday.ItemIndex:=-1;          
+     End;
+end;
+
+
+procedure TForm_DoctorRoutine.CB_ShowDeptWiseDoctorClick(Sender: TObject);
+begin
+     IF CB_ShowDeptWiseDoctor.Checked=False Then
+     Begin
+          With QueryDoc do
+          Begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql[2]:=' ';
+               Open;
+          End;
+     End;
+end;
+
+Function TForm_DoctorRoutine.CheckDaysShift: Boolean;
+Begin
+     IF (CheckSun.Checked=True) and (CmbBoxSunday.ItemIndex=-1) Then
+     Begin
+          MessageDlg('Plz Put Proper Shift.',mtWarning,[mbok],0);
+          CmbBoxSunday.SetFocus;
+          Result:=False;
+          Exit;
+     End;
+
+     IF (CheckMon.Checked=True) and (CmbBoxMonday.ItemIndex=-1) Then
+     Begin
+          MessageDlg('Plz Put Proper Shift.',mtWarning,[mbok],0);
+          CmbBoxMonday.SetFocus;
+          Result:=False;
+          Exit;
+     End;
+
+     IF (CheckTues.Checked=True) and (CmbBoxTuesday.ItemIndex=-1) Then
+     Begin
+          MessageDlg('Plz Put Proper Shift.',mtWarning,[mbok],0);
+          CmbBoxTuesday.SetFocus;
+          Result:=False;
+          Exit;
+     End;
+
+     IF (CheckWed.Checked=True) and (CmbBoxWednesday.ItemIndex=-1) Then
+     Begin
+          MessageDlg('Plz Put Proper Shift.',mtWarning,[mbok],0);
+          CmbBoxWednesday.SetFocus;
+          Result:=False;
+          Exit;
+     End;
+
+     IF (CheckThus.Checked=True) and (CmbBoxThursday.ItemIndex=-1) Then
+     Begin
+          MessageDlg('Plz Put Proper Shift.',mtWarning,[mbok],0);
+          CmbBoxThursday.SetFocus;
+          Result:=False;
+          Exit;
+     End;
+
+     IF (CheckFri.Checked=True) and (CmbBoxFriday.ItemIndex=-1) Then
+     Begin
+          MessageDlg('Plz Put Proper Shift.',mtWarning,[mbok],0);
+          CmbBoxFriday.SetFocus;
+          Result:=False;
+          Exit;
+     End;
+
+     IF (CheckSat.Checked=True) and (CmbBoxSaturday.ItemIndex=-1) Then
+     Begin
+          MessageDlg('Plz Put Proper Shift.',mtWarning,[mbok],0);
+          CmbBoxSaturday.SetFocus;
+          Result:=False;
+          Exit;
+     End;
+     Result:=True;
+End;
+
+
+Procedure TForm_DoctorRoutine.ShiftDisplay(ComboBox:TCombobox; Shift :String);
+Begin
+     IF Trim(Shift)='' Then
+     ComboBox.ItemIndex:=-1
+     Else IF Shift='MORNING' Then
+     ComboBox.ItemIndex:=0
+     Else IF Shift='AFTERNOON' Then
+     ComboBox.ItemIndex:=1
+     Else IF Shift='EVENING' Then
+     ComboBox.ItemIndex:=2
+     Else IF Shift='NIGHT' Then
+     ComboBox.ItemIndex:=3
+     Else IF Shift='FULL DAY' Then
+     ComboBox.ItemIndex:=4
+     Else IF Shift='FULL NIGHT' Then
+     ComboBox.ItemIndex:=5;
+     //
+End;
+
+
+
+procedure TForm_DoctorRoutine.CmbBoxSundayKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_Delete Then
+     CmbBoxSunday.ItemIndex:=-1;
+end;
+
+procedure TForm_DoctorRoutine.CmbBoxMondayKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_Delete Then
+     CmbBoxMonday.ItemIndex:=-1;
+end;
+
+procedure TForm_DoctorRoutine.CmbBoxTuesdayKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_Delete Then
+     CmbBoxTuesday.ItemIndex:=-1;
+end;
+
+procedure TForm_DoctorRoutine.CmbBoxWednesdayKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_Delete Then
+     CmbBoxWednesday.ItemIndex:=-1;
+end;
+
+procedure TForm_DoctorRoutine.CmbBoxThursdayKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_Delete Then
+     CmbBoxThursday.ItemIndex:=-1;
+end;
+
+procedure TForm_DoctorRoutine.CmbBoxFridayKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_Delete Then
+     CmbBoxFriday.ItemIndex:=-1;
+end;
+
+procedure TForm_DoctorRoutine.CmbBoxSaturdayKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_Delete Then
+     CmbBoxSaturday.ItemIndex:=-1;
+end;
+
+procedure TForm_DoctorRoutine.CheckSunClick(Sender: TObject);
+begin
+     IF (CheckSun.Checked=True) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True) Then
+     BEGIN
+          CmbBoxSunday.ItemIndex:=4;
+     END
+     Else IF (CheckSun.Checked=False) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True) Then
+     CmbBoxSunday.ItemIndex:=-1;
+     if CheckSun.Checked=False then
+          medt_Sunday.Text:='';
+
+end;
+
+procedure TForm_DoctorRoutine.CheckMonClick(Sender: TObject);
+begin
+     IF (CheckMon.Checked=True) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True) Then
+     CmbBoxMonday.ItemIndex:=4
+      Else IF (CheckMon.Checked=False) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True) Then
+     CmbBoxMonday.ItemIndex:=-1;
+     IF (CheckMon.Checked=False)  then
+          medt_Monday.Text:='';
+end;
+
+procedure TForm_DoctorRoutine.CheckTuesClick(Sender: TObject);
+begin
+     IF (CheckTues.Checked=True) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True)  Then
+     CmbBoxTuesday.ItemIndex:=4
+     Else IF (CheckTues.Checked=False) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True)  Then
+     CmbBoxTuesday.ItemIndex:=-1;
+     if CheckTues.Checked=False then
+          medt_Tuesday.Text:='';
+end;
+
+procedure TForm_DoctorRoutine.CheckWedClick(Sender: TObject);
+begin
+     IF (CheckWed.Checked=True) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True) Then
+     CmbBoxWednesday.ItemIndex:=4
+     Else IF (CheckWed.Checked=False) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True) Then
+     CmbBoxWednesday.ItemIndex:=-1;
+     if CheckWed.Checked=False then
+          medt_Wednesday.Text:='';
+end;
+
+procedure TForm_DoctorRoutine.CheckThusClick(Sender: TObject);
+begin
+     IF (CheckThus.Checked=True) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True) Then
+     CmbBoxThursday.ItemIndex:=4
+     Else IF (CheckThus.Checked=False) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True) Then
+     CmbBoxThursday.ItemIndex:=-1;
+     if CheckThus.Checked=False then
+          medt_thursday.Text:='';
+end;
+
+procedure TForm_DoctorRoutine.CheckFriClick(Sender: TObject);
+begin
+     IF (CheckFri.Checked=True) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True) Then
+     CmbBoxFriday.ItemIndex:=4
+     Else IF (CheckFri.Checked=False) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True) Then
+     CmbBoxFriday.ItemIndex:=-1;
+     if CheckFri.Checked=False then
+          medt_Friday.Text:='';
+end;
+
+procedure TForm_DoctorRoutine.CheckSatClick(Sender: TObject);
+begin
+     IF (CheckSat.Checked=True) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True) Then
+     CmbBoxSaturday.ItemIndex:=4
+     Else IF (CheckSat.Checked=True) and (b_IsNew=True) and (CB_ShiftSystem.Checked=True) Then
+     CmbBoxSaturday.ItemIndex:=-1;
+     if CheckSat.Checked=False then
+          medt_saturday.Text:='';
+end;
+
+procedure TForm_DoctorRoutine.SpeedButton4Click(Sender: TObject);
+begin
+     Form_DoctorSetup:=TForm_DoctorSetup.Create(Self);
+     with Form_DoctorSetup do
+     Begin
+          Try
+               Showmodal;
+          Finally
+               Free;
+          End;
+     End;
+     QueryDoc.Close;
+     Session := DM_Hospital.DB;
+     QueryDoc.Open;
+     DBLCB_Doctor.SetFocus;
+end;
+
+procedure TForm_DoctorRoutine.DBLCB_DoctorKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_Delete Then
+     DBLCB_Doctor.KeyValue:=NULL;
+end;
+
+procedure TForm_DoctorRoutine.SpeedButton1Click(Sender: TObject);
+begin
+     IF Not Query_DoctorRoutine.Active Then Query_DoctorRoutine.Active:=True;
+     IF Query_DoctorRoutine.RecordCount <=0 Then
+     Begin
+          MessageDlg('No Record To Delete.',mtInformation,[mbok],0);
+          Exit;
+     End;
+
+     IF MessageDlg('Are You Sure To Delete This Doctor Routine ?',mtConfirmation,[mbYes,mbNo],0)=mrYes Then
+     Begin
+          With Query_Blank do
+          Begin
+               Close;
+               sql.Clear;
+               sql.Add(' Delete From DocRoutine where RID='+IntToStr(Query_DoctorRoutine.FieldByName('RID').AsInteger));
+               ExecSQL;
+          End;
+          Query_DoctorRoutine.Close;
+          Query_DoctorRoutine.Open;
+     End;     
+end;
+
+end.

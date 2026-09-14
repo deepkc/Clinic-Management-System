@@ -1,0 +1,1773 @@
+unit Unit_DocWiseFraction;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, Buttons, ExtCtrls, OleCtrls, DateEditXControl_TLB, DBCtrls, Db,
+  DBTables, DBAccess, Ora, OraSmart, MemDS, OraError,Fxn, DM, Variants, Unit_Master, ServerDate;
+
+type
+  TForm_DocWiseFraction = class(TForm)
+    Panel1: TPanel;
+    BitBtnPreview: TBitBtn;
+    BitBtnExcel: TBitBtn;
+    BitBtnCancel: TBitBtn;
+    Panel2: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    DateEditX_FromDate: TDateEditX;
+    DateEditX_ToDate: TDateEditX;
+    BitBtn_FromDate: TBitBtn;
+    BitBtn_ToDate: TBitBtn;
+    Label3: TLabel;
+    DBLC_Doctor: TDBLookupComboBox;
+    Query_Doctor: TOraQuery;
+    DS_Doctor: TDataSource;
+    Query_Name: TOraQuery;
+    QueryDetail: TOraQuery;
+    QueryDetailBILLDATE: TStringField;
+    QueryDetailBILLTIME: TStringField;
+    QueryDetailBILLNO: TStringField;
+    QueryDetailPATIENTID: TFloatField;
+    QueryDetailPName: TStringField;
+    QueryDetailAMOUNT: TFloatField;
+    QueryDetailDISCOUNT: TFloatField;
+    QueryDetailVATAMT: TFloatField;
+    QueryDetailNETTOTAL: TFloatField;
+    QueryCreditBill: TOraQuery;
+    QueryCreditBillBILLDATE: TStringField;
+    QueryCreditBillBILLTIME: TStringField;
+    QueryCreditBillBILLNO: TStringField;
+    QueryCreditBillPATIENTID: TFloatField;
+    QueryCreditBillPName: TStringField;
+    QueryCreditBillAMOUNT: TFloatField;
+    QueryCreditBillDISCOUNT: TFloatField;
+    QueryCreditBillVATAMT: TFloatField;
+    QueryCreditBillNETTOTAL: TFloatField;
+    QueryRefundBill: TOraQuery;
+    QueryRefundBillBILLDATE: TStringField;
+    QueryRefundBillBILLTIME: TStringField;
+    QueryRefundBillBILLNO: TStringField;
+    QueryRefundBillPATIENTID: TFloatField;
+    QueryRefundBillName: TStringField;
+    QueryRefundBillAMOUNT: TFloatField;
+    QueryRefundBillDISCOUNT: TFloatField;
+    QueryRefundBillVATAMT: TFloatField;
+    QueryRefundBillNETTOTAL: TFloatField;
+    Query_Process: TOraQuery;
+    QueryIPDetail: TOraQuery;
+    GroupBox1: TGroupBox;
+    RB_Detail: TRadioButton;
+    RB_Summary: TRadioButton;
+    QueryCashDocSum: TOraQuery;
+    QueryCreditDocSum: TOraQuery;
+    QueryRefundDocSum: TOraQuery;
+    CB_Lock: TCheckBox;
+    BitBtnLock: TBitBtn;
+    GroupBox2: TGroupBox;
+    RB_OPBill: TRadioButton;
+    RB_IPBill: TRadioButton;
+    RB_OPIPBill: TRadioButton;
+    CB_Reg: TCheckBox;
+    CB_Merge: TCheckBox;
+    CBSummariseDetail: TCheckBox;
+    CB_DailyIPDConsultation: TCheckBox;
+    CB_InclInactiveDoc: TCheckBox;
+    TableItemCount: TTable;
+    Table_DFDoctorPartSummary: TTable;
+    Table_DFDoctorPartDetail: TTable;
+    Query_SubProcess: TQuery;
+    Query_ExcelDetail: TQuery;
+    Query_ExcelRefund: TQuery;
+    procedure BitBtnCancelClick(Sender: TObject);
+    procedure BitBtnExcelClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BitBtnPreviewClick(Sender: TObject);
+    procedure BitBtn_FromDateClick(Sender: TObject);
+    procedure BitBtn_ToDateClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure DBLC_DoctorKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure RB_OPIPBillClick(Sender: TObject);
+    procedure RB_OPBillClick(Sender: TObject);
+    procedure RB_IPBillClick(Sender: TObject);
+    procedure BitBtnLockClick(Sender: TObject);
+    procedure RB_SummaryClick(Sender: TObject);
+    procedure RB_DetailClick(Sender: TObject);
+    procedure CB_InclInactiveDocClick(Sender: TObject);
+  private
+    { Private declarations }
+    b_SendToExcel:Boolean;
+
+    procedure DoctorFractionReport_OnlyDoctorPart;
+    procedure CreateTable_DFDoctorPartDetail;
+    procedure CreateTable_DFDoctorPartSummary;
+
+  public
+         { Public declarations }
+
+         ps_TodaysDate : String;
+  end;
+
+var
+  Form_DocWiseFraction: TForm_DocWiseFraction;
+
+implementation
+
+uses Unit_QRDFDoctorPartSummary, Unit_QRDFDoctorPartDetail;
+
+{$R *.DFM}
+
+procedure TForm_DocWiseFraction.BitBtnCancelClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_DocWiseFraction.BitBtnExcelClick(Sender: TObject);
+begin
+     IF (DBLC_Doctor.KeyValue=NULL) and (RB_Detail.Checked=True) Then
+     Begin
+          MessageDlg('Plz. select person whose detail are you going to generate.',mtWarning,[mbok],0);
+          Exit;
+     End;
+     
+     IF MessageDlg('Are you sure to send in Excel ?',mtconfirmation,[mbyes,mbno],0)=mryes then
+     Begin
+          Try
+               b_SendToExcel:=True;
+               BitBtnPreviewClick(Sender);
+               b_SendToExcel:=False;
+          Except
+               b_SendToExcel:=False;
+          End;
+     End;
+end;
+
+procedure TForm_DocWiseFraction.FormShow(Sender: TObject);
+begin
+     With Query_Doctor do
+     Begin
+          Close;
+          IF Trim(gs_DocLoginCode)<>'' Then
+          sql[1]:=' where DActive=''Y'' and DocCode='+#39+gs_DocLoginCode+#39
+          Else
+          sql[1]:=' where DActive=''Y''';
+          Open;
+     End;
+
+     IF Trim(gs_DocLoginCode)<>'' Then
+     DBLC_Doctor.KeyValue:=Query_Doctor.FieldByName('DocCode').AsString;
+
+
+     DateEditX_FromDate.SystemOfDate:=gi_DateSystem;
+     DateEditX_ToDate.SystemOfDate:=gi_DateSystem;
+     DateEditX_FromDate.text:=TodaysDate;
+     DateEditX_ToDate.text:=DateEditX_FromDate.text;
+     DateEditX_FromDate.SystemOfDate := 0;
+     DateEditX_ToDate.SystemOfDate := 0;
+     BitBtn_FromDate.Caption := 'BS';
+     BitBtn_ToDate.Caption := 'BS';
+
+     b_SendToExcel:=False;
+
+     CreateTable_DFDoctorPartDetail;
+     CreateTable_DFDoctorPartSummary;
+
+     //IF gi_UserId=1 Then
+     //Begin
+//          CB_Lock.Visible:=True;
+//          BitBtnLock.Visible:=True;
+     {End
+     Else
+     Begin
+          CB_Lock.Visible:=False;
+          BitBtnLock.Visible:=False;
+     End;}
+     {
+     IF gi_HospitalID=15 Then
+     Begin
+          {With Query_Process do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Update FractionDetail Set TDSPer=15 where billdate >=''2066/07/20'' and TDSPer <=0 ');
+          End;
+     End;
+     }
+
+     With Query_Process do
+     Begin
+          Close;
+          sql.Clear;
+          sql.Add(' Select RD.Amount,RD.RefundDetailId,RD.BillDetailid,RD.BillNo,RD.RefundDate,RD.RefundTime,RD.RefundBy,FD.REFUNDDATE as RefundDateFD,');
+          sql.Add(' FD.REFUNDBYID From RefundDetail RD,FractionDetail FD where FD.BillDetailId=RD.BillDetailId and RD.BillType=''R''');
+          sql.Add(' and NVL(FD.REFUNDBYID,0)=0');
+          Open;
+          First;
+          while not EOF do
+          Begin
+               With Query_SubProcess do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.Add(' Update FractionDetail set RFQty=1,RefundById='+IntToStr(Query_Process.FieldByName('RefundBy').AsInteger));
+                    sql.Add(' ,RefundBy=(Select UserName From lab_UserMain where UserId='+IntToStr(Query_Process.FieldByName('RefundBy').AsInteger)+')');
+                    sql.Add(' ,RFBillNo='+#39+Query_Process.FieldByName('BillNo').AsString+#39);
+                    sql.Add(' ,RefundDate='+#39+Query_Process.FieldByName('RefundDate').AsString+#39);
+                    sql.Add(' ,RefundTime='+#39+Query_Process.FieldByName('RefundTime').AsString+#39);
+                    sql.Add(' where BillDetailId='+IntToStr(Query_Process.FieldByName('BillDetailId').AsInteger));
+                    sql.Add(' and NVL(RefundByID,0)=0');
+                    ExecSQL;
+               End;
+               Query_Process.Next;
+          End;
+     End;
+end;
+
+procedure TForm_DocWiseFraction.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    IF key=27 Then Close;
+    IF key=VK_F1 Then BitBtnPreviewClick(Sender);
+    IF key=VK_F2 Then BitBtnExcelClick(Sender);
+
+    IF key=VK_F3 Then RB_OPIPBill.Checked:=True;
+    IF key=VK_F4 Then RB_OPBill.Checked:=True;
+    IF key=VK_F5 Then RB_IPBill.Checked:=True;
+
+    IF key=VK_F6 Then RB_Summary.Checked:=True;
+    IF key=VK_F7 Then RB_Detail.Checked:=True;
+
+    If key=13 then
+    keybd_event(9,13,0,0);
+
+end;
+
+procedure TForm_DocWiseFraction.BitBtnPreviewClick(Sender: TObject);
+var New_Query:TOraQuery;
+   i:Integer;
+   ls_ReportTitle:String;
+begin
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     BitBtn_FromDate.Caption := gs_DateCaption;
+     BitBtn_ToDate.Caption := gs_DateCaption;
+     gs_From := DateEditX_FromDate.text;
+     gs_to := DateEditX_ToDate.text;
+     DateEditX_FromDate.SystemOfDate := 0;
+     DateEditX_ToDate.SystemOfDate := 0;
+     BitBtn_FromDate.Caption := 'BS';
+     BitBtn_ToDate.Caption := 'BS';
+     DoctorFractionReport_OnlyDoctorPart;
+End;
+
+procedure TForm_DocWiseFraction.BitBtn_FromDateClick(Sender: TObject);
+begin
+   //ChangeDateSystem(DateEditX_FromDate,BitBtn_FromDate);
+end;
+
+procedure TForm_DocWiseFraction.BitBtn_ToDateClick(Sender: TObject);
+begin
+  // ChangeDateSystem(DateEditX_ToDate,BitBtn_ToDate);
+end;
+
+procedure TForm_DocWiseFraction.FormCreate(Sender: TObject);
+begin
+     Application.CreateForm(TForm_QRDFDoctorPartDetail,Form_QRDFDoctorPartDetail);
+     Application.CreateForm(TForm_QRDFDoctorPartSummary,Form_QRDFDoctorPartSummary);
+end;
+
+procedure TForm_DocWiseFraction.FormDestroy(Sender: TObject);
+begin
+     Form_QRDFDoctorPartDetail.Free;
+     Form_QRDFDoctorPartSummary.Free;
+end;
+
+procedure TForm_DocWiseFraction.DBLC_DoctorKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_Delete Then
+     DBLC_Doctor.KeyValue:=NULL;
+end;
+
+procedure TForm_DocWiseFraction.RB_OPIPBillClick(Sender: TObject);
+begin
+     IF RB_OPIPBill.Checked=True Then
+     Begin
+          CB_Reg.Checked:=False;
+          CB_Reg.Visible:=False;
+
+          IF RB_Detail.Checked=True Then
+          CB_DailyIPDConsultation.Visible:=True;
+     End;
+end;
+
+procedure TForm_DocWiseFraction.RB_OPBillClick(Sender: TObject);
+begin
+     IF RB_OPBill.Checked=True Then
+     Begin
+          CB_Reg.Checked:=False;
+          CB_Reg.Visible:=True;
+          CB_DailyIPDConsultation.Visible:=False;
+     End;
+end;
+
+procedure TForm_DocWiseFraction.RB_IPBillClick(Sender: TObject);
+begin
+     IF RB_IPBill.Checked=True Then
+     Begin
+          CB_Reg.Checked:=False;
+          CB_Reg.Visible:=False;
+
+          IF RB_Detail.Checked=True Then
+          CB_DailyIPDConsultation.Visible:=True;
+     End;
+end;
+
+procedure TForm_DocWiseFraction.CreateTable_DFDoctorPartDetail;
+Begin
+     with TableItemCount do
+     Begin
+          DatabaseName:=gs_TempPath;
+          IF Active Then Active:=False;
+          Close;
+          TableName:='DFDoctorItemCount.db';
+          TableType:=ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('ItemCount',ftInteger);
+          FieldDefs.Add('BillType',ftString,3);
+          FieldDefs.Add('Service',ftString,100);
+          FieldDefs.Add('Discount',ftFloat);
+          FieldDefs.Add('NetAmount',ftFloat);
+          FieldDefs.Add('DrAmount',ftFloat);
+          FieldDefs.Add('TDS',ftFloat);
+          FieldDefs.Add('NetDrAmount',ftFloat);
+          IndexDefs.Clear;
+          CreateTable;
+     End;
+
+     with Table_DFDoctorPartDetail do
+     Begin
+          DatabaseName:=gs_TempPath;
+          IF Active Then Active:=False;
+          Close;
+          TableName:='DFDoctorPartDetail.db';
+          TableType:=ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('DocCode',ftString,10);
+          FieldDefs.Add('DocName',ftString,100);
+          FieldDefs.Add('BillDate',ftString,10);
+          FieldDefs.Add('PayType',ftString,10);
+          FieldDefs.Add('BillNo',ftString,16);
+          FieldDefs.Add('BillType',ftString,5);
+          FieldDefs.Add('PatientId',ftInteger);
+          FieldDefs.Add('InPatientId',ftInteger);
+          FieldDefs.Add('PatientName',ftString,100);
+          FieldDefs.Add('Service',ftString,100);
+          FieldDefs.Add('DocDept',ftString,50);
+          FieldDefs.Add('Department',ftString,50);
+          FieldDefs.Add('OPDAmount',ftFloat);
+          FieldDefs.Add('IPDAmount',ftFloat);
+
+          FieldDefs.Add('BillAmount',ftFloat);
+          FieldDefs.Add('Discount',ftFloat);
+          FieldDefs.Add('NetAmount',ftFloat);
+
+          FieldDefs.Add('DrAmount',ftFloat);
+          FieldDefs.Add('TDS',ftFloat);
+          FieldDefs.Add('NetDrAmount',ftFloat);
+          FieldDefs.Add('Hospital',ftFloat);
+          FieldDefs.Add('Remarks',ftString,30);
+
+          FieldDefs.Add('IsOT',ftString,1);
+          FieldDefs.Add('IsBed',ftString,1);
+          FieldDefs.Add('IsSurgeon',ftString,1);
+
+          IndexDefs.Clear;
+          CreateTable;
+     End;
+End;
+
+procedure TForm_DocWiseFraction.CreateTable_DFDoctorPartSummary;
+Begin
+     with Table_DFDoctorPartSummary do
+     Begin
+          DatabaseName:=gs_TempPath;
+          IF Active Then Active:=False;
+          Close;
+          TableName:='DFDoctorPartSummary.db';
+          TableType:=ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('DocCode',ftString,10);
+          FieldDefs.Add('DocName',ftString,100);
+          FieldDefs.Add('IncomeType',ftString,10);
+          FieldDefs.Add('OPDAmount',ftFloat);
+          FieldDefs.Add('IPDAmount',ftFloat);
+          FieldDefs.Add('DrShare',ftFloat);
+          FieldDefs.Add('Discount',ftFloat);
+          FieldDefs.Add('TDS',ftFloat);
+          FieldDefs.Add('NetAmount',ftFloat);
+          IndexDefs.Clear;
+          CreateTable;
+     End;
+End;
+
+
+procedure TForm_DocWiseFraction.DoctorFractionReport_OnlyDoctorPart;
+Var i:Integer;
+    ls_ReportTitle : String;
+    Qry:TOraQuery;
+Begin
+     IF RB_Detail.Checked=True Then
+     Begin
+          {if DBLC_Doctor.KeyValue=NULL then
+          begin
+               ShowMessage('Please Choose Doctor');
+               Exit;
+          end; }
+          Table_DFDoctorPartDetail.Close;
+          Table_DFDoctorPartDetail.DatabaseName:=gs_TempPath;
+          Table_DFDoctorPartDetail.EmptyTable;
+          Table_DFDoctorPartDetail.Open;
+
+          IF (RB_OPIPBill.Checked=True) or (RB_OPBill.Checked=True) Then
+          Begin
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Select RowNum as Sno,BillDetailId,BillType,BillNo,''CASH'' PayType,BillDate,DocCode,PatientId,(Select Trim(Desig||'' ''||DocName) From Doctor where DocCode=FractionDetail.DocCode) as DocName, ');
+                    sql.add(' (select NLS_InitCap(PatientName) From PatientMain where PatientId=FractionDetail.PatientId) as PatientName, ');
+                    sql.add(' (Select DepName From Department where DepId=FractionDetail.DepId) as Department,(select DepName From Department where DepId ');
+                    sql.add(' In (Select DepId From Doctor where DocCode=FractionDetail.DocCode and rownum=1)and rownum=1) as DocDept,((UnitTestCost*Qty)-(UnitTestCost*Qty*DisPer/100)) as TotalAmt,');
+                    sql.add(' (FractionAmount*Qty) as DocComm,(FractionAmount*Qty - FractionAmount*Qty*DisPer/100) as DocCommNet,');
+                    sql.add(' ((FractionAmount*Qty - FractionAmount*Qty*DisPer/100) * TDSPer / 100 ) as TDS,Case when BillType=''R''');
+                    sql.add(' Then ''OPD Consultation'' Else (Select InitCap(TestName) From TestName where TestNameCode=FractionDetail.TestNameCode) End TestName,IsOperation,Description ');
+                    sql.add('           From FractionDetail ');
+
+                    IF CB_Reg.Checked=True Then
+                    sql.add(' where billtype=''R''')
+                    Else
+                    sql.add(' where billtype In (''R'',''B'') ');
+
+                    IF DBLC_Doctor.KeyValue<>NULL Then
+                    sql.add(' and DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+
+                    //sql.add(' and DocCode<>''HOS01'' and DocCode<>''-''');
+
+                    sql.add(' and billdate >='+#39+DateEditX_FromDate.Text+#39+' and billdate <='+#39+DateEditX_ToDate.Text+#39);
+                    //SQL.Add(' AND TESTNAMECODE NOT IN(SELECT TESTNAMECODE FROM TESTNAME WHERE TESTTYPE=''LAB'')');
+
+                    sql.add(' Union '); { Refund part }
+
+                    sql.add(' Select RowNum as Sno,FRACTIONDETAILID,BillType, BillNo,''REFUND'' PayType,RefundBillDate BillDate,DocCode,PatientId,(Select Trim(Desig||'' ''||DocName) ');
+                    sql.add(' From Doctor where  DocCode=FractionRefundDetail.DocCode) as DocName,(select NLS_InitCap(PatientName) From PatientMain where ');
+                    sql.add(' PatientId=FractionRefundDetail.PatientId) as PatientName, (Select DepName From Department where DepId=FractionRefundDetail.DepId) ');
+                    sql.add(' as Department,(select DepName From Department where DepId In (Select DepId From Doctor where DocCode=FractionRefundDetail.DocCode and rownum=1)and rownum=1) as DocDept,');
+                    sql.add(' ((UnitTestCost*Qty)-(UnitTestCost*Qty*DisPer/100)) as TotalAmt,(FractionAmount*Qty) as DocComm, ');
+                    sql.add(' (FractionAmount*Qty - FractionAmount*Qty*DisPer/100) as DocCommNet,((FractionAmount*Qty - FractionAmount*Qty*DisPer/100) * TDSPer / 100 ) as TDS,');
+                    sql.add(' Case when BillType=''R'' Then ''OPD Consultation'' Else (Select InitCap(TestName) From TestName ');
+                    sql.add(' where TestNameCode=FractionRefundDetail.TestNameCode) End TestName,IsOperation,Description');
+                    sql.add('           From FractionRefundDetail ');
+
+                    IF CB_Reg.Checked=True Then
+                    sql.add(' where billtype=''R''')
+                    Else
+                    sql.add(' where billtype In (''R'',''B'') ');
+
+                    IF DBLC_Doctor.KeyValue<>NULL Then
+                    sql.add(' and DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+
+                    //sql.add(' and DocCode<>''HOS01'' and DocCode<>''-''');
+
+                    sql.add(' and RefundBillDate >='+#39+DateEditX_FromDate.Text+#39+' and RefundBillDate <='+#39+DateEditX_ToDate.Text+#39);
+                   // SQL.Add(' AND TESTNAMECODE NOT IN(SELECT TESTNAMECODE FROM TESTNAME WHERE TESTTYPE=''LAB'')');
+                    sql.add(' Order by PayType,BillDate,BillNo');
+                    //sql.saveToFile('C:\DocFractOP.Txt');
+                    Open;
+                    First;
+                    While not EOF Do
+                    Begin
+                         With Table_DFDoctorPartDetail do
+                         Begin
+                              Append;
+                              FieldByName('DocCode').AsString:=Query_Process.FieldByName('DocCode').AsString;
+                              FieldByName('DocName').AsString:=Query_Process.FieldByName('DocName').AsString;
+                              FieldByName('BillType').AsString:=Query_Process.FieldByName('BillType').AsString;
+                              FieldByName('PayType').AsString:=Query_Process.FieldByName('PayType').AsString;
+                              FieldByName('BillDate').AsString:=Query_Process.FieldByName('BillDate').AsString;
+
+                              FieldByName('PatientId').AsInteger:=Query_Process.FieldByName('PatientId').AsInteger;
+                              FieldByName('PatientName').AsString:=Query_Process.FieldByName('PatientName').AsString;
+
+                              IF Trim(Query_Process.FieldByName('TestName').AsString)<>'' Then
+                              Begin
+                                   FieldByName('Service').AsString:=Query_Process.FieldByName('TestName').AsString;
+                                   FieldByName('BillNo').AsString:=Query_Process.FieldByName('BillNo').AsString;
+                              End
+                              Else
+                              Begin
+                                   //FieldByName('PatientName').AsString:='-';
+                                   FieldByName('Service').AsString:=Query_Process.FieldByName('Description').AsString;
+                                   FieldByName('BillNo').AsString:='-';
+                              End;
+                              FieldByName('DocDept').AsString:=Query_Process.FieldByName('DocDept').AsString;
+                              FieldByName('Department').AsString:=Query_Process.FieldByName('Department').AsString;
+
+                              FieldByName('ISOT').AsString:=Query_Process.FieldByName('IsOperation').AsString;
+                              FieldByName('NetAmount').AsFloat:=Query_Process.FieldByName('TotalAmt').AsFloat;
+                              FieldByName('DrAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+                              FieldByName('TDS').AsFloat:=Query_Process.FieldByName('TDS').AsFloat;
+                              FieldByName('NetDrAmount').AsFloat:=(Query_Process.FieldByName('DocCommNet').AsFloat - Query_Process.FieldByName('TDS').AsFloat);
+                              Post;
+                         End;
+                         Next;
+                    End;
+               End;
+          End;
+
+          IF (RB_OPIPBill.Checked=True) or (RB_IPBill.Checked=True) Then
+          Begin
+               IF CB_DailyIPDConsultation.Checked=True Then
+               Begin
+                    { Doctor Round Charge }
+                    With Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Select PatientId,InpatientId,VisitDate,DocCode,BillNo,(Select Trim(Desig||'' ''||DocName) ');
+                         sql.add(' From Doctor where DocCode=DoctorService.DocCode) as DocName,(select NLS_InitCap(PatientName) ');
+                         sql.add(' From PatientMain where PatientId=DoctorService.PatientId) as PatientName, (select Dep.DepName From Doctor D,');
+                         sql.add(' Department Dep where D.DEPCODE=DEP.DEPCODE(+) and D.DocCode=DoctorService.DocCode and rownum=1) as DocDept, ');
+                         sql.add(' ((VisitCharge)-(VisitCharge*DisPer/100)) as TotalAmt,DoctorPart as DocComm, (DoctorPart - DoctorPart * DisPer /100) as DocCommNet,');
+                         sql.add(' ((DoctorPart - DoctorPart * DisPer /100) * TDSPer / 100) as TDS , ''IPD Consultation'' as DoctorService ');
+                         sql.add('      From DoctorService ');
+                         sql.add(' where DocCode<>''HOS01'' and VisitCharge > 0 and ');
+
+                         IF DBLC_Doctor.KeyValue<>NULL Then
+                         sql.add(' DocCode='+#39+DBLC_Doctor.KeyValue+#39+' and ');
+
+                         IF gb_Frct_Realize_On_Final_Bill=True Then
+                         sql.add(' BillDate >='+#39+DateEditX_FromDate.Text+#39+' and BillDate <='+#39+DateEditX_ToDate.Text+#39)
+                         Else
+                         sql.add(' VisitDate >='+#39+DateEditX_FromDate.Text+#39+' and VisitDate <='+#39+DateEditX_ToDate.Text+#39);
+                         //sql.saveToFile('C:\DoctorService.Txt');
+                         Open;
+                         First;
+                         While not EOF Do
+                         Begin
+                              With Table_DFDoctorPartDetail do
+                              Begin
+                                   Append;
+                                   FieldByName('DocCode').AsString:=Query_Process.FieldByName('DocCode').AsString;
+                                   FieldByName('DocName').AsString:=Query_Process.FieldByName('DocName').AsString;
+                                   FieldByName('BillType').AsString:='IP';
+                                   FieldByName('PayType').AsString:='CASH';
+                                   FieldByName('BillDate').AsString:=Query_Process.FieldByName('VisitDate').AsString;
+                                   FieldByName('InPatientId').AsInteger:=Query_Process.FieldByName('InPatientId').AsInteger;
+                                   FieldByName('PatientId').AsInteger:=Query_Process.FieldByName('PatientId').AsInteger;
+                                   FieldByName('PatientName').AsString:=Query_Process.FieldByName('PatientName').AsString;
+                                   FieldByName('BillNo').AsString:=Query_Process.FieldByName('BillNo').AsString;
+                                   FieldByName('Service').AsString:=Query_Process.FieldByName('DoctorService').AsString;
+                                   FieldByName('DocDept').AsString:=Query_Process.FieldByName('DocDept').AsString;
+                                   FieldByName('Department').AsString:=Query_Process.FieldByName('DocDept').AsString;
+
+                                   FieldByName('NetAmount').AsFloat:=Query_Process.FieldByName('TotalAmt').AsFloat;
+
+                                   FieldByName('DrAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+                                   FieldByName('TDS').AsFloat:=Query_Process.FieldByName('TDS').AsFloat;
+                                   FieldByName('NetDrAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat - Query_Process.FieldByName('TDS').AsFloat;
+
+                                   //FieldByName('IPDAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+
+                                   Post;
+                              End;
+                              Next;
+                         End;
+                    End;
+               End;
+               {Else
+               Begin
+                    { Doctor Round Charge }
+               {     With Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Select PatientId,InpatientId,BillDate,DocCode,BillNo,(Select Desig||'' ''||DocName ');
+                         sql.add(' From Doctor where DocCode=DoctorService.DocCode) as DocName,(select NLS_InitCap(PatientName) ');
+                         sql.add(' From PatientMain where PatientId=DoctorService.PatientId) as PatientName, (select Dep.DepName From Doctor D,');
+                         sql.add(' Department Dep where D.DEPCODE=DEP.DEPCODE(+) and D.DocCode=DoctorService.DocCode and rownum=1) as DocDept, ');
+                         sql.add(' Sum((VisitCharge)-(VisitCharge*DisPer/100)) as TotalAmt,Sum(DoctorPart) as DocComm, Sum(DoctorPart - DoctorPart * DisPer /100) as DocCommNet,');
+                         sql.add(' Sum((DoctorPart - DoctorPart * DisPer /100) * TDSPer / 100) as TDS , ''IPD Consultation'' as DoctorService ');
+                         sql.add('      From DoctorService ');
+                         sql.add(' where DocCode<>''HOS01'' and VisitCharge > 0 and ');
+
+                         IF DBLC_Doctor.KeyValue<>NULL Then
+                         sql.add(' DocCode='+#39+DBLC_Doctor.KeyValue+#39+' and ');
+
+                         IF gb_Frct_Realize_On_Final_Bill=True Then
+                         sql.add(' BillDate >='+#39+DateEditX_FromDate.Text+#39+' and BillDate <='+#39+DateEditX_ToDate.Text+#39)
+                         Else
+                         sql.add(' VisitDate >='+#39+DateEditX_FromDate.Text+#39+' and VisitDate <='+#39+DateEditX_ToDate.Text+#39);
+                         sql.add(' Group by PatientId,InpatientId,BillDate,DocCode,BillNo');
+                         //sql.saveToFile('C:\DoctorService.Txt');
+                         Open;
+                         First;
+                         While not EOF Do
+                         Begin
+                              With Table_DFDoctorPartDetail do
+                              Begin
+                                   Append;
+                                   FieldByName('DocCode').AsString:=Query_Process.FieldByName('DocCode').AsString;
+                                   FieldByName('DocName').AsString:=Query_Process.FieldByName('DocName').AsString;
+                                   FieldByName('BillType').AsString:='IP';
+                                   FieldByName('PayType').AsString:='CASH';
+                                   FieldByName('BillDate').AsString:=Query_Process.FieldByName('BillDate').AsString;
+                                   FieldByName('InPatientId').AsInteger:=Query_Process.FieldByName('InPatientId').AsInteger;
+                                   FieldByName('PatientId').AsInteger:=Query_Process.FieldByName('PatientId').AsInteger;
+                                   FieldByName('PatientName').AsString:=Query_Process.FieldByName('PatientName').AsString;
+                                   FieldByName('BillNo').AsString:=Query_Process.FieldByName('BillNo').AsString;
+                                   FieldByName('Service').AsString:=Query_Process.FieldByName('DoctorService').AsString;
+                                   FieldByName('DocDept').AsString:=Query_Process.FieldByName('DocDept').AsString;
+                                   FieldByName('Department').AsString:=Query_Process.FieldByName('DocDept').AsString;
+
+                                   FieldByName('NetAmount').AsFloat:=Query_Process.FieldByName('TotalAmt').AsFloat;
+
+                                   FieldByName('DrAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+                                   FieldByName('TDS').AsFloat:=Query_Process.FieldByName('TDS').AsFloat;
+                                   FieldByName('NetDrAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat - Query_Process.FieldByName('TDS').AsFloat;
+
+                                   //FieldByName('IPDAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+
+                                   Post;
+                              End;
+                              Next;
+                         End;
+                    End;
+               End;}
+
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Select RowNum as Sno,BillDetailId,BillNo,''CASH'' PayType,BillDate,DisDate,DocCode,InpatientId,PatientId,(Select Trim(Desig||'' ''||DocName) From Doctor where DocCode=FractionDetail.DocCode) as DocName, ');
+                    sql.add(' (select NLS_InitCap(PatientName) From PatientMain where PatientId=FractionDetail.PatientId) as PatientName, ');
+                    sql.add(' (Select DepName From Department where DepId=FractionDetail.DepId) as Department,');
+                    sql.add(' (select DepName From Department where DepId In (Select DepId From Doctor where DocCode=FractionDetail.DocCode and rownum=1)) as DocDept,');
+                    sql.add(' Case when Description=''IP CONSULTATION'' Then ''IPD Consultation'' Else (Select NLS_InitCap(TestName) From TestName where TestNameCode=FractionDetail.TESTNAMECODE) End TestName,');
+                    sql.add(' ((UnitTestCost*Qty)-(UnitTestCost*Qty*DisPer/100)) as TotalAmt,(FractionAmount*Qty) as DocComm,(FractionAmount*Qty - FractionAmount*Qty * DisPer/100) as DocCommNet,');
+                    sql.add(' ((FractionAmount*Qty - FractionAmount*Qty * DisPer/100) * TDSPer / 100 ) as TDS,IsOperation ');
+                    sql.add('           From FractionDetail ');
+
+                    sql.add(' where billtype=''IP'' and IsCancel=''N''');
+
+                    IF DBLC_Doctor.KeyValue<>NULL Then
+                    sql.add(' and DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+
+                    //sql.add(' and DocCode<>''HOS01'' and DocCode<>''-''');
+
+                    IF CB_DailyIPDConsultation.Checked=True Then
+                    sql.add(' and Nvl(Description,'' '')<>''IP CONSULTATION''');
+
+                    IF gb_Frct_Realize_On_Final_Bill=True Then
+                    sql.add(' and InpatientId In (Select InpatientId From InpatientReg where DisDate >='+#39+DateEditX_FromDate.Text+#39+' and DisDate <='+#39+DateEditX_ToDate.Text+#39+')')
+                    Else
+                    sql.add(' and billdate >='+#39+DateEditX_FromDate.Text+#39+' and billdate <='+#39+DateEditX_ToDate.Text+#39);
+
+                    { Exatra Added or deducted (Adjusted) after Locking Fraction }
+                    (*sql.add(' Union ');
+
+                    sql.add(' Select RowNum as Sno,BillDetailId,BillNo,''CASH'' PayType,BillDate,BillDate as DisDate,DocCode,InpatientId,PatientId,(Select Trim(Desig||'' ''||DocName) From Doctor where DocCode=FractionDetail.DocCode) as DocName, ');
+                    sql.add(' (select NLS_InitCap(PatientName) From PatientMain where PatientId=FractionDetail.PatientId) as PatientName, ');
+                    sql.add(' (Select DepName From Department where DepId=FractionDetail.DepId) as Department,');
+                    sql.add(' (select DepName From Department where DepId In (Select DepId From Doctor where DocCode=FractionDetail.DocCode and rownum=1)) as DocDept,');
+                    sql.add(' Case when Description=''IP CONSULTATION'' Then ''IPD Consultation'' Else (Select NLS_InitCap(TestName) From TestName where TestNameCode=FractionDetail.TESTNAMECODE) End TestName,');
+                    sql.add(' ((UnitTestCost*Qty)-(UnitTestCost*Qty*DisPer/100)) as TotalAmt,(FractionAmount*Qty) as DocComm,(FractionAmount*Qty - FractionAmount*Qty * DisPer/100) as DocCommNet,');
+                    sql.add(' ((FractionAmount*Qty - FractionAmount*Qty * DisPer/100) * TDSPer / 100 ) as TDS,IsOperation ');
+                    sql.add('           From FractionDetail ');
+
+                    sql.add(' where billtype=''IP'' and IsCancel=''N'' and IsAddLumpSum=''Y'''); // E - Extra
+
+                    IF DBLC_Doctor.KeyValue<>NULL Then
+                    sql.add(' and DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+
+                    //sql.add(' and DocCode<>''HOS01'' and DocCode<>''-''');
+
+                    IF CB_DailyIPDConsultation.Checked=True Then
+                    sql.add(' and Nvl(Description,'' '')<>''IP CONSULTATION''');
+
+                    sql.add(' and billdate >='+#39+DateEditX_FromDate.Text+#39+' and billdate <='+#39+DateEditX_ToDate.Text+#39);*)
+
+                    sql.add(' Union '); { Refund part }
+
+                    sql.add(' Select RowNum as Sno,BillDetailId,RFBillNo as BillNo,''REFUND'' PayType,RefundDate BillDate,RefundDate as DisDate,DocCode,InpatientId,PatientId,(Select Trim(Desig||'' ''||DocName) ');
+                    sql.add(' From Doctor where  DocCode=FractionDetail.DocCode) as DocName,(select NLS_InitCap(PatientName) From PatientMain where ');
+                    sql.add(' PatientId=FractionDetail.PatientId) as PatientName, (Select DepName From Department where DepId=FractionDetail.DepId) ');
+                    sql.add(' as Department,(select DepName From Department where DepId In (Select DepId From Doctor where DocCode=FractionDetail.DocCode and rownum=1)) as DocDept,');
+                    sql.add(' Case when Description=''IP CONSULTATION'' Then ''IPD Consultation'' Else (Select NLS_InitCap(TestName) From TestName where TestNameCode=FractionDetail.TESTNAMECODE) End TestName,');
+                    sql.add(' ((UnitTestCost*Qty)-(UnitTestCost*Qty*DisPer/100)) as TotalAmt,(FractionAmount*Qty) as DocComm, (FractionAmount*Qty - FractionAmount*Qty*DisPer/100) as DocCommNet,');
+                    sql.add(' ((FractionAmount*Qty - FractionAmount*Qty * DisPer/100) * TDSPer / 100 ) as TDS,IsOperation ');
+                    sql.add('           From FractionDetail ');
+
+                    sql.add(' where billtype=''IP''');
+
+                    IF DBLC_Doctor.KeyValue<>NULL Then
+                    sql.add(' and DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+
+                    //sql.add(' and DocCode<>''HOS01'' and DocCode<>''-''');
+
+                    IF CB_DailyIPDConsultation.Checked=True Then
+                    sql.add(' and Nvl(Description,'' '')<>''IP CONSULTATION''');
+
+                    {IF gb_Frct_Realize_On_Final_Bill=True Then
+                    Begin
+                         sql.add(' and InpatientId In (Select InpatientId From InpatientReg where DisDate >='+#39+DateEditX_FromDate.Text+#39);
+                         sql.add(' and DisDate <='+#39+DateEditX_ToDate.Text+#39+') and Trim(RefundDate) Is not null ');
+                    End
+                    Else} // In Case of IP Refund Focus on Refund Date
+                    sql.add(' and RefundDate >='+#39+DateEditX_FromDate.Text+#39+' and RefundDate <='+#39+DateEditX_ToDate.Text+#39+' and Trim(RefundDate) Is not null ');
+                    //sql.add(' Order by PayType,BillDate');
+
+                    { Exatra Added or deducted (Adjusted) after Locking Fraction }
+                    (*sql.add(' Union ');
+
+                    sql.add(' Select RowNum as Sno,BillDetailId,RFBillNo as BillNo,''REFUND'' PayType,RefundDate BillDate,RefundDate DisDate,DocCode,InpatientId,PatientId,(Select Trim(Desig||'' ''||DocName) ');
+                    sql.add(' From Doctor where  DocCode=FractionDetail.DocCode) as DocName,(select NLS_InitCap(PatientName) From PatientMain where ');
+                    sql.add(' PatientId=FractionDetail.PatientId) as PatientName, (Select DepName From Department where DepId=FractionDetail.DepId) ');
+                    sql.add(' as Department,(select DepName From Department where DepId In (Select DepId From Doctor where DocCode=FractionDetail.DocCode and rownum=1)) as DocDept,');
+                    sql.add(' Case when Description=''IP CONSULTATION'' Then ''IPD Consultation'' Else (Select NLS_InitCap(TestName) From TestName where TestNameCode=FractionDetail.TESTNAMECODE) End TestName,');
+                    sql.add(' ((UnitTestCost*Qty)-(UnitTestCost*Qty*DisPer/100)) as TotalAmt,(FractionAmount*Qty) as DocComm, (FractionAmount*Qty - FractionAmount*Qty*DisPer/100) as DocCommNet,');
+                    sql.add(' ((FractionAmount*Qty - FractionAmount*Qty * DisPer/100) * TDSPer / 100 ) as TDS,IsOperation ');
+                    sql.add('           From FractionDetail ');
+
+                    sql.add(' where billtype=''IP''');
+
+                    IF DBLC_Doctor.KeyValue<>NULL Then
+                    sql.add(' and DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+
+                    //sql.add(' and DocCode<>''HOS01'' and DocCode<>''-''');
+
+                    IF CB_DailyIPDConsultation.Checked=True Then
+                    sql.add(' and Nvl(Description,'' '')<>''IP CONSULTATION''');
+
+                    sql.add(' and RefundDate >='+#39+DateEditX_FromDate.Text+#39+' and RefundDate <='+#39+DateEditX_ToDate.Text+#39);*)
+                    sql.add(' Order by PayType,BillDate');
+//                    sql.saveToFile('C:\DocFrct.Txt');
+                    Open;
+                    First;
+                    While not EOF Do
+                    Begin
+                         With Table_DFDoctorPartDetail do
+                         Begin
+                              Append;
+                              FieldByName('DocCode').AsString:=Query_Process.FieldByName('DocCode').AsString;
+                              FieldByName('DocName').AsString:=Query_Process.FieldByName('DocName').AsString;
+                              FieldByName('PayType').AsString:=Query_Process.FieldByName('PayType').AsString;
+                              FieldByName('BillType').AsString:='IP';
+                              FieldByName('BillDate').AsString:=Query_Process.FieldByName('BillDate').AsString;
+                              //FieldByName('BillDate').AsString:=Query_Process.FieldByName('DisDate').AsString;
+                              FieldByName('BillNo').AsString:=Query_Process.FieldByName('BillNo').AsString;
+                              FieldByName('PatientId').AsInteger:=Query_Process.FieldByName('PatientId').AsInteger;
+                              FieldByName('InPatientId').AsInteger:=Query_Process.FieldByName('InPatientId').AsInteger;
+                              FieldByName('PatientName').AsString:=Query_Process.FieldByName('PatientName').AsString;
+                              FieldByName('BillNo').AsString:=Query_Process.FieldByName('BillNo').AsString;
+                              FieldByName('Service').AsString:=Query_Process.FieldByName('TestName').AsString;
+                              FieldByName('DocDept').AsString:=Query_Process.FieldByName('DocDept').AsString;
+                              FieldByName('Department').AsString:=Query_Process.FieldByName('Department').AsString;
+
+                              FieldByName('ISOT').AsString:=Query_Process.FieldByName('IsOperation').AsString;
+
+                              FieldByName('NetAmount').AsFloat:=Query_Process.FieldByName('TotalAmt').AsFloat;
+
+                              FieldByName('DrAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+                              FieldByName('TDS').AsFloat:=Query_Process.FieldByName('TDS').AsFloat;
+                              FieldByName('NetDrAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat - Query_Process.FieldByName('TDS').AsFloat;
+
+                              //FieldByName('IPDAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+                              Post;
+                        End;
+                        Next;
+                    End;
+               End;
+          End;
+
+          With Form_QRDFDoctorPartDetail do
+          Begin
+               If (CBSummariseDetail.Checked=True) And (DBLC_Doctor.KeyValue<>NULL) Then
+               Begin
+                    With Query_SubProcess Do
+                    Begin
+                         Close;
+                         DatabaseName:=gs_TempPath;
+                         { OPD Summary }
+                         With Sql Do
+                         Begin
+                              Clear;
+                              Add('Select Sum(NetAmount) NetAmount');
+                              Add(',Sum(DrAmount) DrAmount,Sum(TDS) TDS,Sum(NetDrAmount) NetDrAmount');
+                              Add(' From DFDoctorPartDetail.db');
+                              Add(' Where PayType<>''REFUND''');
+                              Add(' and BillType In (''B'',''R'')');
+                              //Add(' And (InPatientID Is Null Or InPatientID=0)');
+                         End;
+                         Open;
+                         pf_OPDIncome:=FieldByName('DrAmount').AsFloat;
+                         pf_AniDTDS:=FieldByName('TDS').AsFloat;
+
+                         { OPD Refund }
+                         Close;
+                         With Sql Do
+                         Begin
+                              Clear;
+                              Add('Select Sum(NetAmount) NetAmount');
+                              Add(',Sum(DrAmount) DrAmount,Sum(TDS) TDS,Sum(NetDrAmount) NetDrAmount');
+                              Add(' From DFDoctorPartDetail.db');
+                              Add(' Where PayType=''REFUND'' and BillType In (''R'',''B'')');
+                         End;
+                         Open;
+
+                         pf_OPDIncome:=pf_OPDIncome-FieldByName('DrAmount').AsFloat;
+                         pf_AniDTDS:=pf_AniDTDS - FieldByName('TDS').AsFloat;
+
+                         { IPD Summary }
+                         Close;
+                         With Sql Do
+                         Begin
+                              Clear;
+                              Add('Select Sum(NetAmount) NetAmount');
+                              Add(',Sum(DrAmount) DrAmount,Sum(TDS) TDS,Sum(NetDrAmount) NetDrAmount');
+                              Add(' From DFDoctorPartDetail.db');
+                              Add(' Where PayType<>''REFUND''');
+                              Add(' and BillType=''IP''');
+                              //Add(' And InPatientID > 0');
+                         End;
+                         Open;
+                         pf_IPDIncome:=FieldByName('DrAmount').AsFloat;
+                         pf_AniDTDS:=pf_AniDTDS+FieldByName('TDS').AsFloat;
+
+                         Close;
+                         With Sql Do
+                         Begin
+                              Clear;
+                              Add('Select Sum(NetAmount) NetAmount');
+                              Add(',Sum(DrAmount) DrAmount,Sum(TDS) TDS,Sum(NetDrAmount) NetDrAmount');
+                              Add(' From DFDoctorPartDetail.db');
+                              Add(' Where PayType=''REFUND'' and BillType=''IP''');
+                         End;
+                         Open;
+                         pf_IPDIncome:=pf_IPDIncome-FieldByName('DrAmount').AsFloat;
+                         pf_AniDTDS:=pf_AniDTDS-FieldByName('TDS').AsFloat;
+
+                         //pf_TotalRefund:=FieldByName('DrAmount').AsFloat;
+                         //pf_AniDTDS:=pf_AniDTDS-FieldByName('TDS').AsFloat;
+
+                         //Item Count
+                         TableItemCount.Close;
+                         TableItemCount.EmptyTable;
+                         TableItemCount.Open;
+
+                         //For i:=0 To 1 do
+                         //Begin
+                              Close;
+                              With Sql Do
+                              Begin
+                                   Clear;
+                                   Add('Select Service,BillType,Count(PatientID) PCount,Sum(NetAmount) NetAmount');
+                                   Add(',Sum(DrAmount) DrAmount,Sum(TDS) TDS,Sum(NetDrAmount) NetDrAmount');
+                                   Add(' From DFDoctorPartDetail.db');
+                                   Add(' Where Service<>''OPD Consultation''');
+                                   Add(' And Service<>''CONSULTATION''');
+                                   Add(' And PayType<>''REFUND''');
+                                   //IF (i=0) and ((RB_OPIPBill.Checked=True) or (RB_OPBill.Checked=True)) Then
+                                   //Begin
+                                        Add(' And BillType=''B''');
+
+                                   //End
+                                   //Else IF (i=1)  Then
+                                   //Begin
+                                     //   Add(' And (IsOT=''N'' Or IsOT Is Null) and BillType=''IP''');
+                                   //End;
+                                   //Add(' And (IsSurgeon=''N'' Or IsSurgeon Is Null)');
+                                   //Add(' And (IsBed=''N'' Or IsBed Is Null)');
+                                   Add(' Group By Service,BillType');
+                                   Add(' Order By Service,BillType');
+//                                   SaveToFile('C:\DocSum'+IntToStr(i)+'.Txt');
+                              End;
+                              Open;
+
+                              While Not Eof Do
+                              Begin
+                                   TableItemCount.Append;
+                                   TableItemCount.FieldByName('ItemCount').AsInteger:=FieldByName('PCount').AsInteger;
+                                   TableItemCount.FieldByName('BillType').AsString:=UpperCase(FieldByName('BillType').AsString);
+                                   TableItemCount.FieldByName('Service').AsString:=UpperCase(FieldByName('Service').AsString);
+                                   TableItemCount.FieldByName('NetAmount').AsFloat:=FieldByName('NetAmount').AsFloat;
+                                   TableItemCount.FieldByName('DrAmount').AsFloat:=FieldByName('DrAmount').AsFloat;
+                                   TableItemCount.FieldByName('TDS').AsFloat:=FieldByName('TDS').AsFloat;
+                                   TableItemCount.FieldByName('NetDrAmount').AsFloat:=FieldByName('NetDrAmount').AsFloat;
+                                   TableItemCount.Post;
+                                   Next;
+                              End;
+                         //End;
+
+                                                  //For i:=0 To 1 do
+                         //Begin
+                              Close;
+                              With Sql Do
+                              Begin
+                                   Clear;
+                                   Add('Select Service,BillType,Count(PatientID) PCount,Sum(NetAmount) NetAmount');
+                                   Add(',Sum(DrAmount) DrAmount,Sum(TDS) TDS,Sum(NetDrAmount) NetDrAmount');
+                                   Add(' From DFDoctorPartDetail.db');
+                                   Add(' Where Service<>''OPD Consultation''');
+                                   Add(' And Service<>''CONSULTATION''');
+                                   Add(' And PayType<>''REFUND''');
+                                   Add(' And (IsOT=''N'' Or IsOT Is Null) and BillType=''IP''');
+                                   Add(' Group By Service,BillType');
+                                   Add(' Order By Service,BillType');
+                                   //SaveToFile('C:\DocSum'+IntToStr(i)+'.Txt');
+                              End;
+                              Open;
+
+                              While Not Eof Do
+                              Begin
+                                   TableItemCount.Append;
+                                   TableItemCount.FieldByName('ItemCount').AsInteger:=FieldByName('PCount').AsInteger;
+                                   TableItemCount.FieldByName('BillType').AsString:=UpperCase(FieldByName('BillType').AsString);
+                                   TableItemCount.FieldByName('Service').AsString:=UpperCase(FieldByName('Service').AsString);
+                                   TableItemCount.FieldByName('NetAmount').AsFloat:=FieldByName('NetAmount').AsFloat;
+                                   TableItemCount.FieldByName('DrAmount').AsFloat:=FieldByName('DrAmount').AsFloat;
+                                   TableItemCount.FieldByName('TDS').AsFloat:=FieldByName('TDS').AsFloat;
+                                   TableItemCount.FieldByName('NetDrAmount').AsFloat:=FieldByName('NetDrAmount').AsFloat;
+                                   TableItemCount.Post;
+                                   Next;
+                              End;
+
+                         { Refund }
+                         //For i:=0 To 1 do
+                         //Begin
+                              Close;
+                              With Sql Do
+                              Begin
+                                   Clear;
+                                   Add('Select Service,BillType,Count(PatientID) PCount,Sum(NetAmount) NetAmount');
+                                   Add(',Sum(DrAmount) DrAmount,Sum(TDS) TDS,Sum(NetDrAmount) NetDrAmount');
+                                   Add(' From DFDoctorPartDetail.db');
+                                   Add(' Where Service<>''OPD Consultation''');
+                                   Add(' And Service<>''CONSULTATION''');
+                                   Add(' And PayType=''REFUND''');
+                                   Add(' And BillType=''B''');
+                                  //Add(' And (IsSurgeon=''N'' Or IsSurgeon Is Null)');
+                                   //Add(' And (IsOT=''N'' Or IsOT Is Null)');
+                                   Add(' Group By Service,BIllType');
+                                   Add(' Order By Service,BIllType');
+                              End;
+                              Open;
+                              First;
+                              While Not Eof Do
+                              Begin
+                                   If FieldByName('PCount').AsInteger>0 Then
+                                   Begin
+                                        TableItemCount.Append;
+                                        TableItemCount.FieldByName('ItemCount').AsInteger:=-FieldByName('PCount').AsInteger;
+                                        TableItemCount.FieldByName('Service').AsString:=FieldByName('Service').AsString;
+                                        TableItemCount.FieldByName('BillType').AsString:=FieldByName('BillType').AsString;
+                                        TableItemCount.FieldByName('NetAmount').AsFloat:=-FieldByName('NetAmount').AsFloat;
+                                        TableItemCount.FieldByName('DrAmount').AsFloat:=-FieldByName('DrAmount').AsFloat;
+                                        TableItemCount.FieldByName('TDS').AsFloat:=-FieldByName('TDS').AsFloat;
+                                        TableItemCount.FieldByName('NetDrAmount').AsFloat:=-FieldByName('NetDrAmount').AsFloat;
+                                        TableItemCount.Post;
+                                   End;
+                                   Next;
+                              End;
+
+                              Close;
+                              With Sql Do
+                              Begin
+                                   Clear;
+                                   Add('Select Service,BillType,Count(PatientID) PCount,Sum(NetAmount) NetAmount');
+                                   Add(',Sum(DrAmount) DrAmount,Sum(TDS) TDS,Sum(NetDrAmount) NetDrAmount');
+                                   Add(' From DFDoctorPartDetail.db');
+                                   Add(' Where Service<>''OPD Consultation''');
+                                   Add(' And Service<>''CONSULTATION''');
+                                   Add(' And PayType=''REFUND''');
+                                   Add(' And (IsOT=''N'' Or IsOT Is Null) and BillType=''IP''');
+                                   //Add(' And (IsSurgeon=''N'' Or IsSurgeon Is Null)');
+                                   //Add(' And (IsOT=''N'' Or IsOT Is Null)');
+                                   Add(' Group By Service,BIllType');
+                                   Add(' Order By Service,BIllType');
+                              End;
+                              Open;
+                              First;
+                              While Not Eof Do
+                              Begin
+                                   If FieldByName('PCount').AsInteger>0 Then
+                                   Begin
+                                        TableItemCount.Append;
+                                        TableItemCount.FieldByName('ItemCount').AsInteger:=-FieldByName('PCount').AsInteger;
+                                        TableItemCount.FieldByName('Service').AsString:=FieldByName('Service').AsString;
+                                        TableItemCount.FieldByName('BillType').AsString:=FieldByName('BillType').AsString;
+                                        TableItemCount.FieldByName('NetAmount').AsFloat:=-FieldByName('NetAmount').AsFloat;
+                                        TableItemCount.FieldByName('DrAmount').AsFloat:=-FieldByName('DrAmount').AsFloat;
+                                        TableItemCount.FieldByName('TDS').AsFloat:=-FieldByName('TDS').AsFloat;
+                                        TableItemCount.FieldByName('NetDrAmount').AsFloat:=-FieldByName('NetDrAmount').AsFloat;
+                                        TableItemCount.Post;
+                                   End;
+                                   Next;
+                              End;
+                         //End;
+                    End;
+
+                    QRLblOPDIncome.Caption:=FormatFloat('#,##0.00',pf_OPDIncome);
+                    QRLblIPDIncome.Caption:=FormatFloat('#,##0.00',pf_IPDIncome);
+                    QRLbl_OPDIPDIncome.Caption:=FormatFloat('#,##0.00',pf_OPDIncome+pf_IPDIncome);
+
+                    //QRLblRefund.Caption:=FormatFloat('#,##0.00',pf_TotalRefund);
+                    QRLblTDS.Caption:=FormatFloat('#,##0.00',pf_AniDTDS);
+                    //QRLblNetIncome.Caption:=FormatFloat('#,##0.00',(pf_OPDIncome+pf_IPDIncome-pf_TotalRefund-pf_AniDTDS));
+                    QRLblNetIncome.Caption:=FormatFloat('#,##0.00',(pf_OPDIncome+pf_IPDIncome-pf_AniDTDS));
+
+                    QryOPDDetail.Close;
+                    QryOPDDetail.DatabaseName:=gs_TempPath;
+                    QryOPDDetail.Open;
+
+                    QryOPDRefund.Close;
+                    QryOPDRefund.DatabaseName:=gs_TempPath;
+                    QryOPDRefund.Open;
+
+                    QryOPDProcedure.Close;
+                    QryOPDProcedure.DatabaseName:=gs_TempPath;
+                    QryOPDProcedure.Open;
+
+                    Query_IPDProcedure.Close;
+                    Query_IPDProcedure.DatabaseName:=gs_TempPath;
+                    Query_IPDProcedure.Open;
+
+                    QryInPTDetail.Close;
+                    QryInPTDetail.DatabaseName:=gs_TempPath;
+                    QryInPTDetail.Open;
+
+                    QryInPTBed.Close;
+                    QryInPTBed.DatabaseName:=gs_TempPath;
+                    QryInPTBed.Open;
+
+                    IF gi_DateSystem=0 Then // 1 - AD
+                    Begin
+                         QRLblFDate.Caption:=': '+DateEditX_FromDate.text +' ('+DateEditX_FromDate.ADDateAsText+' AD)';
+                         QRLblTDate.Caption:=': '+DateEditX_ToDate.text +' ('+DateEditX_ToDate.ADDateAsText+' AD)';
+                    End
+                    Else
+                    Begin
+                         QRLblFDate.Caption:=': '+DateEditX_FromDate.text +' ('+DateEditX_FromDate.VSDateAsText+' BS)';
+                         QRLblTDate.Caption:=': '+DateEditX_ToDate.text +' ('+DateEditX_ToDate.VSDateAsText+' BS)';
+                    End;
+                    QRLblDrName.Caption:=Query_Doctor.FieldByName('Desig').AsString+' '+DBLC_Doctor.Text;
+               
+                    QRLblPrintDate.Caption:=ServerDate.TodaysDate;
+                    QRLabelTime.Caption:=ServerDate.TodaysTime;
+
+                    QRSummarizeReport.Preview;
+                    Exit;
+               End;
+
+               IF RB_OPBill.Checked=True Then
+               Begin
+                    IF (DBLC_Doctor.KeyValue=NULL) Then
+                    Begin
+                         ls_ReportTitle:='Doctor Share Details(OPD)';
+                         QRGroup2.Height:=34;
+                    End
+                    Else
+                    Begin
+                         ls_ReportTitle:='Doctor Share Details(OPD) of '+Query_Doctor.FieldByName('Desig').AsString+' '+DBLC_Doctor.Text;
+                         QRGroup2.Height:=0;
+                    End;
+
+                    Query_Detail.Close;
+                    Query_Detail.DatabaseName:=gs_TempPath;
+                    Query_Detail.Open;
+
+                    IF b_SendToExcel=False Then
+                    Begin
+                         QRLabelReportTitle.Caption:=ls_ReportTitle;
+                         QRLabelPrintDate.Caption:=ServerDate.TodaysDate;
+                         QRLabelPrintTime.Caption:=ServerDate.TodaysTime;
+
+                         QRLabelFrom.Caption:=DateEditX_FromDate.Text;
+                         QRLabelTo.Caption:=DateEditX_ToDate.Text;
+
+                         IF DBLC_Doctor.KeyValue<>NULL Then
+                         QRGroupHeader.Height:=0
+                         Else
+                         QRGroupHeader.Height:=40;
+
+                         QR_DFDoctorPartOP.Preview;
+                    End
+                    Else
+                    Begin
+                         With Query_ExcelDetail do
+                         Begin
+                              Close;
+                              DatabaseName:=gs_TempPath;
+                              sql.clear;
+                              sql.add(' Select PatientId as HospNo,PatientName,BillDate,BillNo,Service,DrAmount');
+                              sql.add(' From DFDoctorPartDetail.db where PayType=''CASH''');
+                              sql.add(' Order by BillDate,PatientId,BillNo');
+                              Open;
+                         End;
+
+                         With Query_ExcelRefund do
+                         Begin
+                              Close;
+                              DatabaseName:=gs_TempPath;
+                              sql.clear;
+                              sql.add(' Select PatientId as HospNo,PatientName,BillDate,BillNo,Service,DrAmount');
+                              sql.add(' From DFDoctorPartDetail.db where PayType=''REFUND''');
+                              sql.add(' Order by BillDate,PatientId,BillNo');
+                              Open;
+                         End;
+
+                         {SendToMultiExcel(Query_ExcelDetail,Query_ExcelRefund,nil,nil,ls_ReportTitle,'REFUND','','',
+                                        DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,gs_HosName,gs_HosAddress);}
+                         b_SendToExcel:=False;
+                    End;
+                    Query_Detail.Close;
+               End
+               Else
+               Begin
+                    IF (DBLC_Doctor.KeyValue=NULL) Then
+                    Begin
+                         IF RB_IPBill.Checked=True Then
+                         ls_ReportTitle:='Doctor Share Details(IPD)'
+                         Else
+                         ls_ReportTitle:='Doctor Share Details';
+                         QRGroup2.Height:=34;
+                    End
+                    Else
+                    Begin
+                         IF RB_IPBill.Checked=True Then
+                         ls_ReportTitle:='Doctor Share Details(IPD) of '+Query_Doctor.FieldByName('Desig').AsString+' '+DBLC_Doctor.Text
+                         Else
+                         ls_ReportTitle:='Doctor Share Details of '+Query_Doctor.FieldByName('Desig').AsString+' '+DBLC_Doctor.Text;
+                         QRGroup2.Height:=0;
+                    End;
+
+
+                    Query_DetailIPD.Close;
+                    Query_DetailIPD.DatabaseName:=gs_TempPath;
+                    Query_DetailIPD.Open;
+
+                    IF b_SendToExcel=False Then
+                    Begin
+
+                         QRLabelPrintDateIPD.Caption:=ServerDate.TodaysDate;
+                         QRLabelPrintTimeIPD.Caption:=ServerDate.TodaysTime;
+
+                         QRLabelFromIPD.Caption:=DateEditX_FromDate.Text;
+                         QRLabelToIPD.Caption:=DateEditX_ToDate.Text;
+
+                         QRLabelReportTitleIPD.Caption:=ls_ReportTitle;
+
+                         IF DBLC_Doctor.KeyValue<>NULL Then
+                         SummaryBand2.Height:=0
+                         Else
+                         SummaryBand2.Height:=28;
+
+                         QR_DFDoctorPartIP.Preview;
+                    End
+                    Else
+                    Begin
+                         With Query_ExcelDetail do
+                         Begin
+                              Close;
+                              DatabaseName:=gs_TempPath;
+                              sql.clear;
+                              sql.add(' Select PatientId as HospNo,InpatientId as IPNo,PatientName,BillDate,BillNo,Service,DrAmount');
+                              sql.add(' From DFDoctorPartDetail.db where PayType=''CASH''');
+                              sql.add(' Order by BillDate,PatientId,InpatientId,BillNo');
+                              Open;
+                         End;
+
+                         With Query_ExcelRefund do
+                         Begin
+                              Close;
+                              DatabaseName:=gs_TempPath;
+                              sql.clear;
+                              sql.add(' Select PatientId as HospNo,InpatientId as IPNo,PatientName,BillDate,BillNo,Service,DrAmount');
+                              sql.add(' From DFDoctorPartDetail.db where PayType=''REFUND''');
+                              sql.add(' Order by BillDate,PatientId,InpatientId,BillNo');
+                              Open;
+                         End;
+
+                         {SendToMultiExcel(Query_ExcelDetail,Query_ExcelRefund,nil,nil,ls_ReportTitle,'REFUND','','',
+                                        DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,gs_HosName,gs_HosAddress);}
+                         b_SendToExcel:=False;
+                         Query_DetailIPD.Close;
+                    End;
+               End;
+          End;
+     End
+     Else // Summary
+     Begin
+          Table_DFDoctorPartSummary.Close;
+          Table_DFDoctorPartSummary.DatabaseName:=gs_TempPath;
+          Table_DFDoctorPartSummary.EmptyTable;
+          Table_DFDoctorPartSummary.Open;
+          Qry:=TOraQuery.Create(nil);
+          IF (RB_OPIPBill.Checked=True) or (RB_OPBill.Checked=True) Then
+          Begin
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Select DocCode,DocName,Sum(DocComm) as DocComm,sum(discount)discount,Sum(DocCommNet) as DocCommNet,depid From ( ');
+                    sql.add(' Select DP.DocCode,Trim(D.Desig||'' ''||D.DocName)  as DocName, ');
+                    sql.add(' Sum(FractionAmount*Qty) as DocComm,sum(FractionAmount*Qty*DisPer/100) as Discount, Sum(FractionAmount*Qty - FractionAmount*Qty*DisPer/100) as DocCommNet,dp.depid ');
+                    sql.add('      From FractionDetail DP,Doctor D');
+
+                    IF CB_Reg.Checked=True Then
+                    sql.add(' where billtype=''R'' and DP.DocCode=D.DocCode ')
+                    Else
+                    sql.add(' where billtype In (''R'',''B'') and DP.DocCode=D.DocCode ');
+
+                    IF DBLC_Doctor.KeyValue<>NULL Then
+                    sql.add(' and DP.DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+
+                    sql.add(' and DP.DocCode<>''HOS01'' and DP.DocCode<>''-'' and DP.DocCode<>''DAS'' and DP.DocCode<>''SLF'' and billdate >='+#39+DateEditX_FromDate.Text+#39);
+                    sql.add(' and billdate <='+#39+DateEditX_ToDate.Text+#39);
+                    //SQL.Add(' AND DP.TESTNAMECODE NOT IN(SELECT TESTNAMECODE FROM TESTNAME WHERE TESTTYPE=''LAB'')');
+                    sql.add(' Group by DP.DocCode,D.Desig||'' ''||D.DocName,dp.depid');
+
+                    sql.add(' Union '); { Refund part }
+
+                    sql.add(' Select DP.DocCode,Trim(D.Desig||'' ''||D.DocName) as DocName, ');
+                    sql.add(' -Sum(FractionAmount*Qty) as DocComm,-sum(FractionAmount*Qty*DisPer/100) as Discount, -Sum(FractionAmount*Qty - FractionAmount*Qty*DisPer/100) as DocCommNet,dp.depid');
+                    sql.add('      From FractionRefundDetail DP,Doctor D');
+
+                    IF CB_Reg.Checked=True Then
+                    sql.add(' where billtype=''R'' and DP.DocCode=D.DocCode ')
+                    Else
+                    sql.add(' where billtype In (''R'',''B'') and DP.DocCode=D.DocCode ');
+
+                    IF DBLC_Doctor.KeyValue<>NULL Then
+                    sql.add(' and DP.DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+
+                    sql.add(' and DP.DocCode<>''HOS01'' and DP.DocCode<>''-'' and DP.DocCode<>''DAS'' and DP.DocCode<>''SLF'' and RefundBillDate >='+#39+DateEditX_FromDate.Text+#39);
+                    sql.add(' and RefundBillDate <='+#39+DateEditX_ToDate.Text+#39);
+                    //SQL.Add(' AND DP.TESTNAMECODE NOT IN(SELECT TESTNAMECODE FROM TESTNAME WHERE TESTTYPE=''LAB'')');
+                    sql.add(' Group by DP.DocCode,D.Desig||'' ''||D.DocName,dp.depid');
+                    sql.add(' ) Group by DocCode,DocName,depid Order by DocCode ');
+                    //sql.saveToFile('C:\DocFractSummaryOP.Txt');
+                    Open;
+                    First;
+
+                    While not EOF Do
+                    Begin
+//                         with Qry do
+//                         begin
+//                              Close;
+//                              databasename:=gs_DatabaseName;
+//                              sql.Clear;
+//                              sql.Add('select depid from doctor where doccode='+#39+Query_Process.FieldByName('DocCode').AsString+#39);
+//                              Open;
+//                         end;
+                         gf_TDSPercent:=15;
+                         With Table_DFDoctorPartSummary do
+                         Begin
+                              Append;
+                              FieldByName('DocCode').AsString:=Query_Process.FieldByName('DocCode').AsString;
+                              FieldByName('DocName').AsString:=Query_Process.FieldByName('DocName').AsString;
+                              FieldByName('IncomeType').AsString:='OPD';
+
+                              FieldByName('OPDAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+                              FieldByName('DrShare').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+                              FieldByName('TDS').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat * gf_TDSPercent /100 ;
+                              FieldByName('Discount').AsFloat:=Query_Process.FieldByName('Discount').AsFloat;
+
+                              FieldByName('IPDAmount').AsFloat:=0;
+                              FieldByName('NetAmount').AsFloat:=FieldByName('DrShare').AsFloat - FieldByName('TDS').AsFloat;
+
+                              Post;
+                         End;
+                         Next;
+                    End;
+               End;
+          End;
+
+          IF (RB_OPIPBill.Checked=True) or (RB_IPBill.Checked=True) Then
+          Begin
+               IF CB_DailyIPDConsultation.Checked=True Then
+               Begin
+                    With Query_Process do
+                    Begin
+                         Close;
+                         sql.clear;
+                         sql.add(' Select DS.DocCode,Trim(D.Desig||'' ''||D.DocName) as DocName,');
+                         sql.add(' Sum(DoctorPart) as DocComm,Sum(DoctorPart-(DoctorPart*DisPer/100)) as DocCommNet ');
+                         sql.add('      From DoctorService DS,Doctor D');
+                         sql.add(' where DS.DocCode=D.DocCode and DS.DocCode<>''HOS01'' and DS.DocCode<>''-'' and DP.DocCode<>''DAS'' and DP.DocCode<>''SLF'' and VisitCharge > 0 and ');
+
+                         IF DBLC_Doctor.KeyValue<>NULL Then
+                         sql.add(' DS.DocCode='+#39+DBLC_Doctor.KeyValue+#39+' and ');
+
+                         IF gb_Frct_Realize_On_Final_Bill=True Then
+                         sql.add(' DS.BillDate >='+#39+DateEditX_FromDate.Text+#39+' and DS.BillDate <='+#39+DateEditX_ToDate.Text+#39)
+                         Else
+                         sql.add(' DS.VisitDate >='+#39+DateEditX_FromDate.Text+#39+' and DS.VisitDate <='+#39+DateEditX_ToDate.Text+#39);
+
+                         //sql.add(' Visitdate >='+#39+DateEditX_FromDate.Text+#39+' and Visitdate <='+#39+DateEditX_ToDate.Text+#39);
+                         //sql.add(' DS.InpatientId In (Select InpatientId From InpatientReg where DisDate >='+#39+DateEditX_FromDate.Text+#39+' and DisDate <='+#39+DateEditX_ToDate.Text+#39+')');
+
+                         sql.add(' Group by DS.DocCode,D.Desig||'' ''||D.DocName');
+//                         sql.saveToFile('C:\DoctorServic.Txt');
+                         Open;
+                         First;
+                         While not EOF Do
+                         Begin
+                              With Table_DFDoctorPartSummary do
+                              Begin
+                                   Append;
+                                   FieldByName('DocCode').AsString:=Query_Process.FieldByName('DocCode').AsString;
+                                   FieldByName('DocName').AsString:=Query_Process.FieldByName('DocName').AsString;
+                                   FieldByName('IncomeType').AsString:='IPD';
+
+                                   FieldByName('IPDAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+                                   FieldByName('DrShare').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+                                   FieldByName('TDS').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat * gf_TaxPercent /100 ;
+
+                                   FieldByName('OPDAmount').AsFloat:=0;
+                                   FieldByName('NetAmount').AsFloat:=FieldByName('DrShare').AsFloat - FieldByName('TDS').AsFloat;
+
+                                   Post;
+                              End;
+                              Next;
+                         End;
+                    End;
+               End;
+
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.clear;
+                    sql.add(' Select DocCode,DocName,Sum(DocComm) as DocComm,Sum(DocCommNet) as DocCommNet From ( ');
+                    sql.add(' Select DP.DocCode,Trim(D.Desig||'' ''||D.DocName) as DocName,');
+                    sql.add(' Sum(FractionAmount*Qty) as DocComm,Sum(FractionAmount*Qty-(FractionAmount*Qty*DisPer/100)) as DocCommNet ');
+                    sql.add('      From FractionDetail DP,Doctor D');
+                    sql.add(' where DP.DocCode=D.DocCode and DP.DocCode<>''HOS01'' and DP.DocCode<>''-'' and DP.DocCode<>''DAS'' and DP.DocCode<>''SLF''');
+                    sql.add(' and billtype=''IP'' and IsCancel=''N'' And ');
+
+                    IF CB_DailyIPDConsultation.Checked=True Then
+                    sql.add(' Nvl(Description,'' '')<>''IP CONSULTATION'' And ');
+
+                    IF DBLC_Doctor.KeyValue<>NULL Then
+                    sql.add(' DP.DocCode='+#39+DBLC_Doctor.KeyValue+#39+' and ');
+
+                    IF gb_Frct_Realize_On_Final_Bill=True Then
+                    sql.add(' DP.InpatientId In (Select InpatientId From InpatientReg where DisDate >='+#39+DateEditX_FromDate.Text+#39+' and DisDate <='+#39+DateEditX_ToDate.Text+#39+')')
+                    Else
+                    sql.add(' billdate >='+#39+DateEditX_FromDate.Text+#39+' and billdate <='+#39+DateEditX_ToDate.Text+#39);
+                    sql.add(' Group by DP.DocCode,D.Desig||'' ''||D.DocName');
+
+                    sql.add(' Union ');
+                    { Exatra Added or deducted (Adjusted) after Locking Fraction }
+                    (*sql.add(' Select DP.DocCode,Trim(D.Desig||'' ''||D.DocName) as DocName,');
+                    sql.add(' Sum(FractionAmount*Qty) as DocComm,Sum(FractionAmount*Qty-(FractionAmount*Qty*DisPer/100)) as DocCommNet ');
+                    sql.add('      From FractionDetail DP,Doctor D');
+                    sql.add(' where DP.DocCode=D.DocCode and DP.DocCode<>''HOS01'' and DP.DocCode<>''-'' and DP.DocCode<>''DAS'' and DP.DocCode<>''SLF''');
+                    sql.add(' and billtype=''IP'' and IsCancel=''N'' And');
+
+                    IF CB_DailyIPDConsultation.Checked=True Then
+                    sql.add(' Nvl(Description,'' '')<>''IP CONSULTATION'' And ');
+
+                    IF DBLC_Doctor.KeyValue<>NULL Then
+                    sql.add(' DP.DocCode='+#39+DBLC_Doctor.KeyValue+#39+' and ');
+
+                    sql.add(' billdate >='+#39+DateEditX_FromDate.Text+#39+' and billdate <='+#39+DateEditX_ToDate.Text+#39);
+                    sql.add(' Group by DP.DocCode,D.Desig||'' ''||D.DocName');
+
+                    sql.add(' Union ');*)
+
+                    sql.add(' Select DP.DocCode,Trim(D.Desig||'' ''||D.DocName) as DocName, ');
+                    sql.add('  - Sum(FractionAmount*Qty) as DocComm,- Sum(FractionAmount*Qty-(FractionAmount*Qty*DisPer/100)) as DocCommNet ');
+                    sql.add('      From FractionDetail DP,Doctor D');
+                    sql.add(' where DP.DocCode=D.DocCode and DP.DocCode<>''HOS01'' and DP.DocCode<>''-'' and DP.DocCode<>''DAS'' and DP.DocCode<>''SLF''');
+                    sql.add(' and  billtype=''IP'' and IsCancel=''N'' And');
+
+                    IF CB_DailyIPDConsultation.Checked=True Then
+                    sql.add(' Nvl(Description,'' '')<>''IP CONSULTATION'' And ');
+
+                    IF DBLC_Doctor.KeyValue<>NULL Then
+                    sql.add(' DP.DocCode='+#39+DBLC_Doctor.KeyValue+#39+' and ');
+
+                    {IF gb_Frct_Realize_On_Final_Bill=True Then
+                    Begin
+                         sql.add(' DP.InpatientId In (Select InpatientId From InpatientReg where DisDate >='+#39+DateEditX_FromDate.Text+#39);
+                         sql.add(' and DisDate <='+#39+DateEditX_ToDate.Text+#39+') and Trim(RefundDate) Is not null ');
+                    End
+                    Else}
+                    sql.add(' RefundDate >='+#39+DateEditX_FromDate.Text+#39+' and RefundDate <='+#39+DateEditX_ToDate.Text+#39+' and Trim(RefundDate) Is not null ');
+                    sql.add(' Group by DP.DocCode,D.Desig||'' ''||D.DocName');
+
+                    (*sql.add(' Union ');
+
+                    sql.add(' Select DP.DocCode,Trim(D.Desig||'' ''||D.DocName) as DocName, ');
+                    sql.add('  - Sum(FractionAmount*Qty) as DocComm,- Sum(FractionAmount*Qty-(FractionAmount*Qty*DisPer/100)) as DocCommNet ');
+                    sql.add('      From FractionDetail DP,Doctor D');
+                    sql.add(' where DP.DocCode=D.DocCode and DP.DocCode<>''HOS01'' and DP.DocCode<>''-'' and DP.DocCode<>''DAS'' and DP.DocCode<>''SLF''');
+                    sql.add(' and  billtype=''IP'' and IsCancel=''N'' And');
+
+                    IF CB_DailyIPDConsultation.Checked=True Then
+                    sql.add(' Nvl(Description,'' '')<>''IP CONSULTATION'' And ');
+
+                    IF DBLC_Doctor.KeyValue<>NULL Then
+                    sql.add(' DP.DocCode='+#39+DBLC_Doctor.KeyValue+#39+' and ');
+
+                    sql.add(' RefundDate >='+#39+DateEditX_FromDate.Text+#39+' and RefundDate <='+#39+DateEditX_ToDate.Text+#39);
+                    sql.add(' Group by DP.DocCode,D.Desig||'' ''||D.DocName');*)
+
+                    sql.add('  ) ');
+                    sql.add(' Group by DocCode,DocName ');
+                    sql.add(' Order by DocCode ');
+//                    sql.saveToFile('C:\DocFractSummaryIP.Txt');
+                    Open;
+                    First;
+                    While not EOF Do
+                    Begin
+                         With Table_DFDoctorPartSummary do
+                         Begin
+                              Append;
+                              FieldByName('DocCode').AsString:=Query_Process.FieldByName('DocCode').AsString;
+                              FieldByName('DocName').AsString:=Query_Process.FieldByName('DocName').AsString;
+                              FieldByName('IncomeType').AsString:='IPD';
+
+                              FieldByName('IPDAmount').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+                              FieldByName('DrShare').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat;
+                              FieldByName('TDS').AsFloat:=Query_Process.FieldByName('DocCommNet').AsFloat * gf_TaxPercent /100 ;
+
+                              FieldByName('OPDAmount').AsFloat:=0;
+                              FieldByName('NetAmount').AsFloat:=FieldByName('DrShare').AsFloat - FieldByName('TDS').AsFloat;
+
+                              Post;
+                         End;
+                         Next;
+                    End;
+               End;
+          End;
+
+          IF CB_Merge.Checked=True Then
+          Begin
+               With Form_QRDFDoctorPartSummary do
+               Begin
+                    QRLabel_PrintDate.Caption:=ServerDate.TodaysDate;
+                    QRLabel_PrintTime.Caption:=ServerDate.TodaysTime;
+
+                    QRLabel_FromDate.Caption:=DateEditX_FromDate.Text;
+                    QRLabel_ToDate.Caption:=DateEditX_ToDate.Text;
+
+                    With Query_DetailMerge do
+                    Begin
+                         Close;
+                         DatabaseName:=gs_TempPath;
+                         sql.clear;
+                         sql.add(' Select DocCode,DocName,Sum(OPDAmount) OPDAmount,sum(discount)discount, Sum(IPDAmount) IPDAmount,');
+                         sql.add(' Sum(DrShare) DrShare ,Sum(TDS) TDS , Sum(NetAmount) NetAmount From DFDoctorPartSummary.db ');
+                         sql.add(' Group By DocCode,DocName Order by DocName');
+                         Open;
+                    End;
+
+
+                    QRLabel_ReportTitle.Caption:='Doctor Share Details';
+
+                    IF b_SendToExcel=False Then
+                    QR_DFDoctorPartSummarySingleLine.Preview
+                    Else
+                    Begin
+                         {SendToExcels(Query_DetailMerge,Nil,QRLabel_ReportTitle.Caption,DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,
+                                        '',gs_HosName,gs_HosAddress,2);}
+                         b_SendToExcel:=False;
+
+                    End;
+                    Query_DetailMerge.Close;
+               End;
+          End
+          Else
+          Begin
+               With Form_QRDFDoctorPartSummary do
+               Begin
+                    QRLabelPrintDate.Caption:=ServerDate.TodaysDate;
+                    QRLabelPrintTime.Caption:=ServerDate.TodaysTime;
+
+                    QRLabelFrom.Caption:=DateEditX_FromDate.Text;
+                    QRLabelTo.Caption:=DateEditX_ToDate.Text;
+
+                    With Query_Detail do
+                    Begin
+                         Close;
+                         DatabaseName:=gs_TempPath;
+                         sql.clear;
+                         sql.add(' Select DocCode,DocName,IncomeType, Sum(OPDAmount) OPDAmount,sum(discount)discount,Sum(IPDAmount) IPDAmount,');
+                         sql.add(' Sum(DrShare) DrShare ,Sum(TDS) TDS , Sum(NetAmount) NetAmount From DFDoctorPartSummary.db ');
+                         sql.add(' Group By DocCode,DocName,IncomeType Order by DocName');
+                         Open;
+                    End;
+
+                    IF b_SendToExcel=False Then
+                    QR_DFDoctorPartSummary.Preview
+                    Else
+                    Begin
+                         {SendToExcels(Query_Detail,Nil,QRLabel_ReportTitle.Caption,DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,
+                                        '',gs_HosName,gs_HosAddress,2);}
+                         b_SendToExcel:=False;
+
+                    End;
+
+
+                    Query_Detail.Close;
+               End;
+          End;
+     End;
+     Qry.Free;
+end;
+
+procedure TForm_DocWiseFraction.BitBtnLockClick(Sender: TObject);
+begin
+(*     IF CB_Lock.Checked=False Then
+     Begin
+          MessageDlg('Plz. Check Lock First for Fraction Locking.',mtWarning,[mbok],0);
+          CB_Lock.SetFocus;
+          Exit;
+     End;
+
+     ChangeToDefaultDate(DateEditX_FromDate,DateEditX_ToDate);
+
+     IF gi_HospitalId=19 Then //
+     Begin
+          IF (DBLC_Doctor.KeyValue=Null) Then // 19 - Medicare
+          Begin
+               MessageDlg('Plz. Choose Person Whose Fraction Have To Lock.',mtInformation,[mbok],0);
+               DBLC_Doctor.SetFocus;
+               Exit;
+          End;
+
+          IF RB_OPIPBill.Checked=False Then
+          Begin
+               MessageDlg('You Must Have To Choose Both OPD and IPD While Locking Fraction.',mtInformation,[mbok],0);
+               Exit;
+          End;
+
+          With Query_Process do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select DocCode,(Select Desig||'' ''||F_Name From Doctor where DocCode=FLL.DocCode) as Doctor ');
+               sql.add(' ,LockDate,LockTime,DateFrom,DateTo,(Select UserName From UserMain where UserId=FLL.UserId) as UserName');
+               sql.add(' From FractionLock_Log FLL ');
+               sql.add(' where DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+               sql.add(' and '+#39+DateEditX_FromDate.Text+#39+' >=DateFrom and '+#39+DateEditX_FromDate.Text+#39+' <=DateFrom ');
+               Open;
+          End;
+
+          IF Trim(Query_Process.FieldByName('DocCode').AsString)<>'' Then
+          Begin
+               MessageDlg('Fraction between '+Query_Process.FieldByName('DateFrom').AsString+'-'+Query_Process.FieldByName('DateTo').AsString+
+               ' of   " '+Query_Process.FieldByName('Doctor').AsString+' "   is already locked '+Char(10)+
+               ' by   " '+Query_Process.FieldByName('UserName').AsString+'  "   on Date  " '+Query_Process.FieldByName('LockDate').AsString+' "'
+               ,mtInformation,[mbok],0);
+               DBLC_Doctor.SetFocus;
+               Exit;
+          End;
+
+          IF MessageDlg('Are You Sure to Lock Fraction of   '+Query_Doctor.FieldByName('Desig').AsString+'  '+Query_Doctor.FieldByName('DocName').AsString+Char(10)+Char(10)+
+             'Between Date Range '+DateEditX_FromDate.Text+' - '+DateEditX_ToDate.Text+' .',mtConfirmation,[mbyes,mbno],0)=mrNo Then Exit;
+
+          ps_TodaysDate := ServerDate.TodaysDate;
+
+          Try
+
+               DM_Hospital.DB.StartTransaction;
+
+               With Query_Process do
+               Begin
+                    { Outdoor Doctor Share }
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update FractionDetail Set IsFractionLocked=''Y'', FrctLockDate='+#39+ps_TodaysDate+#39);
+                    sql.add(' where billtype In (''R'',''B'') ');
+                    sql.add(' and billdate >='+#39+DateEditX_FromDate.Text+#39+' and billdate <='+#39+DateEditX_ToDate.Text+#39);
+                    sql.add(' and IsFractionLocked<>''Y'' and DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+                    ExecSQL;
+
+                    { Outdoor Doctor Share Refund }
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update FractionDetail Set IsFractionLocked=''Y'',FrctLockDate='+#39+ps_TodaysDate+#39);
+                    sql.add(' where billtype In (''R'',''B'') ');
+                    sql.add(' and RefundDate >='+#39+DateEditX_FromDate.Text+#39+' and RefundDate <='+#39+DateEditX_ToDate.Text+#39);
+                    sql.add(' and IsFractionLocked<>''Y'' and DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+                    ExecSQL;
+
+                    { Doctor Round Charge }
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update DoctorService Set IsFractionLocked=''Y'',FrctLockDate='+#39+ps_TodaysDate+#39);
+                    sql.add(' where InpatientId In (Select InpatientId From InpatientReg where Discharged=''YES'' and ');
+                    sql.add(' DisDate >='+#39+DateEditX_FromDate.Text+#39+' and DisDate <='+#39+DateEditX_ToDate.Text+#39+')');
+                    sql.add(' and DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+                    sql.add(' and IsFractionLocked<>''Y''');
+                    ExecSQL;
+
+                    { Inpatient Doctor Share }
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update FractionDetail Set IsFractionLocked=''Y'',FrctLockDate='+#39+ps_TodaysDate+#39);
+                    sql.add(' where InpatientId In (Select InpatientId From InpatientReg where Discharged=''YES'' and ');
+                    sql.add(' DisDate >='+#39+DateEditX_FromDate.Text+#39+' and DisDate <='+#39+DateEditX_ToDate.Text+#39+')');
+                    sql.add(' and DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+                    sql.add(' and IsFractionLocked<>''Y'' and billtype=''IP''');
+                    ExecSQL;
+
+                    { Inpatient Doctor Share Refund }
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update FractionDetail Set IsFractionLocked=''Y'',FrctLockDate='+#39+ps_TodaysDate+#39);
+                    sql.add(' where billtype=''IP'' and Trim(RFBillNo) is not null ');
+                    sql.add(' and RefundDate >='+#39+DateEditX_FromDate.Text+#39+' and RefundDate <='+#39+DateEditX_ToDate.Text+#39);
+                    sql.add(' and DocCode='+#39+DBLC_Doctor.KeyValue+#39);
+                    sql.add(' and IsFractionLocked<>''Y''');
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Insert Into FractionLock_Log(FLLID,UserId,LockDate,LockTime,DocCode,DateFrom,DateTo) ');
+                    sql.add(' Values('+IntToStr(GetMaxId('FractionLock_Log','FLLID'))+','+IntToStr(gi_UserId));
+                    sql.add(' ,'+#39+ps_TodaysDate+#39+','+#39+ServerDate.TodaysTime+#39);
+                    sql.add(' ,'+#39+DBLC_Doctor.KeyValue+#39+','+#39+DateEditX_FromDate.Text+#39);
+                    sql.add(' ,'+#39+DateEditX_ToDate.Text+#39+')');
+                    ExecSQL;
+               End;
+
+               DM_Hospital.DB.Commit;
+               ShowDoneMessage;
+          Except
+               DM_Hospital.DB.RollBack;
+               MessageDlg('Failure to Lock Fraction. Plz Contact With System Administrator.',mtWarning,[mbok],0);
+          End;
+     End
+     Else
+     Begin
+          IF (RB_OPIPBill.Checked=True) or (RB_OPBill.Checked=True) Then
+          Begin
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update FractionDetail Set IsFractionLocked=''Y'', IsTempLock=''T'', FrctLockDate='+#39+ServerDate.TodaysDate+#39);
+
+                    IF CB_Reg.Checked=True Then
+                    sql.add(' where billtype=''R''')
+                    Else
+                    sql.add(' where billtype In (''R'',''B'') ');
+
+                    sql.add(' and DocCode<>''HOS01'' and DocCode<>''-'' and billdate >='+#39+DateEditX_FromDate.Text+#39);
+                    sql.add(' and billdate <='+#39+DateEditX_ToDate.Text+#39);
+                    sql.add(' and IsFractionLocked=''N''');
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update FractionDetail Set IsFractionLocked=''Y'',IsTempLock=''T'',FrctLockDate='+#39+ServerDate.TodaysDate+#39);
+                    IF CB_Reg.Checked=True Then
+                    sql.add(' where billtype=''R''')
+                    Else
+                    sql.add(' where billtype In (''R'',''B'') ');
+                    sql.add(' and DocCode<>''HOS01'' and DocCode<>''-'' and RefundDate >='+#39+DateEditX_FromDate.Text+#39);
+                    sql.add(' and RefundDate <='+#39+DateEditX_ToDate.Text+#39);
+                    sql.add(' and IsFractionLocked=''N''');
+                    ExecSQL;
+               End;
+               ShowDoneMessage;
+          End;
+
+          IF (RB_OPIPBill.Checked=True) or (RB_IPBill.Checked=True) Then
+          Begin
+               { Doctor Round Charge }
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update DoctorService Set IsFractionLocked=''Y'',FrctLockDate='+#39+ServerDate.TodaysDate+#39);
+                    sql.add(' where DocCode<>''HOS01'' and DocCode<>''-'' and VisitCharge > 0 and ');
+                    sql.add(' VisitDate >='+#39+DateEditX_FromDate.Text+#39+' and VisitDate <='+#39+DateEditX_ToDate.Text+#39);
+                    sql.add(' and IsFractionLocked=''N''');
+                    ExecSQL;
+               End;
+
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update FractionDetail Set IsFractionLocked=''Y'',IsTempLock=''T'',FrctLockDate='+#39+ServerDate.TodaysDate+#39);
+                    sql.add(' where billtype=''IP''');
+                    sql.add(' and DocCode<>''HOS01'' and DocCode<>''-'' and billdate >='+#39+DateEditX_FromDate.Text+#39);
+                    sql.add(' and billdate <='+#39+DateEditX_ToDate.Text+#39);
+                    sql.add(' and IsFractionLocked=''N''');
+                    ExecSQL;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update FractionDetail Set IsFractionLocked=''Y'',IsTempLock=''T'',FrctLockDate='+#39+ServerDate.TodaysDate+#39);
+                    sql.add(' where billtype=''IP''');
+                    sql.add(' and DocCode<>''HOS01'' and DocCode<>''-'' and RefundDate >='+#39+DateEditX_FromDate.Text+#39);
+                    sql.add(' and RefundDate <='+#39+DateEditX_ToDate.Text+#39);
+                    sql.add(' and IsFractionLocked=''N''');
+                    ExecSQL;
+               End;
+               ShowDoneMessage;
+          End;
+     End;  *)
+end;
+
+procedure TForm_DocWiseFraction.RB_SummaryClick(Sender: TObject);
+begin
+     IF RB_Summary.Checked=True Then
+     CB_DailyIPDConsultation.Visible:=False;
+End;
+
+procedure TForm_DocWiseFraction.RB_DetailClick(Sender: TObject);
+begin
+//     IF RB_Detail.Checked=True Then
+//     CB_DailyIPDConsultation.Visible:=True;
+end;
+
+procedure TForm_DocWiseFraction.CB_InclInactiveDocClick(Sender: TObject);
+begin
+     With Query_Doctor do
+     Begin
+          Close;
+          IF CB_InclInactiveDoc.Checked=True Then
+          Begin
+               IF Trim(gs_DocLoginCode)<>'' Then
+               sql[1]:=' where DocCode='+#39+gs_DocLoginCode+#39
+               Else
+               sql[1]:=' ';
+          End
+          Else
+          Begin
+               IF Trim(gs_DocLoginCode)<>'' Then
+               sql[1]:=' where DActive=''Y'' and DocCode='+#39+gs_DocLoginCode+#39
+               Else
+               sql[1]:=' where DActive=''Y''';
+          End;
+          Open;
+     End;
+
+     IF Trim(gs_DocLoginCode)<>'' Then
+     DBLC_Doctor.KeyValue:=Query_Doctor.FieldByName('DocCode').AsString;
+
+end;
+
+END.

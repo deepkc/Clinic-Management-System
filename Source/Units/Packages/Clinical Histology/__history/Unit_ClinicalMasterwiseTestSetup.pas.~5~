@@ -1,0 +1,293 @@
+unit Unit_ClinicalMasterwiseTestSetup;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, ExtCtrls, Grids, DBGrids, ComCtrls, dblookup, DB,
+  DBAccess, Ora, MemDS, DBCtrls;
+
+type
+  TForm_ClinicalMasterwiseTestSetup = class(TForm)
+    Panel_header: TPanel;
+    BitBtn_New: TBitBtn;
+    BitBtn_Save: TBitBtn;
+    BitBtn_Close: TBitBtn;
+    PageControl1: TPageControl;
+    TabSheet_List: TTabSheet;
+    TabSheet_New: TTabSheet;
+    DBGrid1: TDBGrid;
+    Panel_Body: TPanel;
+    Label_MasterSetupName: TLabel;
+    Label_TestName: TLabel;
+    OraQuery_DbGrid: TOraQuery;
+    OraDataSource_DbGrid: TOraDataSource;
+    DBLC_MasterSetupName: TDBLookupComboBox;
+    DBLC_TestName: TDBLookupComboBox;
+    OraQuery_test: TOraQuery;
+    OraDataSource_test: TOraDataSource;
+    OraQuery_Save: TOraQuery;
+    OraQuery_master: TOraQuery;
+    OraDataSource_Master: TOraDataSource;
+    BitBtn_Delete: TBitBtn;
+    Label1: TLabel;
+    DBLCB_Panel: TDBLookupComboBox;
+    SpeedButton2: TSpeedButton;
+    OraQuery_Panel: TOraQuery;
+    OraDataSource_Panel: TOraDataSource;
+    procedure BitBtn_CloseClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
+    procedure BitBtn_NewClick(Sender: TObject);
+    procedure BitBtn_SaveClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure BitBtn_DeleteClick(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure DBLC_MasterSetupNameExit(Sender: TObject);
+    procedure DBLC_TestNameExit(Sender: TObject);
+  private
+  var pg_isNew:Boolean;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_ClinicalMasterwiseTestSetup: TForm_ClinicalMasterwiseTestSetup;
+
+implementation
+     uses  Fxn, ServerDate,Dm, Unit_ClinicalMasterSetup;
+{$R *.dfm}
+
+procedure TForm_ClinicalMasterwiseTestSetup.BitBtn_CloseClick(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex=0 then
+     begin
+          Close;
+     end;
+     PageControl1.ActivePageIndex:=0;
+     BitBtn_Save.Enabled:=false;
+     BitBtn_New.Enabled:=true;
+     BitBtn_Delete.Enabled:=true;
+end;
+
+procedure TForm_ClinicalMasterwiseTestSetup.BitBtn_DeleteClick(Sender: TObject);
+var id:Integer;
+begin
+     if not CheckAccess('TEST SETUP') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end
+     else
+     begin
+          IF MessageDlg('Are you sure You Want To Delete? You can not process with deleted testname further',mtconfirmation,[mbyes,mbno],0)=mryes then
+          Begin
+               id:=OraQuery_DbGrid.FieldByName('TWMS_TESTNAMEID').AsInteger;
+               with OraQuery_Save do
+               begin
+                    Close;
+                    session:=Dm_Hospital.DB;
+                    sql.Clear;
+                    sql.Add('Delete from HC_TWMS_TestWiseMasterSetup');
+                    sql.Add('where TWMS_TESTNAMEID='+ IntToStr(id));
+                    //sql.SaveToFile('D:\qazx.txt');
+                    execsql;
+               end;
+               OraQuery_DbGrid.Close;
+               OraQuery_DbGrid.Open;
+               PageControl1.ActivePageIndex:=0;
+               showdonemessage;
+          End
+          else
+              exit;
+     end;
+end;
+
+procedure TForm_ClinicalMasterwiseTestSetup.BitBtn_NewClick(Sender: TObject);
+begin
+     pg_isNew:=true;
+     PageControl1.ActivePageIndex:=1;
+     BitBtn_New.Enabled:=False;
+     BitBtn_Save.Enabled:=true;
+     DBLC_MasterSetupName.KeyValue:=null;
+     DBLC_TestName.KeyValue:=null;
+     BitBtn_Delete.Enabled:=false;
+     DBLCB_Panel.KeyValue:=null;
+end;
+
+procedure TForm_ClinicalMasterwiseTestSetup.BitBtn_SaveClick(Sender: TObject);
+Var CLINICALID,UPDATEID:Integer;
+
+     OraQuery_Clinical:TOraQuery;
+begin
+     if DBLCB_Panel.KeyValue=null then
+     begin
+          showmessage('Please Enter panel setup');
+          DBLCB_Panel.SetFocus;
+          exit;
+     end;
+     OraQuery_Clinical:=TOraQuery.Create(nil);
+     with OraQuery_Clinical do
+     begin
+           Close;
+          Session:=Dm_Hospital.DB;
+          Sql.Clear;
+          Sql.Add('select TWMS_TESTNAMEID from HC_TWMS_TestWiseMasterSetup');
+          sql.Add('where twms_testnameid='+ IntToStr(DBLC_TestName.KeyValue));
+          SQL.Add('AND TWMS_PANELID='+IntToStr(DBLCB_Panel.KeyValue));
+          //sql.savetofile('d:\rahul.txt');
+          Open;
+          if OraQuery_Clinical.RecordCount<>0 then
+          begin
+               showmessage('Previously saved Test are not allowed');
+               exit;
+          end
+
+         // end;
+         // if oraQuery_Dbgrid.FieldByName('TWMS_TESTNAMEID').asstring=OraQuery_test.FieldByName('TESTNAMEID').AsString then
+         // begin
+          //     showmessage('Error');
+          //end
+          ELSE
+          BEGIN
+               if pg_isNew=true then
+               begin
+                    CLINICALID:=GetMaxId('HC_TWMS_TestWiseMasterSetup','TWMS_TESTWISEMASTERSETUPID');
+                    With OraQuery_Save do
+                    begin
+                         Close;
+                         Session:=DM_Hospital.DB;
+                         sql.Clear;
+                         Sql.Add('insert into HC_TWMS_TESTWISEMASTERSETUP(TWMS_TESTWISEMASTERSETUPID,TWMS_MASTERSETUPID');
+                         Sql.add(',TWMS_MASTERSETUPNAME,TWMS_TESTNAMEID,TWMS_MODIFIEDBY,TWMS_MODIFIEDDATE');
+                         Sql.add(',TWMS_MODIFIEDTIME,TWMS_MACID,twms_panelid) VALUES(');
+                         Sql.Add(IntToStr(CLINICALID) + ',' + IntToStr(DBLC_MasterSetupName.KeyValue) + ',' + QuotedStr(DBLC_MasterSetupName.Text));
+                         Sql.Add(',' + IntToStr(DBLC_TestName.KeyValue));
+                         Sql.Add(','+ IntToStr(gi_userid));
+                         Sql.Add(','+ QuotedStr(Serverdate.TodaysDate));
+                         Sql.Add(','+ QuotedStr(Serverdate.TodaysTime));
+                         Sql.Add(',' + QuotedStr(gs_MacID));
+                         sql.Add(',' + IntToStr(DBLCB_Panel.KeyValue));
+                         Sql.Add(')');
+                        // Sql.SaveToFile('d:\savemaster.txt');
+                         execSql;
+                    end;
+               end
+               Else
+               UPDATEID:=OraQuery_DbGrid.FieldByName('TWMS_TESTWISEMASTERSETUPID').AsInteger;
+               With OraQuery_Save do
+               begin
+                    Close;
+                    Session:=Dm_Hospital.Db;
+                    Sql.Clear;
+                    Sql.Add('Update HC_TWMS_TESTWISEMASTERSETUP SET');
+                    sql.Add('TWMS_MASTERSETUPID=' + IntTostr(DBLC_MasterSetupName.KeyValue));
+                    sql.Add(',TWMS_MASTERSETUPNAME=' + QuotedStr(DBLC_MasterSetupName.Text));
+                    Sql.Add(',TWMS_TESTNAMEID=' + IntToStr(DBLC_TestName.KeyValue));
+                    Sql.Add(',TWMS_MODIFIEDBY=' + IntToStr(gi_userid));
+                    Sql.Add(',TWMS_MODIFIEDDATE=' + QuotedStr(Serverdate.TodaysDate));
+                    Sql.Add(',TWMS_MODIFIEDTIME=' + QuotedStr(Serverdate.TodaysTime));
+                    Sql.Add(',TWMS_MACID=' + QuotedStr(gs_MacID));
+                    sql.Add(',twms_panelid=' + IntToStr(DBLCB_Panel.KeyValue));
+                    Sql.Add('where TWMS_TESTWISEMASTERSETUPID=' + IntToStr(UPDATEID));
+                   // Sql.SaveToFile('D:\updateClinical.txt');
+                    ExecSql;
+               end;
+               Showdonemessage;
+               OraQuery_DbGrid.Close;
+               OraQuery_DbGrid.Open;
+               PageControl1.ActivePageIndex:=0;
+               BitBtn_New.Enabled:=true;
+               BitBtn_Delete.Enabled:=true;
+               OraQuery_Clinical.Close;
+               OraQuery_Clinical.Free;
+          END;
+     end;
+end;
+
+procedure TForm_ClinicalMasterwiseTestSetup.DBGrid1DblClick(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex:=1;
+     biTBTN_Save.Enabled:=true;
+     BitBtn_Delete.Enabled:=false;
+     pg_isNew:=False;
+     DBLC_MasterSetupName.keyvalue:=OraQuery_DbGrid.FieldByName('TWMS_MASTERSETUPID').AsString;
+     DBLC_TestName.KeyValue:=OraQuery_DbGrid.FieldByName('TWMS_TESTNAMEID').AsString;
+     DBLCB_Panel.KeyValue:=OraQuery_DbGrid.FieldByName('twms_panelid').AsInteger;
+end;
+
+procedure TForm_ClinicalMasterwiseTestSetup.DBLC_MasterSetupNameExit(
+  Sender: TObject);
+begin
+     DBLC_TestName.setfocus;
+end;
+
+procedure TForm_ClinicalMasterwiseTestSetup.DBLC_TestNameExit(Sender: TObject);
+begin
+     DBLCB_Panel.setfocus;
+end;
+
+procedure TForm_ClinicalMasterwiseTestSetup.FormKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     if key=VK_Escape then
+     BitBtn_CloseClick(Sender);
+     if key=VK_F12 then
+     BitBtn_SaveClick(Sender);
+end;
+
+procedure TForm_ClinicalMasterwiseTestSetup.FormShow(Sender: TObject);
+begin
+     BitBtn_Save.Enabled:=false;
+     PageControl1.ActivePageIndex:=0;
+     WITH OraQuery_test DO
+     Begin
+
+          Close;
+          Session:=Dm_Hospital.Db;
+          sql.Clear;
+          SQL.Add('Select * From hs_tena_TestName Where tena_DepId in  ('9,10')');
+          //Sql.Add('WHERE testname='+QuotedStr(gs_deptype));
+          SQL.Add( 'ORDER by tena_TestName');
+          //Sql.SaveToFile('d:\aaaab.txt');
+          Open;
+     End;
+     OraQuery_DbGrid.Close;
+     OraQuery_DbGrid.Open;
+     OraQuery_master.Close;
+     OraQuery_master.Open;
+     OraQuery_Panel.Close;
+     OraQuery_Panel.Open;
+end;
+
+procedure TForm_ClinicalMasterwiseTestSetup.PageControl1Change(Sender: TObject);
+begin
+      if PageControl1.ActivePageIndex=0 then
+     begin
+          PageControl1.ActivePageIndex:=1;
+     end
+     else if PageControl1.ActivePageIndex=1 then
+     begin
+          PageControl1.ActivePageIndex:=0;
+     end;
+end;
+
+procedure TForm_ClinicalMasterwiseTestSetup.SpeedButton2Click(Sender: TObject);
+begin
+     With Form_MasterSetup do
+     begin
+          try
+               Form_MasterSetup:=TForm_MasterSetup.Create(nil);
+               pi_setupid:=2;
+               Showmodal;
+          finally
+               Form_MasterSetup.free
+          end;
+     end;
+     OraQuery_Panel.Close;
+     OraQuery_Panel.Open;
+end;
+
+end.

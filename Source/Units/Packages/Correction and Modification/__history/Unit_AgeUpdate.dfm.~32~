@@ -1,0 +1,739 @@
+object Form_AgeUpdate: TForm_AgeUpdate
+  Left = 545
+  Top = 230
+  Caption = 'Patient Modification'
+  ClientHeight = 447
+  ClientWidth = 369
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 369
+    Height = 447
+    Align = alClient
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 23
+      Top = 13
+      Width = 46
+      Height = 14
+      Caption = 'PatientId :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object SBSearch: TSpeedButton
+      Left = 222
+      Top = 10
+      Width = 63
+      Height = 22
+      Caption = 'S&earch'
+      Flat = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        333333333333333333FF33333333333330003FF3FFFFF3333777003000003333
+        300077F777773F333777E00BFBFB033333337773333F7F33333FE0BFBF000333
+        330077F3337773F33377E0FBFBFBF033330077F3333FF7FFF377E0BFBF000000
+        333377F3337777773F3FE0FBFBFBFBFB039977F33FFFFFFF7377E0BF00000000
+        339977FF777777773377000BFB03333333337773FF733333333F333000333333
+        3300333777333333337733333333333333003333333333333377333333333333
+        333333333333333333FF33333333333330003333333333333777333333333333
+        3000333333333333377733333333333333333333333333333333}
+      NumGlyphs = 2
+      OnClick = SBSearchClick
+    end
+    object Label2: TLabel
+      Left = 12
+      Top = 67
+      Width = 57
+      Height = 14
+      Caption = 'First Name :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label4: TLabel
+      Left = 12
+      Top = 96
+      Width = 57
+      Height = 14
+      Caption = 'Last Name :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 4
+      Top = 123
+      Width = 65
+      Height = 14
+      Caption = 'Age/Gender :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Labelage: TLabel
+      Left = 78
+      Top = 124
+      Width = 19
+      Height = 13
+      Caption = 'Age'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label5: TLabel
+      Left = 4
+      Top = 146
+      Width = 73
+      Height = 14
+      Caption = 'New Age/Sex :'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label90: TLabel
+      Left = 38
+      Top = 172
+      Width = 28
+      Height = 14
+      Caption = 'DOB :'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object LabelName: TLabel
+      Left = 230
+      Top = 83
+      Width = 28
+      Height = 13
+      Caption = 'Name'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Visible = False
+    end
+    object Label38: TLabel
+      Left = 25
+      Top = 195
+      Width = 44
+      Height = 14
+      Caption = 'Country :'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label10: TLabel
+      Left = 29
+      Top = 220
+      Width = 39
+      Height = 14
+      Caption = 'District :'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label9: TLabel
+      Left = 17
+      Top = 245
+      Width = 52
+      Height = 14
+      Caption = 'VDC/MPC :'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label11: TLabel
+      Left = 20
+      Top = 269
+      Width = 51
+      Height = 14
+      Caption = 'Address : '
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label12: TLabel
+      Left = 6
+      Top = 294
+      Width = 65
+      Height = 14
+      Caption = 'Phone (R/O): '
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lbl1: TLabel
+      Left = 32
+      Top = 389
+      Width = 39
+      Height = 14
+      Caption = 'Remark:'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label6: TLabel
+      Left = 19
+      Top = 317
+      Width = 52
+      Height = 14
+      Caption = 'Mobile No :'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label7: TLabel
+      Left = 38
+      Top = 338
+      Width = 31
+      Height = 13
+      Caption = 'Email :'
+    end
+    object Label8: TLabel
+      Left = 44
+      Top = 41
+      Width = 25
+      Height = 14
+      Caption = 'Title :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lbl_scheme: TLabel
+      Left = 26
+      Top = 364
+      Width = 45
+      Height = 13
+      Caption = 'Scheme :'
+    end
+    object lbl2: TLabel
+      Left = 174
+      Top = 123
+      Width = 66
+      Height = 14
+      Caption = 'Blood Group :'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Edit_PatientId: TEdit
+      Left = 77
+      Top = 10
+      Width = 139
+      Height = 21
+      CharCase = ecUpperCase
+      TabOrder = 0
+      OnKeyPress = Edit_PatientIdKeyPress
+    end
+    object Edit_FirstName: TEdit
+      Left = 77
+      Top = 65
+      Width = 139
+      Height = 21
+      CharCase = ecUpperCase
+      TabOrder = 1
+    end
+    object Edit_LastName: TEdit
+      Left = 77
+      Top = 94
+      Width = 139
+      Height = 21
+      CharCase = ecUpperCase
+      TabOrder = 2
+    end
+    object EditAge: TEdit
+      Left = 78
+      Top = 143
+      Width = 38
+      Height = 21
+      CharCase = ecUpperCase
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      MaxLength = 3
+      ParentFont = False
+      TabOrder = 3
+      OnChange = EditAgeChange
+      OnKeyDown = CmbAgeTypeKeyDown
+    end
+    object CmbAgeType: TComboBox
+      Left = 118
+      Top = 143
+      Width = 62
+      Height = 21
+      Style = csDropDownList
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 4
+      TabStop = False
+      OnChange = CmbAgeTypeChange
+      OnKeyDown = CmbAgeTypeKeyDown
+      Items.Strings = (
+        'Year'
+        'Month'
+        'Day')
+    end
+    object DateEditXDOB: TDateEditX
+      Left = 78
+      Top = 169
+      Width = 101
+      Height = 21
+      TabStop = False
+      TabOrder = 5
+      ControlData = {
+        545046300A5444617465456469745200044C656674024E03546F7003A9000577
+        6964746802650B4461746541442E5965617203D6070C4461746541442E4D6F6E
+        746802060A4461746541442E446179020B0B4461746556532E59656172030F08
+        0C4461746556532E4D6F6E746802020A4461746556532E446179021C08526561
+        644F6E6C79090000}
+    end
+    object DateEditXRegAge: TDateEditX
+      Left = 262
+      Top = 166
+      Width = 101
+      Height = 21
+      TabStop = False
+      TabOrder = 6
+      ControlData = {
+        545046300A5444617465456469745200044C65667403060103546F7003A60005
+        776964746802650B4461746541442E5965617203D6070C4461746541442E4D6F
+        6E746802060A4461746541442E446179020B0B4461746556532E59656172030F
+        080C4461746556532E4D6F6E746802020A4461746556532E446179021C085265
+        61644F6E6C79090000}
+    end
+    object CMBCountry: TDBLookupComboBox
+      Left = 77
+      Top = 192
+      Width = 265
+      Height = 21
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      KeyField = 'CountryID'
+      ListField = 'CountryCode;CountryName'
+      ListFieldIndex = 1
+      ListSource = DataSourceCountry
+      ParentFont = False
+      TabOrder = 7
+    end
+    object CmbDistrict: TDBLookupComboBox
+      Left = 76
+      Top = 217
+      Width = 266
+      Height = 21
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      KeyField = 'DistrictID'
+      ListField = 'DISTRICTNAME'
+      ListSource = DataSourceDistrict
+      ParentFont = False
+      TabOrder = 8
+      OnClick = CmbDistrictClick
+      OnKeyDown = CmbDistrictKeyDown
+      OnKeyPress = CmbDistrictKeyPress
+    end
+    object CmbVdc: TDBLookupComboBox
+      Left = 77
+      Top = 242
+      Width = 265
+      Height = 21
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      KeyField = 'VDCMCPTID'
+      ListField = 'VDCName'
+      ListSource = DataSourceVDC
+      ParentFont = False
+      TabOrder = 9
+      OnClick = CmbVdcClick
+      OnKeyDown = CmbVdcKeyDown
+      OnKeyPress = CmbVdcKeyPress
+    end
+    object CMBWardNo: TEdit
+      Left = 77
+      Top = 267
+      Width = 40
+      Height = 21
+      CharCase = ecUpperCase
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      MaxLength = 2
+      ParentFont = False
+      TabOrder = 10
+    end
+    object EditAddress: TEdit
+      Left = 119
+      Top = 267
+      Width = 223
+      Height = 21
+      CharCase = ecUpperCase
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 11
+    end
+    object EditPhone: TEdit
+      Left = 77
+      Top = 291
+      Width = 265
+      Height = 21
+      CharCase = ecUpperCase
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 12
+    end
+    object BitBtn_Update: TBitBtn
+      Left = 150
+      Top = 413
+      Width = 75
+      Height = 25
+      Caption = 'Update'
+      DoubleBuffered = True
+      Glyph.Data = {
+        E6040000424DE604000000000000360000002800000014000000140000000100
+        180000000000B004000000000000000000000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFEFEFEFBFBFBF8F8F8F6F6F6F5F5F5F5F5F5F6F6F6F8F8
+        F8FBFBFBFEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE
+        FEFEFBFBFBF5F5F5EDEDEDE6E6E6E1E1E1DFDFDFDFDFDFE1E1E1E6E6E6EDEDED
+        F5F5F5FBFBFBFEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEF9F9F9E9EE
+        E9ADD7AB80C27D60AF5A4CA4464CA3465EB0587DBF7AA4CBA2D5DAD5E4E4E4EF
+        EFEFF9F9F9FEFEFEFFFFFFFFFFFFFFFFFFFEFEFEF9F9F9BFE2BE76BD7142AF3C
+        40C33B3FD73B3EE63B3DE63B3ED73B3FC03B41AC3A71B46DADCAACDFDFDFEDED
+        EDF9F9F9FEFEFEFFFFFFFFFFFFFBFBFBB3E0B25DB55841C93C3EE23C3DDB3B3C
+        D83A3BD7393CD6393DD53A3CD63A3CD9393EBC3A5AAB54A1C49FDFDFDFEFEFEF
+        FBFBFBFFFFFFFEFEFEC5EBC45FB75A40D83D3FDE3E3FD33D3CD33A39D53637D7
+        353AD2363CCC393DC4393CBE383DC7383DC2395AA954ADC8ABE4E4E4F5F5F5FE
+        FEFEF4FAF47BC77741CF3D3FE33E3FD63E3CD33B8AD588F4FBF43AC73736D233
+        3BC8383DBF3A3DB9393CB2373CC0373FB53971B06CD5D9D5EDEDEDFBFBFBBAEA
+        B942B63D3EEC3E40DE403EDA3E77D174FFFFFFFFFFFFB9E5B733CE3038C9353C
+        BE383DB7393DB0393CAD373CCC3841A33AA3C5A1E6E6E6F8F8F88BD48841CD3C
+        3FEA3E40E14077D275FFFFFFF1FAF1E8F6E7FFFFFF5AC45636CB333AC0373DB6
+        393DB1393DAE383CBF383FB3397CB578E1E1E1F6F6F666BA613FE03C3FE93E40
+        E33FFFFFFFF4FBF444C84151C34EFFFFFFEDF8ED35C13137C5353CBC383EB53A
+        3DB1393DB7383EC53A5EA858DFDFDFF5F5F54EA5463EEE3C3FE93F43E54276D4
+        745AD35864E1636DDC6CCCEBCBFFFFFFB2E2B05ED55C55CC524CBF4942B63E3E
+        B33A3DD53A4CA146DFDFDFF5F5F54FA74740EF3E50ED4F5FEB5F70EA6F76E976
+        7CE77C80E47F85D883FFFFFFFFFFFF8ED88C75DB7471D37063C76052BD4F40D7
+        3D4CA146E1E1E1F6F6F668BC625BE65A75F27470EF7079ED7980EC8087EB868B
+        E98B8EE68EB0E1AEFFFFFFF9FCF982D8807ADA7977D2757CD17A60D05D60AA5B
+        E6E6E6F8F8F88DD88A62D65F89F58879F17881EF818AEE8990ED9096EC9699EB
+        9999E699D9F0D8FFFFFFE2F3E185DE8480D67E91DB9067C26380BB7DEDEDEDFB
+        FBFBBEF1BD53BD4E9CF89C81F38189F28992F1929AF09AA1EFA0A4EEA4A6ECA5
+        A3E4A2F0F8F0FFFFFF92E0918CDB8AA4E6A256B150ADD2ABF5F5F5FEFEFEF8FF
+        F880CF7C78DF779CF79B90F38F9AF39AA2F2A2A9F2A9AEF1AEB0F0B0AEEEAEAA
+        EAAAA3E6A39BE29AA5E6A47FCE7C76B971E9EEE9FBFBFBFFFFFFFFFFFFCAF5CA
+        6AC2658FEC8EA9F7A8A1F5A1A9F4A9B1F4B1B7F3B6B8F2B8B7F1B7B2EEB2ABEA
+        ABB2ECB296DE9467B562BFDFBEF9F9F9FEFEFEFFFFFFFFFFFFFFFFFFBBF0BA6B
+        C26686E184BCF9BBBCF8BCBDF6BDBFF5BFC1F4C1C4F4C3C4F4C4C2F3C28DD88B
+        6AB865B3DCB2F9F9F9FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCBF5CA80CE
+        7D63C25F90DF8DB7F0B6D3F8D3D6F9D6BBEEBB95DB9368BD637CC278C6E7C5FB
+        FBFBFEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8FFF8BEF0BD
+        8DD68A68BB634FA6474EA44667B8628CD089BBE6BAF4FAF4FEFEFEFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFF}
+      ParentDoubleBuffered = False
+      TabOrder = 13
+      OnClick = BitBtn_UpdateClick
+    end
+    object ButtonDOB: TButton
+      Left = 150
+      Top = 171
+      Width = 26
+      Height = 17
+      Caption = 'BS'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 14
+      TabStop = False
+    end
+    object ComboBoxGender: TComboBox
+      Left = 182
+      Top = 143
+      Width = 72
+      Height = 21
+      Style = csDropDownList
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 15
+      TabStop = False
+      Items.Strings = (
+        'MALE'
+        'FEMALE')
+    end
+    object edt_remarkupdate: TEdit
+      Left = 77
+      Top = 386
+      Width = 264
+      Height = 21
+      CharCase = ecUpperCase
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 18
+    end
+    object Edit_MobileNo: TEdit
+      Left = 77
+      Top = 314
+      Width = 265
+      Height = 21
+      CharCase = ecUpperCase
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 16
+    end
+    object Edit_Email: TEdit
+      Left = 77
+      Top = 337
+      Width = 264
+      Height = 21
+      CharCase = ecUpperCase
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 17
+    end
+    object dblcb_title: TDBLookupComboBox
+      Left = 78
+      Top = 37
+      Width = 59
+      Height = 21
+      KeyField = 'TITL_TITLEID'
+      ListField = 'TITL_TITLENAME'
+      ListSource = DS_title
+      TabOrder = 19
+    end
+    object DBLCB_scheme: TDBLookupComboBox
+      Left = 77
+      Top = 362
+      Width = 264
+      Height = 21
+      KeyField = 'schemeid'
+      ListField = 'scheme'
+      ListSource = ds_scheme
+      TabOrder = 20
+    end
+    object cbb_bloodgroup: TComboBox
+      Left = 246
+      Top = 120
+      Width = 107
+      Height = 21
+      TabOrder = 21
+      Text = 'cbb_bloodgroup'
+      Items.Strings = (
+        'O+'
+        'O-'
+        'A+'
+        'A-'
+        'B+'
+        'B-'
+        'AB+'
+        'AB-')
+    end
+  end
+  object PostingTable: TTable
+    TableName = 'PATIENTRECORDMODIFICATION'
+    Left = 315
+    Top = 32
+  end
+  object DataSourceDistrict: TDataSource
+    DataSet = QueryDistrict
+    Left = 289
+    Top = 15
+  end
+  object DataSourceCountry: TDataSource
+    DataSet = QueryCountry
+    Left = 278
+    Top = 45
+  end
+  object DataSourceVDC: TDataSource
+    DataSet = QueryVDC
+    Left = 265
+    Top = 31
+  end
+  object Query_Save: TOraQuery
+    Left = 296
+    Top = 8
+  end
+  object Query_SubProcess: TOraQuery
+    Left = 344
+    Top = 24
+  end
+  object QueryProcess: TOraQuery
+    Left = 304
+    Top = 8
+  end
+  object Query_Search: TOraQuery
+    Left = 224
+    Top = 48
+  end
+  object QueryCountry: TOraQuery
+    SQL.Strings = (
+      'select * from hs_country')
+    Left = 272
+    Top = 16
+  end
+  object QueryVDC: TOraQuery
+    SQL.Strings = (
+      'select * from HS_VDCMCPT'
+      'where (DistrictID=:DistrictID)'
+      'Order By VDCName')
+    Left = 240
+    Top = 32
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'DistrictID'
+      end>
+  end
+  object QueryDistrict: TOraQuery
+    SQL.Strings = (
+      'select * from hs_district'
+      'Order by districtname')
+    Left = 216
+    Top = 24
+  end
+  object QryPost: TOraQuery
+    Left = 312
+    Top = 16
+  end
+  object Qry: TOraQuery
+    Left = 200
+    Top = 24
+  end
+  object OraQueryTitle: TOraQuery
+    Session = DM_Hospital.DB
+    SQL.Strings = (
+      'Select * from HS_Titl_TITLE order by TITL_TITLEID')
+    Left = 312
+    Top = 8
+  end
+  object DS_title: TDataSource
+    DataSet = OraQueryTitle
+    Left = 304
+    Top = 24
+  end
+  object Query_scheme: TOraQuery
+    Session = DM_Hospital.DB
+    SQL.Strings = (
+      'Select * From VW_HS_SETUP_SCHEME'
+      'Where IsActive='#39'Y'#39
+      'Order by Scheme')
+    Left = 344
+    Top = 24
+  end
+  object ds_scheme: TOraDataSource
+    DataSet = Query_scheme
+    Left = 328
+    Top = 40
+  end
+  object Query_patientmain: TOraQuery
+    Session = DM_Hospital.DB
+    Left = 304
+    Top = 24
+  end
+end

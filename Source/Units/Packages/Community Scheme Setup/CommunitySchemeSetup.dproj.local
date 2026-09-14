@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2012/05/28 17:46:05.213.dproj,C:\Users\User\Documents\RAD Studio\Projects\Package1.dproj=E:\MRD\Source\Packages\Setup\Setup.dproj</Transaction>
+    <Transaction>2012/05/28 17:48:09.368.pas,E:\MRD\Source\Packages\Setup\Unit1.pas=E:\MRD\Source\Packages\Setup\Unit_Community.pas</Transaction>
+    <Transaction>2012/05/28 17:48:09.368.dfm,E:\MRD\Source\Packages\Setup\Unit1.dfm=E:\MRD\Source\Packages\Setup\Unit_Community.dfm</Transaction>
+    <Transaction>2012/05/28 17:56:00.989.pas,E:\MRD\Source\Packages\Setup\Unit1.pas=E:\MRD\Source\Packages\Setup\Unit_Schemes.pas</Transaction>
+    <Transaction>2012/05/28 17:56:00.989.dfm,E:\MRD\Source\Packages\Setup\Unit1.dfm=E:\MRD\Source\Packages\Setup\Unit_Schemes.dfm</Transaction>
+    <Transaction>2012/05/28 18:04:12.854.pas,E:\MRD\Source\Packages\Setup\Unit1.pas=E:\MRD\Source\Packages\Setup\Unit_CommunityScheme.pas</Transaction>
+    <Transaction>2012/05/28 18:04:12.854.dfm,E:\MRD\Source\Packages\Setup\Unit1.dfm=E:\MRD\Source\Packages\Setup\Unit_CommunityScheme.dfm</Transaction>
+    <Transaction>2012/05/30 14:51:13.438.pas,E:\MRD\Source\Packages\Setup\Unit_Community.pas=E:\MRD\Source\Packages\Setup\Unit_MemberPackage.pas</Transaction>
+    <Transaction>2012/05/30 14:51:13.438.dfm,E:\MRD\Source\Packages\Setup\Unit_Community.dfm=E:\MRD\Source\Packages\Setup\Unit_MemberPackage.dfm</Transaction>
+    <Transaction>2012/05/30 15:14:36.375.pas,E:\MRD\Source\Packages\Setup\Unit_CommunityScheme.pas=E:\MRD\Source\Packages\Setup\Unit_PackageScheme.pas</Transaction>
+    <Transaction>2012/05/30 15:14:36.375.dfm,E:\MRD\Source\Packages\Setup\Unit_CommunityScheme.dfm=E:\MRD\Source\Packages\Setup\Unit_PackageScheme.dfm</Transaction>
+    <Transaction>2012/05/30 17:16:18.467.pas,E:\MRD\Source\Packages\Setup\Unit1.pas=E:\MRD\Source\Packages\Setup\Unit_Community.pas</Transaction>
+    <Transaction>2012/05/30 17:16:18.468.dfm,E:\MRD\Source\Packages\Setup\Unit1.dfm=E:\MRD\Source\Packages\Setup\Unit_Community.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

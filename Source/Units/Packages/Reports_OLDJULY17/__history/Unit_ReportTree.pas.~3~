@@ -1,0 +1,557 @@
+unit Unit_ReportTree;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, ExtCtrls, ComCtrls, DB, DBTables, MemDS, DBAccess,DM,
+  Ora;
+
+type
+  TForm_ReportTree = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    BitBtn_Close: TBitBtn;
+    TreeView_Report: TTreeView;
+    Query_ReportTree: TOraQuery;
+    Query_Main: TOraQuery;
+    Label1: TLabel;
+    Edit1: TEdit;
+    procedure BitBtn_CloseClick(Sender: TObject);
+    procedure TreeView_ReportClick(Sender: TObject);
+    procedure ReportOpen(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    Procedure FormPendingSampleCollection(Sender: TObject);
+    Procedure FormSampleCollected(Sender: TObject);
+    Procedure FormVerifiedSampleCollected(Sender: TObject);
+    Procedure FormFindingCompleted(Sender: TObject);
+    Procedure FormmicrobiologySensitivity(Sender: TObject);
+    Procedure FormReportToBeDispatched(Sender: TObject);
+    Procedure FormReportPrinted(Sender: TObject);
+    Procedure FormpendingForResultEntry(Sender: TObject);
+    {Procedure FormpendingForAuthentication(Sender: TObject);
+    Procedure FormWorklist(Sender: TObject); }
+    Procedure SamplewiseReport1(Sender: TObject);
+    Procedure NoOfTestDone(Sender: TObject);
+    //Procedure FormpatientTestList(Sender: TObject);
+   { Procedure FormListOfRefund(Sender: TObject); }
+    Procedure FormTestSetupDetail(Sender: TObject);
+    Procedure FormPatientTestDetail(Sender: TObject);
+    {Procedure FormTestCancel(Sender: TObject);}
+    procedure TreeView_ReportCustomDrawItem(Sender: TCustomTreeView;
+      Node: TTreeNode; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure Edit1Change(Sender: TObject);
+    procedure Panel1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+  ps_Nodetext,ps_start:string;
+    { Public declarations }
+  end;
+
+var
+  Form_ReportTree: TForm_ReportTree;
+
+implementation
+   uses Fxn,Unit_PendingSampleCollectionReport,Unit_SampleCollectedReport,Unit_VerifiedSampleReport,
+   Unit_FindingCompletedReport,Unit_MicrobiologySensitivityReport,Unit_ReportToBeDispatched,
+   Unit_ReportPrinted,Unit_PendingForReultEntry,Unit_PendingForAuthentication{,
+   Unit_Worklist},Unit_SampleWise,UnitNoofTestDone{,DateRange},Unit_Testsetupdetail,
+   Unit_PatientTestDetail{,Unit_TestCancelReport, Unit_ListOfRefund};
+{$R *.dfm}
+
+procedure TForm_ReportTree.BitBtn_CloseClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_ReportTree.Edit1Change(Sender: TObject);
+begin
+  {   with Query_ReportTree do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add('select distinct rm.*,rp.userid from rootmenu rm,reportprevilage rp');
+          sql.Add('where rp.USERID=:userid');
+          SQL.Add('and RM.ROOTMENUID=rp.rootmenuid');
+          if Edit1.Text <> '' then
+               sql.add ('and captionname like ' + #39 + Edit1.Text + '%' + #39)
+          else
+               SQL.Add('and 1=1');
+          sql.Add('order by rm.submenuid');
+          parambyname('userid').asinteger:=gi_userid;
+          Open;
+     end;}
+  {   with Query_ReportTree do
+     Begin
+          IF trim(Edit1.Text) <> '' Then
+          Begin
+               Filter := 'captionname =' + #39 + Edit1.Text + '%' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;  }
+end;
+
+procedure TForm_ReportTree.FormFindingCompleted(Sender: TObject);
+begin
+     with Form_FindingCompletedReport do
+     begin
+          try
+          begin
+               Form_FindingCompletedReport:=TForm_FindingCompletedReport.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+
+procedure TForm_ReportTree.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if Key=vk_Escape then
+          Close;
+end;
+   {
+procedure TForm_ReportTree.FormListOfRefund(Sender: TObject);
+begin
+     with Form_ListOfRefund do
+     begin
+          try
+          begin
+               Form_ListOfRefund:=TForm_ListOfRefund.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;   }
+
+procedure TForm_ReportTree.FormmicrobiologySensitivity(Sender: TObject);
+begin
+     with Form_MicrobiologySensitivityResult do
+     begin
+          try
+          begin
+               Form_MicrobiologySensitivityResult:=TForm_MicrobiologySensitivityResult.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+
+procedure TForm_ReportTree.FormPatientTestDetail(Sender: TObject);
+begin
+     with Form_PatienttestDetail do
+     begin
+          try
+          begin
+               Form_PatienttestDetail:=TForm_PatienttestDetail.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+       {
+procedure TForm_ReportTree.FormpatientTestList(Sender: TObject);
+begin
+     with Form_DateRange do
+     begin
+          try
+          begin
+               Form_DateRange:=TForm_DateRange.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+
+procedure TForm_ReportTree.FormpendingForAuthentication(Sender: TObject);
+begin
+     with Form_PendingForAuthentication do
+     begin
+          try
+          begin
+               Form_PendingForAuthentication:=TForm_PendingForAuthentication.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+       }
+procedure TForm_ReportTree.FormpendingForResultEntry(Sender: TObject);
+begin
+     with Form_PendingForResultEntry do
+     begin
+          try
+          begin
+               Form_PendingForResultEntry:=TForm_PendingForResultEntry.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+
+procedure TForm_ReportTree.FormPendingSampleCollection(Sender: TObject);
+begin
+     with Form_PendingSampleCollectionReport do
+     begin
+          try
+          begin
+               Form_PendingSampleCollectionReport:=TForm_PendingSampleCollectionReport.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+
+procedure TForm_ReportTree.FormReportPrinted(Sender: TObject);
+begin
+     with Form_ReportPrinted do
+     begin
+          try
+          begin
+               Form_ReportPrinted:=TForm_ReportPrinted.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+
+procedure TForm_ReportTree.FormReportToBeDispatched(Sender: TObject);
+begin
+     with Form_ReportToBeDispatched do
+     begin
+          try
+          begin
+               Form_ReportToBeDispatched:=TForm_ReportToBeDispatched.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+
+procedure TForm_ReportTree.FormSampleCollected(Sender: TObject);
+begin
+     with Form_SampleCollectedReport do
+     begin
+          try
+          begin
+               Form_SampleCollectedReport:=TForm_SampleCollectedReport.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+
+procedure TForm_ReportTree.FormShow(Sender: TObject);
+var Rootnode:TTreeNode;
+begin
+     ps_start:='BEGIN';
+     Label1.Visible:=False;
+     Rootnode:=nil;
+     if TreeView_Report.Items.Count < 1 then
+     begin
+          with Query_main do
+          begin
+               close;
+               Session:=Dm_Hospital.Db;
+               sql.clear;
+               SQL.Add('select ACCESSID,USERACCESS from useraccess where USERACCESS = ''ANALYSIS''');
+               //SQL.SaveToFile('D:\savetest.txt');
+               open;
+               TreeView_Report.Items.Add(Rootnode,'0.'+Query_main.FieldByName('USERACCESS').asString);
+          end;
+     end;
+end;
+       procedure TForm_ReportTree.Panel1Click(Sender: TObject);
+begin
+
+end;
+
+{
+procedure TForm_ReportTree.FormTestCancel(Sender: TObject);
+begin
+     with Form_TestCancelReport do
+     begin
+          try
+          begin
+               Form_TestCancelReport:=TForm_TestCancelReport.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;      }
+
+procedure TForm_ReportTree.FormTestSetupDetail(Sender: TObject);
+begin
+     with Form_testdetail do
+     begin
+          try
+          begin
+               Form_testdetail:=TForm_testdetail.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+
+procedure TForm_ReportTree.FormVerifiedSampleCollected(Sender: TObject);
+begin
+     with Form_VerifiedSampleReport do
+     begin
+          try
+          begin
+               Form_VerifiedSampleReport:=TForm_VerifiedSampleReport.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+         {
+procedure TForm_ReportTree.FormWorklist(Sender: TObject);
+begin
+     with Form_Worklist do
+     begin
+          try
+          begin
+               Form_Worklist:=TForm_Worklist.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;    }
+
+procedure TForm_ReportTree.NoOfTestDone(Sender: TObject);
+begin
+     with FormNoofTestDone do
+     begin
+          try
+          begin
+               FormNoofTestDone:=TFormNoofTestDone.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+
+procedure TForm_ReportTree.ReportOpen(Sender: TObject);
+begin
+     if ps_Nodetext='2' then
+     FormPendingSampleCollection(Sender)
+     else if ps_Nodetext='3' then
+     FormSampleCollected(Sender)
+     else if ps_Nodetext='5' then
+     FormVerifiedSampleCollected(Sender)
+     else if ps_Nodetext='4' then
+     FormFindingCompleted(Sender)
+     else if ps_Nodetext='6' then
+     SamplewiseReport1(Sender)
+    { else if ps_Nodetext='7' then
+     FormWorklist(Sender)            }
+     else if ps_Nodetext='101' then
+     FormmicrobiologySensitivity(Sender)
+     else if ps_Nodetext='300' then
+     FormReportToBeDispatched(Sender)
+     else if ps_Nodetext='301' then
+     FormReportPrinted(Sender)
+     else if ps_Nodetext='303' then
+     FormpendingForResultEntry(Sender)
+    { else if ps_Nodetext='304' then
+     FormpendingForAuthentication(Sender)}
+     else if ps_Nodetext='206' then
+     NoOfTestDone(Sender)
+   {  else if ps_Nodetext='203' then
+     FormpatientTestList(Sender)
+     else if ps_Nodetext='204' then
+     FormListOfRefund(Sender)    }
+     else if ps_Nodetext='207' then
+     FormTestSetupDetail(Sender)
+     else if ps_Nodetext='209' then
+     FormPatientTestDetail(Sender)
+     {else if ps_Nodetext='305' then
+     FormTestCancel(Sender);  }
+end;
+
+procedure TForm_ReportTree.SamplewiseReport1(Sender: TObject);
+begin
+      with Form_SampleWiseReport do
+     begin
+          try
+          begin
+               Form_SampleWiseReport:=TForm_SampleWiseReport.create(application);
+               showmodal;
+          end;
+          finally
+                free;
+          end;
+     end;
+end;
+
+procedure TForm_ReportTree.TreeView_ReportClick(Sender: TObject);
+var SelNode:TTreeNode;
+NodeText,lf, ls_childNode,ls_formname:String;
+ID:Integer;
+begin
+     Label1.Visible:=True;
+     SelNode := TreeView_Report.Selected;
+     NodeText:=Copy(SelNode.text,1,pos('.',SelNode.text)-1);
+     PS_START:='END';
+     if NodeText='0' then
+     begin
+          if not SelNode.HasChildren  then
+          begin
+          with Query_ReportTree do
+          begin
+               close;
+               sql.clear;
+               Session:=Dm_Hospital.Db;
+               SQL.Add('select distinct repr_Submenuid,(select uasm_captionname from hs_uasm_useraccesssubmenu where uasm_submenuid=hs_repr_reportprevilage.repr_submenuid)captionname from hs_repr_reportprevilage');
+               sql.Add('where repr_submenuid in(select distinct hoac_submenuid from hs_hoac_hospitalaccess where hoac_hospitalid='+IntToStr(gi_ReportId)+')');
+               SQL.Add('and repr_userid='+IntToStr(gi_UserID));
+               SQL.Add('order by repr_submenuid');
+
+              { SQL.Add('SELECT Distinct  Userprevilage.UserId,Userprevilage.SubMenuID,Userprevilage.MenuID, U.SubMenuId,');
+               SQL.Add('U.SubMenuname,U.useraccessid,U.CaptionName');
+               SQL.Add('FROM UserPrevilage Userprevilage,useraccesssubmenu U,useraccess MM');
+               SQL.Add('WHERE (Userprevilage.UserId =:UserID) ');
+               SQL.Add('AND  (Userprevilage.SubMenuID = U.SubMenuId)  ');
+               SQL.Add('AND  (MM.ACCESSID = U.useraccessid)');
+               sql.Add('AND MM.USERACCESS=''ANALYSIS''');
+               SQL.Add('order by U.submenuid');       }
+               //SQL.Add('select * from useraccesssubmenu order by SubmenuID');
+               //SQL.SaveToFile('D:\save.txt');
+               //parambyname('userid').asinteger:=gi_userid;
+
+               Open;
+          end;
+
+          Query_ReportTree.First;
+          while not  Query_ReportTree.eof do
+          begin
+               ls_childNode:= '1.'+Query_ReportTree.fieldbyname('repr_SubmenuID').asString +' - '+ Query_ReportTree.fieldbyname('CaptionName').asString;
+
+               TreeView_Report.Items.AddChild(SelNode, ls_childNode);
+               Query_ReportTree.Next;
+          end;
+     end;
+     end
+     else  if NodeText='1' then
+     begin
+           SelNode := TreeView_Report.Selected;
+
+           NodeText:=Copy(SelNode.text,3,pos(' - ',SelNode.text)-2);
+           if not SelNode.HasChildren  then
+           begin
+               with Query_ReportTree do
+               begin
+                    close;
+                    sql.clear;
+                    Session:=Dm_Hospital.Db;
+                    SQL.Add('select distinct rm.*,rp.repr_userid,ha.hoac_hospitalid from hs_rome_rootmenu rm,hs_repr_reportprevilage rp,hs_hoac_hospitalaccess ha');
+                    sql.Add('where rp.repr_USERID=:userid');
+                    SQL.Add('and ha.hoac_hospitalid='+IntToStr(gi_ReportId));
+                    SQL.Add('and RM.rome_ROOTMENUID=rp.repr_rootmenuid');
+                    SQL.Add('and rm.rome_rootmenuid=ha.hoac_rootmenuid');
+                    SQL.Add('and rm.rome_submenuid='+QUOTEDSTR(NodeText));
+                    sql.Add('order by rm.rome_rootmenuid');
+                    //SQL.Add('and RM.SUBMENUID=RP.SUBMENUID');
+                    parambyname('userid').asinteger:=gi_userid;
+                    //SQL.SaveToFile('D:\save.txt');
+                    //sql.add('select * from rootmenu where submenuid='+qUOTEDSTR(NodeText));
+                    Open;
+               end;
+
+               Query_ReportTree.First;
+               while not  Query_ReportTree.eof do
+               begin
+                    ls_childNode:='2.'+Query_ReportTree.fieldbyname('rome_RootMenuID').asString +' - '+ Query_ReportTree.fieldbyname('rome_CaptionName').asString;
+
+                    TreeView_Report.Items.AddChild(SelNode, ls_childNode);
+                    Query_ReportTree.Next;
+               end;
+           end;
+           if not SelNode.HasChildren then
+           begin
+               NodeText:=Copy(SelNode.text,pos(' - ',SelNode.text)+3,10);
+               ps_Nodetext:=NodeText;
+               ReportOpen(sender);
+           end;
+     end
+     else if NodeText='2'  then
+     begin
+          SelNode := TreeView_Report.Selected;
+          NodeText:=Copy(SelNode.text,3,pos('-',SelNode.text)-4);
+          ps_nodetext:=Trim(NodeText);
+          {with query_blank do
+          begin
+               close;
+               databasename:=gs_databasename;
+               sql.clear;
+               sql.add('select formname from rootmenu where rootmenuid='+Quotedstr(Nodetext));
+               open;
+          end;
+          ls_formname:=query_blank.FieldByName('Formname').AsString;}
+          Label1.Caption:=TreeView_Report.Selected.Text;
+          ReportOpen(sender);
+     end;
+      Label1.Caption:=TreeView_Report.Selected.Text;
+end;
+
+procedure TForm_ReportTree.TreeView_ReportCustomDrawItem(
+  Sender: TCustomTreeView; Node: TTreeNode; State: TCustomDrawState;
+  var DefaultDraw: Boolean);
+  var
+    fontcolor,Backcolor:TColor;
+begin
+     FontColor := Sender.Canvas.Font.Color;
+     BackColor := clwhite;
+     FontColor := clWindowText;
+
+     if ps_start<>'BEGIN' then
+     begin
+          if Node.Text = (TreeView_Report.Selected).text  then
+          begin
+               FontColor := clRed;
+          end;
+     end;
+
+     Sender.Canvas.Font.Color := FontColor;
+     DefaultDraw := True;
+end;
+
+end.

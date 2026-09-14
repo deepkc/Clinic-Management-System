@@ -1,0 +1,277 @@
+unit Unit_PatientSearch;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, StdCtrls, Spin, OleCtrls, DateEditXControl_TLB, Buttons,
+  Grids, DBGrids, DB, MemDS, DBAccess, Ora,Fxn,ServerDate,DM, SMDBGrid;
+
+type
+  TForm_PatientSearch = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    BB_Close: TBitBtn;
+    GroupBox6: TGroupBox;
+    Label31: TLabel;
+    Label32: TLabel;
+    Se_CLDays: TSpinEdit;
+    BB_Refresh: TBitBtn;
+    OraQuery_Dbgrid: TOraQuery;
+    DS_Dbgrid: TDataSource;
+    LabelPatientId: TLabel;
+    SB_OK: TBitBtn;
+    SMDBGrid1: TSMDBGrid;
+    CB_GlobalSearch: TCheckBox;
+    OraQuery_FindRegDate: TOraQuery;
+    GroupBox1: TGroupBox;
+    Label4: TLabel;
+    Label5: TLabel;
+    SPB_From: TSpeedButton;
+    SPB_To: TSpeedButton;
+    Dex_CLFrom: TDateEditX;
+    Dex_CLTo: TDateEditX;
+    CB_SearchBydate: TCheckBox;
+    procedure SPB_FromClick(Sender: TObject);
+    procedure SPB_ToClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
+    procedure Edit_FirstNameKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BB_RefreshClick(Sender: TObject);
+    procedure Se_CLDaysChange(Sender: TObject);
+    procedure SMDBGrid1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure SMDBGrid1DblClick(Sender: TObject);
+    procedure BB_CloseClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure CB_GlobalSearchClick(Sender: TObject);
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_PatientSearch: TForm_PatientSearch;
+
+implementation
+
+{$R *.dfm}
+uses Unit_Verification;
+
+procedure TForm_PatientSearch.BB_CloseClick(Sender: TObject);
+begin
+       close;
+end;
+
+procedure TForm_PatientSearch.BB_RefreshClick(Sender: TObject);
+var KeyState: TKeyboardState;
+begin
+      if Trim(Se_CLDays.Text)<>'' then
+      begin
+          if CB_SearchBydate.Checked=False then
+          Dex_CLFrom.text:=(GetFromDateBySubNoOfDays(DEX_TodayDate,StrToInt(Se_CLDays.Text)));
+
+          with OraQuery_Dbgrid do
+          begin
+               close;
+               session:=DM_Hospital.DB;
+               sql.Clear;
+               sql.Add(' select * from VW_PATIENTMAIN_SEARCH ');
+               if (CB_GlobalSearch.checked=False) AND (CB_SearchBydate.checked=false) then
+               begin
+               sql.Add(' where regdate >='+QuotedSTr(GetFromDateBySubNoOfDays(DEX_TodayDate,StrToInt(Se_CLDays.Text))));
+               sql.Add(' and regdate<='+QuotedStr(Dex_CLTo.text));
+               end
+               else if CB_SearchBydate.checked=True then
+               begin
+                    sql.Add(' where regdate >='+QuotedStr(Dex_CLFrom.text));
+               sql.Add(' and regdate<='+QuotedStr(Dex_CLTo.text));
+               end;
+              //sql.savetofile('C:\abc33.txt');
+               open;
+          end;
+      end;
+
+      GetKeyboardState(KeyState);
+      if (KeyState[VK_CAPITAL]=0) then
+      begin
+           Keybd_Event(VK_CAPITAL, 1, KEYEVENTF_EXTENDEDKEY or 0, 0);
+         // Simulate a "CAPS LOCK" key press
+          Keybd_Event(VK_CAPITAL, 1, KEYEVENTF_EXTENDEDKEY or KEYEVENTF_KEYUP, 0);
+      end;
+
+end;
+
+
+procedure TForm_PatientSearch.CB_GlobalSearchClick(Sender: TObject);
+begin
+    CB_SearchBydate.checked:=false;
+end;
+
+procedure TForm_PatientSearch.Edit_FirstNameKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+    { if key=VK_UP then
+          OraQuery_Dbgrid.Prior
+     else if Key=VK_DOWN then
+          OraQuery_Dbgrid.Next
+     else if (Key=13) and (Trim(Edit_FirstName.Text) <> '') then
+     begin
+          Edit_FirstName.Text:=OraQuery_Dbgrid.FieldByName('Fname').AsString;
+          Edit_LastName.Text:=OraQuery_Dbgrid.FieldByName('Lname').AsString;
+          Edit_Phoneno.Text:=OraQuery_Dbgrid.FieldByName('RPHONENO').AsString;
+          LabelPatientId.Visible:=True;
+          LabelPatientId.Caption:='THE PATIENT ID IS : '+OraQuery_Dbgrid.FieldByName('Patientid').AsString;
+          DBGrid_Search.Visible:=false;
+     end;
+
+     if KEY=VK_ESCAPE then
+     close; }
+
+end;
+
+procedure TForm_PatientSearch.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+var
+  KeyState: TKeyboardState;
+begin
+     Form_Verification.CB_SearchPatient.Checked:=False;
+     GetKeyboardState(KeyState);
+     if (KeyState[VK_CAPITAL]=1) then
+     begin
+       Keybd_Event(VK_CAPITAL, 1, KEYEVENTF_EXTENDEDKEY or 0, 0);
+       Keybd_Event(VK_CAPITAL, 1, KEYEVENTF_EXTENDEDKEY or KEYEVENTF_KEYUP, 0);
+     end;
+end;
+
+procedure TForm_PatientSearch.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if Key = VK_ESCAPE then
+     begin
+           Form_Verification.CB_SearchPatient.Checked:=False;
+          close;
+     end;
+end;
+
+procedure TForm_PatientSearch.FormShow(Sender: TObject);
+begin
+     Dex_CLFrom.ADDateAsText := TodaysDate;
+     Dex_CLFrom.SystemOfDate := gi_datesystem;
+     SPB_From.Caption := gs_DateCaption;
+     Dex_CLTo.ADDateAsText := TodaysDate;
+     Dex_CLTo.SystemOfDate := gi_datesystem;
+     SPB_To.Caption := gs_DateCaption;
+     BB_RefreshClick(Sender);
+
+end;
+
+procedure TForm_PatientSearch.Se_CLDaysChange(Sender: TObject);
+begin
+     if Se_CLDays.Text<>'' then
+     Dex_CLFrom.text:=(GetFromDateBySubNoOfDays(DEX_TodayDate,StrToInt(Se_CLDays.Text)));
+end;
+
+ procedure TForm_PatientSearch.SMDBGrid1DblClick(Sender: TObject);
+ var key:char;
+
+begin
+
+     if Trim(Se_CLDays.Text)<>'' then
+     begin
+
+          Form_Verification.Dex_CLFrom.text:=Dex_CLFrom.text;
+          Form_Verification.Dex_CLTo.text:=Dex_CLTo.text;
+          Form_Verification.Edit_SearchCollectedList.Text:=OraQuery_Dbgrid.FieldByName('patientid').AsString;
+          //Form_Verification.Se_CLDays.Text:=Se_CLDays.Text;
+          key:=#13;
+          Form_Verification.CB_SearchPatient.checked:=false;
+          Form_verification.RB_all.checked:=True;
+          Form_Verification.CB_Date.checked:=True;
+
+          Form_Verification.Edit_SearchCollectedListKeyPress(sender,key);
+
+     end;
+
+end;
+
+procedure TForm_PatientSearch.SMDBGrid1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+  var
+  KeyState: TKeyboardState;
+ var ls_key:char;
+begin
+ {   GetKeyboardState(KeyState);
+  if (KeyState[VK_CAPITAL]=0) then
+  begin
+    // Simulate a "CAPS LOCK" key release
+    Keybd_Event(VK_CAPITAL, 1, KEYEVENTF_EXTENDEDKEY or 0, 0);
+    // Simulate a "CAPS LOCK" key press
+    Keybd_Event(VK_CAPITAL, 1, KEYEVENTF_EXTENDEDKEY or KEYEVENTF_KEYUP, 0);
+  end
+  else
+  begin
+    Keybd_Event(VK_CAPITAL, 0, KEYEVENTF_EXTENDEDKEY or 0, 0);
+    Keybd_Event(VK_CAPITAL, 0, KEYEVENTF_EXTENDEDKEY or KEYEVENTF_KEYUP, 0);
+  end;  }
+
+
+
+      if Key = vk_up then
+    OraQuery_Dbgrid.Prior
+  else if Key = vk_down then
+    OraQuery_Dbgrid.next;
+
+    if KEY=13 then
+    BEGIN
+          if Trim(Se_CLDays.Text)<>'' then
+          begin
+              
+               Form_Verification.Dex_CLFrom.text:=Dex_CLFrom.text;
+               Form_Verification.Dex_CLTo.text:=Dex_CLTo.text;
+               Form_Verification.Edit_SearchCollectedList.Text:=OraQuery_Dbgrid.FieldByName('patientid').AsString;
+               Form_Verification.Se_CLDays.Text:=Se_CLDays.Text;
+               ls_key:=#13;
+               Form_Verification.Edit_SearchCollectedListKeyPress(sender,ls_key);
+               Form_Verification.CB_SearchPatient.checked:=false;
+               Form_Verification.CB_Date.checked:=True;
+               close;
+
+          end;
+    END;
+end;
+
+
+procedure TForm_PatientSearch.SPB_FromClick(Sender: TObject);
+begin
+     if SPB_From.Caption = 'BS' then
+      begin
+        Dex_CLFrom.SystemOfDate := 1;
+        SPB_From.Caption := 'AD';
+      end
+      else
+      begin
+        Dex_CLFrom.SystemOfDate := 0;
+        SPB_From.Caption := 'BS';
+      end;
+end;
+
+procedure TForm_PatientSearch.SPB_ToClick(Sender: TObject);
+begin
+     if SPB_To.Caption = 'BS' then
+      begin
+        Dex_CLTo.SystemOfDate := 1;
+        SPB_To.Caption := 'AD';
+      end
+      else
+      begin
+        Dex_CLTo.SystemOfDate := 0;
+        SPB_To.Caption := 'BS';
+      end;
+end;
+
+end.

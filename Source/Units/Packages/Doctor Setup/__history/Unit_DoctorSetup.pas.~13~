@@ -1,0 +1,550 @@
+unit Unit_DoctorSetup;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm, DbGridExportToExcel,ServerDate,Unit_Master_Hos,
+     Dialogs, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, ExtCtrls, Grids, DBGrids, StdCtrls, Buttons, ComCtrls,
+     DBCtrls;
+
+type
+     TForm_DoctorSetup = class(TForm)
+          Panel2: TPanel;
+          BB_Save: TBitBtn;
+          BB_Close: TBitBtn;
+          BB_New: TBitBtn;
+          PageControl1: TPageControl;
+          TabSheet1: TTabSheet;
+          Label2: TLabel;
+          SpeedButton1: TSpeedButton;
+          SpeedButton2: TSpeedButton;
+          Edit_Search: TEdit;
+          DBGrid1: TDBGrid;
+          TabSheet2: TTabSheet;
+          Label7: TLabel;
+          Label8: TLabel;
+          le_Doccode: TLabeledEdit;
+          le_Docname: TLabeledEdit;
+          Query_list: TOraQuery;
+          Ds_List: TDataSource;
+          le_qualification: TLabeledEdit;
+          le_sepcialization: TLabeledEdit;
+          cb_isactive: TCheckBox;
+    Label1: TLabel;
+    dblcb_Department: TDBLookupComboBox;
+    Query_Dep: TOraQuery;
+    DS_Dep: TDataSource;
+    Label3: TLabel;
+    Label13: TLabel;
+    CMB_Desig: TComboBox;
+    Edit_NMCNo: TEdit;
+    Edit_DisplayOrder: TEdit;
+    Label4: TLabel;
+    Edit_RoomNo: TEdit;
+    Label5: TLabel;
+    LE_PhoneNo: TLabeledEdit;
+    LE_MobileNo: TLabeledEdit;
+    SB_DocRoutine: TSpeedButton;
+    GroupBox1: TGroupBox;
+    RB_IsConsultantDoctor: TRadioButton;
+    RB_IsDutyDoctor: TRadioButton;
+    RB_NoneDoctor: TRadioButton;
+    CB_NoneHospitalDoctor: TCheckBox;
+    Label6: TLabel;
+    CB_IsQueueNoGenerate: TCheckBox;
+    GroupBox2: TGroupBox;
+    RB_GroupA: TRadioButton;
+    RB_GroupB: TRadioButton;
+    GroupBox3: TGroupBox;
+    RB_All: TRadioButton;
+    RB_Active: TRadioButton;
+    RB_Inactive: TRadioButton;
+    Label9: TLabel;
+    Label10: TLabel;
+    DBLCB_AccountHead: TDBLookupComboBox;
+    DBLCB_AccountHeadIPD: TDBLookupComboBox;
+    DS_AccountHead: TDataSource;
+    Query_AccountHead: TOraQuery;
+    Query_ACCHEADIPD: TOraQuery;
+    DS_ACCHEADIPD: TDataSource;
+    RB_AnestheticDoctor: TRadioButton;
+    CB_IsAnestheticDoctor: TCheckBox;
+    LBLE_DisplayName: TLabeledEdit;
+    CB_IsERDoctor: TCheckBox;
+    CB_IsBLKDoctor: TCheckBox;
+    CB_IsErStaff: TCheckBox;
+    DBGrid_DocName: TDBGrid;
+    Query_NameList: TOraQuery;
+    DS_NameList: TDataSource;
+          procedure PageControl1Change(Sender: TObject);
+          procedure BB_NewClick(Sender: TObject);
+          procedure BB_CloseClick(Sender: TObject);
+          procedure Edit_SearchChange(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure BB_SaveClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure SB_DocRoutineClick(Sender: TObject);
+    procedure RB_AllClick(Sender: TObject);
+    procedure le_DocnameChange(Sender: TObject);
+    procedure le_DocnameExit(Sender: TObject);
+    procedure DBGrid_DocNameDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure le_DocnameKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+     private
+          pb_isnew: Boolean;
+          pi_DoctorID: integer;
+          { Private declarations }
+     public
+          { Public declarations }
+     end;
+
+var
+     Form_DoctorSetup: TForm_DoctorSetup;
+
+implementation
+
+uses Unit_DoctorRoutine;
+
+{$R *.dfm}
+
+procedure TForm_DoctorSetup.BB_CloseClick(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+     Begin
+          PageControl1.ActivePageIndex := 0;
+          Query_list.Close;
+          Query_list.Session := DM_Hospital.DB;
+          Query_list.Open;
+          Query_list.Locate('DOCT_DOCID',pi_DoctorId,[]);
+     End
+     else
+          Close;
+end;
+
+procedure TForm_DoctorSetup.BB_NewClick(Sender: TObject);
+begin
+     pb_isnew := true;
+     PageControl1.ActivePageIndex := 1;
+     ClearAll(PageControl1.Pages[1]);
+     cb_isactive.Checked:=True;
+     RB_GroupA.Checked:=True;
+
+end;
+
+procedure TForm_DoctorSetup.BB_SaveClick(Sender: TObject);
+Var
+     ls_DOCCODE, ls_DACTIVE,ls_ISCONSULTANT, ls_DOCNAME, ls_QUALIFICATION, ls_SPECIALIZATION,ls_DEPID,ls_NMCNO: String;
+     ls_PhoneNo, ls_MobileNo,ls_ZipCode, ls_ISDOCTOR,ls_ISSURGEON,ls_ISONCALLDOCTOR, ls_DESIG,ls_RoomNo,
+     ls_ISCONSULTATIONINGENOPD,ls_ISQUEUENOGENINREG,LS_ERSTAFF :String;
+     ls_ISNONEHOSDOCSTAFF,ls_ISANAESTHETIST, ls_DocType,ls_DOCSHAREGROUP,ls_DisplayName,ls_ISERDOCTOR,ls_ISBLKDOCTOR : String;
+     li_DisplayOrder,li_DepId,li_AccHeadId,li_AccHeadIdIpd: Integer;
+begin
+     if (Trim(le_Doccode.Text) = '') or (Trim(le_Docname.Text) = '') or (Trim(CMB_Desig.Text)='') then
+     begin
+          MsgBox(1006, 0, '', '', '');
+          exit;
+     end;
+
+     if Edit_DisplayOrder.Text<>'' then
+     li_DisplayOrder:=StrToInt(Edit_DisplayOrder.Text)
+     else
+     li_DisplayOrder:=0;
+
+     if Trim(dblcb_Department.Text)='' then
+     Begin
+          if Not (MessageDlg('Please Mention Doctor Department First. Do You Want To Continue Without Doctor Department ?',mtConfirmation,[MbYes,MbNo],0)=mrYes) then
+          Begin
+               dblcb_Department.SetFocus;
+               Exit;
+          End;
+     End;
+
+
+     ls_DOCCODE := le_Doccode.Text;
+     if pb_isnew then
+     Begin
+          IF IsDataExist('HS_DOCT_DOCTOR','DOCT_DOCCODE',ls_DOCCODE) Then
+          Begin
+               MessageDlg('Duplicate Doctor Code('+ls_DOCCODE+') !',mtWarning,[mbok],0);
+               Exit;
+          End;
+     End;
+
+
+     if cb_isactive.Checked = true then
+          ls_DACTIVE := 'Y'
+     else
+          ls_DACTIVE := 'N';
+
+
+     if CB_IsAnestheticDoctor.Checked = true then
+          ls_ISANAESTHETIST := 'Y'
+     else
+          ls_ISANAESTHETIST := 'N';
+
+
+
+     if (RB_IsConsultantDoctor.Checked=True) or (RB_IsDutyDoctor.Checked=True) then
+     ls_ISDOCTOR:='Y'
+     Else
+     ls_ISDOCTOR:='N';
+
+     if (CB_IsERDoctor.Checked=True) then
+     ls_ISERDOCTOR:='Y'
+     Else
+     ls_ISERDOCTOR:='N';
+
+
+     if (CB_IsBLKDoctor.Checked=True) then
+     ls_ISBLKDOCTOR:='Y'
+     Else
+     ls_ISBLKDOCTOR:='N';
+
+     if RB_IsConsultantDoctor.Checked=True Then
+     ls_DocType:='COD'
+     Else IF RB_IsDutyDoctor.Checked=True then
+     ls_DocType:='DUD'
+     Else
+     ls_DocType:='NOD';
+
+     if CB_NoneHospitalDoctor.Checked=False then
+     ls_ISNONEHOSDOCSTAFF:='N'
+     Else
+     ls_ISNONEHOSDOCSTAFF:='Y';
+
+     ls_ISONCALLDOCTOR:='N';
+
+     ls_DOCNAME := Trim(le_Docname.Text);
+     if trim(le_doccode.text)='SLF' then
+     begin
+          ls_DESIG:='';
+     end
+     else if trim(le_doccode.text)='NRS' then
+      begin
+          ls_DESIG:='';
+     end
+     else
+     begin
+        ls_DESIG:=CMB_Desig.Text;
+     end;
+     ls_QUALIFICATION := le_qualification.Text;
+     ls_SPECIALIZATION := le_sepcialization.Text;
+
+     ls_PhoneNo := LE_PhoneNo.Text;
+     ls_MobileNo := LE_MobileNo.Text;
+     ls_ZipCode :='';
+
+
+     ls_DisplayName:=StringReplace(LBLE_DisplayName.Text,'''','''''',[rfReplaceAll]);
+
+
+
+     if Trim(dblcb_Department.Text)<>'' then
+     li_DepId := dblcb_Department.KeyValue
+     Else
+     li_DepId := 0;
+
+     if CB_IsQueueNoGenerate.Checked=False then
+     ls_ISQUEUENOGENINREG:='N'
+     Else
+     ls_ISQUEUENOGENINREG:='Y';
+
+     ls_RoomNo:=Edit_RoomNo.Text;
+
+     ls_NMCNO:=Edit_NMCNo.Text;
+
+
+     if RB_GroupA.Checked=True then
+     ls_DOCSHAREGROUP:='A'
+     Else
+     ls_DOCSHAREGROUP:='B';
+
+     IF DBLCB_AccountHead.keyValue<>NULL Then
+     li_AccHeadId:=DBLCB_AccountHead.keyValue
+     Else
+     li_AccHeadId:=0;
+
+     IF DBLCB_AccountHeadIPD.keyValue<>NULL Then
+     li_AccHeadIdIpd:=DBLCB_AccountHeadIPD.keyValue
+     Else
+     li_AccHeadIdIpd:=0;
+
+
+     if CB_IsErStaff.Checked=True then
+     LS_ERSTAFF:='Y'
+     else
+     LS_ERSTAFF:='N';
+
+
+     try
+          if pb_isnew then
+               SaveDoctorSetup(ls_DOCCODE, ls_DESIG, ls_DOCNAME,ls_DisplayName, ls_DACTIVE,ls_QUALIFICATION,ls_SPECIALIZATION,ls_PhoneNo,ls_ZipCode,
+               ls_MobileNo,ls_ISQUEUENOGENINREG,ls_RoomNo,ls_NMCNO,ls_ISDOCTOR,ls_ISANAESTHETIST,ls_ISERDOCTOR,ls_ISBLKDOCTOR, ls_DocType,ls_ISNONEHOSDOCSTAFF,
+               ls_ISONCALLDOCTOR,ls_DOCSHAREGROUP,li_DepId,li_DisplayOrder, pi_DoctorID,li_AccHeadId,li_AccHeadIdIpd)
+          else
+               UpdateDoctorSetup(pi_DoctorID,li_DepId, li_DisplayOrder,li_AccHeadId,li_AccHeadIdIpd,ls_DOCCODE, ls_DESIG, ls_DOCNAME, ls_DisplayName, ls_DACTIVE,
+               ls_QUALIFICATION,ls_SPECIALIZATION,ls_PhoneNo,ls_ZipCode,ls_MobileNo,ls_ISQUEUENOGENINREG,ls_RoomNo,ls_NMCNO,
+               ls_ISDOCTOR,ls_ISANAESTHETIST,ls_ISERDOCTOR,ls_ISBLKDOCTOR,ls_DocType,ls_ISNONEHOSDOCSTAFF,ls_ISONCALLDOCTOR,ls_DOCSHAREGROUP);
+          ShowDoneMessage;
+          ClearAll(PageControl1.Pages[1]);
+          cb_isactive.Checked:=True;
+          le_Doccode.SetFocus;
+          le_Doccode.Enabled:=True;
+          Query_list.Locate('DOCT_DocID',pi_DoctorID,[]);
+          pb_isnew := true;
+     except
+          MsgBox(1005, 0, '', '', '');
+     end;
+end;
+
+procedure TForm_DoctorSetup.DBGrid1DblClick(Sender: TObject);
+begin
+     with Query_list do
+     begin
+          PageControl1.ActivePageIndex:=1;
+          pb_isnew:=false;
+
+          le_Doccode.Text:=FieldByName('DOCT_DOCCODE').AsString;
+          le_Doccode.Color:=clScrollBar;
+          le_Doccode.ReadOnly:=True;
+
+          le_Docname.Text:=FieldByName('DOCT_DOCNAME').AsString;
+          LBLE_DisplayName.Text:=FieldByName('DOCT_DisplayName').AsString;
+          le_qualification.Text:=FieldByName('DOCT_QUALIFICATION').AsString;
+          le_sepcialization.Text:=FieldByName('DOCT_SPECIALIZATION').AsString;
+
+          LE_PhoneNo.Text:=FieldByName('DOCT_PHONENO').AsString;
+          LE_MobileNo.Text:=FieldByName('DOCT_MOBILENO').AsString;
+
+          pi_DoctorID:=FieldByName('DOCT_DOCID').AsInteger;
+          Edit_DisplayOrder.Text:=FieldByName('DOCT_DOCORDER').AsString;
+          le_Doccode.SetFocus;
+          dblcb_Department.KeyValue:=FieldByName('DOCT_DEPID').AsInteger;
+          if Query_list.FieldByName('DOCT_ISACTIVE').AsString='Y' then
+          cb_isactive.Checked:=true
+          else
+          cb_isactive.Checked:=false;
+
+          IF Query_list.FieldByName('DOCT_DOCTYPE').AsString='COD' then
+          RB_IsConsultantDoctor.Checked:=True
+          Else if Query_list.FieldByName('DOCT_DOCTYPE').AsString='DUD' then
+          RB_IsDutyDoctor.Checked:=True
+          else
+          RB_NoneDoctor.Checked:=True;
+
+          IF Query_list.FieldByName('DOCT_ISNONEHOSDOCSTAFF').AsString='Y' then
+          CB_NoneHospitalDoctor.Checked:=True
+          Else
+          CB_NoneHospitalDoctor.Checked:=False;
+
+
+          IF Query_list.FieldByName('DOCT_ISANAESTHETIST').AsString='Y' then
+          CB_IsAnestheticDoctor.Checked:=True
+          else
+          CB_IsAnestheticDoctor.Checked:=False;
+
+          IF Query_list.FieldByName('DOCT_IsERStaff').AsString='Y' then
+          CB_IsErStaff.Checked:=True
+          else
+          CB_IsErStaff.Checked:=False;
+
+          IF Query_list.FieldByName('DOCT_IsERDoctor').AsString='Y' then
+          CB_IsERDoctor.Checked:=True
+          else
+          CB_IsERDoctor.Checked:=False;
+
+          IF Query_list.FieldByName('DOCT_IsBLKDoctor').AsString='Y' then
+          CB_IsBLKDoctor.Checked:=True
+          else
+          CB_IsBLKDoctor.Checked:=False;
+
+          IF Query_list.FieldByName('DOCT_DOCSHAREGROUP').AsString='A' then
+          RB_GroupA.Checked:=True
+          Else
+          RB_GroupB.Checked:=True;
+
+
+          IF Query_list.FieldByName('DOCT_ISQUEUENOGENINREG').AsString='Y' then
+          CB_IsQueueNoGenerate.Checked:=True
+          Else
+          CB_IsQueueNoGenerate.Checked:=False;
+
+          (*if Query_list.FieldByName('IsConsultationInGenOPD').AsString='Y' then
+          CB_DisplayInGenOPD.Checked:=true
+          else
+          CB_DisplayInGenOPD.Checked:=false;*)
+
+          CMB_Desig.Text:=FieldByName('DOCT_DESIG').AsString;
+          Edit_NMCNo.Text:= FieldByName('DOCT_NMCNO').AsString;
+          Edit_RoomNo.Text:=FieldByName('DOCT_ROOMNO').AsString;
+
+          DBLCB_AccountHead.KeyValue:=FieldByName('DOCT_ACCOUNTHEADIDOPD').AsInteger;
+          DBLCB_AccountHeadIPD.KeyValue:=FieldByName('DOCT_ACCOUNTHEADIDIPD').AsInteger;
+     end;
+     DBGrid_DocName.Visible :=False;
+end;
+
+procedure TForm_DoctorSetup.DBGrid_DocNameDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+     IF (Query_NameList.FieldByName('IsActive').asString='N') Then
+     Begin
+          DBGrid1.Canvas.Font.Color:=clRed;
+          DBGrid1.DefaultDrawDataCell(rect,Column.Field,State);
+     End;
+end;
+
+procedure TForm_DoctorSetup.Edit_SearchChange(Sender: TObject);
+begin
+
+     Edit_Search.Text := StringReplace(Edit_Search.Text, '''', '''''', [rfReplaceAll]);
+     with Query_list do
+     Begin
+          IF Trim(Edit_Search.Text) <> '' Then
+          Begin
+               Filter := 'DOCT_DOCNAME =' + #39 + Trim(Edit_Search.Text) + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TForm_DoctorSetup.FormCreate(Sender: TObject);
+begin
+     Query_list.Close;
+     Query_list.Session := DM_Hospital.DB;
+     Query_list.Open;
+     PageControl1.ActivePageIndex := 0;
+end;
+
+procedure TForm_DoctorSetup.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = 27 then
+          BB_CloseClick(Sender);
+end;
+
+procedure TForm_DoctorSetup.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     keybd_event(9,13,0,0);
+end;
+
+procedure TForm_DoctorSetup.FormShow(Sender: TObject);
+begin
+     Query_Dep.Close;
+     Query_Dep.Open;
+     DBGrid_DocName.Visible:=False;
+
+     IF gs_ISINTEGRATEDAccount='Y' Then
+     Begin
+          Try
+               With Query_AccountHead do
+               Begin
+                    Close;
+                    Session:= DM_Hospital.DB;
+                    SQL.Clear;
+                    SQL.add(' Select ID,ParentId,Name From '+gs_DB_AccUserName+'.Acctree where ParentID=36');
+                    SQL.add(' Order by Name');
+                    Open;
+               End;
+          Except
+
+          End;
+
+          Try
+               With Query_ACCHEADIPD do
+               Begin
+                    Close;
+                    Session:= DM_Hospital.DB;
+                    SQL.Clear;
+                    SQL.add(' Select ID,ParentId,Name From '+gs_DB_AccUserName+'.Acctree where ParentID=37');
+                    SQL.add(' Order by Name');
+                    Open;
+               End;
+          Except
+
+          End;
+     End;
+     Query_NameList.Close;
+     Query_NameList.Open;
+end;
+
+procedure TForm_DoctorSetup.le_DocnameChange(Sender: TObject);
+var
+     srcString:String;
+begin
+      srcString:='';
+      DBGrid_DocName.Visible:=True;
+      DBGrid_DocName.BringToFront;
+      Query_NameList.Filtered:=False;
+      if Trim(le_Docname.text) <> '' Then
+           srcString:=srcString+' And DocName ='+ Char(39) + le_Docname.text + '*' + Char(39);
+
+     if Length(srcString)>0 then
+     begin
+          srcString:= copy(srcString,5,length(srcString)-3);
+          Query_NameList.Filter:= srcString;
+          Query_NameList.Filtered:=True;
+     end
+     else Query_NameList.Filtered:=False;
+end;
+
+procedure TForm_DoctorSetup.le_DocnameExit(Sender: TObject);
+begin
+     DBGrid_DocName.Visible := False;
+end;
+
+procedure TForm_DoctorSetup.le_DocnameKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if Key=VK_ESCAPE then
+          DBGrid_DocName.Visible :=False;
+end;
+
+procedure TForm_DoctorSetup.PageControl1Change(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+          PageControl1.ActivePageIndex := 0
+     else
+          PageControl1.ActivePageIndex := 1;
+end;
+
+procedure TForm_DoctorSetup.RB_AllClick(Sender: TObject);
+begin
+     if RB_All.Checked=True then
+     Begin
+          With Query_list do
+          Begin
+               Close;
+               sql[2]:='';
+               Open;
+          End;
+     End;
+end;
+
+procedure TForm_DoctorSetup.SB_DocRoutineClick(Sender: TObject);
+begin
+     try
+          Form_DoctorRoutine := TForm_DoctorRoutine.Create(nil);
+          Form_DoctorRoutine.ShowModal;
+     finally
+          Form_DoctorRoutine.Free;
+     end;
+end;
+
+procedure TForm_DoctorSetup.SpeedButton2Click(Sender: TObject);
+begin
+     if MsgBox(1010, 1, '', '', '') then
+     begin
+          ExportDBGrid(Form_DoctorSetup, DBGrid1, true, 'Doctors List ', TodaysDateVS + ' BS -' + TodaysDate + ' AD');
+     end;
+end;
+
+end.

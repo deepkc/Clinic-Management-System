@@ -1,0 +1,623 @@
+object Form_Scheme: TForm_Scheme
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Scheme'
+  ClientHeight = 469
+  ClientWidth = 666
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 666
+    Height = 41
+    Align = alTop
+    TabOrder = 0
+    object BtnNew: TBitBtn
+      Left = 440
+      Top = 1
+      Width = 75
+      Height = 39
+      Align = alRight
+      Caption = '&New'
+      DoubleBuffered = True
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        18000000000000030000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFC1C1C181818181818181818181818181818181818181
+        8181818181818181818181818181818181C6C6C6FFFFFFFFFFFF818181FFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FF818181FFFFFFFFFFFF818181FFFFFFEDEDEDEDEDEDEEEEEEEFEFEFEFEFEFF0
+        F0F0F0F0F0F1F1F1F2F2F2F2F2F2FFFFFF818181FFFFFFFFFFFF818181FFFFFF
+        EDEDEDEDEDEDEEEEEEEEEEEEEFEFEFF0F0F0F0F0F0F1F1F1F1F1F1F2F2F2FFFF
+        FF818181FFFFFFFFFFFF818181FFFFFFECECECEDEDEDEEEEEEEEEEEEEFEFEFEF
+        EFEFF0F0F0F1F1F1F1F1F1F1F1F1FFFFFF818181FFFFFFFFFFFF818181FFFFFF
+        ECECECECECECEDEDEDEDEDEDEEEEEEEEEEEEEFEFEFEFEFEFF0F0F0F0F0F0FFFF
+        FF818181FFFFFFFFFFFF818181FFFFFFECECECECECECEDEDEDEDEDEDEEEEEEEE
+        EEEEEFEFEFEFEFEFEFEFEFF0F0F0FFFFFF818181FFFFFFFFFFFF818181FFFFFF
+        EBEBEBECECECECECECEDEDEDEDEDEDEEEEEEEEEEEEE2EEEEB1F0F392F0F59AF0
+        F5779696FFFFFFFFFFFF818181FFFFFFEBEBEBEBEBEBECECECECECECEDEDEDED
+        EDEDE0EEEF96EFF463F1F846F3FB45F3FB5EEFF7A2EFF3FEFFFF818181FFFFFF
+        EBEBEBEBEBEBECECECECECECECECECEDEDEDB1EEF167F1F840F4FD71F7FD72F7
+        FD44F3FC63F1F9DBFDFF818181FFFFFFEAEAEAEBEBEBEBEBEBECECECECECECEC
+        ECEC9BEFF34EF2FA6AF6FDBBFAFEBFFBFE6EF6FD49F3FBB3FBFF818181FFFFFF
+        EAEAEAEAEAEAEBEBEBEBEBEBECECECECECEC9CEEF24EF2FA67F6FDB5FAFEB8FA
+        FE6BF5FD4AF2FBA8FBFF818181FFFFFFECECECEAEAEAEAEAEAEBEBEBEBEBEBEB
+        EBEBB4EDF06AF0F73AF4FC68F6FD6AF6FD3EF2FB6AF4FBCAFCFF818181FFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9BEEF269F0F74DF2FA4AEF
+        F766F1F7A3FAFFF6FFFFC1C1C181818181818181818181818181818181818181
+        81818181817C8C8C729F9F6AAEAF92F0F5BCFCFFF0FEFFFFFFFF}
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BtnNewClick
+    end
+    object BitBtnSave: TBitBtn
+      Left = 515
+      Top = 1
+      Width = 75
+      Height = 39
+      Align = alRight
+      Caption = '&Save'
+      DoubleBuffered = True
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        1800000000000003000001000000010000000000000000000000000000975233
+        9A55359954349652339652339652339652339652339652339652339A55359B55
+        359853349451320000009451369D5534BD5A22BB5A24B75926C7B0A4C8B5ACC8
+        B5ACC8B5ACC8B5ACC8B5ACC9B5ABBF6532B759269B55358040408F5030A05633
+        C46127C46127C46127D3CDCBD4D4D5D4D4D5D4D4D5CB9373C7784AD3CFCDC66F
+        3BC461279D56348F50308F5030A15734CB672CCB672CCB672CDED8D5DFDFE0DF
+        DFE0DFDFE0D18A61CB672CDED8D5CD7541CB672C9E56348F50308F5030A15834
+        D26E30D26E30D26E30EAE5E1ECECECECECECECECECDA9367D26E30EAE5E1D57D
+        46D26E309E56358F50308F5030A25835D67233D67233D67233F3E7E0F7F7F7F7
+        F7F7F7F7F7F2E4DBF0DCD0F7F5F5DA824AD672339E57358F50308F5030A35935
+        DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB76
+        36DB76369F57358F50308F5030A35935DF7A39F2ECE8FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFDDCBBFDF7A399F57358F50308F5030A45A36
+        E4803EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE7DB
+        D3E4803E9F58368F50308F5030A45B37E98746FCFCFCFCFCFCFCFCFCFCFCFCFC
+        FCFCFCFCFCFCFCFCFCFCFCFCFCFCE5D9D1E98746A058368F50308F5030A55C38
+        EE9150F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3DED3
+        CCEE9150A059378F5030945231A55D3AF49C5DE5E5E5E5E5E5E5E5E5E5E5E5E5
+        E5E5E5E5E5E5E5E5E5E5E5E5E5E5DAD4CFF49C5DA059378F5030945231A65F3B
+        F8A668D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3CCC7
+        C3F8A668A05A389955339F5535A45D3BF9AC6FD0CECDD3D3D3D3D3D3D3D3D3D3
+        D3D3D3D3D3D3D3D3D3D3D3D3D3D3CCC7C4F9AC6F9E58378E55390000009C5534
+        9B55359B55359B55359B55359B55359B55359B55359B55359B55359B55359B55
+        359B55359C553400000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000}
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BitBtnSaveClick
+    end
+    object BitBtnCancel: TBitBtn
+      Left = 590
+      Top = 1
+      Width = 75
+      Height = 39
+      Align = alRight
+      Caption = '&Cancel'
+      DoubleBuffered = True
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        18000000000000030000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFF6569BA717FE06B6EBEFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFDFEFFFFFFFFFFFFB9BADD7A83E6
+        6A80FF273CD9EBECF6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7677
+        C58788D9FFFFFFFFFFFFA0A1D34D54DE2536EB0B20D9E3E3F3FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFDCDCEE0E16C0B1B2DEFFFFFFFFFFFFE9E9F41519BF
+        060EDB0412D87B7DC3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2C34BA1822
+        C1FFFFFFFFFFFFFFFFFFFFFFFF5A5BBA0002CF0309D8080FC1DADAECFFFFFFFF
+        FFFFFFFFFFFFFFFF7A7CC50C21DF9C9DD2FFFFFFFFFFFFFFFFFFFFFFFFFDFDFE
+        1E1FB00001D00106D52326B1FFFFFFFFFFFFFFFFFFA9AAD30C28E52733BEFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE8E9F41112B50000D10103CE5A5CB9FF
+        FFFFB1B2D90B1FD40C26DFD2D1E7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFE2E3F21516B50000D20101C44D4EB8070EC30514E16F70BEFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F5FA2D2DB00001CC00
+        00CC0103D13639B3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFE2E2F23236B70207CF0103D20001C97777C2FFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7174CA0F1ED10717E40510DE0E
+        13BA0507C10608CC6162BEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9B9BD2
+        4F58D23D57F71D3CFA0D26F01921BFEBEBF6C4C4E5191BBE2325D44A4ABBF9F9
+        FCFFFFFFFFFFFFFFFFFF8487D0A2ABF78D9DFF6A7FFF3A55F9313BC1EFEFF7FF
+        FFFFFFFFFFFDFDFE5B5CBF4041D1494AC4A2A2D5FFFFFFFFFFFF8788CCB6BBF5
+        A3ACFB6973E17678C8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC8C8E65555
+        C16061CC5A5ABDADAED9DFDFEF9192D29A9DE29596D2FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFEDEDF77C7DC96162C58383CB}
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = BitBtnCancelClick
+    end
+  end
+  object PageControl_Scheme: TPageControl
+    Left = 0
+    Top = 41
+    Width = 666
+    Height = 428
+    ActivePage = TabSheet2
+    Align = alClient
+    TabOrder = 1
+    OnChange = PageControl_SchemeChange
+    OnChanging = PageControl_SchemeChanging
+    object TabSheet1: TTabSheet
+      Caption = 'Sc&heme'
+      object Label1: TLabel
+        Left = 5
+        Top = 8
+        Width = 54
+        Height = 13
+        Caption = 'Search Key'
+      end
+      object Label12: TLabel
+        Left = 204
+        Top = 8
+        Width = 104
+        Height = 13
+        Caption = 'Search By Community'
+      end
+      object SpeedButton3: TSpeedButton
+        Left = 621
+        Top = 25
+        Width = 33
+        Height = 27
+        Enabled = False
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000120B0000120B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333000000000
+          3333333777777777F3333330F777777033333337F3F3F3F7F3333330F0808070
+          33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+          33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+          333333F7F7F7F7F7F3F33030F080707030333737F7F7F7F7F7333300F0808070
+          03333377F7F7F7F773333330F080707033333337F7F7F7F7F333333070707070
+          33333337F7F7F7F7FF3333000000000003333377777777777F33330F88877777
+          0333337FFFFFFFFF7F3333000000000003333377777777777333333330777033
+          3333333337FFF7F3333333333000003333333333377777333333}
+        NumGlyphs = 2
+        Visible = False
+        OnClick = SpeedButton3Click
+      end
+      object EditSearch: TEdit
+        Left = 5
+        Top = 31
+        Width = 151
+        Height = 21
+        TabOrder = 0
+        OnChange = EditSearchChange
+      end
+      object Button1: TButton
+        Left = 160
+        Top = 31
+        Width = 23
+        Height = 21
+        Caption = '&Go'
+        TabOrder = 1
+        OnClick = Button1Click
+      end
+      object DBLCB_CommunitySearch: TDBLookupComboBox
+        Left = 204
+        Top = 31
+        Width = 275
+        Height = 21
+        KeyField = 'COMMUNITYID'
+        ListField = 'COMMUNITY'
+        ListSource = DataSource_Community
+        TabOrder = 2
+        OnClick = DBLCB_CommunitySearchClick
+        OnKeyDown = DBLCB_CommunitySearchKeyDown
+      end
+      object DBGrid_Scheme: TDBGrid
+        Left = 0
+        Top = 72
+        Width = 658
+        Height = 328
+        Align = alBottom
+        DataSource = DataSource_Scheme
+        TabOrder = 3
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+        OnDblClick = DBGrid_SchemeDblClick
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'SCHEMECODE'
+            Title.Alignment = taCenter
+            Title.Caption = 'Code'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'SCHEME'
+            Title.Alignment = taCenter
+            Title.Caption = 'Scheme Name'
+            Width = 140
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'REGDISPER'
+            Title.Caption = 'Reg. Dis(%)'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ISREGCRFACILITY'
+            Title.Caption = 'Reg. Credit'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'OPBILLDISPER'
+            Title.Caption = 'Out Pt. Dis(%)'
+            Width = 80
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'isregdiseditable'
+            Title.Alignment = taCenter
+            Title.Caption = 'RegDisEditable'
+            Width = 101
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ISOPBILLCRFACILITY'
+            Title.Caption = 'Out Pt. Credit'
+            Width = 72
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'REMARKS'
+            Title.Caption = 'Remarks'
+            Width = 173
+            Visible = True
+          end>
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = '&New Scheme'
+      ImageIndex = 1
+      object Label82: TLabel
+        Left = 25
+        Top = 18
+        Width = 25
+        Height = 14
+        Caption = 'Code'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object LabelMedicine: TLabel
+        Left = 25
+        Top = 47
+        Width = 67
+        Height = 13
+        Caption = 'Scheme Name'
+      end
+      object Label11: TLabel
+        Left = 25
+        Top = 71
+        Width = 52
+        Height = 14
+        Caption = 'Community'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object SpeedButtonEdu: TSpeedButton
+        Left = 380
+        Top = 69
+        Width = 20
+        Height = 18
+        Flat = True
+        Glyph.Data = {
+          DE000000424DDE0000000000000076000000280000000D0000000D0000000100
+          0400000000006800000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+          F000FFFFFFFFFFFFF000FFFFF000FFFFF000FFFFF0F0FFFFF000FFFFF0F0FFFF
+          F000FF0000F0000FF000FF0FFFFFFF0FF000FF0000F0000FF000FFFFF0F0FFFF
+          F000FFFFF0F0FFFFF000FFFFF000FFFFF000FFFFFFFFFFFFF000FFFFFFFFFFFF
+          F000}
+        OnClick = SpeedButtonEduClick
+      end
+      object Label84: TLabel
+        Left = 25
+        Top = 316
+        Width = 42
+        Height = 14
+        Caption = 'Remarks'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label17: TLabel
+        Left = 219
+        Top = 174
+        Width = 82
+        Height = 13
+        Caption = 'Valid From Date :'
+      end
+      object SPB_ValidFrom: TSpeedButton
+        Left = 370
+        Top = 169
+        Width = 22
+        Height = 22
+        Caption = 'AD'
+        OnClick = SPB_ValidFromClick
+      end
+      object Label18: TLabel
+        Left = 446
+        Top = 174
+        Width = 67
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Valid To Date:'
+      end
+      object SPB_ValidTo: TSpeedButton
+        Left = 587
+        Top = 169
+        Width = 22
+        Height = 22
+        Caption = 'AD'
+        OnClick = SPB_ValidToClick
+      end
+      object Edit_Code: TEdit
+        Left = 104
+        Top = 15
+        Width = 81
+        Height = 21
+        CharCase = ecUpperCase
+        MaxLength = 6
+        TabOrder = 0
+      end
+      object Edit_SchemeName: TEdit
+        Left = 104
+        Top = 43
+        Width = 402
+        Height = 21
+        CharCase = ecUpperCase
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+      end
+      object DBLookupComboBox_Community: TDBLookupComboBox
+        Left = 105
+        Top = 68
+        Width = 275
+        Height = 21
+        KeyField = 'COMMUNITYID'
+        ListField = 'COMMUNITY'
+        ListSource = DataSource_Community
+        TabOrder = 2
+      end
+      object CB_IsDisplayWithoutDiscount: TCheckBox
+        Left = 106
+        Top = 98
+        Width = 197
+        Height = 17
+        Caption = 'Is Display Without Scheme Discount '
+        Enabled = False
+        TabOrder = 3
+        Visible = False
+      end
+      object CB_SchemeDiscountEditable: TCheckBox
+        Left = 106
+        Top = 120
+        Width = 199
+        Height = 17
+        Caption = 'Is Scheme Discount (%) Editable'
+        TabOrder = 4
+      end
+      object GroupBoxReg: TGroupBox
+        Left = 104
+        Top = 201
+        Width = 295
+        Height = 48
+        Caption = 'Registration'
+        TabOrder = 5
+        object Label8: TLabel
+          Left = 8
+          Top = 23
+          Width = 45
+          Height = 14
+          Caption = 'Discount:'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label10: TLabel
+          Left = 138
+          Top = 22
+          Width = 10
+          Height = 13
+          Caption = '%'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object CheckBoxRegCreditFacility: TCheckBox
+          Left = 178
+          Top = 22
+          Width = 97
+          Height = 17
+          Caption = 'Is Credit Facility'
+          TabOrder = 1
+        end
+        object EditRegDiscount: TEdit
+          Left = 73
+          Top = 20
+          Width = 62
+          Height = 21
+          Color = clWhite
+          TabOrder = 0
+          Text = '0'
+          OnKeyPress = EditRegDiscountKeyPress
+        end
+      end
+      object GroupBoxOPD: TGroupBox
+        Left = 104
+        Top = 256
+        Width = 295
+        Height = 48
+        Caption = 'Patient Billing'
+        TabOrder = 6
+        object Label83: TLabel
+          Left = 8
+          Top = 23
+          Width = 45
+          Height = 14
+          Caption = 'Discount:'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label2: TLabel
+          Left = 138
+          Top = 22
+          Width = 10
+          Height = 13
+          Caption = '%'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object CheckBox_OutPtCreditFacility: TCheckBox
+          Left = 178
+          Top = 22
+          Width = 97
+          Height = 17
+          Caption = 'Is Credit Facility'
+          TabOrder = 1
+        end
+        object Edit_OutPtDiscount: TEdit
+          Left = 73
+          Top = 20
+          Width = 62
+          Height = 21
+          Color = clWhite
+          TabOrder = 0
+          Text = '0'
+          OnKeyPress = Edit_OutPtDiscountKeyPress
+        end
+      end
+      object Edit_Remarks: TEdit
+        Left = 104
+        Top = 312
+        Width = 402
+        Height = 21
+        TabOrder = 7
+      end
+      object chk_IsActiveScheme: TCheckBox
+        Left = 105
+        Top = 171
+        Width = 104
+        Height = 17
+        Caption = 'Is Active Scheme'
+        Checked = True
+        Color = clGradientActiveCaption
+        ParentColor = False
+        State = cbChecked
+        TabOrder = 8
+      end
+      object Dex_ValidFrom: TDateEditX
+        Left = 304
+        Top = 170
+        Width = 64
+        Height = 21
+        TabOrder = 9
+        ControlData = {
+          545046300A5444617465456469745200044C65667403300103546F7003AA0005
+          776964746802400B4461746541442E5965617203DB070C4461746541442E4D6F
+          6E746802090A4461746541442E44617902160B4461746556532E596561720314
+          080C4461746556532E4D6F6E746802060A4461746556532E44617902050000}
+      end
+      object Dex_ValidTo: TDateEditX
+        Left = 519
+        Top = 170
+        Width = 64
+        Height = 21
+        TabOrder = 10
+        ControlData = {
+          545046300A5444617465456469745200044C65667403070203546F7003AA0005
+          776964746802400B4461746541442E5965617203DB070C4461746541442E4D6F
+          6E746802090A4461746541442E44617902160B4461746556532E596561720314
+          080C4461746556532E4D6F6E746802060A4461746556532E44617902050000}
+      end
+    end
+  end
+  object Query_Scheme: TOraQuery
+    SQL.Strings = (
+      'Select * From VW_HS_SETUP_SCHEME Order By SCHEME')
+    Left = 307
+    Top = 40
+  end
+  object DataSource_Scheme: TDataSource
+    DataSet = Query_Scheme
+    Left = 379
+    Top = 24
+  end
+  object QueryProcess: TOraQuery
+    SQL.Strings = (
+      'Select * From hs_mety_MemberType Order By mety_MemberType')
+    Left = 432
+    Top = 65
+  end
+  object Query_Community: TOraQuery
+    SQL.Strings = (
+      'Select * From VW_HS_SETUP_COMMUNITY'
+      'Order by Community')
+    Left = 523
+    Top = 88
+  end
+  object DataSource_Community: TDataSource
+    DataSet = Query_Community
+    Left = 555
+    Top = 88
+  end
+end

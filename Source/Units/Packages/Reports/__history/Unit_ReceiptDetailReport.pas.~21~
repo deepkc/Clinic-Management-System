@@ -1,0 +1,181 @@
+unit Unit_ReceiptDetailReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DBCtrls, StdCtrls, ExtCtrls, Buttons, OleCtrls, DateEditXControl_TLB,
+  DB, MemDS, DBAccess, Ora,Fxn,DM,ServerDate;
+
+type
+  TForm_ReceiptDetailReport = class(TForm)
+    Panel2: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    DateEditX_FromDate: TDateEditX;
+    DateEditX_ToDate: TDateEditX;
+    BitBtn_FromDate: TBitBtn;
+    BitBtn_ToDate: TBitBtn;
+    RG_PayType: TRadioGroup;
+    Panel1: TPanel;
+    BitBtnPreview: TBitBtn;
+    BitBtnCancel: TBitBtn;
+    QueryRefDoc: TOraQuery;
+    DS_RefDoc: TDataSource;
+    OraQuery_Hospital: TOraQuery;
+    DS_Hospital: TDataSource;
+    Label4: TLabel;
+    Label3: TLabel;
+    DBLCB_RefDocCode: TDBLookupComboBox;
+    DBLCB_Hospital: TDBLookupComboBox;
+    BitBtn1: TBitBtn;
+    procedure FormShow(Sender: TObject);
+    procedure BitBtn_FromDateClick(Sender: TObject);
+    procedure BitBtn_ToDateClick(Sender: TObject);
+    procedure BitBtnPreviewClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtnCancelClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure DBLCB_HospitalClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    pb_ToXl:Boolean;
+  end;
+
+var
+  Form_ReceiptDetailReport: TForm_ReceiptDetailReport;
+
+implementation
+
+uses Unit_QRCreditReceiptDetReport,UnitSendToExcel;
+
+{$R *.dfm}
+
+procedure TForm_ReceiptDetailReport.BitBtn1Click(Sender: TObject);
+begin
+     pb_ToXl:=True;
+     BitBtnPreviewClick(Sender);
+     pb_ToXl:=False;
+end;
+
+procedure TForm_ReceiptDetailReport.BitBtnCancelClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_ReceiptDetailReport.BitBtnPreviewClick(Sender: TObject);
+var ps_fromdate,ps_todate:String;
+begin
+     ps_fromdate:= DateEditX_FromDate.text;
+     ps_todate:= DateEditX_ToDate.text;
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     BitBtn_FromDate.Caption := gs_DateCaption;
+     BitBtn_ToDate.Caption := gs_DateCaption;
+     gs_From := DateEditX_FromDate.text;
+     gs_to := DateEditX_ToDate.text;
+    // DateEditX_FromDate.SystemOfDate := 0;
+    // DateEditX_ToDate.SystemOfDate := 0;
+    // BitBtn_FromDate.Caption := 'BS';
+    // BitBtn_ToDate.Caption := 'BS';
+
+     Form_QRCreditReceiptDetailReport := TForm_QRCreditReceiptDetailReport.Create(nil);
+     With Form_QRCreditReceiptDetailReport do
+     begin
+          QRLabelFrom.Caption := ps_fromdate;
+          QRLabelTo.Caption := ps_todate;
+          With Query_Receipt do
+          begin
+               Close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.Add(' select A.* from (SELECT ROWNUM AS SN,');
+               sql.Add(' (select TRIM(REPLACE(REPLACE(REPLACE(replace(REDO_docname,''DR''),''PROF''),''.''),''(MRS)'')) from HS_REDO_referaldoctor where REDO_docid=CRD.REFDOCid) ReferalDoc,');
+               sql.Add(' (select HOSE_hospitalname from HS_HOSE_hospitalsetup where HOSE_hospitalcode=CRD.REFHOSCODE) ReferalHos,(select PAMA_PATIENTNAME from hs_pama_patientmain where pama_patientid=CRD.patientid)patientname,');
+               sql.Add(' CRD.* from VW_CREDITRECEIPTDETAIL CRD');
+               sql.Add(' Where ReceiptDate>='+QuotedStr(gs_From)+' And ReceiptDate<='+QuotedStr(gs_To)+')A where'+'');
+               if DBLCB_Hospital.KeyValue<>null then
+               sql.Add(' REFHOSCODE='+QuotedStr(DBLCB_Hospital.KeyValue));
+               if DBLCB_RefDocCode.KeyValue<>null then
+               sql.Add(' And REFDOCID='+QuotedStr(DBLCB_RefDocCode.KeyValue));
+               sql.savetofile('c:\abc454.txt');
+               Open;
+          end;
+          if pb_ToXl =False  then
+          qr_creditCollection.Preview
+          else
+          SendToExcels_query(Query_Receipt,nil,'New Department Wise Collection',ps_fromdate+'-'+ps_todate,'',
+                           gs_HospitalName,gs_HospitalAddress,3);
+     end;
+end;
+
+procedure TForm_ReceiptDetailReport.BitBtn_FromDateClick(Sender: TObject);
+begin
+     if DateEditX_FromDate.SystemOfDate = 0 then
+     begin
+          BitBtn_FromDate.Caption := 'AD';
+          DateEditX_FromDate.SystemOfDate := 1;
+     end
+     else if DateEditX_FromDate.SystemOfDate = 1 then
+     begin
+          BitBtn_FromDate.Caption := 'BS';
+          DateEditX_FromDate.SystemOfDate := 0;
+     end;
+end;
+
+procedure TForm_ReceiptDetailReport.BitBtn_ToDateClick(Sender: TObject);
+begin
+     if DateEditX_ToDate.SystemOfDate = 0 then
+     begin
+          BitBtn_ToDate.Caption := 'AD';
+          DateEditX_ToDate.SystemOfDate := 1;
+     end
+     else if DateEditX_ToDate.SystemOfDate = 1 then
+     begin
+          BitBtn_ToDate.Caption := 'BS';
+          DateEditX_ToDate.SystemOfDate := 0;
+     end;
+end;
+
+procedure TForm_ReceiptDetailReport.DBLCB_HospitalClick(Sender: TObject);
+begin
+     with QueryRefDoc do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.clear;
+          sql.Add('select REDO_DOCID as docid,REDO_DOCCODE as docode,TRIM(REPLACE(REPLACE(REPLACE(replace(REDO_DOCNAME,''DR''),''PROF''),''.''),''(MRS)''))DOCNAME ');
+          sql.Add('from HS_REDO_REFERALDOCTOR');
+          SQL.Add('where REDO_HOSPITALCODE='+QuotedStr(DBLCB_Hospital.KeyValue));
+          sql.Add(' and redo_dactive=''Y'' order by REDO_DOCNAME');
+          //sql.SaveToFile('D:\check.txt');
+          Open;
+     end;
+end;
+
+procedure TForm_ReceiptDetailReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+     Close;
+end;
+
+procedure TForm_ReceiptDetailReport.FormShow(Sender: TObject);
+begin
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_FromDate.text := TodaysDate;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.text := TodaysDate;
+     DateEditX_FromDate.SystemOfDate := 0;
+     DateEditX_ToDate.SystemOfDate := 0;
+     BitBtn_FromDate.Caption := 'BS';
+     BitBtn_ToDate.Caption := 'BS';
+     QueryRefDoc.Close;
+     QueryRefDoc.Open;
+     pb_ToXl:=False;
+     OraQuery_Hospital.Close;
+     OraQuery_Hospital.Open;
+end;
+
+end.

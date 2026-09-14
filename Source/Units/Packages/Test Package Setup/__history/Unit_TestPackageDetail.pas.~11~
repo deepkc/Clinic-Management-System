@@ -1,0 +1,415 @@
+unit Unit_TestPackageDetail;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Dialogs, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, ExtCtrls, StdCtrls, Grids, DBGrids, DBCtrls, ServerDate,
+     Buttons, fxn, Unit_Master, dm,
+     ComCtrls, CheckLst;
+
+type
+     TForm_TestPackageDetail = class(TForm)
+          Panel2: TPanel;
+          BB_Close: TBitBtn;
+          Query_Department: TOraQuery;
+          Ds_Department: TDataSource;
+          Query_list: TOraQuery;
+          Ds_List: TDataSource;
+          Query_TestPackageName: TOraQuery;
+          DS_TestPackageName: TDataSource;
+          Panel1: TPanel;
+          Label1: TLabel;
+          Label2: TLabel;
+          CheckBox_All: TCheckBox;
+          DBLC_DepName: TDBLookupComboBox;
+          DBLC_TestPackageName: TDBLookupComboBox;
+          Clb_TestName: TCheckListBox;
+          Query_Blank: TOraQuery;
+          Label3: TLabel;
+          Label4: TLabel;
+          SpeedButton2: TSpeedButton;
+          BB_Save: TBitBtn;
+          Edit_TestName: TEdit;
+          Label5: TLabel;
+          SB_Add: TSpeedButton;
+          DBGrid_Search: TDBGrid;
+          Query_TestName: TOraQuery;
+          DS_Testname: TDataSource;
+          Cb_Extended: TCheckBox;
+          Rb_CheckBoxView: TRadioButton;
+          Rb_GridView: TRadioButton;
+          DBGrid1: TDBGrid;
+          Table_TestPackage: TOraTable;
+          Ds_Grid: TDataSource;
+          Query_Grid: TOraQuery;
+    BitBtn1: TBitBtn;
+          procedure le_OrderKeyPress(Sender: TObject; var Key: Char);
+          procedure BB_NewClick(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure FormShow(Sender: TObject);
+          procedure DBLC_DepNameClick(Sender: TObject);
+          procedure DBLC_TestPackageNameClick(Sender: TObject);
+          procedure CheckBox_AllClick(Sender: TObject);
+          procedure BB_CloseClick(Sender: TObject);
+          procedure BB_SaveClick(Sender: TObject);
+          procedure SpeedButton2Click(Sender: TObject);
+          procedure Edit_TestNameChange(Sender: TObject);
+          procedure Edit_TestNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure Edit_TestNameKeyPress(Sender: TObject; var Key: Char);
+          procedure SB_AddClick(Sender: TObject);
+          procedure Rb_CheckBoxViewClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+     private
+          { Private declarations }
+          Procedure LoadData;
+          Procedure SaveData;
+     public
+          { Public declarations }
+          pf_testprice, pf_vat, pf_testpricefrg, pf_VatFrg: Double;
+          pb_isnew: Boolean;
+          Arr_TestNameId: Array of String;
+          procedure DisplayTestname;
+     end;
+
+var
+     Form_TestPackageDetail: TForm_TestPackageDetail;
+
+implementation
+
+uses Unit_TestPackageNameSetup, Unit_TestPackage;
+{$R *.dfm}
+
+procedure TForm_TestPackageDetail.BB_CloseClick(Sender: TObject);
+begin
+     close;
+end;
+
+procedure TForm_TestPackageDetail.BB_NewClick(Sender: TObject);
+begin
+     pb_isnew := true;
+
+end;
+
+procedure TForm_TestPackageDetail.BB_SaveClick(Sender: TObject);
+begin
+     if DBLC_TestPackageName.KeyValue = null then
+     begin
+          MessageDlg('Select The Package Name', mtInformation, [mbOK], 0);
+          exit;
+     end;
+     SaveData;
+     ShowDoneMessage;
+     DBLC_TestPackageNameClick(Sender);
+end;
+
+procedure TForm_TestPackageDetail.BitBtn1Click(Sender: TObject);
+begin
+     Try
+          Form_TestPackage := TForm_TestPackage.Create(Nil);
+          With Form_TestPackage do
+          Begin
+               ShowModal;
+          End;
+     Finally
+          Form_TestPackage.Free;
+     End;
+end;
+
+procedure TForm_TestPackageDetail.CheckBox_AllClick(Sender: TObject);
+begin
+     if CheckBox_All.Checked then
+     begin
+          LoadData;
+          DBLC_DepName.Enabled := False;
+          DBLC_DepName.KeyValue := null;
+     end
+     else
+     begin
+          DBLC_DepName.KeyValue := null;
+          DBLC_DepName.Enabled := true;
+     end;
+end;
+
+procedure TForm_TestPackageDetail.DBLC_DepNameClick(Sender: TObject);
+begin
+     LoadData;
+     if DBLC_TestPackageName.KeyValue > 0 then
+          DBLC_TestPackageNameClick(Sender);
+
+end;
+
+procedure TForm_TestPackageDetail.DBLC_TestPackageNameClick(Sender: TObject);
+Var
+     i: integer;
+begin
+     with Query_Blank do
+     begin
+          close;
+          Session := DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add('Select * From HS_TEPD_TestPackageDetail');
+          SQL.Add('Where TEPD_TestPackageID=' + IntToStr(DBLC_TestPackageName.KeyValue));
+          Open;
+          for i := 0 to Clb_TestName.Items.Count - 1 do
+          begin
+               Clb_TestName.State[i] := cbUnchecked;
+          end;
+          while Not Eof do
+          begin
+               for i := 0 to Clb_TestName.Items.Count - 1 do
+               begin
+                    if Arr_TestNameId[i] = Query_Blank.FieldByName('TEPD_TestNameId').AsString then
+                    begin
+                         Clb_TestName.State[i] := cbChecked;
+                         Break;
+                    end;
+               end;
+               Next;
+          end;
+     end;
+     with Query_Grid do
+     begin
+          close;
+          SQL[5] := 'Where TEPD_TestPackageId=' + IntToStr(DBLC_TestPackageName.KeyValue);
+          Open;
+     end;
+end;
+
+procedure TForm_TestPackageDetail.DisplayTestname;
+var
+     i: integer;
+begin
+     with Query_Blank do
+     begin
+          close;
+          Databasename := gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add('select * from testname where isactive=''Y'' ');
+          SQL.Add('and depid=' + IntToStr(DBLC_DepName.KeyValue));
+          Open;
+     end;
+     Clb_TestName.Items.Clear;
+     i := 0;
+     SetLength(Arr_TestNameId, Query_Blank.RecordCount);
+     while not Query_Blank.Eof do
+     begin
+          Clb_TestName.Items.Add(Query_Blank.FieldByName('TestName').AsString);
+          Arr_TestNameId[i] := Query_Blank.FieldByName('TestNameId').AsString;
+          Inc(i);
+          Query_Blank.Next;
+     end;
+end;
+
+procedure TForm_TestPackageDetail.Edit_TestNameChange(Sender: TObject);
+begin
+     if (Trim(Edit_TestName.Text) <> '') then
+     begin
+          DBGrid_Search.BringToFront;
+          with DBGrid_Search do
+          begin
+               left := 515;
+               Top := 87;
+               Height := 175;
+               Width := 405;
+               Visible := true;
+          end;
+          with Query_TestName do
+          begin
+               close;
+               SQL[1] := 'Where Trim(TestName)=' + #39 + Trim(Edit_TestName.Text) + #39;
+               if Cb_Extended.Checked = true then
+                    SQL[1] := 'Where Trim(TestName) like' + #39 + '%' + Trim(Edit_TestName.Text) + '%' + #39
+               else
+                    SQL[1] := 'Where Trim(TestName) Like ' + #39 + Trim(Edit_TestName.Text) + '%' + #39;
+               if DBLC_DepName.KeyValue <> null then
+                    SQL[2] := 'And DepId =' + IntToStr(DBLC_DepName.KeyValue)
+               else
+                    SQL[2] := 'And 99=99';
+               Open;
+          end;
+     end
+     else
+          DBGrid_Search.Visible := False;
+end;
+
+procedure TForm_TestPackageDetail.Edit_TestNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = vk_up then
+          Query_TestName.Prior
+     else if Key = vk_down then
+          Query_TestName.Next
+end;
+
+procedure TForm_TestPackageDetail.Edit_TestNameKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+     begin
+          SB_AddClick(Sender);
+          DBGrid_Search.Visible := False;
+     end;
+end;
+
+procedure TForm_TestPackageDetail.FormCreate(Sender: TObject);
+begin
+     Query_Department.close;
+     Query_Department.Databasename := gs_DatabaseName;
+     Query_Department.Open;
+     Query_TestName.Close;
+     Query_TestName.Open;
+     RefreshQuery(Query_TestPackageName, gs_DatabaseName);
+     CheckBox_All.Checked := true;
+
+     // if FileExists(gs_temppath + '\TestPackage.db') then
+     // begin
+     // with Table_TestPackage do
+     // begin
+     // close;
+     // TableName := 'TestPackage.db';
+     // Databasename := gs_temppath;
+     // DeleteTable;
+     // end;
+     // end;
+     // with Table_TestPackage do
+     // begin
+     // close;
+     // TableName := 'TestPackage.db';
+     // Databasename := gs_temppath;
+     // FieldDefs.Clear;
+     // FieldDefs.Add('TestPackageNameID',ftInteger);
+     // FieldDefs.Add('TestNameID',ftInteger);
+     // FieldDefs.Add('TestName',ftString,100);
+     // end;
+end;
+
+procedure TForm_TestPackageDetail.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = 27 then
+          BB_CloseClick(Sender);
+
+end;
+
+procedure TForm_TestPackageDetail.FormShow(Sender: TObject);
+begin
+     LoadData;
+end;
+
+procedure TForm_TestPackageDetail.le_OrderKeyPress(Sender: TObject; var Key: Char);
+begin
+     if not(Key in [#8, #13, '0' .. '9']) then
+     begin
+          Key := #0;
+          exit;
+     end;
+end;
+
+procedure TForm_TestPackageDetail.LoadData;
+Var
+     i: integer;
+begin
+     with Query_Blank do
+     begin
+          close;
+          Databasename := gs_DatabaseName;
+          SQL.Clear;
+          if CheckBox_All.Checked = true then
+               SQL.Add('select Tena_TestnameId TEstNameId,Tena_TestName TestName from Hs_Tena_testname where Tena_isactive=''Y'' ')
+          else if (CheckBox_All.Checked = False) And (DBLC_DepName.KeyValue > 0) then
+          begin
+               SQL.Add('select Tena_TestnameId TEstNameId,Tena_TestName TestName from Hs_Tena_testname where Tena_isactive=''Y''');
+               SQL.Add('and Tena_depid=' + IntToStr(DBLC_DepName.KeyValue));
+          end;
+          SQL.Add('Order by TestName');
+          Open;
+     end;
+     Clb_TestName.Items.Clear;
+     i := 0;
+     SetLength(Arr_TestNameId, Query_Blank.RecordCount);
+     while not Query_Blank.Eof do
+     begin
+          Clb_TestName.Items.Add(Query_Blank.FieldByName('TestName').AsString);
+          Arr_TestNameId[i] := Query_Blank.FieldByName('TestNameId').AsString;
+          Inc(i);
+          Query_Blank.Next;
+     end;
+end;
+
+procedure TForm_TestPackageDetail.Rb_CheckBoxViewClick(Sender: TObject);
+begin
+     if Rb_CheckBoxView.Checked then
+          DBGrid1.Visible := False
+     else
+     begin
+          if DBLC_TestPackageName.KeyValue = null then
+          begin
+               ShowMessage('Please choose TestPackage');
+               exit;
+          end;
+          DBGrid1.Visible := true;
+          with Query_Grid do
+          begin
+               close;
+               SQL[5] := 'Where TEPD_TestPackageId=' + IntToStr(DBLC_TestPackageName.KeyValue);
+               Open;
+          end;
+     end;
+end;
+
+procedure TForm_TestPackageDetail.SaveData;
+Var
+     i, TestPackageId: integer;
+     IsActive: string;
+begin
+     TestPackageId := DBLC_TestPackageName.KeyValue;
+     for i := 0 to Clb_TestName.Items.Count - 1 do
+     begin
+          if Clb_TestName.State[i] = cbChecked then
+          begin
+               IsActive := 'Y';
+               Try
+                    dm.DM_Hospital.DB.StartTransaction;
+                    DeleteTestPackgeDetail(TestPackageId, StrToInt(Arr_TestNameId[i]));
+                    SaveTestPackageDetail(TestPackageId, StrToInt(Arr_TestNameId[i]), IntToStr(gi_UserID), TodaysDate, TodaysTime, IsActive, '', '');
+                    dm.DM_Hospital.DB.Commit;
+               Except
+                    dm.DM_Hospital.DB.Rollback;
+               End;
+          end
+          else
+          begin
+               DeleteTestPackgeDetail(TestPackageId, StrToInt(Arr_TestNameId[i]));
+          end;
+     end;
+end;
+
+procedure TForm_TestPackageDetail.SpeedButton2Click(Sender: TObject);
+begin
+     Try
+          Form_TestPackageNameSetup := TForm_TestPackageNameSetup.Create(Nil);
+          Form_TestPackageNameSetup.ShowModal;
+     Finally
+          Form_TestPackageNameSetup.Free;
+          RefreshQuery(Query_TestName, gs_DatabaseName);
+     End;
+end;
+
+procedure TForm_TestPackageDetail.SB_AddClick(Sender: TObject);
+Var
+     i, j: integer;
+begin
+     i := Query_TestName.FieldByName('TestNameId').AsInteger;
+     j := IndexOfArray(IntToStr(i), Arr_TestNameId);
+     Try
+          if Clb_TestName.State[j] = cbUnchecked then
+               Clb_TestName.State[j] := cbChecked
+          else
+               Clb_TestName.State[j] := cbUnchecked;
+     Except
+          ShowMessage('No Record');
+     End;
+     Edit_TestName.Clear;
+     Edit_TestName.SetFocus;
+end;
+
+end.

@@ -1,0 +1,175 @@
+unit Unit_PrevilageReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,Fxn,UnitSendToExcel,DM,
+  Dialogs, StdCtrls, ExtCtrls, DBCtrls, Buttons, Grids, DBGrids, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError,ServerDate,
+  OleCtrls, DateEditXControl_TLB;
+
+type
+  TForm_PrevilageReport = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    DBLookupComboBox_User: TDBLookupComboBox;
+    Label1: TLabel;
+    RadioGroup_ReportOption: TRadioGroup;
+    RadioGroup_UserOption: TRadioGroup;
+    CheckBox_all: TCheckBox;
+    DBGrid1: TDBGrid;
+    BitBtn_generate: TBitBtn;
+    Query_data: TOraQuery;
+    DataSource_data: TDataSource;
+    BitBtn_sendtoexcel: TBitBtn;
+    Panel3: TPanel;
+    DBGrid2: TDBGrid;
+    Query_user: TOraQuery;
+    DataSource_user: TDataSource;
+    procedure BitBtn_generateClick(Sender: TObject);
+    procedure BitBtn_sendtoexcelClick(Sender: TObject);
+    procedure CheckBox_allClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_PrevilageReport: TForm_PrevilageReport;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_PrevilageReport.BitBtn_sendtoexcelClick(Sender: TObject);
+begin
+     try
+         if Query_data.RecordCount>0 then
+         begin
+               SendToExcels(Query_data,nil,'PrevilageReport',todaysdate,'',gs_HospitalName,gs_HospitalAddress,10);
+         end;
+     except
+
+     end;
+end;
+
+procedure TForm_PrevilageReport.CheckBox_allClick(Sender: TObject);
+begin
+     if CheckBox_all.Checked then
+     begin
+          DBLookupComboBox_User.Enabled:=False;
+          DBLookupComboBox_User.KeyValue:=0;
+     end
+     else
+     begin
+          DBLookupComboBox_User.Enabled:=True;
+     end;
+end;
+
+procedure TForm_PrevilageReport.FormShow(Sender: TObject);
+begin
+     CheckBox_all.Checked:=True;
+     CheckBox_allClick(Sender);
+     with Query_user do
+     begin
+          Close;
+          sql.Clear;
+          Session:=DM_Hospital.DB;
+          sql.Add('select usma_userid,usma_fullname from hs_usma_usermain');
+          Open;
+     end;
+end;
+
+procedure TForm_PrevilageReport.BitBtn_generateClick(Sender: TObject);
+begin
+     if RadioGroup_ReportOption.ItemIndex=0 then
+     begin
+           with Query_data do
+           begin
+                Close;
+                sql.Clear;
+               Session:=DM_Hospital.DB;
+                sql.Add('select Case when userno=1 then usma_fullname else');
+                sql.Add(''''' end as UserName,Case when moduleno=1 then modu_modulename else');
+                sql.Add(''''' end as ModuleName,Case when mainmenuno=1 then mame_mainmenu else');
+                sql.Add(''''' end as MainMenu,sume_submenu SubMenu,usma_isactive IsActive From (');
+                sql.Add('Select usma_fullname,modu_modulename,mame_mainmenu,sume_submenu,usma_isactive,');
+                sql.Add('ROW_NUMBER() OVER (PARTITION BY usma_fullname,modu_modulename ORDER BY usma_fullname,modu_modulename)moduleno');
+                sql.Add(',ROW_NUMBER() OVER (PARTITION BY usma_fullname,modu_modulename,mame_mainmenu ORDER BY usma_fullname,modu_modulename,mame_mainmenu)Mainmenuno');
+                sql.Add(',ROW_NUMBER() OVER (PARTITION BY usma_fullname ORDER BY usma_fullname)userno');
+                sql.Add('From (');
+                sql.Add('select usma_fullname,modu_modulename,mame_mainmenu,sume_submenu,usma_isactive from ');
+                sql.Add('hs_mepr_menuprevilage left outer join hs_modu_module on mepr_moduleid=modu_moduleid ');
+                sql.Add('left outer join hs_mame_mainmenu on mepr_menuid=mame_mainmenuid');
+                sql.Add('left outer join hs_sume_submenu on mepr_submenuid=sume_submenuid,hs_usma_usermain');
+                sql.Add('where  mepr_userid=usma_userid');
+                if RadioGroup_UserOption.ItemIndex=0 then
+                         sql.Add('and 1=1')
+                else if RadioGroup_UserOption.ItemIndex=1 then
+                         sql.Add('and usma_isactive=''Y''')
+                else if RadioGroup_UserOption.ItemIndex=2 then
+                         sql.Add('and usma_isactive=''N''');
+                if DBLookupComboBox_User.KeyValue>0 then
+                         sql.Add(' and usma_userid='+inttostr(DBLookupComboBox_User.KeyValue));
+                sql.Add('order by mepr_userid,mepr_moduleid,mepr_menuid,mepr_submenuid)');
+                sql.Add('Order by usma_fullname)');
+                // sql.savetofile('d:\check.txt');
+                Open;
+           end;
+
+     end
+     else
+     begin
+             with Query_data do
+           begin
+                Close;
+                sql.Clear;
+                Session:=DM_Hospital.DB;
+                sql.Add('select Case when logdate=1 then log_date else');
+                SQL.Add(''''' end as ActionDate, Case when userno=1 then usma_fullname else');
+                sql.Add(''''' end as UserName,Case when moduleno=1 then modu_modulename else');
+                SQL.Add(''''' end as ModuleName,Case when mainmenuno=1 then mame_mainmenu else');
+                sql.Add(''''' end as MainMenu,sume_submenu SubMenu,useraction UserAction,usma_isactive IsActive From (');
+                SQL.Add('Select log_date,usma_fullname,modu_modulename,mame_mainmenu,sume_submenu,useraction,usma_isactive,');
+                sql.Add('ROW_NUMBER() OVER (PARTITION BY log_date ORDER BY log_date) logdate,');
+                SQL.Add('ROW_NUMBER() OVER (PARTITION BY log_date,usma_fullname,modu_modulename ORDER BY log_date,usma_fullname,modu_modulename)moduleno');
+                sql.Add(',ROW_NUMBER() OVER (PARTITION BY log_date,usma_fullname,modu_modulename,mame_mainmenu ORDER BY log_date,usma_fullname,modu_modulename,mame_mainmenu)Mainmenuno');
+                SQL.Add(',ROW_NUMBER() OVER (PARTITION BY log_date,usma_fullname ORDER BY log_date,usma_fullname)userno');
+                sql.Add('From (select * from (');
+                SQL.Add('select log_date,usma_fullname,modu_modulename,mame_mainmenu,sume_submenu,''ADDED'' as useraction,usma_isactive from ');
+                sql.Add('hs_log_menuprevilage_insert left outer join hs_modu_module on log_moduleid=modu_moduleid ');
+                SQL.Add('left outer join hs_mame_mainmenu on log_menuid=mame_mainmenuid');
+                sql.Add('left outer join hs_sume_submenu on log_submenuid=sume_submenuid,hs_usma_usermain');
+                SQL.Add('where  log_userid=usma_userid');
+                 if RadioGroup_UserOption.ItemIndex=0 then
+                         sql.Add('and 1=1')
+                else if RadioGroup_UserOption.ItemIndex=1 then
+                         sql.Add('and usma_isactive=''Y''')
+                else if RadioGroup_UserOption.ItemIndex=2 then
+                         sql.Add('and usma_isactive=''N''');
+                if DBLookupComboBox_User.KeyValue>0 then
+                         sql.Add(' and usma_userid='+inttostr(DBLookupComboBox_User.KeyValue));
+                sql.Add('union');
+                SQL.Add('select log_date,usma_fullname,modu_modulename,mame_mainmenu,sume_submenu,''DELETED'' as useraction,usma_isactive from ');
+                sql.Add('hs_log_menuprevilage_delete left outer join hs_modu_module on log_moduleid=modu_moduleid');
+                SQL.Add('left outer join hs_mame_mainmenu on log_menuid=mame_mainmenuid');
+                sql.Add('left outer join hs_sume_submenu on log_submenuid=sume_submenuid,hs_usma_usermain');
+                SQL.Add('where  log_userid=usma_userid');
+                 if RadioGroup_UserOption.ItemIndex=0 then
+                         sql.Add('and 1=1')
+                else if RadioGroup_UserOption.ItemIndex=1 then
+                         sql.Add('and usma_isactive=''Y''')
+                else if RadioGroup_UserOption.ItemIndex=2 then
+                         sql.Add('and usma_isactive=''N''');
+                if DBLookupComboBox_User.KeyValue>0 then
+                         sql.Add(' and usma_userid='+inttostr(DBLookupComboBox_User.KeyValue));
+                sql.Add('order by log_date,usma_fullname,modu_modulename,mame_mainmenu,sume_submenu)');
+                SQL.Add('))');
+                //sql.savetofile('d:\check.txt');
+                Open;
+           end;
+     end;
+end;
+
+end.

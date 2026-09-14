@@ -1,0 +1,619 @@
+unit Unit_OPDDocWiseIncomeDetail;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, ComCtrls, Grids, DBGrids, StdCtrls, OleCtrls, DateEditXControl_TLB, Buttons,
+  DB, Fxn, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, ServerDate, UnitSendToExcel;
+
+type
+  TForm_OPDDocWiseIncomeDetail = class(TForm)
+    Panel2: TPanel;
+    StatusBar1: TStatusBar;
+    Panel1: TPanel;
+    Label17: TLabel;
+    Label18: TLabel;
+    DEX_To: TDateEditX;
+    Btn_To: TButton;
+    DEX_From: TDateEditX;
+    Btn_From: TButton;
+    BB_Refresh: TBitBtn;
+    Query_DoctorList: TOraQuery;
+    DS_DoctorList: TDataSource;
+    Query_PatientList: TOraQuery;
+    DS_PatientList: TDataSource;
+    Query_Process: TOraQuery;
+    Panel_Left: TPanel;
+    Panel_Right: TPanel;
+    Panel_Top: TPanel;
+    Panel_Bottom: TPanel;
+    Edit_Search: TEdit;
+    DBGrid_PatientList: TDBGrid;
+    DBGrid_DoctorList: TDBGrid;
+    BitBtnExcel: TBitBtn;
+    BitBtn1: TBitBtn;
+    Panel3: TPanel;
+    Label1: TLabel;
+    Label_TotalNo: TLabel;
+    Label2: TLabel;
+    Label_RefundTotal: TLabel;
+    Label4: TLabel;
+    Label_NetTotal: TLabel;
+    BitBtnPreview: TBitBtn;
+    Label3: TLabel;
+    Label_RefTotal: TLabel;
+    CB_IndivDoc: TCheckBox;
+    procedure Btn_FromClick(Sender: TObject);
+    procedure Btn_ToClick(Sender: TObject);
+    procedure BB_RefreshClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure DBGrid_DoctorListCellClick(Column: TColumn);
+
+    procedure ShowDetailPatient(DocId : Integer);
+    procedure BitBtnExcelClick(Sender: TObject);
+    procedure DBGrid_PatientListDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtnPreviewClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+
+  private
+
+    { Private declarations }
+  public
+
+          ps_OPDIncomeType : string;
+
+    { Public declarations }
+  end;
+
+var
+  Form_OPDDocWiseIncomeDetail: TForm_OPDDocWiseIncomeDetail;
+
+implementation
+
+uses Unit_BNBDailyDoctorColnReport;
+
+{$R *.dfm}
+
+procedure TForm_OPDDocWiseIncomeDetail.BB_RefreshClick(Sender: TObject);
+begin
+     ChangeToDefaultDate(DEX_From,DEX_To);
+     ChangeToDefaultCaption(Btn_From,Btn_To);
+     CB_IndivDoc.Enabled:=True;
+
+     With Query_DoctorList do
+     begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          sql.add(' Update HS_FRDE_FractionDetail Set FRDE_TDSPer=15 where FRDE_BillType=''R'' and FRDE_TDSPer=0');
+          ExecSQL;
+
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          sql.add(' Update HS_FRRD_FractionRefundDetail Set FRRD_TdsPer=15 where FRRD_BillType=''R'' and FRRD_TdsPer=0');
+          ExecSQL;
+     end;
+
+     With Query_DoctorList do
+     begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          sql.add(' Select Depname,DocId,DocName,Sum(BillAmount) as BillAmount,Sum(TotalQty) TotalQty,Sum(NetTotal) NetTotal,Sum(DoctorTDS) DoctorTDS,Sum(NetTotal-DoctorTDS) DoctorPart');
+          sql.add(' From(');
+          sql.add(' Select Dept_Depname Depname,FRDE_DocId as DocId,Doct_Desig||'' ''||InitCap(DOCT_DocName) as DocName,Sum(BIDE_Amount) as BillAmount');
+          sql.add(' ,Sum(FRDE_Qty) TotalQty,Sum((FRDE_FractionAmount*FRDE_Qty)-(FRDE_FractionAmount*FRDE_Qty*FRDE_DisPer/100)) as NetTotal');
+          sql.add(' ,Sum(((FRDE_FractionAmount*FRDE_Qty)-(FRDE_FractionAmount*FRDE_Qty*FRDE_DisPer/100))*FRDE_TDSPer/100) as DoctorTDS');
+          sql.add(' From HS_BIDE_BillDetail BD,HS_FRDE_FractionDetail FD,HS_PAMA_PatientMain PM,HS_DOCT_Doctor D,HS_Dept_Department');
+          sql.add(' where BD.BIDE_BillDetailID=FD.FRDE_BillDetailId(+) and FRDE_DocId=DOCT_DocId and BIDE_PatientId=PAMA_PatientId and Dept_Depid(+)=Doct_Depid');
+          sql.add(' and (BIDE_BillType=''R'' or (BIDE_Service=''OPDBC01'' and BIDE_BillType=''B'')) and BIDE_DepId<>85');
+          if ps_OPDIncomeType='GEN' then
+          sql.add(' and BIDE_PatientType=''GEN''')
+          else
+          sql.add(' and BIDE_PatientType<>''GEN''');
+          sql.add(' and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+          sql.add(' Group By FRDE_DocId,Doct_Desig||'' ''||InitCap(DOCT_DocName),Dept_Depname');
+          sql.add(' Union');
+          sql.add(' Select Dept_Depname Depname,FRDE_DocId,Doct_Desig||'' ''||InitCap(DOCT_DocName),-Sum(BIDE_Amount) as BillAmount,');
+          sql.add(' -Sum(FRDE_Qty) TotalQty,-Sum((FRDE_FractionAmount*FRDE_Qty)-(FRDE_FractionAmount*FRDE_Qty*FRDE_DisPer/100)) as NetTotal,');
+          sql.add(' -Sum(((FRDE_FractionAmount*FRDE_Qty)-(FRDE_FractionAmount*FRDE_Qty*FRDE_DisPer/100))*FRDE_TDSPer/100) as DoctorTDS');
+          sql.add(' From HS_BIDE_BillDetail BD,HS_FRDE_FractionDetail FD,HS_PAMA_PatientMain PM,HS_DOCT_Doctor D,HS_Dept_Department');
+          sql.add(' where BD.BIDE_BillDetailID=FD.FRDE_BillDetailId(+) and FRDE_DocId=DOCT_DocId and BIDE_PatientId=PAMA_PatientId and Dept_Depid(+)=Doct_Depid');
+          sql.add(' and (BIDE_BillType=''R'' or (BIDE_Service=''OPDBC01'' and BIDE_BillType=''B'')) and BIDE_DepId<>85');
+          if ps_OPDIncomeType='GEN' then
+          sql.add(' and BIDE_PatientType=''GEN''')
+          else
+          sql.add(' and BIDE_PatientType<>''GEN''');
+          sql.add(' and FRDE_FractionDetailId In (');
+          sql.add(' Select FRRD_FractionDetailId From HS_FRRD_FractionRefundDetail where FRRD_BillType=''R''');
+          sql.add(' and FRRD_RefundDate>='+#39+DEX_From.Text+#39+' and FRRD_RefundDate<='+#39+DEX_To.Text+#39);
+          sql.add(' ) Group By FRDE_DocId,Doct_Desig||'' ''||InitCap(DOCT_DocName),Dept_Depname');
+          sql.add(' )');
+          sql.add(' Group By DocId,DocName,Depname');
+          sql.add(' Order by DocName,Depname');
+          //sql.saveToFile('C:\DoctorWiseIncomeList.txt');
+          Open;
+     end;
+     ShowDetailPatient(Query_DoctorList.FieldByName('DocId').AsInteger);
+end;
+
+procedure TForm_OPDDocWiseIncomeDetail.ShowDetailPatient(DocId : Integer);
+Begin
+     With Query_PatientList Do
+     Begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          sql.add(' Select PatientId,FName,LName,currentage,BillDate,BillTime,BillNo,BillBy,PatientType,PatientCategory,RefundBy,RefundDate,RefundTime,Sum(Amount) Amount From (');
+          sql.add(' Select BD.BIDE_PatientId PatientId,PAMA_FName FName,PAMA_LName LName,Cast(getcurrentage(PAMA_PATIENTID)||'' / ''||SubStr(PAMA_Gender,1,1) as VarChar2(12)) AS currentage,');
+          sql.add(' BIDE_BillDate BillDate,BIDE_BillTime BillTime,BIDE_BillNo BillNo,');
+          sql.add(' (Select USMA_UserName From HS_USMA_UserMain where USMA_UserId=BIDE_BillBy) as BillBy,');
+          //sql.add(' BIDE_DocCode DepCode,BIDE_DepId DepId,BD.BIDE_Service Service,BIDE_ServiceType ServiceType,FRDE_DOCID DocCode,FRDE_FractionAmount FractionAmount,');
+          //sql.add(' BIDE_Qty Qty,BIDE_VatAmt VatAmt,BIDE_DisPer DisPer,(BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100) as NetTotal,');
+          sql.add(' BIDE_Amount Amount,Case When BIDE_Service=''DOCCHN'' Then ''New Patient'' When BIDE_Service=''DOCCHR'' Then ''Referral Patient'' Else ''Followup Patient'' End PatientType,');
+          sql.add(' BIDE_PatientCategory as PatientCategory,');
+          sql.add(' (Select USMA_UserName From HS_USMA_UserMain where USMA_UserId In (Select REDE_RefundBy From HS_REDE_RefundDetail where REDE_BillDetailID=BIDE_BillDetailId)) as RefundBy,');
+          sql.add(' (Select REDE_RefundDate From HS_REDE_RefundDetail where REDE_BillDetailID=BIDE_BillDetailId) as RefundDate,');
+          sql.add(' (Select REDE_RefundTime From HS_REDE_RefundDetail where REDE_BillDetailID=BIDE_BillDetailId) as RefundTime');
+          sql.add(' From HS_BIDE_BillDetail BD,HS_FRDE_FractionDetail FD,HS_PAMA_PatientMain PM');
+          sql.add(' where BD.BIDE_BillDetailID=FD.FRDE_BillDetailId(+) and BIDE_PatientId=PAMA_PatientId');
+          sql.add(' and FD.FRDE_DocId='+IntToStr(DocId));
+          sql.add(' and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+          sql.add(' and (BIDE_BillType=''R'' or (BIDE_Service=''OPDBC01'' and BIDE_BillType=''B'')) and BIDE_DepId<>85');
+          if ps_OPDIncomeType='GEN' then
+          sql.add(' and BIDE_PatientType=''GEN''')
+          else
+          sql.add(' and BIDE_PatientType<>''GEN''');
+          sql.add(' Union');
+          sql.add(' Select BD.BIDE_PatientId PatientId,PAMA_FName FName,PAMA_LName LName,Cast(getcurrentage(PAMA_PATIENTID)||'' / ''||SubStr(PAMA_Gender,1,1) as VarChar2(12)) AS currentage,');
+          sql.add(' BIDE_BillDate BillDate,BIDE_BillTime BillTime,BIDE_BillNo BillNo,');
+          sql.add(' (Select USMA_UserName From HS_USMA_UserMain where USMA_UserId=BIDE_BillBy) as BillBy,');
+          //sql.add(' BIDE_DocCode DepCode,BIDE_DepId DepId,BD.BIDE_Service Service,BIDE_ServiceType ServiceType,FRDE_DOCID DocCode,FRDE_FractionAmount FractionAmount,');
+          //sql.add(' BIDE_Qty Qty,BIDE_VatAmt VatAmt,BIDE_DisPer DisPer,(BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100) as NetTotal,');
+          sql.add(' BIDE_Amount Amount,Case When BIDE_Service=''DOCCHN'' Then ''New Patient'' When BIDE_Service=''DOCCHR'' Then ''Referral Patient'' Else ''Followup Patient'' End PatientType,');
+          sql.add(' BIDE_PatientCategory as PatientCategory,');
+          sql.add(' (Select USMA_UserName From HS_USMA_UserMain where USMA_UserId In (Select REDE_RefundBy From HS_REDE_RefundDetail where REDE_BillDetailID=BIDE_BillDetailId)) as RefundBy,');
+          sql.add(' (Select REDE_RefundDate From HS_REDE_RefundDetail where REDE_BillDetailID=BIDE_BillDetailId) as RefundDate,');
+          sql.add(' (Select REDE_RefundTime From HS_REDE_RefundDetail where REDE_BillDetailID=BIDE_BillDetailId) as RefundTime');
+          sql.add(' From HS_BIDE_BillDetail BD,HS_FRDE_FractionDetail FD,HS_PAMA_PatientMain PM');
+          sql.add(' where BD.BIDE_BillDetailID=FD.FRDE_BillDetailId(+) and BIDE_PatientId=PAMA_PatientId');
+          sql.add(' and FD.FRDE_DocId='+IntToStr(DocId));
+          sql.add(' and (BIDE_BillType=''R'' or (BIDE_Service=''OPDBC01'' and BIDE_BillType=''B'')) and BIDE_DepId<>85');
+          if ps_OPDIncomeType='GEN' then
+          sql.add(' and BIDE_PatientType=''GEN''')
+          else
+          sql.add(' and BIDE_PatientType<>''GEN''');
+          sql.add(' and BIDE_BillDetailId In (Select REDE_BillDetailId From HS_REDE_RefundDetail where REDE_DocId='+IntToStr(DocId));
+          sql.add(' and REDE_RefundDate>='+#39+DEX_From.Text+#39+' and REDE_RefundDate<='+#39+DEX_To.Text+#39+')');
+          sql.add(' and BIDE_BillDate < '+#39+DEX_From.Text+#39);
+          sql.add(' ) Group By PatientId,FName,LName,currentage,BillDate,BillTime,BillNo,BillBy,PatientType,PatientCategory,RefundBy,RefundDate,RefundTime');
+          sql.add(' Order by BillDate,BillTime');
+          //sql.saveToFile('C:\PatientList.txt');
+          Open;
+     End;
+
+     With Query_Process do
+     Begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          sql.add(' Select Sum(TotalBill) as TotalBill,Sum(RefundBill) as RefundBill From (');
+          sql.add(' Select Sum(TotalBill) as TotalBill,Sum(RefundBill) as RefundBill From (');
+          sql.add(' Select 1 TotalBill,Case When NVL((Select REDE_RefundDetailId');
+          sql.add(' From HS_REDE_RefundDetail where REDE_BillDetailID=BIDE_BillDetailId),0)=0 Then 0 Else 1 End RefundBill');
+          sql.add(' From HS_BIDE_BillDetail BD,HS_FRDE_FractionDetail FD,HS_PAMA_PatientMain PM');
+          sql.add(' where BD.BIDE_BillDetailID=FD.FRDE_BillDetailId(+) and BIDE_PatientId=PAMA_PatientId');
+          sql.add(' and FD.FRDE_DocId='+IntToStr(DocId));
+          sql.add(' and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+          if ps_OPDIncomeType='GEN' then
+          sql.add(' and BIDE_PatientType=''GEN''')
+          else
+          sql.add(' and BIDE_PatientType<>''GEN''');
+          sql.add(' and BIDE_BillType=''R'' and BIDE_DepId<>85)');
+          sql.add(' Union');
+          sql.add(' Select Sum(TotalBill) as TotalBill,Sum(RefundBill) as RefundBill From (');
+          sql.add(' Select 0 TotalBill,Case When NVL((Select REDE_RefundDetailId');
+          sql.add(' From HS_REDE_RefundDetail where REDE_BillDetailID=BIDE_BillDetailId),0)=0 Then 0 Else 1 End RefundBill');
+          sql.add(' From HS_BIDE_BillDetail BD,HS_FRDE_FractionDetail FD,HS_PAMA_PatientMain PM');
+          sql.add(' where BD.BIDE_BillDetailID=FD.FRDE_BillDetailId(+) and BIDE_PatientId=PAMA_PatientId');
+          sql.add(' and FD.FRDE_DocId='+IntToStr(DocId));
+          sql.add(' and BIDE_BillDetailId In (Select REDE_BillDetailId From HS_REDE_RefundDetail where REDE_DocId='+IntToStr(DocId));
+          sql.add(' and REDE_RefundDate>='+#39+DEX_From.Text+#39+' and REDE_RefundDate<='+#39+DEX_To.Text+#39+')');
+          sql.add(' and BIDE_BillDate < '+#39+DEX_From.Text+#39);
+          if ps_OPDIncomeType='GEN' then
+          sql.add(' and BIDE_PatientType=''GEN''')
+          else
+          sql.add(' and BIDE_PatientType<>''GEN''');
+          sql.add(' and BIDE_BillType=''R'' and BIDE_DepId<>85');
+          //sql.add(' and BIDE_PatientType=''GEN'')');
+          sql.add(' ))');
+          Open;
+     End;
+
+     Label_TotalNo.Caption:=IntToStr(Query_Process.FieldByName('TotalBill').AsInteger);
+     Label_RefundTotal.Caption:=IntToStr(Query_Process.FieldByName('RefundBill').AsInteger);
+     Label_NetTotal.Caption:=IntToStr(Query_Process.FieldByName('TotalBill').AsInteger -  Query_Process.FieldByName('RefundBill').AsInteger);
+
+     With Query_Process do
+     Begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          sql.add(' Select Sum(TotalBill) as TotalBill,Sum(RefundBill) as RefundBill From (');
+          sql.add(' Select 1 TotalBill,Case When NVL((Select REDE_RefundDetailId');
+          sql.add(' From HS_REDE_RefundDetail where REDE_BillDetailID=BIDE_BillDetailId),0)=0 Then 0 Else 1 End RefundBill');
+          sql.add(' From HS_BIDE_BillDetail BD,HS_FRDE_FractionDetail FD,HS_PAMA_PatientMain PM');
+          sql.add(' where BD.BIDE_BillDetailID=FD.FRDE_BillDetailId(+) and BIDE_PatientId=PAMA_PatientId');
+          //sql.add(' and FD.FRDE_DocId='+IntToStr(DocId));
+          sql.add(' and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+          sql.add(' and BIDE_SERVICE=''DOCCHR''');
+          if ps_OPDIncomeType='GEN' then
+          sql.add(' and BIDE_PatientType=''GEN''')
+          else
+          sql.add(' and BIDE_PatientType<>''GEN''');
+          sql.add(' and BIDE_BillType=''R'' and BIDE_DepId<>85');
+          sql.add(' and BIDE_PatientType=''GEN'')');
+          Open;
+     End;
+
+     Label_RefTotal.Caption:=IntToStr(Query_Process.FieldByName('TotalBill').AsInteger -  Query_Process.FieldByName('RefundBill').AsInteger);
+
+End;
+
+procedure TForm_OPDDocWiseIncomeDetail.BitBtn1Click(Sender: TObject);
+Var ls_DateRange: string;
+begin
+     if DEX_From.text=DEX_To.text then
+     ls_DateRange:='Report of Date : '+DEX_From.text
+     else
+     ls_DateRange:='Report From Date : '+DEX_From.text+' to Date : '+DEX_To.text;
+
+     if MessageDlg('Are You Sure To Send To Excel ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+     SendToExcels(Query_PatientList,nil,'Patient Detail of Doctor :'+Query_DoctorList.FieldByName('DocName').AsString,ls_DateRange,'',gs_HospitalName,gs_HospitalAddress,2);
+end;
+
+procedure TForm_OPDDocWiseIncomeDetail.BitBtnExcelClick(Sender: TObject);
+Var ls_DateRange: string;
+begin
+     if DEX_From.text=DEX_To.text then
+     ls_DateRange:='Report of Date : '+DEX_From.text
+     else
+     ls_DateRange:='Report From Date : '+DEX_From.text+' to Date : '+DEX_To.text;
+
+     if MessageDlg('Are You Sure To Send To Excel ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+     SendToExcels(Query_DoctorList,nil,'Doctor Wise Patient Count Summary',ls_DateRange,'',gs_HospitalName,gs_HospitalAddress,2);
+
+end;
+
+procedure TForm_OPDDocWiseIncomeDetail.BitBtnPreviewClick(Sender: TObject);
+begin
+     With Form_BNBQRDailyDoctorColnReport do
+     begin
+          With Query_Master do
+          Begin
+               Close;
+               DatabaseName:=gs_DatabaseName;
+               sql.Clear;
+               SQL.Add(' Select BIDE_DocID DocId,(Select InitCap(DOCT_DocName) From HS_DOCT_Doctor where DOCT_DocId=BIDE_DocId)  as Doctor');
+               SQL.Add(' From HS_BIDE_BillDetail where BIDE_DepId<>85 and BIDE_Service In (''DOCCHN'',''DOCCHF'',''DOCCHR'')');
+               if ps_OPDIncomeType='GEN' then
+               sql.add(' and BIDE_PatientType=''GEN''')
+               else
+               sql.add(' and BIDE_PatientType<>''GEN''');
+               sql.add(' and BIDE_BillType=''R'' and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+               if CB_IndivDoc.Checked=True then
+               sql.add(' and BIDE_DocId='+IntToStr(Query_DoctorList.FieldByName('DocId').AsInteger));
+               SQL.Add(' Union');
+               SQL.Add(' Select REDE_DocID DocID,(Select InitCap(DOCT_DocName) From HS_DOCT_Doctor where DOCT_DocId=REDE_DocId)  as Doctor');
+               SQL.Add(' From HS_REDE_RefundDetail where REDE_DepId<>85 and REDE_Service In (''DOCCHN'',''DOCCHF'',''DOCCHR'')');
+               if ps_OPDIncomeType='GEN' then
+               sql.add(' and REDE_PatientType=''GEN''')
+               else
+               sql.add(' and REDE_PatientType<>''GEN''');
+               sql.add(' and REDE_BillType=''R'' and REDE_RefundDate>='+#39+DEX_From.Text+#39+' and REDE_RefundDate<='+#39+DEX_To.Text+#39);
+               if CB_IndivDoc.Checked=True then
+               sql.add(' and REDE_DocId='+IntToStr(Query_DoctorList.FieldByName('DocId').AsInteger));
+               SQL.Add(' Order by Doctor');
+               //sql.saveToFile('C:\master.txt');
+               Open;
+          End;
+
+
+          With Query_Detail do
+          Begin
+               Close;
+               DatabaseName:=gs_DatabaseName;
+               sql.Clear;
+               sql.add(' Select Doctor,Service,Sum(NetTotal) as NetTotal,Sum(Qty) as TotalPatient From (');
+               sql.add(' Select 1 as Qty,BIDE_BillNo,BIDE_DocID,(Select InitCap(DOCT_DocName) From HS_DOCT_Doctor where DOCT_DocId=BIDE_DocId)  as Doctor,''Consultation General OPD'' as Service,');
+               sql.add(' Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal,1 as LastCols');
+               sql.add(' From HS_BIDE_BillDetail where BIDE_DepId<>85 and BIDE_DISSCHEMEID<>21 and BIDE_Service<>''DOCCHR''');
+               if ps_OPDIncomeType='GEN' then
+               sql.add(' and BIDE_PatientType=''GEN''')
+               else
+               sql.add(' and BIDE_PatientType<>''GEN''');
+               sql.add(' and BIDE_DocID=:DocId');
+               sql.add(' and (BIDE_BillType=''R'' or (BIDE_Service=''OPDBC01'' and BIDE_BillType=''B'')) and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+               sql.add(' Group By BIDE_BillNo,BIDE_DocID');
+               sql.add(' Union');
+               sql.add(' Select -1 as Qty,REDE_RefundBillNo,REDE_DocID,(Select InitCap(DOCT_DocName) From HS_DOCT_Doctor where DOCT_DocId=REDE_DocId)  as Doctor,''Consultation General OPD'' as Service,');
+               sql.add(' -Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) as NetTotal,2 as LastCols');
+               sql.add(' From HS_REDE_RefundDetail where REDE_DepId<>85 and REDE_DISSCHEMEID<>21 and REDE_Service<>''DOCCHR''');
+               if ps_OPDIncomeType='GEN' then
+               sql.add(' and REDE_PatientType=''GEN''')
+               else
+               sql.add(' and REDE_PatientType<>''GEN''');
+               sql.add(' and REDE_DocID=:DocId');
+               sql.add(' and (REDE_BillType=''R'' or (REDE_Service=''OPDBC01'' and REDE_BillType=''B'')) and REDE_RefundDate>='+#39+DEX_From.Text+#39+' and REDE_RefundDate<='+#39+DEX_To.Text+#39);
+               sql.add(' Group By REDE_RefundBillNo,REDE_DocID');
+               sql.add(' Union');
+               sql.add(' Select 1 as Qty,BIDE_BillNo,BIDE_DocID,(Select InitCap(DOCT_DocName) From HS_DOCT_Doctor where DOCT_DocId=BIDE_DocId)  as Doctor,''Consultation General OPD (Referral)'' as Service,');
+               sql.add(' Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal,3 as LastCols');
+               sql.add(' From HS_BIDE_BillDetail where BIDE_DepId<>85 and BIDE_DISSCHEMEID<>21 and BIDE_Service=''DOCCHR''');
+               if ps_OPDIncomeType='GEN' then
+               sql.add(' and BIDE_PatientType=''GEN''')
+               else
+               sql.add(' and BIDE_PatientType<>''GEN''');
+               sql.add(' and BIDE_DocID=:DocId');
+               sql.add(' and (BIDE_BillType=''R'' or (BIDE_Service=''OPDBC01'' and BIDE_BillType=''B'')) and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+               sql.add(' Group By BIDE_BillNo,BIDE_DocID');
+               sql.add(' Union');
+               sql.add(' Select -1 as Qty,REDE_RefundBillNo,REDE_DocID,(Select InitCap(DOCT_DocName) From HS_DOCT_Doctor where DOCT_DocId=REDE_DocId)  as Doctor,''Consultation General OPD (Referral)''  as Service,');
+               sql.add(' -Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) as NetTotal,4 as LastCols');
+               sql.add(' From HS_REDE_RefundDetail where REDE_DepId<>85 and REDE_DISSCHEMEID<>21 and REDE_Service=''DOCCHR''');
+               if ps_OPDIncomeType='GEN' then
+               sql.add(' and REDE_PatientType=''GEN''')
+               else
+               sql.add(' and REDE_PatientType<>''GEN''');
+               sql.add(' and REDE_DocID=:DocId');
+               sql.add(' and ( REDE_BillType=''R'' or (REDE_Service=''OPDBC01'' and REDE_BillType=''B'')) and REDE_RefundDate>='+#39+DEX_From.Text+#39+' and REDE_RefundDate<='+#39+DEX_To.Text+#39);
+               sql.add(' Group By REDE_RefundBillNo,REDE_DocID');
+               sql.add(' Union');
+               sql.add(' Select 1 as Qty,BIDE_BillNo,BIDE_DocID,(Select InitCap(DOCT_DocName) From HS_DOCT_Doctor where DOCT_DocId=BIDE_DocId)  as Doctor,''Consultation General OPD (Club Member)'' as Service,');
+               sql.add(' Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal,5 as LastCols');
+               sql.add(' From HS_BIDE_BillDetail where BIDE_DepId<>85 and BIDE_DISSCHEMEID=21 and BIDE_Service In (''DOCCHN'',''DOCCHF'',''DOCCHR'')');
+               if ps_OPDIncomeType='GEN' then
+               sql.add(' and BIDE_PatientType=''GEN''')
+               else
+               sql.add(' and BIDE_PatientType<>''GEN''');
+               sql.add(' and BIDE_DocID=:DocId');
+               sql.add(' and ( BIDE_BillType=''R'' or (BIDE_Service=''OPDBC01'' and BIDE_BillType=''B'')) and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+               sql.add(' Group By BIDE_BillNo,BIDE_DocID');
+               sql.add(' Union');
+               sql.add(' Select -1 as Qty,REDE_RefundBillNo,REDE_DocID,(Select InitCap(DOCT_DocName) From HS_DOCT_Doctor where DOCT_DocId=REDE_DocId)  as Doctor,''Consultation General OPD(Club Member)'' as Service,');
+               sql.add(' -Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) as NetTotal,6 as LastCols');
+               sql.add(' From HS_REDE_RefundDetail where REDE_DepId<>85 and REDE_DISSCHEMEID=21 and REDE_Service In (''DOCCHN'',''DOCCHF'',''DOCCHR'')');
+               if ps_OPDIncomeType='GEN' then
+               sql.add(' and REDE_PatientType=''GEN''')
+               else
+               sql.add(' and REDE_PatientType<>''GEN''');
+               sql.add(' and REDE_DocID=:DocId');
+               sql.add(' and ( REDE_BillType=''R'' or (REDE_Service=''OPDBC01'' and REDE_BillType=''B'')) and REDE_RefundDate>='+#39+DEX_From.Text+#39+' and REDE_RefundDate<='+#39+DEX_To.Text+#39);
+               sql.add(' Group By REDE_RefundBillNo,REDE_DocID');
+               sql.add(' ) Group By Doctor,Service');
+               sql.add(' Order by Doctor,Service');
+               //sql.saveToFile('C:\Detail.txt');
+               Query_Detail.Params[0].DataType:=ftInteger;
+               Open;
+          End;
+
+          if ps_OPDIncomeType='GEN' then
+          begin
+               With Query_GroupA do
+               Begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    sql.Clear;
+                    sql.add(' Select ''Group A'' as DocGroup, Sum(NetTotal) as NETTOTAL,Sum(Qty) as TotalPatient From (');
+                    sql.add(' Select BIDE_BillNo,1 as Qty,Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal');
+                    sql.add(' From HS_BIDE_BillDetail where BIDE_DepId<>85 and BIDE_DISSCHEMEID<>21 and BIDE_Service<>''DOCCHR''');
+                    sql.add(' and NVL(BIDE_PatientCategory,''BNB'')<>''BLK'' and BIDE_DocID In (Select DOCT_Docid From HS_DOCT_Doctor where DOCT_DOCSHAREGROUP=''A'')');
+                    sql.add(' and (BIDE_BillType=''R'' or (BIDE_Service=''OPDBC01'' and BIDE_BillType=''B''))');
+                    sql.add(' and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+                    if ps_OPDIncomeType='GEN' then
+                    sql.add(' and BIDE_PatientType=''GEN''')
+                    else
+                    sql.add(' and BIDE_PatientType<>''GEN''');
+                    sql.add(' Group By BIDE_BillNo');
+                    sql.add(' Union');
+                    sql.add(' Select REDE_RefundBillNo,-1 as Qty,-Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) as NetTotal');
+                    sql.add(' From HS_REDE_RefundDetail where REDE_DepId<>85 and REDE_DISSCHEMEID<>21 and REDE_Service<>''DOCCHR''');
+                    sql.add(' and NVL(REDE_PatientCategory,''BNB'')<>''BLK'' and REDE_DocID In (Select DOCT_Docid From HS_DOCT_Doctor where DOCT_DOCSHAREGROUP=''A'')');
+                    sql.add(' and (REDE_BillType=''R'' or (REDE_Service=''OPDBC01'' and REDE_BillType=''B''))');
+                    sql.add(' and REDE_RefundDate>='+#39+DEX_From.Text+#39+' and REDE_RefundDate<='+#39+DEX_To.Text+#39);
+                    if ps_OPDIncomeType='GEN' then
+                    sql.add(' and REDE_PatientType=''GEN''')
+                    else
+                    sql.add(' and REDE_PatientType<>''GEN''');
+                    sql.add(' Group By REDE_RefundBillNo,REDE_DocID)');
+                    //sql.saveToFile('C:\DocGroup.txt');
+                    Open;
+               End;
+
+               With Query_GroupB do
+               Begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    sql.Clear;
+                    sql.add(' Select ''Group B'' as DocGroup, Sum(NetTotal) as NETTOTAL,Sum(Qty) as TotalPatient From (');
+                    sql.add(' Select BIDE_BillNo,1 as Qty,Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal');
+                    sql.add(' From HS_BIDE_BillDetail where BIDE_DepId<>85 and BIDE_DISSCHEMEID<>21 and BIDE_Service<>''DOCCHR''');
+                    sql.add(' and NVL(BIDE_PatientCategory,''BNB'')<>''BLK'' and BIDE_DocID In (Select DOCT_Docid From HS_DOCT_Doctor where DOCT_DOCSHAREGROUP=''B'')');
+                    sql.add(' and (BIDE_BillType=''R'' or (BIDE_Service=''OPDBC01'' and BIDE_BillType=''B''))');
+                    sql.add(' and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+                    if ps_OPDIncomeType='GEN' then
+                    sql.add(' and BIDE_PatientType=''GEN''')
+                    else
+                    sql.add(' and BIDE_PatientType<>''GEN''');
+                    sql.add(' Group By BIDE_BillNo');
+                    sql.add(' Union');
+                    sql.add(' Select REDE_RefundBillNo,-1 as Qty,-Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) as NetTotal');
+                    sql.add(' From HS_REDE_RefundDetail where REDE_DepId<>85 and REDE_DISSCHEMEID<>21 and REDE_Service<>''DOCCHR''');
+                    sql.add(' and NVL(REDE_PatientCategory,''BNB'')<>''BLK'' and REDE_DocID In (Select DOCT_Docid From HS_DOCT_Doctor where DOCT_DOCSHAREGROUP=''B'')');
+                    sql.add(' and (REDE_BillType=''R'' or (REDE_Service=''OPDBC01'' and REDE_BillType=''B''))');
+                    sql.add(' and REDE_RefundDate>='+#39+DEX_From.Text+#39+' and REDE_RefundDate<='+#39+DEX_To.Text+#39);
+                    if ps_OPDIncomeType='GEN' then
+                    sql.add(' and REDE_PatientType=''GEN''')
+                    else
+                    sql.add(' and REDE_PatientType<>''GEN''');
+                    sql.add(' Group By REDE_RefundBillNo,REDE_DocID)');
+                    //sql.saveToFile('C:\DocGroupB.txt');
+                    Open;
+               End;
+
+               With Query_PatientCategoryWise do
+               Begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    sql.Clear;
+                    sql.add(' Select ''BLK Patient'' as DocGroup, Sum(NetTotal) as NETTOTAL,Sum(Qty) as TotalPatient From (');
+                    sql.add(' Select BIDE_BillNo,1 as Qty,Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal');
+                    sql.add(' From HS_BIDE_BillDetail where BIDE_DepId<>85 and NVL(BIDE_PatientCategory,''BNB'')=''BLK''');
+                    sql.add(' and (BIDE_BillType=''R'' or (BIDE_Service=''OPDBC01'' and BIDE_BillType=''B''))');
+                    sql.add(' and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+                    if ps_OPDIncomeType='GEN' then
+                    sql.add(' and BIDE_PatientType=''GEN''')
+                    else
+                    sql.add(' and BIDE_PatientType<>''GEN''');
+                    sql.add(' Group By BIDE_BillNo');
+                    sql.add(' Union');
+                    sql.add(' Select REDE_RefundBillNo,-1 as Qty,-Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) as NetTotal');
+                    sql.add(' From HS_REDE_RefundDetail where REDE_DepId<>85 and NVL(REDE_PatientCategory,''BNB'')=''BLK''');
+                    sql.add(' and (REDE_BillType=''R'' or (REDE_Service=''OPDBC01'' and REDE_BillType=''B''))');
+                    sql.add(' and REDE_RefundDate>='+#39+DEX_From.Text+#39+' and REDE_RefundDate<='+#39+DEX_To.Text+#39);
+                    if ps_OPDIncomeType='GEN' then
+                    sql.add(' and REDE_PatientType=''GEN''')
+                    else
+                    sql.add(' and REDE_PatientType<>''GEN''');
+                    sql.add(' Group By REDE_RefundBillNo,REDE_DocID)');
+                    sql.saveToFile('C:\Categorywise.txt');
+                    Open;
+               End;
+
+               With Query_ReferralDoc do
+               Begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    sql.Clear;
+                    sql.add(' Select ''Referral Doc.'' as DocGroup, Sum(NetTotal) as NETTOTAL,Sum(Qty) as TotalPatient From (');
+                    sql.add(' Select BIDE_BillNo,1 as Qty,Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal');
+                    sql.add(' From HS_BIDE_BillDetail where BIDE_DepId<>85 and BIDE_DISSCHEMEID<>21 and BIDE_Service=''DOCCHR''');
+                    sql.add(' and NVL(BIDE_PatientCategory,''BNB'')<>''BLK''');
+                    sql.add(' and (BIDE_BillType=''R'' or (BIDE_Service=''OPDBC01'' and BIDE_BillType=''B''))');
+                    sql.add(' and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+                    if ps_OPDIncomeType='GEN' then
+                    sql.add(' and BIDE_PatientType=''GEN''')
+                    else
+                    sql.add(' and BIDE_PatientType<>''GEN''');
+                    sql.add(' Group By BIDE_BillNo');
+                    sql.add(' Union');
+                    sql.add(' Select REDE_RefundBillNo,-1 as Qty,-Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) as NetTotal');
+                    sql.add(' From HS_REDE_RefundDetail where REDE_DepId<>85 and REDE_DISSCHEMEID<>21 and REDE_Service=''DOCCHR''');
+                    sql.add(' and NVL(REDE_PatientCategory,''BNB'')<>''BLK''');
+                    sql.add(' and (REDE_BillType=''R'' or (REDE_Service=''OPDBC01'' and REDE_BillType=''B''))');
+                    sql.add(' and REDE_RefundDate>='+#39+DEX_From.Text+#39+' and REDE_RefundDate<='+#39+DEX_To.Text+#39);
+                    if ps_OPDIncomeType='GEN' then
+                    sql.add(' and REDE_PatientType=''GEN''')
+                    else
+                    sql.add(' and REDE_PatientType<>''GEN''');
+                    sql.add(' Group By REDE_RefundBillNo,REDE_DocID)');
+                    //sql.saveToFile('C:\RefDoc.txt');
+                    Open;
+               End;
+
+               With Query_SchemeWise do
+               Begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    sql.Clear;
+                    sql.add(' Select ''Member Orgn.'' as DocGroup, Sum(NetTotal) as NETTOTAL,Sum(Qty) as TotalPatient From (');
+                    sql.add(' Select BIDE_BillNo,1 as Qty,Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal');
+                    sql.add(' From HS_BIDE_BillDetail where BIDE_DepId<>85 and BIDE_DISSCHEMEID=21');
+                    sql.add(' and NVL(BIDE_PatientCategory,''BNB'')<>''BLK''');
+                    sql.add(' and (BIDE_BillType=''R'' or (BIDE_Service=''OPDBC01'' and BIDE_BillType=''B''))');
+                    sql.add(' and BIDE_BillDate>='+#39+DEX_From.Text+#39+' and BIDE_BillDate<='+#39+DEX_To.Text+#39);
+                    if ps_OPDIncomeType='GEN' then
+                    sql.add(' and BIDE_PatientType=''GEN''')
+                    else
+                    sql.add(' and BIDE_PatientType<>''GEN''');
+                    sql.add(' Group By BIDE_BillNo');
+                    sql.add(' Union');
+                    sql.add(' Select REDE_RefundBillNo,-1 as Qty,-Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) as NetTotal');
+                    sql.add(' From HS_REDE_RefundDetail where REDE_DepId<>85 and REDE_DISSCHEMEID=21');
+                    sql.add(' and NVL(REDE_PatientCategory,''BNB'')<>''BLK''');
+                    sql.add(' and (REDE_BillType=''R'' or (REDE_Service=''OPDBC01'' and REDE_BillType=''B''))');
+                    sql.add(' and REDE_RefundDate>='+#39+DEX_From.Text+#39+' and REDE_RefundDate<='+#39+DEX_To.Text+#39);
+                    if ps_OPDIncomeType='GEN' then
+                    sql.add(' and REDE_PatientType=''GEN''')
+                    else
+                    sql.add(' and REDE_PatientType<>''GEN''');
+                    sql.add(' Group By REDE_RefundBillNo,REDE_DocID)');
+                    //sql.saveToFile('C:\MembOrgn.txt');
+                    Open;
+               End;
+               SummaryBand1.Height :=172;
+          end
+          else
+          SummaryBand1.Height :=24;
+
+
+          QRLabel_FromDate.Caption:=DEX_From.text;
+          QRLabel_To.Caption:=DEX_To.text;
+
+          lbl_hosname.Caption:=gs_HospitalName;
+          QRLabelDate.Caption:=TodaysDate;
+          QRLabelTime.Caption:=TodaysTime;
+          QR_DailyDoctorCollectionReport.Preview;
+     end;
+end;
+
+procedure TForm_OPDDocWiseIncomeDetail.Btn_FromClick(Sender: TObject);
+begin
+     ChangeDateSystem(Dex_From,Btn_From);
+     ChangeDateSystem(Dex_To,Btn_To);
+end;
+
+procedure TForm_OPDDocWiseIncomeDetail.Btn_ToClick(Sender: TObject);
+begin
+     ChangeDateSystem(Dex_From,Btn_From);
+     ChangeDateSystem(Dex_To,Btn_To);
+end;
+
+procedure TForm_OPDDocWiseIncomeDetail.DBGrid_DoctorListCellClick(Column: TColumn);
+begin
+     ShowDetailPatient(Query_DoctorList.FieldByName('DocId').AsInteger);
+end;
+
+procedure TForm_OPDDocWiseIncomeDetail.DBGrid_PatientListDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+     if Trim(Query_PatientList.FieldByName('RefundBy').AsString)<>'' then
+     Begin
+          DBGrid_PatientList.Canvas.Font.Color:=clRed;
+          DBGrid_PatientList.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     End
+end;
+
+procedure TForm_OPDDocWiseIncomeDetail.FormCreate(Sender: TObject);
+begin
+     Application.CreateForm(TForm_BNBQRDailyDoctorColnReport,Form_BNBQRDailyDoctorColnReport);
+end;
+
+procedure TForm_OPDDocWiseIncomeDetail.FormDestroy(Sender: TObject);
+begin
+     Form_BNBQRDailyDoctorColnReport.Free;
+end;
+
+procedure TForm_OPDDocWiseIncomeDetail.FormShow(Sender: TObject);
+begin
+     ChangeToDefaultDate(DEX_From,DEX_To);
+     ChangeToDefaultCaption(Btn_From,Btn_To);
+     DEX_From.text:=ServerDate.TodaysDate;
+     DEX_To.text:=DEX_From.text;
+     Edit_Search.SetFocus;
+end;
+
+end.

@@ -1,0 +1,59 @@
+package ClinicalPathology;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+{$DEFINE DEBUG}
+
+requires
+  rtl,
+  VclSmp,
+  QR5RunD2010,
+  BarcodeD10,
+  Global,
+  MidasFunction,
+  Finding;
+
+contains
+  Unit_ClinicalPathDep in 'Unit_ClinicalPathDep.pas' {Form_ExtendedReportDep},
+  Unit_ClinicalPathFinding in 'Unit_ClinicalPathFinding.pas' {Frame_ClinicalPathFinding: TFrame},
+  Unit_ClinicalPathSetup in 'Unit_ClinicalPathSetup.pas' {Form2},
+  Unit_ClinicalSetup in 'Unit_ClinicalSetup.pas' {Form_ClinicalTest},
+  Unit_ClinicalFindingSetUp in 'Unit_ClinicalFindingSetUp.pas' {Form_FindingSetup},
+  Unit_ClinicalReportType in 'Unit_ClinicalReportType.pas' {Form_ReportType},
+  Unit_QrPathologyReport in 'Unit_QrPathologyReport.pas' {Form_ReportClinicalPathology},
+  Unit_TestWiseReport in 'Unit_TestWiseReport.pas' {Form_TestWiseReport},
+  Unit_ReportReplication in 'Unit_ReportReplication.pas' {Form_Replicate},
+  Unit_SemenAnalysis in 'Unit_SemenAnalysis.pas' {Form_SemenAnalysis},
+  Unit_QrPathInvestigativeResult in 'Unit_QrPathInvestigativeResult.pas' {Form_QrPathFinding},
+  UnitEditFindingAnalysis in 'Clinical Pathology New\UnitEditFindingAnalysis.pas' {FormEditReportFindingAnalysis},
+  UnitEditFindAlternate in 'Clinical Pathology New\UnitEditFindAlternate.pas' {FormEditFindAlternate},
+  Unit_ClinicalPathFindingNew in 'Clinical Pathology New\Unit_ClinicalPathFindingNew.pas' {Frame_ClinicalPathFindingNew: TFrame},
+  Unit_QrNeuroBrtHistoPathInvestigativeResult in 'Unit_QrNeuroBrtHistoPathInvestigativeResult.pas' {Form_NeuroBrtHistoQrPathFinding},
+  Unit_QrPathNepalCancerRadiology in 'Unit_QrPathNepalCancerRadiology.pas' {Form_QrNepalCancerRadiology},
+  Unit_QrBNBHistoPathInvestigativeResult in 'Clinical Pathology New\Unit_QrBNBHistoPathInvestigativeResult.pas' {Form_BNBHistoQrPathFinding};
+
+//  Fxn in 'Fxn.pas',
+//  ServerDate in 'ServerDate.pas';
+
+end.

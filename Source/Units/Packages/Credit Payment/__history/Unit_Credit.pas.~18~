@@ -1,0 +1,71 @@
+unit Unit_Credit;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,fxn,
+  Dialogs, ExtCtrls,Unit_CreditPayment, StdCtrls, Buttons;
+
+type
+  TForm_Credit = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    BB_Close: TBitBtn;
+    BB_Save: TBitBtn;
+    procedure BB_SaveClick(Sender: TObject);
+    procedure BB_CloseClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure LoadCreditpayment;
+  end;
+
+var
+  Form_Credit: TForm_Credit;
+  Frame_CreditPayment:Unit_CreditPayment.TFrame_CreditPayment;
+
+implementation
+
+
+
+{$R *.dfm}
+
+{ TForm4 }
+
+procedure TForm_Credit.BB_CloseClick(Sender: TObject);
+begin
+    if Frame_CreditPayment.PageControlCredit.ActivePageIndex=1 then
+    begin
+          Frame_CreditPayment.TSCreditPayment.Visible:=false;
+          Frame_CreditPayment.TSCreditBill.Visible:=True;
+    end
+    else
+    begin
+         close;
+    end;
+
+end;
+
+procedure TForm_Credit.BB_SaveClick(Sender: TObject);
+begin
+     if Frame_CreditPayment.PageControlCredit.ActivePageIndex=1 then
+     
+     Frame_CreditPayment.SaveCreditPayment;
+end;
+
+procedure TForm_Credit.LoadCreditpayment;
+begin
+     //clearFrame;
+     Frame_CreditPayment:=TFrame_CreditPayment.Create(nil);
+     with Frame_CreditPayment do
+     begin
+          Parent := self.Panel1;
+          Align := alClient;
+          Show;
+          FrameCleared := false;
+          // SpeedButton2.Visible:=false;
+     end;
+end;
+
+end.

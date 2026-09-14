@@ -1,0 +1,566 @@
+unit Unit_DepartmentSetupNew;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm,
+     Dialogs, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, ExtCtrls, Grids, DBGrids, StdCtrls, Buttons,
+     ComCtrls, DBCtrls, Unit_Master_Hos;
+
+type
+     TForm_DepartmentSetupNew = class(TForm)
+          Panel2: TPanel;
+          BB_Save: TBitBtn;
+          BB_Close: TBitBtn;
+          BB_New: TBitBtn;
+          PageControl1: TPageControl;
+    TS_DepartmentList: TTabSheet;
+          Label2: TLabel;
+          SpeedButton1: TSpeedButton;
+          SpeedButton2: TSpeedButton;
+          Edit_Search: TEdit;
+          DBGridDept: TDBGrid;
+    TS_DepartmentNew: TTabSheet;
+          Label7: TLabel;
+          Label8: TLabel;
+          le_DepartmentCode: TLabeledEdit;
+          le_DepName: TLabeledEdit;
+          Query_Department: TOraQuery;
+          Ds_Department: TDataSource;
+          Label1: TLabel;
+          DBlcb_ParentDep: TDBLookupComboBox;
+          le_ReportTitle: TLabeledEdit;
+          Label16: TLabel;
+          Label24: TLabel;
+          Label18: TLabel;
+          Label17: TLabel;
+          GroupBox1: TGroupBox;
+          RB_All: TRadioButton;
+          RB_ClinicalDept: TRadioButton;
+          RB_Pathological: TRadioButton;
+          RB_Radiological: TRadioButton;
+          RB_Surgical: TRadioButton;
+          RB_Procedural: TRadioButton;
+          Btn_TimeWisePriceSetup: TBitBtn;
+          SpeedButton6: TSpeedButton;
+          Query_ParentDep: TOraQuery;
+          DS_ParentDep: TDataSource;
+          BitBtn1: TBitBtn;
+          CB_ParentDep: TCheckBox;
+          Label22: TLabel;
+          le_DepartmentOrder: TLabeledEdit;
+    Bb_RateEntry: TBitBtn;
+          ComboBox_DepartmentType: TComboBox;
+          Label13: TLabel;
+          Query_ListDepartment: TOraQuery;
+    DS_ListDepartment: TDataSource;
+    Query_PatientType: TOraQuery;
+    BitBtn2: TBitBtn;
+    Label14: TLabel;
+    Btn_DocWiseCharge: TBitBtn;
+    lbledt_TestNameCodePrefix: TLabeledEdit;
+    Label3: TLabel;
+    CB_IsMembDept: TCheckBox;
+    CB_IsFeminineDept: TCheckBox;
+          procedure PageControl1Change(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure Edit_SearchChange(Sender: TObject);
+          procedure BB_SaveClick(Sender: TObject);
+          procedure BB_NewClick(Sender: TObject);
+          procedure BB_CloseClick(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word;
+               Shift: TShiftState);
+          procedure DBGridDeptDblClick(Sender: TObject);
+          procedure FormKeyPress(Sender: TObject; var Key: Char);
+          procedure FormShow(Sender: TObject);
+          procedure le_FreeFollowupDays1Exit(Sender: TObject);
+          procedure DBGridDeptDrawColumnCell
+            (Sender: TObject; const Rect: TRect; DataCol: Integer;
+               Column: TColumn; State: TGridDrawState);
+          procedure RB_AllClick(Sender: TObject);
+          procedure RB_ClinicalDeptClick(Sender: TObject);
+          procedure RB_PathologicalClick(Sender: TObject);
+          procedure RB_RadiologicalClick(Sender: TObject);
+          procedure Btn_TimeWisePriceSetupClick(Sender: TObject);
+          procedure SpeedButton6Click(Sender: TObject);
+          procedure BitBtn1Click(Sender: TObject);
+          procedure CB_ParentDepClick(Sender: TObject);
+          procedure DBGrid_RateChartKeyPress(Sender: TObject; var Key: Char);
+          procedure Bb_RateEntryClick(Sender: TObject);
+          procedure TS_DepartmentNewShow(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure Btn_DocWiseChargeClick(Sender: TObject);
+     private
+          pb_isnew: Boolean;
+          { Private declarations }
+          function SaveData : Boolean;
+     public
+          // pf_NEWREGCHARGE,pf_NEWREGSVRTAX,pf_ADMISSONCHARGE,pf_ADMISSONCHARGESVRTAX : Double;
+
+          // pf_NEWREGCHARGEGEN,pf_NEWREGSVRTAXGEN,pf_FOLLOWUPCHARGEGEN,pf_FOLLOWUPSVRTAXGEN : Double;
+
+          // pf_FOLLOWUPCHARGE,pf_FOLLOWUPSVRTAX : Double;
+          // pf_FOLLOWUPCHARGEPVT,pf_FOLLOWUPSVRTAXPVT : Double;
+          // pf_FOLLOWUPCHARGEFRG,pf_FOLLOWUPSVRTAXFRG : Double;
+
+
+          // pf_NEWREGCHARGEPVT,pf_NEWREGSVRTAXPVT : Double;
+          // pf_NEWREGCHARGEFRG,pf_NEWREGSVRTAXFRG : Double;
+
+          // pf_NEWREGCHARGECARD,pf_NEWREGSVRTAXCARD : Double;
+          pb_IsRecordCount: boolean;
+
+          ps_DEPCODE: String;
+          pi_DEPID : Integer;
+
+
+
+          // pi_FREEFOLLOWUPDAYS : Integer;
+
+          procedure DepartmentList;
+
+          { Public declarations }
+     end;
+
+var
+     Form_DepartmentSetupNew: TForm_DepartmentSetupNew;
+
+implementation
+
+uses Unit_DepartmentWiseChargeSetup,Unit_DoctorWiseChargeSetup, Unit_ParentDepartmentSetUp,
+  Unit_DepartmentWiseQuota;
+
+Procedure SaveDepartment(DEPCODE, DEPNAME, REPORTTITLE, ISCLINICALDEP,
+     ISCHARGEWITHSVRTAX, PRETESTNAMECODE: String; FREEFOLLOWUPDAYS, DEPORDER,
+     PARENTDEPID: Integer; NEWREGCHARGE, NEWREGSVRTAX, NEWREGCHARGEGEN,
+     NEWREGSVRTAXGEN, NEWREGCHARGEPVT, NEWREGSVRTAXPVT, NEWREGCHARGEFRG,
+     NEWREGSVRTAXFRG, NEWREGCHARGECARD, NEWREGSVRTAXCARD, FOLLOWUPCHARGE,
+     FOLLOWUPSVRTAX, FOLLOWUPCHARGEGEN, FOLLOWUPSVRTAXGEN, FOLLOWUPCHARGEPVT,
+     FOLLOWUPSVRTAXPVT, FOLLOWUPCHARGEFRG, FOLLOWUPSVRTAXFRG, ADMISSONCHARGE,
+     ADMISSONCHARGESVRTAX: Double); stdcall; external 'MidasFunction.bpl';
+Procedure UpdateDepartment(DEPCODE, DEPNAME, REPORTTITLE, ISCLINICALDEP,
+     ISCHARGEWITHSVRTAX, PRETESTNAMECODE: String; DEPID, FREEFOLLOWUPDAYS,
+     DEPORDER, PARENTDEPID: Integer; NEWREGCHARGE, NEWREGSVRTAX,
+     NEWREGCHARGEGEN, NEWREGSVRTAXGEN, NEWREGCHARGEPVT, NEWREGSVRTAXPVT,
+     NEWREGCHARGEFRG, NEWREGSVRTAXFRG, NEWREGCHARGECARD, NEWREGSVRTAXCARD,
+     FOLLOWUPCHARGE, FOLLOWUPSVRTAX, FOLLOWUPCHARGEGEN, FOLLOWUPSVRTAXGEN,
+     FOLLOWUPCHARGEPVT, FOLLOWUPSVRTAXPVT, FOLLOWUPCHARGEFRG,
+     FOLLOWUPSVRTAXFRG, ADMISSONCHARGE, ADMISSONCHARGESVRTAX: Double); stdcall;
+external 'MidasFunction.bpl';
+
+(*Procedure SaveDepartmentNew(DEPCODE, DEPNAME, REPORTTITLE,IsClinicalDept,TestNameCodePrefix: string; DEPORDER, PARENTDEPID: Integer); stdcall;
+external 'MidasFunction.bpl';
+
+Procedure UpdateDepartmentNew(DEPCODE, DEPNAME, REPORTTITLE, IsClinicalDept, TestNameCodePrefix: string; DEPORDER, PARENTDEPID, DEPID: Integer); stdcall;
+external 'MidasFunction.bpl';*)
+{$R *.dfm}
+
+procedure TForm_DepartmentSetupNew.BB_CloseClick(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+     begin
+          PageControl1.ActivePageIndex := 0;
+          Query_ListDepartment.Close;
+          Query_ListDepartment.Open;
+          Query_ListDepartment.Locate('DepID', pi_DEPID, []);
+     end
+     else
+          Close;
+end;
+
+procedure TForm_DepartmentSetupNew.BB_NewClick(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex := 1;
+     pb_isnew := true;
+     // ComboBox_DepartmentType.ItemIndex := 0;
+
+     le_DepartmentCode.ReadOnly := False;
+     le_DepartmentCode.Color := clWhite;
+     le_DepartmentCode.SetFocus;
+     Query_Department.Close;
+     Query_Department.Session := DM_Hospital.DB;
+     Query_Department.Open;
+
+     Query_ParentDep.Close;
+     Query_ParentDep.Open;
+
+     ClearAll(PageControl1.Pages[1]);
+     ComboBox_DepartmentType.ItemIndex := 0;
+end;
+
+procedure TForm_DepartmentSetupNew.BB_SaveClick(Sender: TObject);
+begin
+     if (le_DepartmentCode.Text = '') or (le_DepName.Text = '') then
+     begin
+          MsgBox(1006, 0, '', '', '');
+          exit;
+     end;
+     try
+          IF SaveData=False Then Exit;
+          ShowDoneMessage;
+          ClearAll(PageControl1.Pages[1]);
+          PageControl1.ActivePageIndex := 0;
+          Query_ListDepartment.Close;
+          Query_ListDepartment.Open;
+          //Query_ListDepartment.Locate('DepCode', ps_DEPCODE, []);
+     except
+          MsgBox(1005, 0, '', '', '');
+     end;
+end;
+
+procedure TForm_DepartmentSetupNew.BitBtn1Click(Sender: TObject);
+begin
+     { try
+       Form_EmrRefChargeSetup := TForm_EmrRefChargeSetup.Create(nil);
+       Form_EmrRefChargeSetup.ShowModal;
+       finally
+       Form_EmrRefChargeSetup.Free;
+       end; }
+end;
+
+procedure TForm_DepartmentSetupNew.BitBtn2Click(Sender: TObject);
+begin
+     if Query_ListDepartment.FieldByName('DEPCODE').AsString='' then
+     Exit;
+     with Form_DepartmentWiseQuota do
+     begin
+          try
+          Form_DepartmentWiseQuota:=TForm_DepartmentWiseQuota.Create(nil);
+          Ps_PatientType:='GEN';
+          Ps_DepCode:=Query_ListDepartment.FieldByName('DEPCODE').AsString;
+          pi_DepID:=Query_ListDepartment.FieldByName('DEPID').AsInteger;
+          Form_DepartmentWiseQuota.ShowModal;
+          finally
+          Form_DepartmentWiseQuota.Free;
+          end;
+     end;
+end;
+
+procedure TForm_DepartmentSetupNew.Bb_RateEntryClick(Sender: TObject);
+begin
+     try
+          Form_DepartmentWiseChargeSetup := TForm_DepartmentWiseChargeSetup.Create(nil);
+          Form_DepartmentWiseChargeSetup.pi_DepID:=Self.pi_DEPID;
+          Form_DepartmentWiseChargeSetup.ShowModal;
+     finally
+          Form_DepartmentWiseChargeSetup.Free;
+     end;
+end;
+
+procedure TForm_DepartmentSetupNew.Btn_DocWiseChargeClick(Sender: TObject);
+begin
+     try
+          Form_DoctorWiseChargeSetup := TForm_DoctorWiseChargeSetup.Create(nil);
+          //Form_DoctorWiseChargeSetup.ps_DepCode:=Self.ps_DEPCODE;
+          Form_DoctorWiseChargeSetup.ShowModal;
+     finally
+          Form_DoctorWiseChargeSetup.Free;
+     end;
+end;
+
+procedure TForm_DepartmentSetupNew.Btn_TimeWisePriceSetupClick(Sender: TObject);
+begin
+     { try
+       Form_TimeWisePriceSetup := TForm_TimeWisePriceSetup.Create(nil);
+       Form_TimeWisePriceSetup.ShowModal;
+       finally
+       Form_TimeWisePriceSetup.Free;
+       end; }
+end;
+
+procedure TForm_DepartmentSetupNew.DBGridDeptDblClick(Sender: TObject);
+begin
+     with Query_ListDepartment do
+     begin
+          PageControl1.ActivePageIndex := 1;
+          if FieldByName('ParentDepId').AsString <> '' then
+               DBlcb_ParentDep.KeyValue := FieldByName('ParentDepId').AsInteger;
+
+          le_DepartmentCode.Text := FieldByName('DepCode').AsString;
+          le_DepartmentCode.ReadOnly := true;
+          le_DepartmentCode.Color := clMenu;
+
+          ps_DEPCODE := FieldByName('DepCode').AsString;
+          pi_DEPID := FieldByName('DepID').AsInteger;
+          le_DepName.Text := FieldByName('DepName').AsString;
+          le_ReportTitle.Text := FieldByName('ReportTitle').AsString;
+          le_departmentorder.Text := FieldByName('Deporder').AsString;
+          PI_DEPID := FieldByName('DepID').AsInteger;
+
+          If FieldByName('ISMEMBERSHIPDEPT').AsString ='Y' then
+               CB_IsMembDept.Checked :=True
+          else
+               CB_IsMembDept.Checked := False;
+
+          if FieldByName('deptype').AsString = 'N' then
+          ComboBox_DepartmentType.ItemIndex:= 0
+          else if FieldByName('deptype').AsString = 'C' then
+          ComboBox_DepartmentType.ItemIndex:= 1
+          else if FieldByName('deptype').AsString = 'E' then
+          ComboBox_DepartmentType.ItemIndex:= 2
+          else if FieldByName('deptype').AsString = 'P' then
+          ComboBox_DepartmentType.ItemIndex:= 3
+          else if FieldByName('deptype').AsString = 'H' then
+          ComboBox_DepartmentType.ItemIndex:= 4
+          else if FieldByName('deptype').AsString = 'R' then
+          ComboBox_DepartmentType.ItemIndex:= 5;
+          pb_isnew :=False;
+
+          If FieldByName('IsFeminineDept').AsString ='Y' then
+               CB_IsFeminineDept.Checked :=True
+          else
+               CB_IsFeminineDept.Checked := False;
+
+          lbledt_TestNameCodePrefix.Text := FieldByName('TESTNAMECODEPREFIX').AsString;
+
+          le_DepName.SetFocus;
+     end;
+end;
+
+procedure TForm_DepartmentSetupNew.DBGridDeptDrawColumnCell
+  (Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+     State: TGridDrawState);
+begin
+     IF Query_ListDepartment.FieldByName('deptype').AsString = 'C' Then
+     begin
+          DBGridDept.Canvas.Font.Color := clBlue;
+          DBGridDept.DefaultDrawDataCell(Rect, Column.Field, State);
+     end;
+
+     IF (Query_ListDepartment.FieldByName('deptype').AsString = 'P') or (Query_ListDepartment.FieldByName('deptype').AsString = 'H') Then
+     begin
+          DBGridDept.Canvas.Font.Color := clFuchsia;
+          DBGridDept.DefaultDrawDataCell(Rect, Column.Field, State);
+     end;
+end;
+
+procedure TForm_DepartmentSetupNew.DBGrid_RateChartKeyPress
+  (Sender: TObject; var Key: Char);
+begin
+     { if Key= 13 then
+       begin
+       //if DBGrid_RateChart.SelectedIndex then
+
+       end; }
+
+end;
+
+procedure TForm_DepartmentSetupNew.Edit_SearchChange(Sender: TObject);
+begin
+     Edit_Search.Text := StringReplace(Edit_Search.Text, '''', '''''',
+          [rfReplaceAll]);
+     with Query_ListDepartment do
+     begin
+          IF Trim(Edit_Search.Text) <> '' Then
+          begin
+               Filter := 'DEPNAME =' + #39 + Trim(Edit_Search.Text) + '*' + #39;
+               Filtered := true;
+          end
+          else
+               Filtered := False;
+     end;
+
+end;
+
+procedure TForm_DepartmentSetupNew.FormCreate(Sender: TObject);
+begin
+     DepartmentList;
+     Query_Department.Close;
+     Query_Department.Session := DM_Hospital.DB;
+     Query_Department.Open;
+     PageControl1.ActivePageIndex := 0;
+end;
+
+procedure TForm_DepartmentSetupNew.FormKeyDown(Sender: TObject; var Key: Word;
+     Shift: TShiftState);
+begin
+     if Key = 27 then
+          BB_CloseClick(Sender);
+end;
+
+procedure TForm_DepartmentSetupNew.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+          keybd_event(9, 13, 0, 0);
+end;
+
+procedure TForm_DepartmentSetupNew.FormShow(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex := 0;
+     Query_ParentDep.Close;
+     Query_ParentDep.Open;
+end;
+
+procedure TForm_DepartmentSetupNew.le_FreeFollowupDays1Exit(Sender: TObject);
+begin
+     { if Trim(le_FreeFollowupDays.Text)='' then le_FreeFollowupDays.Text:='0'; }
+
+end;
+
+procedure TForm_DepartmentSetupNew.PageControl1Change(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+          PageControl1.ActivePageIndex := 0
+     else
+     Begin
+          PageControl1.ActivePageIndex := 1;
+     End;
+end;
+
+procedure TForm_DepartmentSetupNew.RB_AllClick(Sender: TObject);
+begin
+     DepartmentList;
+end;
+
+procedure TForm_DepartmentSetupNew.RB_ClinicalDeptClick(Sender: TObject);
+begin
+     DepartmentList;
+end;
+
+procedure TForm_DepartmentSetupNew.RB_PathologicalClick(Sender: TObject);
+begin
+     DepartmentList;
+end;
+
+procedure TForm_DepartmentSetupNew.RB_RadiologicalClick(Sender: TObject);
+begin
+     DepartmentList;
+end;
+
+Procedure TForm_DepartmentSetupNew.DepartmentList;
+Begin
+     With Query_ListDepartment Do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          if RB_All.Checked = true then
+               sql[1] := 'where 1=1'
+          Else if RB_ClinicalDept.Checked = true then
+               sql[1] := ' where DepType In (''C'',''E'')'
+          Else if RB_Pathological.Checked = true then
+               sql[1] := ' where DepType=''P'''
+          Else if RB_Radiological.Checked = true then
+               sql[1] := ' where DepType=''R'''
+          (*Else if RB_Surgical.Checked = true then
+               sql[1] := ' where ParentDepId=5'
+          Else if RB_Procedural.Checked = true then
+               sql[1] := ' where ParentDepId=14';
+
+          if CB_ParentDep.Checked = False then
+               sql[1] := ' and IsParentDep=''N'''*)
+          Else
+               sql[1] := ' ';
+               sql.savetofile('C:\abctt.txt');
+          Open;
+     End;
+End;
+
+function TForm_DepartmentSetupNew.SaveData: Boolean;
+Var
+     DEPNAME, REPORTTITLE, ls_IsClinicalDept, ls_IsFeminineDept, ls_TestNameCodePrefix,IsradiologyDept,ls_IsMembDept: String;
+     DEPORDER, PARENTDEPID: Integer;
+begin
+     ps_DEPCODE := Trim(le_DepartmentCode.Text);
+     if Length(Trim(le_DepartmentCode.Text))>7 then
+     Begin
+          MessageDlg('Dep. Code Must be less 8 Char.',mtWarning, [mbok], 0);
+          Result:=False;
+          exit;
+     End;
+
+
+     if pb_isnew then
+     Begin
+          IF IsDataExist('HS_Dept_DEPARTMENT', 'Dept_DEPCODE', ps_DEPCODE) Then
+          Begin
+               MessageDlg('Duplicate Dep. Code(' + ps_DEPCODE + ') !',mtWarning, [mbok], 0);
+               Result:=False;
+               exit;
+          End;
+     End;
+
+     DEPNAME := Trim(le_DepName.Text);
+     REPORTTITLE := le_ReportTitle.Text;
+     if le_DepartmentOrder.Text <> '' then
+          DEPORDER := StrToInt(le_DepartmentOrder.Text)
+     else
+          DEPORDER := 0;
+     if DBlcb_ParentDep.KeyValue > 0 then
+          PARENTDEPID := DBlcb_ParentDep.KeyValue
+     else
+          PARENTDEPID := 0;
+
+     if ComboBox_DepartmentType.ItemIndex = 0 then
+          ls_IsClinicalDept := 'N'
+     Else if ComboBox_DepartmentType.ItemIndex = 1 then
+          ls_IsClinicalDept := 'C'
+     Else if ComboBox_DepartmentType.ItemIndex = 2 then
+          ls_IsClinicalDept := 'E'
+     Else if ComboBox_DepartmentType.ItemIndex = 3 then
+          ls_IsClinicalDept := 'P'
+     Else if ComboBox_DepartmentType.ItemIndex = 4 then
+          ls_IsClinicalDept := 'H'
+     Else if ComboBox_DepartmentType.ItemIndex = 5 then
+          ls_IsClinicalDept := 'R';
+
+     if CB_IsMembDept.Checked=True then
+          ls_IsMembDept :='Y'
+     else
+          ls_IsMembDept :='N';
+
+     if CB_IsFeminineDept.Checked=True then
+     ls_IsFeminineDept:='Y'
+     else
+     ls_IsFeminineDept:='N';
+
+
+     if Trim(lbledt_TestNameCodePrefix.Text)<>'' then
+     Begin
+          if Length(Trim(lbledt_TestNameCodePrefix.Text)) < 3 then
+          Begin
+               MessageDlg('If you are keeping Prefix for to Auto Generate TestNameCode, Then Must Be of 3 Char.',mtWarning,[mbOK],0);
+               lbledt_TestNameCodePrefix.SetFocus;
+               Exit;
+          End;
+
+     End;
+     ls_TestNameCodePrefix:=lbledt_TestNameCodePrefix.Text;
+
+
+
+
+     if pb_isnew then
+          SaveDepartmentNew(ps_DEPCODE, DEPNAME, REPORTTITLE,ls_IsMembDept,ls_IsClinicalDept,ls_IsFeminineDept,ls_TestNameCodePrefix,DEPORDER, PARENTDEPID, pi_DEPID)
+     else
+          UpdateDepartmentNew(ps_DEPCODE, DEPNAME, REPORTTITLE,ls_IsMembDept,ls_IsClinicalDept,ls_IsFeminineDept,ls_TestNameCodePrefix, DEPORDER, PARENTDEPID, PI_DEPID);
+
+     pb_isnew := true;
+     Result:=True;
+
+end;
+
+procedure TForm_DepartmentSetupNew.CB_ParentDepClick(Sender: TObject);
+begin
+     DepartmentList;
+end;
+
+procedure TForm_DepartmentSetupNew.SpeedButton6Click(Sender: TObject);
+begin
+     try
+          Form_ParentDepartmentSetup := TForm_ParentDepartmentSetup.Create(nil);
+          Form_ParentDepartmentSetup.ShowModal;
+     finally
+          Form_ParentDepartmentSetup.Free;
+     end;
+
+     Query_ParentDep.Close;
+     Query_ParentDep.Open;
+end;
+
+procedure TForm_DepartmentSetupNew.TS_DepartmentNewShow(Sender: TObject);
+begin
+     ComboBox_DepartmentType.ItemIndex := 0;
+end;
+
+end.

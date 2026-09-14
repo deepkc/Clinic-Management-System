@@ -1,0 +1,3054 @@
+
+ Start         Length     Name                   Class
+ 0001:00401000 000309E8H .text                   CODE
+ 0002:00432000 00000450H .itext                  ICODE
+ 0003:00433000 0000012CH .data                   DATA
+ 0004:00434000 0000013CH .bss                    BSS
+ 0005:00000000 00000000H .tls                    TLS
+
+
+Detailed map of segments
+
+ 0001:00000000 0000013E C=CODE     S=.text    G=(none)   M=System   ACBP=A9
+ 0001:00000140 000001C3 C=CODE     S=.text    G=(none)   M=SysInit  ACBP=A9
+ 0001:00000304 00000006 C=CODE     S=.text    G=(none)   M=ActnList ACBP=A9
+ 0001:0000030C 0000004E C=CODE     S=.text    G=(none)   M=Classes  ACBP=A9
+ 0001:0000035C 00000071 C=CODE     S=.text    G=(none)   M=Windows  ACBP=A9
+ 0001:000003D0 00000006 C=CODE     S=.text    G=(none)   M=TypInfo  ACBP=A9
+ 0001:000003D8 0000008E C=CODE     S=.text    G=(none)   M=SysUtils ACBP=A9
+ 0001:00000468 00000046 C=CODE     S=.text    G=(none)   M=Variants ACBP=A9
+ 0001:000004B0 00000006 C=CODE     S=.text    G=(none)   M=VarUtils ACBP=A9
+ 0001:000004B8 00000016 C=CODE     S=.text    G=(none)   M=Graphics ACBP=A9
+ 0001:000004D0 00000006 C=CODE     S=.text    G=(none)   M=Registry ACBP=A9
+ 0001:000004D8 00000006 C=CODE     S=.text    G=(none)   M=IniFiles ACBP=A9
+ 0001:000004E0 0000000E C=CODE     S=.text    G=(none)   M=IOUtils  ACBP=A9
+ 0001:000004F0 00000006 C=CODE     S=.text    G=(none)   M=Themes   ACBP=A9
+ 0001:000004F8 00000116 C=CODE     S=.text    G=(none)   M=Controls ACBP=A9
+ 0001:00000610 00000006 C=CODE     S=.text    G=(none)   M=SyncObjs ACBP=A9
+ 0001:00000618 00000006 C=CODE     S=.text    G=(none)   M=TimeSpan ACBP=A9
+ 0001:00000620 00000006 C=CODE     S=.text    G=(none)   M=Menus    ACBP=A9
+ 0001:00000628 00000006 C=CODE     S=.text    G=(none)   M=UxTheme  ACBP=A9
+ 0001:00000630 00000006 C=CODE     S=.text    G=(none)   M=MultiMon ACBP=A9
+ 0001:00000638 0000014E C=CODE     S=.text    G=(none)   M=Forms    ACBP=A9
+ 0001:00000788 00000006 C=CODE     S=.text    G=(none)   M=HelpIntfs ACBP=A9
+ 0001:00000790 00000016 C=CODE     S=.text    G=(none)   M=Dialogs  ACBP=A9
+ 0001:000007A8 0000002E C=CODE     S=.text    G=(none)   M=ComCtrls ACBP=A9
+ 0001:000007D8 00000006 C=CODE     S=.text    G=(none)   M=GraphUtil ACBP=A9
+ 0001:000007E0 0000000E C=CODE     S=.text    G=(none)   M=ExtCtrls ACBP=A9
+ 0001:000007F0 00000006 C=CODE     S=.text    G=(none)   M=Printers ACBP=A9
+ 0001:000007F8 00000006 C=CODE     S=.text    G=(none)   M=Clipbrd  ACBP=A9
+ 0001:00000800 00000006 C=CODE     S=.text    G=(none)   M=FlatSB   ACBP=A9
+ 0001:00000808 0000000E C=CODE     S=.text    G=(none)   M=DBGrids  ACBP=A9
+ 0001:00000818 0000005E C=CODE     S=.text    G=(none)   M=DB       ACBP=A9
+ 0001:00000878 00000006 C=CODE     S=.text    G=(none)   M=WideStrings ACBP=A9
+ 0001:00000880 00000006 C=CODE     S=.text    G=(none)   M=FMTBcd   ACBP=A9
+ 0001:00000888 00000006 C=CODE     S=.text    G=(none)   M=SqlTimSt ACBP=A9
+ 0001:00000890 00000006 C=CODE     S=.text    G=(none)   M=ComObj   ACBP=A9
+ 0001:00000898 0000000E C=CODE     S=.text    G=(none)   M=DBCtrls  ACBP=A9
+ 0001:000008A8 00000006 C=CODE     S=.text    G=(none)   M=Buttons  ACBP=A9
+ 0001:000008B0 0000001E C=CODE     S=.text    G=(none)   M=Mask     ACBP=A9
+ 0001:000008D0 00000006 C=CODE     S=.text    G=(none)   M=DBPWDlg  ACBP=A9
+ 0001:000008D8 00000006 C=CODE     S=.text    G=(none)   M=DBLogDlg ACBP=A9
+ 0001:000008E0 00000006 C=CODE     S=.text    G=(none)   M=OraCall  ACBP=A9
+ 0001:000008E8 00000006 C=CODE     S=.text    G=(none)   M=MemUtils ACBP=A9
+ 0001:000008F0 00000006 C=CODE     S=.text    G=(none)   M=CLRClasses ACBP=A9
+ 0001:000008F8 00000006 C=CODE     S=.text    G=(none)   M=MTSCall  ACBP=A9
+ 0001:00000900 0000000E C=CODE     S=.text    G=(none)   M=DBAccess ACBP=A9
+ 0001:00000910 00000006 C=CODE     S=.text    G=(none)   M=CRParser ACBP=A9
+ 0001:00000918 00000006 C=CODE     S=.text    G=(none)   M=MemData  ACBP=A9
+ 0001:00000920 00000006 C=CODE     S=.text    G=(none)   M=AnsiStrings ACBP=A9
+ 0001:00000928 00000006 C=CODE     S=.text    G=(none)   M=DASQLMonitor ACBP=A9
+ 0001:00000930 00000006 C=CODE     S=.text    G=(none)   M=CRVioTcp ACBP=A9
+ 0001:00000938 00000006 C=CODE     S=.text    G=(none)   M=DBMonitorClient ACBP=A9
+ 0001:00000940 00000006 C=CODE     S=.text    G=(none)   M=CRXml    ACBP=A9
+ 0001:00000948 00000006 C=CODE     S=.text    G=(none)   M=OraSmart ACBP=A9
+ 0001:00000950 00000006 C=CODE     S=.text    G=(none)   M=OraParser ACBP=A9
+ 0001:00000958 00000006 C=CODE     S=.text    G=(none)   M=OraClasses ACBP=A9
+ 0001:00000960 00000006 C=CODE     S=.text    G=(none)   M=OraObjects ACBP=A9
+ 0001:00000968 00000006 C=CODE     S=.text    G=(none)   M=OraNet   ACBP=A9
+ 0001:00000970 00000006 C=CODE     S=.text    G=(none)   M=OraAlerter ACBP=A9
+ 0001:00000978 0000001E C=CODE     S=.text    G=(none)   M=Ora      ACBP=A9
+ 0001:00000998 00000006 C=CODE     S=.text    G=(none)   M=OraConnectionPool ACBP=A9
+ 0001:000009A0 00000006 C=CODE     S=.text    G=(none)   M=OraSQLMonitor ACBP=A9
+ 0001:000009A8 00000046 C=CODE     S=.text    G=(none)   M=DBTables ACBP=A9
+ 0001:000009F0 00000006 C=CODE     S=.text    G=(none)   M=OleServer ACBP=A9
+ 0001:000009F8 00000026 C=CODE     S=.text    G=(none)   M=OleCtrls ACBP=A9
+ 0001:00000A20 00000006 C=CODE     S=.text    G=(none)   M=AxCtrls  ACBP=A9
+ 0001:00000A28 00000026 C=CODE     S=.text    G=(none)   M=ServerDate ACBP=A9
+ 0001:00000A50 00000016 C=CODE     S=.text    G=(none)   M=QRCtrls  ACBP=A9
+ 0001:00000A68 00000006 C=CODE     S=.text    G=(none)   M=QRExpr   ACBP=A9
+ 0001:00000A70 00000026 C=CODE     S=.text    G=(none)   M=QuickRpt ACBP=A9
+ 0001:00000A98 00000006 C=CODE     S=.text    G=(none)   M=OleCtnrs ACBP=A9
+ 0001:00000AA0 00000006 C=CODE     S=.text    G=(none)   M=QRExtra  ACBP=A9
+ 0001:00000AA8 00000006 C=CODE     S=.text    G=(none)   M=QRPrntr  ACBP=A9
+ 0001:00000AB0 00000006 C=CODE     S=.text    G=(none)   M=QRPDFFilt ACBP=A9
+ 0001:00000AB8 00000006 C=CODE     S=.text    G=(none)   M=pdfconst ACBP=A9
+ 0001:00000AC0 00000006 C=CODE     S=.text    G=(none)   M=QRExport ACBP=A9
+ 0001:00000AC8 00000006 C=CODE     S=.text    G=(none)   M=jpeg     ACBP=A9
+ 0001:00000AD0 00000006 C=CODE     S=.text    G=(none)   M=QRWebFilt ACBP=A9
+ 0001:00000AD8 00000006 C=CODE     S=.text    G=(none)   M=QRPrev   ACBP=A9
+ 0001:00000AE0 00000006 C=CODE     S=.text    G=(none)   M=QRXMLSFilt ACBP=A9
+ 0001:00000AE8 00000006 C=CODE     S=.text    G=(none)   M=QRPrnSu  ACBP=A9
+ 0001:00000AF0 0000002E C=CODE     S=.text    G=(none)   M=Fxn      ACBP=A9
+ 0001:00000B20 00000006 C=CODE     S=.text    G=(none)   M=ADODB    ACBP=A9
+ 0001:00000B28 00000006 C=CODE     S=.text    G=(none)   M=TeCanvas ACBP=A9
+ 0001:00000B30 00000006 C=CODE     S=.text    G=(none)   M=TeeConst ACBP=A9
+ 0001:00000B38 00000006 C=CODE     S=.text    G=(none)   M=TeeHtml  ACBP=A9
+ 0001:00000B40 00000006 C=CODE     S=.text    G=(none)   M=CheckLst ACBP=A9
+ 0001:00000B48 00000006 C=CODE     S=.text    G=(none)   M=Unit_Message ACBP=A9
+ 0001:00000B50 00000EBB C=CODE     S=.text    G=(none)   M=UnitRepNoofTestDone ACBP=A9
+ 0001:00001A0C 00000F47 C=CODE     S=.text    G=(none)   M=UnitNoofTestDone ACBP=A9
+ 0001:00002954 00001123 C=CODE     S=.text    G=(none)   M=UnitRepDeptWiseCollection ACBP=A9
+ 0001:00003A78 00001053 C=CODE     S=.text    G=(none)   M=UnitDeptWiseReport ACBP=A9
+ 0001:00004ACC 0000278F C=CODE     S=.text    G=(none)   M=UnitRepDetailUserWise ACBP=A9
+ 0001:0000725C 000006F3 C=CODE     S=.text    G=(none)   M=UnitRepUserWiseDetail ACBP=A9
+ 0001:00007950 00000006 C=CODE     S=.text    G=(none)   M=qrpBaseCtrls ACBP=A9
+ 0001:00007958 00000006 C=CODE     S=.text    G=(none)   M=qrpexpr  ACBP=A9
+ 0001:00007960 00002017 C=CODE     S=.text    G=(none)   M=UnitRepUserWiseCollection ACBP=A9
+ 0001:00009978 0000239F C=CODE     S=.text    G=(none)   M=UnitUserWiseCollection ACBP=A9
+ 0001:0000BD18 000004B7 C=CODE     S=.text    G=(none)   M=Unit1    ACBP=A9
+ 0001:0000C1D0 00000006 C=CODE     S=.text    G=(none)   M=Barcode  ACBP=A9
+ 0001:0000C1D8 00001DC3 C=CODE     S=.text    G=(none)   M=Unit_QrPatientTestList ACBP=A9
+ 0001:0000DF9C 000029BB C=CODE     S=.text    G=(none)   M=Unit_QrWorkList ACBP=A9
+ 0001:00010958 00003A3F C=CODE     S=.text    G=(none)   M=Unit_Medicare_GovtSvrTaxReport ACBP=A9
+ 0001:00014398 00003387 C=CODE     S=.text    G=(none)   M=Unit_Medicare_GovtSvrTaxReportSummary ACBP=A9
+ 0001:00017720 0000266F C=CODE     S=.text    G=(none)   M=UnitSalesBook ACBP=A9
+ 0001:00019D90 00001C07 C=CODE     S=.text    G=(none)   M=Unit_QrTaxReport ACBP=A9
+ 0001:0001B998 000006EB C=CODE     S=.text    G=(none)   M=Unit_TaxReport ACBP=A9
+ 0001:0001C084 00000A1F C=CODE     S=.text    G=(none)   M=Unit_QrReffWiseRevenueDetail ACBP=A9
+ 0001:0001CAA4 0000074B C=CODE     S=.text    G=(none)   M=Unit_QrReffWiseRevenueSummary ACBP=A9
+ 0001:0001D1F0 00001607 C=CODE     S=.text    G=(none)   M=Unit_ReffWiseRevenue ACBP=A9
+ 0001:0001E7F8 000009DB C=CODE     S=.text    G=(none)   M=Unit_QrCollectionCenterDetail ACBP=A9
+ 0001:0001F1D4 00000723 C=CODE     S=.text    G=(none)   M=Unit_QrCollectionCenterSummary ACBP=A9
+ 0001:0001F8F8 0000170F C=CODE     S=.text    G=(none)   M=Unit_CollectionCenterReport ACBP=A9
+ 0001:00021008 00000973 C=CODE     S=.text    G=(none)   M=Unit_QrSchemeWiseRevenueDetail ACBP=A9
+ 0001:0002197C 0000069F C=CODE     S=.text    G=(none)   M=Unit_QrSchemeWiseRevenueSummary ACBP=A9
+ 0001:0002201C 00001BEF C=CODE     S=.text    G=(none)   M=Unit_SchemeWiseRevenue ACBP=A9
+ 0001:00023C0C 000007FF C=CODE     S=.text    G=(none)   M=Unit_QrSampleWiseRep ACBP=A9
+ 0001:0002440C 0000000E C=CODE     S=.text    G=(none)   M=UnitSendToExcel ACBP=A9
+ 0001:0002441C 00001857 C=CODE     S=.text    G=(none)   M=Unit_SampleWise ACBP=A9
+ 0001:00025C74 00000803 C=CODE     S=.text    G=(none)   M=Unit_Testsetupdetail ACBP=A9
+ 0001:00026478 000015FF C=CODE     S=.text    G=(none)   M=Unit_PatientTestDetail ACBP=A9
+ 0001:00027A78 000013F3 C=CODE     S=.text    G=(none)   M=Unit_QrPatientFindingDetail ACBP=A9
+ 0001:00028E6C 00000B7B C=CODE     S=.text    G=(none)   M=Unit_AllPatientTest ACBP=A9
+ 0001:000299E8 00000A5B C=CODE     S=.text    G=(none)   M=Qr_WorkList ACBP=A9
+ 0001:0002A444 000021A7 C=CODE     S=.text    G=(none)   M=Unit_WorkList ACBP=A9
+ 0001:0002C5EC 00000897 C=CODE     S=.text    G=(none)   M=Unit_QrDoctorwiseCaseDetail ACBP=A9
+ 0001:0002CE84 00000663 C=CODE     S=.text    G=(none)   M=Unit_QRDoctorWisePatientSummary ACBP=A9
+ 0001:0002D4E8 000013FF C=CODE     S=.text    G=(none)   M=Unit_Doctorwisepatientcase ACBP=A9
+ 0001:0002E8E8 000014B3 C=CODE     S=.text    G=(none)   M=Unit_ReportTree ACBP=A9
+ 0001:0002FD9C 00000C4B C=CODE     S=.text    G=(none)   M=.Reports ACBP=A9
+ 0002:00000000 00000006 C=ICODE    S=.itext   G=(none)   M=System   ACBP=A9
+ 0002:00000008 00000006 C=ICODE    S=.itext   G=(none)   M=ActnList ACBP=A9
+ 0002:00000010 0000000E C=ICODE    S=.itext   G=(none)   M=Classes  ACBP=A9
+ 0002:00000020 00000016 C=ICODE    S=.itext   G=(none)   M=Windows  ACBP=A9
+ 0002:00000038 00000006 C=ICODE    S=.itext   G=(none)   M=TypInfo  ACBP=A9
+ 0002:00000040 0000001E C=ICODE    S=.itext   G=(none)   M=SysUtils ACBP=A9
+ 0002:00000060 00000006 C=ICODE    S=.itext   G=(none)   M=Variants ACBP=A9
+ 0002:00000068 00000006 C=ICODE    S=.itext   G=(none)   M=VarUtils ACBP=A9
+ 0002:00000070 00000006 C=ICODE    S=.itext   G=(none)   M=Graphics ACBP=A9
+ 0002:00000078 00000006 C=ICODE    S=.itext   G=(none)   M=Registry ACBP=A9
+ 0002:00000080 00000006 C=ICODE    S=.itext   G=(none)   M=IniFiles ACBP=A9
+ 0002:00000088 0000000E C=ICODE    S=.itext   G=(none)   M=IOUtils  ACBP=A9
+ 0002:00000098 00000006 C=ICODE    S=.itext   G=(none)   M=Themes   ACBP=A9
+ 0002:000000A0 00000006 C=ICODE    S=.itext   G=(none)   M=Controls ACBP=A9
+ 0002:000000A8 00000006 C=ICODE    S=.itext   G=(none)   M=SyncObjs ACBP=A9
+ 0002:000000B0 00000006 C=ICODE    S=.itext   G=(none)   M=TimeSpan ACBP=A9
+ 0002:000000B8 00000006 C=ICODE    S=.itext   G=(none)   M=Menus    ACBP=A9
+ 0002:000000C0 00000006 C=ICODE    S=.itext   G=(none)   M=UxTheme  ACBP=A9
+ 0002:000000C8 00000006 C=ICODE    S=.itext   G=(none)   M=MultiMon ACBP=A9
+ 0002:000000D0 00000006 C=ICODE    S=.itext   G=(none)   M=Forms    ACBP=A9
+ 0002:000000D8 00000006 C=ICODE    S=.itext   G=(none)   M=HelpIntfs ACBP=A9
+ 0002:000000E0 00000006 C=ICODE    S=.itext   G=(none)   M=Dialogs  ACBP=A9
+ 0002:000000E8 00000006 C=ICODE    S=.itext   G=(none)   M=ComCtrls ACBP=A9
+ 0002:000000F0 00000006 C=ICODE    S=.itext   G=(none)   M=GraphUtil ACBP=A9
+ 0002:000000F8 00000006 C=ICODE    S=.itext   G=(none)   M=ExtCtrls ACBP=A9
+ 0002:00000100 00000006 C=ICODE    S=.itext   G=(none)   M=Printers ACBP=A9
+ 0002:00000108 00000006 C=ICODE    S=.itext   G=(none)   M=Clipbrd  ACBP=A9
+ 0002:00000110 00000006 C=ICODE    S=.itext   G=(none)   M=FlatSB   ACBP=A9
+ 0002:00000118 00000006 C=ICODE    S=.itext   G=(none)   M=DB       ACBP=A9
+ 0002:00000120 00000006 C=ICODE    S=.itext   G=(none)   M=WideStrings ACBP=A9
+ 0002:00000128 00000006 C=ICODE    S=.itext   G=(none)   M=FMTBcd   ACBP=A9
+ 0002:00000130 00000006 C=ICODE    S=.itext   G=(none)   M=SqlTimSt ACBP=A9
+ 0002:00000138 00000006 C=ICODE    S=.itext   G=(none)   M=ComObj   ACBP=A9
+ 0002:00000140 00000006 C=ICODE    S=.itext   G=(none)   M=DBCtrls  ACBP=A9
+ 0002:00000148 00000006 C=ICODE    S=.itext   G=(none)   M=Buttons  ACBP=A9
+ 0002:00000150 00000006 C=ICODE    S=.itext   G=(none)   M=DBPWDlg  ACBP=A9
+ 0002:00000158 00000006 C=ICODE    S=.itext   G=(none)   M=DBLogDlg ACBP=A9
+ 0002:00000160 00000006 C=ICODE    S=.itext   G=(none)   M=OraCall  ACBP=A9
+ 0002:00000168 00000006 C=ICODE    S=.itext   G=(none)   M=MemUtils ACBP=A9
+ 0002:00000170 00000006 C=ICODE    S=.itext   G=(none)   M=CLRClasses ACBP=A9
+ 0002:00000178 00000006 C=ICODE    S=.itext   G=(none)   M=MTSCall  ACBP=A9
+ 0002:00000180 00000006 C=ICODE    S=.itext   G=(none)   M=DBAccess ACBP=A9
+ 0002:00000188 00000006 C=ICODE    S=.itext   G=(none)   M=CRParser ACBP=A9
+ 0002:00000190 00000006 C=ICODE    S=.itext   G=(none)   M=MemData  ACBP=A9
+ 0002:00000198 00000006 C=ICODE    S=.itext   G=(none)   M=AnsiStrings ACBP=A9
+ 0002:000001A0 00000006 C=ICODE    S=.itext   G=(none)   M=DASQLMonitor ACBP=A9
+ 0002:000001A8 00000006 C=ICODE    S=.itext   G=(none)   M=CRVioTcp ACBP=A9
+ 0002:000001B0 00000006 C=ICODE    S=.itext   G=(none)   M=DBMonitorClient ACBP=A9
+ 0002:000001B8 00000006 C=ICODE    S=.itext   G=(none)   M=CRXml    ACBP=A9
+ 0002:000001C0 00000006 C=ICODE    S=.itext   G=(none)   M=OraSmart ACBP=A9
+ 0002:000001C8 00000006 C=ICODE    S=.itext   G=(none)   M=OraParser ACBP=A9
+ 0002:000001D0 00000006 C=ICODE    S=.itext   G=(none)   M=OraClasses ACBP=A9
+ 0002:000001D8 00000006 C=ICODE    S=.itext   G=(none)   M=OraObjects ACBP=A9
+ 0002:000001E0 00000006 C=ICODE    S=.itext   G=(none)   M=OraNet   ACBP=A9
+ 0002:000001E8 00000006 C=ICODE    S=.itext   G=(none)   M=OraAlerter ACBP=A9
+ 0002:000001F0 00000006 C=ICODE    S=.itext   G=(none)   M=Ora      ACBP=A9
+ 0002:000001F8 00000006 C=ICODE    S=.itext   G=(none)   M=OraConnectionPool ACBP=A9
+ 0002:00000200 00000006 C=ICODE    S=.itext   G=(none)   M=OraSQLMonitor ACBP=A9
+ 0002:00000208 00000006 C=ICODE    S=.itext   G=(none)   M=DBTables ACBP=A9
+ 0002:00000210 00000006 C=ICODE    S=.itext   G=(none)   M=OleServer ACBP=A9
+ 0002:00000218 00000006 C=ICODE    S=.itext   G=(none)   M=OleCtrls ACBP=A9
+ 0002:00000220 00000006 C=ICODE    S=.itext   G=(none)   M=AxCtrls  ACBP=A9
+ 0002:00000228 00000006 C=ICODE    S=.itext   G=(none)   M=ServerDate ACBP=A9
+ 0002:00000230 00000006 C=ICODE    S=.itext   G=(none)   M=QRCtrls  ACBP=A9
+ 0002:00000238 00000006 C=ICODE    S=.itext   G=(none)   M=QRExpr   ACBP=A9
+ 0002:00000240 00000006 C=ICODE    S=.itext   G=(none)   M=QuickRpt ACBP=A9
+ 0002:00000248 00000006 C=ICODE    S=.itext   G=(none)   M=OleCtnrs ACBP=A9
+ 0002:00000250 00000006 C=ICODE    S=.itext   G=(none)   M=QRExtra  ACBP=A9
+ 0002:00000258 00000006 C=ICODE    S=.itext   G=(none)   M=QRPrntr  ACBP=A9
+ 0002:00000260 00000006 C=ICODE    S=.itext   G=(none)   M=QRPDFFilt ACBP=A9
+ 0002:00000268 00000006 C=ICODE    S=.itext   G=(none)   M=pdfconst ACBP=A9
+ 0002:00000270 00000006 C=ICODE    S=.itext   G=(none)   M=QRExport ACBP=A9
+ 0002:00000278 00000006 C=ICODE    S=.itext   G=(none)   M=jpeg     ACBP=A9
+ 0002:00000280 00000006 C=ICODE    S=.itext   G=(none)   M=QRWebFilt ACBP=A9
+ 0002:00000288 00000006 C=ICODE    S=.itext   G=(none)   M=QRPrev   ACBP=A9
+ 0002:00000290 00000006 C=ICODE    S=.itext   G=(none)   M=QRXMLSFilt ACBP=A9
+ 0002:00000298 00000006 C=ICODE    S=.itext   G=(none)   M=QRPrnSu  ACBP=A9
+ 0002:000002A0 00000006 C=ICODE    S=.itext   G=(none)   M=Fxn      ACBP=A9
+ 0002:000002A8 00000006 C=ICODE    S=.itext   G=(none)   M=ADODB    ACBP=A9
+ 0002:000002B0 00000006 C=ICODE    S=.itext   G=(none)   M=TeCanvas ACBP=A9
+ 0002:000002B8 00000006 C=ICODE    S=.itext   G=(none)   M=TeeConst ACBP=A9
+ 0002:000002C0 00000006 C=ICODE    S=.itext   G=(none)   M=TeeHtml  ACBP=A9
+ 0002:000002C8 00000006 C=ICODE    S=.itext   G=(none)   M=CheckLst ACBP=A9
+ 0002:000002D0 00000006 C=ICODE    S=.itext   G=(none)   M=Unit_Message ACBP=A9
+ 0002:000002D8 00000014 C=ICODE    S=.itext   G=(none)   M=UnitRepNoofTestDone ACBP=A9
+ 0002:000002EC 00000014 C=ICODE    S=.itext   G=(none)   M=UnitNoofTestDone ACBP=A9
+ 0002:00000300 00000014 C=ICODE    S=.itext   G=(none)   M=UnitRepDeptWiseCollection ACBP=A9
+ 0002:00000314 00000014 C=ICODE    S=.itext   G=(none)   M=UnitDeptWiseReport ACBP=A9
+ 0002:00000328 00000008 C=ICODE    S=.itext   G=(none)   M=UnitRepDetailUserWise ACBP=A9
+ 0002:00000330 00000008 C=ICODE    S=.itext   G=(none)   M=UnitRepUserWiseDetail ACBP=A9
+ 0002:00000338 00000006 C=ICODE    S=.itext   G=(none)   M=qrpexpr  ACBP=A9
+ 0002:00000340 00000008 C=ICODE    S=.itext   G=(none)   M=UnitRepUserWiseCollection ACBP=A9
+ 0002:00000348 00000008 C=ICODE    S=.itext   G=(none)   M=UnitUserWiseCollection ACBP=A9
+ 0002:00000350 00000008 C=ICODE    S=.itext   G=(none)   M=Unit1    ACBP=A9
+ 0002:00000358 00000006 C=ICODE    S=.itext   G=(none)   M=Barcode  ACBP=A9
+ 0002:00000360 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrPatientTestList ACBP=A9
+ 0002:00000368 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrWorkList ACBP=A9
+ 0002:00000370 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_Medicare_GovtSvrTaxReport ACBP=A9
+ 0002:00000378 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_Medicare_GovtSvrTaxReportSummary ACBP=A9
+ 0002:00000380 00000008 C=ICODE    S=.itext   G=(none)   M=UnitSalesBook ACBP=A9
+ 0002:00000388 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrTaxReport ACBP=A9
+ 0002:00000390 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_TaxReport ACBP=A9
+ 0002:00000398 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrReffWiseRevenueDetail ACBP=A9
+ 0002:000003A0 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrReffWiseRevenueSummary ACBP=A9
+ 0002:000003A8 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_ReffWiseRevenue ACBP=A9
+ 0002:000003B0 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrCollectionCenterDetail ACBP=A9
+ 0002:000003B8 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrCollectionCenterSummary ACBP=A9
+ 0002:000003C0 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_CollectionCenterReport ACBP=A9
+ 0002:000003C8 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrSchemeWiseRevenueDetail ACBP=A9
+ 0002:000003D0 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrSchemeWiseRevenueSummary ACBP=A9
+ 0002:000003D8 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_SchemeWiseRevenue ACBP=A9
+ 0002:000003E0 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrSampleWiseRep ACBP=A9
+ 0002:000003E8 00000006 C=ICODE    S=.itext   G=(none)   M=UnitSendToExcel ACBP=A9
+ 0002:000003F0 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_SampleWise ACBP=A9
+ 0002:000003F8 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_Testsetupdetail ACBP=A9
+ 0002:00000400 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_PatientTestDetail ACBP=A9
+ 0002:00000408 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrPatientFindingDetail ACBP=A9
+ 0002:00000410 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_AllPatientTest ACBP=A9
+ 0002:00000418 00000008 C=ICODE    S=.itext   G=(none)   M=Qr_WorkList ACBP=A9
+ 0002:00000420 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_WorkList ACBP=A9
+ 0002:00000428 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QrDoctorwiseCaseDetail ACBP=A9
+ 0002:00000430 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_QRDoctorWisePatientSummary ACBP=A9
+ 0002:00000438 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_Doctorwisepatientcase ACBP=A9
+ 0002:00000440 00000008 C=ICODE    S=.itext   G=(none)   M=Unit_ReportTree ACBP=A9
+ 0002:00000448 00000005 C=ICODE    S=.itext   G=(none)   M=.Reports ACBP=A9
+ 0003:00000000 00000030 C=DATA     S=.data    G=DGROUP   M=SysInit  ACBP=A9
+ 0003:00000030 0000000C C=DATA     S=.data    G=DGROUP   M=Windows  ACBP=A9
+ 0003:0000003C 00000043 C=DATA     S=.data    G=DGROUP   M=Unit_WorkList ACBP=A9
+ 0004:00000000 0000000C C=BSS      S=.bss     G=DGROUP   M=SysInit  ACBP=A9
+ 0004:0000000C 00000008 C=BSS      S=.bss     G=DGROUP   M=Windows  ACBP=A9
+ 0004:00000014 00000008 C=BSS      S=.bss     G=DGROUP   M=UnitRepNoofTestDone ACBP=A9
+ 0004:0000001C 00000008 C=BSS      S=.bss     G=DGROUP   M=UnitNoofTestDone ACBP=A9
+ 0004:00000024 00000008 C=BSS      S=.bss     G=DGROUP   M=UnitRepDeptWiseCollection ACBP=A9
+ 0004:0000002C 00000008 C=BSS      S=.bss     G=DGROUP   M=UnitDeptWiseReport ACBP=A9
+ 0004:00000034 00000008 C=BSS      S=.bss     G=DGROUP   M=UnitRepDetailUserWise ACBP=A9
+ 0004:0000003C 00000008 C=BSS      S=.bss     G=DGROUP   M=UnitRepUserWiseDetail ACBP=A9
+ 0004:00000044 00000008 C=BSS      S=.bss     G=DGROUP   M=UnitRepUserWiseCollection ACBP=A9
+ 0004:0000004C 00000008 C=BSS      S=.bss     G=DGROUP   M=UnitUserWiseCollection ACBP=A9
+ 0004:00000054 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit1    ACBP=A9
+ 0004:0000005C 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrPatientTestList ACBP=A9
+ 0004:00000064 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrWorkList ACBP=A9
+ 0004:0000006C 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_Medicare_GovtSvrTaxReport ACBP=A9
+ 0004:00000074 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_Medicare_GovtSvrTaxReportSummary ACBP=A9
+ 0004:0000007C 00000008 C=BSS      S=.bss     G=DGROUP   M=UnitSalesBook ACBP=A9
+ 0004:00000084 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrTaxReport ACBP=A9
+ 0004:0000008C 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_TaxReport ACBP=A9
+ 0004:00000094 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrReffWiseRevenueDetail ACBP=A9
+ 0004:0000009C 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrReffWiseRevenueSummary ACBP=A9
+ 0004:000000A4 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_ReffWiseRevenue ACBP=A9
+ 0004:000000AC 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrCollectionCenterDetail ACBP=A9
+ 0004:000000B4 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrCollectionCenterSummary ACBP=A9
+ 0004:000000BC 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_CollectionCenterReport ACBP=A9
+ 0004:000000C4 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrSchemeWiseRevenueDetail ACBP=A9
+ 0004:000000CC 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrSchemeWiseRevenueSummary ACBP=A9
+ 0004:000000D4 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_SchemeWiseRevenue ACBP=A9
+ 0004:000000DC 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrSampleWiseRep ACBP=A9
+ 0004:000000E4 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_SampleWise ACBP=A9
+ 0004:000000EC 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_Testsetupdetail ACBP=A9
+ 0004:000000F4 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_PatientTestDetail ACBP=A9
+ 0004:000000FC 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrPatientFindingDetail ACBP=A9
+ 0004:00000104 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_AllPatientTest ACBP=A9
+ 0004:0000010C 00000008 C=BSS      S=.bss     G=DGROUP   M=Qr_WorkList ACBP=A9
+ 0004:00000114 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_WorkList ACBP=A9
+ 0004:0000011C 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QrDoctorwiseCaseDetail ACBP=A9
+ 0004:00000124 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_QRDoctorWisePatientSummary ACBP=A9
+ 0004:0000012C 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_Doctorwisepatientcase ACBP=A9
+ 0004:00000134 00000008 C=BSS      S=.bss     G=DGROUP   M=Unit_ReportTree ACBP=A9
+
+
+  Address             Publics by Name
+
+ 0002:00000448       .Reports..Reports
+ 0001:000309C8       .Reports.@GetPackageInfoTable
+ 0001:000309D0       .Reports.@PackageLoad
+ 0001:000309DC       .Reports.@PackageUnload
+ 0002:00000008       ActnList.ActnList
+ 0001:00000304       ActnList.Finalization
+ 0002:000002A8       ADODB.ADODB
+ 0001:00000B20       ADODB.Finalization
+ 0002:00000198       AnsiStrings.AnsiStrings
+ 0001:00000920       AnsiStrings.Finalization
+ 0002:00000220       AxCtrls.AxCtrls
+ 0001:00000A20       AxCtrls.Finalization
+ 0002:00000358       Barcode.Barcode
+ 0001:0000C1D0       Barcode.Finalization
+ 0002:00000148       Buttons.Buttons
+ 0001:000008A8       Buttons.Finalization
+ 0002:000002C8       CheckLst.CheckLst
+ 0001:00000B40       CheckLst.Finalization
+ 0002:00000018       Classes.Classes
+ 0001:00000354       Classes.Finalization
+ 0001:0000030C       Classes.RegisterClass
+ 0001:00000324       Classes.TCollection.Clear
+ 0001:00000344       Classes.TComponent.SafeCallException
+ 0001:0000033C       Classes.TComponent.UpdateAction
+ 0001:0000034C       Classes.TComponent.UpdateRegistry
+ 0001:00000334       Classes.TComponent.WriteState
+ 0001:0000031C       Classes.TPersistent.Assign
+ 0002:00000010       Classes.TThread.Create@
+ 0001:0000032C       Classes.TThread.Destroy@
+ 0001:00000314       Classes.UnRegisterClass
+ 0002:00000108       Clipbrd.Clipbrd
+ 0001:000007F8       Clipbrd.Finalization
+ 0002:00000170       CLRClasses.CLRClasses
+ 0001:000008F0       CLRClasses.Finalization
+ 0002:000000E8       ComCtrls.ComCtrls
+ 0001:000007D0       ComCtrls.Finalization
+ 0001:000007C8       ComCtrls.TCustomTreeView.GetSelected
+ 0001:000007A8       ComCtrls.TTreeNode.GetChildren
+ 0001:000007C0       ComCtrls.TTreeNodes.Add
+ 0001:000007B8       ComCtrls.TTreeNodes.AddChild
+ 0001:000007B0       ComCtrls.TTreeNodes.GetCount
+ 0002:00000138       ComObj.ComObj
+ 0001:00000890       ComObj.Finalization
+ 0002:000000A0       Controls.Controls
+ 0001:00000608       Controls.Finalization
+ 0001:00000550       Controls.TControl.CreateTouchManager
+ 0001:00000508       Controls.TControl.GetAction
+ 0001:000004F8       Controls.TControl.GetDragImages
+ 0001:00000500       Controls.TControl.GetEnabled
+ 0001:00000558       Controls.TControl.GetFloatingDockSiteClass
+ 0001:00000560       Controls.TControl.InitiateAction
+ 0001:00000520       Controls.TControl.SetAutoSize
+ 0001:00000548       Controls.TControl.SetBiDiMode
+ 0001:00000510       Controls.TControl.SetDragMode
+ 0001:00000538       Controls.TControl.SetEnabled
+ 0001:00000518       Controls.TControl.SetLeft
+ 0001:00000528       Controls.TControl.SetName
+ 0001:00000540       Controls.TControl.SetText
+ 0001:00000530       Controls.TControl.SetVisible
+ 0001:000005E0       Controls.TWinControl.AssignTo
+ 0001:000005E8       Controls.TWinControl.CanAutoSize
+ 0001:000005D0       Controls.TWinControl.CanResize
+ 0001:000005D8       Controls.TWinControl.ConstrainedResize
+ 0001:00000570       Controls.TWinControl.CreateHandle
+ 0001:00000578       Controls.TWinControl.CustomAlignInsertBefore
+ 0001:00000580       Controls.TWinControl.CustomAlignPosition
+ 0001:00000568       Controls.TWinControl.DestroyWnd
+ 0001:000005F8       Controls.TWinControl.DockReplaceDockClient
+ 0001:000005C8       Controls.TWinControl.GetClientOrigin
+ 0001:000005C0       Controls.TWinControl.GetControlExtents
+ 0001:000005A0       Controls.TWinControl.GetDeviceContext
+ 0001:000005A8       Controls.TWinControl.Invalidate
+ 0001:000005B8       Controls.TWinControl.Repaint
+ 0001:00000590       Controls.TWinControl.SetBounds
+ 0001:000005F0       Controls.TWinControl.SetParentBackground
+ 0001:00000588       Controls.TWinControl.SetParentDoubleBuffered
+ 0001:00000598       Controls.TWinControl.ShowControl
+ 0001:000005B0       Controls.TWinControl.Update
+ 0001:00000600       Controls.TWinControl.UpdateControlOriginalParentSize
+ 0002:00000188       CRParser.CRParser
+ 0001:00000910       CRParser.Finalization
+ 0002:000001A8       CRVioTcp.CRVioTcp
+ 0001:00000930       CRVioTcp.Finalization
+ 0002:000001B8       CRXml.CRXml
+ 0001:00000940       CRXml.Finalization
+ 0002:000001A0       DASQLMonitor.DASQLMonitor
+ 0001:00000928       DASQLMonitor.Finalization
+ 0002:00000118       DB.DB
+ 0001:00000870       DB.Finalization
+ 0001:00000868       DB.TDataSet.Append
+ 0001:00000838       DB.TDataSet.Close
+ 0001:00000860       DB.TDataSet.Edit
+ 0001:00000848       DB.TDataSet.FieldByName
+ 0001:00000850       DB.TDataSet.First
+ 0001:00000840       DB.TDataSet.GetActive
+ 0001:00000858       DB.TDataSet.Next
+ 0001:00000830       DB.TDataSet.Open
+ 0001:00000820       DB.TDataSource.Create
+ 0001:00000828       DB.TDataSource.SetDataSet
+ 0001:00000818       DB.TFieldDefs.Add
+ 0002:00000180       DBAccess.DBAccess
+ 0001:00000908       DBAccess.Finalization
+ 0001:00000900       DBAccess.TCustomDADataSet.GetSQL
+ 0002:00000140       DBCtrls.DBCtrls
+ 0001:000008A0       DBCtrls.Finalization
+ 0001:00000898       DBCtrls.TDBLookupControl.SetKeyValue
+ 0001:00000808       DBGrids.TCustomDBGrid.Create
+ 0001:00000810       DBGrids.TCustomDBGrid.SetDataSource
+ 0002:00000158       DBLogDlg.DBLogDlg
+ 0001:000008D8       DBLogDlg.Finalization
+ 0002:000001B0       DBMonitorClient.DBMonitorClient
+ 0001:00000938       DBMonitorClient.Finalization
+ 0002:00000150       DBPWDlg.DBPWDlg
+ 0001:000008D0       DBPWDlg.Finalization
+ 0002:00000208       DBTables.DBTables
+ 0001:000009E8       DBTables.Finalization
+ 0001:000009A8       DBTables.TDBDataSet.SetDatabaseName
+ 0001:000009E0       DBTables.TQuery.Create
+ 0001:000009B0       DBTables.TTable.CreateTable
+ 0001:000009B8       DBTables.TTable.DeleteTable
+ 0001:000009C0       DBTables.TTable.EmptyTable
+ 0001:000009C8       DBTables.TTable.SetExclusive
+ 0001:000009D0       DBTables.TTable.SetTableName
+ 0001:000009D8       DBTables.TTable.SetTableType
+ 0002:000000E0       Dialogs.Dialogs
+ 0001:000007A0       Dialogs.Finalization
+ 0001:00000790       Dialogs.MessageDlg
+ 0001:00000798       Dialogs.ShowMessage
+ 0002:000000F8       ExtCtrls.ExtCtrls
+ 0001:000007E8       ExtCtrls.Finalization
+ 0001:000007E0       ExtCtrls.TCustomRadioGroup.SetItemIndex
+ 0001:00000800       FlatSB.Finalization
+ 0002:00000110       FlatSB.FlatSB
+ 0001:00000880       FMTBcd.Finalization
+ 0002:00000128       FMTBcd.FMTBcd
+ 0001:00000780       Forms.Finalization
+ 0002:000000D0       Forms.Forms
+ 0001:00000778       Forms.TApplication.CreateForm
+ 0001:00000668       Forms.TCustomForm.AfterConstruction
+ 0001:000006F0       Forms.TCustomForm.AlignControls
+ 0001:00000678       Forms.TCustomForm.BeforeDestruction
+ 0001:00000740       Forms.TCustomForm.Close
+ 0001:00000748       Forms.TCustomForm.CloseQuery
+ 0001:00000660       Forms.TCustomForm.Create
+ 0001:00000670       Forms.TCustomForm.CreateNew
+ 0001:000006F8       Forms.TCustomForm.CreateParams
+ 0001:00000708       Forms.TCustomForm.CreateWindowHandle
+ 0001:00000700       Forms.TCustomForm.CreateWnd
+ 0001:00000720       Forms.TCustomForm.DefaultHandler
+ 0001:000006B0       Forms.TCustomForm.DefineProperties
+ 0001:00000680       Forms.TCustomForm.Destroy
+ 0001:00000710       Forms.TCustomForm.DestroyHandle
+ 0001:00000718       Forms.TCustomForm.DestroyWindowHandle
+ 0001:00000688       Forms.TCustomForm.DoCreate
+ 0001:00000690       Forms.TCustomForm.DoDestroy
+ 0001:000006B8       Forms.TCustomForm.GetClientRect
+ 0001:000006C0       Forms.TCustomForm.GetFloating
+ 0001:00000698       Forms.TCustomForm.Loaded
+ 0001:000006A0       Forms.TCustomForm.Notification
+ 0001:00000730       Forms.TCustomForm.PaintWindow
+ 0001:00000770       Forms.TCustomForm.QueryInterface
+ 0001:000006A8       Forms.TCustomForm.ReadState
+ 0001:00000768       Forms.TCustomForm.RequestAlign
+ 0001:00000738       Forms.TCustomForm.Resizing
+ 0001:00000750       Forms.TCustomForm.SetFocus
+ 0001:00000728       Forms.TCustomForm.SetFocusedControl
+ 0001:000006D8       Forms.TCustomForm.SetParent
+ 0001:000006C8       Forms.TCustomForm.SetParentBiDiMode
+ 0001:00000758       Forms.TCustomForm.ShowModal
+ 0001:00000760       Forms.TCustomForm.UpdateActions
+ 0001:000006E0       Forms.TCustomForm.ValidateRename
+ 0001:000006D0       Forms.TCustomForm.WantChildKey
+ 0001:000006E8       Forms.TCustomForm.WndProc
+ 0001:00000658       Forms.TScrollingWinControl.AdjustClientRect
+ 0001:00000638       Forms.TScrollingWinControl.AutoScrollEnabled
+ 0001:00000650       Forms.TScrollingWinControl.AutoScrollInView
+ 0001:00000640       Forms.TScrollingWinControl.DoGesture
+ 0001:00000648       Forms.TScrollingWinControl.DoGetGestureOptions
+ 0001:00000AF0       Fxn.ChangeDateSystem
+ 0001:00000B18       Fxn.Finalization
+ 0002:000002A0       Fxn.Fxn
+ 0001:00000AF8       Fxn.IsStrANumber
+ 0001:00000B08       Fxn.IsStrANumberExtended
+ 0001:00000B00       Fxn.LoadPatientData
+ 0001:00000B10       Fxn.RefreshQuery
+ 0001:000004C8       Graphics.Finalization
+ 0002:00000070       Graphics.Graphics
+ 0001:000004B8       Graphics.TFont.SetColor
+ 0001:000004C0       Graphics.TFont.SetStyle
+ 0001:000007D8       GraphUtil.Finalization
+ 0002:000000F0       GraphUtil.GraphUtil
+ 0001:00000788       HelpIntfs.Finalization
+ 0002:000000D8       HelpIntfs.HelpIntfs
+ 0001:000004D8       IniFiles.Finalization
+ 0002:00000080       IniFiles.IniFiles
+ 0001:000004E8       IOUtils.Finalization
+ 0002:00000090       IOUtils.IOUtils
+ 0002:00000088       IOUtils.TPath.Create@
+ 0001:000004E0       IOUtils.TPath.Destroy@
+ 0001:00000AC8       jpeg.Finalization
+ 0002:00000278       jpeg.jpeg
+ 0001:000008B8       Mask.TCustomMaskEdit.GetEditText
+ 0001:000008C0       Mask.TCustomMaskEdit.GetText
+ 0001:000008B0       Mask.TCustomMaskEdit.SetEditText
+ 0001:000008C8       Mask.TCustomMaskEdit.SetText
+ 0001:00000918       MemData.Finalization
+ 0002:00000190       MemData.MemData
+ 0001:000008E8       MemUtils.Finalization
+ 0002:00000168       MemUtils.MemUtils
+ 0001:00000620       Menus.Finalization
+ 0002:000000B8       Menus.Menus
+ 0001:000008F8       MTSCall.Finalization
+ 0002:00000178       MTSCall.MTSCall
+ 0001:00000630       MultiMon.Finalization
+ 0002:000000C8       MultiMon.MultiMon
+ 0001:00000A98       OleCtnrs.Finalization
+ 0002:00000248       OleCtnrs.OleCtnrs
+ 0001:00000A18       OleCtrls.Finalization
+ 0002:00000218       OleCtrls.OleCtrls
+ 0001:000009F8       OleCtrls.TOleControl.GetTOleEnumProp
+ 0001:00000A00       OleCtrls.TOleControl.GetWideStringProp
+ 0001:00000A08       OleCtrls.TOleControl.SetTOleEnumProp
+ 0001:00000A10       OleCtrls.TOleControl.SetWideStringProp
+ 0001:000009F0       OleServer.Finalization
+ 0002:00000210       OleServer.OleServer
+ 0001:00000990       Ora.Finalization
+ 0002:000001F0       Ora.Ora
+ 0001:00000978       Ora.TOraDataSet.Create
+ 0001:00000980       Ora.TOraDataSet.ParamByName
+ 0001:00000988       Ora.TOraDataSet.SetSession
+ 0001:00000970       OraAlerter.Finalization
+ 0002:000001E8       OraAlerter.OraAlerter
+ 0001:000008E0       OraCall.Finalization
+ 0002:00000160       OraCall.OraCall
+ 0001:00000958       OraClasses.Finalization
+ 0002:000001D0       OraClasses.OraClasses
+ 0001:00000998       OraConnectionPool.Finalization
+ 0002:000001F8       OraConnectionPool.OraConnectionPool
+ 0001:00000968       OraNet.Finalization
+ 0002:000001E0       OraNet.OraNet
+ 0001:00000960       OraObjects.Finalization
+ 0002:000001D8       OraObjects.OraObjects
+ 0001:00000950       OraParser.Finalization
+ 0002:000001C8       OraParser.OraParser
+ 0001:00000948       OraSmart.Finalization
+ 0002:000001C0       OraSmart.OraSmart
+ 0001:000009A0       OraSQLMonitor.Finalization
+ 0002:00000200       OraSQLMonitor.OraSQLMonitor
+ 0001:00000AB8       pdfconst.Finalization
+ 0002:00000268       pdfconst.pdfconst
+ 0001:000007F0       Printers.Finalization
+ 0002:00000100       Printers.Printers
+ 0001:00000A60       QRCtrls.Finalization
+ 0002:00000230       QRCtrls.QRCtrls
+ 0001:00000A50       QRCtrls.TQRCustomLabel.SetCaption
+ 0001:00000A58       QRCtrls.TQRExpr.SetMask
+ 0001:00000AC0       QRExport.Finalization
+ 0002:00000270       QRExport.QRExport
+ 0001:00000A68       QRExpr.Finalization
+ 0002:00000238       QRExpr.QRExpr
+ 0001:00000AA0       QRExtra.Finalization
+ 0002:00000250       QRExtra.QRExtra
+ 0001:00007950       qrpBaseCtrls.TQRPQuickrep.Preview
+ 0001:00000AB0       QRPDFFilt.Finalization
+ 0002:00000260       QRPDFFilt.QRPDFFilt
+ 0001:00007958       qrpexpr.Finalization
+ 0002:00000338       qrpexpr.qrpexpr
+ 0001:00000AD8       QRPrev.Finalization
+ 0002:00000288       QRPrev.QRPrev
+ 0001:00000AE8       QRPrnSu.Finalization
+ 0002:00000298       QRPrnSu.QRPrnSu
+ 0001:00000AA8       QRPrntr.Finalization
+ 0002:00000258       QRPrntr.QRPrntr
+ 0001:00000AD0       QRWebFilt.Finalization
+ 0002:00000280       QRWebFilt.QRWebFilt
+ 0001:00000AE0       QRXMLSFilt.Finalization
+ 0002:00000290       QRXMLSFilt.QRXMLSFilt
+ 0004:00000110       Qr_WorkList..2
+ 0001:000299E8       Qr_WorkList..TForm_QrreportWorkList
+ 0001:0002A43C       Qr_WorkList.Finalization
+ 0004:0000010C       Qr_WorkList.Form_QrreportWorkList
+ 0002:00000418       Qr_WorkList.Qr_WorkList
+ 0001:0002A258       Qr_WorkList.TForm_QrreportWorkList.QRLabel10Print
+ 0001:0002A26C       Qr_WorkList.TForm_QrreportWorkList.QRLabel21Print
+ 0001:0002A280       Qr_WorkList.TForm_QrreportWorkList.Tableworklistcreate
+ 0001:00000A90       QuickRpt.Finalization
+ 0002:00000240       QuickRpt.QuickRpt
+ 0001:00000A80       QuickRpt.TCustomQuickRep.Preview
+ 0001:00000A78       QuickRpt.TQRBasePanel.GetFrame
+ 0001:00000A70       QuickRpt.TQRFrame.SetValue
+ 0001:00000A88       QuickRpt.TQuickRep.SetDataSet
+ 0001:000004D0       Registry.Finalization
+ 0002:00000078       Registry.Registry
+ 0001:00000A28       ServerDate.CreateQuery
+ 0001:00000A48       ServerDate.Finalization
+ 0002:00000228       ServerDate.ServerDate
+ 0001:00000A38       ServerDate.TodaysDate
+ 0001:00000A40       ServerDate.TodaysDateVS
+ 0001:00000A30       ServerDate.TodaysTime
+ 0001:00000888       SqlTimSt.Finalization
+ 0002:00000130       SqlTimSt.SqlTimSt
+ 0001:00000610       SyncObjs.Finalization
+ 0002:000000A8       SyncObjs.SyncObjs
+ 0001:00000288       SysInit.@InitPkg
+ 0001:000002EC       SysInit.@PackageLoad
+ 0001:000002F8       SysInit.@PackageUnload
+ 0001:00000178       SysInit.AllocTlsBuffer
+ 0001:00000234       SysInit.ExitProcessTLS
+ 0001:000001FC       SysInit.ExitThreadTLS
+ 0001:00000140       SysInit.FreeLibrary
+ 0001:00000184       SysInit.GetTlsSize
+ 0004:00000004       SysInit.HInstance
+ 0001:00000258       SysInit.InitializeModule
+ 0001:000001D0       SysInit.InitProcessTLS
+ 0001:0000018C       SysInit.InitThreadTLS
+ 0001:00000148       SysInit.LocalAlloc
+ 0001:00000150       SysInit.LocalFree
+ 0003:00000004       SysInit.Module
+ 0004:00000000       SysInit.ModuleIsLib
+ 0004:00000001       SysInit.ModuleIsPackage
+ 0001:00000158       SysInit.TlsAlloc
+ 0004:00000008       SysInit.tlsBuffer
+ 0001:00000160       SysInit.TlsFree
+ 0001:00000168       SysInit.TlsGetValue
+ 0003:00000000       SysInit.TlsIndex
+ 0005:00000000       SysInit.TlsLast
+ 0003:00000020       SysInit.TlsProc
+ 0001:00000170       SysInit.TlsSetValue
+ 0001:00000264       SysInit.UninitializeModule
+ 0001:00000048       System.@DoneExcept
+ 0001:00000070       System.@EnsureUnicodeString
+ 0001:00000118       System.@FinalizeArray
+ 0001:00000038       System.@HandleAnyException
+ 0001:00000040       System.@HandleFinally
+ 0001:00000058       System.@PackageLoad
+ 0001:00000060       System.@PackageUnload
+ 0001:00000068       System.@RunError
+ 0001:00000050       System.@TryFinallyExit
+ 0001:00000090       System.@UStrAddRef
+ 0001:000000A0       System.@UStrArrayClr
+ 0001:000000A8       System.@UStrAsg
+ 0001:000000E8       System.@UStrCat
+ 0001:000000F0       System.@UStrCat3
+ 0001:000000F8       System.@UStrCatN
+ 0001:00000098       System.@UStrClr
+ 0001:00000108       System.@UStrCopy
+ 0001:00000100       System.@UStrEqual
+ 0001:000000C0       System.@UStrFromPWChar
+ 0001:000000D8       System.@UStrFromString
+ 0001:000000C8       System.@UStrFromWStr
+ 0001:000000B0       System.@UStrLAsg
+ 0001:000000E0       System.@UStrLen
+ 0001:000000B8       System.@UStrToPWChar
+ 0001:00000080       System.@WStrArrayClr
+ 0001:00000088       System.@WStrCatN
+ 0001:00000078       System.@WStrClr
+ 0001:000000D0       System.@WStrFromUStr
+ 0001:00000138       System.Finalization
+ 0001:00000110       System.Pos
+ 0001:00000128       System.RegisterModule
+ 0002:00000000       System.System
+ 0001:00000030       System.TObject.Dispatch
+ 0001:00000018       System.TObject.Equals
+ 0001:00000010       System.TObject.Free
+ 0001:00000008       System.TObject.FreeInstance
+ 0001:00000020       System.TObject.GetHashCode
+ 0001:00000000       System.TObject.NewInstance
+ 0001:00000028       System.TObject.ToString
+ 0001:00000130       System.UnregisterModule
+ 0001:00000120       System.WideCharToString
+ 0001:00000408       SysUtils.AnsiLastChar
+ 0001:00000430       SysUtils.Date
+ 0002:00000050       SysUtils.Exception.Create@
+ 0001:00000440       SysUtils.Exception.Destroy@
+ 0001:00000400       SysUtils.FileExists
+ 0001:00000460       SysUtils.Finalization
+ 0001:00000418       SysUtils.FloatToStr
+ 0001:00000438       SysUtils.FormatDateTime
+ 0001:00000420       SysUtils.FormatFloat
+ 0001:000003F0       SysUtils.IntToStr
+ 0001:000003E8       SysUtils.IntToStr
+ 0001:000003E0       SysUtils.QuotedStr
+ 0001:00000448       SysUtils.StringReplace
+ 0001:00000410       SysUtils.StrPos
+ 0001:00000428       SysUtils.StrToFloat
+ 0001:000003F8       SysUtils.StrToInt
+ 0002:00000058       SysUtils.SysUtils
+ 0002:00000048       SysUtils.TEncoding.Create@
+ 0001:00000458       SysUtils.TEncoding.Destroy@
+ 0002:00000040       SysUtils.TLanguages.Create@
+ 0001:00000450       SysUtils.TLanguages.Destroy@
+ 0001:000003D8       SysUtils.Trim
+ 0001:00000B28       TeCanvas.Finalization
+ 0002:000002B0       TeCanvas.TeCanvas
+ 0001:00000B30       TeeConst.Finalization
+ 0002:000002B8       TeeConst.TeeConst
+ 0001:00000B38       TeeHtml.Finalization
+ 0002:000002C0       TeeHtml.TeeHtml
+ 0001:000004F0       Themes.Finalization
+ 0002:00000098       Themes.Themes
+ 0002:000000B0       TimeSpan.TTimeSpan.Create@
+ 0001:00000618       TimeSpan.TTimeSpan.Destroy@
+ 0001:000003D0       TypInfo.Finalization
+ 0002:00000038       TypInfo.TypInfo
+ 0004:00000058       Unit1..2
+ 0001:0000BD18       Unit1..TForm1
+ 0001:0000C1C8       Unit1.Finalization
+ 0004:00000054       Unit1.Form1
+ 0001:0000C0A0       Unit1.TForm1.Button1Click
+ 0001:0000C0FC       Unit1.TForm1.Button2Click
+ 0001:0000C158       Unit1.TForm1.Button3Click
+ 0001:0000C1B4       Unit1.TForm1.FormKeyDown
+ 0002:00000350       Unit1.Unit1
+ 0004:00000030       UnitDeptWiseReport..2
+ 0001:00003A78       UnitDeptWiseReport..TFormDeptwiseCollection
+ 0001:00004AB8       UnitDeptWiseReport.Finalization
+ 0004:0000002C       UnitDeptWiseReport.FormDeptwiseCollection
+ 0001:00004094       UnitDeptWiseReport.TFormDeptwiseCollection.BtnFromClick
+ 0001:000040A8       UnitDeptWiseReport.TFormDeptwiseCollection.BtnToClick
+ 0001:000040BC       UnitDeptWiseReport.TFormDeptwiseCollection.Btn_PreviewClick
+ 0001:0000493C       UnitDeptWiseReport.TFormDeptwiseCollection.DBLCB_DepNameKeyDown
+ 0001:00004998       UnitDeptWiseReport.TFormDeptwiseCollection.FormShow
+ 0002:00000314       UnitDeptWiseReport.UnitDeptWiseReport
+ 0004:00000020       UnitNoofTestDone..2
+ 0001:00001A0C       UnitNoofTestDone..TFormNoofTestDone
+ 0001:00002940       UnitNoofTestDone.Finalization
+ 0004:0000001C       UnitNoofTestDone.FormNoofTestDone
+ 0001:00002180       UnitNoofTestDone.TFormNoofTestDone.BtnFromClick
+ 0001:00002194       UnitNoofTestDone.TFormNoofTestDone.BtnToClick
+ 0001:000021A8       UnitNoofTestDone.TFormNoofTestDone.Btn_PreviewClick
+ 0001:000027C4       UnitNoofTestDone.TFormNoofTestDone.DBLCB_DepNameKeyDown
+ 0001:00002820       UnitNoofTestDone.TFormNoofTestDone.Dblcb_ParentDepClick
+ 0001:00002824       UnitNoofTestDone.TFormNoofTestDone.FormKeyDown
+ 0001:00002838       UnitNoofTestDone.TFormNoofTestDone.FormShow
+ 0002:000002EC       UnitNoofTestDone.UnitNoofTestDone
+ 0004:00000028       UnitRepDeptWiseCollection..2
+ 0001:00002954       UnitRepDeptWiseCollection..TFormRepDeptWiseSum
+ 0001:00003A64       UnitRepDeptWiseCollection.Finalization
+ 0004:00000024       UnitRepDeptWiseCollection.FormRepDeptWiseSum
+ 0001:00003984       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QRDBText16Print
+ 0001:00003988       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QRDBText1Print
+ 0001:000039E4       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QRExpr12Print
+ 0001:000039E8       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QRExpr13Print
+ 0001:000039EC       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QRLabel3Print
+ 0001:00003A00       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QRLabel8Print
+ 0001:00003A4C       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QuickRep1AfterPrint
+ 0001:00003A58       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QuickRep1BeforePrint
+ 0002:00000300       UnitRepDeptWiseCollection.UnitRepDeptWiseCollection
+ 0004:00000038       UnitRepDetailUserWise..2
+ 0001:00004ACC       UnitRepDetailUserWise..TFormRepDetailUserWise
+ 0001:00007254       UnitRepDetailUserWise.Finalization
+ 0004:00000034       UnitRepDetailUserWise.FormRepDetailUserWise
+ 0001:00006D38       UnitRepDetailUserWise.TFormRepDetailUserWise.FormCreate
+ 0001:00006D4C       UnitRepDetailUserWise.TFormRepDetailUserWise.QRDBText16Print
+ 0001:00006DA8       UnitRepDetailUserWise.TFormRepDetailUserWise.QRDBText4Print
+ 0001:00006E04       UnitRepDetailUserWise.TFormRepDetailUserWise.QRDBText64Print
+ 0001:00006E60       UnitRepDetailUserWise.TFormRepDetailUserWise.QRDBText74Print
+ 0001:00006EBC       UnitRepDetailUserWise.TFormRepDetailUserWise.QRDBText9Print
+ 0001:00006F18       UnitRepDetailUserWise.TFormRepDetailUserWise.QRExpr16Print
+ 0001:00006FA4       UnitRepDetailUserWise.TFormRepDetailUserWise.QRExpr17Print
+ 0001:00007030       UnitRepDetailUserWise.TFormRepDetailUserWise.QRExpr28Print
+ 0001:000070C0       UnitRepDetailUserWise.TFormRepDetailUserWise.QRExpr32Print
+ 0001:0000714C       UnitRepDetailUserWise.TFormRepDetailUserWise.QRExpr3Print
+ 0001:000071D8       UnitRepDetailUserWise.TFormRepDetailUserWise.QRLabel_HosNamePrint
+ 0001:000071EC       UnitRepDetailUserWise.TFormRepDetailUserWise.QuickRep1AfterPrint
+ 0001:00007220       UnitRepDetailUserWise.TFormRepDetailUserWise.QuickRep1BeforePrint
+ 0002:00000328       UnitRepDetailUserWise.UnitRepDetailUserWise
+ 0004:00000018       UnitRepNoofTestDone..2
+ 0001:00000B50       UnitRepNoofTestDone..TFormRepNoofTestDone
+ 0001:000019F8       UnitRepNoofTestDone.Finalization
+ 0004:00000014       UnitRepNoofTestDone.FormRepNoofTestDone
+ 0001:000018C4       UnitRepNoofTestDone.TFormRepNoofTestDone.QRLabel5Print
+ 0001:00001920       UnitRepNoofTestDone.TFormRepNoofTestDone.QRLabelDatePrint
+ 0001:0000196C       UnitRepNoofTestDone.TFormRepNoofTestDone.QRLabelTimePrint
+ 0001:000019B8       UnitRepNoofTestDone.TFormRepNoofTestDone.QRLabel_HosNamePrint
+ 0001:000019CC       UnitRepNoofTestDone.TFormRepNoofTestDone.QRLabel_HosPhonePrint
+ 0001:000019E0       UnitRepNoofTestDone.TFormRepNoofTestDone.QuickRep1AfterPrint
+ 0001:000019EC       UnitRepNoofTestDone.TFormRepNoofTestDone.QuickRep1BeforePrint
+ 0002:000002D8       UnitRepNoofTestDone.UnitRepNoofTestDone
+ 0004:00000048       UnitRepUserWiseCollection..2
+ 0001:00007960       UnitRepUserWiseCollection..TFormRepUserWiseCollection
+ 0001:00009970       UnitRepUserWiseCollection.Finalization
+ 0004:00000044       UnitRepUserWiseCollection.FormRepUserWiseCollection
+ 0001:000098EC       UnitRepUserWiseCollection.TFormRepUserWiseCollection.FormCreate
+ 0001:00009940       UnitRepUserWiseCollection.TFormRepUserWiseCollection.lbl_AddressPrint
+ 0001:00009878       UnitRepUserWiseCollection.TFormRepUserWiseCollection.QRLabel10Print
+ 0001:000098C4       UnitRepUserWiseCollection.TFormRepUserWiseCollection.QRLabel1Print
+ 0001:000098D8       UnitRepUserWiseCollection.TFormRepUserWiseCollection.QRLabel21Print
+ 0001:00009944       UnitRepUserWiseCollection.TFormRepUserWiseCollection.QRLabel6Print
+ 0001:00009958       UnitRepUserWiseCollection.TFormRepUserWiseCollection.QRLabel7Print
+ 0001:0000996C       UnitRepUserWiseCollection.TFormRepUserWiseCollection.QRLabel9Print
+ 0002:00000340       UnitRepUserWiseCollection.UnitRepUserWiseCollection
+ 0004:00000040       UnitRepUserWiseDetail..2
+ 0001:0000725C       UnitRepUserWiseDetail..TFormRepUserWiseDetail
+ 0001:00007948       UnitRepUserWiseDetail.Finalization
+ 0004:0000003C       UnitRepUserWiseDetail.FormRepUserWiseDetail
+ 0001:00007938       UnitRepUserWiseDetail.TFormRepUserWiseDetail.FormCreate
+ 0002:00000330       UnitRepUserWiseDetail.UnitRepUserWiseDetail
+ 0004:00000080       UnitSalesBook..2
+ 0001:00017720       UnitSalesBook..TForm_SalesBook
+ 0001:00019D88       UnitSalesBook.Finalization
+ 0004:0000007C       UnitSalesBook.Form_SalesBook
+ 0001:00018074       UnitSalesBook.TForm_SalesBook.BitBtnCancelClick
+ 0001:0001807C       UnitSalesBook.TForm_SalesBook.BitBtnPreviewClick
+ 0001:000180AC       UnitSalesBook.TForm_SalesBook.BitBtn_FromDateClick
+ 0001:0001814C       UnitSalesBook.TForm_SalesBook.BitBtn_ToDateClick
+ 0001:000181EC       UnitSalesBook.TForm_SalesBook.CBTaxOfficeClick
+ 0001:00018230       UnitSalesBook.TForm_SalesBook.CreateTable_TaxSummaryReport
+ 0001:000184E8       UnitSalesBook.TForm_SalesBook.FormCreate
+ 0001:0001851C       UnitSalesBook.TForm_SalesBook.FormDestroy
+ 0001:00018520       UnitSalesBook.TForm_SalesBook.FormKeyDown
+ 0001:00018564       UnitSalesBook.TForm_SalesBook.FormShow
+ 0001:00018640       UnitSalesBook.TForm_SalesBook.Govt_Service_Tax_Report_Medicare
+ 0002:00000380       UnitSalesBook.UnitSalesBook
+ 0001:00024414       UnitSendToExcel.Finalization
+ 0001:0002440C       UnitSendToExcel.SendToExcels
+ 0002:000003E8       UnitSendToExcel.UnitSendToExcel
+ 0004:00000050       UnitUserWiseCollection..2
+ 0001:00009978       UnitUserWiseCollection..TFormUserWiseCollection
+ 0001:0000BD10       UnitUserWiseCollection.Finalization
+ 0004:0000004C       UnitUserWiseCollection.FormUserWiseCollection
+ 0001:0000BBC4       UnitUserWiseCollection.TFormUserWiseCollection.BtnfromClick
+ 0001:0000A1DC       UnitUserWiseCollection.TFormUserWiseCollection.BtnToClick
+ 0001:0000A1F0       UnitUserWiseCollection.TFormUserWiseCollection.Btn_DepWiseClick
+ 0001:0000A24C       UnitUserWiseCollection.TFormUserWiseCollection.Btn_PreviewClick
+ 0001:0000BABC       UnitUserWiseCollection.TFormUserWiseCollection.Button1Click
+ 0001:0000BB18       UnitUserWiseCollection.TFormUserWiseCollection.Chk_DetailClick
+ 0001:0000BB68       UnitUserWiseCollection.TFormUserWiseCollection.DBLCB_UserNameKeyDown
+ 0001:0000BBD8       UnitUserWiseCollection.TFormUserWiseCollection.FormDestroy
+ 0001:0000BBDC       UnitUserWiseCollection.TFormUserWiseCollection.FormKeyDown
+ 0001:0000BBF0       UnitUserWiseCollection.TFormUserWiseCollection.FormShow
+ 0002:00000348       UnitUserWiseCollection.UnitUserWiseCollection
+ 0004:00000108       Unit_AllPatientTest..2
+ 0001:00028E6C       Unit_AllPatientTest..TForm_AllPatientTest
+ 0001:000299E0       Unit_AllPatientTest.Finalization
+ 0004:00000104       Unit_AllPatientTest.Form_AllPatientTest
+ 0001:00029840       Unit_AllPatientTest.TForm_AllPatientTest.Bb_cancelClick
+ 0001:00029510       Unit_AllPatientTest.TForm_AllPatientTest.Bb_previewClick
+ 0001:00029848       Unit_AllPatientTest.TForm_AllPatientTest.btnfromClick
+ 0001:0002985C       Unit_AllPatientTest.TForm_AllPatientTest.btntoClick
+ 0001:00029870       Unit_AllPatientTest.TForm_AllPatientTest.cb_allClick
+ 0001:000298D4       Unit_AllPatientTest.TForm_AllPatientTest.FormKeyDown
+ 0001:000298E8       Unit_AllPatientTest.TForm_AllPatientTest.FormShow
+ 0002:00000410       Unit_AllPatientTest.Unit_AllPatientTest
+ 0004:000000C0       Unit_CollectionCenterReport..2
+ 0001:0001F8F8       Unit_CollectionCenterReport..TForm_CollectionCenterReport
+ 0001:00021000       Unit_CollectionCenterReport.Finalization
+ 0004:000000BC       Unit_CollectionCenterReport.Form_CollectionCenterReport
+ 0001:00020220       Unit_CollectionCenterReport.TForm_CollectionCenterReport.Btn_PreviewClick
+ 0001:00020C88       Unit_CollectionCenterReport.TForm_CollectionCenterReport.Dblcb_CommunityClick
+ 0001:00020D64       Unit_CollectionCenterReport.TForm_CollectionCenterReport.Dblcb_CommunityKeyDown
+ 0001:00020DC0       Unit_CollectionCenterReport.TForm_CollectionCenterReport.DBLCB_SchemeCodeKeyDown
+ 0001:00020E1C       Unit_CollectionCenterReport.TForm_CollectionCenterReport.FormCreate
+ 0001:00020FE4       Unit_CollectionCenterReport.TForm_CollectionCenterReport.FormKeyDown
+ 0001:00020FF8       Unit_CollectionCenterReport.TForm_CollectionCenterReport.Rb_DetailClick
+ 0001:00020FFC       Unit_CollectionCenterReport.TForm_CollectionCenterReport.Rb_SummaryClick
+ 0002:000003C0       Unit_CollectionCenterReport.Unit_CollectionCenterReport
+ 0004:00000130       Unit_Doctorwisepatientcase..2
+ 0001:0002D4E8       Unit_Doctorwisepatientcase..TForm_DoctorwisePatientcase
+ 0001:0002E8E0       Unit_Doctorwisepatientcase.Finalization
+ 0004:0000012C       Unit_Doctorwisepatientcase.Form_DoctorwisePatientcase
+ 0001:0002DCE4       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.BitBtn1Click
+ 0001:0002E71C       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.BitBtn2Click
+ 0001:0002E724       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.CheckBox_AllClick
+ 0001:0002E7B8       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.FormKeyDown
+ 0001:0002E7CC       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.FormShow
+ 0001:0002E8B8       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.SpeedButton_fromClick
+ 0001:0002E8CC       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.SpeedButton_toClick
+ 0002:00000438       Unit_Doctorwisepatientcase.Unit_Doctorwisepatientcase
+ 0004:00000070       Unit_Medicare_GovtSvrTaxReport..2
+ 0001:00010958       Unit_Medicare_GovtSvrTaxReport..TForm_Medicare_GovtSvrTaxReport
+ 0001:00014390       Unit_Medicare_GovtSvrTaxReport.Finalization
+ 0004:0000006C       Unit_Medicare_GovtSvrTaxReport.Form_Medicare_GovtSvrTaxReport
+ 0001:00013334       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr10Print
+ 0001:00013454       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr11Print
+ 0001:00013B60       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr13Print
+ 0001:00013BF0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr14Print
+ 0001:00013C80       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr16Print
+ 0001:00013D10       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr17Print
+ 0001:00013694       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr18Print
+ 0001:00013574       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr19Print
+ 0001:00013890       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr1Print
+ 0001:000134E4       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr20Print
+ 0001:00013FC0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr21Print
+ 0001:000140D8       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr22Print
+ 0001:000141F0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr23Print
+ 0001:00013604       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr24Print
+ 0001:00013DA0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr25Print
+ 0001:00013E28       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr26Print
+ 0001:00013EB0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr27Print
+ 0001:00013F38       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr28Print
+ 0001:00014050       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr29Print
+ 0001:000132A4       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr2Print
+ 0001:00014168       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr30Print
+ 0001:00014280       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr31Print
+ 0001:00014308       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr32Print
+ 0001:00013724       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr3Print
+ 0001:000133C4       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr4Print
+ 0001:000137AC       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr5Print
+ 0001:00013920       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr6Print
+ 0001:000139B0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr7Print
+ 0001:00013A40       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr8Print
+ 0001:00013AD0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr9Print
+ 0001:00013094       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel10Print
+ 0001:000130B8       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel15Print
+ 0001:000130DC       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel1Print
+ 0001:00013248       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel20Print
+ 0001:000130F0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel40Print
+ 0001:00013834       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel45Print
+ 0001:00013224       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel5Print
+ 0001:0001316C       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabelCRSnoPrint
+ 0001:00013110       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabelCSSnoPrint
+ 0001:000131C8       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabelRFSnoPrint
+ 0001:00013100       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel_AddPrint
+ 0002:00000370       Unit_Medicare_GovtSvrTaxReport.Unit_Medicare_GovtSvrTaxReport
+ 0004:00000078       Unit_Medicare_GovtSvrTaxReportSummary..2
+ 0001:00014398       Unit_Medicare_GovtSvrTaxReportSummary..TForm_Medicare_GovtSvrTaxReportSummary
+ 0001:00017718       Unit_Medicare_GovtSvrTaxReportSummary.Finalization
+ 0004:00000074       Unit_Medicare_GovtSvrTaxReportSummary.Form_Medicare_GovtSvrTaxReportSummary
+ 0001:00016C3C       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText20Print
+ 0001:00016CD4       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText21Print
+ 0001:00016E28       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText23Print
+ 0001:00016EC0       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText24Print
+ 0001:00016F58       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText3Print
+ 0001:00016A74       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText4Print
+ 0001:00016BA4       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText6Print
+ 0001:00016B0C       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText8Print
+ 0001:00016F70       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr11Print
+ 0001:00017050       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr16Print
+ 0001:00017130       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr17Print
+ 0001:00017134       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr18Print
+ 0001:00016778       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr19Print
+ 0001:00017214       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr20Print
+ 0001:00017294       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr21Print
+ 0001:00017314       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr22Print
+ 0001:00017394       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr23Print
+ 0001:00017414       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr24Print
+ 0001:00017494       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr26Print
+ 0001:00017514       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr27Print
+ 0001:000168B4       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr6Print
+ 0001:00016994       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr9Print
+ 0001:00016548       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel14Print
+ 0001:00017594       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel1Print
+ 0001:0001671C       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel20Print
+ 0001:00016568       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel34Print
+ 0001:00016578       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel40Print
+ 0001:00016858       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel45Print
+ 0001:0001669C       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel5Print
+ 0001:000166C0       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel9Print
+ 0001:000165E4       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabelCRSnoPrint
+ 0001:00016588       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabelCSSnoPrint
+ 0001:00016640       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabelRFSnoPrint
+ 0001:00016558       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel_AddPrint
+ 0001:000175A4       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QuickRep1StartPage
+ 0001:000176C0       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.SummaryBand1AfterPrint
+ 0002:00000378       Unit_Medicare_GovtSvrTaxReportSummary.Unit_Medicare_GovtSvrTaxReportSummary
+ 0001:00000B48       Unit_Message.Finalization
+ 0002:000002D0       Unit_Message.Unit_Message
+ 0004:000000F8       Unit_PatientTestDetail..2
+ 0001:00026478       Unit_PatientTestDetail..TForm_PatienttestDetail
+ 0001:00027A70       Unit_PatientTestDetail.Finalization
+ 0004:000000F4       Unit_PatientTestDetail.Form_PatienttestDetail
+ 0001:00026C7C       Unit_PatientTestDetail.TForm_PatienttestDetail.bb_closeClick
+ 0001:00026C84       Unit_PatientTestDetail.TForm_PatienttestDetail.Bb_SendtoExcelClick
+ 0001:00027A5C       Unit_PatientTestDetail.TForm_PatienttestDetail.BtnFromClick
+ 0001:00027320       Unit_PatientTestDetail.TForm_PatienttestDetail.BtnToClick
+ 0001:00027334       Unit_PatientTestDetail.TForm_PatienttestDetail.chk_deptAllClick
+ 0001:00027574       Unit_PatientTestDetail.TForm_PatienttestDetail.Chk_TestAllClick
+ 0001:000277BC       Unit_PatientTestDetail.TForm_PatienttestDetail.dblkcbb_depClick
+ 0001:0002790C       Unit_PatientTestDetail.TForm_PatienttestDetail.FormCreate
+ 0001:000279FC       Unit_PatientTestDetail.TForm_PatienttestDetail.FormShow
+ 0002:00000400       Unit_PatientTestDetail.Unit_PatientTestDetail
+ 0004:000000B0       Unit_QrCollectionCenterDetail..2
+ 0001:0001E7F8       Unit_QrCollectionCenterDetail..TForm_QRCollectionCenterDetail
+ 0001:0001F1CC       Unit_QrCollectionCenterDetail.Finalization
+ 0004:000000AC       Unit_QrCollectionCenterDetail.Form_QRCollectionCenterDetail
+ 0002:000003B0       Unit_QrCollectionCenterDetail.Unit_QrCollectionCenterDetail
+ 0004:000000B8       Unit_QrCollectionCenterSummary..2
+ 0001:0001F1D4       Unit_QrCollectionCenterSummary..TForm_QrCollectionCenterSummary
+ 0001:0001F8F0       Unit_QrCollectionCenterSummary.Finalization
+ 0004:000000B4       Unit_QrCollectionCenterSummary.Form_QrCollectionCenterSummary
+ 0002:000003B8       Unit_QrCollectionCenterSummary.Unit_QrCollectionCenterSummary
+ 0004:00000120       Unit_QrDoctorwiseCaseDetail..2
+ 0001:0002C5EC       Unit_QrDoctorwiseCaseDetail..TForm_QrDoctorwisePatientDetail
+ 0001:0002CE7C       Unit_QrDoctorwiseCaseDetail.Finalization
+ 0004:0000011C       Unit_QrDoctorwiseCaseDetail.Form_QrDoctorwisePatientDetail
+ 0001:0002CE54       Unit_QrDoctorwiseCaseDetail.TForm_QrDoctorwisePatientDetail.QRLabel1Print
+ 0001:0002CE68       Unit_QrDoctorwiseCaseDetail.TForm_QrDoctorwisePatientDetail.QRLabel2Print
+ 0002:00000428       Unit_QrDoctorwiseCaseDetail.Unit_QrDoctorwiseCaseDetail
+ 0004:00000128       Unit_QRDoctorWisePatientSummary..2
+ 0001:0002CE84       Unit_QRDoctorWisePatientSummary..TForm_QrDoctorWisePatientSummary
+ 0001:0002D4E0       Unit_QRDoctorWisePatientSummary.Finalization
+ 0004:00000124       Unit_QRDoctorWisePatientSummary.Form_QrDoctorWisePatientSummary
+ 0001:0002D4B8       Unit_QRDoctorWisePatientSummary.TForm_QrDoctorWisePatientSummary.QRLabel1Print
+ 0001:0002D4CC       Unit_QRDoctorWisePatientSummary.TForm_QrDoctorWisePatientSummary.QRLabel2Print
+ 0002:00000430       Unit_QRDoctorWisePatientSummary.Unit_QRDoctorWisePatientSummary
+ 0004:00000100       Unit_QrPatientFindingDetail..2
+ 0001:00027A78       Unit_QrPatientFindingDetail..TForm_PatientFindingDetail
+ 0001:00028E64       Unit_QrPatientFindingDetail.Finalization
+ 0004:000000FC       Unit_QrPatientFindingDetail.Form_PatientFindingDetail
+ 0001:00028660       Unit_QrPatientFindingDetail.TForm_PatientFindingDetail.FormCreate
+ 0001:00028674       Unit_QrPatientFindingDetail.TForm_PatientFindingDetail.GetFlag
+ 0001:00028CB8       Unit_QrPatientFindingDetail.TForm_PatientFindingDetail.QRDBText7Print
+ 0001:00028D64       Unit_QrPatientFindingDetail.TForm_PatientFindingDetail.QRDBText8Print
+ 0001:00028D7C       Unit_QrPatientFindingDetail.TForm_PatientFindingDetail.QRDBText9Print
+ 0001:00028E50       Unit_QrPatientFindingDetail.TForm_PatientFindingDetail.QRLabel_HosNamePrint
+ 0002:00000408       Unit_QrPatientFindingDetail.Unit_QrPatientFindingDetail
+ 0004:00000060       Unit_QrPatientTestList..2
+ 0001:0000C1D8       Unit_QrPatientTestList..TForm_QrPatientTesList
+ 0001:0000DF94       Unit_QrPatientTestList.Finalization
+ 0004:0000005C       Unit_QrPatientTestList.Form_QrPatientTesList
+ 0001:0000CBD0       Unit_QrPatientTestList.TForm_QrPatientTesList.FormCreate
+ 0001:0000DE48       Unit_QrPatientTestList.TForm_QrPatientTesList.GetTestName
+ 0001:0000CF90       Unit_QrPatientTestList.TForm_QrPatientTesList.Loaddata
+ 0001:0000D8E0       Unit_QrPatientTestList.TForm_QrPatientTesList.PrintBarcode
+ 0001:0000DAF8       Unit_QrPatientTestList.TForm_QrPatientTesList.QRDBText1Print
+ 0001:0000DC9C       Unit_QrPatientTestList.TForm_QrPatientTesList.QRDBText2Print
+ 0001:0000DCA0       Unit_QrPatientTestList.TForm_QrPatientTesList.QRDBText4Print
+ 0001:0000DD28       Unit_QrPatientTestList.TForm_QrPatientTesList.QRDBText5Print
+ 0001:0000DD2C       Unit_QrPatientTestList.TForm_QrPatientTesList.QRLabel5Print
+ 0001:0000DDC0       Unit_QrPatientTestList.TForm_QrPatientTesList.QRSubDetail1AfterPrint
+ 0001:0000DDC4       Unit_QrPatientTestList.TForm_QrPatientTesList.Table_PatienttestlistAfterScroll
+ 0002:00000360       Unit_QrPatientTestList.Unit_QrPatientTestList
+ 0004:00000098       Unit_QrReffWiseRevenueDetail..2
+ 0001:0001C084       Unit_QrReffWiseRevenueDetail..TForm_QRReffWiseRevenueDetail
+ 0001:0001CA9C       Unit_QrReffWiseRevenueDetail.Finalization
+ 0004:00000094       Unit_QrReffWiseRevenueDetail.Form_QRReffWiseRevenueDetail
+ 0001:0001C9C8       Unit_QrReffWiseRevenueDetail.TForm_QRReffWiseRevenueDetail.QRDBText5Print
+ 0002:00000398       Unit_QrReffWiseRevenueDetail.Unit_QrReffWiseRevenueDetail
+ 0004:000000A0       Unit_QrReffWiseRevenueSummary..2
+ 0001:0001CAA4       Unit_QrReffWiseRevenueSummary..TForm_QrReffWiseRevenueSummary
+ 0001:0001D1E8       Unit_QrReffWiseRevenueSummary.Finalization
+ 0004:0000009C       Unit_QrReffWiseRevenueSummary.Form_QrReffWiseRevenueSummary
+ 0001:0001D114       Unit_QrReffWiseRevenueSummary.TForm_QrReffWiseRevenueSummary.QRDBText3Print
+ 0002:000003A0       Unit_QrReffWiseRevenueSummary.Unit_QrReffWiseRevenueSummary
+ 0004:000000E0       Unit_QrSampleWiseRep..2
+ 0001:00023C0C       Unit_QrSampleWiseRep..TForm_SampleWise
+ 0001:00024404       Unit_QrSampleWiseRep.Finalization
+ 0004:000000DC       Unit_QrSampleWiseRep.Form_SampleWise
+ 0001:000243DC       Unit_QrSampleWiseRep.TForm_SampleWise.lbl_hosaddressPrint
+ 0001:000243F0       Unit_QrSampleWiseRep.TForm_SampleWise.lbl_hosnamePrint
+ 0002:000003E0       Unit_QrSampleWiseRep.Unit_QrSampleWiseRep
+ 0004:000000C8       Unit_QrSchemeWiseRevenueDetail..2
+ 0001:00021008       Unit_QrSchemeWiseRevenueDetail..TForm_QRSchemeWiseRevenueDetail
+ 0001:00021974       Unit_QrSchemeWiseRevenueDetail.Finalization
+ 0004:000000C4       Unit_QrSchemeWiseRevenueDetail.Form_QRSchemeWiseRevenueDetail
+ 0002:000003C8       Unit_QrSchemeWiseRevenueDetail.Unit_QrSchemeWiseRevenueDetail
+ 0004:000000D0       Unit_QrSchemeWiseRevenueSummary..2
+ 0001:0002197C       Unit_QrSchemeWiseRevenueSummary..TForm_QrSchemeWiseRevenueSummary
+ 0001:00022014       Unit_QrSchemeWiseRevenueSummary.Finalization
+ 0004:000000CC       Unit_QrSchemeWiseRevenueSummary.Form_QrSchemeWiseRevenueSummary
+ 0002:000003D0       Unit_QrSchemeWiseRevenueSummary.Unit_QrSchemeWiseRevenueSummary
+ 0004:00000088       Unit_QrTaxReport..2
+ 0001:00019D90       Unit_QrTaxReport..TForm_QrTaxReport
+ 0001:0001B990       Unit_QrTaxReport.Finalization
+ 0004:00000084       Unit_QrTaxReport.Form_QrTaxReport
+ 0001:0001AC64       Unit_QrTaxReport.TForm_QrTaxReport.FormCreate
+ 0001:0001B638       Unit_QrTaxReport.TForm_QrTaxReport.lbl_BillCountPrint
+ 0001:0001B650       Unit_QrTaxReport.TForm_QrTaxReport.lbl_billnoPrint
+ 0001:0001B654       Unit_QrTaxReport.TForm_QrTaxReport.QRDBText1Print
+ 0001:0001B6E0       Unit_QrTaxReport.TForm_QrTaxReport.QRDBText2Print
+ 0001:0001B76C       Unit_QrTaxReport.TForm_QrTaxReport.QRDBText3Print
+ 0001:0001B7F8       Unit_QrTaxReport.TForm_QrTaxReport.QRDBText4Print
+ 0001:0001B810       Unit_QrTaxReport.TForm_QrTaxReport.QRDBText5Print
+ 0001:0001B828       Unit_QrTaxReport.TForm_QrTaxReport.QRExpr1Print
+ 0001:0001B8A0       Unit_QrTaxReport.TForm_QrTaxReport.QRExpr2Print
+ 0001:0001B918       Unit_QrTaxReport.TForm_QrTaxReport.QRExpr3Print
+ 0002:00000388       Unit_QrTaxReport.Unit_QrTaxReport
+ 0004:00000068       Unit_QrWorkList..2
+ 0001:0000DF9C       Unit_QrWorkList..TForm_QrWorkList
+ 0001:00010950       Unit_QrWorkList.Finalization
+ 0004:00000064       Unit_QrWorkList.Form_QrWorkList
+ 0001:0000E770       Unit_QrWorkList.TForm_QrWorkList.FormCreate
+ 0001:0000E968       Unit_QrWorkList.TForm_QrWorkList.lbl_pagePrint
+ 0001:0000E9FC       Unit_QrWorkList.TForm_QrWorkList.Loaddata
+ 0001:000105D8       Unit_QrWorkList.TForm_QrWorkList.QRDBText1Print
+ 0001:00010680       Unit_QrWorkList.TForm_QrWorkList.QRDBText2Print
+ 0001:00010728       Unit_QrWorkList.TForm_QrWorkList.QRDBText3Print
+ 0001:000107D0       Unit_QrWorkList.TForm_QrWorkList.QRDBText4Print
+ 0001:00010878       Unit_QrWorkList.TForm_QrWorkList.QRLabel1Print
+ 0002:00000368       Unit_QrWorkList.Unit_QrWorkList
+ 0004:000000A8       Unit_ReffWiseRevenue..2
+ 0001:0001D1F0       Unit_ReffWiseRevenue..TForm_ReffWiseRevenue
+ 0001:0001E7F0       Unit_ReffWiseRevenue.Finalization
+ 0004:000000A4       Unit_ReffWiseRevenue.Form_ReffWiseRevenue
+ 0001:0001D978       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.BtnFromClick
+ 0001:0001D98C       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.BtnToClick
+ 0001:0001D9A0       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.Btn_PreviewClick
+ 0001:0001E60C       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.DBLCB_DocCodeKeyDown
+ 0001:0001E668       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.FormCreate
+ 0001:0001E788       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.Rb_DetailClick
+ 0001:0001E7BC       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.Rb_SummaryClick
+ 0002:000003A8       Unit_ReffWiseRevenue.Unit_ReffWiseRevenue
+ 0004:00000138       Unit_ReportTree..2
+ 0001:0002E8E8       Unit_ReportTree..TForm_ReportTree
+ 0001:0002FD94       Unit_ReportTree.Finalization
+ 0004:00000134       Unit_ReportTree.Form_ReportTree
+ 0001:0002EF18       Unit_ReportTree.TForm_ReportTree.BitBtn_CloseClick
+ 0001:0002EF20       Unit_ReportTree.TForm_ReportTree.Edit1Change
+ 0001:0002EF24       Unit_ReportTree.TForm_ReportTree.FormKeyDown
+ 0001:0002EF38       Unit_ReportTree.TForm_ReportTree.FormShow
+ 0001:0002F124       Unit_ReportTree.TForm_ReportTree.ReportOpen
+ 0001:0002F128       Unit_ReportTree.TForm_ReportTree.TreeView_ReportClick
+ 0001:0002FD18       Unit_ReportTree.TForm_ReportTree.TreeView_ReportCustomDrawItem
+ 0002:00000440       Unit_ReportTree.Unit_ReportTree
+ 0004:000000E8       Unit_SampleWise..2
+ 0001:0002441C       Unit_SampleWise..TForm_SampleWiseReport
+ 0001:00025C6C       Unit_SampleWise.Finalization
+ 0004:000000E4       Unit_SampleWise.Form_SampleWiseReport
+ 0001:00024FAC       Unit_SampleWise.TForm_SampleWiseReport.bb_closeClick
+ 0001:00024FB4       Unit_SampleWise.TForm_SampleWiseReport.bb_previewClick
+ 0001:000258BC       Unit_SampleWise.TForm_SampleWiseReport.bb_sendtoXLClick
+ 0001:000258D8       Unit_SampleWise.TForm_SampleWiseReport.btn_date1Click
+ 0001:000258EC       Unit_SampleWise.TForm_SampleWiseReport.btn_dateClick
+ 0001:00025900       Unit_SampleWise.TForm_SampleWiseReport.chk_datewiseClick
+ 0001:0002595C       Unit_SampleWise.TForm_SampleWiseReport.chk_TimeClick
+ 0001:00025998       Unit_SampleWise.TForm_SampleWiseReport.dblcb_departmentKeyDown
+ 0001:000259F4       Unit_SampleWise.TForm_SampleWiseReport.FormCreate
+ 0001:00025A24       Unit_SampleWise.TForm_SampleWiseReport.FormKeyDown
+ 0001:00025A38       Unit_SampleWise.TForm_SampleWiseReport.FormShow
+ 0001:00025BB8       Unit_SampleWise.TForm_SampleWiseReport.rb_NotReceivedClick
+ 0001:00025BC0       Unit_SampleWise.TForm_SampleWiseReport.rb_ReceivedClick
+ 0001:00025C24       Unit_SampleWise.TForm_SampleWiseReport.SampleNotReceived
+ 0002:000003F0       Unit_SampleWise.Unit_SampleWise
+ 0004:000000D8       Unit_SchemeWiseRevenue..2
+ 0001:0002201C       Unit_SchemeWiseRevenue..TForm_SchemeWiseRevenue
+ 0001:00023C04       Unit_SchemeWiseRevenue.Finalization
+ 0004:000000D4       Unit_SchemeWiseRevenue.Form_SchemeWiseRevenue
+ 0001:00022934       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.Btn_PreviewClick
+ 0001:0002381C       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.Dblcb_CommunityClick
+ 0001:000238F8       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.Dblcb_CommunityKeyDown
+ 0001:00023954       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.DBLCB_SchemeCodeKeyDown
+ 0001:000239B0       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.FormCreate
+ 0001:00023B88       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.FormKeyDown
+ 0001:00023B9C       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.Rb_DetailClick
+ 0001:00023BD0       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.Rb_SummaryClick
+ 0002:000003D8       Unit_SchemeWiseRevenue.Unit_SchemeWiseRevenue
+ 0004:00000090       Unit_TaxReport..2
+ 0001:0001B998       Unit_TaxReport..TForm_TaxReport
+ 0001:0001C07C       Unit_TaxReport.Finalization
+ 0004:0000008C       Unit_TaxReport.Form_TaxReport
+ 0001:0001BEB4       Unit_TaxReport.TForm_TaxReport.BitBtnCancelClick
+ 0001:0001BEBC       Unit_TaxReport.TForm_TaxReport.BitBtnPreviewClick
+ 0001:0001BF94       Unit_TaxReport.TForm_TaxReport.FormCreate
+ 0001:0001C068       Unit_TaxReport.TForm_TaxReport.FormKeyDown
+ 0002:00000390       Unit_TaxReport.Unit_TaxReport
+ 0004:000000F0       Unit_Testsetupdetail..2
+ 0001:00025C74       Unit_Testsetupdetail..TForm_testdetail
+ 0001:00026470       Unit_Testsetupdetail.Finalization
+ 0004:000000EC       Unit_Testsetupdetail.Form_testdetail
+ 0001:00026114       Unit_Testsetupdetail.TForm_testdetail.BB_CloseClick
+ 0001:0002611C       Unit_Testsetupdetail.TForm_testdetail.chk_allClick
+ 0001:00026150       Unit_Testsetupdetail.TForm_testdetail.FormCreate
+ 0001:00026188       Unit_Testsetupdetail.TForm_testdetail.SpeedButton2Click
+ 0002:000003F8       Unit_Testsetupdetail.Unit_Testsetupdetail
+ 0004:00000118       Unit_WorkList..2
+ 0001:0002A444       Unit_WorkList..TForm_WorkList
+ 0001:0002C5E4       Unit_WorkList.Finalization
+ 0004:00000114       Unit_WorkList.Form_WorkList
+ 0003:00000058       Unit_WorkList.roms
+ 0001:0002AF88       Unit_WorkList.TForm_WorkList.BitBtn1Click
+ 0001:0002AEF0       Unit_WorkList.TForm_WorkList.BitBtn2Click
+ 0001:0002AE5C       Unit_WorkList.TForm_WorkList.BitBtnCancelClick
+ 0001:0002C500       Unit_WorkList.TForm_WorkList.BitBtnExcelClick
+ 0001:0002AE64       Unit_WorkList.TForm_WorkList.BitBtn_FromClick
+ 0001:0002C3E8       Unit_WorkList.TForm_WorkList.CheckBoxAllClick
+ 0001:0002C5B0       Unit_WorkList.TForm_WorkList.CheckBox_timewiseClick
+ 0001:0002AF7C       Unit_WorkList.TForm_WorkList.FormKeyPress
+ 0001:0002AD1C       Unit_WorkList.TForm_WorkList.FormShow
+ 0001:0002C470       Unit_WorkList.TForm_WorkList.IntToRoman
+ 0002:00000420       Unit_WorkList.Unit_WorkList
+ 0003:0000003C       Unit_WorkList.vals
+ 0001:00000628       UxTheme.Finalization
+ 0002:000000C0       UxTheme.UxTheme
+ 0001:00000468       Variants.@VarClr
+ 0001:00000498       Variants.@VarCmpEQ
+ 0001:000004A0       Variants.@VarCmpNE
+ 0001:00000480       Variants.@VarFromInt
+ 0001:00000488       Variants.@VarFromReal
+ 0001:00000470       Variants.@VarToInt64
+ 0001:00000478       Variants.@VarToUStr
+ 0001:000004A8       Variants.Finalization
+ 0001:00000490       Variants.Null
+ 0002:00000060       Variants.Variants
+ 0001:000004B0       VarUtils.Finalization
+ 0002:00000068       VarUtils.VarUtils
+ 0001:00000878       WideStrings.Finalization
+ 0002:00000120       WideStrings.WideStrings
+ 0004:0000000C       Windows..2
+ 0001:000003B0       Windows.Finalization
+ 0001:0000035C       Windows.FreeLibrary
+ 0001:00000364       Windows.GetVersionEx
+ 0004:00000010       Windows.HtmlHelpModule
+ 0001:00000374       Windows.InitVersionInfo
+ 0001:0000036C       Windows.keybd_event
+ 0003:00000030       Windows.Win32MajorVersion
+ 0003:00000034       Windows.Win32MinorVersion
+ 0003:00000038       Windows.Win32Platform
+ 0002:00000020       Windows.Windows
+
+
+  Address             Publics by Value
+
+ 0001:00000000       System.TObject.NewInstance
+ 0001:00000008       System.TObject.FreeInstance
+ 0001:00000010       System.TObject.Free
+ 0001:00000018       System.TObject.Equals
+ 0001:00000020       System.TObject.GetHashCode
+ 0001:00000028       System.TObject.ToString
+ 0001:00000030       System.TObject.Dispatch
+ 0001:00000038       System.@HandleAnyException
+ 0001:00000040       System.@HandleFinally
+ 0001:00000048       System.@DoneExcept
+ 0001:00000050       System.@TryFinallyExit
+ 0001:00000058       System.@PackageLoad
+ 0001:00000060       System.@PackageUnload
+ 0001:00000068       System.@RunError
+ 0001:00000070       System.@EnsureUnicodeString
+ 0001:00000078       System.@WStrClr
+ 0001:00000080       System.@WStrArrayClr
+ 0001:00000088       System.@WStrCatN
+ 0001:00000090       System.@UStrAddRef
+ 0001:00000098       System.@UStrClr
+ 0001:000000A0       System.@UStrArrayClr
+ 0001:000000A8       System.@UStrAsg
+ 0001:000000B0       System.@UStrLAsg
+ 0001:000000B8       System.@UStrToPWChar
+ 0001:000000C0       System.@UStrFromPWChar
+ 0001:000000C8       System.@UStrFromWStr
+ 0001:000000D0       System.@WStrFromUStr
+ 0001:000000D8       System.@UStrFromString
+ 0001:000000E0       System.@UStrLen
+ 0001:000000E8       System.@UStrCat
+ 0001:000000F0       System.@UStrCat3
+ 0001:000000F8       System.@UStrCatN
+ 0001:00000100       System.@UStrEqual
+ 0001:00000108       System.@UStrCopy
+ 0001:00000110       System.Pos
+ 0001:00000118       System.@FinalizeArray
+ 0001:00000120       System.WideCharToString
+ 0001:00000128       System.RegisterModule
+ 0001:00000130       System.UnregisterModule
+ 0001:00000138       System.Finalization
+ 0001:00000140       SysInit.FreeLibrary
+ 0001:00000148       SysInit.LocalAlloc
+ 0001:00000150       SysInit.LocalFree
+ 0001:00000158       SysInit.TlsAlloc
+ 0001:00000160       SysInit.TlsFree
+ 0001:00000168       SysInit.TlsGetValue
+ 0001:00000170       SysInit.TlsSetValue
+ 0001:00000178       SysInit.AllocTlsBuffer
+ 0001:00000184       SysInit.GetTlsSize
+ 0001:0000018C       SysInit.InitThreadTLS
+ 0001:000001D0       SysInit.InitProcessTLS
+ 0001:000001FC       SysInit.ExitThreadTLS
+ 0001:00000234       SysInit.ExitProcessTLS
+ 0001:00000258       SysInit.InitializeModule
+ 0001:00000264       SysInit.UninitializeModule
+ 0001:00000288       SysInit.@InitPkg
+ 0001:000002EC       SysInit.@PackageLoad
+ 0001:000002F8       SysInit.@PackageUnload
+ 0001:00000304       ActnList.Finalization
+ 0001:0000030C       Classes.RegisterClass
+ 0001:00000314       Classes.UnRegisterClass
+ 0001:0000031C       Classes.TPersistent.Assign
+ 0001:00000324       Classes.TCollection.Clear
+ 0001:0000032C       Classes.TThread.Destroy@
+ 0001:00000334       Classes.TComponent.WriteState
+ 0001:0000033C       Classes.TComponent.UpdateAction
+ 0001:00000344       Classes.TComponent.SafeCallException
+ 0001:0000034C       Classes.TComponent.UpdateRegistry
+ 0001:00000354       Classes.Finalization
+ 0001:0000035C       Windows.FreeLibrary
+ 0001:00000364       Windows.GetVersionEx
+ 0001:0000036C       Windows.keybd_event
+ 0001:00000374       Windows.InitVersionInfo
+ 0001:000003B0       Windows.Finalization
+ 0001:000003D0       TypInfo.Finalization
+ 0001:000003D8       SysUtils.Trim
+ 0001:000003E0       SysUtils.QuotedStr
+ 0001:000003E8       SysUtils.IntToStr
+ 0001:000003F0       SysUtils.IntToStr
+ 0001:000003F8       SysUtils.StrToInt
+ 0001:00000400       SysUtils.FileExists
+ 0001:00000408       SysUtils.AnsiLastChar
+ 0001:00000410       SysUtils.StrPos
+ 0001:00000418       SysUtils.FloatToStr
+ 0001:00000420       SysUtils.FormatFloat
+ 0001:00000428       SysUtils.StrToFloat
+ 0001:00000430       SysUtils.Date
+ 0001:00000438       SysUtils.FormatDateTime
+ 0001:00000440       SysUtils.Exception.Destroy@
+ 0001:00000448       SysUtils.StringReplace
+ 0001:00000450       SysUtils.TLanguages.Destroy@
+ 0001:00000458       SysUtils.TEncoding.Destroy@
+ 0001:00000460       SysUtils.Finalization
+ 0001:00000468       Variants.@VarClr
+ 0001:00000470       Variants.@VarToInt64
+ 0001:00000478       Variants.@VarToUStr
+ 0001:00000480       Variants.@VarFromInt
+ 0001:00000488       Variants.@VarFromReal
+ 0001:00000490       Variants.Null
+ 0001:00000498       Variants.@VarCmpEQ
+ 0001:000004A0       Variants.@VarCmpNE
+ 0001:000004A8       Variants.Finalization
+ 0001:000004B0       VarUtils.Finalization
+ 0001:000004B8       Graphics.TFont.SetColor
+ 0001:000004C0       Graphics.TFont.SetStyle
+ 0001:000004C8       Graphics.Finalization
+ 0001:000004D0       Registry.Finalization
+ 0001:000004D8       IniFiles.Finalization
+ 0001:000004E0       IOUtils.TPath.Destroy@
+ 0001:000004E8       IOUtils.Finalization
+ 0001:000004F0       Themes.Finalization
+ 0001:000004F8       Controls.TControl.GetDragImages
+ 0001:00000500       Controls.TControl.GetEnabled
+ 0001:00000508       Controls.TControl.GetAction
+ 0001:00000510       Controls.TControl.SetDragMode
+ 0001:00000518       Controls.TControl.SetLeft
+ 0001:00000520       Controls.TControl.SetAutoSize
+ 0001:00000528       Controls.TControl.SetName
+ 0001:00000530       Controls.TControl.SetVisible
+ 0001:00000538       Controls.TControl.SetEnabled
+ 0001:00000540       Controls.TControl.SetText
+ 0001:00000548       Controls.TControl.SetBiDiMode
+ 0001:00000550       Controls.TControl.CreateTouchManager
+ 0001:00000558       Controls.TControl.GetFloatingDockSiteClass
+ 0001:00000560       Controls.TControl.InitiateAction
+ 0001:00000568       Controls.TWinControl.DestroyWnd
+ 0001:00000570       Controls.TWinControl.CreateHandle
+ 0001:00000578       Controls.TWinControl.CustomAlignInsertBefore
+ 0001:00000580       Controls.TWinControl.CustomAlignPosition
+ 0001:00000588       Controls.TWinControl.SetParentDoubleBuffered
+ 0001:00000590       Controls.TWinControl.SetBounds
+ 0001:00000598       Controls.TWinControl.ShowControl
+ 0001:000005A0       Controls.TWinControl.GetDeviceContext
+ 0001:000005A8       Controls.TWinControl.Invalidate
+ 0001:000005B0       Controls.TWinControl.Update
+ 0001:000005B8       Controls.TWinControl.Repaint
+ 0001:000005C0       Controls.TWinControl.GetControlExtents
+ 0001:000005C8       Controls.TWinControl.GetClientOrigin
+ 0001:000005D0       Controls.TWinControl.CanResize
+ 0001:000005D8       Controls.TWinControl.ConstrainedResize
+ 0001:000005E0       Controls.TWinControl.AssignTo
+ 0001:000005E8       Controls.TWinControl.CanAutoSize
+ 0001:000005F0       Controls.TWinControl.SetParentBackground
+ 0001:000005F8       Controls.TWinControl.DockReplaceDockClient
+ 0001:00000600       Controls.TWinControl.UpdateControlOriginalParentSize
+ 0001:00000608       Controls.Finalization
+ 0001:00000610       SyncObjs.Finalization
+ 0001:00000618       TimeSpan.TTimeSpan.Destroy@
+ 0001:00000620       Menus.Finalization
+ 0001:00000628       UxTheme.Finalization
+ 0001:00000630       MultiMon.Finalization
+ 0001:00000638       Forms.TScrollingWinControl.AutoScrollEnabled
+ 0001:00000640       Forms.TScrollingWinControl.DoGesture
+ 0001:00000648       Forms.TScrollingWinControl.DoGetGestureOptions
+ 0001:00000650       Forms.TScrollingWinControl.AutoScrollInView
+ 0001:00000658       Forms.TScrollingWinControl.AdjustClientRect
+ 0001:00000660       Forms.TCustomForm.Create
+ 0001:00000668       Forms.TCustomForm.AfterConstruction
+ 0001:00000670       Forms.TCustomForm.CreateNew
+ 0001:00000678       Forms.TCustomForm.BeforeDestruction
+ 0001:00000680       Forms.TCustomForm.Destroy
+ 0001:00000688       Forms.TCustomForm.DoCreate
+ 0001:00000690       Forms.TCustomForm.DoDestroy
+ 0001:00000698       Forms.TCustomForm.Loaded
+ 0001:000006A0       Forms.TCustomForm.Notification
+ 0001:000006A8       Forms.TCustomForm.ReadState
+ 0001:000006B0       Forms.TCustomForm.DefineProperties
+ 0001:000006B8       Forms.TCustomForm.GetClientRect
+ 0001:000006C0       Forms.TCustomForm.GetFloating
+ 0001:000006C8       Forms.TCustomForm.SetParentBiDiMode
+ 0001:000006D0       Forms.TCustomForm.WantChildKey
+ 0001:000006D8       Forms.TCustomForm.SetParent
+ 0001:000006E0       Forms.TCustomForm.ValidateRename
+ 0001:000006E8       Forms.TCustomForm.WndProc
+ 0001:000006F0       Forms.TCustomForm.AlignControls
+ 0001:000006F8       Forms.TCustomForm.CreateParams
+ 0001:00000700       Forms.TCustomForm.CreateWnd
+ 0001:00000708       Forms.TCustomForm.CreateWindowHandle
+ 0001:00000710       Forms.TCustomForm.DestroyHandle
+ 0001:00000718       Forms.TCustomForm.DestroyWindowHandle
+ 0001:00000720       Forms.TCustomForm.DefaultHandler
+ 0001:00000728       Forms.TCustomForm.SetFocusedControl
+ 0001:00000730       Forms.TCustomForm.PaintWindow
+ 0001:00000738       Forms.TCustomForm.Resizing
+ 0001:00000740       Forms.TCustomForm.Close
+ 0001:00000748       Forms.TCustomForm.CloseQuery
+ 0001:00000750       Forms.TCustomForm.SetFocus
+ 0001:00000758       Forms.TCustomForm.ShowModal
+ 0001:00000760       Forms.TCustomForm.UpdateActions
+ 0001:00000768       Forms.TCustomForm.RequestAlign
+ 0001:00000770       Forms.TCustomForm.QueryInterface
+ 0001:00000778       Forms.TApplication.CreateForm
+ 0001:00000780       Forms.Finalization
+ 0001:00000788       HelpIntfs.Finalization
+ 0001:00000790       Dialogs.MessageDlg
+ 0001:00000798       Dialogs.ShowMessage
+ 0001:000007A0       Dialogs.Finalization
+ 0001:000007A8       ComCtrls.TTreeNode.GetChildren
+ 0001:000007B0       ComCtrls.TTreeNodes.GetCount
+ 0001:000007B8       ComCtrls.TTreeNodes.AddChild
+ 0001:000007C0       ComCtrls.TTreeNodes.Add
+ 0001:000007C8       ComCtrls.TCustomTreeView.GetSelected
+ 0001:000007D0       ComCtrls.Finalization
+ 0001:000007D8       GraphUtil.Finalization
+ 0001:000007E0       ExtCtrls.TCustomRadioGroup.SetItemIndex
+ 0001:000007E8       ExtCtrls.Finalization
+ 0001:000007F0       Printers.Finalization
+ 0001:000007F8       Clipbrd.Finalization
+ 0001:00000800       FlatSB.Finalization
+ 0001:00000808       DBGrids.TCustomDBGrid.Create
+ 0001:00000810       DBGrids.TCustomDBGrid.SetDataSource
+ 0001:00000818       DB.TFieldDefs.Add
+ 0001:00000820       DB.TDataSource.Create
+ 0001:00000828       DB.TDataSource.SetDataSet
+ 0001:00000830       DB.TDataSet.Open
+ 0001:00000838       DB.TDataSet.Close
+ 0001:00000840       DB.TDataSet.GetActive
+ 0001:00000848       DB.TDataSet.FieldByName
+ 0001:00000850       DB.TDataSet.First
+ 0001:00000858       DB.TDataSet.Next
+ 0001:00000860       DB.TDataSet.Edit
+ 0001:00000868       DB.TDataSet.Append
+ 0001:00000870       DB.Finalization
+ 0001:00000878       WideStrings.Finalization
+ 0001:00000880       FMTBcd.Finalization
+ 0001:00000888       SqlTimSt.Finalization
+ 0001:00000890       ComObj.Finalization
+ 0001:00000898       DBCtrls.TDBLookupControl.SetKeyValue
+ 0001:000008A0       DBCtrls.Finalization
+ 0001:000008A8       Buttons.Finalization
+ 0001:000008B0       Mask.TCustomMaskEdit.SetEditText
+ 0001:000008B8       Mask.TCustomMaskEdit.GetEditText
+ 0001:000008C0       Mask.TCustomMaskEdit.GetText
+ 0001:000008C8       Mask.TCustomMaskEdit.SetText
+ 0001:000008D0       DBPWDlg.Finalization
+ 0001:000008D8       DBLogDlg.Finalization
+ 0001:000008E0       OraCall.Finalization
+ 0001:000008E8       MemUtils.Finalization
+ 0001:000008F0       CLRClasses.Finalization
+ 0001:000008F8       MTSCall.Finalization
+ 0001:00000900       DBAccess.TCustomDADataSet.GetSQL
+ 0001:00000908       DBAccess.Finalization
+ 0001:00000910       CRParser.Finalization
+ 0001:00000918       MemData.Finalization
+ 0001:00000920       AnsiStrings.Finalization
+ 0001:00000928       DASQLMonitor.Finalization
+ 0001:00000930       CRVioTcp.Finalization
+ 0001:00000938       DBMonitorClient.Finalization
+ 0001:00000940       CRXml.Finalization
+ 0001:00000948       OraSmart.Finalization
+ 0001:00000950       OraParser.Finalization
+ 0001:00000958       OraClasses.Finalization
+ 0001:00000960       OraObjects.Finalization
+ 0001:00000968       OraNet.Finalization
+ 0001:00000970       OraAlerter.Finalization
+ 0001:00000978       Ora.TOraDataSet.Create
+ 0001:00000980       Ora.TOraDataSet.ParamByName
+ 0001:00000988       Ora.TOraDataSet.SetSession
+ 0001:00000990       Ora.Finalization
+ 0001:00000998       OraConnectionPool.Finalization
+ 0001:000009A0       OraSQLMonitor.Finalization
+ 0001:000009A8       DBTables.TDBDataSet.SetDatabaseName
+ 0001:000009B0       DBTables.TTable.CreateTable
+ 0001:000009B8       DBTables.TTable.DeleteTable
+ 0001:000009C0       DBTables.TTable.EmptyTable
+ 0001:000009C8       DBTables.TTable.SetExclusive
+ 0001:000009D0       DBTables.TTable.SetTableName
+ 0001:000009D8       DBTables.TTable.SetTableType
+ 0001:000009E0       DBTables.TQuery.Create
+ 0001:000009E8       DBTables.Finalization
+ 0001:000009F0       OleServer.Finalization
+ 0001:000009F8       OleCtrls.TOleControl.GetTOleEnumProp
+ 0001:00000A00       OleCtrls.TOleControl.GetWideStringProp
+ 0001:00000A08       OleCtrls.TOleControl.SetTOleEnumProp
+ 0001:00000A10       OleCtrls.TOleControl.SetWideStringProp
+ 0001:00000A18       OleCtrls.Finalization
+ 0001:00000A20       AxCtrls.Finalization
+ 0001:00000A28       ServerDate.CreateQuery
+ 0001:00000A30       ServerDate.TodaysTime
+ 0001:00000A38       ServerDate.TodaysDate
+ 0001:00000A40       ServerDate.TodaysDateVS
+ 0001:00000A48       ServerDate.Finalization
+ 0001:00000A50       QRCtrls.TQRCustomLabel.SetCaption
+ 0001:00000A58       QRCtrls.TQRExpr.SetMask
+ 0001:00000A60       QRCtrls.Finalization
+ 0001:00000A68       QRExpr.Finalization
+ 0001:00000A70       QuickRpt.TQRFrame.SetValue
+ 0001:00000A78       QuickRpt.TQRBasePanel.GetFrame
+ 0001:00000A80       QuickRpt.TCustomQuickRep.Preview
+ 0001:00000A88       QuickRpt.TQuickRep.SetDataSet
+ 0001:00000A90       QuickRpt.Finalization
+ 0001:00000A98       OleCtnrs.Finalization
+ 0001:00000AA0       QRExtra.Finalization
+ 0001:00000AA8       QRPrntr.Finalization
+ 0001:00000AB0       QRPDFFilt.Finalization
+ 0001:00000AB8       pdfconst.Finalization
+ 0001:00000AC0       QRExport.Finalization
+ 0001:00000AC8       jpeg.Finalization
+ 0001:00000AD0       QRWebFilt.Finalization
+ 0001:00000AD8       QRPrev.Finalization
+ 0001:00000AE0       QRXMLSFilt.Finalization
+ 0001:00000AE8       QRPrnSu.Finalization
+ 0001:00000AF0       Fxn.ChangeDateSystem
+ 0001:00000AF8       Fxn.IsStrANumber
+ 0001:00000B00       Fxn.LoadPatientData
+ 0001:00000B08       Fxn.IsStrANumberExtended
+ 0001:00000B10       Fxn.RefreshQuery
+ 0001:00000B18       Fxn.Finalization
+ 0001:00000B20       ADODB.Finalization
+ 0001:00000B28       TeCanvas.Finalization
+ 0001:00000B30       TeeConst.Finalization
+ 0001:00000B38       TeeHtml.Finalization
+ 0001:00000B40       CheckLst.Finalization
+ 0001:00000B48       Unit_Message.Finalization
+ 0001:00000B50       UnitRepNoofTestDone..TFormRepNoofTestDone
+ 0001:000018C4       UnitRepNoofTestDone.TFormRepNoofTestDone.QRLabel5Print
+ 0001:00001920       UnitRepNoofTestDone.TFormRepNoofTestDone.QRLabelDatePrint
+ 0001:0000196C       UnitRepNoofTestDone.TFormRepNoofTestDone.QRLabelTimePrint
+ 0001:000019B8       UnitRepNoofTestDone.TFormRepNoofTestDone.QRLabel_HosNamePrint
+ 0001:000019CC       UnitRepNoofTestDone.TFormRepNoofTestDone.QRLabel_HosPhonePrint
+ 0001:000019E0       UnitRepNoofTestDone.TFormRepNoofTestDone.QuickRep1AfterPrint
+ 0001:000019EC       UnitRepNoofTestDone.TFormRepNoofTestDone.QuickRep1BeforePrint
+ 0001:000019F8       UnitRepNoofTestDone.Finalization
+ 0001:00001A0C       UnitNoofTestDone..TFormNoofTestDone
+ 0001:00002180       UnitNoofTestDone.TFormNoofTestDone.BtnFromClick
+ 0001:00002194       UnitNoofTestDone.TFormNoofTestDone.BtnToClick
+ 0001:000021A8       UnitNoofTestDone.TFormNoofTestDone.Btn_PreviewClick
+ 0001:000027C4       UnitNoofTestDone.TFormNoofTestDone.DBLCB_DepNameKeyDown
+ 0001:00002820       UnitNoofTestDone.TFormNoofTestDone.Dblcb_ParentDepClick
+ 0001:00002824       UnitNoofTestDone.TFormNoofTestDone.FormKeyDown
+ 0001:00002838       UnitNoofTestDone.TFormNoofTestDone.FormShow
+ 0001:00002940       UnitNoofTestDone.Finalization
+ 0001:00002954       UnitRepDeptWiseCollection..TFormRepDeptWiseSum
+ 0001:00003984       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QRDBText16Print
+ 0001:00003988       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QRDBText1Print
+ 0001:000039E4       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QRExpr12Print
+ 0001:000039E8       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QRExpr13Print
+ 0001:000039EC       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QRLabel3Print
+ 0001:00003A00       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QRLabel8Print
+ 0001:00003A4C       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QuickRep1AfterPrint
+ 0001:00003A58       UnitRepDeptWiseCollection.TFormRepDeptWiseSum.QuickRep1BeforePrint
+ 0001:00003A64       UnitRepDeptWiseCollection.Finalization
+ 0001:00003A78       UnitDeptWiseReport..TFormDeptwiseCollection
+ 0001:00004094       UnitDeptWiseReport.TFormDeptwiseCollection.BtnFromClick
+ 0001:000040A8       UnitDeptWiseReport.TFormDeptwiseCollection.BtnToClick
+ 0001:000040BC       UnitDeptWiseReport.TFormDeptwiseCollection.Btn_PreviewClick
+ 0001:0000493C       UnitDeptWiseReport.TFormDeptwiseCollection.DBLCB_DepNameKeyDown
+ 0001:00004998       UnitDeptWiseReport.TFormDeptwiseCollection.FormShow
+ 0001:00004AB8       UnitDeptWiseReport.Finalization
+ 0001:00004ACC       UnitRepDetailUserWise..TFormRepDetailUserWise
+ 0001:00006D38       UnitRepDetailUserWise.TFormRepDetailUserWise.FormCreate
+ 0001:00006D4C       UnitRepDetailUserWise.TFormRepDetailUserWise.QRDBText16Print
+ 0001:00006DA8       UnitRepDetailUserWise.TFormRepDetailUserWise.QRDBText4Print
+ 0001:00006E04       UnitRepDetailUserWise.TFormRepDetailUserWise.QRDBText64Print
+ 0001:00006E60       UnitRepDetailUserWise.TFormRepDetailUserWise.QRDBText74Print
+ 0001:00006EBC       UnitRepDetailUserWise.TFormRepDetailUserWise.QRDBText9Print
+ 0001:00006F18       UnitRepDetailUserWise.TFormRepDetailUserWise.QRExpr16Print
+ 0001:00006FA4       UnitRepDetailUserWise.TFormRepDetailUserWise.QRExpr17Print
+ 0001:00007030       UnitRepDetailUserWise.TFormRepDetailUserWise.QRExpr28Print
+ 0001:000070C0       UnitRepDetailUserWise.TFormRepDetailUserWise.QRExpr32Print
+ 0001:0000714C       UnitRepDetailUserWise.TFormRepDetailUserWise.QRExpr3Print
+ 0001:000071D8       UnitRepDetailUserWise.TFormRepDetailUserWise.QRLabel_HosNamePrint
+ 0001:000071EC       UnitRepDetailUserWise.TFormRepDetailUserWise.QuickRep1AfterPrint
+ 0001:00007220       UnitRepDetailUserWise.TFormRepDetailUserWise.QuickRep1BeforePrint
+ 0001:00007254       UnitRepDetailUserWise.Finalization
+ 0001:0000725C       UnitRepUserWiseDetail..TFormRepUserWiseDetail
+ 0001:00007938       UnitRepUserWiseDetail.TFormRepUserWiseDetail.FormCreate
+ 0001:00007948       UnitRepUserWiseDetail.Finalization
+ 0001:00007950       qrpBaseCtrls.TQRPQuickrep.Preview
+ 0001:00007958       qrpexpr.Finalization
+ 0001:00007960       UnitRepUserWiseCollection..TFormRepUserWiseCollection
+ 0001:00009878       UnitRepUserWiseCollection.TFormRepUserWiseCollection.QRLabel10Print
+ 0001:000098C4       UnitRepUserWiseCollection.TFormRepUserWiseCollection.QRLabel1Print
+ 0001:000098D8       UnitRepUserWiseCollection.TFormRepUserWiseCollection.QRLabel21Print
+ 0001:000098EC       UnitRepUserWiseCollection.TFormRepUserWiseCollection.FormCreate
+ 0001:00009940       UnitRepUserWiseCollection.TFormRepUserWiseCollection.lbl_AddressPrint
+ 0001:00009944       UnitRepUserWiseCollection.TFormRepUserWiseCollection.QRLabel6Print
+ 0001:00009958       UnitRepUserWiseCollection.TFormRepUserWiseCollection.QRLabel7Print
+ 0001:0000996C       UnitRepUserWiseCollection.TFormRepUserWiseCollection.QRLabel9Print
+ 0001:00009970       UnitRepUserWiseCollection.Finalization
+ 0001:00009978       UnitUserWiseCollection..TFormUserWiseCollection
+ 0001:0000A1DC       UnitUserWiseCollection.TFormUserWiseCollection.BtnToClick
+ 0001:0000A1F0       UnitUserWiseCollection.TFormUserWiseCollection.Btn_DepWiseClick
+ 0001:0000A24C       UnitUserWiseCollection.TFormUserWiseCollection.Btn_PreviewClick
+ 0001:0000BABC       UnitUserWiseCollection.TFormUserWiseCollection.Button1Click
+ 0001:0000BB18       UnitUserWiseCollection.TFormUserWiseCollection.Chk_DetailClick
+ 0001:0000BB68       UnitUserWiseCollection.TFormUserWiseCollection.DBLCB_UserNameKeyDown
+ 0001:0000BBC4       UnitUserWiseCollection.TFormUserWiseCollection.BtnfromClick
+ 0001:0000BBD8       UnitUserWiseCollection.TFormUserWiseCollection.FormDestroy
+ 0001:0000BBDC       UnitUserWiseCollection.TFormUserWiseCollection.FormKeyDown
+ 0001:0000BBF0       UnitUserWiseCollection.TFormUserWiseCollection.FormShow
+ 0001:0000BD10       UnitUserWiseCollection.Finalization
+ 0001:0000BD18       Unit1..TForm1
+ 0001:0000C0A0       Unit1.TForm1.Button1Click
+ 0001:0000C0FC       Unit1.TForm1.Button2Click
+ 0001:0000C158       Unit1.TForm1.Button3Click
+ 0001:0000C1B4       Unit1.TForm1.FormKeyDown
+ 0001:0000C1C8       Unit1.Finalization
+ 0001:0000C1D0       Barcode.Finalization
+ 0001:0000C1D8       Unit_QrPatientTestList..TForm_QrPatientTesList
+ 0001:0000CBD0       Unit_QrPatientTestList.TForm_QrPatientTesList.FormCreate
+ 0001:0000CF90       Unit_QrPatientTestList.TForm_QrPatientTesList.Loaddata
+ 0001:0000D8E0       Unit_QrPatientTestList.TForm_QrPatientTesList.PrintBarcode
+ 0001:0000DAF8       Unit_QrPatientTestList.TForm_QrPatientTesList.QRDBText1Print
+ 0001:0000DC9C       Unit_QrPatientTestList.TForm_QrPatientTesList.QRDBText2Print
+ 0001:0000DCA0       Unit_QrPatientTestList.TForm_QrPatientTesList.QRDBText4Print
+ 0001:0000DD28       Unit_QrPatientTestList.TForm_QrPatientTesList.QRDBText5Print
+ 0001:0000DD2C       Unit_QrPatientTestList.TForm_QrPatientTesList.QRLabel5Print
+ 0001:0000DDC0       Unit_QrPatientTestList.TForm_QrPatientTesList.QRSubDetail1AfterPrint
+ 0001:0000DDC4       Unit_QrPatientTestList.TForm_QrPatientTesList.Table_PatienttestlistAfterScroll
+ 0001:0000DE48       Unit_QrPatientTestList.TForm_QrPatientTesList.GetTestName
+ 0001:0000DF94       Unit_QrPatientTestList.Finalization
+ 0001:0000DF9C       Unit_QrWorkList..TForm_QrWorkList
+ 0001:0000E770       Unit_QrWorkList.TForm_QrWorkList.FormCreate
+ 0001:0000E968       Unit_QrWorkList.TForm_QrWorkList.lbl_pagePrint
+ 0001:0000E9FC       Unit_QrWorkList.TForm_QrWorkList.Loaddata
+ 0001:000105D8       Unit_QrWorkList.TForm_QrWorkList.QRDBText1Print
+ 0001:00010680       Unit_QrWorkList.TForm_QrWorkList.QRDBText2Print
+ 0001:00010728       Unit_QrWorkList.TForm_QrWorkList.QRDBText3Print
+ 0001:000107D0       Unit_QrWorkList.TForm_QrWorkList.QRDBText4Print
+ 0001:00010878       Unit_QrWorkList.TForm_QrWorkList.QRLabel1Print
+ 0001:00010950       Unit_QrWorkList.Finalization
+ 0001:00010958       Unit_Medicare_GovtSvrTaxReport..TForm_Medicare_GovtSvrTaxReport
+ 0001:00013094       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel10Print
+ 0001:000130B8       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel15Print
+ 0001:000130DC       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel1Print
+ 0001:000130F0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel40Print
+ 0001:00013100       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel_AddPrint
+ 0001:00013110       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabelCSSnoPrint
+ 0001:0001316C       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabelCRSnoPrint
+ 0001:000131C8       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabelRFSnoPrint
+ 0001:00013224       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel5Print
+ 0001:00013248       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel20Print
+ 0001:000132A4       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr2Print
+ 0001:00013334       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr10Print
+ 0001:000133C4       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr4Print
+ 0001:00013454       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr11Print
+ 0001:000134E4       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr20Print
+ 0001:00013574       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr19Print
+ 0001:00013604       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr24Print
+ 0001:00013694       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr18Print
+ 0001:00013724       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr3Print
+ 0001:000137AC       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr5Print
+ 0001:00013834       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRLabel45Print
+ 0001:00013890       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr1Print
+ 0001:00013920       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr6Print
+ 0001:000139B0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr7Print
+ 0001:00013A40       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr8Print
+ 0001:00013AD0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr9Print
+ 0001:00013B60       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr13Print
+ 0001:00013BF0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr14Print
+ 0001:00013C80       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr16Print
+ 0001:00013D10       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr17Print
+ 0001:00013DA0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr25Print
+ 0001:00013E28       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr26Print
+ 0001:00013EB0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr27Print
+ 0001:00013F38       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr28Print
+ 0001:00013FC0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr21Print
+ 0001:00014050       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr29Print
+ 0001:000140D8       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr22Print
+ 0001:00014168       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr30Print
+ 0001:000141F0       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr23Print
+ 0001:00014280       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr31Print
+ 0001:00014308       Unit_Medicare_GovtSvrTaxReport.TForm_Medicare_GovtSvrTaxReport.QRExpr32Print
+ 0001:00014390       Unit_Medicare_GovtSvrTaxReport.Finalization
+ 0001:00014398       Unit_Medicare_GovtSvrTaxReportSummary..TForm_Medicare_GovtSvrTaxReportSummary
+ 0001:00016548       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel14Print
+ 0001:00016558       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel_AddPrint
+ 0001:00016568       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel34Print
+ 0001:00016578       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel40Print
+ 0001:00016588       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabelCSSnoPrint
+ 0001:000165E4       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabelCRSnoPrint
+ 0001:00016640       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabelRFSnoPrint
+ 0001:0001669C       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel5Print
+ 0001:000166C0       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel9Print
+ 0001:0001671C       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel20Print
+ 0001:00016778       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr19Print
+ 0001:00016858       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel45Print
+ 0001:000168B4       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr6Print
+ 0001:00016994       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr9Print
+ 0001:00016A74       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText4Print
+ 0001:00016B0C       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText8Print
+ 0001:00016BA4       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText6Print
+ 0001:00016C3C       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText20Print
+ 0001:00016CD4       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText21Print
+ 0001:00016E28       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText23Print
+ 0001:00016EC0       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText24Print
+ 0001:00016F58       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRDBText3Print
+ 0001:00016F70       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr11Print
+ 0001:00017050       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr16Print
+ 0001:00017130       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr17Print
+ 0001:00017134       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr18Print
+ 0001:00017214       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr20Print
+ 0001:00017294       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr21Print
+ 0001:00017314       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr22Print
+ 0001:00017394       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr23Print
+ 0001:00017414       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr24Print
+ 0001:00017494       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr26Print
+ 0001:00017514       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRExpr27Print
+ 0001:00017594       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QRLabel1Print
+ 0001:000175A4       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.QuickRep1StartPage
+ 0001:000176C0       Unit_Medicare_GovtSvrTaxReportSummary.TForm_Medicare_GovtSvrTaxReportSummary.SummaryBand1AfterPrint
+ 0001:00017718       Unit_Medicare_GovtSvrTaxReportSummary.Finalization
+ 0001:00017720       UnitSalesBook..TForm_SalesBook
+ 0001:00018074       UnitSalesBook.TForm_SalesBook.BitBtnCancelClick
+ 0001:0001807C       UnitSalesBook.TForm_SalesBook.BitBtnPreviewClick
+ 0001:000180AC       UnitSalesBook.TForm_SalesBook.BitBtn_FromDateClick
+ 0001:0001814C       UnitSalesBook.TForm_SalesBook.BitBtn_ToDateClick
+ 0001:000181EC       UnitSalesBook.TForm_SalesBook.CBTaxOfficeClick
+ 0001:00018230       UnitSalesBook.TForm_SalesBook.CreateTable_TaxSummaryReport
+ 0001:000184E8       UnitSalesBook.TForm_SalesBook.FormCreate
+ 0001:0001851C       UnitSalesBook.TForm_SalesBook.FormDestroy
+ 0001:00018520       UnitSalesBook.TForm_SalesBook.FormKeyDown
+ 0001:00018564       UnitSalesBook.TForm_SalesBook.FormShow
+ 0001:00018640       UnitSalesBook.TForm_SalesBook.Govt_Service_Tax_Report_Medicare
+ 0001:00019D88       UnitSalesBook.Finalization
+ 0001:00019D90       Unit_QrTaxReport..TForm_QrTaxReport
+ 0001:0001AC64       Unit_QrTaxReport.TForm_QrTaxReport.FormCreate
+ 0001:0001B638       Unit_QrTaxReport.TForm_QrTaxReport.lbl_BillCountPrint
+ 0001:0001B650       Unit_QrTaxReport.TForm_QrTaxReport.lbl_billnoPrint
+ 0001:0001B654       Unit_QrTaxReport.TForm_QrTaxReport.QRDBText1Print
+ 0001:0001B6E0       Unit_QrTaxReport.TForm_QrTaxReport.QRDBText2Print
+ 0001:0001B76C       Unit_QrTaxReport.TForm_QrTaxReport.QRDBText3Print
+ 0001:0001B7F8       Unit_QrTaxReport.TForm_QrTaxReport.QRDBText4Print
+ 0001:0001B810       Unit_QrTaxReport.TForm_QrTaxReport.QRDBText5Print
+ 0001:0001B828       Unit_QrTaxReport.TForm_QrTaxReport.QRExpr1Print
+ 0001:0001B8A0       Unit_QrTaxReport.TForm_QrTaxReport.QRExpr2Print
+ 0001:0001B918       Unit_QrTaxReport.TForm_QrTaxReport.QRExpr3Print
+ 0001:0001B990       Unit_QrTaxReport.Finalization
+ 0001:0001B998       Unit_TaxReport..TForm_TaxReport
+ 0001:0001BEB4       Unit_TaxReport.TForm_TaxReport.BitBtnCancelClick
+ 0001:0001BEBC       Unit_TaxReport.TForm_TaxReport.BitBtnPreviewClick
+ 0001:0001BF94       Unit_TaxReport.TForm_TaxReport.FormCreate
+ 0001:0001C068       Unit_TaxReport.TForm_TaxReport.FormKeyDown
+ 0001:0001C07C       Unit_TaxReport.Finalization
+ 0001:0001C084       Unit_QrReffWiseRevenueDetail..TForm_QRReffWiseRevenueDetail
+ 0001:0001C9C8       Unit_QrReffWiseRevenueDetail.TForm_QRReffWiseRevenueDetail.QRDBText5Print
+ 0001:0001CA9C       Unit_QrReffWiseRevenueDetail.Finalization
+ 0001:0001CAA4       Unit_QrReffWiseRevenueSummary..TForm_QrReffWiseRevenueSummary
+ 0001:0001D114       Unit_QrReffWiseRevenueSummary.TForm_QrReffWiseRevenueSummary.QRDBText3Print
+ 0001:0001D1E8       Unit_QrReffWiseRevenueSummary.Finalization
+ 0001:0001D1F0       Unit_ReffWiseRevenue..TForm_ReffWiseRevenue
+ 0001:0001D978       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.BtnFromClick
+ 0001:0001D98C       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.BtnToClick
+ 0001:0001D9A0       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.Btn_PreviewClick
+ 0001:0001E60C       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.DBLCB_DocCodeKeyDown
+ 0001:0001E668       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.FormCreate
+ 0001:0001E788       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.Rb_DetailClick
+ 0001:0001E7BC       Unit_ReffWiseRevenue.TForm_ReffWiseRevenue.Rb_SummaryClick
+ 0001:0001E7F0       Unit_ReffWiseRevenue.Finalization
+ 0001:0001E7F8       Unit_QrCollectionCenterDetail..TForm_QRCollectionCenterDetail
+ 0001:0001F1CC       Unit_QrCollectionCenterDetail.Finalization
+ 0001:0001F1D4       Unit_QrCollectionCenterSummary..TForm_QrCollectionCenterSummary
+ 0001:0001F8F0       Unit_QrCollectionCenterSummary.Finalization
+ 0001:0001F8F8       Unit_CollectionCenterReport..TForm_CollectionCenterReport
+ 0001:00020220       Unit_CollectionCenterReport.TForm_CollectionCenterReport.Btn_PreviewClick
+ 0001:00020C88       Unit_CollectionCenterReport.TForm_CollectionCenterReport.Dblcb_CommunityClick
+ 0001:00020D64       Unit_CollectionCenterReport.TForm_CollectionCenterReport.Dblcb_CommunityKeyDown
+ 0001:00020DC0       Unit_CollectionCenterReport.TForm_CollectionCenterReport.DBLCB_SchemeCodeKeyDown
+ 0001:00020E1C       Unit_CollectionCenterReport.TForm_CollectionCenterReport.FormCreate
+ 0001:00020FE4       Unit_CollectionCenterReport.TForm_CollectionCenterReport.FormKeyDown
+ 0001:00020FF8       Unit_CollectionCenterReport.TForm_CollectionCenterReport.Rb_DetailClick
+ 0001:00020FFC       Unit_CollectionCenterReport.TForm_CollectionCenterReport.Rb_SummaryClick
+ 0001:00021000       Unit_CollectionCenterReport.Finalization
+ 0001:00021008       Unit_QrSchemeWiseRevenueDetail..TForm_QRSchemeWiseRevenueDetail
+ 0001:00021974       Unit_QrSchemeWiseRevenueDetail.Finalization
+ 0001:0002197C       Unit_QrSchemeWiseRevenueSummary..TForm_QrSchemeWiseRevenueSummary
+ 0001:00022014       Unit_QrSchemeWiseRevenueSummary.Finalization
+ 0001:0002201C       Unit_SchemeWiseRevenue..TForm_SchemeWiseRevenue
+ 0001:00022934       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.Btn_PreviewClick
+ 0001:0002381C       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.Dblcb_CommunityClick
+ 0001:000238F8       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.Dblcb_CommunityKeyDown
+ 0001:00023954       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.DBLCB_SchemeCodeKeyDown
+ 0001:000239B0       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.FormCreate
+ 0001:00023B88       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.FormKeyDown
+ 0001:00023B9C       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.Rb_DetailClick
+ 0001:00023BD0       Unit_SchemeWiseRevenue.TForm_SchemeWiseRevenue.Rb_SummaryClick
+ 0001:00023C04       Unit_SchemeWiseRevenue.Finalization
+ 0001:00023C0C       Unit_QrSampleWiseRep..TForm_SampleWise
+ 0001:000243DC       Unit_QrSampleWiseRep.TForm_SampleWise.lbl_hosaddressPrint
+ 0001:000243F0       Unit_QrSampleWiseRep.TForm_SampleWise.lbl_hosnamePrint
+ 0001:00024404       Unit_QrSampleWiseRep.Finalization
+ 0001:0002440C       UnitSendToExcel.SendToExcels
+ 0001:00024414       UnitSendToExcel.Finalization
+ 0001:0002441C       Unit_SampleWise..TForm_SampleWiseReport
+ 0001:00024FAC       Unit_SampleWise.TForm_SampleWiseReport.bb_closeClick
+ 0001:00024FB4       Unit_SampleWise.TForm_SampleWiseReport.bb_previewClick
+ 0001:000258BC       Unit_SampleWise.TForm_SampleWiseReport.bb_sendtoXLClick
+ 0001:000258D8       Unit_SampleWise.TForm_SampleWiseReport.btn_date1Click
+ 0001:000258EC       Unit_SampleWise.TForm_SampleWiseReport.btn_dateClick
+ 0001:00025900       Unit_SampleWise.TForm_SampleWiseReport.chk_datewiseClick
+ 0001:0002595C       Unit_SampleWise.TForm_SampleWiseReport.chk_TimeClick
+ 0001:00025998       Unit_SampleWise.TForm_SampleWiseReport.dblcb_departmentKeyDown
+ 0001:000259F4       Unit_SampleWise.TForm_SampleWiseReport.FormCreate
+ 0001:00025A24       Unit_SampleWise.TForm_SampleWiseReport.FormKeyDown
+ 0001:00025A38       Unit_SampleWise.TForm_SampleWiseReport.FormShow
+ 0001:00025BB8       Unit_SampleWise.TForm_SampleWiseReport.rb_NotReceivedClick
+ 0001:00025BC0       Unit_SampleWise.TForm_SampleWiseReport.rb_ReceivedClick
+ 0001:00025C24       Unit_SampleWise.TForm_SampleWiseReport.SampleNotReceived
+ 0001:00025C6C       Unit_SampleWise.Finalization
+ 0001:00025C74       Unit_Testsetupdetail..TForm_testdetail
+ 0001:00026114       Unit_Testsetupdetail.TForm_testdetail.BB_CloseClick
+ 0001:0002611C       Unit_Testsetupdetail.TForm_testdetail.chk_allClick
+ 0001:00026150       Unit_Testsetupdetail.TForm_testdetail.FormCreate
+ 0001:00026188       Unit_Testsetupdetail.TForm_testdetail.SpeedButton2Click
+ 0001:00026470       Unit_Testsetupdetail.Finalization
+ 0001:00026478       Unit_PatientTestDetail..TForm_PatienttestDetail
+ 0001:00026C7C       Unit_PatientTestDetail.TForm_PatienttestDetail.bb_closeClick
+ 0001:00026C84       Unit_PatientTestDetail.TForm_PatienttestDetail.Bb_SendtoExcelClick
+ 0001:00027320       Unit_PatientTestDetail.TForm_PatienttestDetail.BtnToClick
+ 0001:00027334       Unit_PatientTestDetail.TForm_PatienttestDetail.chk_deptAllClick
+ 0001:00027574       Unit_PatientTestDetail.TForm_PatienttestDetail.Chk_TestAllClick
+ 0001:000277BC       Unit_PatientTestDetail.TForm_PatienttestDetail.dblkcbb_depClick
+ 0001:0002790C       Unit_PatientTestDetail.TForm_PatienttestDetail.FormCreate
+ 0001:000279FC       Unit_PatientTestDetail.TForm_PatienttestDetail.FormShow
+ 0001:00027A5C       Unit_PatientTestDetail.TForm_PatienttestDetail.BtnFromClick
+ 0001:00027A70       Unit_PatientTestDetail.Finalization
+ 0001:00027A78       Unit_QrPatientFindingDetail..TForm_PatientFindingDetail
+ 0001:00028660       Unit_QrPatientFindingDetail.TForm_PatientFindingDetail.FormCreate
+ 0001:00028674       Unit_QrPatientFindingDetail.TForm_PatientFindingDetail.GetFlag
+ 0001:00028CB8       Unit_QrPatientFindingDetail.TForm_PatientFindingDetail.QRDBText7Print
+ 0001:00028D64       Unit_QrPatientFindingDetail.TForm_PatientFindingDetail.QRDBText8Print
+ 0001:00028D7C       Unit_QrPatientFindingDetail.TForm_PatientFindingDetail.QRDBText9Print
+ 0001:00028E50       Unit_QrPatientFindingDetail.TForm_PatientFindingDetail.QRLabel_HosNamePrint
+ 0001:00028E64       Unit_QrPatientFindingDetail.Finalization
+ 0001:00028E6C       Unit_AllPatientTest..TForm_AllPatientTest
+ 0001:00029510       Unit_AllPatientTest.TForm_AllPatientTest.Bb_previewClick
+ 0001:00029840       Unit_AllPatientTest.TForm_AllPatientTest.Bb_cancelClick
+ 0001:00029848       Unit_AllPatientTest.TForm_AllPatientTest.btnfromClick
+ 0001:0002985C       Unit_AllPatientTest.TForm_AllPatientTest.btntoClick
+ 0001:00029870       Unit_AllPatientTest.TForm_AllPatientTest.cb_allClick
+ 0001:000298D4       Unit_AllPatientTest.TForm_AllPatientTest.FormKeyDown
+ 0001:000298E8       Unit_AllPatientTest.TForm_AllPatientTest.FormShow
+ 0001:000299E0       Unit_AllPatientTest.Finalization
+ 0001:000299E8       Qr_WorkList..TForm_QrreportWorkList
+ 0001:0002A258       Qr_WorkList.TForm_QrreportWorkList.QRLabel10Print
+ 0001:0002A26C       Qr_WorkList.TForm_QrreportWorkList.QRLabel21Print
+ 0001:0002A280       Qr_WorkList.TForm_QrreportWorkList.Tableworklistcreate
+ 0001:0002A43C       Qr_WorkList.Finalization
+ 0001:0002A444       Unit_WorkList..TForm_WorkList
+ 0001:0002AD1C       Unit_WorkList.TForm_WorkList.FormShow
+ 0001:0002AE5C       Unit_WorkList.TForm_WorkList.BitBtnCancelClick
+ 0001:0002AE64       Unit_WorkList.TForm_WorkList.BitBtn_FromClick
+ 0001:0002AEF0       Unit_WorkList.TForm_WorkList.BitBtn2Click
+ 0001:0002AF7C       Unit_WorkList.TForm_WorkList.FormKeyPress
+ 0001:0002AF88       Unit_WorkList.TForm_WorkList.BitBtn1Click
+ 0001:0002C3E8       Unit_WorkList.TForm_WorkList.CheckBoxAllClick
+ 0001:0002C470       Unit_WorkList.TForm_WorkList.IntToRoman
+ 0001:0002C500       Unit_WorkList.TForm_WorkList.BitBtnExcelClick
+ 0001:0002C5B0       Unit_WorkList.TForm_WorkList.CheckBox_timewiseClick
+ 0001:0002C5E4       Unit_WorkList.Finalization
+ 0001:0002C5EC       Unit_QrDoctorwiseCaseDetail..TForm_QrDoctorwisePatientDetail
+ 0001:0002CE54       Unit_QrDoctorwiseCaseDetail.TForm_QrDoctorwisePatientDetail.QRLabel1Print
+ 0001:0002CE68       Unit_QrDoctorwiseCaseDetail.TForm_QrDoctorwisePatientDetail.QRLabel2Print
+ 0001:0002CE7C       Unit_QrDoctorwiseCaseDetail.Finalization
+ 0001:0002CE84       Unit_QRDoctorWisePatientSummary..TForm_QrDoctorWisePatientSummary
+ 0001:0002D4B8       Unit_QRDoctorWisePatientSummary.TForm_QrDoctorWisePatientSummary.QRLabel1Print
+ 0001:0002D4CC       Unit_QRDoctorWisePatientSummary.TForm_QrDoctorWisePatientSummary.QRLabel2Print
+ 0001:0002D4E0       Unit_QRDoctorWisePatientSummary.Finalization
+ 0001:0002D4E8       Unit_Doctorwisepatientcase..TForm_DoctorwisePatientcase
+ 0001:0002DCE4       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.BitBtn1Click
+ 0001:0002E71C       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.BitBtn2Click
+ 0001:0002E724       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.CheckBox_AllClick
+ 0001:0002E7B8       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.FormKeyDown
+ 0001:0002E7CC       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.FormShow
+ 0001:0002E8B8       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.SpeedButton_fromClick
+ 0001:0002E8CC       Unit_Doctorwisepatientcase.TForm_DoctorwisePatientcase.SpeedButton_toClick
+ 0001:0002E8E0       Unit_Doctorwisepatientcase.Finalization
+ 0001:0002E8E8       Unit_ReportTree..TForm_ReportTree
+ 0001:0002EF18       Unit_ReportTree.TForm_ReportTree.BitBtn_CloseClick
+ 0001:0002EF20       Unit_ReportTree.TForm_ReportTree.Edit1Change
+ 0001:0002EF24       Unit_ReportTree.TForm_ReportTree.FormKeyDown
+ 0001:0002EF38       Unit_ReportTree.TForm_ReportTree.FormShow
+ 0001:0002F124       Unit_ReportTree.TForm_ReportTree.ReportOpen
+ 0001:0002F128       Unit_ReportTree.TForm_ReportTree.TreeView_ReportClick
+ 0001:0002FD18       Unit_ReportTree.TForm_ReportTree.TreeView_ReportCustomDrawItem
+ 0001:0002FD94       Unit_ReportTree.Finalization
+ 0001:000309C8       .Reports.@GetPackageInfoTable
+ 0001:000309D0       .Reports.@PackageLoad
+ 0001:000309DC       .Reports.@PackageUnload
+ 0002:00000000       System.System
+ 0002:00000008       ActnList.ActnList
+ 0002:00000010       Classes.TThread.Create@
+ 0002:00000018       Classes.Classes
+ 0002:00000020       Windows.Windows
+ 0002:00000038       TypInfo.TypInfo
+ 0002:00000040       SysUtils.TLanguages.Create@
+ 0002:00000048       SysUtils.TEncoding.Create@
+ 0002:00000050       SysUtils.Exception.Create@
+ 0002:00000058       SysUtils.SysUtils
+ 0002:00000060       Variants.Variants
+ 0002:00000068       VarUtils.VarUtils
+ 0002:00000070       Graphics.Graphics
+ 0002:00000078       Registry.Registry
+ 0002:00000080       IniFiles.IniFiles
+ 0002:00000088       IOUtils.TPath.Create@
+ 0002:00000090       IOUtils.IOUtils
+ 0002:00000098       Themes.Themes
+ 0002:000000A0       Controls.Controls
+ 0002:000000A8       SyncObjs.SyncObjs
+ 0002:000000B0       TimeSpan.TTimeSpan.Create@
+ 0002:000000B8       Menus.Menus
+ 0002:000000C0       UxTheme.UxTheme
+ 0002:000000C8       MultiMon.MultiMon
+ 0002:000000D0       Forms.Forms
+ 0002:000000D8       HelpIntfs.HelpIntfs
+ 0002:000000E0       Dialogs.Dialogs
+ 0002:000000E8       ComCtrls.ComCtrls
+ 0002:000000F0       GraphUtil.GraphUtil
+ 0002:000000F8       ExtCtrls.ExtCtrls
+ 0002:00000100       Printers.Printers
+ 0002:00000108       Clipbrd.Clipbrd
+ 0002:00000110       FlatSB.FlatSB
+ 0002:00000118       DB.DB
+ 0002:00000120       WideStrings.WideStrings
+ 0002:00000128       FMTBcd.FMTBcd
+ 0002:00000130       SqlTimSt.SqlTimSt
+ 0002:00000138       ComObj.ComObj
+ 0002:00000140       DBCtrls.DBCtrls
+ 0002:00000148       Buttons.Buttons
+ 0002:00000150       DBPWDlg.DBPWDlg
+ 0002:00000158       DBLogDlg.DBLogDlg
+ 0002:00000160       OraCall.OraCall
+ 0002:00000168       MemUtils.MemUtils
+ 0002:00000170       CLRClasses.CLRClasses
+ 0002:00000178       MTSCall.MTSCall
+ 0002:00000180       DBAccess.DBAccess
+ 0002:00000188       CRParser.CRParser
+ 0002:00000190       MemData.MemData
+ 0002:00000198       AnsiStrings.AnsiStrings
+ 0002:000001A0       DASQLMonitor.DASQLMonitor
+ 0002:000001A8       CRVioTcp.CRVioTcp
+ 0002:000001B0       DBMonitorClient.DBMonitorClient
+ 0002:000001B8       CRXml.CRXml
+ 0002:000001C0       OraSmart.OraSmart
+ 0002:000001C8       OraParser.OraParser
+ 0002:000001D0       OraClasses.OraClasses
+ 0002:000001D8       OraObjects.OraObjects
+ 0002:000001E0       OraNet.OraNet
+ 0002:000001E8       OraAlerter.OraAlerter
+ 0002:000001F0       Ora.Ora
+ 0002:000001F8       OraConnectionPool.OraConnectionPool
+ 0002:00000200       OraSQLMonitor.OraSQLMonitor
+ 0002:00000208       DBTables.DBTables
+ 0002:00000210       OleServer.OleServer
+ 0002:00000218       OleCtrls.OleCtrls
+ 0002:00000220       AxCtrls.AxCtrls
+ 0002:00000228       ServerDate.ServerDate
+ 0002:00000230       QRCtrls.QRCtrls
+ 0002:00000238       QRExpr.QRExpr
+ 0002:00000240       QuickRpt.QuickRpt
+ 0002:00000248       OleCtnrs.OleCtnrs
+ 0002:00000250       QRExtra.QRExtra
+ 0002:00000258       QRPrntr.QRPrntr
+ 0002:00000260       QRPDFFilt.QRPDFFilt
+ 0002:00000268       pdfconst.pdfconst
+ 0002:00000270       QRExport.QRExport
+ 0002:00000278       jpeg.jpeg
+ 0002:00000280       QRWebFilt.QRWebFilt
+ 0002:00000288       QRPrev.QRPrev
+ 0002:00000290       QRXMLSFilt.QRXMLSFilt
+ 0002:00000298       QRPrnSu.QRPrnSu
+ 0002:000002A0       Fxn.Fxn
+ 0002:000002A8       ADODB.ADODB
+ 0002:000002B0       TeCanvas.TeCanvas
+ 0002:000002B8       TeeConst.TeeConst
+ 0002:000002C0       TeeHtml.TeeHtml
+ 0002:000002C8       CheckLst.CheckLst
+ 0002:000002D0       Unit_Message.Unit_Message
+ 0002:000002D8       UnitRepNoofTestDone.UnitRepNoofTestDone
+ 0002:000002EC       UnitNoofTestDone.UnitNoofTestDone
+ 0002:00000300       UnitRepDeptWiseCollection.UnitRepDeptWiseCollection
+ 0002:00000314       UnitDeptWiseReport.UnitDeptWiseReport
+ 0002:00000328       UnitRepDetailUserWise.UnitRepDetailUserWise
+ 0002:00000330       UnitRepUserWiseDetail.UnitRepUserWiseDetail
+ 0002:00000338       qrpexpr.qrpexpr
+ 0002:00000340       UnitRepUserWiseCollection.UnitRepUserWiseCollection
+ 0002:00000348       UnitUserWiseCollection.UnitUserWiseCollection
+ 0002:00000350       Unit1.Unit1
+ 0002:00000358       Barcode.Barcode
+ 0002:00000360       Unit_QrPatientTestList.Unit_QrPatientTestList
+ 0002:00000368       Unit_QrWorkList.Unit_QrWorkList
+ 0002:00000370       Unit_Medicare_GovtSvrTaxReport.Unit_Medicare_GovtSvrTaxReport
+ 0002:00000378       Unit_Medicare_GovtSvrTaxReportSummary.Unit_Medicare_GovtSvrTaxReportSummary
+ 0002:00000380       UnitSalesBook.UnitSalesBook
+ 0002:00000388       Unit_QrTaxReport.Unit_QrTaxReport
+ 0002:00000390       Unit_TaxReport.Unit_TaxReport
+ 0002:00000398       Unit_QrReffWiseRevenueDetail.Unit_QrReffWiseRevenueDetail
+ 0002:000003A0       Unit_QrReffWiseRevenueSummary.Unit_QrReffWiseRevenueSummary
+ 0002:000003A8       Unit_ReffWiseRevenue.Unit_ReffWiseRevenue
+ 0002:000003B0       Unit_QrCollectionCenterDetail.Unit_QrCollectionCenterDetail
+ 0002:000003B8       Unit_QrCollectionCenterSummary.Unit_QrCollectionCenterSummary
+ 0002:000003C0       Unit_CollectionCenterReport.Unit_CollectionCenterReport
+ 0002:000003C8       Unit_QrSchemeWiseRevenueDetail.Unit_QrSchemeWiseRevenueDetail
+ 0002:000003D0       Unit_QrSchemeWiseRevenueSummary.Unit_QrSchemeWiseRevenueSummary
+ 0002:000003D8       Unit_SchemeWiseRevenue.Unit_SchemeWiseRevenue
+ 0002:000003E0       Unit_QrSampleWiseRep.Unit_QrSampleWiseRep
+ 0002:000003E8       UnitSendToExcel.UnitSendToExcel
+ 0002:000003F0       Unit_SampleWise.Unit_SampleWise
+ 0002:000003F8       Unit_Testsetupdetail.Unit_Testsetupdetail
+ 0002:00000400       Unit_PatientTestDetail.Unit_PatientTestDetail
+ 0002:00000408       Unit_QrPatientFindingDetail.Unit_QrPatientFindingDetail
+ 0002:00000410       Unit_AllPatientTest.Unit_AllPatientTest
+ 0002:00000418       Qr_WorkList.Qr_WorkList
+ 0002:00000420       Unit_WorkList.Unit_WorkList
+ 0002:00000428       Unit_QrDoctorwiseCaseDetail.Unit_QrDoctorwiseCaseDetail
+ 0002:00000430       Unit_QRDoctorWisePatientSummary.Unit_QRDoctorWisePatientSummary
+ 0002:00000438       Unit_Doctorwisepatientcase.Unit_Doctorwisepatientcase
+ 0002:00000440       Unit_ReportTree.Unit_ReportTree
+ 0002:00000448       .Reports..Reports
+ 0003:00000000       SysInit.TlsIndex
+ 0003:00000004       SysInit.Module
+ 0003:00000020       SysInit.TlsProc
+ 0003:00000030       Windows.Win32MajorVersion
+ 0003:00000034       Windows.Win32MinorVersion
+ 0003:00000038       Windows.Win32Platform
+ 0003:0000003C       Unit_WorkList.vals
+ 0003:00000058       Unit_WorkList.roms
+ 0004:00000000       SysInit.ModuleIsLib
+ 0004:00000001       SysInit.ModuleIsPackage
+ 0004:00000004       SysInit.HInstance
+ 0004:00000008       SysInit.tlsBuffer
+ 0004:0000000C       Windows..2
+ 0004:00000010       Windows.HtmlHelpModule
+ 0004:00000014       UnitRepNoofTestDone.FormRepNoofTestDone
+ 0004:00000018       UnitRepNoofTestDone..2
+ 0004:0000001C       UnitNoofTestDone.FormNoofTestDone
+ 0004:00000020       UnitNoofTestDone..2
+ 0004:00000024       UnitRepDeptWiseCollection.FormRepDeptWiseSum
+ 0004:00000028       UnitRepDeptWiseCollection..2
+ 0004:0000002C       UnitDeptWiseReport.FormDeptwiseCollection
+ 0004:00000030       UnitDeptWiseReport..2
+ 0004:00000034       UnitRepDetailUserWise.FormRepDetailUserWise
+ 0004:00000038       UnitRepDetailUserWise..2
+ 0004:0000003C       UnitRepUserWiseDetail.FormRepUserWiseDetail
+ 0004:00000040       UnitRepUserWiseDetail..2
+ 0004:00000044       UnitRepUserWiseCollection.FormRepUserWiseCollection
+ 0004:00000048       UnitRepUserWiseCollection..2
+ 0004:0000004C       UnitUserWiseCollection.FormUserWiseCollection
+ 0004:00000050       UnitUserWiseCollection..2
+ 0004:00000054       Unit1.Form1
+ 0004:00000058       Unit1..2
+ 0004:0000005C       Unit_QrPatientTestList.Form_QrPatientTesList
+ 0004:00000060       Unit_QrPatientTestList..2
+ 0004:00000064       Unit_QrWorkList.Form_QrWorkList
+ 0004:00000068       Unit_QrWorkList..2
+ 0004:0000006C       Unit_Medicare_GovtSvrTaxReport.Form_Medicare_GovtSvrTaxReport
+ 0004:00000070       Unit_Medicare_GovtSvrTaxReport..2
+ 0004:00000074       Unit_Medicare_GovtSvrTaxReportSummary.Form_Medicare_GovtSvrTaxReportSummary
+ 0004:00000078       Unit_Medicare_GovtSvrTaxReportSummary..2
+ 0004:0000007C       UnitSalesBook.Form_SalesBook
+ 0004:00000080       UnitSalesBook..2
+ 0004:00000084       Unit_QrTaxReport.Form_QrTaxReport
+ 0004:00000088       Unit_QrTaxReport..2
+ 0004:0000008C       Unit_TaxReport.Form_TaxReport
+ 0004:00000090       Unit_TaxReport..2
+ 0004:00000094       Unit_QrReffWiseRevenueDetail.Form_QRReffWiseRevenueDetail
+ 0004:00000098       Unit_QrReffWiseRevenueDetail..2
+ 0004:0000009C       Unit_QrReffWiseRevenueSummary.Form_QrReffWiseRevenueSummary
+ 0004:000000A0       Unit_QrReffWiseRevenueSummary..2
+ 0004:000000A4       Unit_ReffWiseRevenue.Form_ReffWiseRevenue
+ 0004:000000A8       Unit_ReffWiseRevenue..2
+ 0004:000000AC       Unit_QrCollectionCenterDetail.Form_QRCollectionCenterDetail
+ 0004:000000B0       Unit_QrCollectionCenterDetail..2
+ 0004:000000B4       Unit_QrCollectionCenterSummary.Form_QrCollectionCenterSummary
+ 0004:000000B8       Unit_QrCollectionCenterSummary..2
+ 0004:000000BC       Unit_CollectionCenterReport.Form_CollectionCenterReport
+ 0004:000000C0       Unit_CollectionCenterReport..2
+ 0004:000000C4       Unit_QrSchemeWiseRevenueDetail.Form_QRSchemeWiseRevenueDetail
+ 0004:000000C8       Unit_QrSchemeWiseRevenueDetail..2
+ 0004:000000CC       Unit_QrSchemeWiseRevenueSummary.Form_QrSchemeWiseRevenueSummary
+ 0004:000000D0       Unit_QrSchemeWiseRevenueSummary..2
+ 0004:000000D4       Unit_SchemeWiseRevenue.Form_SchemeWiseRevenue
+ 0004:000000D8       Unit_SchemeWiseRevenue..2
+ 0004:000000DC       Unit_QrSampleWiseRep.Form_SampleWise
+ 0004:000000E0       Unit_QrSampleWiseRep..2
+ 0004:000000E4       Unit_SampleWise.Form_SampleWiseReport
+ 0004:000000E8       Unit_SampleWise..2
+ 0004:000000EC       Unit_Testsetupdetail.Form_testdetail
+ 0004:000000F0       Unit_Testsetupdetail..2
+ 0004:000000F4       Unit_PatientTestDetail.Form_PatienttestDetail
+ 0004:000000F8       Unit_PatientTestDetail..2
+ 0004:000000FC       Unit_QrPatientFindingDetail.Form_PatientFindingDetail
+ 0004:00000100       Unit_QrPatientFindingDetail..2
+ 0004:00000104       Unit_AllPatientTest.Form_AllPatientTest
+ 0004:00000108       Unit_AllPatientTest..2
+ 0004:0000010C       Qr_WorkList.Form_QrreportWorkList
+ 0004:00000110       Qr_WorkList..2
+ 0004:00000114       Unit_WorkList.Form_WorkList
+ 0004:00000118       Unit_WorkList..2
+ 0004:0000011C       Unit_QrDoctorwiseCaseDetail.Form_QrDoctorwisePatientDetail
+ 0004:00000120       Unit_QrDoctorwiseCaseDetail..2
+ 0004:00000124       Unit_QRDoctorWisePatientSummary.Form_QrDoctorWisePatientSummary
+ 0004:00000128       Unit_QRDoctorWisePatientSummary..2
+ 0004:0000012C       Unit_Doctorwisepatientcase.Form_DoctorwisePatientcase
+ 0004:00000130       Unit_Doctorwisepatientcase..2
+ 0004:00000134       Unit_ReportTree.Form_ReportTree
+ 0004:00000138       Unit_ReportTree..2
+ 0005:00000000       SysInit.TlsLast
+
+
+Line numbers for UnitRepNoofTestDone(UnitRepNoofTestDone.pas) segment .text
+
+    92 0001:000018C4    93 0001:000018DD    94 0001:000018E3    95 0001:000018FB
+    99 0001:00001920   100 0001:00001936   101 0001:00001949   105 0001:0000196C
+   106 0001:00001982   107 0001:00001995   111 0001:000019B8   112 0001:000019BB
+   113 0001:000019CA   116 0001:000019CC   117 0001:000019CF   118 0001:000019DE
+   122 0001:000019E0   123 0001:000019EA   128 0001:000019EC   129 0001:000019F4
+   134 0001:000019F8   135 0001:00001A0A
+
+Line numbers for UnitRepNoofTestDone(UnitRepNoofTestDone.pas) segment .itext
+
+   131 0002:000002D8   132 0002:000002E1   133 0002:000002EB
+
+Line numbers for UnitNoofTestDone(UnitNoofTestDone.pas) segment .text
+
+    55 0001:00002180    56 0001:00002191    60 0001:00002194    61 0001:000021A5
+    64 0001:000021A8    65 0001:000021C9    66 0001:000021E1    67 0001:000021F9
+    68 0001:0000220C    69 0001:0000221F    70 0001:0000222D    73 0001:00002243
+    75 0001:00002250    76 0001:00002257    77 0001:00002268    78 0001:00002274
+    79 0001:00002285    80 0001:00002296    83 0001:00002304    84 0001:00002321
+    85 0001:00002366    86 0001:00002377    88 0001:00002388    90 0001:0000238F
+    91 0001:000023AC    93 0001:000023CC    94 0001:000023E3    95 0001:00002416
+    96 0001:00002449    99 0001:00002468   101 0001:0000247C   104 0001:000027C4
+   105 0001:000027E0   106 0001:000027E6   107 0001:000027FC   118 0001:00002820
+   122 0001:00002824   123 0001:00002827   125 0001:0000282D   128 0001:00002832
+   131 0001:00002838   132 0001:00002850   133 0001:00002855   134 0001:0000286D
+   135 0001:00002885   136 0001:000028A8   137 0001:000028CB   138 0001:000028DE
+   139 0001:000028F1   141 0001:000028F7   142 0001:000028FE   143 0001:0000290F
+   145 0001:00002916   152 0001:00002940   154 0001:00002952
+
+Line numbers for UnitNoofTestDone(UnitNoofTestDone.pas) segment .itext
+
+   146 0002:000002EC   148 0002:000002F5   150 0002:000002FF
+
+Line numbers for UnitRepDeptWiseCollection(UnitRepDeptWiseCollection.pas) segment .text
+
+   112 0001:00003984   116 0001:00003988   117 0001:0000399E   118 0001:000039A4
+   119 0001:000039C0   125 0001:000039E4   131 0001:000039E8   134 0001:000039EC
+   135 0001:000039EF   136 0001:000039FE   139 0001:00003A00   140 0001:00003A16
+   141 0001:00003A29   145 0001:00003A4C   146 0001:00003A56   151 0001:00003A58
+   152 0001:00003A62   157 0001:00003A64   159 0001:00003A76
+
+Line numbers for UnitRepDeptWiseCollection(UnitRepDeptWiseCollection.pas) segment .itext
+
+   154 0002:00000300   155 0002:00000309   156 0002:00000313
+
+Line numbers for UnitDeptWiseReport(UnitDeptWiseReport.pas) segment .text
+
+    51 0001:00004094    52 0001:000040A5    56 0001:000040A8    57 0001:000040B9
+    60 0001:000040BC    61 0001:000040DD    62 0001:000040F5    63 0001:0000410D
+    64 0001:00004120    65 0001:00004133    67 0001:00004162    68 0001:0000416C
+    69 0001:0000417A    71 0001:0000417F    72 0001:0000418D    73 0001:000041A3
+    77 0001:000041B9    79 0001:000041C6    80 0001:000041CD    81 0001:000041DE
+    82 0001:000041EA    84 0001:000041FB    86 0001:0000420C    87 0001:0000421D
+    90 0001:00004286    91 0001:000042A3    92 0001:000042DE    93 0001:000042EF
+    97 0001:00004300    99 0001:00004307   101 0001:00004314   102 0001:0000431B
+   103 0001:0000432C   104 0001:00004338   105 0001:00004349   106 0001:0000435A
+   108 0001:000043C3   110 0001:000043CA   111 0001:000043FD   112 0001:00004430
+   121 0001:0000444F   123 0001:00004463   126 0001:0000493C   127 0001:00004958
+   128 0001:0000495E   129 0001:00004974   132 0001:00004998   133 0001:000049B2
+   134 0001:000049CA   135 0001:000049E2   136 0001:00004A09   137 0001:00004A30
+   138 0001:00004A43   139 0001:00004A56   141 0001:00004A5C   142 0001:00004A63
+   143 0001:00004A74   145 0001:00004A7B   153 0001:00004AB8   155 0001:00004ACA
+
+Line numbers for UnitDeptWiseReport(UnitDeptWiseReport.pas) segment .itext
+
+   147 0002:00000314   149 0002:0000031D   151 0002:00000327
+
+Line numbers for UnitRepDetailUserWise(UnitRepDetailUserWise.pas) segment .text
+
+   212 0001:00006D38   213 0001:00006D4B   217 0001:00006D4C   218 0001:00006D62
+   219 0001:00006D68   220 0001:00006D84   224 0001:00006DA8   225 0001:00006DBE
+   226 0001:00006DC4   227 0001:00006DE0   231 0001:00006E04   232 0001:00006E1A
+   233 0001:00006E20   234 0001:00006E3C   238 0001:00006E60   239 0001:00006E76
+   240 0001:00006E7C   241 0001:00006E98   245 0001:00006EBC   246 0001:00006ED2
+   247 0001:00006ED8   248 0001:00006EF4   251 0001:00006F18   252 0001:00006F31
+   253 0001:00006F3F   254 0001:00006F63   257 0001:00006FA4   258 0001:00006FBD
+   259 0001:00006FCB   260 0001:00006FEF   263 0001:00007030   264 0001:00007049
+   265 0001:0000707F   268 0001:000070C0   269 0001:000070D9   270 0001:000070E7
+   271 0001:0000710B   274 0001:0000714C   275 0001:00007165   276 0001:00007173
+   277 0001:00007197   281 0001:000071D8   282 0001:000071DB   283 0001:000071EA
+   287 0001:000071EC   288 0001:000071F4   289 0001:000071FC   290 0001:00007204
+   291 0001:0000720C   292 0001:00007214   294 0001:0000721C   299 0001:00007220
+   300 0001:00007228   301 0001:00007230   302 0001:00007238   303 0001:00007240
+   304 0001:00007248   306 0001:00007250
+
+Line numbers for UnitRepDetailUserWise(UnitRepDetailUserWise.pas) segment .itext
+
+   308 0002:00000328
+
+Line numbers for UnitRepUserWiseDetail(UnitRepUserWiseDetail.pas) segment .text
+
+    60 0001:00007938    62 0001:00007945
+
+Line numbers for UnitRepUserWiseDetail(UnitRepUserWiseDetail.pas) segment .itext
+
+    64 0002:00000330
+
+Line numbers for UnitRepUserWiseCollection(UnitRepUserWiseCollection.pas) segment .text
+
+   213 0001:00009878   214 0001:0000988E   215 0001:000098A1   219 0001:000098C4
+   220 0001:000098C7   221 0001:000098D6   225 0001:000098D8   226 0001:000098DB
+   227 0001:000098EA   230 0001:000098EC   231 0001:000098EF   232 0001:00009902
+   233 0001:00009915   234 0001:00009928   235 0001:0000993B   241 0001:00009940
+   245 0001:00009944   246 0001:00009947   247 0001:00009956   251 0001:00009958
+   252 0001:0000995B   253 0001:0000996A   263 0001:0000996C
+
+Line numbers for UnitRepUserWiseCollection(UnitRepUserWiseCollection.pas) segment .itext
+
+   269 0002:00000340
+
+Line numbers for UnitUserWiseCollection(UnitUserWiseCollection.pas) segment .text
+
+    59 0001:0000A1DC    60 0001:0000A1ED    63 0001:0000A1F0    64 0001:0000A1F3
+    65 0001:0000A201    66 0001:0000A217    68 0001:0000A233    70 0001:0000A247
+    73 0001:0000A24C    74 0001:0000A26D    75 0001:0000A285    76 0001:0000A29D
+    77 0001:0000A2B0    78 0001:0000A2C3    79 0001:0000A2E3    80 0001:0000A303
+    82 0001:0000A332    83 0001:0000A33C    84 0001:0000A34A    87 0001:0000A34F
+    89 0001:0000A365    90 0001:0000A373    93 0001:0000A389    95 0001:0000A396
+    96 0001:0000A39D    97 0001:0000A3AE    98 0001:0000A3BA    99 0001:0000A3CB
+   100 0001:0000A3DC   101 0001:0000A3ED   102 0001:0000A3FE   103 0001:0000A43E
+   104 0001:0000A45B   105 0001:0000A496   107 0001:0000A4A7   110 0001:0000A4AE
+   111 0001:0000A4CD   114 0001:0000A4EC   119 0001:0000A500   120 0001:0000A50E
+   123 0001:0000A524   125 0001:0000A531   126 0001:0000A538   127 0001:0000A549
+   128 0001:0000A555   129 0001:0000A566   130 0001:0000A578   131 0001:0000A589
+   132 0001:0000A59A   133 0001:0000A5AB   134 0001:0000A5BC   135 0001:0000A5FC
+   136 0001:0000A637   137 0001:0000A648   138 0001:0000A65A   139 0001:0000A66B
+   140 0001:0000A67C   143 0001:0000A683   145 0001:0000A690   146 0001:0000A697
+   147 0001:0000A6A8   148 0001:0000A6B4   149 0001:0000A6C5   150 0001:0000A6D7
+   151 0001:0000A6E8   152 0001:0000A6F9   153 0001:0000A70A   154 0001:0000A71B
+   155 0001:0000A75B   156 0001:0000A796   157 0001:0000A7A7   158 0001:0000A7B9
+   159 0001:0000A7CA   160 0001:0000A7DB   163 0001:0000A7E2   165 0001:0000A7EF
+   166 0001:0000A7F6   167 0001:0000A807   168 0001:0000A813   169 0001:0000A824
+   170 0001:0000A836   171 0001:0000A847   172 0001:0000A858   173 0001:0000A869
+   174 0001:0000A87A   175 0001:0000A8BA   176 0001:0000A8F5   177 0001:0000A906
+   178 0001:0000A918   179 0001:0000A929   180 0001:0000A93A   183 0001:0000A941
+   185 0001:0000A94E   186 0001:0000A955   187 0001:0000A966   188 0001:0000A972
+   189 0001:0000A983   190 0001:0000A994   191 0001:0000AA02   192 0001:0000AA13
+   193 0001:0000AA58   194 0001:0000AA69   197 0001:0000AA70   199 0001:0000AA7D
+   200 0001:0000AA84   201 0001:0000AA95   202 0001:0000AAA1   203 0001:0000AAB2
+   205 0001:0000AB25   206 0001:0000AB76   207 0001:0000AB87   210 0001:0000AB8E
+   211 0001:0000ABA5   212 0001:0000ABBC   213 0001:0000ABD3   214 0001:0000ABF1
+   215 0001:0000AC15   216 0001:0000AC39   217 0001:0000AC78   218 0001:0000ACB7
+   219 0001:0000ACC9   220 0001:0000ACDB   221 0001:0000ACED   222 0001:0000ACFF
+   223 0001:0000AD11   224 0001:0000AD23   229 0001:0000AD42   231 0001:0000AD4A
+   234 0001:0000BABC   235 0001:0000BABF   236 0001:0000BACD   237 0001:0000BAE3
+   239 0001:0000BAFF   241 0001:0000BB13   244 0001:0000BB18   245 0001:0000BB1B
+   247 0001:0000BB2D   248 0001:0000BB3A   252 0001:0000BB49   253 0001:0000BB56
+   255 0001:0000BB63   258 0001:0000BB68   259 0001:0000BB84   260 0001:0000BB8A
+   261 0001:0000BBA0   265 0001:0000BBC4   266 0001:0000BBD5   271 0001:0000BBD8
+   274 0001:0000BBDC   275 0001:0000BBDF   276 0001:0000BBE5   277 0001:0000BBEA
+   280 0001:0000BBF0   281 0001:0000BC0B   283 0001:0000BC11   284 0001:0000BC18
+   285 0001:0000BC29   287 0001:0000BC30   288 0001:0000BC48   289 0001:0000BC60
+   290 0001:0000BC87   291 0001:0000BCAE   292 0001:0000BCC1   293 0001:0000BCD4
+
+Line numbers for UnitUserWiseCollection(UnitUserWiseCollection.pas) segment .itext
+
+   303 0002:00000348
+
+Line numbers for Unit1(Unit1.pas) segment .text
+
+    34 0001:0000C0A0    35 0001:0000C0A3    36 0001:0000C0B1    37 0001:0000C0C7
+    39 0001:0000C0E3    41 0001:0000C0F7    44 0001:0000C0FC    45 0001:0000C0FF
+    46 0001:0000C10D    47 0001:0000C123    49 0001:0000C13F    51 0001:0000C153
+    54 0001:0000C158    55 0001:0000C15B    56 0001:0000C169    57 0001:0000C17F
+    59 0001:0000C19B    61 0001:0000C1AF    64 0001:0000C1B4    65 0001:0000C1B7
+    66 0001:0000C1BD    67 0001:0000C1C2
+
+Line numbers for Unit1(Unit1.pas) segment .itext
+
+    69 0002:00000350
+
+Line numbers for Unit_QrPatientTestList(Unit_QrPatientTestList.pas) segment .text
+
+    71 0001:0000CBD0    72 0001:0000CBE9    74 0001:0000CC0A    76 0001:0000CC10
+    77 0001:0000CC17    78 0001:0000CC23    79 0001:0000CC2C    80 0001:0000CC3B
+    83 0001:0000CC42    85 0001:0000CC48    86 0001:0000CC4F    87 0001:0000CC5B
+    88 0001:0000CC64    89 0001:0000CC73    90 0001:0000CC7B    91 0001:0000CC8E
+    92 0001:0000CCA1    93 0001:0000CCB7    94 0001:0000CCCA    95 0001:0000CCDD
+    96 0001:0000CCF0    97 0001:0000CD03    99 0001:0000CD0A   101 0001:0000CD11
+   103 0001:0000CD1F   104 0001:0000CD37   105 0001:0000CD4A   106 0001:0000CD5D
+   107 0001:0000CD70   108 0001:0000CD80   109 0001:0000CD8A   112 0001:0000CD9C
+   113 0001:0000CDAC   114 0001:0000CDBC   118 0001:0000CDCE   120 0001:0000CDDE
+   127 0001:0000CF90   128 0001:0000CFB3   130 0001:0000CFBC   131 0001:0000CFC3
+   132 0001:0000CFCA   134 0001:0000CFD1   137 0001:0000CFE1   138 0001:0000CFE8
+   139 0001:0000CFF9   140 0001:0000D005   141 0001:0000D016   143 0001:0000D045
+   148 0001:0000D0A7   149 0001:0000D0B1   150 0001:0000D0E1   151 0001:0000D110
+   153 0001:0000D121   154 0001:0000D128   155 0001:0000D13E   156 0001:0000D148
+   160 0001:0000D157   162 0001:0000D160   163 0001:0000D167   165 0001:0000D18C
+   166 0001:0000D1B9   168 0001:0000D1E6   169 0001:0000D1F0   170 0001:0000D1F7
+   172 0001:0000D224   174 0001:0000D238   175 0001:0000D265   176 0001:0000D26F
+   177 0001:0000D276   180 0001:0000D28A   182 0001:0000D2AB   183 0001:0000D2D8
+   184 0001:0000D2E2   185 0001:0000D2E9   188 0001:0000D2FD   191 0001:0000D359
+   193 0001:0000D366   194 0001:0000D37D   198 0001:0000D388   199 0001:0000D3AD
+   201 0001:0000D3DC   202 0001:0000D409   223 0001:0000D413   224 0001:0000D424
+   158 0001:0000D42B   227 0001:0000D438   228 0001:0000D43F   229 0001:0000D44D
+   230 0001:0000D45B   235 0001:0000D8E0   237 0001:0000D8F8   238 0001:0000D912
+   239 0001:0000D921   240 0001:0000D933   241 0001:0000D942   242 0001:0000D951
+   243 0001:0000D960   244 0001:0000D96F   245 0001:0000D97E   246 0001:0000D98D
+   247 0001:0000D99C   248 0001:0000D9AB   249 0001:0000D9BA   250 0001:0000D9C7
+   252 0001:0000DA11   255 0001:0000DAF8   256 0001:0000DB14   258 0001:0000DB19
+   259 0001:0000DB2D   263 0001:0000DB3C   264 0001:0000DB50   267 0001:0000DB5D
+   269 0001:0000DB62   271 0001:0000DB6E   272 0001:0000DB7B   276 0001:0000DB92
+   277 0001:0000DBA2   278 0001:0000DBAF   281 0001:0000DBC4   282 0001:0000DBD2
+   284 0001:0000DBE9   286 0001:0000DBF7   287 0001:0000DC1F   289 0001:0000DC2C
+   298 0001:0000DC50   299 0001:0000DC55   307 0001:0000DC9C   310 0001:0000DCA0
+   311 0001:0000DCB6   312 0001:0000DCE4   313 0001:0000DCED   321 0001:0000DD28
+   324 0001:0000DD2C   325 0001:0000DD47   326 0001:0000DD80   332 0001:0000DDC0
+   335 0001:0000DDC4   336 0001:0000DDDA   337 0001:0000DDFF   342 0001:0000DE48
+   343 0001:0000DE61   346 0001:0000DE71   347 0001:0000DE78   348 0001:0000DE89
+   349 0001:0000DE95   350 0001:0000DEC5   352 0001:0000DECC   353 0001:0000DEDF
+
+Line numbers for Unit_QrPatientTestList(Unit_QrPatientTestList.pas) segment .itext
+
+   355 0002:00000360
+
+Line numbers for Unit_QrWorkList(Unit_QrWorkList.pas) segment .text
+
+    56 0001:0000E770    57 0001:0000E787    59 0001:0000E7A8    61 0001:0000E7AE
+    62 0001:0000E7B5    63 0001:0000E7C1    64 0001:0000E7CA    65 0001:0000E7D9
+    68 0001:0000E7E0    70 0001:0000E7E6    71 0001:0000E7ED    72 0001:0000E7F9
+    73 0001:0000E802    74 0001:0000E811    75 0001:0000E819    76 0001:0000E82C
+    77 0001:0000E83F    78 0001:0000E852    79 0001:0000E865    80 0001:0000E878
+    82 0001:0000E87F    83 0001:0000E886    86 0001:0000E968    87 0001:0000E983
+    88 0001:0000E9BC    95 0001:0000E9FC    96 0001:0000EA1F    98 0001:0000EA28
+    99 0001:0000EA2F   100 0001:0000EA36   102 0001:0000EA3D   103 0001:0000EA4E
+   106 0001:0000EA5E   107 0001:0000EA66   108 0001:0000EA78   109 0001:0000EA85
+   110 0001:0000EA97   111 0001:0000EAA9   112 0001:0000EABB   113 0001:0000EACD
+   114 0001:0000EADF   115 0001:0000EAF1   116 0001:0000EB03   117 0001:0000EB15
+   118 0001:0000EB27   119 0001:0000EB39   121 0001:0000EB69   127 0001:0000EBCC
+   128 0001:0000EBD6   131 0001:0000EC07   132 0001:0000EC11   134 0001:0000EC25
+   137 0001:0000EC37   138 0001:0000EC49   140 0001:0000EC79   141 0001:0000EC81
+   142 0001:0000EC97   143 0001:0000ECA1   144 0001:0000ECA8   145 0001:0000ECAD
+   146 0001:0000ECB2   147 0001:0000ECB7   148 0001:0000ECBC   149 0001:0000ECC1
+   152 0001:0000ECC8   154 0001:0000ECD2   156 0001:0000ECDE   158 0001:0000ECE7
+   159 0001:0000ECEA   161 0001:0000ED10   162 0001:0000ED18   163 0001:0000ED30
+   164 0001:0000ED6A   165 0001:0000ED75   170 0001:0000ED8F   171 0001:0000EDB8
+   173 0001:0000EDDA   174 0001:0000EDE2   175 0001:0000EE28   176 0001:0000EE33
+   179 0001:0000EE48   182 0001:0000EE4B   183 0001:0000EE52   184 0001:0000EE63
+   185 0001:0000EE6F   186 0001:0000EE80   187 0001:0000EECC   189 0001:0000EF01
+   195 0001:0000EF75   197 0001:0000EFAA   200 0001:0000EFB6   202 0001:0000EFC2
+   204 0001:0000EFC7   205 0001:0000EFCF   206 0001:0000EFD2   207 0001:0000EFEA
+   208 0001:0000F01E   212 0001:0000F02B   213 0001:0000F05A   214 0001:0000F062
+   215 0001:0000F096   218 0001:0000F0A1   219 0001:0000F0A8   220 0001:0000F0AB
+   221 0001:0000F0B0   198 0001:0000F0B3   225 0001:0000F0C0   227 0001:0000F0CC
+   229 0001:0000F0D6   231 0001:0000F0E2   233 0001:0000F0EB   234 0001:0000F0EE
+   236 0001:0000F11A   237 0001:0000F122   238 0001:0000F13A   239 0001:0000F180
+   240 0001:0000F18B   245 0001:0000F1A5   246 0001:0000F1D4   248 0001:0000F1FC
+   249 0001:0000F204   250 0001:0000F24A   251 0001:0000F255   254 0001:0000F26A
+   257 0001:0000F26D   258 0001:0000F274   259 0001:0000F285   260 0001:0000F291
+   261 0001:0000F2A2   262 0001:0000F2EE   264 0001:0000F323   272 0001:0000F397
+   273 0001:0000F3CC   276 0001:0000F3D8   278 0001:0000F3E4   280 0001:0000F3E9
+   281 0001:0000F3F1   282 0001:0000F3F4   283 0001:0000F40C   284 0001:0000F440
+   288 0001:0000F44D   289 0001:0000F47C   290 0001:0000F484   291 0001:0000F4B8
+   294 0001:0000F4C3   295 0001:0000F4CA   296 0001:0000F4CD   297 0001:0000F4D2
+   274 0001:0000F4D5   301 0001:0000F4E2   303 0001:0000F4EE   305 0001:0000F4F8
+   307 0001:0000F504   309 0001:0000F50D   310 0001:0000F510   312 0001:0000F53C
+   313 0001:0000F544   314 0001:0000F55C   315 0001:0000F5A2   316 0001:0000F5AD
+   321 0001:0000F5C7   322 0001:0000F5F6   324 0001:0000F61E   325 0001:0000F626
+   326 0001:0000F66C   327 0001:0000F677   330 0001:0000F68C   333 0001:0000F68F
+   334 0001:0000F696   335 0001:0000F6A7   336 0001:0000F6B3   337 0001:0000F6C4
+   338 0001:0000F710   340 0001:0000F745   348 0001:0000F7B9   349 0001:0000F7EE
+   352 0001:0000F7FA   354 0001:0000F806   356 0001:0000F80B   357 0001:0000F813
+   358 0001:0000F816   359 0001:0000F82E   360 0001:0000F862   364 0001:0000F86F
+   365 0001:0000F89E   366 0001:0000F8A6   367 0001:0000F8DA   370 0001:0000F8E5
+   371 0001:0000F8EC   372 0001:0000F8EF   373 0001:0000F8F4   350 0001:0000F8F7
+   377 0001:0000F904   379 0001:0000F910   381 0001:0000F91A   383 0001:0000F926
+   385 0001:0000F92F   386 0001:0000F932   388 0001:0000F95E   389 0001:0000F966
+   390 0001:0000F97E   391 0001:0000F9C4   392 0001:0000F9CF   397 0001:0000F9E9
+   398 0001:0000FA18   400 0001:0000FA40   401 0001:0000FA48   402 0001:0000FA8E
+   403 0001:0000FA99   406 0001:0000FAAE   409 0001:0000FAB1   410 0001:0000FAB8
+   411 0001:0000FAC9   412 0001:0000FAD5   413 0001:0000FAE6   414 0001:0000FB32
+   416 0001:0000FB67   425 0001:0000FBDB   426 0001:0000FC10   429 0001:0000FC1C
+   431 0001:0000FC28   433 0001:0000FC2D   434 0001:0000FC35   435 0001:0000FC38
+   436 0001:0000FC50   437 0001:0000FC84   441 0001:0000FC91   442 0001:0000FCC0
+   443 0001:0000FCC8   444 0001:0000FCFC   447 0001:0000FD07   448 0001:0000FD0E
+   449 0001:0000FD11   450 0001:0000FD16   427 0001:0000FD19   454 0001:0000FD26
+   456 0001:0000FD2D   150 0001:0000FD35   458 0001:0000FD45   459 0001:0000FD4D
+   460 0001:0000FD5B   462 0001:0000FD69   467 0001:000105D8   468 0001:000105F1
+   469 0001:00010600   471 0001:0001060D   472 0001:00010622   476 0001:00010631
+   477 0001:00010646   480 0001:00010653   485 0001:00010680   486 0001:00010699
+   487 0001:000106A8   489 0001:000106B5   490 0001:000106CA   494 0001:000106D9
+   495 0001:000106EE   497 0001:000106FB   502 0001:00010728   503 0001:00010741
+   504 0001:00010750   506 0001:0001075D   507 0001:00010772   511 0001:00010781
+   512 0001:00010796   514 0001:000107A3   519 0001:000107D0   520 0001:000107E9
+   521 0001:000107F8   523 0001:00010805   524 0001:0001081A   528 0001:00010829
+   529 0001:0001083E   531 0001:0001084B   534 0001:00010878   536 0001:00010890
+   540 0001:000108E5
+
+Line numbers for Unit_QrWorkList(Unit_QrWorkList.pas) segment .itext
+
+   542 0002:00000368
+
+Line numbers for Unit_Medicare_GovtSvrTaxReport(Unit_Medicare_GovtSvrTaxReport.pas) segment .text
+
+   200 0001:00013094   201 0001:0001309C   202 0001:000130A4   203 0001:000130AC
+   204 0001:000130B4   208 0001:000130B8   209 0001:000130C0   210 0001:000130C8
+   211 0001:000130D0   212 0001:000130D8   215 0001:000130DC   216 0001:000130DF
+   217 0001:000130EE   220 0001:000130F0   221 0001:000130F3   222 0001:000130FC
+   225 0001:00013100   226 0001:00013103   227 0001:0001310C   230 0001:00013110
+   231 0001:00013129   232 0001:0001312F   233 0001:00013147   236 0001:0001316C
+   237 0001:00013185   238 0001:0001318B   239 0001:000131A3   242 0001:000131C8
+   243 0001:000131E1   244 0001:000131E7   245 0001:000131FF   249 0001:00013224
+   250 0001:0001322C   251 0001:00013234   252 0001:0001323C   253 0001:00013244
+   256 0001:00013248   257 0001:00013261   258 0001:00013267   259 0001:0001327F
+   262 0001:000132A4   263 0001:000132BD   264 0001:000132CB   265 0001:000132EF
+   268 0001:00013334   269 0001:0001334D   270 0001:0001335B   271 0001:0001337F
+   274 0001:000133C4   275 0001:000133DD   276 0001:000133EB   277 0001:0001340F
+   280 0001:00013454   281 0001:0001346D   282 0001:0001347B   283 0001:0001349F
+   286 0001:000134E4   287 0001:000134FD   288 0001:0001350B   289 0001:0001352F
+   292 0001:00013574   293 0001:0001358D   294 0001:0001359B   295 0001:000135BF
+   298 0001:00013604   299 0001:0001361D   300 0001:0001362B   301 0001:0001364F
+   304 0001:00013694   305 0001:000136AD   306 0001:000136BB   307 0001:000136DF
+   310 0001:00013724   311 0001:0001373D   312 0001:00013767   315 0001:000137AC
+   316 0001:000137C5   317 0001:000137EF   320 0001:00013834   321 0001:0001384D
+   322 0001:00013853   323 0001:0001386B   326 0001:00013890   327 0001:000138A9
+   328 0001:000138B7   329 0001:000138DB   332 0001:00013920   333 0001:00013939
+   334 0001:00013947   335 0001:0001396B   338 0001:000139B0   339 0001:000139C9
+   340 0001:000139D7   341 0001:000139FB   344 0001:00013A40   345 0001:00013A59
+   346 0001:00013A67   347 0001:00013A8B   350 0001:00013AD0   351 0001:00013AE9
+   352 0001:00013AF7   353 0001:00013B1B   356 0001:00013B60   357 0001:00013B79
+   358 0001:00013B87   359 0001:00013BAB   362 0001:00013BF0   363 0001:00013C09
+   364 0001:00013C17   365 0001:00013C3B   368 0001:00013C80   369 0001:00013C99
+   370 0001:00013CA7   371 0001:00013CCB   374 0001:00013D10   375 0001:00013D29
+   376 0001:00013D37   377 0001:00013D5B   380 0001:00013DA0   381 0001:00013DB9
+   382 0001:00013DE3   385 0001:00013E28   386 0001:00013E41   387 0001:00013E6B
+   390 0001:00013EB0   391 0001:00013EC9   392 0001:00013EF3   395 0001:00013F38
+   396 0001:00013F51   397 0001:00013F7B   400 0001:00013FC0   401 0001:00013FD9
+   402 0001:00013FE7   403 0001:0001400B   406 0001:00014050   407 0001:00014069
+   408 0001:00014093   411 0001:000140D8   412 0001:000140F1   413 0001:000140FF
+   414 0001:00014123   417 0001:00014168   418 0001:00014181   419 0001:000141AB
+   422 0001:000141F0   423 0001:00014209   424 0001:00014217   425 0001:0001423B
+   428 0001:00014280   429 0001:00014299   430 0001:000142C3   433 0001:00014308
+   434 0001:00014321   435 0001:0001434B
+
+Line numbers for Unit_Medicare_GovtSvrTaxReport(Unit_Medicare_GovtSvrTaxReport.pas) segment .itext
+
+   437 0002:00000370
+
+Line numbers for Unit_Medicare_GovtSvrTaxReportSummary(Unit_Medicare_GovtSvrTaxReportSummary.pas) segment .text
+
+   164 0001:00016548   165 0001:0001654B   166 0001:00016554   170 0001:00016558
+   171 0001:0001655B   172 0001:00016564   176 0001:00016568   177 0001:0001656B
+   178 0001:00016574   182 0001:00016578   185 0001:0001657B   186 0001:00016584
+   190 0001:00016588   191 0001:000165A1   192 0001:000165A7   193 0001:000165BF
+   197 0001:000165E4   198 0001:000165FD   199 0001:00016603   200 0001:0001661B
+   204 0001:00016640   205 0001:00016659   206 0001:0001665F   207 0001:00016677
+   212 0001:0001669C   213 0001:000166A4   214 0001:000166AC   215 0001:000166B4
+   216 0001:000166BC   219 0001:000166C0   220 0001:000166D9   221 0001:000166DF
+   222 0001:000166F7   226 0001:0001671C   227 0001:00016735   228 0001:0001673B
+   229 0001:00016753   233 0001:00016778   234 0001:00016793   235 0001:000167B7
+   236 0001:000167CC   239 0001:000167F4   243 0001:00016858   244 0001:00016871
+   245 0001:00016877   246 0001:0001688F   250 0001:000168B4   251 0001:000168CF
+   252 0001:000168F3   253 0001:00016908   256 0001:00016930   260 0001:00016994
+   261 0001:000169AF   262 0001:000169D3   263 0001:000169E8   266 0001:00016A10
+   270 0001:00016A74   271 0001:00016A8D   272 0001:00016AA3   273 0001:00016ACB
+   277 0001:00016B0C   278 0001:00016B25   279 0001:00016B3B   281 0001:00016B63
+   285 0001:00016BA4   286 0001:00016BBD   287 0001:00016BD3   288 0001:00016BFB
+   292 0001:00016C3C   293 0001:00016C55   294 0001:00016C6B   295 0001:00016C93
+   299 0001:00016CD4   300 0001:00016CF3   302 0001:00016D17   303 0001:00016D2B
+   307 0001:00016D77   308 0001:00016D8B   310 0001:00016DB0   314 0001:00016E28
+   315 0001:00016E41   316 0001:00016E57   317 0001:00016E7F   321 0001:00016EC0
+   322 0001:00016ED9   323 0001:00016EEF   324 0001:00016F17   327 0001:00016F58
+   328 0001:00016F5E   329 0001:00016F6B   333 0001:00016F70   334 0001:00016F8B
+   335 0001:00016FAF   336 0001:00016FC4   339 0001:00016FEC   343 0001:00017050
+   344 0001:0001706B   345 0001:0001708F   346 0001:000170A4   349 0001:000170CC
+   357 0001:00017130   361 0001:00017134   362 0001:0001714F   363 0001:00017173
+   364 0001:00017188   367 0001:000171B0   371 0001:00017214   372 0001:0001722D
+   373 0001:00017251   377 0001:00017294   378 0001:000172AD   379 0001:000172D1
+   383 0001:00017314   384 0001:0001732D   385 0001:00017351   389 0001:00017394
+   390 0001:000173AD   391 0001:000173D1   395 0001:00017414   396 0001:0001742D
+   397 0001:00017451   401 0001:00017494   402 0001:000174AD   403 0001:000174D1
+   407 0001:00017514   408 0001:0001752D   409 0001:00017551   413 0001:00017594
+   414 0001:00017597   415 0001:000175A0   420 0001:000175A4   421 0001:000175B2
+   422 0001:000175C0   423 0001:000175CE   424 0001:000175DC   425 0001:000175EA
+   426 0001:000175F8   427 0001:00017606   428 0001:00017614   429 0001:00017622
+   432 0001:00017630   433 0001:0001763E   434 0001:0001764C   435 0001:0001765A
+   436 0001:00017668   437 0001:00017676   438 0001:00017684   439 0001:00017692
+   440 0001:000176A0   441 0001:000176AE   442 0001:000176BC   446 0001:000176C0
+   447 0001:000176CE   448 0001:000176DC   449 0001:000176EA   450 0001:000176F8
+   451 0001:00017706   452 0001:00017714
+
+Line numbers for Unit_Medicare_GovtSvrTaxReportSummary(Unit_Medicare_GovtSvrTaxReportSummary.pas) segment .itext
+
+   454 0002:00000378
+
+Line numbers for UnitSalesBook(UnitSalesBook.pas) segment .text
+
+    59 0001:00018074    60 0001:00018079    69 0001:0001807C    75 0001:0001808D
+    77 0001:00018092    80 0001:000180AC    82 0001:000180AF    84 0001:000180C3
+    85 0001:000180D3    87 0001:000180EA    89 0001:000180FF    90 0001:0001810F
+    92 0001:00018121    95 0001:0001814C    97 0001:0001814F    99 0001:00018163
+   100 0001:00018173   102 0001:0001818A   104 0001:0001819F   105 0001:000181AF
+   107 0001:000181C1   110 0001:000181EC   111 0001:000181EF   114 0001:00018201
+   115 0001:0001820E   118 0001:00018220   119 0001:0001822D   122 0001:00018230
+   123 0001:00018231   125 0001:00018237   126 0001:00018246   127 0001:0001824D
+   128 0001:00018259   129 0001:00018262   130 0001:0001826A   131 0001:0001827D
+   132 0001:00018290   133 0001:000182A3   134 0001:000182B6   135 0001:000182C9
+   136 0001:000182DC   137 0001:000182EF   138 0001:00018302   139 0001:00018315
+   140 0001:00018328   141 0001:0001833B   142 0001:00018346   144 0001:0001834D
+   149 0001:000184E8   150 0001:00018500   152 0001:00018518   160 0001:0001851C
+   163 0001:00018520   164 0001:0001852C   165 0001:00018532   166 0001:00018539
+   167 0001:0001853F   169 0001:00018548   170 0001:0001854E   171 0001:0001855B
+   174 0001:00018564   175 0001:0001857E   177 0001:00018596   179 0001:000185BD
+   181 0001:000185D5   183 0001:000185FC   185 0001:00018603   191 0001:00018640
+   192 0001:00018663   193 0001:00018665   194 0001:00018677   196 0001:00018679
+   198 0001:00018693   199 0001:000186A1   200 0001:000186B7   203 0001:000186C5
+   205 0001:000186D5   206 0001:000186DD   208 0001:000186EF   211 0001:00018763
+   215 0001:0001876B   217 0001:0001877B   219 0001:00018783   221 0001:000187F7
+   222 0001:0001880E   225 0001:00018816   227 0001:00018823   228 0001:00018832
+   229 0001:00018841   231 0001:00018850   233 0001:0001885E   234 0001:000188C1
+   238 0001:00018929   239 0001:0001898C   241 0001:000189EF   243 0001:00018A0D
+   245 0001:00018A22   247 0001:00018A2A   248 0001:00018A41   249 0001:00018A58
+   250 0001:00018A6C   251 0001:00018A80   252 0001:00018A94   253 0001:00018AA8
+   254 0001:00018ABC   256 0001:00018AD0   257 0001:00018AE4   258 0001:00018AF8
+   259 0001:00018B0C   260 0001:00018B20   261 0001:00018B34   263 0001:00018B48
+   264 0001:00018B5C   265 0001:00018B70   266 0001:00018B84   267 0001:00018B98
+   268 0001:00018BAC   274 0001:00018BC5   275 0001:00018BDF   276 0001:00018BF9
+   277 0001:00018C0D   278 0001:00018C21   279 0001:00018C35   280 0001:00018C49
+   281 0001:00018C5D   283 0001:00018C71   284 0001:00018C85   285 0001:00018C99
+   286 0001:00018CAD   287 0001:00018CC1   288 0001:00018CD5   290 0001:00018CE9
+   291 0001:00018CFD   292 0001:00018D11   293 0001:00018D25   294 0001:00018D39
+   295 0001:00018D4D   303 0001:00018D61   305 0001:00018D73   306 0001:00018D85
+   310 0001:00018DA4   313 0001:00018DB9   316 0001:00018DCD   318 0001:00018DE3
+   320 0001:00018DEA   321 0001:00018DF5   322 0001:00018E08   323 0001:00018E13
+   325 0001:00018E1E   327 0001:00018E24   330 0001:00018E2B   332 0001:00018E9E
+   333 0001:00018EA5   336 0001:00018EB1   337 0001:00018EBC   338 0001:00018ED9
+   339 0001:00018F14   340 0001:00018F4F   341 0001:00018F8A   342 0001:00018FBE
+   343 0001:00018FF2   344 0001:00019026   345 0001:0001905A   346 0001:0001908E
+   347 0001:000190C2   348 0001:000190F6   349 0001:00019104   334 0001:0001910F
+   353 0001:0001911C   355 0001:00019122   358 0001:00019129   360 0001:000191B4
+   361 0001:000191BB   364 0001:000191C7   365 0001:000191D2   366 0001:000191EF
+   367 0001:0001922A   368 0001:00019265   369 0001:000192A0   370 0001:000192D4
+   371 0001:00019308   372 0001:0001933C   373 0001:00019370   374 0001:000193A4
+   375 0001:000193D8   376 0001:0001940C   377 0001:0001941A   362 0001:00019425
+   381 0001:00019432   382 0001:00019440   383 0001:00019456   386 0001:00019464
+   388 0001:00019471   389 0001:00019478   390 0001:00019487   393 0001:0001948E
+   395 0001:0001949B   396 0001:000194A2   397 0001:000194B1   400 0001:000194B8
+   402 0001:000194C5   403 0001:000194D4   404 0001:000194E3   406 0001:000194F2
+   408 0001:00019522   409 0001:0001959D   411 0001:0001961D   413 0001:0001964F
+   414 0001:000196CA   416 0001:00019745   418 0001:00019769   419 0001:0001977E
+   421 0001:00019790   422 0001:000197A2   424 0001:000197C1   428 0001:000197E8
+   432 0001:000197FC
+
+Line numbers for UnitSalesBook(UnitSalesBook.pas) segment .itext
+
+   434 0002:00000380
+
+Line numbers for Unit_QrTaxReport(Unit_QrTaxReport.pas) segment .text
+
+    96 0001:0001AC64    97 0001:0001AC80    98 0001:0001AC93    99 0001:0001ACA6
+   101 0001:0001ACD9   102 0001:0001ACF2   104 0001:0001ACFB   106 0001:0001AD02
+   108 0001:0001AD08   109 0001:0001AD0F   110 0001:0001AD1B   111 0001:0001AD2C
+   113 0001:0001AD39   114 0001:0001AD4A   115 0001:0001AD5B   116 0001:0001AD6C
+   117 0001:0001ADB1   118 0001:0001ADC2   119 0001:0001ADD3   120 0001:0001ADE4
+   121 0001:0001ADF5   125 0001:0001AE3F   126 0001:0001AE50   127 0001:0001AE61
+   128 0001:0001AE72   129 0001:0001AE83   130 0001:0001AEC8   131 0001:0001AED9
+   132 0001:0001AEEA   133 0001:0001AEFB   134 0001:0001AF0C   135 0001:0001AF1D
+   136 0001:0001AF62   137 0001:0001AF73   139 0001:0001AF84   141 0001:0001AF8B
+   144 0001:0001B638   145 0001:0001B63E   146 0001:0001B64B   182 0001:0001B650
+   185 0001:0001B654   186 0001:0001B65A   187 0001:0001B66C   188 0001:0001B683
+   189 0001:0001B695   190 0001:0001B6A9   193 0001:0001B6E0   194 0001:0001B6E6
+   195 0001:0001B6F8   196 0001:0001B70F   197 0001:0001B721   198 0001:0001B735
+   201 0001:0001B76C   202 0001:0001B772   203 0001:0001B784   204 0001:0001B79B
+   205 0001:0001B7AD   206 0001:0001B7C1   209 0001:0001B7F8   210 0001:0001B7FE
+   211 0001:0001B80B   214 0001:0001B810   215 0001:0001B816   216 0001:0001B823
+   219 0001:0001B828   220 0001:0001B841   221 0001:0001B865   224 0001:0001B8A0
+   225 0001:0001B8B9   226 0001:0001B8DD   229 0001:0001B918   230 0001:0001B931
+   231 0001:0001B955
+
+Line numbers for Unit_QrTaxReport(Unit_QrTaxReport.pas) segment .itext
+
+   233 0002:00000388
+
+Line numbers for Unit_TaxReport(Unit_TaxReport.pas) segment .text
+
+    45 0001:0001BEB4    46 0001:0001BEB9    49 0001:0001BEBC    50 0001:0001BED4
+    51 0001:0001BEF4    52 0001:0001BF14    53 0001:0001BF22    54 0001:0001BF38
+    56 0001:0001BF57    58 0001:0001BF6B    61 0001:0001BF94    62 0001:0001BFAE
+    63 0001:0001BFD5    64 0001:0001BFED    65 0001:0001C014    66 0001:0001C02C
+    69 0001:0001C068    70 0001:0001C06B    71 0001:0001C071    72 0001:0001C076
+
+Line numbers for Unit_TaxReport(Unit_TaxReport.pas) segment .itext
+
+    74 0002:00000390
+
+Line numbers for Unit_QrReffWiseRevenueDetail(Unit_QrReffWiseRevenueDetail.pas) segment .text
+
+    72 0001:0001C9C8    73 0001:0001C9E0    74 0001:0001CA04    75 0001:0001CA3B
+
+Line numbers for Unit_QrReffWiseRevenueDetail(Unit_QrReffWiseRevenueDetail.pas) segment .itext
+
+    77 0002:00000398
+
+Line numbers for Unit_QrReffWiseRevenueSummary(Unit_QrReffWiseRevenueSummary.pas) segment .text
+
+    53 0001:0001D114    54 0001:0001D12C    55 0001:0001D150    56 0001:0001D187
+
+Line numbers for Unit_QrReffWiseRevenueSummary(Unit_QrReffWiseRevenueSummary.pas) segment .itext
+
+    58 0002:000003A0
+
+Line numbers for Unit_ReffWiseRevenue(Unit_ReffWiseRevenue.pas) segment .text
+
+    54 0001:0001D978    55 0001:0001D989    59 0001:0001D98C    60 0001:0001D99D
+    65 0001:0001D9A0    66 0001:0001D9C2    67 0001:0001D9DF    68 0001:0001D9F3
+    69 0001:0001DA13    70 0001:0001DA33    72 0001:0001DA49    73 0001:0001DA57
+    76 0001:0001DA6D    78 0001:0001DA7A    79 0001:0001DA81    80 0001:0001DA92
+    81 0001:0001DA9E    82 0001:0001DAAF    83 0001:0001DAC0    84 0001:0001DAC6
+    86 0001:0001DAF3    87 0001:0001DB04    88 0001:0001DB49    89 0001:0001DB5A
+    90 0001:0001DB6B    91 0001:0001DB72    92 0001:0001DB8C    93 0001:0001DBA6
+    95 0001:0001DBE0    98 0001:0001DBFF   101 0001:0001DC13   103 0001:0001DC29
+   104 0001:0001DC37   107 0001:0001DC4D   109 0001:0001DC5F   110 0001:0001DC73
+   111 0001:0001DC87   112 0001:0001DC9B   114 0001:0001DCB1   116 0001:0001DCC3
+   117 0001:0001DCD7   118 0001:0001DCEB   119 0001:0001DCFF   121 0001:0001DD13
+   123 0001:0001DD20   124 0001:0001DD27   125 0001:0001DD38   126 0001:0001DD44
+   127 0001:0001DD56   129 0001:0001DD69   130 0001:0001DD7B   132 0001:0001DD8C
+   133 0001:0001DD92   135 0001:0001DDBF   136 0001:0001DDD0   137 0001:0001DE15
+   138 0001:0001DE27   139 0001:0001DE3A   140 0001:0001DE4C   141 0001:0001DE5D
+   142 0001:0001DE6E   143 0001:0001DE7F   144 0001:0001DE86   145 0001:0001DEA0
+   146 0001:0001DEBA   148 0001:0001DEF4   151 0001:0001DF13   154 0001:0001DF27
+   157 0001:0001E60C   158 0001:0001E628   160 0001:0001E62E   162 0001:0001E644
+   165 0001:0001E668   166 0001:0001E683   168 0001:0001E689   169 0001:0001E690
+   170 0001:0001E6A1   172 0001:0001E6A8   173 0001:0001E6C0   174 0001:0001E6D8
+   175 0001:0001E6FF   176 0001:0001E726   177 0001:0001E739   178 0001:0001E74C
+   181 0001:0001E788   182 0001:0001E78B   183 0001:0001E79D   185 0001:0001E7AC
+   186 0001:0001E7B9   189 0001:0001E7BC   190 0001:0001E7BF   191 0001:0001E7D1
+   193 0001:0001E7E0   194 0001:0001E7ED
+
+Line numbers for Unit_ReffWiseRevenue(Unit_ReffWiseRevenue.pas) segment .itext
+
+   196 0002:000003A8
+
+Line numbers for Unit_QrCollectionCenterDetail(Collection Center Report\Unit_QrCollectionCenterDetail.pas) segment .itext
+
+    77 0002:000003B0
+
+Line numbers for Unit_QrCollectionCenterSummary(Collection Center Report\Unit_QrCollectionCenterSummary.pas) segment .itext
+
+    59 0002:000003B8
+
+Line numbers for Unit_CollectionCenterReport(Collection Center Report\Unit_CollectionCenterReport.pas) segment .text
+
+    61 0001:00020220    62 0001:00020241    63 0001:0002025E    65 0001:00020272
+    66 0001:0002028F    68 0001:000202A3    69 0001:000202C3    70 0001:000202E3
+    72 0001:000202F9    73 0001:00020307    76 0001:0002031D    78 0001:0002032A
+    79 0001:00020331    80 0001:00020342    81 0001:0002034E    82 0001:0002035F
+    83 0001:00020365    85 0001:00020392    90 0001:000203A3    92 0001:000203E8
+    93 0001:000203F9    94 0001:0002040A    95 0001:00020411    96 0001:0002042B
+    97 0001:00020445    99 0001:0002047F   102 0001:0002049E   105 0001:000204B2
+   107 0001:000204C8   109 0001:000204CE   110 0001:000204D8   112 0001:000204DD
+   113 0001:000204EB   116 0001:00020501   117 0001:00020539   119 0001:00020546
+   120 0001:0002054D   121 0001:0002055E   122 0001:0002056A   123 0001:0002057B
+   124 0001:0002058C   125 0001:0002059D   126 0001:000205A3   128 0001:000205D0
+   133 0001:000205E1   134 0001:00020626   135 0001:00020637   136 0001:0002063E
+   137 0001:00020658   138 0001:00020672   140 0001:000206AC   143 0001:000206CB
+   146 0001:000206DF   149 0001:00020C88   150 0001:00020CA1   152 0001:00020CA7
+   153 0001:00020CAE   154 0001:00020CBF   155 0001:00020CFF   157 0001:00020D06
+   160 0001:00020D64   161 0001:00020D80   163 0001:00020D86   165 0001:00020D9C
+   168 0001:00020DC0   169 0001:00020DDC   171 0001:00020DE2   173 0001:00020DF8
+   176 0001:00020E1C   177 0001:00020E3E   179 0001:00020E44   180 0001:00020E4B
+   181 0001:00020E5C   184 0001:00020E63   186 0001:00020E76   187 0001:00020E86
+   188 0001:00020E93   189 0001:00020EB0   190 0001:00020EB9   193 0001:00020EC6
+   194 0001:00020EDE   195 0001:00020EF6   196 0001:00020F1D   197 0001:00020F44
+   198 0001:00020F57   199 0001:00020F6A   202 0001:00020FE4   203 0001:00020FE7
+   204 0001:00020FED   205 0001:00020FF2   213 0001:00020FF8   221 0001:00020FFC
+
+Line numbers for Unit_CollectionCenterReport(Collection Center Report\Unit_CollectionCenterReport.pas) segment .itext
+
+   223 0002:000003C0
+
+Line numbers for Unit_QrSchemeWiseRevenueDetail(Scheme Wise Revenue\Unit_QrSchemeWiseRevenueDetail.pas) segment .itext
+
+    74 0002:000003C8
+
+Line numbers for Unit_QrSchemeWiseRevenueSummary(Scheme Wise Revenue\Unit_QrSchemeWiseRevenueSummary.pas) segment .itext
+
+    55 0002:000003D0
+
+Line numbers for Unit_SchemeWiseRevenue(Scheme Wise Revenue\Unit_SchemeWiseRevenue.pas) segment .text
+
+    60 0001:00022934    61 0001:00022955    62 0001:00022972    64 0001:00022986
+    65 0001:000229A3    67 0001:000229B7    68 0001:000229D7    69 0001:000229F7
+    71 0001:00022A0D    72 0001:00022A1B    75 0001:00022A31    77 0001:00022A44
+    79 0001:00022A5B    81 0001:00022A68    82 0001:00022A6F    83 0001:00022A80
+    84 0001:00022A8C    85 0001:00022A9D    86 0001:00022AA3    88 0001:00022AD0
+    89 0001:00022AE1    90 0001:00022AE7    92 0001:00022B14    93 0001:00022B25
+    94 0001:00022B6A    95 0001:00022B7B    96 0001:00022B82    97 0001:00022B9C
+    98 0001:00022BB6   100 0001:00022BF0   103 0001:00022C0F   106 0001:00022C23
+   108 0001:00022C39   109 0001:00022C47   112 0001:00022C5D   114 0001:00022C70
+   116 0001:00022C87   118 0001:00022C99   119 0001:00022CAD   120 0001:00022CC1
+   121 0001:00022CD5   123 0001:00022CEB   125 0001:00022CFD   126 0001:00022D11
+   127 0001:00022D25   128 0001:00022D39   130 0001:00022D4D   132 0001:00022D5A
+   133 0001:00022D61   134 0001:00022D72   135 0001:00022D7E   136 0001:00022D90
+   138 0001:00022DA3   139 0001:00022DB5   141 0001:00022DC6   142 0001:00022DCC
+   144 0001:00022DF9   145 0001:00022E0A   146 0001:00022E10   148 0001:00022E3D
+   149 0001:00022E4E   150 0001:00022E93   151 0001:00022EA5   152 0001:00022EB8
+   153 0001:00022ECA   154 0001:00022EDB   155 0001:00022EEC   156 0001:00022EFD
+   157 0001:00022F04   158 0001:00022F1E   159 0001:00022F38   161 0001:00022F72
+   164 0001:00022F91   167 0001:00022FA5   170 0001:0002381C   171 0001:00023835
+   173 0001:0002383B   174 0001:00023842   175 0001:00023853   176 0001:00023893
+   178 0001:0002389A   181 0001:000238F8   182 0001:00023914   184 0001:0002391A
+   186 0001:00023930   189 0001:00023954   190 0001:00023970   192 0001:00023976
+   194 0001:0002398C   197 0001:000239B0   198 0001:000239D2   200 0001:000239D8
+   201 0001:000239DF   202 0001:000239F0   205 0001:000239F7   207 0001:00023A0A
+   208 0001:00023A1A   209 0001:00023A27   210 0001:00023A44   211 0001:00023A4D
+   212 0001:00023A5A   215 0001:00023A69   216 0001:00023A81   217 0001:00023A99
+   218 0001:00023AC0   219 0001:00023AE7   220 0001:00023AFA   221 0001:00023B0D
+   224 0001:00023B88   225 0001:00023B8B   226 0001:00023B91   227 0001:00023B96
+   230 0001:00023B9C   231 0001:00023B9F   232 0001:00023BB1   234 0001:00023BC0
+   235 0001:00023BCD   238 0001:00023BD0   239 0001:00023BD3   240 0001:00023BE5
+   242 0001:00023BF4   243 0001:00023C01
+
+Line numbers for Unit_SchemeWiseRevenue(Scheme Wise Revenue\Unit_SchemeWiseRevenue.pas) segment .itext
+
+   245 0002:000003D8
+
+Line numbers for Unit_QrSampleWiseRep(Unit_QrSampleWiseRep.pas) segment .text
+
+    63 0001:000243DC    64 0001:000243DF    65 0001:000243EE    68 0001:000243F0
+    69 0001:000243F3    70 0001:00024402
+
+Line numbers for Unit_QrSampleWiseRep(Unit_QrSampleWiseRep.pas) segment .itext
+
+    72 0002:000003E0
+
+Line numbers for Unit_SampleWise(Unit_SampleWise.pas) segment .text
+
+    73 0001:00024FAC    74 0001:00024FB1    79 0001:00024FB4    80 0001:00024FD7
+    83 0001:00024FE5    84 0001:00025018    86 0001:0002504B    88 0001:00025068
+    91 0001:00025088    93 0001:0002509F    95 0001:000250AC    96 0001:000250B3
+    98 0001:000250C4   100 0001:000250DA   102 0001:000250F0   105 0001:00025177
+   106 0001:00025189   107 0001:000251A1   108 0001:000251B3   109 0001:000251CB
+   110 0001:000251DD   111 0001:000251F5   112 0001:00025207   115 0001:0002521D
+   117 0001:0002523A   120 0001:00025286   122 0001:0002529C   124 0001:000252B2
+   125 0001:0002534D   129 0001:00025408   130 0001:0002541E   133 0001:00025434
+   135 0001:0002543B   136 0001:0002544B   137 0001:0002545F   139 0001:0002546C
+   141 0001:00025479   143 0001:00025504   145 0001:0002550B   150 0001:0002552A
+   151 0001:00025532   154 0001:000258BC   155 0001:000258BF   156 0001:000258C6
+   157 0001:000258CD   158 0001:000258D4   162 0001:000258D8   163 0001:000258E9
+   167 0001:000258EC   168 0001:000258FD   171 0001:00025900   172 0001:00025903
+   173 0001:00025915   175 0001:00025927   177 0001:00025937   178 0001:00025949
+   180 0001:00025959   182 0001:0002595C   183 0001:0002595F   185 0001:00025971
+   188 0001:00025983   189 0001:00025993   193 0001:00025998   194 0001:000259B4
+   196 0001:000259BA   198 0001:000259D0   201 0001:000259F4   202 0001:000259F7
+   203 0001:00025A0D   204 0001:00025A21   208 0001:00025A24   209 0001:00025A27
+   210 0001:00025A2D   211 0001:00025A32   214 0001:00025A38   218 0001:00025A58
+   219 0001:00025A82   222 0001:00025AAC   225 0001:00025ABC   226 0001:00025ACF
+   229 0001:00025AE2   230 0001:00025AFA   232 0001:00025B1D   233 0001:00025B35
+   235 0001:00025B58   237 0001:00025B65   239 0001:00025B7B   243 0001:00025BB8
+   244 0001:00025BBD   247 0001:00025BC0   248 0001:00025BC3   250 0001:00025BD5
+   251 0001:00025BE2   252 0001:00025BEF   253 0001:00025BFC   254 0001:00025C09
+   258 0001:00025C18   260 0001:00025C1F   263 0001:00025C24   264 0001:00025C27
+   265 0001:00025C34   266 0001:00025C41   267 0001:00025C4E   268 0001:00025C5B
+   269 0001:00025C68
+
+Line numbers for Unit_SampleWise(Unit_SampleWise.pas) segment .itext
+
+   271 0002:000003F0
+
+Line numbers for Unit_Testsetupdetail(Unit_Testsetupdetail.pas) segment .text
+
+    40 0001:00026114    41 0001:00026119    44 0001:0002611C    45 0001:0002611F
+    46 0001:00026131    48 0001:00026140    49 0001:0002614D    52 0001:00026150
+    53 0001:00026153    54 0001:00026160    55 0001:00026170    56 0001:00026184
+    62 0001:00026188    63 0001:000261A4    64 0001:000261B2    67 0001:000261C3
+    68 0001:000261CB    69 0001:000261DD    70 0001:000261EA    71 0001:000261FC
+    72 0001:0002620E    74 0001:00026220    77 0001:00026261    79 0001:00026269
+    80 0001:00026279    81 0001:00026283    82 0001:00026290    84 0001:000262D0
+    86 0001:000262E0
+
+Line numbers for Unit_Testsetupdetail(Unit_Testsetupdetail.pas) segment .itext
+
+    88 0002:000003F8
+
+Line numbers for Unit_PatientTestDetail(Unit_PatientTestDetail.pas) segment .text
+
+    57 0001:00026C7C    58 0001:00026C81    64 0001:00026C84    65 0001:00026CA5
+    66 0001:00026CB3    69 0001:00026CC4    70 0001:00026CCC    71 0001:00026CDE
+    72 0001:00026CEB    73 0001:00026CFD    74 0001:00026D7E    75 0001:00026D90
+    77 0001:00026DBC    78 0001:00026DFD    80 0001:00026E43    82 0001:00026E67
+    84 0001:00026EAA    86 0001:00026ECE    89 0001:00026F0F    91 0001:00026F17
+    92 0001:00026F27    93 0001:00026F31    94 0001:00026F3E    96 0001:00026FE4
+    98 0001:00026FF4   103 0001:00027320   104 0001:00027331   107 0001:00027334
+   108 0001:00027356   110 0001:00027368   111 0001:0002737E   113 0001:0002738B
+   115 0001:00027391   116 0001:00027398   117 0001:000273A9   118 0001:000273BF
+   123 0001:000273CB   124 0001:000273FA   125 0001:00027407   126 0001:00027419
+   128 0001:0002741F   129 0001:00027426   130 0001:00027437   131 0001:0002744D
+   135 0001:00027456   137 0001:0002745C   138 0001:00027463   139 0001:00027474
+   140 0001:000274B9   144 0001:000274C0   147 0001:00027574   148 0001:00027596
+   150 0001:000275A8   151 0001:000275BE   152 0001:000275CB   154 0001:000275D1
+   155 0001:000275D8   156 0001:000275E9   157 0001:000275FF   162 0001:0002760B
+   163 0001:00027618   164 0001:00027647   166 0001:00027659   168 0001:0002765F
+   169 0001:00027666   170 0001:00027677   171 0001:000276BC   176 0001:000276C5
+   178 0001:000276CB   179 0001:000276D2   180 0001:000276E3   181 0001:000276F9
+   186 0001:00027700   189 0001:000277BC   190 0001:000277D7   192 0001:000277E9
+   194 0001:000277EF   195 0001:000277F6   196 0001:00027807   197 0001:0002784C
+   202 0001:00027855   204 0001:0002785B   205 0001:00027862   206 0001:00027873
+   207 0001:00027889   211 0001:00027890   214 0001:0002790C   215 0001:00027926
+   216 0001:0002794D   217 0001:00027974   218 0001:00027981   219 0001:0002798E
+   220 0001:0002799E   221 0001:000279AE   222 0001:000279C2   225 0001:000279FC
+   235 0001:000279FF   236 0001:00027A11   237 0001:00027A23   238 0001:00027A33
+   240 0001:00027A43   244 0001:00027A5C   245 0001:00027A6D
+
+Line numbers for Unit_PatientTestDetail(Unit_PatientTestDetail.pas) segment .itext
+
+   247 0002:00000400
+
+Line numbers for Unit_QrPatientFindingDetail(Unit_QrPatientFindingDetail.pas) segment .text
+
+    86 0001:00028660    87 0001:00028673    94 0001:00028674    95 0001:000286A4
+    97 0001:000286EF    98 0001:0002872A   100 0001:0002878F   101 0001:00028795
+   102 0001:000287A5   103 0001:000287AB   105 0001:000287BB   106 0001:000287E1
+   108 0001:000287EB   110 0001:00028810   111 0001:0002881D   113 0001:00028844
+   115 0001:00028869   116 0001:00028876   120 0001:0002889A   121 0001:000288A4
+   124 0001:000288CB   126 0001:000288D5   128 0001:000288FA   129 0001:00028907
+   131 0001:0002892E   133 0001:00028953   134 0001:00028960   138 0001:00028984
+   139 0001:0002898E   142 0001:000289B5   146 0001:00028A80   148 0001:00028A8F
+   150 0001:00028A9B   153 0001:00028AAC   155 0001:00028ABD   157 0001:00028ACC
+   159 0001:00028AD8   162 0001:00028AE9   164 0001:00028AFA   166 0001:00028B09
+   168 0001:00028B15   171 0001:00028B26   173 0001:00028B37   175 0001:00028B46
+   177 0001:00028B52   180 0001:00028B60   184 0001:00028B6E   185 0001:00028B7A
+   186 0001:00028B88   187 0001:00028B94   188 0001:00028BA2   189 0001:00028BBA
+   191 0001:00028BC8   195 0001:00028BD1   199 0001:00028CB8   200 0001:00028CD3
+   201 0001:00028CD8   202 0001:00028CFF   203 0001:00028D28   207 0001:00028D64
+   208 0001:00028D6A   209 0001:00028D77   213 0001:00028D7C   214 0001:00028D99
+   215 0001:00028DCF   216 0001:00028E10   220 0001:00028E50   221 0001:00028E53
+   222 0001:00028E62
+
+Line numbers for Unit_QrPatientFindingDetail(Unit_QrPatientFindingDetail.pas) segment .itext
+
+   224 0002:00000408
+
+Line numbers for Unit_AllPatientTest(Unit_AllPatientTest.pas) segment .text
+
+    50 0001:00029510    51 0001:00029532    52 0001:00029540    55 0001:00029556
+    57 0001:00029563    58 0001:0002956A    59 0001:0002957B    60 0001:000295EE
+    61 0001:0002960B    63 0001:0002964D    65 0001:00029663    67 0001:0002966A
+    68 0001:00029688    69 0001:000296A6    70 0001:000296D9    71 0001:0002970C
+    74 0001:0002972B    76 0001:0002973F    80 0001:00029840    81 0001:00029845
+    85 0001:00029848    86 0001:00029859    90 0001:0002985C    91 0001:0002986D
+    94 0001:00029870    95 0001:0002988A    96 0001:0002989C    97 0001:000298B2
+   101 0001:000298D4   102 0001:000298D7   103 0001:000298DD   104 0001:000298E2
+   107 0001:000298E8   108 0001:00029902   109 0001:0002991A   110 0001:00029941
+   111 0001:00029959   113 0001:00029980   115 0001:00029986   116 0001:0002998D
+   117 0001:0002999E   119 0001:000299A5
+
+Line numbers for Unit_AllPatientTest(Unit_AllPatientTest.pas) segment .itext
+
+   121 0002:00000410
+
+Line numbers for Qr_WorkList(Qr_WorkList.pas) segment .text
+
+    68 0001:0002A258    69 0001:0002A25B    70 0001:0002A26A    74 0001:0002A26C
+    75 0001:0002A26F    76 0001:0002A27E    79 0001:0002A280    80 0001:0002A281
+    82 0001:0002A287    84 0001:0002A289    85 0001:0002A290    86 0001:0002A29F
+    87 0001:0002A2AB    88 0001:0002A2B4    89 0001:0002A2BC    90 0001:0002A2CF
+    91 0001:0002A2E2    92 0001:0002A2F5    93 0001:0002A308    94 0001:0002A31B
+    96 0001:0002A32E    97 0001:0002A341   100 0001:0002A348
+
+Line numbers for Qr_WorkList(Qr_WorkList.pas) segment .itext
+
+   102 0002:00000418
+
+Line numbers for Unit_WorkList(Unit_WorkList.pas) segment .text
+
+    63 0001:0002AD1C    68 0001:0002AD36    69 0001:0002AD4D    70 0001:0002AD64
+    71 0001:0002AD7C    72 0001:0002AD94    73 0001:0002ADB7    74 0001:0002ADDA
+    75 0001:0002ADED    76 0001:0002AE00    78 0001:0002AE06    79 0001:0002AE0D
+    80 0001:0002AE1E    82 0001:0002AE25    86 0001:0002AE5C    87 0001:0002AE61
+    90 0001:0002AE64    91 0001:0002AE67    93 0001:0002AE7C    94 0001:0002AE8E
+    98 0001:0002AEA0    99 0001:0002AEB5   101 0001:0002AEC5   104 0001:0002AEF0
+   105 0001:0002AEF3   107 0001:0002AF08   108 0001:0002AF1A   112 0001:0002AF2C
+   113 0001:0002AF41   115 0001:0002AF51   119 0001:0002AF7C   120 0001:0002AF82
+   121 0001:0002AF87   126 0001:0002AF88   127 0001:0002AFAA   129 0001:0002AFD9
+   130 0001:0002AFEE   131 0001:0002AFFC   133 0001:0002B001   135 0001:0002B022
+   136 0001:0002B030   139 0001:0002B04C   140 0001:0002B05E   142 0001:0002B07A
+   143 0001:0002B0C5   145 0001:0002B0DB   146 0001:0002B149   147 0001:0002B160
+   148 0001:0002B177   149 0001:0002B19A   153 0001:0002B1BF   154 0001:0002B1D9
+   155 0001:0002B1F3   156 0001:0002B20D   158 0001:0002B227   163 0001:0002B2A5
+   164 0001:0002B2B7   165 0001:0002B2C3   167 0001:0002B2D0   168 0001:0002B2E7
+   169 0001:0002B2F0   170 0001:0002B2F7   171 0001:0002B2FE   172 0001:0002B305
+   175 0001:0002B31C   176 0001:0002B323   178 0001:0002B348   179 0001:0002B34B
+   180 0001:0002B352   181 0001:0002B369   182 0001:0002B39B   183 0001:0002B3D3
+   184 0001:0002B413   189 0001:0002B44D   190 0001:0002B456   193 0001:0002B45D
+   194 0001:0002B460   198 0001:0002B4A0   199 0001:0002B4D8   200 0001:0002B510
+   201 0001:0002B51A   202 0001:0002B539   173 0001:0002B54B   207 0001:0002B565
+   208 0001:0002B598   209 0001:0002B5D7   210 0001:0002B5F5   211 0001:0002B60C
+   212 0001:0002B640   213 0001:0002B64E   216 0001:0002B66D   219 0001:0002B681
+   221 0001:0002B6BA   222 0001:0002B6C8   226 0001:0002B6DE   227 0001:0002B6F0
+   230 0001:0002B70C   232 0001:0002B722   233 0001:0002B7A2   234 0001:0002B7B9
+   235 0001:0002B7D0   236 0001:0002B7F9   240 0001:0002B824   241 0001:0002B83E
+   242 0001:0002B858   243 0001:0002B872   245 0001:0002B88C   246 0001:0002B922
+   249 0001:0002B93E   251 0001:0002B950   252 0001:0002B95C   254 0001:0002B969
+   255 0001:0002B980   256 0001:0002B989   257 0001:0002B990   258 0001:0002B997
+   259 0001:0002B99E   262 0001:0002B9B5   263 0001:0002B9BC   265 0001:0002B9E1
+   266 0001:0002B9E4   267 0001:0002B9EB   268 0001:0002BA02   269 0001:0002BA34
+   270 0001:0002BA72   271 0001:0002BABE   275 0001:0002BAFE   276 0001:0002BB07
+   279 0001:0002BB0E   280 0001:0002BB11   284 0001:0002BB5D   285 0001:0002BB9B
+   286 0001:0002BBD9   287 0001:0002BBE3   288 0001:0002BC02   260 0001:0002BC14
+   295 0001:0002BC2E   296 0001:0002BC6D   297 0001:0002BCAC   298 0001:0002BCC3
+   299 0001:0002BCDA   300 0001:0002BD0E   301 0001:0002BD1C   304 0001:0002BD3B
+   307 0001:0002BD4F   310 0001:0002C3E8   311 0001:0002C402   313 0001:0002C414
+   314 0001:0002C431   317 0001:0002C440   319 0001:0002C44D   333 0001:0002C470
+   334 0001:0002C48A   335 0001:0002C493   336 0001:0002C495   339 0001:0002C49B
+   338 0001:0002C49C   340 0001:0002C4AB   341 0001:0002C4B8   336 0001:0002C4D6
+   343 0001:0002C4DA   348 0001:0002C500   349 0001:0002C507   350 0001:0002C517
+   351 0001:0002C521   354 0001:0002C52A   355 0001:0002C531   356 0001:0002C53C
+   357 0001:0002C54B   358 0001:0002C55B   361 0001:0002C562   362 0001:0002C56A
+   365 0001:0002C5B0   366 0001:0002C5B3   368 0001:0002C5C5   372 0001:0002C5D4
+   374 0001:0002C5E1
+
+Line numbers for Unit_WorkList(Unit_WorkList.pas) segment .itext
+
+   376 0002:00000420
+
+Line numbers for Unit_QrDoctorwiseCaseDetail(Unit_QrDoctorwiseCaseDetail.pas) segment .text
+
+    66 0001:0002CE54    67 0001:0002CE57    68 0001:0002CE66    72 0001:0002CE68
+    73 0001:0002CE6B    74 0001:0002CE7A
+
+Line numbers for Unit_QrDoctorwiseCaseDetail(Unit_QrDoctorwiseCaseDetail.pas) segment .itext
+
+    76 0002:00000428
+
+Line numbers for Unit_QRDoctorWisePatientSummary(Unit_QRDoctorWisePatientSummary.pas) segment .text
+
+    50 0001:0002D4B8    51 0001:0002D4BB    52 0001:0002D4CA    55 0001:0002D4CC
+    56 0001:0002D4CF    57 0001:0002D4DE
+
+Line numbers for Unit_QRDoctorWisePatientSummary(Unit_QRDoctorWisePatientSummary.pas) segment .itext
+
+    59 0002:00000430
+
+Line numbers for Unit_Doctorwisepatientcase(Unit_Doctorwisepatientcase.pas) segment .text
+
+    53 0001:0002DCE4    54 0001:0002DD06    56 0001:0002DD23    57 0001:0002DD2D
+    58 0001:0002DD3B    61 0001:0002DD40    63 0001:0002DD54    64 0001:0002DD62
+    67 0001:0002DD78    69 0001:0002DD85    70 0001:0002DD8C    71 0001:0002DD9D
+    72 0001:0002DDDD    73 0001:0002DDFA    75 0001:0002DE3C    76 0001:0002DE52
+    78 0001:0002DEC5    80 0001:0002DECC    81 0001:0002DEFF    82 0001:0002DF32
+    83 0001:0002DF50    84 0001:0002DF6E    87 0001:0002DF8D    90 0001:0002DFA1
+    92 0001:0002DFA8    93 0001:0002DFB6    96 0001:0002DFCC    98 0001:0002DFD9
+    99 0001:0002DFE0   100 0001:0002DFF1   101 0001:0002E031   102 0001:0002E04E
+   104 0001:0002E090   105 0001:0002E0A6   107 0001:0002E11F   110 0001:0002E12B
+   112 0001:0002E138   113 0001:0002E13F   114 0001:0002E150   115 0001:0002E15C
+   116 0001:0002E16D   117 0001:0002E17E   118 0001:0002E1C5   119 0001:0002E1E8
+   121 0001:0002E231   122 0001:0002E242   124 0001:0002E2C8   126 0001:0002E2CF
+   108 0001:0002E2E1   129 0001:0002E2FB   130 0001:0002E33A   131 0001:0002E379
+   132 0001:0002E39D   133 0001:0002E3BB   136 0001:0002E3DA   140 0001:0002E3EE
+   144 0001:0002E71C   145 0001:0002E721   148 0001:0002E724   149 0001:0002E73E
+   151 0001:0002E750   152 0001:0002E766   154 0001:0002E775   156 0001:0002E787
+   158 0001:0002E794   162 0001:0002E7B8   163 0001:0002E7BB   164 0001:0002E7C1
+   165 0001:0002E7C6   168 0001:0002E7CC   169 0001:0002E7E6   170 0001:0002E7F1
+   171 0001:0002E7FC   172 0001:0002E807   173 0001:0002E812   174 0001:0002E81F
+   175 0001:0002E846   176 0001:0002E86D   177 0001:0002E87D   181 0001:0002E8B8
+   182 0001:0002E8C9   186 0001:0002E8CC   187 0001:0002E8DD
+
+Line numbers for Unit_Doctorwisepatientcase(Unit_Doctorwisepatientcase.pas) segment .itext
+
+   189 0002:00000438
+
+Line numbers for Unit_ReportTree(Unit_ReportTree.pas) segment .text
+
+    65 0001:0002EF18    66 0001:0002EF1D    96 0001:0002EF20   115 0001:0002EF24
+   116 0001:0002EF27   117 0001:0002EF2D   118 0001:0002EF32   272 0001:0002EF38
+   273 0001:0002EF52   274 0001:0002EF62   275 0001:0002EF6F   276 0001:0002EF71
+   278 0001:0002EF89   280 0001:0002EF8F   281 0001:0002EF96   282 0001:0002EFA7
+   283 0001:0002EFB3   285 0001:0002EFC4   286 0001:0002EFCB   289 0001:0002F009
+   402 0001:0002F124   423 0001:0002F128   424 0001:0002F14E   425 0001:0002F15B
+   426 0001:0002F168   427 0001:0002F189   428 0001:0002F199   430 0001:0002F1AC
+   432 0001:0002F1BB   434 0001:0002F1C1   435 0001:0002F1C8   436 0001:0002F1D4
+   437 0001:0002F1E5   438 0001:0002F1F6   439 0001:0002F230   440 0001:0002F260
+   454 0001:0002F271   457 0001:0002F278   460 0001:0002F285   462 0001:0002F2CE
+   463 0001:0002F2E4   458 0001:0002F2EF   467 0001:0002F303   469 0001:0002F316
+   471 0001:0002F323   472 0001:0002F346   474 0001:0002F355   476 0001:0002F35E
+   477 0001:0002F366   478 0001:0002F373   479 0001:0002F385   480 0001:0002F397
+   481 0001:0002F3A9   482 0001:0002F3DA   483 0001:0002F3EC   484 0001:0002F3FE
+   485 0001:0002F42B   487 0001:0002F43D   488 0001:0002F457   490 0001:0002F469
+   493 0001:0002F471   496 0001:0002F47E   498 0001:0002F4C7   499 0001:0002F4DD
+   494 0001:0002F4E8   502 0001:0002F4F7   504 0001:0002F506   505 0001:0002F529
+   506 0001:0002F537   509 0001:0002F543   511 0001:0002F552   512 0001:0002F55F
+   513 0001:0002F582   523 0001:0002F59B   524 0001:0002F5B4   526 0001:0002F5BE
+   527 0001:0002F5D7   534 0001:0002FD18   537 0001:0002FD26   539 0001:0002FD2B
+   541 0001:0002FD3D   543 0001:0002FD58   547 0001:0002FD5D   548 0001:0002FD6D
+   549 0001:0002FD73
+
+Line numbers for Unit_ReportTree(Unit_ReportTree.pas) segment .itext
+
+   551 0002:00000440
+
+Line numbers for .Reports(Reports.dpk) segment .itext
+
+    78 0002:00000448
+
+Bound resource files
+
+UnitRepNoofTestDone.dfm
+UnitNoofTestDone.dfm
+UnitRepDeptWiseCollection.dfm
+UnitDeptWiseReport.dfm
+UnitRepDetailUserWise.dfm
+UnitRepUserWiseDetail.dfm
+UnitRepUserWiseCollection.dfm
+UnitUserWiseCollection.dfm
+Unit1.dfm
+Unit_QrPatientTestList.dfm
+Unit_QrWorkList.dfm
+Unit_Medicare_GovtSvrTaxReport.dfm
+Unit_Medicare_GovtSvrTaxReportSummary.dfm
+UnitSalesBook.dfm
+Unit_QrTaxReport.dfm
+Unit_TaxReport.dfm
+Unit_QrReffWiseRevenueDetail.dfm
+Unit_QrReffWiseRevenueSummary.dfm
+Unit_ReffWiseRevenue.dfm
+Unit_QrCollectionCenterDetail.dfm
+Unit_QrCollectionCenterSummary.dfm
+Unit_CollectionCenterReport.dfm
+Unit_QrSchemeWiseRevenueDetail.dfm
+Unit_QrSchemeWiseRevenueSummary.dfm
+Unit_SchemeWiseRevenue.dfm
+Unit_QrSampleWiseRep.dfm
+Unit_SampleWise.dfm
+Unit_Testsetupdetail.dfm
+Unit_PatientTestDetail.dfm
+Unit_QrPatientFindingDetail.dfm
+Unit_AllPatientTest.dfm
+Qr_WorkList.DFM
+Unit_WorkList.DFM
+Unit_QrDoctorwiseCaseDetail.dfm
+Unit_QRDoctorWisePatientSummary.dfm
+Unit_Doctorwisepatientcase.dfm
+Unit_ReportTree.dfm
+Reports.res
+Reports.drf
+
+
+Program entry point at 0002:00000448

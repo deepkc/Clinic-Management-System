@@ -1,0 +1,450 @@
+BDE Migration Wizard log
+
+Created at: 2017/06/04 2:50:33 PM
+
+Initializing unit list
+
+Allocating temporary folder
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Preview.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Print\Unit_Preview.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Temp Billing\Unit_TempBillingFrame.pas
+
+6 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\UnitDischargeClearanceDetail.pas
+
+15 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BillDetail.pas
+
+27 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BillDetail_2nd.pas
+
+16 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_Billing.pas
+
+73 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_Billing1.pas
+
+69 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BillingParent.pas
+
+3 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BillingRefund.pas
+
+64 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BillListFrame.pas
+
+3 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BloodBagRefund.pas
+
+14 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BringPendingBill.pas
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_CancelTestList.pas
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_CommunityRefund.pas
+
+14 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_CreditMessage.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_CustomerMonitor.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_DepositDayClose.pas
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_Deposits.pas
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_DisAdjDeposit.pas
+
+3 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_DischargeBilling.pas
+
+42 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_DischargeInDeposit.pas
+
+8 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_DoctorRoundVisit.pas
+
+28 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_DrInvolveInOperation.pas
+
+7 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_FractionLocking.pas
+
+8 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_IndoorPatientCategoryChange.pas
+
+7 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_IndoorPatientList.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_IndoorPatientScheme.pas
+
+7 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_otherpatient.pas
+
+11 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_OutdoorPatientList.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_PharmacyDisPer.pas
+
+7 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrBill.pas
+
+3 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrBill_Manipal.pas
+
+8 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrBill_NNH.pas
+
+8 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrBill_old.pas
+
+3 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrCommrefSlip_Manipal.pas
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrDepositSlip.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrDepositSlip_Manipal.pas
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrDepositSlip_NNH.pas
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeBill.pas
+
+7 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeBillDetail.pas
+
+9 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeBillDetail2nd.pas
+
+8 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrDischargeBill_BNB.pas
+
+8 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeBill_Manipal.pas
+
+9 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeBill_Manipal1.pas
+
+8 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeBill_NNH.pas
+
+9 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeClearence.pas
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrSticker.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_SelectDoctor.pas
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_ServiceAcknowledge.pas
+
+8 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_ServiceDetail.pas
+
+4 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_SpecialDeposits.pas
+
+6 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_StaffMemberSearch.pas
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_TestList.pas
+
+14 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_ViewLabReport.pas
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Print\Unit_Preview.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Temp Billing\Unit_TempBillingFrame.DFM
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\UnitDischargeClearanceDetail.DFM
+
+14 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BillDetail.DFM
+
+16 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BillDetail_2nd.DFM
+
+13 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_Billing.DFM
+
+31 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_Billing1.DFM
+
+29 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BillingParent.DFM
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BillingRefund.DFM
+
+21 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BillListFrame.DFM
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BloodBagRefund.DFM
+
+11 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_BringPendingBill.DFM
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_CancelTestList.DFM
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_CommunityRefund.DFM
+
+11 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_CreditMessage.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_CustomerMonitor.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_DepositDayClose.DFM
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_Deposits.DFM
+
+4 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_DisAdjDeposit.DFM
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_DischargeBilling.DFM
+
+34 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_DischargeInDeposit.DFM
+
+7 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_DoctorRoundVisit.DFM
+
+27 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_DrInvolveInOperation.DFM
+
+6 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_FractionLocking.DFM
+
+7 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_IndoorPatientCategoryChange.DFM
+
+4 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_IndoorPatientList.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_IndoorPatientScheme.DFM
+
+3 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_otherpatient.DFM
+
+6 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_OutdoorPatientList.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_PharmacyDisPer.DFM
+
+3 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrBill.DFM
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrBill_Manipal.DFM
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrBill_NNH.DFM
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrBill_old.DFM
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrCommrefSlip_Manipal.DFM
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrDepositSlip.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrDepositSlip_Manipal.DFM
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrDepositSlip_NNH.DFM
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeBill.DFM
+
+4 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeBillDetail.DFM
+
+8 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeBillDetail2nd.DFM
+
+7 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrDischargeBill_BNB.DFM
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeBill_Manipal.DFM
+
+6 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeBill_Manipal1.DFM
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeBill_NNH.DFM
+
+6 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QRDischargeClearence.DFM
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_QrSticker.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_SelectDoctor.DFM
+
+4 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_ServiceAcknowledge.DFM
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_ServiceDetail.DFM
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_SpecialDeposits.DFM
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_StaffMemberSearch.DFM
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_TestList.DFM
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Billing\Unit_ViewLabReport.DFM
+
+4 change(s)
+
+Replacing original files with changed versions
+
+Removing temporary folder
+
+Replace procedure was performed sucessfully.
+

@@ -1,0 +1,39 @@
+package PrivilegeSetup;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  Global,
+  VclSmp;
+
+contains
+  Unit_ModuleSetup in 'Unit_ModuleSetup.pas' {Form_ModuleSetup},
+  Unit_MainmenuSetup in 'Unit_MainmenuSetup.pas' {Form_MainmenuSetup},
+  Unit_SubmenuSetup in 'Unit_SubmenuSetup.pas' {Form_SubmenuSetup},
+  Unit_FunctionSetup in 'Unit_FunctionSetup.pas' {Form_FunctionSetup};
+
+end.
+

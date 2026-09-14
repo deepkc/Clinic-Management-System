@@ -1,0 +1,663 @@
+unit Unit_QRDischargeBill_NNH;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Dialogs, QRCtrls, qrBarcode, QuickRpt, ExtCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Fxn,
+     Serverdate, dm, InWordsSu, Unit_Master, pngimage, jpeg;
+
+type
+     TForm_QRDischargeBill_NNH = class(TForm)
+          Qr_DischargeBill: TQuickRep;
+          PageHeaderBand1: TQRBand;
+          lbl_headName: TQRLabel;
+          lbl_reprint: TQRLabel;
+          QRLabel17: TQRLabel;
+          QRLabel37: TQRLabel;
+          QRLabel39: TQRLabel;
+          QRShape2: TQRShape;
+          QRSubDetail1: TQRSubDetail;
+          GroupFooterBand1: TQRBand;
+          QRLabel28: TQRLabel;
+          lbl_Inwords: TQRLabel;
+          QRLabel30: TQRLabel;
+          lbl_GrossAmount: TQRLabel;
+          lbl_user: TQRLabel;
+          QRLabel27: TQRLabel;
+          QRLabel31: TQRLabel;
+          lbl_Discount: TQRLabel;
+          QRLabel33: TQRLabel;
+    lbl_TaxableTotal: TQRLabel;
+    QRLabel_TaxSystemCap: TQRLabel;
+          lbl_Svrtax: TQRLabel;
+          QRLabel40: TQRLabel;
+          lbl_Total: TQRLabel;
+          QRLabel42: TQRLabel;
+          QRLabel43: TQRLabel;
+          QRLabel44: TQRLabel;
+          QRLabel45: TQRLabel;
+          QRLabel46: TQRLabel;
+          QRLabel48: TQRLabel;
+          QRLabel1: TQRLabel;
+          QRLabel4: TQRLabel;
+          lbl_depositamount: TQRLabel;
+          QRLabel6: TQRLabel;
+          QRLabel11: TQRLabel;
+          lbl_balanceamt: TQRLabel;
+          QRShape3: TQRShape;
+          QRLabel22: TQRLabel;
+          lbl_PrintDate: TQRLabel;
+          lbl_refundedtest: TQRLabel;
+          QRLabel34: TQRLabel;
+          lbl_DepositFooter: TQRLabel;
+          QRLabel36: TQRLabel;
+          QRLabel41: TQRLabel;
+          QRLabel47: TQRLabel;
+          PageFooterBand1: TQRBand;
+          QRLabel5: TQRLabel;
+          QRLabel13: TQRLabel;
+          lbl_pagetotal: TQRLabel;
+          QRLabel14: TQRLabel;
+          QRLabel15: TQRLabel;
+          lbl_totpage: TQRLabel;
+          QRSysData1: TQRSysData;
+          lbl_contd: TQRLabel;
+          QRLabel10: TQRLabel;
+          QRLabel16: TQRLabel;
+          lbl_Addres: TQRLabel;
+          lbl_Name: TQRLabel;
+          QRLabel18: TQRLabel;
+          QRLabel21: TQRLabel;
+          lbl_billtype: TQRLabel;
+          lbl_InvoiceNo: TQRLabel;
+          QRLabel7: TQRLabel;
+          QRLabel24: TQRLabel;
+          QRLabel26: TQRLabel;
+          lbl_InvoiceDate: TQRLabel;
+          QRLabel49: TQRLabel;
+          QRLabel50: TQRLabel;
+          lbl_Scheme: TQRLabel;
+          Query_DischargeBill: TOraQuery;
+    Query_TaxableTotal: TOraQuery;
+          QRLabel12: TQRLabel;
+          Lbl_AdmnDate: TQRLabel;
+          QRLabel55: TQRLabel;
+          lbl_contactno: TQRLabel;
+          Lbl_HosNoCap: TQRLabel;
+          Lbl_HosNo: TQRLabel;
+          QRLabel32: TQRLabel;
+          QRLabel59: TQRLabel;
+          lbl_agesex: TQRLabel;
+          QRLabel63: TQRLabel;
+          QRLabel2: TQRLabel;
+          QRLabel3: TQRLabel;
+          Lbl_Ward: TQRLabel;
+          QRLabel65: TQRLabel;
+          QRLabel66: TQRLabel;
+          Lbl_RoomType: TQRLabel;
+          QRLabel68: TQRLabel;
+          QRLabel69: TQRLabel;
+          Lbl_BedNo: TQRLabel;
+          QRLabel20: TQRLabel;
+          QRLabel38: TQRLabel;
+          Lbl_InptNo: TQRLabel;
+          QRLabel53: TQRLabel;
+          QRLabel60: TQRLabel;
+          Lbl_DisDate: TQRLabel;
+          QRLabel64: TQRLabel;
+          QRLabel67: TQRLabel;
+          Lbl_NoOfDays: TQRLabel;
+          QRLabel8: TQRLabel;
+          QRLabel23: TQRLabel;
+          Lbl_InvDateBS: TQRLabel;
+          Query_Deposit: TOraQuery;
+          qrBarcode: TQRAsBarcode;
+    lbl_NonTaxableTotal: TQRLabel;
+          QRLabel25: TQRLabel;
+          QRLabel29: TQRLabel;
+    Query_NoTaxableTotal: TOraQuery;
+    QRLabel9: TQRLabel;
+    QRLabel19: TQRLabel;
+    lbl_Consultant: TQRLabel;
+    Lbl_RefundCap: TQRLabel;
+    QRLabel52: TQRLabel;
+    Lbl_RefundAmt: TQRLabel;
+    Lbl_BalanceCap: TQRLabel;
+    QRLabel57: TQRLabel;
+    Lbl_BalanceAfterRefund: TQRLabel;
+    QRLabel56: TQRLabel;
+    QRLabel58: TQRLabel;
+    lbl_Refundno: TQRLabel;
+    lbl_RefundBills: TQRLabel;
+    QRLabel54: TQRLabel;
+    QRLabel51: TQRLabel;
+    QRLabel61: TQRLabel;
+    QRLabel62: TQRLabel;
+    lbl_ReprintBy: TQRLabel;
+    QRLabel35: TQRLabel;
+    QRLabel70: TQRLabel;
+    QRLabel_HosSloganTitle: TQRLabel;
+    QRLabel74: TQRLabel;
+    QRLabel_PhoneNo: TQRLabel;
+    QRLabel_HosAddress: TQRLabel;
+    Query_Process: TOraQuery;
+    QRLabel77: TQRLabel;
+    QRLabel78: TQRLabel;
+    QrLBL_MCPNO: TQRLabel;
+    QRImage1: TQRImage;
+    QRShape4: TQRShape;
+    QRLabel_BillStatus: TQRLabel;
+    DetailBand1: TQRBand;
+    QRDBText1: TQRDBText;
+    QRDBText7: TQRDBText;
+    QRDBText2: TQRDBText;
+    QRDBText3: TQRDBText;
+    QRDBText4: TQRDBText;
+    QRDBText5: TQRDBText;
+    DataSource_Query_DischargeBill: TDataSource;
+    QueryCharges: TOraQuery;
+    QRBand1: TQRBand;
+          procedure QRDBText1Print(sender: TObject; var Value: string);
+          procedure QRDBText2Print(sender: TObject; var Value: string);
+          procedure lbl_SchemePrint(sender: TObject; var Value: string);
+    procedure lbl_headNamePrint(sender: TObject; var Value: string);
+    procedure Lbl_HosNoPrint(sender: TObject; var Value: string);
+    procedure QRLabel70Print(sender: TObject; var Value: string);
+    procedure QRLabel_HosSloganTitlePrint(sender: TObject; var Value: string);
+    procedure QRLabel_PhoneNoPrint(sender: TObject; var Value: string);
+    procedure QRLabel74Print(sender: TObject; var Value: string);
+    procedure QRLabel_HosAddressPrint(sender: TObject; var Value: string);
+    procedure Qr_DischargeBillBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
+    procedure QRDBText3Print(sender: TObject; var Value: string);
+    procedure QRDBText7Print(sender: TObject; var Value: string);
+    procedure Qr_DischargeBillAfterPrint(Sender: TObject);
+     private
+          { Private declarations }
+     public
+          { Public declarations }
+
+          pf_Deposit, pf_CopayAmount, pf_NetTotal, pf_RefundTotal,pf_FinalPaidRefund: Double;
+
+          pi_Sno ,pi_SnoSub: Integer;
+
+          pb_IsDischargedBill,pb_IsReprint: Boolean;
+
+          Const Arr_SubSNO:array[0..10] of string=('a','b','c','d','e','f','g','h','i','j','k');
+
+          Procedure LoadPatientInfo;
+          Procedure BillHeaderInfo;
+
+
+     end;
+
+var
+     Form_QRDischargeBill_NNH: TForm_QRDischargeBill_NNH;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_QRDischargeBill_NNH.lbl_headNamePrint(sender: TObject; var Value: string);
+begin
+     pi_Sno:=0;
+     
+
+end;
+
+procedure TForm_QRDischargeBill_NNH.Lbl_HosNoPrint(sender: TObject; var Value: string);
+begin
+     pi_Sno:=0;
+end;
+
+procedure TForm_QRDischargeBill_NNH.lbl_SchemePrint(sender: TObject; var Value: string);
+begin
+     if Length(Trim(Value)) = 0 then
+          Value := 'N/A';
+end;
+
+Procedure TForm_QRDischargeBill_NNH.LoadPatientInfo;
+Var
+     Qry: TOraQuery;
+     ls_RefBillNo : String;
+     lf_DisFinalAmount : Double;
+begin
+     SetPrinter('Bill Printer');
+     Qry := TOraQuery.Create(Nil);
+     With Qry Do
+     Begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          sql.Clear;
+          sql.Add(' Select * From VW_HS_ADMNPATIENTCURRENTINFO where InpatientId=' + IntToStr(gi_InpatientId));
+          Open;
+     End;
+
+     //BillHeaderInfo;
+
+     if gi_HospitalId=562 then // 562 - Manipal
+     qrBarcode.Text := ''
+     Else
+     qrBarcode.Text := Gs_BillNo;
+
+     // lbl_Password.Caption:=GetUPassword(Gs_BillNo);
+     Lbl_HosNoCap.Caption := Gs_HosNoCaptionName;
+     lbl_Name.Caption := Trim(Qry.FieldByName('Title').AsString+' '+Qry.FieldByName('PatientName').AsString);
+     Lbl_HosNo.Caption := IntToStr(Qry.FieldByName('PatientId').AsInteger);
+     Lbl_InptNo.Caption := IntToStr(Qry.FieldByName('InPatientId').AsInteger);
+     lbl_Addres.Caption := Qry.FieldByName('PTADDRESS').AsString;
+     lbl_agesex.Caption := Qry.FieldByName('AgeGender').AsString;
+     if Trim(Qry.FieldByName('phoneno').AsString) <> '' then
+          lbl_contactno.Caption := Qry.FieldByName('phoneno').AsString
+     Else
+          lbl_contactno.Caption := 'N/A';
+
+     Lbl_AdmnDate.Caption := Qry.FieldByName('AdmnDate').AsString;
+     if Trim(Qry.FieldByName('DisDate').AsString) <> '' then
+          //Lbl_DisDate.Caption := Qry.FieldByName('DisDate').AsString
+          Lbl_DisDate.Caption := Qry.FieldByName('OutDate').AsString // Hospital Out Date, In DisDate - > Actually the data is keept of BillDate.
+     Else
+          Lbl_DisDate.Caption := 'C';
+
+     if Qry.FieldByName('TotalDaysOfStay').AsInteger > 0 then
+          Lbl_NoOfDays.Caption := IntToStr(Qry.FieldByName('TotalDaysOfStay').AsInteger)
+     Else
+          Lbl_NoOfDays.Caption := '1';
+
+     Lbl_Ward.Caption := Qry.FieldByName('Ward').AsString;
+     Lbl_RoomType.Caption := Qry.FieldByName('RoomType').AsString;
+     Lbl_BedNo.Caption := Qry.FieldByName('BedNo').AsString;
+
+     if gi_HospitalID=563 then //563 - Nepal Cancer Hospital
+     Begin
+          if Qry.FieldByName('DocId').AsInteger=2 then // 2 - Dr Sudeep
+          lbl_Consultant.Caption := Qry.FieldByName('Consultant').AsString+' / '+GetDocName(39)
+          Else
+          lbl_Consultant.Caption := Qry.FieldByName('Consultant').AsString;
+     End
+     Else
+     lbl_Consultant.Caption := Qry.FieldByName('Consultant').AsString;
+
+     lbl_PrintDate.Caption := TodaysDateAD + ' AD - ' + TodaysDateVS + ' BS' + ' ' + TodaysTime;
+     lbl_user.Caption :=GetBillingUser(Gs_BillNo);
+
+
+     if Copy(gs_BillNo,1,2)='ME' then
+     Begin
+          QRLabel77.Enabled:=True;
+          QRLabel78.Enabled:=True;
+          QrLBL_MCPNO.Enabled:=True;
+          QrLBL_MCPNO.Caption:=Qry.FieldByName('MemberNo').AsString;
+          lbl_Scheme.Caption:=Qry.FieldByName('SchemeName').AsString;
+          QRLabel1.Caption:='DEPOSIT/Co-PAY AMOUNT';
+     End
+     Else
+     Begin
+          QRLabel77.Enabled:=False;
+          QRLabel78.Enabled:=False;
+          QrLBL_MCPNO.Enabled:=False;
+          QrLBL_MCPNO.Caption:='';
+          lbl_Scheme.Caption:=Qry.FieldByName('SchemeName').AsString;
+          QRLabel1.Caption:='DEPOSIT AMOUNT';
+     End;
+
+     if pb_IsReprint=True then
+     Begin
+          lbl_ReprintBy.Enabled:=True;
+          QRLabel61.Enabled:=True;
+          QRLabel62.Enabled:=True;
+          lbl_ReprintBy.Caption:= gs_UserName;
+     End
+     Else
+     Begin
+          lbl_ReprintBy.Enabled:=False;
+          QRLabel61.Enabled:=False;
+          QRLabel62.Enabled:=False;
+     End;
+
+     lbl_InvoiceNo.Caption := Gs_BillNo;
+
+     if (Copy(Trim(Gs_BillNo), 1, 2) = 'CS') or (Copy(Trim(Gs_BillNo), 1, 2) = 'CR') or (Copy(Trim(Gs_BillNo), 1, 2) = 'ME') then
+     Begin
+          lbl_InvoiceNo.Enabled := True;
+          lbl_billtype.Enabled := True;
+          QRLabel24.Enabled := True;
+          lbl_InvoiceDate.Enabled := True;
+          Lbl_InvDateBS.Enabled := True;
+          QRLabel7.Enabled := True;
+          QRLabel26.Enabled := True;
+          qrBarcode.Enabled := True;
+          inc(gi_noOfPrint);
+          (*if (gi_noOfPrint mod 2)=0 then
+          lbl_headName.Caption:='INVOICE'
+          else
+          lbl_headName.Caption:='DISCHARGE BILL';*)
+
+
+          if pb_IsReprint=False then
+          Begin
+               if (gi_noOfPrint mod 2)=0 then
+               lbl_headName.Caption:='COPY OF ORIGINAL (Print No : '+ IntToStr(GetNoOfPrint(Gs_BillNo,'PAYMENT'))+')'
+               else
+               lbl_headName.Caption:='TAX INVOICE';
+          End
+          Else
+          lbl_headName.Caption:='COPY OF ORIGINAL (Print No : '+ IntToStr(GetNoOfPrint(Gs_BillNo,'PAYMENT'))+')';
+
+
+
+//          lbl_headName.Caption := 'TAX INVOICE';
+          lbl_headName.Enabled:=True;
+          //lbl_headName.Enabled:=False; // Due to already Printed in Invoce from Press.
+          lbl_InvoiceDate.Caption := GetBillDate(Gs_BillNo);
+          if gi_datesystem = 1 then
+               Lbl_InvDateBS.Caption := '( ' + ADToVSS(Copy(GetBillDate(Gs_BillNo), 1, 10)) + ' BS )'
+          Else
+               Lbl_InvDateBS.Caption := '( ' + VSTOADS(Copy(GetBillDate(Gs_BillNo), 1, 10)) + ' AD )';
+          //lbl_Scheme.Caption := GetScheme(Gs_BillNo);
+
+
+          if gs_TaxSystem='VAT' then
+          QRLabel_TaxSystemCap.Caption:=FloatToStr(gf_TaxPercent)+'% VAT'
+          Else
+          QRLabel_TaxSystemCap.Caption:=FloatToStr(gf_TaxPercent)+'% HS TAX';
+
+
+          IF RefundBillExists(Gs_BillNo) Then
+          Begin
+               pf_RefundTotal:=GetTotalRefundAmt(Gs_billNO);
+               Lbl_RefundAmt.Caption := FormatFloat('#0,0.00',pf_RefundTotal);
+               Lbl_RefundAmt.Enabled:=True;
+               QRLabel56.Enabled:=True;
+               QRLabel58.Enabled:=True;
+               QRLabel51.Enabled:=True;
+               QRLabel54.Enabled:=True;
+
+               ls_RefBillNo:=GetRefundBillofBill(Gs_billNO);
+               lbl_Refundno.Caption :=Copy(ls_RefBillNo,1,15);
+               lbl_RefundBills.Caption:=Copy(ls_RefBillNo,17,20);
+
+               Lbl_RefundCap.Enabled:=True;
+               lbl_Refundno.Enabled:=True;
+               lbl_RefundBills.Enabled:=True;
+
+               //Lbl_BalanceCap.Enabled:=True;
+               //Lbl_BalanceAfterRefund.Enabled:=True;
+               QRLabel52.Enabled:=True;
+               //QRLabel57.Enabled:=True;
+          End
+          Else
+          Begin
+               Lbl_RefundAmt.Enabled:=False;
+               QRLabel56.Enabled:=False;
+               QRLabel58.Enabled:=False;
+               QRLabel51.Enabled:=False;
+               QRLabel54.Enabled:=False;
+
+
+               Lbl_RefundCap.Enabled:=False;
+               lbl_Refundno.Enabled:=False;
+               lbl_RefundBills.Enabled:=False;
+
+               Lbl_BalanceCap.Enabled:=False;
+               Lbl_BalanceAfterRefund.Enabled:=False;
+               QRLabel52.Enabled:=False;
+               QRLabel57.Enabled:=False;
+          End;
+
+          //lbl_PrintDate.Caption := TodaysDate + ' AD - ' + TodaysDateVS + ' BS' + ' ' + TodaysTime;
+          //lbl_user.Caption := gs_UserName;
+
+     End
+     Else
+     Begin
+          lbl_user.Caption :=gs_UserName;
+          lbl_headName.Caption := 'ESTIMATED COST';
+          lbl_headName.Enabled:=True;
+          lbl_InvoiceNo.Enabled := False;
+          lbl_billtype.Enabled := False;
+          QRLabel24.Enabled := False;
+          lbl_InvoiceDate.Enabled := False;
+          Lbl_InvDateBS.Enabled := False;
+          QRLabel7.Enabled := False;
+          QRLabel26.Enabled := False;
+          qrBarcode.Enabled := False;
+     End;
+
+
+     With Query_DischargeBill do
+     Begin
+          Close;
+          DatabaseName := gs_temppath;
+          sql.clear;
+          sql.add('Select Sum(Sn)Sn,PaymentCategory,Sum(Total) as Total From FinalDischargeBill ');
+          sql.add('Where PaymentCategory is not null Group by PaymentCategory Order by Sn,PaymentCategory');
+          Open;
+     End;
+
+     (*with QueryCharges do
+     begin
+          close;
+          sql.Clear;
+          databasename:=gs_temppath;
+          sql.add('Select Department,Total  From FinalDischargeBill.db');
+          sql.add('where PaymentCategory=:paymentcategory') ;
+          open;
+      end;*)
+
+
+     With Query_NoTaxableTotal do
+     Begin
+          Close;
+          DatabaseName := gs_temppath;
+          Open;
+     End;
+
+     With Query_TaxableTotal do
+     Begin
+          Close;
+          DatabaseName := gs_temppath;
+          Open;
+     End;
+
+
+
+     {lbl_GrossAmount.Caption := FormatFloat('#,##0.00', Query_DischargeSum.FieldByName('Total').AsFloat - Query_PharmacyTotal.FieldByName
+            ('NetTotal').AsFloat);}
+     lbl_GrossAmount.Caption := FormatFloat('#,##0.00', Query_TaxableTotal.FieldByName('Total').AsFloat+Query_NoTaxableTotal.FieldByName('Total').AsFloat);
+     lbl_Discount.Caption := FormatFloat('#,##0.00', Query_TaxableTotal.FieldByName('Discount').AsFloat+Query_NoTaxableTotal.FieldByName('Discount').AsFloat);
+     lbl_TaxableTotal.Caption := FormatFloat('#,##0.00', (Query_TaxableTotal.FieldByName('Total').AsFloat - Query_TaxableTotal.FieldByName('Discount').AsFloat));
+
+     lbl_Svrtax.Caption := FormatFloat('#,##0.00', Query_TaxableTotal.FieldByName('TaxAmt').AsFloat);
+
+     lbl_NonTaxableTotal.Caption := FormatFloat('#,##0.00', Query_NoTaxableTotal.FieldByName('Total').AsFloat - Query_NoTaxableTotal.FieldByName('Discount').AsFloat);
+
+     lbl_Total.Caption := FormatFloat('#,##0.00', Query_TaxableTotal.FieldByName('NetTotal').AsFloat+Query_NoTaxableTotal.FieldByName('NetTotal').AsFloat);
+
+     lbl_depositamount.Caption := FormatFloat('#,##0.00', pf_Deposit+pf_CopayAmount);
+
+     pf_NetTotal := Query_TaxableTotal.FieldByName('NetTotal').AsFloat+Query_NoTaxableTotal.FieldByName('NetTotal').AsFloat;
+     lbl_Inwords.Caption := InWords(pf_NetTotal);
+
+     if (Copy(Trim(Gs_BillNo), 1, 2) = 'CS') then
+     Begin
+          if pf_FinalPaidRefund > 0 then
+          Begin
+               lbl_balanceamt.Caption:= FormatFloat('#,##0.00', pf_FinalPaidRefund);
+               QRLabel6.Caption:='COLLECTED AMOUNT';
+          End
+          else
+          begin
+               lbl_balanceamt.Caption:= '( '+FormatFloat('#,##0.00', ABS(pf_FinalPaidRefund))+' )';
+               QRLabel6.Caption:='REFUNDED AMOUNT';
+          end;
+     End
+     else //or (Copy(Trim(Gs_BillNo), 1, 2) = 'CR') or (Copy(Trim(Gs_BillNo), 1, 2) = 'ME')
+     begin
+          if pf_NetTotal > (pf_Deposit+ pf_CopayAmount + pf_FinalPaidRefund) then
+          Begin
+               lbl_balanceamt.Caption:= FormatFloat('#,##0.00',pf_NetTotal - (pf_Deposit+ pf_CopayAmount + pf_FinalPaidRefund));
+               QRLabel6.Caption:='TO BE COLLECTED';
+          End
+          else
+          begin
+               lbl_balanceamt.Caption:= FormatFloat('#,##0.00', ((pf_Deposit+ pf_CopayAmount + pf_FinalPaidRefund)- pf_NetTotal));
+               QRLabel6.Caption:='TO BE REFUNDED';
+          end;
+     end;
+
+
+     (*if (Copy(Trim(Gs_BillNo), 1, 2) = 'CS') or (Copy(Trim(Gs_BillNo), 1, 2) = 'CR') or (Copy(Trim(Gs_BillNo), 1, 2) = 'ME') then
+     Begin
+          if (pf_NetTotal - pf_Deposit) > 0 then
+          Begin
+               lbl_balanceamt.Caption := FormatFloat('#,##0.00', (pf_NetTotal - pf_Deposit));
+               if (Copy(Trim(Gs_BillNo), 1, 2) = 'CS') then
+                    QRLabel6.Caption := 'COLLECTED AMOUNT'
+               Else
+                    //QRLabel6.Caption := 'TO BE COLLECTED';
+                    QRLabel6.Caption := 'TOTAL PAYMENT';
+          End
+          Else
+          Begin
+               lbl_balanceamt.Caption := ' ( ' + FormatFloat('#,##0.00', (pf_Deposit - pf_NetTotal)) + ' )';
+               QRLabel6.Caption := 'REFUNDED AMOUNT';
+          End;
+     End
+     Else
+     Begin
+          if (pf_NetTotal - pf_Deposit) > 0 then
+          Begin
+               lbl_balanceamt.Caption := FormatFloat('#,##0.00', (pf_NetTotal - pf_Deposit));
+               //QRLabel6.Caption := 'TO BE COLLECTED';
+               QRLabel6.Caption := 'TOTAL PAYMENT';
+          End
+          Else
+          Begin
+               lbl_balanceamt.Caption := ' ( ' + FormatFloat('#,##0.00', (pf_Deposit - pf_NetTotal)) + ' )';
+               QRLabel6.Caption := 'TO BE REFUNDED';
+          End;
+     End;*)
+end;
+
+procedure TForm_QRDischargeBill_NNH.QRDBText1Print(sender: TObject; var Value: string);
+begin
+     if Value = 'BED CHARGES' then
+          QRDBText7.Enabled := False
+     ELse
+          QRDBText7.Enabled := True;
+end;
+
+procedure TForm_QRDischargeBill_NNH.QRDBText2Print(sender: TObject; var Value: string);
+begin
+     pi_Sno := pi_Sno + 1;
+     Value := IntToStr(pi_Sno);
+     pi_SnoSub:=0;
+end;
+
+procedure TForm_QRDischargeBill_NNH.QRDBText3Print(sender: TObject; var Value: string);
+begin
+     //Value := Arr_SubSNO[pi_SnoSub];
+     //pi_SnoSub := pi_SnoSub + 1;
+     pi_Sno := pi_Sno + 1;
+     Value := IntToStr(pi_Sno);
+     if Query_DischargeBill.FieldByName('Sn').AsInteger>101 then
+     Value := '';
+end;
+
+procedure TForm_QRDischargeBill_NNH.QRDBText7Print(sender: TObject; var Value: string);
+begin
+     (*if Query_DischargeBill.FieldByName('paymentCategory').AsString='Bed Charges' then
+     begin
+          value:='';
+          QRSubDetail1.Height:=14;
+     end
+     else
+          QRSubDetail1.Height:=0;*)
+end;
+
+procedure TForm_QRDischargeBill_NNH.QRLabel70Print(sender: TObject; var Value: string);
+begin
+     if gb_BillPrintInPrintedPaper=False then
+     Value:=gs_HospitalName
+     else
+     Value:='';
+end;
+
+procedure TForm_QRDischargeBill_NNH.QRLabel_HosAddressPrint(sender: TObject; var Value: string);
+begin
+     if gb_BillPrintInPrintedPaper=False then
+     Value:=gs_HospitalAddress
+     else
+     Value:='';
+end;
+
+procedure TForm_QRDischargeBill_NNH.QRLabel_HosSloganTitlePrint(sender: TObject; var Value: string);
+begin
+     if gb_BillPrintInPrintedPaper=False then
+     Begin
+          if Trim(gs_HosSloganTitle)<>'' then
+          Value:=gs_HosSloganTitle
+          Else
+          Begin
+               Value:='';
+               QRLabel_PhoneNo.Top:=QRLabel_HosAddress.Top;
+               QRLabel_HosAddress.Top:=QRLabel_HosSloganTitle.Top;
+          End;
+     End
+     else
+     Value:='';
+end;
+
+procedure TForm_QRDischargeBill_NNH.QRLabel74Print(sender: TObject; var Value: string);
+begin
+     if gb_BillPrintInPrintedPaper=False then
+     Value:=gs_TPINNOBill
+     else
+     Value:='';
+end;
+
+procedure TForm_QRDischargeBill_NNH.QRLabel_PhoneNoPrint(sender: TObject; var Value: string);
+begin
+     (*if gb_BillPrintInPrintedPaper=False then
+     Value:=gs_HosPhoneBill
+     else*)
+     Value:='';
+end;
+
+procedure TForm_QRDischargeBill_NNH.Qr_DischargeBillAfterPrint(Sender: TObject);
+begin
+     with Query_process do
+     begin
+          Close;
+          DatabaseName := gs_databasename;
+          SQL.Clear;
+          SQL.Add('Update HS_BIMA_BILLMASTER SET BIMA_NOOFPRINT=BIMA_NOOFPRINT+1, BIMA_ISPRINTED=''Y'',BIMA_PRINTEDBY='+inttostr(gi_UserID));
+          SQL.Add(',BIMA_PRINTEDTIME='+#39+Serverdate.TodaysTime+#39+' where BIMA_BILLNO='+#39+gs_billno+#39);
+          ExecSQL;
+     end;
+end;
+
+procedure TForm_QRDischargeBill_NNH.Qr_DischargeBillBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
+var
+  poLandscape: TPrinterOrientation ;
+begin
+     //Qr_DischargeBill.Page.Orientation :=poLandscape;
+     //Qr_DischargeBill.Page.Orientation :=poPortrait;
+end;
+
+Procedure TForm_QRDischargeBill_NNH.BillHeaderInfo;
+begin
+     QRLabel70.Caption:=gs_HospitalNameBill;
+     QRLabel_HosSloganTitle.Caption:=gs_HosSloganTitleBill;
+     QRLabel_HosAddress.Caption:=gs_HosAddressBill;
+     QRLabel_PhoneNo.Caption:=gs_HosPhoneBill;
+
+     //QRLabel72.Caption:=gs_HosEmailBill;
+     //QRLabel73.Caption:=gs_HosWebSiteBill;
+
+     QRLabel74.Caption:=gs_TPINNOBill;
+end;
+
+
+End.

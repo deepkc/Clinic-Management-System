@@ -1,0 +1,1393 @@
+object FormEditFindAlternate: TFormEditFindAlternate
+  Left = 418
+  Top = 133
+  BorderIcons = [biSystemMenu, biMinimize, biMaximize, biHelp]
+  BorderStyle = bsDialog
+  Caption = 'Find  Entry'
+  ClientHeight = 611
+  ClientWidth = 722
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnClose = FormClose
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object PageControlFind: TPageControl
+    Left = 0
+    Top = 30
+    Width = 722
+    Height = 581
+    ActivePage = TabSheet1
+    Align = alClient
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    OnChange = PageControlFindChange
+    object TabSheet1: TTabSheet
+      Caption = ' &Find            '
+      DesignSize = (
+        714
+        553)
+      object Label2: TLabel
+        Left = 5
+        Top = 6
+        Width = 62
+        Height = 13
+        Caption = 'Test Name'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object SpeedButton1: TSpeedButton
+        Left = 603
+        Top = 0
+        Width = 41
+        Height = 25
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000120B0000120B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333000000000
+          3333333777777777F3333330F777777033333337F3F3F3F7F3333330F0808070
+          33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+          33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+          333333F7F7F7F7F7F3F33030F080707030333737F7F7F7F7F7333300F0808070
+          03333377F7F7F7F773333330F080707033333337F7F7F7F7F333333070707070
+          33333337F7F7F7F7FF3333000000000003333377777777777F33330F88877777
+          0333337FFFFFFFFF7F3333000000000003333377777777777333333330777033
+          3333333337FFF7F3333333333000003333333333377777333333}
+        NumGlyphs = 2
+        OnClick = SpeedButton1Click
+      end
+      object SpeedButton3: TSpeedButton
+        Left = 651
+        Top = 0
+        Width = 41
+        Height = 25
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000130B0000130B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+          00033FFFFFFFFFFFFFFF0888888888888880777777777777777F088888888888
+          8880777777777777777F0000000000000000FFFFFFFFFFFFFFFF0F8F8F8F8F8F
+          8F80777777777777777F08F8F8F8F8F8F9F0777777777777777F0F8F8F8F8F8F
+          8F807777777777777F7F0000000000000000777777777777777F3330FFFFFFFF
+          03333337F3FFFF3F7F333330F0000F0F03333337F77773737F333330FFFFFFFF
+          03333337F3FF3FFF7F333330F00F000003333337F773777773333330FFFF0FF0
+          33333337F3FF7F3733333330F08F0F0333333337F7737F7333333330FFFF0033
+          33333337FFFF7733333333300000033333333337777773333333}
+        NumGlyphs = 2
+        OnClick = SpeedButton3Click
+      end
+      object SpeedButton4: TSpeedButton
+        Left = 602
+        Top = 26
+        Width = 105
+        Height = 22
+        Caption = 'Font Style Setup'
+        OnClick = SpeedButton4Click
+      end
+      object DBGrid1: TDBGrid
+        Left = 5
+        Top = 49
+        Width = 705
+        Height = 499
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        Color = clBtnFace
+        DataSource = DataSourceQueryFind
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+        OnDblClick = DBGrid1DblClick
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'FINDINGS'
+            Title.Alignment = taCenter
+            Title.Caption = 'Find  Name'
+            Width = 205
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DESCRIPTION'
+            Title.Caption = 'Description'
+            Width = 356
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DEFFIND'
+            Title.Alignment = taCenter
+            Title.Caption = 'Default  Find'
+            Width = 73
+            Visible = True
+          end>
+      end
+      object CMBTestName: TDBLookupComboBox
+        Left = 5
+        Top = 22
+        Width = 192
+        Height = 21
+        DropDownWidth = 350
+        KeyField = 'TESTNAMEID'
+        ListField = 'TESTNAME'
+        ListFieldIndex = 1
+        ListSource = DataSourceQueryTestName
+        TabOrder = 1
+        OnClick = CMBTestNameClick
+      end
+      object BitBtn1: TBitBtn
+        Left = 507
+        Top = 26
+        Width = 95
+        Height = 22
+        Caption = 'Key Words'
+        DoubleBuffered = True
+        ParentDoubleBuffered = False
+        TabOrder = 2
+        OnClick = BitBtn1Click
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = '&New Find       '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ImageIndex = 1
+      ParentFont = False
+      object Bevel2: TBevel
+        Left = 0
+        Top = 550
+        Width = 714
+        Height = 3
+        Align = alBottom
+        ExplicitTop = 475
+      end
+      object Label1: TLabel
+        Left = 2
+        Top = 106
+        Width = 43
+        Height = 13
+        Caption = 'Title One'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label3: TLabel
+        Left = 2
+        Top = 128
+        Width = 43
+        Height = 13
+        Caption = 'Title Two'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label4: TLabel
+        Left = 318
+        Top = 66
+        Width = 59
+        Height = 13
+        Caption = 'Report Note'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object SpeedButton2: TSpeedButton
+        Left = 204
+        Top = 58
+        Width = 33
+        Height = 21
+        Flat = True
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000120B0000120B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333303333
+          333333333337F33333333333333033333333333333373F333333333333090333
+          33333333337F7F33333333333309033333333333337373F33333333330999033
+          3333333337F337F33333333330999033333333333733373F3333333309999903
+          333333337F33337F33333333099999033333333373333373F333333099999990
+          33333337FFFF3FF7F33333300009000033333337777F77773333333333090333
+          33333333337F7F33333333333309033333333333337F7F333333333333090333
+          33333333337F7F33333333333309033333333333337F7F333333333333090333
+          33333333337F7F33333333333300033333333333337773333333}
+        NumGlyphs = 2
+      end
+      object Label5: TLabel
+        Left = 2
+        Top = 150
+        Width = 51
+        Height = 13
+        Caption = 'Title Three'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label6: TLabel
+        Left = 2
+        Top = 170
+        Width = 45
+        Height = 13
+        Caption = 'Title Four'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label7: TLabel
+        Left = 2
+        Top = 194
+        Width = 43
+        Height = 13
+        Caption = 'Title Five'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label8: TLabel
+        Left = 2
+        Top = 215
+        Width = 37
+        Height = 13
+        Caption = 'Title Six'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label9: TLabel
+        Left = 2
+        Top = 240
+        Width = 53
+        Height = 13
+        Caption = 'Title Seven'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label10: TLabel
+        Left = 2
+        Top = 263
+        Width = 47
+        Height = 13
+        Caption = 'Title Eight'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label11: TLabel
+        Left = 2
+        Top = 284
+        Width = 44
+        Height = 13
+        Caption = 'Title Nine'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label12: TLabel
+        Left = 2
+        Top = 306
+        Width = 41
+        Height = 13
+        Caption = 'Title Ten'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label13: TLabel
+        Left = 1
+        Top = 86
+        Width = 56
+        Height = 13
+        Caption = 'Report Title'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label14: TLabel
+        Left = 2
+        Top = 327
+        Width = 55
+        Height = 13
+        Caption = 'Title Eleven'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label15: TLabel
+        Left = 2
+        Top = 350
+        Width = 57
+        Height = 13
+        Caption = 'Title Twelve'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label16: TLabel
+        Left = 2
+        Top = 372
+        Width = 63
+        Height = 13
+        Caption = 'Title Thirteen'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label17: TLabel
+        Left = 0
+        Top = 395
+        Width = 67
+        Height = 13
+        Caption = 'Title Fourteen'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label18: TLabel
+        Left = 4
+        Top = 417
+        Width = 57
+        Height = 13
+        Caption = 'Title Fifteen'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label19: TLabel
+        Left = 2
+        Top = 438
+        Width = 59
+        Height = 13
+        Caption = 'Title Sixteen'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label20: TLabel
+        Left = 192
+        Top = 505
+        Width = 74
+        Height = 13
+        Caption = 'Text Preview'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object SpeedButton5: TSpeedButton
+        Left = 192
+        Top = 479
+        Width = 73
+        Height = 22
+        Caption = 'Load Text'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        OnClick = SpeedButton5Click
+      end
+      object Label21: TLabel
+        Left = 1
+        Top = 62
+        Width = 60
+        Height = 13
+        Caption = 'Report Type'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label22: TLabel
+        Left = -15
+        Top = 459
+        Width = 75
+        Height = 13
+        Caption = 'Title Seventeen'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object CheckFind: TCheckBox
+        Left = 601
+        Top = 60
+        Width = 99
+        Height = 17
+        Caption = 'Default Finding'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 18
+      end
+      object EditTitleOne: TEdit
+        Left = 66
+        Top = 104
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 1
+      end
+      object EditTitleTwo: TEdit
+        Left = 66
+        Top = 126
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 2
+      end
+      object EditTitleThree: TEdit
+        Left = 66
+        Top = 148
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 3
+      end
+      object EditTitleFour: TEdit
+        Left = 66
+        Top = 170
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 4
+      end
+      object EditTitleFive: TEdit
+        Left = 66
+        Top = 192
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 5
+      end
+      object EditTitleSix: TEdit
+        Left = 66
+        Top = 214
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 6
+      end
+      object EditTitleSeven: TEdit
+        Left = 66
+        Top = 236
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 7
+      end
+      object EditTitleEight: TEdit
+        Left = 66
+        Top = 258
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 8
+      end
+      object EditTitleNine: TEdit
+        Left = 66
+        Top = 280
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 9
+      end
+      object EditTitleTen: TEdit
+        Left = 66
+        Top = 302
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 10
+      end
+      object Edit_Description: TEdit
+        Left = 66
+        Top = 83
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 0
+      end
+      object EditTitleEleven: TEdit
+        Left = 66
+        Top = 324
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 11
+      end
+      object EditTitleTwelve: TEdit
+        Left = 66
+        Top = 346
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 12
+      end
+      object EditTitleThirteen: TEdit
+        Left = 66
+        Top = 368
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 13
+      end
+      object EditTitleFourteen: TEdit
+        Left = 66
+        Top = 390
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 14
+      end
+      object EditTitleFifteen: TEdit
+        Left = 66
+        Top = 412
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 15
+      end
+      object EditTitleSixteen: TEdit
+        Left = 66
+        Top = 434
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 16
+      end
+      object CB_Title1: TCheckBox
+        Left = 258
+        Top = 105
+        Width = 16
+        Height = 17
+        TabOrder = 19
+      end
+      object CB_Title2: TCheckBox
+        Left = 258
+        Top = 127
+        Width = 16
+        Height = 17
+        TabOrder = 20
+      end
+      object CB_Title3: TCheckBox
+        Left = 258
+        Top = 148
+        Width = 16
+        Height = 17
+        TabOrder = 21
+      end
+      object CB_Title4: TCheckBox
+        Left = 258
+        Top = 171
+        Width = 16
+        Height = 17
+        TabOrder = 22
+      end
+      object CB_Title5: TCheckBox
+        Left = 258
+        Top = 193
+        Width = 16
+        Height = 17
+        TabOrder = 23
+      end
+      object CB_Title6: TCheckBox
+        Left = 258
+        Top = 215
+        Width = 16
+        Height = 17
+        TabOrder = 24
+      end
+      object CB_Title7: TCheckBox
+        Left = 258
+        Top = 238
+        Width = 16
+        Height = 17
+        TabOrder = 25
+      end
+      object CB_Title8: TCheckBox
+        Left = 258
+        Top = 260
+        Width = 16
+        Height = 17
+        TabOrder = 26
+      end
+      object CB_Title9: TCheckBox
+        Left = 258
+        Top = 281
+        Width = 16
+        Height = 17
+        TabOrder = 27
+      end
+      object CB_Title10: TCheckBox
+        Left = 258
+        Top = 303
+        Width = 16
+        Height = 17
+        TabOrder = 28
+      end
+      object CB_Title11: TCheckBox
+        Left = 258
+        Top = 326
+        Width = 16
+        Height = 17
+        TabOrder = 29
+      end
+      object CB_Title12: TCheckBox
+        Left = 258
+        Top = 347
+        Width = 16
+        Height = 17
+        TabOrder = 30
+      end
+      object CB_Title13: TCheckBox
+        Left = 258
+        Top = 369
+        Width = 16
+        Height = 17
+        TabOrder = 31
+      end
+      object CB_Title14: TCheckBox
+        Left = 258
+        Top = 390
+        Width = 16
+        Height = 17
+        TabOrder = 32
+      end
+      object CB_Title15: TCheckBox
+        Left = 258
+        Top = 413
+        Width = 16
+        Height = 17
+        TabOrder = 33
+      end
+      object CB_Title16: TCheckBox
+        Left = 258
+        Top = 436
+        Width = 16
+        Height = 17
+        TabOrder = 34
+      end
+      object MemoDisplay: TMemo
+        Left = 274
+        Top = 481
+        Width = 440
+        Height = 67
+        Color = 15922164
+        ScrollBars = ssVertical
+        TabOrder = 35
+      end
+      object EditReportType: TEdit
+        Left = 66
+        Top = 60
+        Width = 190
+        Height = 21
+        MaxLength = 60
+        TabOrder = 36
+      end
+      object EditTitleSeventeen: TEdit
+        Left = 66
+        Top = 455
+        Width = 190
+        Height = 21
+        MaxLength = 40
+        TabOrder = 17
+      end
+      object Memo18: TRichEdit
+        Left = 274
+        Top = 83
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 37
+        OnEnter = Memo18Enter
+      end
+      object Memo1: TRichEdit
+        Left = 274
+        Top = 104
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 38
+        OnChange = Memo1Change
+        OnEnter = Memo1Enter
+        OnExit = Memo1Exit
+        OnSelectionChange = Memo1SelectionChange
+      end
+      object Memo2: TRichEdit
+        Left = 274
+        Top = 126
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 39
+        OnChange = Memo2Change
+        OnEnter = Memo2Enter
+        OnExit = Memo2Exit
+        OnSelectionChange = Memo2SelectionChange
+      end
+      object Memo3: TRichEdit
+        Left = 274
+        Top = 148
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 40
+        OnChange = Memo3Change
+        OnEnter = Memo3Enter
+        OnExit = Memo3Exit
+        OnSelectionChange = Memo3SelectionChange
+      end
+      object Memo4: TRichEdit
+        Left = 274
+        Top = 170
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 41
+        OnChange = Memo4Change
+        OnEnter = Memo4Enter
+        OnExit = Memo4Exit
+        OnSelectionChange = Memo4SelectionChange
+      end
+      object Memo5: TRichEdit
+        Left = 274
+        Top = 192
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 42
+        OnChange = Memo5Change
+        OnEnter = Memo5Enter
+        OnExit = Memo5Exit
+        OnSelectionChange = Memo5SelectionChange
+      end
+      object Memo6: TRichEdit
+        Left = 274
+        Top = 214
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 43
+        OnChange = Memo6Change
+        OnEnter = Memo6Enter
+        OnExit = Memo6Exit
+        OnSelectionChange = Memo6SelectionChange
+      end
+      object Memo7: TRichEdit
+        Left = 274
+        Top = 236
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 44
+        OnChange = Memo7Change
+        OnEnter = Memo7Enter
+        OnExit = Memo7Exit
+        OnSelectionChange = Memo7SelectionChange
+      end
+      object memo8: TRichEdit
+        Left = 274
+        Top = 258
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 45
+        OnChange = memo8Change
+        OnEnter = memo8Enter
+        OnExit = memo8Exit
+        OnSelectionChange = memo8SelectionChange
+      end
+      object Memo9: TRichEdit
+        Left = 274
+        Top = 280
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 46
+        OnChange = Memo9Change
+        OnEnter = Memo9Enter
+        OnExit = Memo9Exit
+        OnSelectionChange = Memo9SelectionChange
+      end
+      object Memo10: TRichEdit
+        Left = 274
+        Top = 302
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 47
+        OnChange = Memo10Change
+        OnEnter = Memo10Enter
+        OnExit = Memo10Exit
+        OnSelectionChange = Memo10SelectionChange
+      end
+      object Memo11: TRichEdit
+        Left = 274
+        Top = 324
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 48
+        OnChange = Memo11Change
+        OnEnter = Memo11Enter
+        OnExit = Memo11Exit
+        OnSelectionChange = Memo11SelectionChange
+      end
+      object Memo12: TRichEdit
+        Left = 274
+        Top = 346
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 49
+        OnChange = Memo12Change
+        OnEnter = Memo12Enter
+        OnExit = Memo12Exit
+        OnSelectionChange = Memo12SelectionChange
+      end
+      object Memo13: TRichEdit
+        Left = 274
+        Top = 368
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 50
+        OnChange = Memo13Change
+        OnEnter = Memo13Enter
+        OnExit = Memo13Exit
+        OnSelectionChange = Memo13SelectionChange
+      end
+      object Memo14: TRichEdit
+        Left = 274
+        Top = 390
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 51
+        OnChange = Memo14Change
+        OnEnter = Memo14Enter
+        OnExit = Memo14Exit
+        OnSelectionChange = Memo14SelectionChange
+      end
+      object Memo15: TRichEdit
+        Left = 274
+        Top = 413
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 52
+        OnChange = Memo15Change
+        OnEnter = Memo15Enter
+        OnExit = Memo15Exit
+        OnSelectionChange = Memo15SelectionChange
+      end
+      object Memo16: TRichEdit
+        Left = 274
+        Top = 435
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 53
+        OnChange = Memo16Change
+        OnEnter = Memo16Enter
+        OnExit = Memo16Exit
+        OnSelectionChange = Memo16SelectionChange
+      end
+      object Memo17: TRichEdit
+        Left = 274
+        Top = 457
+        Width = 426
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 54
+        OnChange = Memo17Change
+        OnEnter = Memo17Enter
+        OnExit = Memo17Exit
+        OnSelectionChange = Memo17SelectionChange
+      end
+      object ToolBar1: TToolBar
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Width = 708
+        Height = 21
+        AutoSize = True
+        ButtonHeight = 19
+        ButtonWidth = 45
+        Caption = 'ToolBar1'
+        EdgeInner = esNone
+        Flat = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        List = True
+        ParentFont = False
+        ShowCaptions = True
+        TabOrder = 55
+        Wrapable = False
+        object ToolButton1: TToolButton
+          Left = 0
+          Top = 0
+          AutoSize = True
+          Caption = 'B'
+          ImageIndex = 0
+          Style = tbsCheck
+          OnClick = ToolButton1Click
+        end
+        object ToolButton6: TToolButton
+          Left = 22
+          Top = 0
+          Width = 8
+          Caption = 'ToolButton6'
+          ImageIndex = 4
+          Style = tbsSeparator
+        end
+        object ToolButton2: TToolButton
+          Left = 30
+          Top = 0
+          AutoSize = True
+          Caption = 'I'
+          ImageIndex = 1
+          Style = tbsCheck
+          OnClick = ToolButton2Click
+        end
+        object ToolButton4: TToolButton
+          Left = 50
+          Top = 0
+          Width = 8
+          Caption = 'ToolButton4'
+          ImageIndex = 3
+          Style = tbsSeparator
+        end
+        object ToolButton3: TToolButton
+          Left = 58
+          Top = 0
+          AutoSize = True
+          Caption = 'U'
+          ImageIndex = 4
+          Style = tbsCheck
+          OnClick = ToolButton3Click
+        end
+        object ToolButton5: TToolButton
+          Left = 81
+          Top = 0
+          Width = 8
+          Caption = 'ToolButton5'
+          ImageIndex = 3
+          Style = tbsSeparator
+        end
+        object ToolButton7: TToolButton
+          Left = 89
+          Top = 0
+          AutoSize = True
+          Caption = 'ST'
+          ImageIndex = 3
+          Style = tbsCheck
+          OnClick = ToolButton7Click
+        end
+        object ToolButton12: TToolButton
+          Left = 117
+          Top = 0
+          Width = 3
+          Caption = 'ToolButton12'
+          ImageIndex = 6
+          Style = tbsSeparator
+        end
+        object ToolButton9: TToolButton
+          Left = 120
+          Top = 0
+          Width = 8
+          Caption = 'ToolButton9'
+          ImageIndex = 5
+          Style = tbsSeparator
+        end
+        object Tbtn_Font: TToolButton
+          Left = 128
+          Top = 0
+          AutoSize = True
+          Caption = 'Font'
+          ImageIndex = 4
+          Style = tbsCheck
+          OnClick = Tbtn_FontClick
+        end
+        object ToolButton16: TToolButton
+          Left = 166
+          Top = 0
+          Width = 8
+          Caption = 'ToolButton16'
+          ImageIndex = 8
+          Style = tbsSeparator
+        end
+        object ToolButton8: TToolButton
+          Left = 174
+          Top = 0
+          AutoSize = True
+          Caption = 'Left'
+          ImageIndex = 8
+          OnClick = ToolButton8Click
+        end
+        object ToolButton10: TToolButton
+          Left = 209
+          Top = 0
+          AutoSize = True
+          Caption = 'Center'
+          ImageIndex = 9
+          OnClick = ToolButton10Click
+        end
+        object ToolButton11: TToolButton
+          Left = 258
+          Top = 0
+          AutoSize = True
+          Caption = 'Right'
+          ImageIndex = 10
+          OnClick = ToolButton11Click
+        end
+        object ComboBox2: TComboBox
+          Left = 299
+          Top = 0
+          Width = 126
+          Height = 21
+          TabOrder = 2
+          OnChange = ComboBox2Change
+        end
+        object ComboBox1: TComboBox
+          Left = 425
+          Top = 0
+          Width = 39
+          Height = 21
+          TabOrder = 0
+          OnChange = ComboBox1Change
+        end
+        object ButtonColor1: TButtonColor
+          Left = 464
+          Top = 0
+          Height = 19
+          Caption = 'Color'
+          TabOrder = 1
+          OnClick = ButtonColor1Click
+        end
+      end
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 722
+    Height = 30
+    Align = alTop
+    TabOrder = 1
+    DesignSize = (
+      722
+      30)
+    object BtnNew: TBitBtn
+      Left = 492
+      Top = 3
+      Width = 75
+      Height = 24
+      Anchors = [akTop, akRight]
+      Caption = '&New'
+      DoubleBuffered = True
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BtnNewClick
+    end
+    object BitBtnSave: TBitBtn
+      Left = 567
+      Top = 3
+      Width = 75
+      Height = 24
+      Anchors = [akTop, akRight]
+      Caption = '&Save'
+      DoubleBuffered = True
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BitBtnSaveClick
+    end
+    object BitBtnCancel: TBitBtn
+      Left = 642
+      Top = 3
+      Width = 75
+      Height = 24
+      Anchors = [akTop, akRight]
+      Cancel = True
+      Caption = '&Cancel'
+      DoubleBuffered = True
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = BitBtnCancelClick
+    end
+    object Memo: TMemo
+      Left = 256
+      Top = 16
+      Width = 10
+      Height = 9
+      TabOrder = 3
+    end
+  end
+  object DataSourceQueryFind: TDataSource
+    DataSet = QueryFind
+    Left = 285
+    Top = 49
+  end
+  object DataSourceQueryTestName: TDataSource
+    DataSet = QueryTestName
+    Left = 505
+    Top = 147
+  end
+  object Table1: TTable
+    Left = 412
+    Top = 30
+  end
+  object Table2: TTable
+    Left = 628
+    Top = 198
+  end
+  object QueryCheck: TOraQuery
+    SQL.Strings = (
+      'Select * From TestEditFinding_NEW'
+      ' Where (TestNameID=:TestNameID) And'
+      '             (DefFind='#39'T'#39')')
+    Left = 608
+    Top = 144
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'TestNameID'
+      end>
+  end
+  object QueryFind: TOraQuery
+    SQL.Strings = (
+      'Select * From TestEditFinding_NEW'
+      ' Where (TestNameID=:TestNameID)')
+    Left = 192
+    Top = 160
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'TestNameID'
+      end>
+  end
+  object QueryTestName: TOraQuery
+    SQL.Strings = (
+      
+        'Select tena_testnameid testnameid,tena_testname testname From hs' +
+        '_tena_TestName'
+      '  Where tena_ISActive='#39'Y'#39
+      'AND 1=1')
+    Left = 384
+    Top = 152
+  end
+  object Query_Process: TOraQuery
+    SQL.Strings = (
+      'Select * From TestEditFinding'
+      ' Where (TestNameID=:TestNameID) And'
+      '             (DefFind='#39'T'#39')')
+    Left = 376
+    Top = 256
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'TestNameID'
+      end>
+  end
+  object Query1: TQuery
+    DatabaseName = 'Hospital'
+    Left = 543
+    Top = 248
+  end
+  object ColorDialog1: TColorDialog
+    Left = 344
+    Top = 8
+  end
+  object FontDialog1: TFontDialog
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    Left = 304
+    Top = 8
+  end
+end

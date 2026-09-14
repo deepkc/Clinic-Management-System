@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2014/11/28 15:50:12.054.dproj,C:\Users\Administrator\Documents\RAD Studio\Projects\Package1.dproj=C:\Users\Administrator\Documents\RAD Studio\Projects\BloodBank.dproj</Transaction>
+    <Transaction>2014/11/28 15:50:28.684.dproj,C:\Users\Administrator\Documents\RAD Studio\Projects\BloodBank.dproj=E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\BloodBank.dproj</Transaction>
+    <Transaction>2014/11/28 16:25:20.969.pas,E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit_Main.pas=E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit_BloodCollectionMain.pas</Transaction>
+    <Transaction>2014/11/28 16:25:20.969.dfm,E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit_Main.dfm=E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit_BloodCollectionMain.dfm</Transaction>
+    <Transaction>2014/11/28 16:47:50.960.pas,E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit3.pas=</Transaction>
+    <Transaction>2014/11/28 16:47:50.960.dfm,E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit3.dfm=</Transaction>
+    <Transaction>2014/11/28 16:47:56.732.pas,E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit_BloodCollectionMain.pas=</Transaction>
+    <Transaction>2014/11/28 16:47:56.732.dfm,E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit_BloodCollectionMain.dfm=</Transaction>
+    <Transaction>2014/11/28 16:57:33.459.pas,E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit3.pas=E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit_MainBloodCollection.pas</Transaction>
+    <Transaction>2014/11/28 16:57:33.459.dfm,E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit3.dfm=E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit_MainBloodCollection.dfm</Transaction>
+    <Transaction>2014/11/28 17:00:59.992.pas,E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit_BloodCollectionMain.pas=</Transaction>
+    <Transaction>2014/11/28 17:00:59.992.dfm,E:\Working Projects\CENTRAL SOURCE\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Blood Bank\Unit_BloodCollectionMain.dfm=</Transaction>
+  </Transactions>
+</BorlandProject>

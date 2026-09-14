@@ -1,0 +1,1454 @@
+unit Unit_PatientAdministration_GMenu;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,Fxn,db,dbtables, DBAccess, Ora, OraSmart, MemDS, OraError,
+  Dialogs, CategoryButtons, Buttons, ExtCtrls, jpeg, StdCtrls,DM,Unit_Deposits;
+
+type
+  TFrame_GMenuPatientAdministration = class(TFrame)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    SpeedButton_LogInOut: TSpeedButton;
+    SpeedButton_Exit: TSpeedButton;
+    SpeedButton_Home: TSpeedButton;
+    CategoryButtons1: TCategoryButtons;
+    Image2: TImage;
+    TimerClock: TTimer;
+    Panel3: TPanel;
+    lbl_CurrentTime: TLabel;
+    Label_UserName: TLabel;
+    Label_LogInDateTime: TLabel;
+    procedure SpeedButton_ExitClick(Sender: TObject);
+    procedure SpeedButton_LogInOutClick(Sender: TObject);
+    procedure SpeedButton_HomeClick(Sender: TObject);
+    procedure CategoryButtons1Categories0Items2Click(Sender: TObject);
+    procedure CategoryButtons1Categories0Items3Click(Sender: TObject);
+    procedure CategoryButtons1Categories0Items1Click(Sender: TObject);
+    procedure CategoryButtons1Categories1Items0Click(Sender: TObject);
+    procedure CategoryButtons1Categories6Items0Click(Sender: TObject);
+
+    procedure CategoryButtons1Categories4Items0Click(Sender: TObject);
+    procedure CategoryButtons1Categories8Items0Click(Sender: TObject);
+    procedure CategoryButtons1Categories8Items1Click(Sender: TObject);
+    procedure CategoryButtons1Categories8Items2Click(Sender: TObject);
+    procedure CategoryButtons1Categories8Items3Click(Sender: TObject);
+    procedure CategoryButtons1Categories8Items4Click(Sender: TObject);
+    procedure CategoryButtons1Categories8Items5Click(Sender: TObject);
+    procedure CategoryButtons1Categories11Items2Click(Sender: TObject);
+    procedure CategoryButtons1Categories11Items1Click(Sender: TObject);
+    procedure CategoryButtons1Categories11Items0Click(Sender: TObject);
+    procedure CategoryButtons1Categories11Items3Click(Sender: TObject);
+    procedure CategoryButtons1Categories12Items0Click(Sender: TObject);
+    procedure CategoryButtons1Categories12Items1Click(Sender: TObject);
+    procedure CategoryButtons1Categories12Items2Click(Sender: TObject);
+    procedure CategoryButtons1Categories11Items4Click(Sender: TObject);
+    procedure CategoryButtons1Categories11Items5Click(Sender: TObject);
+    procedure CategoryButtons1Categories11Items6Click(Sender: TObject);
+    procedure CategoryButtons1Categories11Items7Click(Sender: TObject);
+    procedure CategoryButtons1Categories5Items0Click(Sender: TObject);
+    procedure CategoryButtons1Categories0Items0Click(Sender: TObject);
+    procedure CategoryButtons1Categories1Items1Click(Sender: TObject);
+    procedure CategoryButtons1Categories1Items2Click(Sender: TObject);
+    procedure CategoryButtons1Categories2Items0Click(Sender: TObject);
+    procedure CategoryButtons1Categories2Items1Click(Sender: TObject);
+    procedure CategoryButtons1Categories2Items2Click(Sender: TObject);
+    procedure CategoryButtons1Categories2Items3Click(Sender: TObject);
+    procedure CategoryButtons1Categories2Items4Click(Sender: TObject);
+
+
+    procedure CategoryButtons1Categories1Items3Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items0Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items1Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items2Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items3Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items4Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items5Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items6Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items8Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items7Click(Sender: TObject);
+    procedure CategoryButtons1Categories0Items4Click(Sender: TObject);
+    procedure CategoryButtons1Categories0Items5Click(Sender: TObject);
+    procedure CategoryButtons1Categories1Items4Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items9Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items10Click(Sender: TObject);
+    procedure TimerClockTimer(Sender: TObject);
+    procedure CategoryButtons1Categories4Items1Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items11Click(Sender: TObject);
+    procedure CategoryButtons1Categories1Items5Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items12Click(Sender: TObject);
+    procedure CategoryButtons1Categories1Items6Click(Sender: TObject);
+    procedure CategoryButtons1Categories4Items2Click(Sender: TObject);
+    procedure CategoryButtons1Categories4Items3Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items13Click(Sender: TObject);
+    procedure CategoryButtons1Categories3Items14Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    Constructor Create(Aowner:Tcomponent);Override;
+
+    Procedure PatientInfoPanelAdministration;
+    Procedure ShowHideButtons;
+    procedure GuidedMenuPrevilage;
+    procedure ResetVariables;
+    procedure ShowButtonsForER;
+
+  end;
+
+
+
+
+implementation
+
+uses Unit_Main, Unit_MainFormPatientAdministration,
+          Unit_NewPatient,Unit_Billing;
+
+
+{$R *.dfm}
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories0Items0Click(Sender: TObject);
+begin
+     Form_MainPatientAdministration.LoadDoctorSchedule;
+     gs_CalledFrom:='Doctor Schedule Plan';
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Doctor Schedule Plan';
+     Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+     gs_CalledFormName:='Doctor';
+
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories0Items1Click(Sender: TObject);
+begin
+     Form_MainPatientAdministration.LoadLeaveSchedule;
+
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Doctor Schedule';
+     gs_CalledFrom:='Doctor Schedule';
+     Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+     gs_CalledFormName:='Doctor';
+
+
+      //form_main.LoadMedicine;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories0Items2Click(Sender: TObject);
+begin
+     Form_MainPatientAdministration.LoadDoc;
+
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Doctor Appointment';
+     gs_CalledFrom:='Doctor Appointment';
+     Form_MainPatientAdministration.DBGrid1.Visible:=false;
+       Form_MainPatientAdministration.Panel_Footer.Visible:=TRue;
+     gs_CalledFormName:='Doctor';
+    // form_main.LoadSurgery;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories0Items3Click(Sender: TObject);
+begin
+    //form_main.LoadGynae;
+
+    Form_MainPatientAdministration.LoadCancelledAppointments;
+
+    Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Appointment Log';
+    gs_CalledFrom:='Appointment Log';
+    Form_MainPatientAdministration.DBGrid1.Visible:=false;
+      Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+     gs_CalledFormName:='Doctor';
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories0Items4Click(Sender: TObject);
+begin
+     //if gs_CalledFrom<>'DischargeBilling' then
+     //Begin
+          //gs_CalledFrom:='AdmittedPatientList';
+          Form_MainPatientAdministration.LoadIndoorPatientSerach;
+     //End;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories0Items5Click(
+  Sender: TObject);
+begin
+     //Form_MainPatientAdministration.LoadFrameParentWellness;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories11Items0Click(Sender: TObject);
+begin
+       //form_main.LoadPackage;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories11Items1Click(Sender: TObject);
+begin
+     //form_main.LoadScheme;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories11Items2Click(Sender: TObject);
+begin
+    // form_main.LoadPackageScheme;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories11Items3Click(Sender: TObject);
+begin
+     //form_main.LoadCommunity;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories11Items4Click(Sender: TObject);
+begin
+    // form_main.loadTestNameSetUp;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories11Items5Click(Sender: TObject);
+begin
+     //form_main.loadTestPackageDetail;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories11Items6Click(Sender: TObject);
+begin
+     ////Form_Main.LoadCommunityDetail;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories11Items7Click(Sender: TObject);
+begin
+    // Form_Main.LoadBenefitPackageDetail;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories12Items0Click(Sender: TObject);
+begin
+    // form_main.LoadReportType;
+end; //
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories12Items1Click(Sender: TObject);
+begin
+      //form_main.LoadFindingSetup;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories12Items2Click(Sender: TObject);
+begin
+     //form_main.LoadClinicalSetup;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories1Items0Click(Sender: TObject);
+begin
+     ResetVariables;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=False;
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='New Registration';
+
+     gs_BillType:='';
+     Gs_BillNo:='';
+     Gs_TempBillno:='';
+     gi_PatientID:=0;
+     gi_SchemeId:=0;
+     gi_CommunityId:=0;
+
+     gs_CalledFrom:='DirectRegistration';
+
+     Form_MainPatientAdministration.BitBtn_Admission.Visible:=False;
+     Form_MainPatientAdministration.BitBtn_DischargeBilling.Visible:=False;
+     Form_MainPatientAdministration.BitBtn_Deposit.Visible:=False;
+
+     Form_MainPatientAdministration.BB_New.Visible:=False;
+     Form_MainPatientAdministration.BB_Save.Visible:=True;
+     Form_MainPatientAdministration.Panel_Footer.Visible:=False;
+     Form_MainPatientAdministration.DBGrid1.Visible:=False;
+     gs_Frame:='Direct';
+     gb_PatientDataLoaded:=False;
+     gs_RegistrationType:='NEW';
+     Form_MainPatientAdministration.LoadNewPatient;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories1Items1Click(
+  Sender: TObject);
+begin
+     ResetVariables;
+     if gs_CalledFrom='ERPatientList' then
+     begin
+          Form_MainPatientAdministration.LoadERForm;
+     end
+     else
+     begin
+          Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Registered Patient List';
+          Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=false;
+          gs_CalledFrom:='RegisteredPatientList';
+
+          gs_BillType:='';
+          Gs_BillNo:='';
+          Gs_TempBillno:='';
+          gi_PatientID:=0;
+          gi_SchemeId:=0;
+          gi_CommunityId:=0;
+
+          Form_MainPatientAdministration.BitBtn_Admission.Visible:=False;
+          Form_MainPatientAdministration.BitBtn_DischargeBilling.Visible:=False;
+          Form_MainPatientAdministration.BitBtn_Deposit.Visible:=False;
+
+          Form_MainPatientAdministration.BB_New.Visible:=True;
+          //Form_MainPatientAdministration.BB_Save.Visible:=False;
+          Form_MainPatientAdministration.BB_Save.Enabled:=False;
+          Form_MainPatientAdministration.Panel_Footer.Visible:=False;
+          Form_MainPatientAdministration.DBGrid1.Visible:=False;
+          Form_MainPatientAdministration.LoadFrameParent;
+     end;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories1Items2Click(
+  Sender: TObject);
+begin
+     ResetVariables;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=false;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Caption:='Appointment list';
+     gs_CalledFrom:='Appointment list';
+     Form_MainPatientAdministration.BB_New.Visible:=false;
+     Form_MainPatientAdministration.Panel_Footer.Visible:=False;
+     Form_MainPatientAdministration.DBGrid1.Visible:=False;
+     Form_MainPatientAdministration.LoadSearch;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories1Items3Click(Sender: TObject);
+begin
+     ResetVariables;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=false;
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Patient Admission';
+
+     gs_BillType:='';
+     Gs_BillNo:='';
+     Gs_TempBillno:='';
+     gi_PatientID:=0;
+     gi_SchemeId:=0;
+     gi_CommunityId:=0;
+
+
+     gs_CalledFrom:='PatientAdmission';//'Admitted Patient List';
+     Form_MainPatientAdministration.BB_New.Visible:=True;
+     Form_MainPatientAdministration.Panel_Footer.Visible:=False;
+     Form_MainPatientAdministration.DBGrid1.Visible:=False;
+     Form_MainPatientAdministration.LoadFrameParentAdmission;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories1Items4Click(Sender: TObject);
+begin
+     ResetVariables;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=False;
+     gs_CalledFrom:='ERPatientList';
+     if gs_CalledFrom='ERPatientList' then
+     begin
+          Form_MainPatientAdministration.LoadERForm;
+     end
+     else
+     begin
+          Form_MainPatientAdministration.Label_DisplayInfo.Caption:='New Registration';
+          gs_CalledFrom:='RegisteredFromFrontDesk';
+          Form_MainPatientAdministration.BB_New.Visible:=False;
+          Form_MainPatientAdministration.BB_Save.Visible:=True;
+          Form_MainPatientAdministration.Panel_Footer.Visible:=False;
+          Form_MainPatientAdministration.DBGrid1.Visible:=False;
+          gs_Frame:='Direct';
+          gs_RegistrationType:='NEW';
+          gb_PatientDataLoaded:=False;
+          Form_MainPatientAdministration.LoadNewPatient;
+     end;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories1Items5Click(
+  Sender: TObject);
+begin
+     ResetVariables;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=False;
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Special OPD Registration';
+     gs_CalledFrom:='SpecialOPDRegistration';
+     Form_MainPatientAdministration.BB_New.Visible:=False;
+     Form_MainPatientAdministration.BB_Save.Visible:=True;
+     Form_MainPatientAdministration.Panel_Footer.Visible:=False;
+     Form_MainPatientAdministration.DBGrid1.Visible:=False;
+     gs_Frame:='Direct';
+     gs_RegistrationType:='NEW';
+     gb_PatientDataLoaded:=False;
+     Form_MainPatientAdministration.LoadNewPatient;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories1Items6Click(
+  Sender: TObject);
+begin
+     ResetVariables;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=False;
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Emergency Registration';
+     gs_CalledFrom:='EmergencyRegistration';
+     Form_MainPatientAdministration.BB_New.Visible:=False;
+     Form_MainPatientAdministration.BB_Save.Visible:=True;
+     Form_MainPatientAdministration.Panel_Footer.Visible:=False;
+     Form_MainPatientAdministration.DBGrid1.Visible:=False;
+     gs_Frame:='Direct';
+     gs_RegistrationType:='NEW';
+     gb_PatientDataLoaded:=False;
+     //gb_IsERAlreadyLoaded:=False;
+     Form_MainPatientAdministration.LoadNewPatient;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories2Items0Click(
+  Sender: TObject);
+begin
+     ResetVariables;
+     Form_MainPatientAdministration.BB_New.Visible:=True;
+     Form_MainPatientAdministration.LoadMembership;
+     Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories2Items1Click(
+  Sender: TObject);
+begin
+     ResetVariables;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=false;
+     Form_MainPatientAdministration.BB_New.Visible:=True;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Caption:='New Member';
+     gs_CalledFrom:='New Member';
+      Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+     Form_MainPatientAdministration.LoadNewMember;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories2Items2Click(
+  Sender: TObject);
+begin
+     ResetVariables;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=True;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Caption:='Member Family';
+     gs_CalledFrom:='Member Family';
+     Form_MainPatientAdministration.ChangeCaption;
+     Form_MainPatientAdministration.BB_New.Visible:=True;
+      Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+     Form_MainPatientAdministration.LoadMemberFamily;
+
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories2Items3Click(
+  Sender: TObject);
+begin
+
+ Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=TRue;
+     Form_MainPatientAdministration.BB_New.Visible:=True;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Caption:='Member Package';
+     gs_CalledFrom:='Member Package';
+     Form_MainPatientAdministration.ChangeCaption;
+      Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+     Form_MainPatientAdministration.LoadMemberPAckage;
+
+
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories2Items4Click(
+  Sender: TObject);
+begin
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Member Deposit';
+     gs_CalledFrom:='Member Deposit';
+     Form_MainPatientAdministration.ChangeCaption;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=True;
+     Form_MainPatientAdministration.BB_New.Visible:=True;
+      Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+     Form_MainPatientAdministration.LoadDeposit;
+
+
+
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items2Click(Sender: TObject);
+begin
+     ResetVariables;
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Deposit';
+     gs_CalledFrom:='Deposit Billing';
+     Form_MainPatientAdministration.ChangeCaption;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=True;
+     Form_MainPatientAdministration.BB_New.Visible:=True;
+     Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+     Form_MainPatientAdministration.loadBillList;
+    Try
+          Form_Deposits:=TForm_Deposits.Create(Nil);
+          With Form_Deposits do
+          Begin
+               //gi_PatientId:=Query_InpatientList.FieldByName('PatientId').AsInteger;
+               Form_Deposits.ShowModal;
+          End;
+     Finally
+          Form_Deposits.Free;
+     End;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items4Click(
+  Sender: TObject);
+begin
+     if gs_CalledFrom='Service Billing' then
+     Exit;
+
+
+     ResetVariables;
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Service Billing';
+     gs_CalledFrom:='Service Billing';
+     gs_BillType:='IPBILL';
+     Gs_BillNo:='';
+     Form_MainPatientAdministration.ChangeCaption;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=True;
+     Form_MainPatientAdministration.BB_New.Visible:=True;
+      Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+     Form_MainPatientAdministration.loadBillList;
+
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items0Click(
+  Sender: TObject);
+begin
+     if gs_CalledFrom='Final Billing' then
+     Exit;
+
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Final Billing';
+
+     ResetVariables;
+     gs_CalledFrom:='Final Billing';
+     PatientInfoPanelAdministration;
+     Form_MainPatientAdministration.ChangeCaption;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=True;
+     Form_MainPatientAdministration.BB_New.Visible:=True;
+     Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+     Form_MainPatientAdministration.LoadBillList;
+end;
+
+
+procedure TFrame_GMenuPatientAdministration.ResetVariables;
+Begin
+     Gs_BillNo:='';
+     Gs_MemberNo:='';
+     gi_CommunityId:=0;
+     gi_SchemeId:=0;
+     gi_PatientID:=0;
+     gi_InPatientID:=0;
+End;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items10Click(Sender: TObject);
+begin
+     (*With Form_Utilites Do
+     Begin
+          Try
+               Form_Utilites := TForm_Utilites.Create(Application);
+               Showmodal;
+          Finally
+               Free;
+          End;
+     End;*)
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items11Click(
+  Sender: TObject);
+begin
+     if gs_CalledFrom<>'DischargeBilling' then
+     Begin
+          ResetVariables;
+          gs_BillType:='ERBILL';
+          gs_CalledFrom:='AdmittedPatientList';
+          Form_MainPatientAdministration.LoadAdmittedPatientList;
+     End;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items12Click(
+  Sender: TObject);
+begin
+    { Try
+          Form_Billing:=TForm_Billing.Create(Nil);
+          With Form_Billing do
+          Begin
+               //gi_PatientId:=Query_InpatientList.FieldByName('PatientId').AsInteger;
+               gs_calledfrom:='SpecialOPDBilling';
+               gs_BillType:='OPBILL';
+               Form_Billing.ShowModal;
+          End;
+     Finally
+          Form_Billing.Free;
+     End; }
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items13Click(
+  Sender: TObject);
+begin
+     Try
+          Form_Billing:=TForm_Billing.Create(Nil);
+          With Form_Billing do
+          Begin
+               //gi_PatientId:=Query_InpatientList.FieldByName('PatientId').AsInteger;
+               Le_HosNo.Text := IntToStr(gi_PatientID);
+               gs_calledfrom:='NormalOPDBilling';
+               gs_BillType:='TPBILL';
+               Form_Billing.ShowModal;
+          End;
+     Finally
+          Form_Billing.Free;
+     End;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items14Click(
+  Sender: TObject);
+begin
+     Try
+          Form_Billing:=TForm_Billing.Create(Nil);
+          With Form_Billing do
+          Begin
+               //gi_PatientId:=Query_InpatientList.FieldByName('PatientId').AsInteger;
+               gs_BillType:='SERVICE REFUNDBILL';
+               Form_Billing.ShowModal;
+          End;
+     Finally
+          Form_Billing.Free;
+     End;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items1Click(
+  Sender: TObject);
+
+begin
+    // Form_MainPatientAdministration.LoadDirectBilling;
+     //Sender as TCategoryButtons;
+
+     Try
+          Form_Billing:=TForm_Billing.Create(Nil);
+          With Form_Billing do
+          Begin
+               //gi_PatientId:= Query_InpatientList.FieldByName('PatientId').AsInteger;
+               Le_HosNo.Text := IntToStr(gi_PatientID);
+               gs_calledfrom:='NormalOPDBilling';
+               gs_BillType:='OPBILL';
+               Form_Billing.ShowModal;
+          End;
+     Finally
+          Frame_Parent.BB_RefreshClick(Sender);
+          Form_Billing.Free;
+     End;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items3Click(
+  Sender: TObject);
+begin
+     (*ResetVariables;
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Refunds';
+     gs_CalledFrom:='Refunded Bills';
+     PatientInfoPanelAdministration;
+     Form_MainPatientAdministration.ChangeCaption;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=True;
+     Form_MainPatientAdministration.BB_New.Visible:=True;
+     Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+     Form_MainPatientAdministration.LoadBillList;*)
+
+     Try
+          Form_Billing:=TForm_Billing.Create(Nil);
+          With Form_Billing do
+          Begin
+               //gi_PatientId:=Query_InpatientList.FieldByName('PatientId').AsInteger;
+               gs_BillType:='REFUNDBILL';
+               Form_Billing.ShowModal;
+          End;
+     Finally
+          Form_Billing.Free;
+     End;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items5Click(
+  Sender: TObject);
+begin
+     ResetVariables;
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Advance';
+     gs_CalledFrom:='Advance';
+     PatientInfoPanelAdministration;
+     Form_MainPatientAdministration.ChangeCaption;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=True;
+     Form_MainPatientAdministration.BB_New.Visible:=True;
+     Form_MainPatientAdministration.Panel_Footer.Visible:=false;
+     Form_MainPatientAdministration.LoadBillList;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items6Click(Sender: TObject);
+begin
+     if gs_CalledFrom<>'DischargeBilling' then
+     Begin
+          ResetVariables;
+          gs_BillType:='DISCHARGEBILL';
+          gs_CalledFrom:='AdmittedPatientList';
+          Form_MainPatientAdministration.LoadAdmittedPatientList;
+     End;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items7Click(Sender: TObject);
+begin
+     Form_MainPatientAdministration.LoadPharmacyCashReceiveList;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items8Click(Sender: TObject);
+begin
+     Form_MainPatientAdministration.LoadCreditClearance;
+     {With Form_CommunityRefund Do
+     Begin
+          Try
+               Form_CommunityRefund := TForm_CommunityRefund.Create(Application);
+               Showmodal;
+          Finally
+               Free;
+          End;
+     End;}
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories3Items9Click(Sender: TObject);
+begin
+     (*ResetVariables;
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible:=false;
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Patient Admission';
+     gs_CalledFrom:='PatientAdmission';//'Admitted Patient List';
+     Form_MainPatientAdministration.BB_New.Visible:=True;
+     Form_MainPatientAdministration.Panel_Footer.Visible:=False;
+     Form_MainPatientAdministration.DBGrid1.Visible:=False;
+     Form_MainPatientAdministration.LoadFrameParentAdmission;*)
+
+
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories4Items0Click(Sender: TObject);
+begin
+     (*if gs_IsUserViewCollection='R' then
+     Begin
+          With Form_RegUserPayment do
+          Begin
+               Try
+                    Form_RegUserPayment:=TForm_RegUserPayment.Create(Application);
+                    ShowModal;
+               Finally
+                    Free;
+               End;
+          End;
+     End
+     else
+     begin*)
+          {try
+               Form_UserWiseCollection:=TForm_UserWiseCollection.Create(nil);
+               Form_UserWiseCollection.ShowModal;
+          finally
+               Form_UserWiseCollection.Free;
+          end; }
+     //end;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories4Items1Click(Sender: TObject);
+begin
+     {With Form_Logpatientmodification do
+     Begin
+          Try
+               Form_Logpatientmodification:=TForm_Logpatientmodification.Create(Application);
+               ShowModal;
+          Finally
+               Free;
+          End;
+     End;}
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories4Items2Click(Sender: TObject);
+begin
+     {With Form_OPDDocWiseIncomeDetail do
+     Begin
+          Try
+               Form_OPDDocWiseIncomeDetail:=TForm_OPDDocWiseIncomeDetail.Create(Application);
+               ps_OPDIncomeType:='GEN';
+               ShowModal;
+          Finally
+               Free;
+          End;
+     End; }
+     // General Case
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories4Items3Click(Sender: TObject);
+begin
+     {With Form_OPDDocWiseIncomeDetail do
+     Begin
+          Try
+               Form_OPDDocWiseIncomeDetail:=TForm_OPDDocWiseIncomeDetail.Create(Application);
+               ps_OPDIncomeType:='SPL';
+               ShowModal;
+          Finally
+               Free;
+          End;
+     End; }
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories5Items0Click(Sender: TObject);
+begin
+     Form_MainPatientAdministration.LoadPatientInfoCorrection;
+     //Form_MainPatientAdministration.loadWellness;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories6Items0Click(Sender: TObject);
+begin
+     //form_main.LoadImmunization;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories8Items0Click(Sender: TObject);
+begin
+      //form_main.LoadOperationType;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories8Items1Click(Sender: TObject);
+begin
+     //form_main.LoadOperationName;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories8Items2Click(Sender: TObject);
+begin
+      //form_main.LoadoperationProcedure;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories8Items3Click(Sender: TObject);
+begin
+     //.LoadOperationItems
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories8Items4Click(Sender: TObject);
+begin
+    // form_main.LoadImplantation;
+end;
+
+procedure TFrame_GMenuPatientAdministration.CategoryButtons1Categories8Items5Click(Sender: TObject);
+begin
+     //form_main.LoadOTMovement;
+end;
+
+constructor TFrame_GMenuPatientAdministration.Create(Aowner: Tcomponent);
+begin
+     inherited;
+     if gs_CalledFormName='ER' then
+     ShowButtonsForER
+     else
+     //ShowHideButtons;
+     GuidedMenuPrevilage;
+     Label_UserName.Caption:=gs_UserName;
+     Label_LogInDateTime.Caption:=gs_UserLoginDate+'-'+Copy(gs_UserLoginTime,1,5);
+//     CategoryButtons1.Categories[CategoryButtons1.Categories.IndexOf('Log')].Free;
+end;
+
+procedure TFrame_GMenuPatientAdministration.GuidedMenuPrevilage;
+var
+     Qry,Query_PatientAdministration:TOraQuery;
+begin
+     //QrySubMenu:=TOraQuery.Create(nil);
+     Qry:=TOraQuery.Create(nil);
+     Query_PatientAdministration:=TOraQuery.Create(nil);
+     with Query_PatientAdministration do
+     begin
+          close;
+          Session :=DM_Hospital.DB;
+          sql.Clear;
+          SQL.Add('Select MAME_MainMenu,1 as CHeckNo,MAME_MAINMENUID FROM HS_MAME_MAINMENU ');
+          SQL.Add('WHere MAME_Mainmenuid in (Select MEPR_Menuid From HS_MEPR_MenuPrevilage');
+          SQL.Add('Where MEPR_AccessTYpe=''MAINMENU'' and MEPR_Userid='+IntToStr(gi_UserID)+') and MAME_ModuleId in (SELECT Modu_ModuleId From HS_MODU_Module');
+          SQL.Add('Where MODU_ModuleName=''Patient Administration'') and MAME_ISACTIVEMENU=''Y'' ');
+          SQL.Add('Union');
+          SQL.Add('Select MAME_MainMenu,0 as CHeckNo,MAME_MAINMENUID FROM HS_MAME_MAINMENU');
+          SQL.Add('WHere MAME_Mainmenuid not in (Select MEPR_Menuid From HS_MEPR_MenuPrevilage ');
+          SQL.Add('Where MEPR_AccessTYpe=''MAINMENU'' and MEPR_Userid='+IntToStr(gi_UserID)+') and MAME_ModuleId in (SELECT Modu_ModuleId From HS_MODU_Module');
+          SQL.Add('Where MODU_ModuleName=''Patient Administration'') and MAME_ISACTIVEMENU=''Y''');
+          SQL.Add('Order By Mame_MainMenuId Desc');
+          {SQL.Add('Select MEPR_PREVILAGEID,MEPR_CAPTIONNAME ,1 as CheckNo,MEPR_MENUID from HS_MEPR_MENUPREVILAGE');
+          SQL.Add('Where mepr_userid='+IntToStr(gi_UserID)+' and MEPR_ACCESSTYPE=''MAINMENU'' and mepr_menuid in (');
+          SQL.Add('Select MAME_MAINMENUID From HS_MAME_MAINMENU)');
+          SQL.Add('Union');
+          SQL.Add('Select MEPR_PREVILAGEID,MEPR_CAPTIONNAME ,1 as CheckNo,MEPR_MENUID from HS_MEPR_MENUPREVILAGE');
+          SQL.Add('Where mepr_userid='+IntToStr(gi_UserID)+' and MEPR_ACCESSTYPE=''MAINMENU'' and mepr_menuid not in (');
+          SQL.Add('Select MAME_MAINMENUID From HS_MAME_MAINMENU)');
+          SQL.Add('ORder by MEPR_MENUID Desc');  }
+          //SQL.SaveToFile('C:\NewPrevilage.txt');
+          Open;
+          while not eof do
+          begin
+               if ((Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString='Utilities') and (Query_PatientAdministration.FieldByName('CheckNo').AsInteger=1)) then
+               begin
+                    with Qry do
+                    begin
+                         Close;
+                         Session :=DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add('Select * from HS_SUME_SubMenu Where Sume_MainMenuid in (');
+                         SQL.Add('Select mame_MainMenuid From HS_Mame_MainMenu Where Mame_ISActiveMenu=''Y'' and Mame_Mainmenu='+QuotedStr(Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString));
+                         SQL.Add('and Sume_Submenuid not in (Select MP.MEPR_Submenuid From HS_MEPR_MENUPREVILAGE MP Where Mepr_AccessType=''SUBMENU''');
+                         SQL.Add('and Mepr_Userid='+IntToStr(gi_UserID)+' and Mepr_Submenuid in (Select SUME_SUBMENUID from HS_SUME_SUBMENU where SUME_MAINMENUID In (select MAME_MAINMENUID');
+                         SQL.Add('From HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+QuotedStr(Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString)+'))))');
+                         SQL.Add('Order By Sume_SubMenuId Desc');
+
+                         {SQL.Add('Select * from HS_MEPR_MENUPREVILAGE where mepr_userid='+IntToStr(gi_UserID)+' and MEPR_ACCESSTYPE=''SUBMENU''');
+                         SQL.Add('and MEPR_Menuid='+IntToStr(Query_PatientAdministration.FieldByName('MEPR_Menuid').AsInteger));
+                         SQL.Add('ORder by MEPR_SUBMENUID Desc'); }
+                       //  SQL.SaveToFile('C:\SUbmenu.txt');
+                         Open;
+
+                         while not eof do
+                         begin
+                              if Qry.fieldbyname('SUME_SUBMENU').AsString='Patient Info Correction' then
+                              CategoryButtons1.Categories[2].Items[0].Free;
+                              Qry.Next;
+                         end;
+                    end;
+
+               end
+               else if ((Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString='Utilities') and (Query_PatientAdministration.FieldByName('CheckNo').AsInteger=0)) then
+               begin
+                    CategoryButtons1.Categories[2].Free;
+               end
+               else if (fieldbyname('MAME_MainMenu').AsString='Reports') and (fieldbyname('CheckNo').AsString='1') then
+               begin
+                    with Qry do
+                    begin
+                         Close;
+                         Session :=DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add('Select * from HS_SUME_SubMenu Where Sume_MainMenuid in (');
+                         SQL.Add('Select mame_MainMenuid From HS_Mame_MainMenu Where Mame_ISActiveMenu=''Y'' and Mame_Mainmenu='+QuotedStr(Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString));
+                         SQL.Add('and Sume_Submenuid not in (Select MP.MEPR_Submenuid From HS_MEPR_MENUPREVILAGE MP Where Mepr_AccessType=''SUBMENU''');
+                         SQL.Add('and Mepr_Userid='+IntToStr(gi_UserID)+' and Mepr_Submenuid in (Select SUME_SUBMENUID from HS_SUME_SUBMENU where SUME_MAINMENUID In (select MAME_MAINMENUID');
+                         SQL.Add('From HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+QuotedStr(Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString)+'))))');
+                         SQL.Add('Order By Sume_SubMenuId Desc');
+                         {SQL.Add('Select * from HS_MEPR_MENUPREVILAGE where mepr_userid='+IntToStr(gi_UserID)+' and MEPR_ACCESSTYPE=''SUBMENU''');
+                         SQL.Add('and MEPR_Menuid='+IntToStr(Query_PatientAdministration.FieldByName('MEPR_Menuid').AsInteger));
+                         SQL.Add('ORder by MEPR_SUBMENUID ,MEPR_PREVILAGEID'); }
+                         //SQL.savetofile('C:\abc55.txt');
+                         Open;
+
+                         while not eof do
+                         begin
+                         //
+                             { if fieldbyname('SUME_SUBMENU').AsString='User Collection' then
+                              CategoryButtons1.Categories[4].Items[3].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Log Report' then
+                              CategoryButtons1.Categories[4].Items[2].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Doctor Wise Income List(Gen)' then
+                              CategoryButtons1.Categories[4].Items[1].Free
+                              Else if fieldbyname('SUME_SUBMENU').AsString='Doctor Wise Income List(SPL)' then
+                              CategoryButtons1.Categories[4].Items[0].Free; }
+
+                              //
+                              Qry.Next;
+                         end;
+                    end;
+               end
+               else if (fieldbyname('MAME_MainMenu').AsString='Reports') and (fieldbyname('CheckNo').AsString='0') then
+               begin
+                    // CategoryButtons1.Categories[4].Free;
+               end
+               else if (fieldbyname('MAME_MainMenu').AsString='Billing') and (fieldbyname('CheckNo').AsString='1') then
+               begin
+                    with Qry do
+                    begin
+                         Close;
+                         Session :=DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add('Select * from HS_SUME_SubMenu Where Sume_MainMenuid in (');
+                         SQL.Add('Select mame_MainMenuid From HS_Mame_MainMenu Where Mame_ISActiveMenu=''Y'' and Mame_Mainmenu='+QuotedStr(Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString));
+                         SQL.Add('and sume_isactivesubmenu=''Y'' and Sume_Submenuid not in (Select MP.MEPR_Submenuid From HS_MEPR_MENUPREVILAGE MP Where Mepr_AccessType=''SUBMENU''');
+                         SQL.Add('and Mepr_Userid='+IntToStr(gi_UserID)+' and Mepr_Submenuid in (Select SUME_SUBMENUID from HS_SUME_SUBMENU where SUME_MAINMENUID In (select MAME_MAINMENUID');
+                         SQL.Add('From HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+QuotedStr(Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString)+'))))');
+                         SQL.Add('Order By SUME_PRIORITY Desc');
+                         {SQL.Add('Select * from HS_MEPR_MENUPREVILAGE where mepr_userid='+IntToStr(gi_UserID)+' and MEPR_ACCESSTYPE=''SUBMENU''');
+                         SQL.Add('and MEPR_Menuid='+IntToStr(Query_PatientAdministration.FieldByName('MEPR_Menuid').AsInteger));
+                         SQL.Add('ORder by MEPR_SUBMENUID,MEPR_PREVILAGEID Desc');  }
+                         //SQL.SaveToFile('C:\Previlage.txt');
+                         Open;
+                         while not eof do
+                         begin
+                              if Qry.fieldbyname('SUME_SUBMENU').AsString='Service Refund Billing' then
+                               CategoryButtons1.Categories[1].Items[7].Free
+                               else if fieldbyname('SUME_SUBMENU').AsString='Service Billing' then
+                              CategoryButtons1.Categories[1].Items[6].Free
+                               Else if fieldbyname('SUME_SUBMENU').AsString='Credit Clearance' then
+                              CategoryButtons1.Categories[1].Items[5].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Deposit' then
+                              CategoryButtons1.Categories[1].Items[4].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Refunded Bills' then
+                              CategoryButtons1.Categories[1].Items[3].Free
+                            //  else if Qry.fieldbyname('SUME_SUBMENU').AsString='Er Billing' then
+                            //  CategoryButtons1.Categories[3].Items[12].Free
+                           //   else if fieldbyname('SUME_SUBMENU').AsString='Special OPD Billing' then
+                            //  CategoryButtons1.Categories[3].Items[11].Free
+                            //  Else if fieldbyname('SUME_SUBMENU').AsString='Community Refund' then
+                            //  CategoryButtons1.Categories[3].Items[10].Free
+                           //   else if fieldbyname('SUME_SUBMENU').AsString='Utilities' then
+                            //  CategoryButtons1.Categories[3].Items[9].Free
+                           //   Else if fieldbyname('SUME_SUBMENU').AsString='Patient Admission(Bill)' then
+                            //  CategoryButtons1.Categories[3].Items[8].Free
+
+                            //  Else if fieldbyname('SUME_SUBMENU').AsString='Pharmacy Cash Receive' then
+                             // CategoryButtons1.Categories[3].Items[6].Free
+                            // else if fieldbyname('SUME_SUBMENU').AsString='Discharge Billing' then
+                            //  CategoryButtons1.Categories[3].Items[5].Free
+
+                              else if fieldbyname('SUME_SUBMENU').AsString='Bill / Receipt List' then
+                              CategoryButtons1.Categories[1].Items[2].Free
+                              else if Qry.fieldbyname('SUME_SUBMENU').AsString='Direct Billing' then
+                              CategoryButtons1.Categories[1].Items[1].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Final Billing' then
+                              CategoryButtons1.Categories[1].Items[0].Free;
+                              Next;
+                         end;
+                    end;
+               end
+               else if (fieldbyname('MAME_MainMenu').AsString='Billing') and (fieldbyname('CheckNo').AsString='0') then
+               begin
+                    CategoryButtons1.Categories[1].Free;
+               end
+               else if (fieldbyname('MAME_MainMenu').AsString='Membership') and (fieldbyname('CheckNo').AsString='1') then
+               begin
+                    with Qry do
+                    begin
+                         Close;
+                         Session :=DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add('Select * from HS_SUME_SubMenu Where Sume_MainMenuid in (');
+                         SQL.Add('Select mame_MainMenuid From HS_Mame_MainMenu Where Mame_ISActiveMenu=''Y'' and Mame_Mainmenu='+QuotedStr(Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString));
+                         SQL.Add('and Sume_Submenuid not in (Select MP.MEPR_Submenuid From HS_MEPR_MENUPREVILAGE MP Where Mepr_AccessType=''SUBMENU''');
+                         SQL.Add('and Mepr_Userid='+IntToStr(gi_UserID)+' and Mepr_Submenuid in (Select SUME_SUBMENUID from HS_SUME_SUBMENU where SUME_MAINMENUID In (select MAME_MAINMENUID');
+                         SQL.Add('From HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+QuotedStr(Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString)+'))))');
+                         SQL.Add('Order By Sume_SubMenuId Desc');
+
+                         {SQL.Add('Select * from HS_MEPR_MENUPREVILAGE where mepr_userid='+IntToStr(gi_UserID)+' and MEPR_ACCESSTYPE=''SUBMENU''');
+                         SQL.Add('and MEPR_Menuid='+IntToStr(Query_PatientAdministration.FieldByName('MEPR_Menuid').AsInteger));
+                         SQL.Add('ORder by MEPR_SUBMENUID,MEPR_PREVILAGEID Desc');  }
+                       //  SQL.savetofile('C:\abc57.txt');
+                         Open;
+
+                         while not eof do
+                         begin
+                              //
+                             { if fieldbyname('SUME_SUBMENU').AsString='Deposit Member' then
+                              CategoryButtons1.Categories[2].Items[4].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Member Package' then
+                              CategoryButtons1.Categories[2].Items[3].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Member Family' then
+                              CategoryButtons1.Categories[2].Items[2].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='New Member' then
+                              CategoryButtons1.Categories[2].Items[1].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Members List' then
+                              CategoryButtons1.Categories[2].Items[0].Free; }
+                              //
+                              Next;
+                         end;
+                    end;
+               end
+               else if (fieldbyname('MAME_MainMenu').AsString='Membership') and (fieldbyname('CheckNo').AsString='0') then
+               begin
+                   // CategoryButtons1.Categories[2].Free;
+               end
+               else if (fieldbyname('MAME_MainMenu').AsString='Registration') and (fieldbyname('CheckNo').AsString='1') then
+               begin
+                    with Qry do
+                    begin
+                         Close;
+                         Session :=DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add('Select * from HS_SUME_SubMenu Where Sume_MainMenuid in (');
+                         SQL.Add('Select mame_MainMenuid From HS_Mame_MainMenu Where Mame_ISActiveMenu=''Y'' and Mame_Mainmenu='+QuotedStr(Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString));
+                         SQL.Add('and Sume_Submenuid not in (Select MP.MEPR_Submenuid From HS_MEPR_MENUPREVILAGE MP Where Mepr_AccessType=''SUBMENU''');
+                         SQL.Add('and Mepr_Userid='+IntToStr(gi_UserID)+' and Mepr_Submenuid in (Select SUME_SUBMENUID from HS_SUME_SUBMENU where SUME_MAINMENUID In (select MAME_MAINMENUID');
+                         SQL.Add('From HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+QuotedStr(Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString)+'))))');
+                         SQL.Add('Order By Sume_SubMenuId Desc');
+                        // SQL.SaveToFile('C:\SubMenu.txt');
+
+                         {SQL.Add('Select * from HS_MEPR_MENUPREVILAGE where mepr_userid='+IntToStr(gi_UserID)+' and MEPR_ACCESSTYPE=''SUBMENU''');
+                         SQL.Add('and MEPR_Menuid='+IntToStr(Query_PatientAdministration.FieldByName('MEPR_Menuid').AsInteger));
+                         SQL.Add('ORder by MEPR_SUBMENUID,MEPR_PREVILAGEID Desc');}
+                         Open;
+
+                         while not eof do
+                         begin
+                              //
+                            //  if Qry.fieldbyname('SUME_SUBMENU').AsString='Emergency Patient List' then
+                            // CategoryButtons1.Categories[1].Items[6].Free
+                            //  else if fieldbyname('SUME_SUBMENU').AsString='Emergency Registration' then
+                            //  CategoryButtons1.Categories[1].Items[5].Free
+                            //  Else if fieldbyname('SUME_SUBMENU').AsString='Special OPD Registration' then
+                            //  CategoryButtons1.Categories[1].Items[4].Free
+                            //  Else if fieldbyname('SUME_SUBMENU').AsString='Patient Admission(Reg)' then
+                            //  CategoryButtons1.Categories[1].Items[3].Free
+                            //  else if fieldbyname('SUME_SUBMENU').AsString='Registration Through Appointment' then
+                            //  CategoryButtons1.Categories[1].Items[2].Free
+                            //
+                              if fieldbyname('SUME_SUBMENU').AsString='Direct Registration' then
+                              CategoryButtons1.Categories[1].Items[1].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Registered Patients' then
+                              CategoryButtons1.Categories[1].Items[0].Free;
+                              Next;
+                         end;
+                    end;
+               end
+               else if (fieldbyname('MAME_MainMenu').AsString='Registration') and (fieldbyname('CheckNo').AsString='0') then
+               begin
+                    CategoryButtons1.Categories[0].Free;
+               end
+               else if (fieldbyname('MAME_MainMenu').AsString='Appointment') and (fieldbyname('CheckNo').AsString='1') then
+               begin
+                    with Qry do
+                    begin
+                         Close;
+                         Session :=DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add('Select * from HS_SUME_SubMenu Where Sume_MainMenuid in (');
+                         SQL.Add('Select mame_MainMenuid From HS_Mame_MainMenu Where Mame_ISActiveMenu=''Y'' and Mame_Mainmenu='+QuotedStr(Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString));
+                         SQL.Add('and Sume_Submenuid not in (Select MP.MEPR_Submenuid From HS_MEPR_MENUPREVILAGE MP Where Mepr_AccessType=''SUBMENU''');
+                         SQL.Add('and Mepr_Userid='+IntToStr(gi_UserID)+' and Mepr_Submenuid in (Select SUME_SUBMENUID from HS_SUME_SUBMENU where SUME_MAINMENUID In (select MAME_MAINMENUID');
+                         SQL.Add('From HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+QuotedStr(Query_PatientAdministration.fieldbyname('MAME_MainMenu').AsString)+'))))');
+                         SQL.Add('Order By Sume_SubMenuId Desc');
+
+                         {SQL.Add('Select * from HS_MEPR_MENUPREVILAGE where mepr_userid='+IntToStr(gi_UserID)+' and MEPR_ACCESSTYPE=''SUBMENU''');
+                         SQL.Add('and MEPR_Menuid='+IntToStr(Query_PatientAdministration.FieldByName('MEPR_Menuid').AsInteger));
+                         SQL.Add('ORder by MEPR_SUBMENUID,MEPR_PREVILAGEID Desc');  }
+                        // SQL.savetofile('C:\abc59.txt');
+                         Open;
+
+                         while not eof do
+                         begin
+                             { if Qry.fieldbyname('SUME_SUBMENU').AsString='Wellness' then
+                              CategoryButtons1.Categories[0].Items[5].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Indoor Patient Search' then
+                              CategoryButtons1.Categories[0].Items[4].Free
+                              Else if fieldbyname('SUME_SUBMENU').AsString='Appointment Log' then
+                              CategoryButtons1.Categories[0].Items[3].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Doctor Schedule Plan' then
+                              CategoryButtons1.Categories[0].Items[2].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Doctor Schedule' then
+                              CategoryButtons1.Categories[0].Items[1].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Doctor Appointment' then
+                              CategoryButtons1.Categories[0].Items[0].Free;  }
+                              //
+                              Next;
+                         end;
+                    end;
+               end
+               else if (fieldbyname('MAME_MainMenu').AsString='Appointment') and (fieldbyname('CheckNo').AsString='0') then
+               begin
+                   // CategoryButtons1.Categories[0].Free;
+               end;
+               Query_PatientAdministration.Next;
+          end;
+     end;
+      //QrySubMenu.Free;
+     Qry.Free;
+     Query_PatientAdministration.Free;
+end;
+
+procedure TFrame_GMenuPatientAdministration.ShowHideButtons;
+var
+     QrySubMenu,Qry,Query_PatientAdministration:TOraQuery;
+begin
+     QrySubMenu:=TOraQuery.Create(nil);
+     Qry:=TOraQuery.Create(nil);
+     Query_PatientAdministration:=TOraQuery.Create(nil);
+     with Query_PatientAdministration do
+     begin
+          close;
+          Session :=DM_Hospital.DB;
+          sql.Clear;
+          SQL.Add(' Select * from (select MAME_MAINMENU,MAME_MAINMENUID,0 as checkno from HS_MAME_MAINMENU where MAME_MODULEID in (');
+          SQL.Add(' Select MODU_MODULEID from HS_MODU_MODULE where MODU_MODULENAME=''Patient Administration'') and MAME_MAINMENUID not in(');
+          SQL.Add(' Select USPR.USPR_ACESSCONTROLID');
+          SQL.Add(' From HS_USPR_USERPRIVILEGE USPR where Upper(USPR_ACESSTYPE)=''MAINMENU'' and USPR_USERID=' + inttostr(gi_userId));
+          SQL.Add(' and USPR_ACESSCONTROLID in (select MAME_MAINMENUID from HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MODULEID');
+          SQL.Add(' In (select MODU_MODULEID From HS_MODU_MODULE where MODU_MODULENAME=''Patient Administration'')))');
+          SQL.Add(' Union');
+          SQL.Add(' Select MAME_MAINMENU,MAME_MAINMENUID,1 as chekno from HS_MAME_MAINMENU Where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENUID in (');
+          SQL.Add(' Select USPR_ACESSCONTROLID ');
+          SQL.Add(' From HS_USPR_USERPRIVILEGE USPR where Upper(USPR_ACESSTYPE)=''MAINMENU'' and USPR_USERID=' + inttostr(gi_userId));
+          SQL.Add(' and USPR_ACESSCONTROLID in (Select MAME_MAINMENUID from HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MODULEID');
+          SQL.Add(' In (select MODU_MODULEID From HS_MODU_MODULE where MODU_MODULENAME=''Patient Administration'')');
+          SQL.Add(' )))');
+          SQL.Add(' Order by MAME_MAINMENUID desc');
+           open;
+           while not eof do
+           begin
+               if (fieldbyname('MAME_MAINMENU').AsString='Reports') and (fieldbyname('CheckNo').AsString='1') then
+                begin
+                     with Qry Do
+                     begin
+                         close;
+                         Session :=DM_Hospital.DB;
+                         SQL.Clear;
+
+                         SQL.Add(' Select * from HS_SUME_SUBMENU where SUME_MAINMENUID IN ( ');
+                         SQL.Add(' select MAME_MAINMENUID from HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+#39+Query_PatientAdministration.fieldbyname('MAME_MAINMENU').AsString+#39+') and SUME_SUBMENUID');
+                         SQL.Add(' NOT IN ( Select U.USPR_ACESSCONTROLID From HS_USPR_USERPRIVILEGE U where Upper(USPR_ACESSTYPE)=''SUBMENU'' and USPR_USERID=' + inttostr(gi_userId));
+                         SQL.Add(' and USPR_ACESSCONTROLID in (Select SUME_SUBMENUID from HS_SUME_SUBMENU where SUME_MAINMENUID In (select MAME_MAINMENUID ');
+                         SQL.Add(' From HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+#39+Query_PatientAdministration.fieldbyname('MAME_MAINMENU').AsString+#39+')))');
+                         SQL.Add(' Order by SUME_SUBMENUID desc');
+                         //sql.savetofile('C:\category.txt');
+                         Open;
+                         while not eof do
+                         begin
+                             { if fieldbyname('SUME_SUBMENU').AsString='Visit Cancel' then
+                              CategoryButtons1.Categories[4].Items[2].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Log Reports' then
+                              CategoryButtons1.Categories[4].Items[1].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='User Collection' then
+                              CategoryButtons1.Categories[4].Items[0].Free; }
+                              //
+                              Next;
+                         end;
+
+                    end;
+
+                end
+                else if (fieldbyname('MAME_MAINMENU').AsString='Reports') and (fieldbyname('CheckNo').AsString='0') then
+                begin
+                   // CategoryButtons1.Categories[4].Free;
+                end
+                else if (fieldbyname('MAME_MAINMENU').AsString='Billing') and (fieldbyname('CheckNo').AsString='1') then
+                begin
+                     with Qry Do
+                     begin
+                         close;
+                         Session :=DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add(' Select * from HS_SUME_SUBMENU where SUME_MAINMENUID IN ( ');
+                         SQL.Add(' select MAME_MAINMENUID from HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+#39+Query_PatientAdministration.fieldbyname('MAME_MAINMENU').AsString+#39+') and SUME_SUBMENUID');
+                         SQL.Add(' NOT IN ( Select U.USPR_ACESSCONTROLID From HS_USPR_USERPRIVILEGE U where Upper(USPR_ACESSTYPE)=''SUBMENU'' and USPR_USERID=' + inttostr(gi_userId));
+                         SQL.Add(' and USPR_ACESSCONTROLID in (Select SUME_SUBMENUID from HS_SUME_SUBMENU where SUME_MAINMENUID In (select MAME_MAINMENUID ');
+                         SQL.Add(' From HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+#39+Query_PatientAdministration.fieldbyname('MAME_MAINMENU').AsString+#39+')))');
+                         SQL.Add(' Order by SUME_Priority Desc');
+                         Open;
+                         while not eof do
+                         begin
+                            //  if fieldbyname('SUME_SUBMENU').AsString='Special OPD Billing' then
+                            //  CategoryButtons1.Categories[3].Items[12].Free
+                            //  else if fieldbyname('SUME_SUBMENU').AsString='Er Billing' then
+                           //   CategoryButtons1.Categories[3].Items[11].Free
+                           //   else if fieldbyname('SUME_SUBMENU').AsString='Utilities' then
+                           //   CategoryButtons1.Categories[3].Items[10].Free
+                           //   Else if fieldbyname('SUME_SUBMENU').AsString='Patient Admission(Bill)' then
+                            //  CategoryButtons1.Categories[3].Items[9].Free
+                            //  Else if fieldbyname('SUME_SUBMENU').AsString='Community Refund' then
+                            //  CategoryButtons1.Categories[3].Items[8].Free
+                              if fieldbyname('SUME_SUBMENU').AsString='Credit Clearance' then
+                              CategoryButtons1.Categories[1].Items[5].Free
+                             Else if fieldbyname('SUME_SUBMENU').AsString='Direct Billing' then
+                             CategoryButtons1.Categories[1].Items[1].Free
+                            else if fieldbyname('SUME_SUBMENU').AsString='Service Refund Billing' then
+                              CategoryButtons1.Categories[1].Items[7].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Bill / Receipt List' then
+                              CategoryButtons1.Categories[1].Items[2].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Refunded Bills' then
+                              CategoryButtons1.Categories[1].Items[3].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Deposit' then
+                              CategoryButtons1.Categories[1].Items[4].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Service Billing' then
+                              CategoryButtons1.Categories[1].Items[6].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Final Billing' then
+                              CategoryButtons1.Categories[1].Items[0].Free;
+                              Next;
+                         end;
+                    end;
+                    //CategoryButtons1.Categories[3].Items[2].Free;
+                end
+                else if (fieldbyname('MAME_MAINMENU').AsString='Billing') and (fieldbyname('CheckNo').AsString='0') then
+                begin
+                    CategoryButtons1.Categories[1].Free;
+                end
+                else if (fieldbyname('MAME_MAINMENU').AsString='Membership') and (fieldbyname('CheckNo').AsString='1') then
+                begin
+                     with Qry Do
+                     begin
+                         close;
+                         Session :=DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add(' Select * from HS_SUME_SUBMENU where SUME_MAINMENUID IN ( ');
+                         SQL.Add(' select MAME_MAINMENUID from HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+#39+Query_PatientAdministration.fieldbyname('MAME_MAINMENU').AsString+#39+') and SUME_SUBMENUID');
+                         SQL.Add(' NOT IN ( Select U.USPR_ACESSCONTROLID From HS_USPR_USERPRIVILEGE U where Upper(USPR_ACESSTYPE)=''SUBMENU'' and USPR_USERID=' + inttostr(gi_userId));
+                         SQL.Add(' and USPR_ACESSCONTROLID in (Select SUME_SUBMENUID from HS_SUME_SUBMENU where SUME_MAINMENUID In (select MAME_MAINMENUID ');
+                         SQL.Add(' From HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+#39+Query_PatientAdministration.fieldbyname('MAME_MAINMENU').AsString+#39+')))');
+                         SQL.Add(' Order by SUME_SUBMENUID desc');
+                         Open;
+                         while not eof do
+                         begin
+                             { if fieldbyname('SUME_SUBMENU').AsString='Deposit Member' then
+                              CategoryButtons1.Categories[2].Items[4].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Member Package' then
+                              CategoryButtons1.Categories[2].Items[3].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Member Family' then
+                              CategoryButtons1.Categories[2].Items[2].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='New Member' then
+                              CategoryButtons1.Categories[2].Items[1].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Members List' then
+                              CategoryButtons1.Categories[2].Items[0].Free; }
+                              //
+                              Next;
+                         end;
+
+                    end;
+                end
+                else if (fieldbyname('MAME_MAINMENU').AsString='Membership') and (fieldbyname('CheckNo').AsString='0') then
+                begin
+                    //CategoryButtons1.Categories[2].Free;
+                end
+                else if (fieldbyname('MAME_MAINMENU').AsString='Registration') and (fieldbyname('CheckNo').AsString='1') then
+                begin
+                     with Qry Do
+                     begin
+                         close;
+                         Session :=DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add(' Select * from HS_SUME_SUBMENU where SUME_MAINMENUID IN ( ');
+                         SQL.Add(' select MAME_MAINMENUID from HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+#39+Query_PatientAdministration.fieldbyname('MAME_MAINMENU').AsString+#39+') and SUME_SUBMENUID');
+                         SQL.Add(' NOT IN ( Select U.USPR_ACESSCONTROLID From HS_USPR_USERPRIVILEGE U where Upper(USPR_ACESSTYPE)=''SUBMENU'' and USPR_USERID=' + inttostr(gi_userId));
+                         SQL.Add(' and USPR_ACESSCONTROLID in (Select SUME_SUBMENUID from HS_SUME_SUBMENU where SUME_MAINMENUID In (select MAME_MAINMENUID ');
+                         SQL.Add(' From HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+#39+Query_PatientAdministration.fieldbyname('MAME_MAINMENU').AsString+#39+')))');
+                         SQL.Add(' Order by Sume_Priority desc');
+                         Open;
+                         while not eof do
+                         begin
+                            //
+                             { if fieldbyname('SUME_SUBMENU').AsString='Emergency Registration' then
+                              CategoryButtons1.Categories[1].Items[6].Free
+                              Else if fieldbyname('SUME_SUBMENU').AsString='Special OPD Registration' then
+                              CategoryButtons1.Categories[1].Items[5].Free
+                              Else if fieldbyname('SUME_SUBMENU').AsString='Emergency Patient List' then
+                              CategoryButtons1.Categories[1].Items[4].Free
+                              Else if fieldbyname('SUME_SUBMENU').AsString='Patient Admission(Reg)' then
+                              CategoryButtons1.Categories[1].Items[3].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Registration Through Appointment' then
+                              CategoryButtons1.Categories[1].Items[2].Free }
+                              //
+                              if fieldbyname('SUME_SUBMENU').AsString='Direct Registration' then
+                              CategoryButtons1.Categories[0].Items[1].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Registered Patients' then
+                              CategoryButtons1.Categories[0].Items[0].Free;
+                              Next;
+                         end;
+                    end;
+                end
+                else if (fieldbyname('MAME_MAINMENU').AsString='Registration') and (fieldbyname('CheckNo').AsString='0') then
+                begin
+                    CategoryButtons1.Categories[0].Free;
+                end
+                else if (fieldbyname('MAME_MAINMENU').AsString='Appointment') and (fieldbyname('CheckNo').AsString='1') then
+                begin
+                     with Qry Do
+                     begin
+                         close;
+                         Session :=DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add(' Select * from HS_SUME_SUBMENU where SUME_MAINMENUID IN ( ');
+                         SQL.Add(' select MAME_MAINMENUID from HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+#39+Query_PatientAdministration.fieldbyname('MAME_MAINMENU').AsString+#39+') and SUME_SUBMENUID');
+                         SQL.Add(' NOT IN ( Select U.USPR_ACESSCONTROLID From HS_USPR_USERPRIVILEGE U where Upper(USPR_ACESSTYPE)=''SUBMENU'' and USPR_USERID=' + inttostr(gi_userId));
+                         SQL.Add(' and USPR_ACESSCONTROLID in (Select SUME_SUBMENUID from HS_SUME_SUBMENU where SUME_MAINMENUID In (select MAME_MAINMENUID ');
+                         SQL.Add(' From HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+#39+Query_PatientAdministration.fieldbyname('MAME_MAINMENU').AsString+#39+')))');
+                         SQL.Add(' Order by SUME_SUBMENUID desc');
+                         Open;
+                         while not eof do
+                         begin
+                             { if fieldbyname('SUME_SUBMENU').AsString='Wellness' then
+                              CategoryButtons1.Categories[0].Items[5].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Indoor Patient Search' then
+                              CategoryButtons1.Categories[0].Items[4].Free
+                              Else if fieldbyname('SUME_SUBMENU').AsString='Appointment Log' then
+                              CategoryButtons1.Categories[0].Items[3].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Doctor Schedule Plan' then
+                              CategoryButtons1.Categories[0].Items[2].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Doctor Schedule' then
+                              CategoryButtons1.Categories[0].Items[1].Free
+                              else if fieldbyname('SUME_SUBMENU').AsString='Doctor Appointment' then
+                              CategoryButtons1.Categories[0].Items[0].Free; }
+                              //
+                              Next;
+                         end;
+                    end;
+                end
+                else if (fieldbyname('MAME_MAINMENU').AsString='Appointment') and (fieldbyname('CheckNo').AsString='0') then
+                begin
+                   // CategoryButtons1.Categories[0].Free;
+                end
+                else if (fieldbyname('MAME_MAINMENU').AsString='Utilities') and (fieldbyname('CheckNo').AsString='1') then
+                begin
+                     with Qry Do
+                     begin
+                         close;
+                         Session :=DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add(' Select * from HS_SUME_SUBMENU where SUME_MAINMENUID IN ( ');
+                         SQL.Add(' select MAME_MAINMENUID from HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+#39+Query_PatientAdministration.fieldbyname('MAME_MAINMENU').AsString+#39+') and SUME_SUBMENUID');
+                         SQL.Add(' NOT IN ( Select U.USPR_ACESSCONTROLID From HS_USPR_USERPRIVILEGE U where Upper(USPR_ACESSTYPE)=''SUBMENU'' and USPR_USERID=' + inttostr(gi_userId));
+                         SQL.Add(' and USPR_ACESSCONTROLID in (Select SUME_SUBMENUID from HS_SUME_SUBMENU where SUME_MAINMENUID In (select MAME_MAINMENUID ');
+                         SQL.Add(' From HS_MAME_MAINMENU where MAME_ISACTIVEMENU=''Y'' and MAME_MAINMENU='+#39+Query_PatientAdministration.fieldbyname('MAME_MAINMENU').AsString+#39+')))');
+                         SQL.Add(' Order by SUME_SUBMENUID desc');
+                         Open;
+                         while not eof do
+                         begin
+                              if fieldbyname('SUME_SUBMENU').AsString='Patient Info Correction' then
+                              CategoryButtons1.Categories[2].Items[0].Free;
+                              Next;
+                         end;
+                    end;
+                end
+                else if (fieldbyname('MAME_MAINMENU').AsString='Utilities') and (fieldbyname('CheckNo').AsString='0') then
+                begin
+                    CategoryButtons1.Categories[2].Free;
+                end;
+                Query_PatientAdministration.Next;
+           end;
+      end;
+      QrySubMenu.Free;
+      Qry.Free;
+      Query_PatientAdministration.Free;
+end;
+
+procedure TFrame_GMenuPatientAdministration.SpeedButton_ExitClick(Sender: TObject);
+begin
+//     if MessageDlg('Are u sure to exit?',mtConfirmation,[mbYES,mbNO],0)=mrYES then
+//     /Form_Main.Close;
+end;
+
+procedure TFrame_GMenuPatientAdministration.SpeedButton_HomeClick(Sender: TObject);
+begin
+    Form_MainPatientAdministration.BB_New.Visible:=True;
+    //Form_MainPatientAdministration.BB_Save.Visible:=False;
+    Form_MainPatientAdministration.BB_Save.Enabled:=False;
+    Form_MainPatientAdministration.LoadFrameParent;
+    Form_MainPatientAdministration.Label_DisplayInfo.Caption:='Registered Patient';
+end;
+
+procedure TFrame_GMenuPatientAdministration.SpeedButton_LogInOutClick(Sender: TObject);
+begin
+     if MessageDlg('You are about to Log off, Continue?',mtConfirmation,[mbYES,mbNO],0)=mrYES then
+          //Form_Main.LogOff;
+end;
+
+
+
+procedure TFrame_GMenuPatientAdministration.TimerClockTimer(Sender: TObject);
+begin
+     lbl_CurrentTime.Caption:=TimeToStr(Time);
+end;
+
+Procedure TFrame_GMenuPatientAdministration.PatientInfoPanelAdministration;
+Begin
+     if gs_CalledFrom='DischargeBilling' then
+     Begin
+          Form_MainPatientAdministration.Panel_PatientBasicInfo.Height:=73;
+          //Form_MainPatientAdministration.Lbl_IPNoCap.Visible:=True;
+          //Form_MainPatientAdministration.Edit_InpatientNo.Visible:=True;
+     End
+     Else
+     Begin
+          Form_MainPatientAdministration.Panel_PatientBasicInfo.Height:=50;
+          //Form_MainPatientAdministration.Lbl_IPNoCap.Visible:=False;
+          //Form_MainPatientAdministration.Edit_InpatientNo.Visible:=False;
+     End;
+End;
+
+procedure TFrame_GMenuPatientAdministration.ShowButtonsForER;
+var
+     QrySubMenu,Qry,Query_PatientAdministration:TOraQuery;
+begin
+   //  CategoryButtons1.Categories[4].Free;
+   //  CategoryButtons1.Categories[3].Free;
+     CategoryButtons1.Categories[2].Free;
+     CategoryButtons1.Categories[1].Items[5].Free;
+     CategoryButtons1.Categories[0].Items[0].Caption :='Registered List';
+     CategoryButtons1.Categories[1].Items[3].Free;
+     CategoryButtons1.Categories[1].Items[2].Free;
+     CategoryButtons1.Categories[1].Items[1].Free;
+     CategoryButtons1.Categories[1].Items[0].Free;
+     CategoryButtons1.Categories[0].Free;
+end;
+
+end.

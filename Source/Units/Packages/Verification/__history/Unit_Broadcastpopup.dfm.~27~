@@ -1,0 +1,177 @@
+object Form_Broadcastpopup: TForm_Broadcastpopup
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'Form_Broadcastpopup'
+  ClientHeight = 309
+  ClientWidth = 546
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Shape1: TShape
+    Left = 1
+    Top = 3
+    Width = 537
+    Height = 301
+    Brush.Style = bsClear
+    Pen.Color = 12615680
+    Pen.Width = 2
+    Shape = stRoundRect
+  end
+  object Label1: TLabel
+    Left = 80
+    Top = 16
+    Width = 119
+    Height = 13
+    Caption = 'Please choose option'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object bb_ok: TSpeedButton
+    Left = 309
+    Top = 237
+    Width = 89
+    Height = 31
+    Caption = 'Send Email'
+    OnClick = bb_okClick
+  end
+  object bb_cancel: TSpeedButton
+    Left = 408
+    Top = 237
+    Width = 89
+    Height = 31
+    Caption = 'Cancel'
+    OnClick = bb_cancelClick
+  end
+  object bb_update: TSpeedButton
+    Left = 214
+    Top = 237
+    Width = 89
+    Height = 31
+    Caption = 'Update'
+    OnClick = bb_updateClick
+  end
+  object Label2: TLabel
+    Left = 91
+    Top = 96
+    Width = 49
+    Height = 13
+    Caption = 'Message :'
+  end
+  object lbl_count: TLabel
+    Left = 478
+    Top = 75
+    Width = 18
+    Height = 13
+    Alignment = taRightJustify
+    Caption = '160'
+  end
+  object BB_SendSms: TSpeedButton
+    Left = 119
+    Top = 237
+    Width = 89
+    Height = 31
+    Caption = 'Send SMS'
+    Visible = False
+    OnClick = BB_SendSmsClick
+  end
+  object CB_Web: TCheckBox
+    Left = 22
+    Top = 84
+    Width = 43
+    Height = 17
+    Caption = 'Web'
+    TabOrder = 0
+    Visible = False
+  end
+  object Cb_sms: TCheckBox
+    Left = 22
+    Top = 107
+    Width = 46
+    Height = 17
+    Caption = 'Sms'
+    TabOrder = 1
+    Visible = False
+  end
+  object cb_email: TCheckBox
+    Left = 22
+    Top = 43
+    Width = 46
+    Height = 17
+    Caption = 'Email'
+    Checked = True
+    State = cbChecked
+    TabOrder = 2
+  end
+  object Le_Mobileno: TLabeledEdit
+    Left = 143
+    Top = 42
+    Width = 160
+    Height = 21
+    EditLabel.Width = 57
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Mobile No. :'
+    LabelPosition = lpLeft
+    TabOrder = 3
+  end
+  object le_email: TLabeledEdit
+    Left = 143
+    Top = 66
+    Width = 160
+    Height = 21
+    EditLabel.Width = 45
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Email ID :'
+    LabelPosition = lpLeft
+    TabOrder = 4
+  end
+  object Memo_Message: TMemo
+    Left = 143
+    Top = 93
+    Width = 354
+    Height = 130
+    MaxLength = 160
+    TabOrder = 5
+    OnChange = Memo_MessageChange
+  end
+  object CB_LetterHead: TCheckBox
+    Left = 344
+    Top = 14
+    Width = 97
+    Height = 17
+    Caption = 'With Letter Head'
+    TabOrder = 6
+  end
+  object CB_REFDOC: TCheckBox
+    Left = 344
+    Top = 37
+    Width = 87
+    Height = 17
+    Caption = 'Referal Doctor'
+    TabOrder = 7
+    OnClick = CB_REFDOCClick
+  end
+  object oraqryPostSentMailStatus: TOraQuery
+    Session = DM_Hospital.DB
+    Left = 440
+    Top = 64
+  end
+  object QueryProcess2: TQuery
+    Left = 456
+    Top = 32
+  end
+end

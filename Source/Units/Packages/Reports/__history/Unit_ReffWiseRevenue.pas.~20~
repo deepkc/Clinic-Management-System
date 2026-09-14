@@ -1,0 +1,273 @@
+unit Unit_ReffWiseRevenue;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Fxn, ServerDate, UnitSendToExcel,
+     Dialogs, ComCtrls, StdCtrls, OleCtrls, DateEditXControl_TLB, Buttons, DBCtrls, ExtCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError;
+
+type
+     TForm_ReffWiseRevenue = class(TForm)
+          Panel1: TPanel;
+          Btn_Preview: TButton;
+          Panel2: TPanel;
+          Label3: TLabel;
+          DBLCB_DocCode: TDBLookupComboBox;
+          GroupBox1: TGroupBox;
+          label2: TLabel;
+          Label1: TLabel;
+          BtnTo: TSpeedButton;
+          BtnFrom: TSpeedButton;
+          DateEditXTo: TDateEditX;
+          DateEditxFrom: TDateEditX;
+          StatusBar1: TStatusBar;
+          Query_DocCode: TOraQuery;
+          Ds_Doccode: TDataSource;
+          Rb_Summary: TRadioButton;
+          Rb_Detail: TRadioButton;
+          Panel_Detail: TPanel;
+          Rb_BillWise: TRadioButton;
+          Rb_TestWise: TRadioButton;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+          procedure Btn_PreviewClick(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure DBLCB_DocCodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure Rb_DetailClick(Sender: TObject);
+          procedure Rb_SummaryClick(Sender: TObject);
+    procedure BtnFromClick(Sender: TObject);
+    procedure BtnToClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+     private
+          { Private declarations }
+     public
+     pb_ToXl:BOOLEAN;
+          { Public declarations }
+     end;
+
+var
+     Form_ReffWiseRevenue: TForm_ReffWiseRevenue;
+
+implementation
+
+uses Unit_QrReffWiseRevenueDetail, Unit_QrReffWiseRevenueSummary,dm;
+{$R *.dfm}
+
+procedure TForm_ReffWiseRevenue.BitBtn1Click(Sender: TObject);
+begin
+     try
+          pb_ToXl:=TRUE;
+          Btn_PreviewClick(SENDER);
+          pb_ToXl:=FALSE;
+     except
+          pb_ToXl:=FALSE;
+     end;
+end;
+
+procedure TForm_ReffWiseRevenue.BitBtn2Click(Sender: TObject);
+begin
+     close;
+end;
+
+procedure TForm_ReffWiseRevenue.BtnFromClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditxFrom,BtnFrom);
+end;
+
+procedure TForm_ReffWiseRevenue.BtnToClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditXTo,BtnTo);
+end;
+
+procedure TForm_ReffWiseRevenue.Btn_PreviewClick(Sender: TObject);
+Var
+     DocCode: String;
+     Arr_Dataset:Array of TDataset;
+begin
+     if DBLCB_DocCode.KeyValue<>Null then
+     DocCode := DBLCB_DocCode.KeyValue;
+     DateEditxFrom.SystemOfDate := gi_datesystem;
+     DateEditXTo.SystemOfDate := gi_datesystem;
+     BtnFrom.Caption := gs_DateCaption;
+     BtnTo.Caption := gs_DateCaption;
+     gs_From := DateEditxFrom.text;
+     gs_to := DateEditXTo.text;
+     DateEditxFrom.SystemOfDate := 0;
+     DateEditXTo.SystemOfDate := 0;
+     BtnFrom.Caption := 'BS';
+     BtnTo.Caption := 'BS';
+     if Rb_Summary.Checked then
+     begin
+          Try
+               Form_QrReffWiseRevenueSummary := TForm_QrReffWiseRevenueSummary.Create(Nil);
+               With Form_QrReffWiseRevenueSummary do
+               begin
+                    With Query_Data do
+                    begin
+                         Close;
+                         session:=dm_hospital.DB;
+                         SQL.Clear;
+                         SQL.Add('select Docid,Doctor,Sum(GrossTotal)GrossTotal,Sum(Discount)Discount,Sum(subtotal)Subtotal,sum(SvrTax)SvrTax,sum(nettotal)NetTotal');
+                         SQL.Add('from VW_Reff_Wise_Revenue_Summary');
+                         if DocCode <> '' then
+                              SQL.Add('Where docid=' + #39 + DocCode + #39)
+                         else
+                              SQL.Add('Where 99=99');
+                         SQL.Add('and BillDate Between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39);
+                         Sql.Add('group by Docid,Doctor');
+                         SQL.Add('Order by Docid');
+                         sql.SaveToFile('C:\mangalamreff.txt');
+                         Open;
+
+                    end;
+                    if pb_ToXl then
+                    begin
+                         SendToExcels_query(Query_Data,nil,'Refferal Wise Revenue',DateEditXFrom.VSDateAsText+'-'+DateEditXTo.VSDateAsText,'',gs_HospitalName,gs_HospitalAddress,0);
+                    end
+                    else
+                    begin
+                         lbl_hosname.Caption := gs_HospitalName;
+                         lbl_hosaddress.Caption := gs_HospitalAddress;
+                         QRLabel4.Caption := gs_From;
+                         QRLabel7.Caption := gs_To;
+                         QRLabel9.Caption := ServerDate.TodaysDateVS;
+                         QRLabel10.Caption := ServerDate.TodaysTime;
+                         QuickRep1.Preview;
+                    end;
+               end;
+          Finally
+               Form_QrReffWiseRevenueSummary.Free;
+          End;
+     end
+     else if Rb_Detail.Checked then
+     begin
+          Try
+               Form_QRReffWiseRevenueDetail := TForm_QRReffWiseRevenueDetail.Create(Nil);
+               With Form_QRReffWiseRevenueDetail do
+               begin
+                    if Rb_BillWise.Checked then
+                    begin
+                         QRLabel4.Enabled := False;
+                         QRShape13.Enabled := False;
+                         QRDBText7.Enabled := False;
+                         QRShape15.Enabled := False;
+                    end
+                    else if Rb_TestWise.Checked then
+                    begin
+                         QRLabel4.Enabled := True;
+                         QRShape13.Enabled := True;
+                         QRDBText7.Enabled := True;
+                         QRShape15.Enabled := True;
+                    end;
+                    With Query_Data do
+                    begin
+                         Close;
+                         Session:=DM_Hospital.DB;
+                         SQL.Clear;
+                         if Rb_BillWise.Checked then
+                              SQL.Add(
+                                   'Select PatientID,PatientName,PayType,BillNo,BillDate,Doctor,Sum(TotalAmount)TotalAmount from VW_Reff_Wise_Revenue_Detail')
+                         else if Rb_TestWise.Checked then
+                              SQL.Add(
+                                   'Select PatientID,PatientName,PayType,BillNo,ServiceType,BillDate,Doctor,Sum(TotalAmount)TotalAmount from VW_Reff_Wise_Revenue_Detail');
+                         if DocCode <> '' then
+                              SQL.Add('Where Refdocid=' + #39 + DocCode + #39)
+                         else
+                              SQL.Add('Where 99=99');
+                         SQL.Add('and BillDate Between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39);
+                         if Rb_BillWise.Checked then
+                              SQL.Add('Group by BillNo,PatientId,PatientName,PayType,BillDate,Doctor')
+                         else if Rb_TestWise.Checked then
+                              SQL.Add('Group by BillNo,ServiceType,PatientId,PatientName,PayType,BillDate,Doctor');
+                         SQL.Add('Having Doctor is not null');
+                         SQL.Add('Order by Doctor,BillNo');
+                         sql.SaveToFile('C:\mangalamrefdetail.txt');
+                         Open;
+                    end;
+                    if pb_ToXl then
+                    begin
+                         SendToExcels(Query_Data,nil,'Referral Wise Revenue',DateEditXFrom.VSDateAsText+'-'+DateEditXTo.VSDateAsText,'',gs_HospitalName,gs_HospitalAddress,0);
+                    end
+                    else
+                    begin
+                         lbl_hosname.Caption := gs_HospitalName;
+                         lbl_hosaddress.Caption := gs_HospitalAddress;
+                         QRLabel11.Caption := DateEditxFrom.text;
+                         QRLabel12.Caption := DateEditXTo.text;
+                         QRLabel14.Caption := ServerDate.TodaysDateVS;
+                         QRLabel15.Caption := ServerDate.TodaysTime;
+                         QuickRep1.Preview;
+                    end;
+
+               end;
+          Finally
+               Form_QRReffWiseRevenueDetail.Free;
+          End;
+     end;
+end;
+
+procedure TForm_ReffWiseRevenue.DBLCB_DocCodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = VK_DELETE then
+     begin
+          DBLCB_DocCode.KeyValue := Null;
+     end;
+end;
+
+procedure TForm_ReffWiseRevenue.FormCreate(Sender: TObject);
+begin
+     with Query_DocCode do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          Open;
+     end;
+     DateEditxFrom.SystemOfDate := gi_datesystem;
+     DateEditXTo.SystemOfDate := gi_datesystem;
+     DateEditxFrom.text := ServerDate.TodaysDate;
+     DateEditXTo.text := ServerDate.TodaysDate;
+     BtnFrom.Caption := gs_DateCaption;
+     BtnTo.Caption := gs_DateCaption;
+end;
+
+procedure TForm_ReffWiseRevenue.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if Key=VK_ESCAPE then
+     Close;
+end;
+
+procedure TForm_ReffWiseRevenue.FormShow(Sender: TObject);
+begin
+     DateEditxFrom.SystemOfDate := gi_datesystem;
+     DateEditXTo.SystemOfDate := gi_datesystem;
+     DateEditxFrom.text := serverdate.TodaysDate;
+     DateEditXTo.text := serverdate.TodaysDate;
+     BtnFrom.Caption := gs_DateCaption;
+     BtnTo.Caption := gs_DateCaption;
+     DateEditxFrom.SystemOfDate := 0;
+     DateEditXTo.SystemOfDate := 0;
+     BtnFrom.Caption := 'BS';
+     BtnTo.Caption := 'BS';
+end;
+
+procedure TForm_ReffWiseRevenue.Rb_DetailClick(Sender: TObject);
+begin
+     if Rb_Detail.Checked then
+          Panel_Detail.Visible := true
+     else
+          Panel_Detail.Visible := False;
+end;
+
+procedure TForm_ReffWiseRevenue.Rb_SummaryClick(Sender: TObject);
+begin
+     if Rb_Detail.Checked then
+          Panel_Detail.Visible := true
+     else
+          Panel_Detail.Visible := False;
+end;
+
+end.

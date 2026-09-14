@@ -1,0 +1,46 @@
+package Registration;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  Global,
+  vcldbx,
+  MidasFunction,
+  BarcodeD10,
+  Billing,
+  MidasFxnFraction,
+  dac140,
+  odac140,
+  DelphiTwainPackage;
+
+contains
+  Unit_OPDVisit in 'Unit_OPDVisit.pas' {Frame_OPDVisit: TFrame},
+  UnitVDC in 'VDCMCPT\UnitVDC.pas' {FormVDC},
+  Unit_NewPatient in 'Unit_NewPatient.pas' {Frame_NewPatient: TFrame},
+  Unit_QrOpSticker in 'Unit_QrOpSticker.pas' {Form_OPSticker},
+  Unit_image in 'Unit_image.pas' {Form_Image};
+
+end.

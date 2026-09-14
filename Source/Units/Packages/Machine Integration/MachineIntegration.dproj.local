@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2014/09/20 21:08:58.886.dproj,C:\Users\Administrator\Documents\RAD Studio\Projects\Package1.dproj=D:\Working Bikram\MidasDrHomsV3.0Manipal\Source_No_Client\Units\Packages\Machine Integration\MachineIntegration.dproj</Transaction>
+    <Transaction>2014/09/20 21:09:31.171.pas,D:\Working Bikram\MidasDrHomsV3.0Manipal\Source_No_Client\Units\Packages\Machine Integration\Unit_ResultVerification.pas=</Transaction>
+    <Transaction>2014/09/20 21:25:12.261.pas,D:\Working Bikram\MidasDrHomsV3.0Manipal\Source_No_Client\Units\Packages\Machine Integration\Unit_Message.pas=</Transaction>
+    <Transaction>2014/09/20 21:25:12.261.dfm,D:\Working Bikram\MidasDrHomsV3.0Manipal\Source_No_Client\Units\Packages\Machine Integration\Unit_Message.dfm=</Transaction>
+    <Transaction>2014/09/20 21:52:33.083.pas,D:\Working Bikram\MidasDrHomsV3.0Manipal\Source_No_Client\Units\Packages\Machine Integration\Unit_QrSticker.pas=</Transaction>
+    <Transaction>2014/09/20 21:52:33.083.dfm,D:\Working Bikram\MidasDrHomsV3.0Manipal\Source_No_Client\Units\Packages\Machine Integration\Unit_QrSticker.dfm=</Transaction>
+    <Transaction>2014/11/18 11:14:29.757.pas,D:\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Machine Integration\Unit_ResultVerification.pas=</Transaction>
+    <Transaction>2014/11/18 11:14:29.757.dfm,D:\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Machine Integration\Unit_ResultVerification.dfm=</Transaction>
+    <Transaction>2014/11/18 11:24:59.659.pas,D:\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Machine Integration\Unit_QrSticker.pas=</Transaction>
+    <Transaction>2014/11/18 11:24:59.659.dfm,D:\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Machine Integration\Unit_QrSticker.dfm=</Transaction>
+    <Transaction>2014/11/18 11:40:31.215.pas,D:\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Machine Integration\Unit_QrLabSticker.pas=</Transaction>
+    <Transaction>2014/11/18 11:40:31.215.dfm,D:\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Machine Integration\Unit_QrLabSticker.dfm=</Transaction>
+  </Transactions>
+</BorlandProject>

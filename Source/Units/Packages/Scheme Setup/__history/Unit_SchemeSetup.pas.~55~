@@ -1,0 +1,600 @@
+unit Unit_SchemeSetup;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm,Unit_CommunitySetup,Unit_Master,ServerDate,
+     Dialogs, StdCtrls, Buttons, ExtCtrls, ComCtrls, DBCtrls, Grids, DBGrids, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError,
+  OleCtrls, DateEditXControl_TLB;
+
+type
+     TForm_Scheme = class(TForm)
+          Panel1: TPanel;
+          BtnNew: TBitBtn;
+          BitBtnSave: TBitBtn;
+          BitBtnCancel: TBitBtn;
+          PageControl_Scheme: TPageControl;
+          TabSheet1: TTabSheet;
+          TabSheet2: TTabSheet;
+          Label1: TLabel;
+          EditSearch: TEdit;
+          Button1: TButton;
+          Label12: TLabel;
+          DBLCB_CommunitySearch: TDBLookupComboBox;
+          SpeedButton3: TSpeedButton;
+          DBGrid_Scheme: TDBGrid;
+          Edit_Code: TEdit;
+          Label82: TLabel;
+          LabelMedicine: TLabel;
+          Edit_SchemeName: TEdit;
+          Label11: TLabel;
+          DBLookupComboBox_Community: TDBLookupComboBox;
+          SpeedButtonEdu: TSpeedButton;
+          CB_IsDisplayWithoutDiscount: TCheckBox;
+          CB_SchemeDiscountEditable: TCheckBox;
+          GroupBoxReg: TGroupBox;
+          Label8: TLabel;
+          Label10: TLabel;
+          CheckBoxRegCreditFacility: TCheckBox;
+          EditRegDiscount: TEdit;
+          GroupBoxOPD: TGroupBox;
+          Label83: TLabel;
+          Label2: TLabel;
+          CheckBox_OutPtCreditFacility: TCheckBox;
+          Edit_OutPtDiscount: TEdit;
+          Label84: TLabel;
+          Edit_Remarks: TEdit;
+          Query_Scheme: TOraQuery;
+          DataSource_Scheme: TDataSource;
+          QueryProcess: TOraQuery;
+          Query_Community: TOraQuery;
+          DataSource_Community: TDataSource;
+    chk_IsActiveScheme: TCheckBox;
+    Label17: TLabel;
+    SPB_ValidFrom: TSpeedButton;
+    Label18: TLabel;
+    SPB_ValidTo: TSpeedButton;
+    Dex_ValidFrom: TDateEditX;
+    Dex_ValidTo: TDateEditX;
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure BitBtnCancelClick(Sender: TObject);
+          procedure FormShow(Sender: TObject);
+          procedure EditSearchChange(Sender: TObject);
+          procedure Button1Click(Sender: TObject);
+          procedure DBLCB_CommunitySearchClick(Sender: TObject);
+          procedure DBLCB_CommunitySearchKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure SpeedButton3Click(Sender: TObject);
+          procedure SpeedButtonEduClick(Sender: TObject);
+          procedure EditRegDiscountKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_OutPtDiscountKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_InPtDiscountKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_PHOPTDiscountKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_PHINPTDiscountKeyPress(Sender: TObject; var Key: Char);
+          procedure EditAdmnDisKeyPress(Sender: TObject; var Key: Char);
+          procedure EditBedChargeDisKeyPress(Sender: TObject; var Key: Char);
+          procedure BtnNewClick(Sender: TObject);
+          procedure BitBtnSaveClick(Sender: TObject);
+          procedure PageControl_SchemeChanging(Sender: TObject; var AllowChange: Boolean);
+          procedure DBGrid_SchemeDblClick(Sender: TObject);
+          procedure PageControl_SchemeChange(Sender: TObject);
+    procedure SPB_ValidFromClick(Sender: TObject);
+    procedure SPB_ValidToClick(Sender: TObject);
+     private
+          { Private declarations }
+     public
+          { Public declarations }
+          pi_NewPrimaryId, pi_OldPrimaryId: LongInt;
+          lToAppend: Boolean;
+     end;
+
+var
+     Form_Scheme: TForm_Scheme;
+
+implementation
+ {
+Procedure SaveSchemeSetup(COMMUNITYID, RegDiscount, OutPtDiscount, InPtDiscount, PHOPTDiscount, PHINPTDiscount, AdmnDiscount, BedDiscount: Integer;
+     SchemeCode, SchemeName, REMARKS: string; RegCreditFacility, OutPtCreditFacility, InPtCreditFacility, PhOutPtCreditFacility,
+     PhInPtCreditFacility, DisplayWithoutDis, SchemeDisEditable: Boolean); stdcall; external 'MidasFunction.bpl';
+Procedure  UpdateSchemeSetup(SCHEMEID, COMMUNITYID, RegDiscount, OutPtDiscount, InPtDiscount, PHOPTDiscount, PHINPTDiscount, AdmnDiscount,
+     BedDiscount: Integer; SchemeCode, SchemeName, REMARKS: string; RegCreditFacility, OutPtCreditFacility, InPtCreditFacility,
+     PhOutPtCreditFacility, PhInPtCreditFacility, DisplayWithoutDis, SchemeDisEditable: Boolean); stdcall; external 'MidasFunction.bpl';     }
+{$R *.dfm}
+
+procedure TForm_Scheme.BitBtnCancelClick(Sender: TObject);
+begin
+     IF PageControl_Scheme.ActivePageIndex = 0 Then
+          Close
+     Else
+     Begin
+          PageControl_Scheme.ActivePageIndex := 0;
+          EditSearch.SetFocus;
+          BitBtnSave.Enabled := False;
+          BtnNew.Enabled := True;
+          Query_Scheme.Close;
+          Query_Scheme.Open;
+     End;
+end;
+
+procedure TForm_Scheme.BitBtnSaveClick(Sender: TObject);
+Var
+     SCHEMEID,CommunityId, RegDiscount, OutPtDiscount, InPtDiscount, PHOPTDiscount, PHINPTDiscount, AdmnDiscount,
+       BedDiscount: integer;
+     SchemeCode, SchemeName, Remarks,ls_VALIDFROMDATE,ls_VALIDTODATE,ls_ISACTIVE: string;
+     RegCreditFacility, OutPtCreditFacility, InPtCreditFacility, PhOutPtCreditFacility, PhInPtCreditFacility,
+       DisplayWithoutDis, SchemeDisEditable: Boolean;
+begin
+     IF Edit_SchemeName.Text = '' Then
+     Begin
+          Messagedlg('Please enter the scheme name !', mtConfirmation, [mbOk], 0);
+          Edit_SchemeName.SetFocus;
+          Exit;
+     End;
+
+     IF DBLookupComboBox_Community.KeyValue = NULL Then
+     Begin
+          Messagedlg('Please Select Community !', mtConfirmation, [mbOk], 0);
+          DBLookupComboBox_Community.SetFocus;
+          Exit;
+     End;
+
+     IF EditRegDiscount.Text = '' Then
+          EditRegDiscount.Text := '0';
+     IF Edit_OutPtDiscount.Text = '' Then
+          Edit_OutPtDiscount.Text := '0';
+    { IF Edit_InPtDiscount.Text = '' Then
+          Edit_InPtDiscount.Text := '0';
+
+     IF Edit_PHOPTDiscount.Text = '' Then
+          Edit_PHOPTDiscount.Text := '0';
+     IF Edit_PHINPTDiscount.Text = '' Then
+          Edit_PHINPTDiscount.Text := '0';
+
+     IF EditAdmnDis.Text = '' Then
+          EditAdmnDis.Text := '0';
+     IF EditBedChargeDis.Text = '' Then
+          EditBedChargeDis.Text := '0';}
+
+     { savescheme(CommunityId,RegDiscount,OutPtDiscount,InPtDiscount,PHOPTDiscount,PHINPTDiscount,AdmnDiscount,
+       BedDiscount:integer;SchemeCode,SchemeName,
+       Remarks:string) }
+     SCHEMEID:=pi_OldPrimaryId;
+     CommunityId := DBLookupComboBox_Community.KeyValue;
+     RegDiscount := StrToInt(EditRegDiscount.Text);
+     OutPtDiscount := StrToInt(Edit_OutPtDiscount.Text);
+     //InPtDiscount := StrToInt(Edit_InPtDiscount.Text);
+     //PHOPTDiscount := StrToInt(Edit_PHOPTDiscount.Text);
+     //PHINPTDiscount := StrToInt(Edit_PHINPTDiscount.Text);
+    // AdmnDiscount := StrToInt(EditAdmnDis.Text);
+    // BedDiscount := StrToInt(EditBedChargeDis.Text);
+     SchemeCode := Edit_Code.Text;
+     SchemeName := Edit_SchemeName.Text;
+     Remarks := StringReplace(Edit_Remarks.Text, '''', '''''', [rfReplaceAll]);
+     if CheckBoxRegCreditFacility.Checked = True then
+          RegCreditFacility := True
+     else
+          RegCreditFacility := False;
+
+     if CheckBox_OutPtCreditFacility.Checked = True then
+          OutPtCreditFacility := True
+     else
+          OutPtCreditFacility := False;
+
+     if chk_IsActiveScheme.Checked = True then
+          ls_ISACTIVE := 'Y'
+     else
+          ls_ISACTIVE := 'N';
+
+     {ChangeToDefaultDate(Dex_ValidFrom);
+     ChangeCaption(SPB_ValidFrom);
+
+     ChangeToDefaultDate(Dex_ValidTo);
+     ChangeCaption(SPB_ValidTo);}
+
+     ls_VALIDFROMDATE:=Dex_ValidFrom.text;
+     ls_VALIDTODATE:=Dex_ValidTo.text;
+
+
+
+     {if CheckBox_InPtCreditFacility.Checked = True then
+          InPtCreditFacility := True
+     else
+          InPtCreditFacility := False;
+
+     if CheckBox_PhOPTCreditFacility.Checked = True then
+          PhOutPtCreditFacility := True
+     else
+          PhOutPtCreditFacility := False;
+
+     if CheckBox_PHINPTCreditFacility.Checked = True then
+          PhInPtCreditFacility := True
+     else
+          PhInPtCreditFacility := False; }
+
+     if CB_IsDisplayWithoutDiscount.Checked = True then
+          DisplayWithoutDis := True
+     else
+          DisplayWithoutDis := False;
+
+     if CB_SchemeDiscountEditable.Checked = True then
+          SchemeDisEditable := True
+     else
+          SchemeDisEditable := False;
+     try
+          if lToAppend then
+               SaveSchemeSetup(CommunityId, RegDiscount, OutPtDiscount, InPtDiscount, PHOPTDiscount, PHINPTDiscount,
+                    AdmnDiscount, BedDiscount, SchemeCode, SchemeName, Remarks,ls_ISACTIVE,ls_VALIDFROMDATE,ls_VALIDTODATE, RegCreditFacility, OutPtCreditFacility,
+                    InPtCreditFacility, PhOutPtCreditFacility, PhInPtCreditFacility, DisplayWithoutDis,
+                    SchemeDisEditable)
+          else
+               UpdateSchemeSetup(SCHEMEID, CommunityId, RegDiscount, OutPtDiscount, InPtDiscount, PHOPTDiscount,
+                    PHINPTDiscount, AdmnDiscount, BedDiscount, SchemeCode, SchemeName, Remarks,ls_ISACTIVE,ls_VALIDFROMDATE,ls_VALIDTODATE, RegCreditFacility,
+                    OutPtCreditFacility, InPtCreditFacility, PhOutPtCreditFacility, PhInPtCreditFacility,
+                    DisplayWithoutDis, SchemeDisEditable);
+     except
+          MsgBox(1005, 0, '', '', '');
+
+     end;
+     ShowDoneMessage;
+
+     if lToAppend = False then
+     begin
+          Edit_Code.Enabled := True;
+          Edit_Code.SetFocus;
+     end;
+
+     Edit_Code.Text := '';
+     Edit_SchemeName.Text := '';
+     EditRegDiscount.Text := '0';
+    { Edit_OutPtDiscount.Text := '0';
+     Edit_InPtDiscount.Text := '0';
+     Edit_PHOPTDiscount.Text := '0';
+     Edit_PHINPTDiscount.Text := '0';
+     EditBedChargeDis.Text := '0';
+     EditAdmnDis.Text := '0';}
+     Edit_Remarks.Text := '';
+     DBLookupComboBox_Community.KeyValue := -1;
+     CB_IsDisplayWithoutDiscount.Checked := False;
+     CB_SchemeDiscountEditable.Checked := False;
+     lToAppend := True;
+
+     PageControl_Scheme.ActivePageIndex:=0;
+     Query_Scheme.Close;
+     Query_Scheme.Session:=DM_Hospital.DB;
+     Query_Scheme.Open;
+end;
+
+procedure TForm_Scheme.BtnNewClick(Sender: TObject);
+begin
+     { IF PageControl_Scheme.ActivePageIndex=1 Then
+       Begin
+       PageControl_Scheme.ActivePageIndex:=0;
+       End }
+     // Else
+     // Begin
+     PageControl_Scheme.ActivePageIndex := 1;
+     Edit_Code.Enabled := True;
+     Edit_Code.Text := '';
+     Edit_Code.SetFocus;
+     Edit_SchemeName.Text := '';
+     Edit_OutPtDiscount.Text := '0';
+    // Edit_InPtDiscount.Text := '0';
+     CheckBox_OutPtCreditFacility.Checked := False;
+    // CheckBox_InPtCreditFacility.Checked := False;
+     CB_IsDisplayWithoutDiscount.Checked := False;
+     CB_SchemeDiscountEditable.Checked := False;
+     Edit_Remarks.Text := '';
+     DBLookupComboBox_Community.KeyValue := NULL;
+     BitBtnSave.Enabled := True;
+     BtnNew.Enabled := False;
+     lToAppend := True;
+     Dex_ValidFrom.text:=serverdate.TodaysDate;
+     Dex_ValidTo.text:=ServerDate.TodaysDate;
+     EditRegDiscount.Text:='';
+     CheckBoxRegCreditFacility.Checked:=false;
+
+
+     // End;
+end;
+
+procedure TForm_Scheme.Button1Click(Sender: TObject);
+begin
+     // dmhospital.ExtendedSearch('Scheme',Query_Scheme,EditSearch);
+end;
+
+procedure TForm_Scheme.DBGrid_SchemeDblClick(Sender: TObject);
+begin
+     lToAppend := False;
+     PageControl_Scheme.ActivePageIndex := 1;
+     pi_OldPrimaryId := Query_Scheme.FieldbyName('SchemeId').AsInteger;
+     Edit_Code.Enabled := False;
+     Edit_Code.Text := Query_Scheme.FieldbyName('SchemeCode').AsString;
+     DBLookupComboBox_Community.KeyValue := Query_Scheme.FieldbyName('CommunityID').AsInteger;
+     Edit_SchemeName.Text := Query_Scheme.FieldbyName('Scheme').AsString;
+
+     if Query_Scheme.FieldbyName('ISREGDISEDITABLE').AsString = 'Y' Then
+     CB_SchemeDiscountEditable.checked:=True
+     else
+     CB_SchemeDiscountEditable.checked:=false;
+
+     EditRegDiscount.Text := FloatToStr(Query_Scheme.FieldbyName('RegDisper').AsFloat);
+     IF Query_Scheme.FieldbyName('ISREGCRFACILITY').AsString = 'Y' Then
+          CheckBoxRegCreditFacility.Checked := True
+     Else
+          CheckBoxRegCreditFacility.Checked := False;
+
+     Edit_OutPtDiscount.Text := FloatToStr(Query_Scheme.FieldbyName('OPBILLDISPER').AsFloat);
+     IF Query_Scheme.FieldbyName('ISOPBILLCRFACILITY').AsString = 'Y' Then
+          CheckBox_OutPtCreditFacility.Checked := True
+     Else
+          CheckBox_OutPtCreditFacility.Checked := False;
+
+     IF Query_Scheme.FieldbyName('ISACTIVE').AsString = 'Y' Then
+     chk_IsActiveScheme.checked:=True
+     else
+     chk_IsActiveScheme.checked:=false;
+
+     Dex_ValidFrom.text:=Query_Scheme.FieldbyName('VALIDFROMDATE').AsString;
+    Dex_ValidTo.text:=Query_Scheme.FieldbyName('VALIDTODATE').AsString;
+
+    { Edit_InPtDiscount.Text := FloatToStr(Query_Scheme.FieldbyName('InPtDiscount').AsFloat);
+     IF Query_Scheme.FieldbyName('IPtCreditFacility').AsString = 'Y' Then
+          CheckBox_InPtCreditFacility.Checked := True
+     Else
+          CheckBox_InPtCreditFacility.Checked := False;
+
+     Edit_PHOPTDiscount.Text := FloatToStr(Query_Scheme.FieldbyName('PHOPTDiscount').AsFloat);
+     IF Query_Scheme.FieldbyName('PHOPTCRFacility').AsString = 'Y' Then
+          CheckBox_PhOPTCreditFacility.Checked := True
+     Else
+          CheckBox_PhOPTCreditFacility.Checked := False;
+
+     Edit_PHINPTDiscount.Text := FloatToStr(Query_Scheme.FieldbyName('PHINPTDiscount').AsFloat);
+     IF Query_Scheme.FieldbyName('PHINPTCRFacility').AsString = 'Y' Then
+          CheckBox_PHINPTCreditFacility.Checked := True
+     Else
+          CheckBox_PHINPTCreditFacility.Checked := False; }
+
+    { IF Query_Scheme.FieldbyName('ISDISPLAYWITHOUTDISCOUNT').AsString = 'Y' Then
+          CB_IsDisplayWithoutDiscount.Checked := True
+     Else
+          CB_IsDisplayWithoutDiscount.Checked := False;
+
+     IF Query_Scheme.FieldbyName('ISDISCOUNTEDITABLE').AsString = 'Y' Then
+          CB_SchemeDiscountEditable.Checked := True
+     Else
+          CB_SchemeDiscountEditable.Checked := False; }
+
+    // EditAdmnDis.Text := FloatToStr(Query_Scheme.FieldbyName('AdmnDiscount').AsFloat);
+   //  EditBedChargeDis.Text := FloatToStr(Query_Scheme.FieldbyName('BedDiscount').AsFloat);
+
+     Edit_Remarks.Text := Query_Scheme.FieldbyName('Remarks').AsString;
+     Edit_SchemeName.SetFocus;
+     BtnNew.Enabled := False;
+     BitBtnSave.Enabled := True;
+end;
+
+procedure TForm_Scheme.DBLCB_CommunitySearchClick(Sender: TObject);
+begin
+     With Query_Scheme do
+     Begin
+          Close;
+          sql.Clear;
+          IF DBLCB_CommunitySearch.KeyValue <> NULL Then
+               sql.Add(' Select * From VW_HS_SETUP_SCHEME  where COMMUNITYID=' + IntToStr(DBLCB_CommunitySearch.KeyValue)
+                      + ' Order By SCHEME')
+          Else
+               sql.Add(' Select * From VW_HS_SETUP_SCHEME Order By SCHEME');
+
+          //sql.savetofile('C:\abc11.txt');
+          Open;
+     End;
+end;
+
+procedure TForm_Scheme.DBLCB_CommunitySearchKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Delete Then
+     Begin
+          DBLCB_CommunitySearch.KeyValue := NULL;
+          With Query_Scheme do
+          Begin
+               Close;
+               sql.Clear;
+               sql.Add(' Select * From Scheme Order By SchemeName');
+               Open;
+          End;
+     End;
+end;
+
+procedure TForm_Scheme.EditAdmnDisKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     OnlyNumeric(Sender, Key);
+     Key := Key;
+end;
+
+procedure TForm_Scheme.EditBedChargeDisKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     OnlyNumeric(Sender, Key);
+     Key := Key;
+end;
+
+procedure TForm_Scheme.EditRegDiscountKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     OnlyNumeric(Sender, Key);
+     Key := Key;
+end;
+
+procedure TForm_Scheme.EditSearchChange(Sender: TObject);
+begin
+     EditSearch.Text := StringReplace(EditSearch.Text, '''', '''''', [rfReplaceAll]);
+     with Query_Scheme do
+     Begin
+          IF Trim(EditSearch.Text) <> '' Then
+          Begin
+               Filter := 'SchemeCode =' + #39 + EditSearch.Text + '*' + #39 + ' Or Scheme =' + #39 +
+                 EditSearch.Text + '*' + #39;
+               Filtered := True;
+          End
+          Else
+               Filtered := False;
+     End;
+end;
+
+procedure TForm_Scheme.Edit_InPtDiscountKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     OnlyNumeric(Sender, Key);
+     Key := Key;
+end;
+
+procedure TForm_Scheme.Edit_OutPtDiscountKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     OnlyNumeric(Sender, Key);
+     Key := Key;
+end;
+
+procedure TForm_Scheme.Edit_PHINPTDiscountKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     OnlyNumeric(Sender, Key);
+     Key := Key;
+end;
+
+procedure TForm_Scheme.Edit_PHOPTDiscountKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key in [#8] then
+          Exit;
+     OnlyNumeric(Sender, Key);
+     Key := Key;
+end;
+
+procedure TForm_Scheme.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = 13 Then
+          keybd_Event(9, 13, 0, 0);
+     IF Key = 27 Then
+          BitBtnCancelClick(Sender);
+end;
+
+procedure TForm_Scheme.FormShow(Sender: TObject);
+begin
+     Query_Scheme.Open;
+     Query_Community.Open;
+
+     // IF gs_IsInptPharmacyService='N' Then
+     // Begin
+     // GroupBox_OPPharmacy.Enabled:=False;
+     // GroupBox_OPPharmacy.Visible:=False;
+     //
+     // GroupBox_IPPharmacy.Enabled:=False;
+     // GroupBox_IPPharmacy.Visible:=False;
+     // End;
+
+     Dex_ValidFrom.text:=ServerDate.TodaysDate;
+     Dex_ValidTo.text:=ServerDate.TodaysDate;
+     PageControl_Scheme.ActivePageIndex := 0;
+     BitBtnSave.Enabled := False;
+     EditSearch.SetFocus;
+end;
+
+procedure TForm_Scheme.PageControl_SchemeChange(Sender: TObject);
+begin
+     if PageControl_Scheme.ActivePageIndex = 0 then
+          PageControl_Scheme.ActivePageIndex := 1
+     else
+          PageControl_Scheme.ActivePageIndex := 0;
+end;
+
+procedure TForm_Scheme.PageControl_SchemeChanging(Sender: TObject; var AllowChange: Boolean);
+begin
+     { IF PageControl_Scheme.ActivePageIndex=1 Then
+       Begin
+       PageControl_Scheme.ActivePageIndex:=0;
+       BtnNew.Enabled:=True;
+       BitBtnSave.Enabled:=False;
+       End
+       Else
+       Begin
+       BtnNewClick(Sender);
+       Edit_Code.SetFocus;
+       End; }
+end;
+
+procedure TForm_Scheme.SPB_ValidFromClick(Sender: TObject);
+begin
+     ChangeDateSystem(Dex_ValidFrom, SPB_ValidFrom);
+end;
+
+procedure TForm_Scheme.SPB_ValidToClick(Sender: TObject);
+begin
+     ChangeDateSystem(Dex_ValidTo, SPB_ValidTo);
+end;
+
+procedure TForm_Scheme.SpeedButton3Click(Sender: TObject);
+Var
+     i: integer;
+     b_IsExistScheme: Boolean;
+Const
+     Arr_TableName: array [0 .. 3] of String = ('PatientMain', 'PatientVisit', 'BillDetail', 'InpatientReg');
+begin
+     b_IsExistScheme := False;
+     For i := 0 To 3 Do
+     Begin
+          With QueryProcess do
+          Begin
+               Close;
+               sql.Clear;
+               sql.Add(' Select Distinct SchemeID From ' + Arr_TableName[i] + ' where ');
+               sql.Add(' SchemeId=' + IntToStr(Query_Scheme.FieldbyName('SchemeId').AsInteger));
+               sql.savetofile('C:\abc112.txt');
+               Open;
+          End;
+
+          IF QueryProcess.FieldbyName('SchemeID').AsInteger > 0 Then
+          Begin
+               b_IsExistScheme := True;
+               Break;
+          End;
+     End;
+
+     IF b_IsExistScheme = True Then
+     Begin
+          Messagedlg('Sorrry ! This scheme has been already used in transaction.', mtWarning, [mbOk], 0);
+          Exit;
+     End;
+
+     With QueryProcess do
+     Begin
+          Close;
+          sql.Clear;
+          sql.Add(' Delete From Scheme where SchemeID=' + IntToStr(Query_Scheme.FieldbyName('SchemeId').AsInteger));
+          ExecSQL;
+     End;
+
+     ShowDoneMessage;
+end;
+
+procedure TForm_Scheme.SpeedButtonEduClick(Sender: TObject);
+begin
+     With FormCommunity Do
+     Begin
+          Try
+               FormCommunity := TFormCommunity.Create(Application);
+               ShowModal;
+          Finally
+               Free;
+          End;
+     End;
+end;
+
+end.

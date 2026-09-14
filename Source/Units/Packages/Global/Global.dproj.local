@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2011/11/10 11:45:26.155.dproj,C:\Users\vicky\Documents\RAD Studio\Projects\Package1.dproj=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\Global.dproj</Transaction>
+    <Transaction>2011/11/10 14:27:38.381.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\DM\DM.pas=</Transaction>
+    <Transaction>2011/11/10 14:27:38.381.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\DM\DM.dfm=</Transaction>
+    <Transaction>2011/11/10 14:45:34.282.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\DM.pas</Transaction>
+    <Transaction>2011/11/10 14:45:34.282.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\Unit1.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\DM.dfm</Transaction>
+    <Transaction>2011/11/16 16:27:45.495.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\DM.pas=</Transaction>
+    <Transaction>2011/11/16 16:27:45.495.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\DM.dfm=</Transaction>
+    <Transaction>2011/11/16 16:36:12.512.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\DM.pas</Transaction>
+    <Transaction>2011/11/16 16:36:12.512.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\Unit1.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\DM.dfm</Transaction>
+    <Transaction>2011/12/11 17:33:22.025.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\InWords.pas</Transaction>
+    <Transaction>2011/12/11 17:33:49.337.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\InWords.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Global\InWordsSu.pas</Transaction>
+    <Transaction>2011/12/14 11:59:47.341.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\ExportToExcel\UnitSendToExcel.pas=</Transaction>
+    <Transaction>2012/01/18 15:04:45.034.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Fxn.pas=</Transaction>
+    <Transaction>2012/01/18 15:06:38.220.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Preprocess.pas=</Transaction>
+    <Transaction>2012/01/18 15:06:39.873.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\SaveData.pas=</Transaction>
+    <Transaction>2012/01/18 15:06:43.963.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Unit_Message.pas=</Transaction>
+    <Transaction>2012/01/18 15:06:43.963.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Unit_Message.dfm=</Transaction>
+    <Transaction>2014/03/27 16:55:52.913.pas,E:\Working Soyal\Dhulikhel_New\Dhulikhel\Source\Units\Packages\Global\ExportToExcel\UnitSendToExcel.pas=</Transaction>
+    <Transaction>2017/06/04 14:58:22.048.pas,D:\working rabin\INTREPID\Source\Units\Packages\Global\Fxn.pas=D:\working rabin\INTREPID\Source\Units\Packages\Global\Fxn1.pas</Transaction>
+    <Transaction>2017/06/04 14:58:43.858.pas,D:\working rabin\INTREPID\Source\Units\Packages\Global\Fxn1.pas=D:\working rabin\INTREPID\Source\Units\Packages\Global\Fxn.pas</Transaction>
+    <Transaction>2019/05/27 10:13:59.646.pas,E:\Working susen\LAb sources\Delphi10\A.PPL\Source\Units\Packages\Global\Unit_GlobalFxnVar.pas=</Transaction>
+    <Transaction>2019/05/27 10:25:03.574.pas,E:\Working susen\LAb sources\Delphi10\A.PPL\Source\Units\Packages\Global\Unit_GlobalFxnVar.pas=</Transaction>
+    <Transaction>2020/02/06 13:26:18.695.pas,D:\WORKING DEEP\Nozomi_working\Source\Units\Main\Unit_QrCard_BNB.pas=</Transaction>
+    <Transaction>2020/02/06 13:26:18.696.dfm,D:\WORKING DEEP\Nozomi_working\Source\Units\Main\Unit_QrCard_BNB.dfm=</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="-1" SortType="1"/>
+</BorlandProject>

@@ -1,0 +1,242 @@
+unit Unit_ReferalDoctorSetup;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm, DbGridExportToExcel,ServerDate,Unit_Master,
+     Dialogs, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, ExtCtrls, Grids, DBGrids, StdCtrls, Buttons, ComCtrls,
+  DBCtrls;
+
+type
+     TForm_ReferalDoctorSetup = class(TForm)
+          Panel2: TPanel;
+          BB_Save: TBitBtn;
+          BB_Close: TBitBtn;
+          BB_New: TBitBtn;
+          PageControl1: TPageControl;
+          TabSheet1: TTabSheet;
+          Label2: TLabel;
+          SpeedButton1: TSpeedButton;
+          SpeedButton2: TSpeedButton;
+          Edit_Search: TEdit;
+          DBGrid1: TDBGrid;
+          TabSheet2: TTabSheet;
+          Label7: TLabel;
+          Label8: TLabel;
+          le_Doccode: TLabeledEdit;
+          le_Docname: TLabeledEdit;
+          Query_Department: TOraQuery;
+          Ds_Department: TDataSource;
+          Query_list: TOraQuery;
+          Ds_List: TDataSource;
+          le_qualification: TLabeledEdit;
+          le_sepcialization: TLabeledEdit;
+          cb_isactive: TCheckBox;
+    Query_process: TOraQuery;
+    DBLCB_Hospital: TDBLookupComboBox;
+    Hospital: TLabel;
+    OraQuery_hospital: TOraQuery;
+    ds_hospital: TDataSource;
+    Label1: TLabel;
+    Edit_Email: TEdit;
+          procedure PageControl1Change(Sender: TObject);
+          procedure BB_NewClick(Sender: TObject);
+          procedure BB_CloseClick(Sender: TObject);
+          procedure Edit_SearchChange(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure BB_SaveClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+     private
+          pb_isnew: Boolean;
+          pi_DoctorID: integer;
+          { Private declarations }
+     public
+          { Public declarations }
+     end;
+
+var
+     Form_ReferalDoctorSetup: TForm_ReferalDoctorSetup;
+
+implementation
+
+uses Unit_DoctorSetup;
+
+
+{Procedure SaveReferalDoctorSetup(hospitalcode,DOCCODE, DACTIVE, DOCNAME, QUALIFICATION, SPECIALIZATION: String); stdcall;
+external 'MidasFunction.bpl';
+Procedure UpdateReferalDoctorSetup(DOCID: integer;hospitalcode, DOCCODE, DACTIVE, DOCNAME, QUALIFICATION, SPECIALIZATION: String); stdcall;
+external 'MidasFunction.bpl';}
+{$R *.dfm}
+
+procedure TForm_ReferalDoctorSetup.BB_CloseClick(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+     Begin
+          PageControl1.ActivePageIndex := 0;
+          Query_list.Close;
+          Query_list.Session:=DM_Hospital.DB;
+          Query_list.Open;
+     End
+     else
+          Close;
+end;
+
+procedure TForm_ReferalDoctorSetup.BB_NewClick(Sender: TObject);
+begin
+     pb_isnew := true;
+     PageControl1.ActivePageIndex := 1;
+     ClearAll(PageControl1.Pages[1]);
+    // le_Doccode.Text:=GetNextDoccode_mangalam;
+end;
+
+procedure TForm_ReferalDoctorSetup.BB_SaveClick(Sender: TObject);
+Var
+     DOCCODE, DACTIVE, DOCNAME, QUALIFICATION, SPECIALIZATION,ls_hospitalcode,EMAIL: String;
+begin
+     if (le_Doccode.Text = '') or (le_Docname.Text = '') then
+     begin
+          MsgBox(1006, 0, '', '', '');
+          exit;
+     end;
+     if DBLCB_Hospital.KeyValue=null then
+     begin
+          ShowMessage('Please Select the hospital');
+          DBLCB_Hospital.SetFocus;
+          Exit;
+     end
+     else
+          ls_hospitalcode:=DBLCB_Hospital.KeyValue;
+
+     DOCCODE := le_Doccode.Text;
+     if cb_isactive.Checked = true then
+          DACTIVE := 'Y'
+     else
+          DACTIVE := 'N';
+     DOCNAME := le_Docname.Text;
+     QUALIFICATION := le_qualification.Text;
+     SPECIALIZATION := le_sepcialization.Text;
+     EMAIL:=Edit_Email.text;
+
+     try
+          if pb_isnew then
+               SaveReferalDoctorSetup(ls_hospitalcode,DOCCODE, DACTIVE, DOCNAME, QUALIFICATION, SPECIALIZATION,EMAIL)
+          else
+               UpdateReferalDoctorSetup(pi_DoctorID,ls_hospitalcode, DOCCODE, DACTIVE, DOCNAME, QUALIFICATION, SPECIALIZATION,EMAIL);
+          ShowDoneMessage;
+          ClearAll(PageControl1.Pages[1]);
+          le_Doccode.SetFocus;
+          pb_isnew := true;
+     except
+          MsgBox(1005, 0, '', '', '');
+     end;
+end;
+
+procedure TForm_ReferalDoctorSetup.DBGrid1DblClick(Sender: TObject);
+begin
+     with Query_list do
+     begin
+          PageControl1.ActivePageIndex:=1;
+          pb_isnew:=false;
+          le_Doccode.Text:=FieldByName('REDO_DOCCODE').AsString;
+          le_Docname.Text:=FieldByName('REDO_DOCNAME').AsString;
+          le_qualification.Text:=FieldByName('REDO_QUALIFICATION').AsString;
+          le_sepcialization.Text:=FieldByName('REDO_SPECIALIZATION').AsString;
+          pi_DoctorID:=FieldByName('REDO_DOCID').AsInteger;
+          DBLCB_Hospital.KeyValue:=FieldByName('REDO_HOSPITALCODE').AsString;
+          Edit_Email.Text:=FieldByName('REDO_EMAIL').AsString;
+          le_Doccode.SetFocus;
+          if FieldByName('REDO_DACTIVE').AsString='Y' then
+          cb_isactive.Checked:=true
+          else
+          cb_isactive.Checked:=false;
+     end;
+end;
+
+procedure TForm_ReferalDoctorSetup.Edit_SearchChange(Sender: TObject);
+begin
+
+     Edit_Search.Text := StringReplace(Edit_Search.Text, '''', '''''', [rfReplaceAll]);
+     with Query_list do
+     Begin
+          IF Trim(Edit_Search.Text) <> '' Then
+          Begin
+               Filter := 'REDO_DocName =' + #39 + Trim(Edit_Search.Text) + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TForm_ReferalDoctorSetup.FormCreate(Sender: TObject);
+begin
+     Query_list.Close;
+     Query_list.Session:=DM_Hospital.DB;
+     Query_list.Open;
+     PageControl1.ActivePageIndex := 0;
+     with OraQuery_hospital do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          Open;
+     end;
+end;
+
+procedure TForm_ReferalDoctorSetup.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = 27 then
+          BB_CloseClick(Sender);
+end;
+
+procedure TForm_ReferalDoctorSetup.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     keybd_event(9,13,0,0);
+end;
+
+procedure TForm_ReferalDoctorSetup.PageControl1Change(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+          PageControl1.ActivePageIndex := 0
+     else
+          PageControl1.ActivePageIndex := 1;
+end;
+
+procedure TForm_ReferalDoctorSetup.SpeedButton1Click(Sender: TObject);
+begin
+     if ((gi_UserID=1) or (gi_UserID=9)) then
+     begin
+          If MessageDlg('Are you sure you want to delete this doctor?', mtConfirmation, [mbYes,MbNo], 0) = mrYes then
+          begin
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.Add(' Delete From Doctor where DocID=' + IntToStr(Query_list.FieldbyName('DocId').AsInteger));
+                    ExecSQL;
+               End;
+          end;
+          Query_list.Close;
+          Query_list.Open;
+     end
+     else
+     begin
+          MessageDlg('Please Contact your System Administrator to delete the doctor details !', mtConfirmation, [mbok], 0);
+     end;
+
+end;
+
+procedure TForm_ReferalDoctorSetup.SpeedButton2Click(Sender: TObject);
+begin
+     if MsgBox(1010, 1, '', '', '') then
+     begin
+         // ExportDBGrid(Form_DoctorSetup, DBGrid1, true, 'Doctors List ', TodaysDateVS + ' BS -' + TodaysDate + ' AD');
+     end;
+end;
+
+end.

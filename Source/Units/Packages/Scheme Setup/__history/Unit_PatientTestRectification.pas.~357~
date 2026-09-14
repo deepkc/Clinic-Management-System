@@ -1,0 +1,1248 @@
+unit Unit_PatientTestRectification;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ComCtrls, Db, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, StdCtrls, DBCtrls, OleCtrls, Fxn, DM,
+  DateEditXControl_TLB, ExtCtrls, Buttons, Grids, DBGrids,ServerDate, SMDBGrid,Unit_Billing;
+
+type
+  TForm_PatientTestRectification = class(TForm)
+    Panel1: TPanel;
+    BitBtnCancel: TBitBtn;
+    PageControlBillReprint: TPageControl;
+    TabSheet2: TTabSheet;
+    Label4: TLabel;
+    EditHosNo: TEdit;
+    Query_PatientInfo: TOraQuery;
+    Label7: TLabel;
+    Lbl_Name: TLabel;
+    Query_Process: TOraQuery;
+    Label1: TLabel;
+    Lbl_AgeSex: TLabel;
+    Label3: TLabel;
+    Lbl_ContactNo: TLabel;
+    Label6: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Lbl_Address: TLabel;
+    Label13: TLabel;
+    Query_BillDetail: TOraQuery;
+    DS_BillDetail: TDataSource;
+    SBSearch: TSpeedButton;
+    Query_Scheme: TOraQuery;
+    DS_Scheme: TDataSource;
+    Label100: TLabel;
+    DBLCB_Scheme: TDBLookupComboBox;
+    CB_RemoveScheme: TCheckBox;
+    BtnSave: TBitBtn;
+    GroupBox1: TGroupBox;
+    RB_DirectBilling: TRadioButton;
+    RB_ServiceBilling: TRadioButton;
+    OraQueryProcess2: TOraQuery;
+    OraQueryProcess3: TOraQuery;
+    Edit_PreveBillNo: TEdit;
+    Label2: TLabel;
+    DBGrid_PrevBillNoInfo: TDBGrid;
+    Query_RefundBillList: TOraQuery;
+    RB_IPBILL: TRadioButton;
+    RB_OPBILL: TRadioButton;
+    ds_refundbilllist: TDataSource;
+    DBGrid_Billing: TSMDBGrid;
+    ds_tempbill: TDataSource;
+    query_tempbilling: TTable;
+    Query_RefundBillItem: TOraQuery;
+    Table_billing: TTable;
+    ds_tempbilling: TDataSource;
+    CB_LoadFullRefundedItem: TCheckBox;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    query_save: TOraQuery;
+    query_testdetail: TOraQuery;
+    CB_Preview: TCheckBox;
+    procedure BitBtnCancelClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EditHospitalNoKeyPress(Sender: TObject; var Key: Char);
+    procedure EditHosNoKeyPress(Sender: TObject; var Key: Char);
+    procedure EditHosNoExit(Sender: TObject);
+    procedure SBSearchClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure DBLCB_SchemeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure BtnSaveClick(Sender: TObject);
+    procedure CB_RemoveSchemeClick(Sender: TObject);
+    procedure RB_DirectBillingClick(Sender: TObject);
+    procedure RB_ServiceBillingClick(Sender: TObject);
+    procedure DBGridBillListCellClick(Column: TColumn);
+    procedure Edit_PreveBillNoKeyPress(Sender: TObject; var Key: Char);
+    procedure LoadForBillRefund(BillNo: string);
+    Procedure CreateTableFinalBill;
+    procedure Edit_PreveBillNoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+      Procedure CalculateLabels;
+    procedure DBGrid_BillingCellClick(Column: TColumn);
+    procedure DBGrid_BillingDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGrid_PrevBillNoInfoDblClick(Sender: TObject);
+
+  private
+  pf_TestPrice, pf_Dis, pf_SvrTax, pf_Qty, pf_TotalPrice, pf_disper,
+      pf_discount, pf_DiscountTotal, pf_Total, pf_subtotal, pf_grandtotal,
+      pf_SvrTaxTotal, pf_Payment, pf_NetTotal, pf_Return, pf_Deposit,
+      pf_AdvancRefund, pf_balance, pf_MemberDeposit, Pf_TotalDeposit,
+      Pf_FinalBillDiscount, Pf_FinalBillDisPer, Pf_DepositDeducted,
+      pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE, pf_DOLLARGROSSTOTAL,
+      pf_DOLLARTAXAMT, pf_DOLLARDISCOUNTTOTAL, pf_DOLLARNETTOTAL,
+      pf_DOLLORSERVICECHARGETOTAL, pf_DOLLARAMOUNT, pf_DOLLARVATAMT,
+      pf_DOLLARTOTALAMOUNT, pf_DOLLARDISCOUNT, pf_DOLLARSERVICECHARGE,
+      pf_PrevRefundTotal:double;
+      pi_TotItems,pi_TotalItems,pi_billdetailid,pi_servicebilldetailid
+      ,pi_gridselectedtestnameid
+      ,pi_gridselectedtestprogressstatus,pi_patienttestid:integer;
+      pi_gridselectedtestnamecode,pi_gridselectedtestname,pi_testnameid,ps_servicebillno,ps_billno :string;
+      { Private declarations }
+  public
+      { Public declarations }
+      pi_PatientId,pi_CommunityId,pi_SchemeId,pi_DepId:Integer;
+      ps_BillType,ps_MyBillNo,ps_PayType,ps_MemberNo:String;
+      ps_RateType,ps_TodaysDate,ps_TodaysTime,ps_PatientType:String;
+      pf_VatAmt,pf_RegCharge,pf_DisAmt,pf_TotalAmt:Double;
+      b_Reprint:Boolean;
+
+
+      Procedure GetPatientInfo;
+      Function IsBillExistR(BillNo: String): Boolean;
+
+  end;
+
+var
+  Form_PatientTestRectification: TForm_PatientTestRectification;
+
+implementation
+
+{$R *.DFM}
+
+procedure TForm_PatientTestRectification.BitBtnCancelClick(Sender: TObject);
+begin
+   Close;
+end;
+
+procedure TForm_PatientTestRectification.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     IF Key=27 Then Close;
+
+     if Key=VK_F1 then CB_RemoveScheme.Checked:=not(CB_RemoveScheme.Checked);
+
+     if Key=VK_F12 then BtnSaveClick(Sender);
+
+
+end;
+
+procedure TForm_PatientTestRectification.EditHospitalNoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   IF key=#8 Then Exit;
+   IF Not (key IN['0'..'9']) Then Key:=#0;
+end;
+
+procedure TForm_PatientTestRectification.Edit_PreveBillNoKeyDown(
+  Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF (Key = VK_ESCAPE) Then
+          Edit_PreveBillNo.Text := '';
+
+     IF (Key = vk_down) and (Query_RefundBillList.Active) Then
+     Begin
+          DBGrid_PrevBillNoInfo.Visible := True;
+          Query_RefundBillList.next;
+          Edit_PreveBillNo.Text := Query_RefundBillList.FieldByName('BillNo')
+          .AsString;
+     End;
+
+     IF (Key = vk_up) and (Query_RefundBillList.Active) Then
+     Begin
+          DBGrid_PrevBillNoInfo.Visible := True;
+          Query_RefundBillList.Prior;
+          Edit_PreveBillNo.Text := Query_RefundBillList.FieldByName('BillNo')
+          .AsString;
+     End;
+end;
+
+procedure TForm_PatientTestRectification.Edit_PreveBillNoKeyPress(
+  Sender: TObject; var Key: Char);
+  var Column:Tcolumn;
+begin
+     if Trim(Edit_PreveBillNo.Text) = '' then
+     Begin
+          if (Key = #13) then
+          begin
+               //DBGrid_PrevBillNoInfo.left := 82;
+               //DBGrid_PrevBillNoInfo.Top := 190;
+               DBGrid_PrevBillNoInfo.Height := 125;
+               DBGrid_PrevBillNoInfo.Width := 700;
+               DBGrid_PrevBillNoInfo.Visible := True;
+
+               if  RB_ServiceBilling.Checked=true then
+               begin
+                    With Query_RefundBillList do
+                    Begin
+                         Close;
+                         Session := DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add(
+                              ' Select sebd_BillNo BillNo,sebd_BillNo FinalBillNo,sebd_BillDate BillDate,sebd_BillTime BillTime,sebd_BillBy BillBy,');
+                         SQL.Add(
+                              ' (Select UserName From lab_UserMain where UserId=sebd_BillBy) as UserName,');
+                         SQL.Add(
+                              ' Sum((sebd_Amount*sebd_Qty)+sebd_VatAmt-(sebd_Amount*sebd_Qty*sebd_DisPer/100)) as NetTotal,''FINALBILL'' as BillType,');
+                         SQL.Add(
+                              ' NVL(Case when SubStr(sebd_BillNo,1,2)=''ME'' Then (Select Sum(ReceivedAmount) as Total From CreditPayment where CrBillNo=sebd_BillNo) Else 0 End,0) as DepositAmt');
+                         SQL.Add(' From HS_sebd_serviceBillDetail BD where sebd_PatientId=' + IntToStr
+                                   (pi_PatientID) + ' and sebd_BillType=''B'' and SEBD_BILLDETAILID=0');
+                         SQL.Add(
+                              ' Group By sebd_BillNo,sebd_BillDate,sebd_BillTime,sebd_BillBy');
+                         SQL.Add(' Order by sebd_BillDate Desc,sebd_BillTime Desc');
+
+                         //SQL.Savetofile('C:\abc66.txt');
+                         Open;
+                    End;
+               end
+
+               else if RB_OPBILL.Checked = True then
+               Begin
+                    With Query_RefundBillList do
+                    Begin
+                         Close;
+                         Session := DM_Hospital.DB;
+                         SQL.Clear;
+                         SQL.Add(
+                              ' Select BIDE_BillNo BillNo,BIDE_BillNo FinalBillNo,BIDE_BillDate BillDate,BIDE_BillTime BillTime,BIDE_BillBy BillBy,');
+                         SQL.Add(
+                              ' (Select UserName From lab_UserMain where UserId=BIDE_BillBy) as UserName,');
+                         SQL.Add(
+                              ' Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal,''FINALBILL'' as BillType,');
+                         SQL.Add(
+                              ' NVL(Case when SubStr(BIDE_BillNo,1,2)=''ME'' Then (Select Sum(ReceivedAmount) as Total From CreditPayment where CrBillNo=BIDE_BillNo) Else 0 End,0) as DepositAmt');
+                         SQL.Add(' From HS_BIDE_BillDetail BD where BIDE_PatientId=' + IntToStr
+                                   (pi_PatientID) + ' and BIDE_BillType=''B''');
+                         SQL.Add(
+                              ' Group By BIDE_BillNo,BIDE_BillDate,BIDE_BillTime,BIDE_BillBy');
+                         SQL.Add(' Order by BIDE_BillDate Desc,BIDE_BillTime Desc');
+                         Open;
+                    End;
+               End
+               Else
+               Begin
+                    With Query_RefundBillList do
+                    Begin
+                         Close;
+                         Session := DM_Hospital.DB;
+                         SQL.Clear;
+
+                         SQL.Add(' Select BIDE_BillNo BillNo,BIDE_BillNo FinalBillNo,BIDE_BillDate BillDate,BIDE_BillTime BillTime,BIDE_BillBy BillBy,');
+                         SQL.Add(' (Select UserName From lab_UserMain where UserId=BIDE_BillBy) as UserName,');
+                         SQL.Add(' Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal,0 as DepositAmt,0 as CopayAmount,''FINALBILL'' as BillType');
+                         SQL.Add(' From HS_BIDE_BillDetail BD where BIDE_PatientId=' + IntToStr(pi_PatientID) +
+                                                             ' and BIDE_BillType In (''IP'',''A'') and BIDE_ServiceBillDetailId=0');
+                         SQL.Add(' Group By BIDE_BillNo,BIDE_BillDate,BIDE_BillTime,BIDE_BillBy');
+                         SQL.Add(' Union');
+                         SQL.Add(' Select SEBD_BillNo BillNo,(Select Distinct BIDE_BillNo From HS_BIDE_BillDetail where BIDE_BillDetailId In (Select SEBD_BillDetailId From');
+                         SQL.Add(' HS_SEBD_ServiceBillDetail where SEBD_BillNo=SBD.SEBD_BillNo)) as FinalBillNo,');
+                         SQL.Add(' SEBD_BillDate BillDate,SEBD_BillTime BillTime,SEBD_BillBy BillBy,');
+                         SQL.Add(' (Select UserName From lab_UserMain where UserId=SEBD_BillBy) as UserName,');
+                         SQL.Add(' Sum((SEBD_Amount*SEBD_Qty)+SEBD_VatAmt-(SEBD_Amount*SEBD_Qty*SEBD_DisPer/100)) as NetTotal,');
+                         SQL.Add(' NVL((Select Sum(DEPO_DrAmount-DEPO_CrAmount) From HS_DEPO_Deposit where DEPO_ReferenceNo=SEBD_BillNo),0) as DepositAmt,');
+                         SQL.Add(' (Select Sum(ReceivedAmount) From CreditPayment where CrBillNo=SEBD_BillNo) as CopayAmount,     ''FINALBILL'' as BillType');
+                         SQL.Add(' From HS_SEBD_ServiceBillDetail SBD where SEBD_PatientId=' + IntToStr(pi_PatientID) +
+                                                  ' and SEBD_BillType In (''IP'',''A'')     and SEBD_BillDetailId > 0');
+                         SQL.Add(' Group By SEBD_BillNo,SEBD_BillDate,SEBD_BillTime,SEBD_BillBy');
+                         SQL.Add(' Union');
+                         SQL.Add(' Select SEBD_BillNo BillNo,SEBD_BillNo as FinalBillNo,SEBD_BillDate BillDate,SEBD_BillTime BillTime,SEBD_BillBy BillBy,');
+                         SQL.Add(' (Select UserName From lab_UserMain where UserId=SEBD_BillBy) as UserName,');
+                         SQL.Add(' Sum((SEBD_Amount*SEBD_Qty)+SEBD_VatAmt-(SEBD_Amount*SEBD_Qty*SEBD_DisPer/100)) as NetTotal,');
+                         SQL.Add(' NVL((Select Sum(DEPO_DrAmount-DEPO_CrAmount) From HS_DEPO_Deposit where DEPO_ReferenceNo=SEBD_BillNo),0) as DepositAmt,');
+                         SQL.Add(' (Select Sum(ReceivedAmount) From CreditPayment where CrBillNo=SEBD_BillNo) as CopayAmount,     ''ADVANCEBILL'' as BillType');
+                         SQL.Add(' From HS_SEBD_ServiceBillDetail SBD where SEBD_PatientId=' + IntToStr(pi_PatientID) +
+                                                  ' and SEBD_BillType In (''IP'',''A'')     and SEBD_BillDetailId=0');
+                         SQL.Add(' Group By SEBD_BillNo,SEBD_BillDate,SEBD_BillTime,SEBD_BillBy     Order by BillDate Desc,BillTime Desc');
+                         Open;
+                    End;
+               End;
+               Edit_PreveBillNo.Text := Query_RefundBillList.FieldByName('BillNo').AsString;
+          end;
+     End
+     else
+     begin
+          if (Key = #13) then
+          begin
+
+               pi_testnameid:='';
+               pi_billdetailid:=0;
+               pi_servicebilldetailid:=0;
+               pi_gridselectedtestnameid:=0;
+               pi_gridselectedtestprogressstatus:=0;
+               DBLCB_Scheme.KeyValue:=-1;
+               pi_patienttestid:=0;
+               ps_servicebillno:='';
+               if IsBillExistR(Edit_PreveBillNo.Text) = False then
+               begin
+                    MessageDlg(' No Items Exist With This Bill No. " ' +
+                              Edit_PreveBillNo.Text + ' "', mtWarning, [MbOk], 0);
+                    Edit_PreveBillNo.Text:=ps_billno;
+                    Edit_PreveBillNo.SetFocus;
+                    Exit;
+               end;
+
+               (* Get Scheme & Referral Dept *)
+               With Query_Process do
+               begin
+                    Close;
+                    Session := DM_Hospital.DB;
+                    SQL.Clear;
+                    if gs_BillType='SERVICE REFUNDBILL' then
+                    begin
+
+                         SQL.Add(' Select Distinct SEBD_DisSchemeId as SchemeId,(Select Distinct SEBD_RefDocID From HS_SEBD_ServiceBillDetail');
+                         SQL.Add(' where SEBD_ServiceBillDetailId=SBD.SEBD_ServiceBillDetailId and RowNum=1) as RefDocID,');
+                         SQL.Add(' (Select Distinct SEBD_RefDepID From HS_SEBD_ServiceBillDetail');
+                         SQL.Add(' where SEBD_ServiceBillDetailId=SBD.SEBD_ServiceBillDetailId and RowNum=1) as RefDepID');
+                         SQL.Add(' From HS_SEBD_ServiceBillDetail SBD ');
+                        // SQL.Add(' Select BIDE_BillDetailId From HS_BIDE_BillDetail');
+                         if (RB_IPBILL.Checked = True) and(Copy(Query_RefundBillList.FieldByName('BillNo').AsString, 1, 2)= 'TP') or (gs_BillType='SERVICE REFUNDBILL')  then
+                         SQL.Add(' where sebd_BillNo=' + #39 +Query_RefundBillList.FieldByName('FinalBillNo').AsString + #39 + ' and NVL(SEBD_DisSchemeId,0) > 0')
+                         Else
+                         SQL.Add(' where sebd_BillNo=' + #39 + Edit_PreveBillNo.Text + #39 +' and NVL(SEBD_DisSchemeId,0) > 0');
+
+                         if (RB_IPBILL.Checked = True) and (Copy(Query_RefundBillList.FieldByName('BillNo').AsString, 1, 2)= 'TP') or (gs_BillType='SERVICE REFUNDBILL') then
+                         SQL.Add(' and SEBD_BillDetailId In (Select SEBD_BillDetailId From HS_SEBD_ServiceBillDetail where SEBD_BillNo=' + #39 + Query_RefundBillList.FieldByName('BillNo').AsString + #39 + ')');
+                    end
+                    else if (gs_BillType<>'SERVICE REFUNDBILL') AND (RB_OPBILL.Checked = True) or (gs_BillType<>'SERVICE REFUNDBILL')AND (Query_RefundBillList.FieldByName('BillType').AsString = 'FINALBILL') then
+                    Begin
+                         SQL.Add(' Select Distinct SEBD_DisSchemeId as SchemeId,(Select Distinct SEBD_RefDocID From HS_SEBD_ServiceBillDetail');
+                         SQL.Add(' where SEBD_ServiceBillDetailId=SBD.SEBD_ServiceBillDetailId and RowNum=1) as RefDocID,');
+                         SQL.Add(' (Select Distinct SEBD_RefDepID From HS_SEBD_ServiceBillDetail');
+                         SQL.Add(' where SEBD_ServiceBillDetailId=SBD.SEBD_ServiceBillDetailId and RowNum=1) as RefDepID');
+                         SQL.Add(' From HS_SEBD_ServiceBillDetail SBD where SEBD_BillDetailId In (');
+                         SQL.Add(' Select BIDE_BillDetailId From HS_BIDE_BillDetail');
+                         if (RB_IPBILL.Checked = True) and(Copy(Query_RefundBillList.FieldByName('BillNo').AsString, 1, 2)= 'TP') then
+                         SQL.Add(' where BIDE_BillNo=' + #39 +Query_RefundBillList.FieldByName('FinalBillNo').AsString + #39 + ') and NVL(SEBD_DisSchemeId,0) > 0')
+                         Else
+                         SQL.Add(' where BIDE_BillNo=' + #39 + Edit_PreveBillNo.Text + #39 +') and NVL(SEBD_DisSchemeId,0) > 0');
+
+                         if (RB_IPBILL.Checked = True) and (Copy(Query_RefundBillList.FieldByName('BillNo').AsString, 1, 2)= 'TP') then
+                         SQL.Add(' and SEBD_BillDetailId In (Select SEBD_BillDetailId From HS_SEBD_ServiceBillDetail where SEBD_BillNo=' + #39 + Query_RefundBillList.FieldByName('BillNo').AsString + #39 + ')');
+
+                    End
+                    else
+                    begin
+                         SQL.Add(' Select Distinct SEBD_DisSchemeId as SchemeId,SEBD_RefDocID as RefDocID, SEBD_RefDepID RefDepId');
+                         SQL.Add(' From HS_SEBD_ServiceBillDetail SBD where SEBD_BillNo=' +#39 + Edit_PreveBillNo.Text + #39 +' and NVL(SEBD_DisSchemeId,0) > 0');
+                    end;
+                    //sql.SaveToFile('C:\RefundBill.txt');
+                    Open;
+               end;
+
+               DBGrid_PrevBillNoInfo.Visible := False;
+
+               LoadForBillRefund(Edit_PreveBillNo.Text);
+               ps_billno:=Edit_PreveBillNo.Text;
+               DBGrid_Billing.OnCellClick(Column);
+          end;
+     end;
+end;
+
+Function TForm_PatientTestRectification.IsBillExistR(BillNo: String): Boolean;
+Var
+     Qry: TOraQuery;
+begin
+     Qry := TOraQuery.Create(nil);
+     with Qry do
+     begin
+          close;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          if copy(BillNo, 1, 2) <> 'TP' then
+          Begin
+               sql.Add(
+                    ' Select Count(BIDE_BillDetailId) as Total From HS_BIDE_BillDetail');
+               sql.Add
+                 (' where BIDE_BillNo=' + #39 + BillNo +
+                    #39);
+                    SQL.Add('AND BIDE_PATIENTID='+INTTOSTR(gi_PatientId));
+          End
+          else
+          begin
+               sql.Add(
+                    ' Select Count(SEBD_ServiceBillDetailId) as Total From HS_SEBD_ServiceBillDetail');
+               sql.Add
+                 (' where SEBD_BillNo=' + #39 + BillNo +#39);
+
+          end;
+          open;
+     End;
+     if Qry.fieldbyname('Total').AsInteger > 0 then
+          Result := True
+     Else
+          Result := False;
+     Qry.free;
+End;
+
+
+procedure TForm_PatientTestRectification.LoadForBillRefund(BillNo: string);
+Var
+  li_RemQty: Double;
+
+Begin
+
+     Table_Billing.Close;
+     Table_Billing.DatabaseName := gs_temppath;
+     Table_Billing.EmptyTable;
+     Table_Billing.Open;
+
+     pi_TotItems := 0;
+
+     With Query_RefundBillItem do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          SQL.Clear;
+          if  (RB_ServiceBilling.Checked=false) and (RB_OPBILL.Checked = True) or (RB_ServiceBilling.Checked=false) AND (Query_RefundBillList.FieldByName('BillType').AsString = 'FINALBILL') then
+          Begin
+               if CB_LoadFullRefundedItem.Checked = False then
+               SQL.Add(' Select R.*,NVL(Case When R.CancelStatus=''N'' and R.SampleReceivedBy > 0 Then ''N'' Else ''Y'' End,''Y'') IsValidForRefund From (');
+               SQL.Add(' SELECT BD.BIDE_REFDOCCODE REFDOCCODE,BD.BIDE_DISCOMMUNITYID COMMUNITYID,BD.BIDE_DISSCHEMEID SCHEMEID,BD.BIDE_SERVICEBILLDETAILID SERVICEBILLDETAILID,');
+               SQL.Add(' BD.BIDE_AMOUNT AMOUNT,BD.BIDE_VATAMT VATAMT,BD.BIDE_QTY QTY,BD.BIDE_TOTALAMOUNT TOTALAMOUNT,BD.BIDE_DISPER DISPER,BD.BIDE_DISCOUNT DISCOUNT,');
+               SQL.Add(' NVL((Select Sum(REDE_Qty) From HS_REDE_RefundDetail where REDE_BillDetailId=BIDE_BillDetailId),0) as RefundQty,');
+               SQL.Add(' NVL((Select Sum(REDE_VatAmt) From HS_REDE_RefundDetail where REDE_BillDetailId=BIDE_BillDetailId),0) as RefundVat,');
+               SQL.Add(' NVL((Select Sum(REDE_TotalAmount) From HS_REDE_RefundDetail where REDE_BillDetailId=BIDE_BillDetailId),0) as RefundTotal,BD.BIDE_BILLNO BILLNO,');
+               SQL.Add(' BD.BIDE_PATIENTID PATIENTID,BD.BIDE_INPATIENTID INPATIENTID,BD.BIDE_DEPID DEPID,BD.BIDE_DOCCODE DOCCODE,');
+               SQL.Add(' BD.BIDE_SERVICE SERVICE,BD.BIDE_SERVICETYPE SERVICETYPE,BD.BIDE_RATETYPE RATETYPE,BD.BIDE_BILLDETAILID BILLDETAILID,');
+               SQL.Add(' BD.BIDE_BILLDATE BILLDATE,BD.BIDE_BILLTIME BILLTIME,BD.BIDE_BILLBY VERIFIEDBY,BD.BIDE_ORGBILLCATEGORY ORGBILLCATEGORY,Bide_HosPartPer HOSPARTPER,');
+               SQL.Add(' BD.BIDE_ISFRACTIONABLETEST ISFRACTIONABLETEST,(SELECT TENA_TESTNAMEID FROM HS_TENA_TESTNAME WHERE TENA_TESTNAMECODE=BD.BIDE_SERVICE)TESTNAMEID,');
+               SQL.Add(' (SELECT TENA_TNCATEGORYCODE FROM HS_TENA_TESTNAME WHERE TENA_TESTNAMECODE=BD.BIDE_Service) TNCategoryCode,');
+               (*SQL.Add(' (SELECT BIMA_TOBESENTTOWEB FROM HS_BIMA_BILLMASTER WHERE BIMA_BILLNO=BD.BIDE_BILLNO)TOBE_SENTTOWEB,');
+               SQL.Add(' (SELECT BIMA_TOBESENTTOSMS FROM HS_BIMA_BILLMASTER WHERE BIMA_BILLNO=BD.BIDE_BILLNO)TOBE_SENTTOSMS,');
+               SQL.Add(' (SELECT BIMA_TOBESENTTOEMAIL FROM HS_BIMA_BILLMASTER WHERE BIMA_BILLNO=BD.BIDE_BILLNO)TOBE_SENTTOEMAIL,');*)
+               SQL.Add(' ''N'' as TOBE_SENTTOWEB,''N'' as TOBE_SENTTOSMS,''N'' as TOBE_SENTTOEMAIL,');
+               SQL.Add(' BIDE_ISVATABLETEST ISVATABLE,');
+               SQL.Add(' (SELECT Max(REDE_REFUNDBILLNO) FROM HS_REDE_REFUNDDETAIL WHERE REDE_BILLDETAILID=BD.BIDE_BILLDETAILID)REFUNDBILLNO,');
+               sql.Add('(select testprogressstatus from patienttest pt where patientid=bide_patientid and billdetailid=bide_billdetailid)testprogressstatus,');
+               sql.Add('(select patienttestid from patienttest pt where patientid=bide_patientid and billdetailid=bide_billdetailid)patienttestid,');
+               SQL.Add('(SELECT UNDOSTATUS FROM SAMPLECOLLECTION WHERE PATIENTTESTID=(select patienttestid from patienttest pt where patientid=bide_patientid and billdetailid=bide_billdetailid))UNDOSTATUS,');
+               if RB_OPBILL.Checked=True then
+               begin
+                    SQL.Add(' NVL((Select NVL(CancelStatus,''N'') From PatientTest PT where PatientID=BIDE_PatientID and BillDetailId=BIDE_BillDetailId and RowNum=1),''Y'') CancelStatus,');
+                    SQL.Add(' NVL((Select NVL(SampleTakenBy,0) SampleReceivedBy From SampleCollection where PatientTestId In (Select PatientTestId');
+                    SQL.Add(' From PatientTest PT where PatientID=BIDE_PatientID and BillDetailId=BIDE_BillDetailId) and RowNum=1 and UndoStatus=0),0) SampleReceivedBy');
+               end
+               else
+               begin
+                    SQL.Add(' NVL((Select NVL(CancelStatus,''N'') From PatientTest PT where PatientID=BIDE_PatientID and ServiceBillDetailId=BIDE_ServiceBillDetailId and RowNum=1),''Y'') CancelStatus,');
+                    SQL.Add(' NVL((Select NVL(SampleTakenBy,0) SampleReceivedBy From SampleCollection where PatientTestId In (Select PatientTestId');
+                    SQL.Add(' From PatientTest PT where PatientID=BIDE_PatientID and ServiceBillDetailId=BIDE_ServiceBillDetailId) and RowNum=1 and UndoStatus=0),0) SampleReceivedBy');
+               end;
+               SQL.Add(' , (SELECT SEBD_BILLNO FROM HS_SEBD_SERVICEBILLDETAIL WHERE SEBD_SERVICEBILLDETAILID=BD.BIDE_SERVICEBILLDETAILID)SERVICEBILLNO');
+               SQL.Add(' FROM HS_BIDE_BILLDETAIL BD WHERE BIDE_BILLNO=' + #39 + BillNo +#39);
+               if (RB_IPBILL.Checked = True) and (Copy(Query_RefundBillList.FieldByName('BillNo').AsString, 1, 2)= 'TP') then
+                    SQL.Add(' and BIDE_BillDetailId In (Select SEBD_BillDetailId From HS_SEBD_ServiceBillDetail where SEBD_BillNo=' + #39 + Query_RefundBillList.FieldByName('BillNo').AsString + #39 + ')');
+               if CB_LoadFullRefundedItem.Checked = False then
+                    SQL.Add(' ) R --where (QTY-RefundQty) > 0');
+          End
+          Else
+          Begin
+               SQL.Add(' Select Z.* From (');
+               SQL.Add(' Select R.*,NVL(Case When R.CancelStatus=''N'' and R.SampleReceivedBy > 0 Then ''N'' Else ''Y'' End,''Y'') IsValidForRefund,');
+               SQL.Add(' Case when TECA_TestCancelId > 0 Then Qty Else 0 End as RefundQty,Case when TECA_TestCancelId > 0 Then TOTALAMOUNT Else 0 End as RefundTotal,');
+               SQL.Add(' Case when TECA_TestCancelId > 0 Then VATAMT Else 0 End as RefundVat     From (');
+               SQL.Add(' SELECT SEBD_REFDOCCODE REFDOCCODE,SEBD_DISCOMMUNITYID COMMUNITYID,SEBD_DISSCHEMEID SCHEMEID,SEBD_SERVICEBILLDETAILID SERVICEBILLDETAILID,');
+               SQL.Add(' SEBD_AMOUNT AMOUNT,SEBD_VATAMT VATAMT,SEBD_QTY QTY,SEBD_TOTALAMOUNT TOTALAMOUNT,SEBD_DISPER DISPER,SEBD_DISCOUNT DISCOUNT,SEBD_BILLNO BILLNO,');
+               SQL.Add(' SEBD_PATIENTTESTID PATIENTTESTID,SEBD_PATIENTID PATIENTID,SEBD_INPATIENTID INPATIENTID,SEBD_DEPID DEPID,SEBD_DOCCODE DOCCODE,');
+               SQL.Add(' SEBD_SERVICE SERVICE,SEBD_SERVICETYPE SERVICETYPE,SEBD_BillType BillType, SEBD_RATETYPE RATETYPE,SEBD_BILLDETAILID BILLDETAILID,');
+               SQL.Add(' SEBD_BILLDATE BILLDATE,SEBD_BILLTIME BILLTIME,SEBD_BILLBY VERIFIEDBY,SEBD_ORGBILLCATEGORY ORGBILLCATEGORY,SEBD_ISVATABLETEST ISVATABLE,SEBD_HosPartPer HOSPARTPER,');
+               SQL.Add(' SEBD_ISFRACTIONABLETEST ISFRACTIONABLETEST,(SELECT TENA_TESTNAMEID FROM HS_TENA_TESTNAME WHERE TENA_TESTNAMECODE=SEBD_SERVICE)TESTNAMEID,');
+               SQL.Add(' (SELECT TENA_TNCATEGORYCODE FROM HS_TENA_TESTNAME WHERE TENA_TESTNAMECODE=SEBD_Service and RowNum=1) TNCategoryCode,');
+               (*SQL.Add(' (SELECT SEBM_TOBESENTTOWEB FROM HS_SEBM_SERVICEBILLMASTER WHERE SEBM_BILLNO=SEBD_BILLNO and RowNum=1)TOBE_SENTTOWEB,');
+               SQL.Add(' (SELECT SEBM_TOBESENTTOSMS FROM HS_SEBM_SERVICEBILLMASTER WHERE SEBM_BILLNO=SEBD_BILLNO and RowNum=1)TOBE_SENTTOSMS,');
+               SQL.Add(' (SELECT SEBM_TOBESENTTOEMAIL FROM HS_SEBM_SERVICEBILLMASTER WHERE SEBM_BILLNO=SEBD_BILLNO and RowNum=1)TOBE_SENTTOEMAIL,');*)
+               SQL.Add(' ''N'' as TOBE_SENTTOWEB,''N'' as TOBE_SENTTOSMS,''N'' as TOBE_SENTTOEMAIL,');
+               SQL.Add(' (SELECT Max(TECA_TestCancelId) FROM HS_TECA_TESTCANCEL WHERE TECA_ServiceBillDetailID=SEBD_ServiceBillDetailId) TECA_TestCancelId,');
+               SQL.Add(' (SELECT Max(TECA_BillNo) FROM HS_TECA_TESTCANCEL WHERE TECA_ServiceBillDetailID=SEBD_ServiceBillDetailId) RefundBillNo,');
+//               sql.Add('(select testprogressstatus from patienttest pt where patientid=bide_patientid and billdetailid=bide_billdetailid)testprogressstatus,');
+               SQL.Add(' NVL((Select NVL(CancelStatus,''N'') From PatientTest PT where PatientID=SEBD_PatientID and ServiceBillDetailId=SEBD_ServiceBillDetailId and RowNum=1),''Y'') CancelStatus,');
+               SQL.Add(' NVL((Select NVL(SampleTakenBy,0) SampleReceivedBy From SampleCollection where PatientTestId In (Select PatientTestId');
+               SQL.Add(' From PatientTest PT where PatientID=SEBD_PatientID and ServiceBillDetailId=SEBD_ServiceBillDetailId) and RowNum=1 and UndoStatus=0),0) SampleReceivedBy');
+               SQL.Add(' FROM HS_SEBD_SERVICEBILLDETAIL BD WHERE SEBD_BILLNO=' + #39 +BillNo + #39);
+               SQL.Add(' ) R ) Z where (QTY-RefundQty) > 0');
+          End;
+          //sql.saveToFile('C:\RefundDetail.Txt');
+          Open;
+          First;
+          while not Query_RefundBillItem.eof do
+          Begin
+               with Table_Billing do
+               begin
+                    Append;
+                    FieldByName('ServiceBillDetailID').AsInteger :=Query_RefundBillItem.FieldByName('ServiceBillDetailID').AsInteger;
+                    FieldByName('BillDetailID').AsInteger :=Query_RefundBillItem.FieldByName('BillDetailID').AsInteger;
+                    FieldByName('UNDOSTATUS').AsInteger :=Query_RefundBillItem.FieldByName('UNDOSTATUS').AsInteger;
+                    FieldByName('BillNo').AsString := Query_RefundBillItem.FieldByName('BillNo').AsString;
+                    FieldByName('ServiceBillNo').AsString := Query_RefundBillItem.FieldByName('ServiceBillNo').AsString;
+                    FieldByName('PatientId').AsInteger := Query_RefundBillItem.FieldByName('PatientId').AsInteger;
+                    FieldByName('InPatientId').AsInteger := Query_RefundBillItem.FieldByName('InPatientId').AsInteger;
+                    FieldByName('DepId').AsInteger := Query_RefundBillItem.FieldByName('DepId').AsInteger;
+                    FieldByName('PatientTestID').AsInteger :=Query_RefundBillItem.FieldByName('PatientTestId').AsInteger;
+                    FieldByName('Doccode').AsString := Query_RefundBillItem.FieldByName('Doccode').AsString;
+                    FieldByName('TestNameCode').AsString := Query_RefundBillItem.FieldByName('Service').AsString;
+                    FieldByName('TNCategoryCode').AsString :=Query_RefundBillItem.FieldByName('TNCategoryCode').AsString;
+                    FieldByName('TestNameId').AsInteger := Query_RefundBillItem.FieldByName('TestNameId').AsInteger;
+                    FieldByName('TestName').AsString := Query_RefundBillItem.FieldByName('ServiceType').AsString;
+                    FieldByName('ISFRACTIONABLETEST').AsString :=Query_RefundBillItem.FieldByName('ISFRACTIONABLETEST').AsString;
+                    FieldByName('TestPrice').AsFloat := Query_RefundBillItem.FieldByName('Amount').AsFloat;
+                    FieldByName('PrevTestPrice').AsFloat := Query_RefundBillItem.FieldByName('Amount').AsFloat;
+                    li_RemQty := Query_RefundBillItem.FieldByName('Qty').AsFloat - Query_RefundBillItem.FieldByName('RefundQty').AsFloat;
+                    FieldByName('Qty').AsFloat := li_RemQty;
+                    FieldByName('PrevQty').AsFloat := li_RemQty;
+                    FieldByName('RefundQty').AsFloat := Query_RefundBillItem.FieldByName('RefundQty').AsFloat;
+                    FieldByName('TotalPrice').AsFloat := Query_RefundBillItem.FieldByName('Amount').AsFloat * li_RemQty;
+                    FieldByName('DisPer').AsFloat := Query_RefundBillItem.FieldByName('DisPer').AsFloat;
+                    pf_disper := Query_RefundBillItem.FieldByName('DisPer').AsFloat;
+                    FieldByName('SvrTax').AsFloat := Query_RefundBillItem.FieldByName('VatAmt').AsFloat - Query_RefundBillItem.FieldByName('RefundVat').AsFloat;
+                    FieldByName('Discount').AsFloat := Query_RefundBillItem.FieldByName('Discount').AsFloat;
+                    pf_discount := Query_RefundBillItem.FieldByName('Discount').AsFloat;
+                    FieldByName('NetTotal').AsFloat :=(Query_RefundBillItem.FieldByName('Amount').AsFloat * li_RemQty)+ Query_RefundBillItem.FieldByName('VatAmt')
+                         .AsFloat - Query_RefundBillItem.FieldByName('Discount').AsFloat - Query_RefundBillItem.FieldByName('RefundVat').AsFloat;
+                    FieldByName('RefundTotal').AsFloat := Query_RefundBillItem.FieldByName('RefundTotal').AsFloat;
+                    FieldByName('CommunityId').AsInteger := Query_RefundBillItem.FieldByName('CommunityId').AsInteger;
+                    FieldByName('SchemeId').AsInteger := Query_RefundBillItem.FieldByName('SchemeId').AsInteger;
+                    FieldByName('RefDocCode').AsString := Query_RefundBillItem.FieldByName('RefDocCode').AsString;
+                    FieldByName('RateType').AsString := Query_RefundBillItem.FieldByName('RateType').AsString;
+                    FieldByName('OrgBillCategory').AsString :=Query_RefundBillItem.FieldByName('OrgBillCategory').AsString;
+                    FieldByName('HOSPARTPER').AsString := Query_RefundBillItem.FieldByName('HOSPARTPER').AsString;
+                    FieldByName('IsVatable').AsString := Query_RefundBillItem.FieldByName('IsVatable').AsString;
+                    FieldByName('IsValidForRefund').AsString :=Query_RefundBillItem.FieldByName('IsValidForRefund').AsString;
+                    FieldByName('TestProgressStatus').AsInteger :=Query_RefundBillItem.FieldByName('TestProgressStatus').AsInteger;
+                    FieldByName('CancelStatus').AsString :=Query_RefundBillItem.FieldByName('CancelStatus').AsString;
+                    if gi_BillCase = 2 then
+                    begin
+                         FieldByName('IsDiscountable').AsString :=Query_RefundBillItem.FieldByName('IsDiscountable').AsString;
+                         FieldByName('IsVatable').AsString := Query_RefundBillItem.FieldByName('IsVatable').AsString;
+                         FieldByName('User').AsString := Query_RefundBillItem.FieldByName('UserName').AsString;
+                         FieldByName('TestProgressStatus').AsInteger :=Query_RefundBillItem.FieldByName('TestProgressStatus').AsInteger;
+
+                         FieldByName('BillDate').AsString := Query_RefundBillItem.FieldByName('BillDate').AsString;
+                         FieldByName('BillTime').AsString := Query_RefundBillItem.FieldByName('BillTime').AsString;
+                         FieldByName('BillNo').AsString := Query_RefundBillItem.FieldByName('BillNo').AsString;
+                         FieldByName('DisplayOrder').AsInteger := 1;
+                         FieldByName('DepType').AsString := Query_RefundBillItem.FieldByName('DepType').AsString;
+                         FieldByName('LabDepId').AsInteger := Query_RefundBillItem.FieldByName('LabDepID').AsInteger;
+                         FieldByName('VerifiedBy').AsInteger :=Query_RefundBillItem.FieldByName('VerifiedBy').AsInteger;
+                    end;
+
+                    if (Trim(Query_RefundBillItem.FieldByName('RefundBillNo').AsString)<> '') and (li_RemQty = 0) then
+                    FieldByName('Status').AsString := 'R';
+
+                    FieldByName('RefundBillNo').AsString := Query_RefundBillItem.FieldByName('RefundBillNo').AsString;
+                    pi_TotItems := pi_TotItems + 1;
+                    Post;
+               end;
+               if pi_testnameid='' then
+                    pi_testnameid:=Query_RefundBillItem.FieldByName('TestNameId').AsString
+               else
+                    pi_testnameid:=pi_testnameid+','+Query_RefundBillItem.FieldByName('TestNameId').AsString;
+
+               Query_RefundBillItem.next;
+          End;
+     end;
+     CalculateLabels;
+
+     With Query_Process do // Get Prev. Refund Total
+     begin
+          Close;
+          Session := DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add(' SELECT Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) As RefundTotal');
+          SQL.Add(' FROM HS_REDE_REFUNDDETAIL WHERE REDE_BILLDETAILID In (');
+          SQL.Add(' Select BIDE_BILLDETAILID FROM HS_BIDE_BILLDETAIL BD WHERE BIDE_BILLNO='+ #39 + BillNo + #39);
+
+          if (RB_IPBILL.Checked = True) and (Copy(Query_RefundBillList.FieldByName('BillNo').AsString, 1, 2) = 'TP') then
+          SQL.Add(' and BIDE_BillDetailId In (Select SEBD_BillDetailId From HS_SEBD_ServiceBillDetail where SEBD_BillNo=' + #39 + Query_RefundBillList.FieldByName('BillNo').AsString + #39 + ')');
+
+          SQL.Add(' )');
+          Open;
+     end;
+     pf_PrevRefundTotal := Query_Process.FieldByName('RefundTotal').AsFloat;
+
+     with Query_Scheme do
+     begin
+          close;
+          sql[2]:='and tena_testnameid not in ('+pi_testnameid+')';
+          open;
+     end;
+
+     with Table_Billing do
+     Begin
+          IF trim(Edit_PreveBillNo.Text) <> '' Then
+          Begin
+               Filter := 'CancelStatus =''N'' and testprogressstatus<=3 and refundbillno is null';
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+     DS_Tempbilling.DataSet := Table_Billing;
+
+end;
+
+procedure TForm_PatientTestRectification.CalculateLabels;
+Var
+     TestPriceWithDis, SvrTaxWithDis: Double;
+     Qry: TQuery;
+begin
+     pf_TestPrice := 0;
+     pf_SvrTax := 0;
+     pf_Qty := 0;
+     pf_TotalPrice := 0;
+     pf_disper := 0;
+     pf_discount := 0;
+     pf_NetTotal := 0;
+
+     pf_SvrTaxTotal := 0;
+     pf_Total := 0;
+     pf_DiscountTotal := 0;
+     pf_grandtotal := 0;
+     pf_subtotal := 0;
+
+     pi_TotalItems := 0;
+
+     Qry := TQuery.Create(Nil);
+
+     With Qry do
+     begin
+          Close;
+          SQL.Clear;
+          DatabaseName := gs_temppath;
+          SQL.Add(' Select Count(TestPrice)C,Sum(TestPrice*Qty)SubTotal,Sum(SvrTax)SvrTaxTotal,Sum(TestPrice*Qty)NetTotal,Sum(Discount)DiscountTotal ');
+          SQL.Add(' From Billing.db');
+          Open;
+          pf_subtotal := FieldByName('Subtotal').AsFloat;
+          pf_SvrTaxTotal := FieldByName('SvrTaxTotal').AsFloat;
+          pf_DiscountTotal := FieldByName('DiscountTotal').AsFloat;
+          pi_TotalItems := FieldByName('C').AsInteger;
+
+          if Gs_TaxRule = 'TBD' then
+          begin
+               pf_NetTotal := pf_subtotal + pf_SvrTaxTotal;
+               pf_grandtotal := pf_NetTotal - pf_DiscountTotal;
+          end
+          else if Gs_TaxRule = 'TAD' then
+          begin
+               pf_NetTotal := FieldByName('SubTotal').AsFloat - pf_DiscountTotal;
+               pf_grandtotal := pf_NetTotal + pf_SvrTaxTotal;
+          end;
+          edit1.Text:=floattostr(pf_nettotal);
+          edit2.Text:=floattostr(pf_grandtotal);
+          edit3.Text:=floattostr(pf_svrtaxtotal);
+//          if CB_DayCare.Checked = True then
+//               pf_Deposit := GetTotalDeposit(gi_PatientID)
+//          else
+//               pf_Deposit := 0;
+
+//          if (gi_BillCase = 1) and ((gs_CalledFrom<>'FinalBilling')) then
+//          Begin
+//               Close;
+//               DatabaseName := gs_temppath;
+//               SQL.Clear;
+//               SQL.Add(' Select Sum(TestPrice*Qty)SubTotal,Sum(SvrTax)SvrTaxTotal,Sum(TestPrice*Qty)NetTotal,Sum(Discount)DiscountTotal ');
+//               SQL.Add('from TempBilling Where Status is Not Null');
+//               Open;
+//
+//               if pb_IsAdvanceExist = True then
+//               Begin
+//                    pf_AdvancRefund := FieldByName('Subtotal').AsFloat + FieldByName('SvrTaxTotal').AsFloat - FieldByName('DiscountTotal').AsFloat;
+//                    Label21.Visible := True;
+//                    Label21.Caption := 'Refund AMT:';
+//                    Lbl_BillNo.Visible := True;
+//                    Lbl_BillNo.Caption := FloatToStr(pf_AdvancRefund);
+//               End
+//               Else
+//               Begin
+//                    Label21.Visible := True;
+//                    Label21.Caption := 'Refund AMT:';
+//                    Lbl_BillNo.Visible := True;
+//                    Lbl_BillNo.Caption := 'No Advance Taken';
+//                    pf_AdvancRefund := 0;
+//               End;
+//          End;
+//          pf_balance := pf_Deposit - pf_grandtotal;
+//
+//          if CB_DayCare.Checked = True then
+//               lbl_OutStddeposit.Caption := FormatFloat('#0,0.00', pf_balance);
+
+//          Le_SubTotal.Text := FormatFloat('#0,0.00', pf_subtotal);
+//          Le_NetTotal.Text := FormatFloat('#0,0.00', pf_NetTotal);
+//          Le_SvrTax.Text := FormatFloat('#0,0.00', pf_SvrTaxTotal);
+//          Le_NetBalance.Text := FormatFloat('#0,0.00', pf_balance);
+//          Le_Discount.Text := FormatFloat('#0,0.00', pf_DiscountTotal);
+//          Le_GrandTotal.Text := FormatFloat('#0,0.00', pf_grandtotal);
+//          le_TotalDeposit.Text := FormatFloat('#0,0.00', pf_Deposit);
+//
+//          pf_CurrBillTotal := pf_grandtotal;
+//          Lbl_GrandTotal.Caption := FormatFloat('#0,0.00', pf_grandtotal);
+//          lbl_DepositBalance.Caption := FormatFloat('#0,0.00', pf_Deposit);
+//          lbl_NetBalance.Caption := FormatFloat('#0,0.00', pf_balance);
+//          Lbl_TotalItems.Caption := IntToStr(pi_TotalItems);
+     end;
+end;
+
+
+
+
+procedure TForm_PatientTestRectification.CreateTableFinalBill;
+begin
+     if FileExists(gs_temppath + '\Billing.db') then
+     begiN
+           with Table_Billing do
+           begin
+             Close;
+             DatabaseName := gs_temppath;
+             TableName := 'Billing.db';
+             EmptyTable;
+           end;
+     end;
+     with Table_Billing do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          TableName := 'Billing.db';
+          TableType := ttdefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('SNO', ftInteger);
+          FieldDefs.Add('ReportSNO', ftInteger);
+          FieldDefs.Add('DepID', ftInteger);
+          FieldDefs.Add('PatientID', ftInteger);
+          FieldDefs.Add('ServiceBillDetailID', ftInteger);
+          FieldDefs.Add('BillDetailID', ftInteger);
+          FieldDefs.Add('BillNo', ftString, 15);
+          FieldDefs.Add('ServiceBillNo', ftString, 15);
+          FieldDefs.Add('InPatientID', ftInteger);
+          FieldDefs.Add('PatientTestID', ftInteger);
+          FieldDefs.Add('DocCode', ftString, 10);
+          FieldDefs.Add('DocID', ftInteger);
+          FieldDefs.Add('AccountId', ftInteger);
+          FieldDefs.Add('TestNameCode', ftString, 32);
+          FieldDefs.Add('TNCategoryCode', ftString, 32);
+          FieldDefs.Add('TestNameId', ftInteger);
+          FieldDefs.Add('TestPackageId', ftInteger);
+          FieldDefs.Add('TestName', ftString, 100);
+          FieldDefs.Add('TestPrice', ftFloat);
+          FieldDefs.Add('PrevTestPrice', ftFloat);
+          FieldDefs.Add('TestPriceWithTax', ftFloat);
+          FieldDefs.Add('TestPriceAfterDiscount', ftFloat);
+          FieldDefs.Add('Qty', ftFloat);
+          FieldDefs.Add('PrevQty', ftFloat);
+          FieldDefs.Add('RefundQty', ftFloat);
+          FieldDefs.Add('TotalPrice', ftFloat);
+          FieldDefs.Add('SvrTax', ftFloat);
+          FieldDefs.Add('DisPer', ftFloat);
+          FieldDefs.Add('Discount', ftFloat);
+          FieldDefs.Add('NetTotal', ftFloat);
+          FieldDefs.Add('RefundTotal', ftFloat);
+          FieldDefs.Add('PharmacyCost', ftFloat);
+          FieldDefs.Add('CommunityID', ftInteger);
+          FieldDefs.Add('SchemeID', ftInteger);
+          FieldDefs.Add('RefDocCode', ftString, 10);
+          FieldDefs.Add('RefDocID', ftInteger);
+          FieldDefs.Add('Status', ftString, 1);
+          FieldDefs.Add('RefundBillNo', ftString, 15);
+          FieldDefs.Add('IsDiscountable', ftString, 1);
+          FieldDefs.Add('IsVatable', ftString, 1);
+          FieldDefs.Add('ISPACKAGETEST', ftString, 1);
+          FieldDefs.Add('ISFractionableTest', ftString, 1);
+          FieldDefs.Add('User', ftString, 32);
+          FieldDefs.Add('ChargeType', ftString, 32);
+          FieldDefs.Add('TestProgressStatus', ftInteger);
+          FieldDefs.Add('BillDate', ftString, 10);
+          FieldDefs.Add('BillTime', ftString, 12);
+          FieldDefs.Add('DisplayOrder', ftInteger);
+          FieldDefs.Add('DepType', ftString, 32);
+          FieldDefs.Add('LabDepID', ftInteger);
+          FieldDefs.Add('RateType', ftString, 5);
+          FieldDefs.Add('VerifiedBy', ftInteger);
+          FieldDefs.Add('OrgBillCategory', ftString, 3);
+          FieldDefs.Add('HOSPARTPER', ftString, 3);
+          FieldDefs.Add('IsCoPaymentItem', ftString, 1);
+          FieldDefs.Add('CoPaymentItemPercent', ftFloat);
+          FieldDefs.Add('IsRecentBilled', ftString, 17);
+          FieldDefs.Add('PatientTypeCode', ftString, 10);
+          FieldDefs.Add('IsValidForRefund', ftString, 1);
+          FieldDefs.Add('CancelStatus', ftString, 1);
+          FieldDefs.Add('UndoStatus', ftString, 1);
+
+          FieldDefs.Add('REFFRACTIONPER', ftFloat);
+          FieldDefs.Add('REFFRACTIONAMOUNT', ftFloat);
+          FieldDefs.Add('REFERRALFRACTIONID', ftInteger);
+
+          Fielddefs.add('WardId',ftInteger);
+
+          FieldDefs.Add('DOCREFFRACTIONPER', ftFloat);
+          FieldDefs.Add('DOCREFFRACTIONAMOUNT', ftFloat);
+          FieldDefs.Add('DOCREFERRALFRACTIONID', ftInteger);
+          FieldDefs.Add('Isot', ftString, 1);
+          FieldDefs.Add('PatientCategory', ftString, 5);
+
+          CreateTable;
+     end;
+
+end;
+
+procedure TForm_PatientTestRectification.EditHosNoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF key=#8 Then Exit;
+
+     IF Key=#13 Then
+     SBSearchClick(Sender);
+
+     IF Not (key In['0'..'9']) Then Key:=#0;
+
+end;
+
+procedure TForm_PatientTestRectification.DBGridBillListCellClick(
+  Column: TColumn);
+begin
+     if RB_DirectBilling.Checked=True then
+     DBLCB_Scheme.KeyValue:=Query_BillDetail.FieldByName('BIDE_DISSCHEMEID').AsInteger
+     else if RB_ServiceBilling.Checked=true then
+     DBLCB_Scheme.KeyValue:=Query_BillDetail.FieldByName('SEBD_DISSCHEMEID').AsInteger;
+end;
+
+procedure TForm_PatientTestRectification.DBGrid_BillingCellClick(
+  Column: TColumn);
+  var qry:tquery;
+begin
+     pi_billdetailid:=table_billing.FieldByName('billdetailid').AsInteger;
+     pi_servicebilldetailid:=table_billing.FieldByName('servicebilldetailid').AsInteger;
+     pi_depid:=table_billing.FieldByName('depid').AsInteger;
+     pi_patienttestid:=table_billing.FieldByName('patienttestid').AsInteger;
+     ps_servicebillno:=table_billing.FieldByName('servicebillno').AsString;
+     pi_gridselectedtestnameid:=table_billing.FieldByName('testnameid').AsInteger;
+     pi_gridselectedtestnamecode:=table_billing.FieldByName('testnamecode').AsString;
+     pi_gridselectedtestname:=table_billing.FieldByName('testname').AsString;
+     pi_gridselectedtestprogressstatus:=table_billing.FieldByName('testprogressstatus').AsInteger;
+     Qry := TQuery.Create(Nil);
+     with qry do
+     begin
+          close;
+          databasename:=gs_temppath;
+          sql.Clear;
+          sql.Add('update billing.db set status=''Y'' ');
+          sql.Add('where billdetailid='+inttostr(pi_billdetailid));
+          ExecSQL;
+
+          close;
+          sql.Clear;
+          sql.Add('update billing.db set status='''' ');
+          sql.Add('where billdetailid <>'+inttostr(pi_billdetailid));
+          ExecSQL;
+     end;
+     table_billing.Close;
+     table_billing.Open;
+     Table_Billing.Locate('BillDetailID', pi_billdetailid, []);
+
+end;
+
+procedure TForm_PatientTestRectification.DBGrid_BillingDrawColumnCell(
+  Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+     if table_billing.FieldByName('status').AsString='Y' then
+     begin
+          DBGrid_Billing.Canvas.Brush.Color := clolive;
+          DBGrid_Billing.DefaultDrawDataCell(Rect, Column.Field, State);
+     end;
+end;
+
+procedure TForm_PatientTestRectification.DBGrid_PrevBillNoInfoDblClick(
+  Sender: TObject);
+  var key :char;
+begin
+     Edit_PreveBillNo.Text := Query_RefundBillList.FieldByName('BillNo').AsString;
+     key:=#13;
+     Edit_PreveBillNoKeyPress(Sender,key);
+end;
+
+procedure TForm_PatientTestRectification.DBLCB_SchemeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key=VK_DELETE then
+     DBLCB_Scheme.KeyValue:=-1;
+end;
+
+procedure TForm_PatientTestRectification.BtnSaveClick(Sender: TObject);
+Var ls_LogRemarks,ls_testnamecode: string;
+var li_schemeid,li_communityid,maxidGlobalLog,li_testnameid
+,li_depid,li_maxid:integer;
+
+ ls_totalamount,ls_testprice,ls_vatamount :double;
+k :char;
+var OraqueryProcessLog,OraquerySaveLog:TOraQuery;
+
+var lf_discount,lf_disper,lf_totalamount,lf_totalamountfornoscheme,lf_totalamountForBillmaster,lf_totaldiscountforBillmaster,lf_vatAmt:Double;
+qry:Tquery;
+begin
+     if Trim(EditHosNo.Text)='' then
+     begin
+          ShowMessage('Please Input Patient Id !!!');
+          Exit;
+     end;
+
+     if table_billing.RecordCount<=0 then
+     begin
+          ShowMessage('There is No Data To Modify !!!');
+          Edit_PreveBillNo.SetFocus;
+          exit;
+     end;
+//     if pi_billdetailid=0 then
+//     begin
+//          showmessage('Please select test you want to change!!!');
+//          DBGrid_Billing.SetFocus;
+//          exit;
+//     end;
+     if DBLCB_Scheme.KeyValue<0 then
+     begin
+          showmessage('Please select test!!!');
+          DBLCB_Scheme.SetFocus;
+          exit;
+     end;
+//     if pi_gridselectedtestprogressstatus>3 then
+//     begin
+//          MessageDlg('Findings are entered. Can not change!!!', mtWarning, [mbok], 0);
+//          exit;
+//     end;
+
+     //showmessage(inttostr(pi_gridselectedtestnameid));
+
+     Query_RefundBillItem.First;
+     while not Query_RefundBillItem.eof do
+     begin
+          if DBLCB_Scheme.KeyValue= Query_RefundBillItem.FieldByName('testnameid').AsInteger then
+          begin
+               MessageDlg('Test can not be change. It is already in the list!!!', mtWarning, [mbok], 0);
+               exit;
+          end;
+          Query_RefundBillItem.Next;
+     end;
+     with query_testdetail do
+     begin
+          close;
+          session := dm_hospital.DB;
+          sql.clear;
+          sql.Add('select (select tena_testnamecode from hs_tena_testname where tena_testnameid=a.tenp_testnameid)testnamecode,');
+          sql.Add('a.* from HS_TENP_TESTNAMEPRICE a where a.tenp_patienttypecode=''GEN'' and ');
+          sql.Add('a.tenp_testnameid='+inttostr(DBLCB_Scheme.KeyValue));
+          //sql.SaveToFile('c:\testnameid.txt');
+          open;
+          li_depid:=query_testdetail.FieldByName('TENP_DEPID').AsInteger;
+          li_testnameid:=query_testdetail.FieldByName('tenp_testnameid').AsInteger;
+          ls_testnamecode:=query_testdetail.FieldByName('testnamecode').AsString;
+          ls_testprice:=query_testdetail.FieldByName('TENP_TESTPRICE').AsFloat;
+          ls_vatamount:=query_testdetail.FieldByName('tenp_vatamt').AsFloat;
+          ls_totalamount:=ls_testprice+ls_vatamount;
+     end;
+     if ls_testprice<=0 then// cannot change to test which have no testprice
+     begin
+          MessageDlg('You can not change to this test!!!', mtWarning, [mbok], 0);
+          exit;
+     end;
+     if MessageDlg('Are you sure you want to change selected test ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+     begin
+          try
+               li_maxid:=getmaxid('hs_trlo_testrectificationlog','trlo_logid');
+               DM_Hospital.DB.StartTransaction;
+               with query_save do
+               begin
+                    close;
+                    session :=dm_hospital.DB;
+                    sql.Clear;
+                    sql.Add('insert into hs_trlo_testrectificationlog values(');
+                    sql.Add(inttostr(li_maxid)+',');
+                    sql.Add(inttostr(pi_billdetailid)+',');
+                    sql.Add(inttostr(pi_servicebilldetailid)+',');
+                    sql.Add(inttostr(pi_PatientId)+',');
+                    sql.Add(inttostr(pi_patienttestid)+',');
+                    sql.Add(quotedstr(Edit_PreveBillNo.Text)+',');
+                    sql.Add(quotedstr(ps_servicebillno)+',');
+                    sql.Add(inttostr(li_depid)+',');
+                    sql.Add(inttostr(li_testnameid)+',');
+                    sql.Add(quotedstr(ls_testnamecode)+',');
+                    sql.Add(quotedstr(DBLCB_Scheme.Text)+',');
+                    sql.Add(inttostr(pi_depid)+',');
+                    sql.Add(inttostr(pi_gridselectedtestnameid)+',');
+                    sql.Add(quotedstr(pi_gridselectedtestnamecode)+',');
+                    sql.Add(quotedstr(pi_gridselectedtestname)+',');
+                    sql.Add(quotedstr(gs_macid)+',');
+                    sql.Add(quotedstr(todaysdate)+',');
+                    sql.Add(quotedstr(todaystime)+',');
+                    sql.Add(inttostr(gi_userid)+')');
+                    ExecSQL;
+               end;
+               Qry := TQuery.Create(Nil);
+               with Qry do
+               begin
+                    close;
+                    DatabaseName := gs_temppath;
+                    sql.Clear;
+                    sql.Add('update billing.db set depid='+inttostr(li_depid));
+                    sql.Add(', testnameid='+inttostr(li_testnameid));
+                    sql.Add(', testnamecode='+quotedstr(ls_testnamecode));
+                    sql.Add(', testname='+quotedstr(DBLCB_Scheme.Text));
+                    sql.Add(', testprice='+floattostr(ls_testprice));
+                    sql.Add(', prevtestprice='+floattostr(ls_testprice));
+                    sql.Add(', totalprice='+floattostr(ls_testprice));
+                    sql.Add(', svrtax='+floattostr(ls_vatamount));
+                    sql.Add(', nettotal='+floattostr(ls_totalamount));
+                    sql.Add(', status='''' ');
+                    sql.Add('where billdetailid='+inttostr(pi_billdetailid));
+                    ExecSQL;
+                    //sql.SaveToFile('c:\saveeeeeee.txt');
+               end;
+
+               table_billing.Close;
+               table_billing.Open;
+               CalculateLabels;
+               with query_save do
+               begin
+                    sql.Clear;
+                    sql.Add('update hs_sebd_servicebilldetail set sebd_depid='+inttostr(li_depid));
+                    sql.Add(', SEBD_SERVICETYPE='+quotedstr(DBLCB_Scheme.Text));
+                    sql.Add(', SEBD_SERVICE='+quotedstr(ls_testnamecode));
+                    sql.Add(', SEBD_AMOUNT='+floattostr(ls_testprice));
+                    sql.Add(', SEBD_VATAMT='+floattostr(ls_vatamount));
+                    sql.Add(', SEBD_TOTALAMOUNT='+floattostr(ls_totalamount));
+                    sql.Add('where SEBD_BILLDETAILID='+inttostr(pi_billdetailid));
+                    //sql.SaveToFile('c:\saveeeeeee.txt');
+                    ExecSQL;
+
+                    close;
+                    Session := DM_Hospital.DB;
+                    sql.Clear;
+                    sql.Add('update hs_sebm_servicebillmaster set SEBM_GROSSTOTAL='+edit2.Text);
+                    //sql.Add(', SEBM_VATTOTAL='+floattostr(ls_vatamount));
+                    sql.Add(', SEBM_nettotal='+edit1.Text);
+                    sql.Add('where SEBM_billno='+quotedstr(ps_servicebillno));
+                    //sql.SaveToFile('c:\saveeeeeee.txt');
+                    ExecSQL;
+
+                    sql.Clear;
+                    sql.Add('update hs_bide_billdetail set bide_depid='+inttostr(li_depid));
+                    sql.Add(', BIDE_SERVICETYPE='+quotedstr(DBLCB_Scheme.Text));
+                    sql.Add(', BIDE_SERVICE='+quotedstr(ls_testnamecode));
+                    sql.Add(', BIDE_AMOUNT='+floattostr(ls_testprice));
+                    sql.Add(', BIDE_VATAMT='+floattostr(ls_vatamount));
+                    sql.Add(', BIDE_TOTALAMOUNT='+floattostr(ls_totalamount));
+                    sql.Add('where BIDE_BILLDETAILID='+inttostr(pi_billdetailid));
+                    //sql.SaveToFile('c:\saveeeeeee.txt');
+                    ExecSQL;
+
+                    close;
+                    Session := DM_Hospital.DB;
+                    sql.Clear;
+                    sql.Add('update hs_bima_billmaster set bima_grosstotal='+edit2.Text);
+                    //sql.Add(', bima_VATTOTAL='+floattostr(ls_vatamount));
+                    sql.Add(', bima_nettotal='+edit1.Text);
+                    sql.Add('where bima_billno='+quotedstr(Edit_PreveBillNo.Text));
+                    //sql.SaveToFile('c:\saveeeeeee.txt');
+                    ExecSQL;
+
+                    sql.Clear;
+                    sql.Add('update patienttest set depid='+inttostr(li_depid));
+                    sql.Add(', testnameid='+inttostr(li_testnameid));
+                    sql.Add(', testnamecode='+quotedstr(ls_testnamecode));
+                    sql.Add(', testamount='+floattostr(ls_testprice));
+                    sql.Add('where billdetailid='+inttostr(pi_billdetailid));
+                    //sql.SaveToFile('c:\saveeeeeee.txt');
+                    ExecSQL;
+
+               end;
+
+               DM_Hospital.DB.Commit;
+               ShowDoneMessage;
+               pi_billdetailid:=0;
+               pi_servicebilldetailid:=0;
+               pi_gridselectedtestnameid:=0;
+               pi_gridselectedtestprogressstatus:=0;
+               DBLCB_Scheme.KeyValue:=-1;
+               pi_testnameid:='';
+               pi_patienttestid:=0;
+               ps_servicebillno:='';
+               k:=#13;
+               Edit_PreveBillNoKeyPress(Sender,k);
+//               to print bill
+//               if MessageDlg('Are you sure to print ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+//               Begin
+//                    Gs_BillNo := Edit_PreveBillNo.Text;
+//                    gi_noOfPrint := 0;
+//                    Form_Billing.PrintBill(CB_Preview, 1);
+//               end;
+          except
+               DM_Hospital.DB.Rollback;
+               MessageDlg('Failuer To Save Data.', mtWarning, [mbok], 0);
+               exit;
+          end;
+     end;
+end;
+
+procedure TForm_PatientTestRectification.CB_RemoveSchemeClick(Sender: TObject);
+begin
+     if CB_RemoveScheme.Checked=False then
+     Begin
+          DBLCB_Scheme.Enabled:=True;
+          DBLCB_Scheme.Color:=clWhite;
+
+          Label100.Enabled:=True;
+     End
+     Else
+     Begin
+          DBLCB_Scheme.Enabled:=False;
+          DBLCB_Scheme.Color:=clMenu;
+          DBLCB_Scheme.KeyValue:=-1;
+          Label100.Enabled:=False;
+     End;
+end;
+
+procedure TForm_PatientTestRectification.EditHosNoExit(Sender: TObject);
+begin
+     IF (Trim(EditHosNo.Text)<>'') and (EditHosNo.Text<>'0') Then
+     //SBSearchClick(Sender);
+end;
+
+Procedure TForm_PatientTestRectification.GetPatientInfo;
+Begin
+     IF (Trim(EditHosNo.Text)='') or (EditHosNo.Text='0') Then
+     Begin
+          MessageDlg('Please enter the Patient no.',mtInformation,[mbok],0);
+          Exit;
+     End;
+
+
+     IF IsRegisteredHospitalNo(StrToInt(EditHosNo.Text))=False Then
+     Begin
+          MessageDlg('Sorry ! Please Check Hospital No Properly. Anybody is Not Registered With This Number( '+EditHosNo.Text+').',
+          mtWarning,[mbok],0);
+          Exit;
+     End;
+
+     CB_RemoveScheme.Checked:=False;
+     DBLCB_Scheme.KeyValue:=-1;
+
+     LoadPatientData(StrToInt(EditHosNo.Text));
+     pi_PatientId:=StrToInt(EditHosNo.Text);
+     gi_PatientId:=StrToInt(EditHosNo.Text);
+     Lbl_Name.Caption:=Gs_PatientName;
+     Lbl_AgeSex.Caption:=Gs_CurrentAgeGender;               //Gs_CurrentAge+'/'+Copy(Gs_Gender,1,1);
+     Lbl_Address.Caption:=Gs_FullAddress;
+     if (Trim(Gs_PhoneNo)<>'') and (Trim(Gs_MobileNo)='') then
+     Lbl_ContactNo.Caption:=Gs_PhoneNo
+     else if (Trim(Gs_PhoneNo)='') and (Trim(Gs_MobileNo)='') then
+     Lbl_ContactNo.Caption:=Gs_MobileNo
+     else if (Trim(Gs_PhoneNo)<>'') and (Trim(Gs_MobileNo)='') then
+     Lbl_ContactNo.Caption:=Gs_MobileNo+' / '+Gs_PhoneNo
+     else
+     Lbl_ContactNo.Caption:=Gs_MobileNo;
+
+
+     With Query_BillDetail do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.clear;
+          if RB_DirectBilling.Checked=True then
+          begin
+               sql.Add('select distinct bide_billdate billdate,bide_billno billno,bide_billtime billtime,(select username from lab_usermain where userid=BIDE_BILLBY and rownum=1)BILLBY,');
+               sql.Add('(select SCHE_SCHEME from HS_SCHE_SCHEME where SCHE_SCHEMEID=BIDE_DISSCHEMEID)schemename,BIDE_DISSCHEMEID,BIDE_DISCOMMUNITYID,(select COMM_COMMUNITY from HS_COMM_COMMUNITY where COMM_COMMUNITYID=BIDE_DISCOMMUNITYID)Communityname');
+               sql.Add(' from hs_bide_billdetail where bide_patientid='+Trim(EditHosNo.Text)+' Order by billdate,billtime desc');
+
+          end
+          else if RB_ServiceBilling.Checked=True then
+          begin
+               sql.Add('select distinct sebd_billdate billdate,sebd_billno billno,sebd_billtime billtime,(select username from lab_usermain where userid=sebd_BILLBY and rownum=1)BILLBY,');
+               sql.Add('(select SCHE_SCHEME from HS_SCHE_SCHEME where SCHE_SCHEMEID=SEBD_DISSCHEMEID)schemename,SEBD_DISSCHEMEID,SEBD_DISCOMMUNITYID,(select COMM_COMMUNITY from HS_COMM_COMMUNITY where COMM_COMMUNITYID=SEBD_DISCOMMUNITYID)Communityname');
+               sql.Add(' from hs_SEBD_Servicebilldetail where sebd_patientid='+Trim(EditHosNo.Text)+' and SEBD_BILLDETAILID<=0  Order by billdate,billtime desc');
+
+          end;
+         // sql.SaveToFile('C:\abc5555.txt');
+          Open;
+     End;
+
+
+
+
+
+  //   StatusBar1.Panels[1].Text:='Total No Of Visit : '+IntToStr(Query_PatientVisit.RecordCount);
+
+     Label100.Enabled:=True;
+     DBLCB_Scheme.Enabled:=True;
+     CB_RemoveScheme.Enabled:=True;
+     BtnSave.Enabled:=True;
+     Edit_PreveBillNo.SetFocus;
+End;
+
+procedure TForm_PatientTestRectification.RB_DirectBillingClick(
+  Sender: TObject);
+begin
+     if RB_DirectBilling.Checked=True then
+     RB_ServiceBilling.Checked:=False
+     else
+     RB_ServiceBilling.Checked:=True;
+end;
+
+procedure TForm_PatientTestRectification.RB_ServiceBillingClick(
+  Sender: TObject);
+begin
+     if RB_ServiceBilling.Checked=True then
+     RB_DirectBilling.Checked:=False
+     else
+     RB_DirectBilling.Checked:=True;
+end;
+
+procedure TForm_PatientTestRectification.SBSearchClick(Sender: TObject);
+begin
+
+     GetPatientInfo;
+     CreateTableFinalBill;
+     Table_Billing.Close;
+     Table_Billing.DatabaseName := gs_temppath;
+     Table_Billing.EmptyTable;
+     Table_Billing.Open;
+     with Query_Scheme do
+     begin
+          Close;
+           sql[2]:='and 1=1';
+          Open;
+     end;
+
+     Edit_PreveBillNo.Text:='';
+     pi_testnameid:='';
+     pi_billdetailid:=0;
+     pi_servicebilldetailid:=0;
+     pi_gridselectedtestnameid:=0;
+     pi_gridselectedtestprogressstatus:=0;
+     DBLCB_Scheme.KeyValue:=-1;
+     pi_patienttestid:=0;
+     ps_servicebillno:='';
+end;
+
+procedure TForm_PatientTestRectification.FormShow(Sender: TObject);
+begin
+     Query_Scheme.Close;
+     Query_Scheme.Open;
+     DBLCB_Scheme.KeyValue:=-1;
+     Label4.Caption:=Gs_HosNoCaptionName;
+     EditHosNo.SetFocus;
+end;
+
+END.

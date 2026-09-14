@@ -1,0 +1,404 @@
+unit Unit_QRUserWiseColnDetail_Manipal;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,fxn, dm, serverdate,
+  Dialogs, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, QRCtrls, QuickRpt, ExtCtrls;
+
+type
+  TForm_QRUserWiseCollnDetail_Manipal = class(TForm)
+    QuickRep1: TQuickRep;
+    QRDBText8: TQRDBText;
+    QRDBText9: TQRDBText;
+    QRDBText12: TQRDBText;
+    QRDBText13: TQRDBText;
+    QRDBText14: TQRDBText;
+    QRDBText10: TQRDBText;
+    QRDBText20: TQRDBText;
+    QRLabelOPCS: TQRLabel;
+    QRBand1: TQRBand;
+    QRLabel9: TQRLabel;
+    QRShape1: TQRShape;
+    QRExpr1: TQRExpr;
+    QRExpr4: TQRExpr;
+    QRExpr6: TQRExpr;
+    QRExpr3: TQRExpr;
+    QRDBText1: TQRDBText;
+    QRDBText15: TQRDBText;
+    QRDBText4: TQRDBText;
+    QRLabelOPRefund: TQRLabel;
+    QRBand4: TQRBand;
+    QRShape7: TQRShape;
+    SummaryBand1: TQRBand;
+    PageHeaderBand1: TQRBand;
+    QRLabel15: TQRLabel;
+    QRLabel16: TQRLabel;
+    QRLabel4: TQRLabel;
+    QRLabel19: TQRLabel;
+    QRLabel21: TQRLabel;
+    QRLabel3: TQRLabel;
+    QRLabelUser: TQRLabel;
+    QRLabel6: TQRLabel;
+    QRLabelDate: TQRLabel;
+    QRLabel17: TQRLabel;
+    QRLabel24: TQRLabel;
+    Date1: TQRLabel;
+    Date2: TQRLabel;
+    QRLabel27: TQRLabel;
+    QRSysData1: TQRSysData;
+    QRLabel32: TQRLabel;
+    QRLabelTimeRange: TQRLabel;
+    QRLabel35: TQRLabel;
+    QRLabel_HosName: TQRLabel;
+    lbl_address: TQRLabel;
+    QRShape4: TQRShape;
+    QRLabel29: TQRLabel;
+    QRLabel36: TQRLabel;
+    QRLabel41: TQRLabel;
+    QRLabelTime: TQRLabel;
+    QRBand5: TQRBand;
+    QRExpr17: TQRExpr;
+    QRLabel37: TQRLabel;
+    QRLabel57: TQRLabel;
+    QRLabel58: TQRLabel;
+    QRShape9: TQRShape;
+    QRDBText69: TQRDBText;
+    QRDBText71: TQRDBText;
+    QRDBText72: TQRDBText;
+    QRDBText74: TQRDBText;
+    QRLabel61: TQRLabel;
+    QRBand3: TQRBand;
+    QRExpr32: TQRExpr;
+    QRLabel62: TQRLabel;
+    QRBand6: TQRBand;
+    QRShape2: TQRShape;
+    Query_CashBill: TOraQuery;
+    Query_CashRefund: TOraQuery;
+    QRLabel2: TQRLabel;
+    QRLabel25: TQRLabel;
+    QRDBText5: TQRDBText;
+    QRLabel28: TQRLabel;
+    QRExpr15: TQRExpr;
+    Query_CreditBill: TOraQuery;
+    QRDBText2: TQRDBText;
+    QRDBText6: TQRDBText;
+    QRDBText7: TQRDBText;
+    QRDBText11: TQRDBText;
+    QRDBText21: TQRDBText;
+    QRLabel1: TQRLabel;
+    QRExpr2: TQRExpr;
+    QRExpr11: TQRExpr;
+    QRExpr12: TQRExpr;
+    QRExpr14: TQRExpr;
+    QRExpr18: TQRExpr;
+    Query_Deposit: TOraQuery;
+    Query_AdjustedDeposit: TOraQuery;
+    QRLabel42: TQRLabel;
+    QRLabel43: TQRLabel;
+    Query_CreditRefund: TOraQuery;
+    QRDBText34: TQRDBText;
+    QRSubDetail_CreditBillRefund: TQRSubDetail;
+    QRBand2: TQRBand;
+    QRLabel_CrReundNo: TQRLabel;
+    QRDBText29: TQRDBText;
+    QRDBText30: TQRDBText;
+    QRDBText31: TQRDBText;
+    QRDBText32: TQRDBText;
+    QRDBText33: TQRDBText;
+    QRDBText25: TQRDBText;
+    QRDBText26: TQRDBText;
+    QRDBText27: TQRDBText;
+    QRDBText28: TQRDBText;
+    QRExpr16: TQRExpr;
+    QRExpr19: TQRExpr;
+    QRExpr20: TQRExpr;
+    QRLabel10: TQRLabel;
+    QRExpr21: TQRExpr;
+    QRExpr22: TQRExpr;
+    QRLabelOPCr: TQRLabel;
+    QRDBText17: TQRDBText;
+    QRDBText18: TQRDBText;
+    QRDBText19: TQRDBText;
+    QRDBText23: TQRDBText;
+    QRDBText24: TQRDBText;
+    QRDBText3: TQRDBText;
+    QRDBText16: TQRDBText;
+    QRDBText22: TQRDBText;
+    QRExpr5: TQRExpr;
+    QRExpr7: TQRExpr;
+    QRExpr8: TQRExpr;
+    QRLabel7: TQRLabel;
+    QRExpr9: TQRExpr;
+    QRExpr13: TQRExpr;
+    QRLabel5: TQRLabel;
+    QRLabel40: TQRLabel;
+    QRLabel12: TQRLabel;
+    QRLabel13: TQRLabel;
+    Query_ReceiptColn: TOraQuery;
+    QRLabel14: TQRLabel;
+    QRDBText35: TQRDBText;
+    QRDBText36: TQRDBText;
+    QRDBText37: TQRDBText;
+    QRLabel18: TQRLabel;
+    QRExpr10: TQRExpr;
+    QRLabel20: TQRLabel;
+    QRDBText39: TQRDBText;
+    QRLabel22: TQRLabel;
+    QRDBText40: TQRDBText;
+    QRDBText41: TQRDBText;
+    QRDBText42: TQRDBText;
+    QRDBText43: TQRDBText;
+    QRDBText44: TQRDBText;
+    QRDBText45: TQRDBText;
+    qrdbtxtDepositTime: TQRDBText;
+    QRDBText46: TQRDBText;
+    QRDBText47: TQRDBText;
+    QRDBText48: TQRDBText;
+    QRDBText49: TQRDBText;
+    QRDBText50: TQRDBText;
+    QRDBText51: TQRDBText;
+    QRSubDetail1: TQRSubDetail;
+    QRDBText52: TQRDBText;
+    QRDBText53: TQRDBText;
+    QRDBText54: TQRDBText;
+    QRDBText55: TQRDBText;
+    QRDBText56: TQRDBText;
+    QRDBText57: TQRDBText;
+    QRDBText58: TQRDBText;
+    QRLabel23: TQRLabel;
+    QRDBText60: TQRDBText;
+    QRDBText63: TQRDBText;
+    QRDBText65: TQRDBText;
+    QRBand7: TQRBand;
+    QRLabel30: TQRLabel;
+    QRLabel31: TQRLabel;
+    QRShape5: TQRShape;
+    QRExpr23: TQRExpr;
+    QRExpr24: TQRExpr;
+    QRExpr25: TQRExpr;
+    QRExpr26: TQRExpr;
+    QRLabel33: TQRLabel;
+    QRExpr27: TQRExpr;
+    Query_CashBillIP: TOraQuery;
+    GroupHeaderBand1: TQRBand;
+    QRLabel8: TQRLabel;
+    QRDBText38: TQRDBText;
+    QRDBText66: TQRDBText;
+    QRSubDetail_ReceiptRefund: TQRSubDetail;
+    QRLabel11: TQRLabel;
+    QRDBText67: TQRDBText;
+    QRDBText68: TQRDBText;
+    QRDBText70: TQRDBText;
+    QRDBText73: TQRDBText;
+    QRDBText75: TQRDBText;
+    QRDBText76: TQRDBText;
+    QRDBText77: TQRDBText;
+    QRBand8: TQRBand;
+    QRShape3: TQRShape;
+    QRLabel34: TQRLabel;
+    QRLabel38: TQRLabel;
+    QRExpr29: TQRExpr;
+    QRExpr30: TQRExpr;
+    QRShape8: TQRShape;
+    QRLabel39: TQRLabel;
+    Query_ReceiptRefund: TOraQuery;
+    QRLabel26: TQRLabel;
+    QRLabel44: TQRLabel;
+    Query1: TOraQuery;
+    QRDBText78: TQRDBText;
+    QRDBText79: TQRDBText;
+    QRLabel45: TQRLabel;
+    QRLabel46: TQRLabel;
+    QRDBText80: TQRDBText;
+    QRDBText81: TQRDBText;
+    QRDBText82: TQRDBText;
+    QRDBText83: TQRDBText;
+    QRLabel47: TQRLabel;
+    QRSubDetail_ServiceTPBill: TQRSubDetail;
+    QRLabel_ServiceTPNo: TQRLabel;
+    QRDBText84: TQRDBText;
+    QRDBText85: TQRDBText;
+    QRDBText86: TQRDBText;
+    QRDBText87: TQRDBText;
+    QRDBText88: TQRDBText;
+    QRDBText89: TQRDBText;
+    QRDBText90: TQRDBText;
+    QRDBText91: TQRDBText;
+    QRDBText92: TQRDBText;
+    QRDBText93: TQRDBText;
+    QRFooter_ServiceTPBill: TQRBand;
+    QRExpr28: TQRExpr;
+    QRExpr31: TQRExpr;
+    QRExpr33: TQRExpr;
+    QRLabel49: TQRLabel;
+    QRExpr34: TQRExpr;
+    QRExpr35: TQRExpr;
+    Query_ServiceTPBill: TOraQuery;
+    QRDBText94: TQRDBText;
+    QRLabel50: TQRLabel;
+    QRLabel51: TQRLabel;
+    QRLabel_TotalPage: TQRLabel;
+    procedure QRLabel_HosNamePrint(sender: TObject; var Value: string);
+    procedure FormCreate(Sender: TObject);
+    procedure QRLabelOPCSPrint(sender: TObject; var Value: string);
+    procedure QRLabelOPRefundPrint(sender: TObject; var Value: string);
+    procedure QRLabel2Print(sender: TObject; var Value: string);
+    procedure QRLabel61Print(sender: TObject; var Value: string);
+    procedure QRLabelOPCrPrint(sender: TObject; var Value: string);
+    procedure QRLabel_CrReundNoPrint(sender: TObject; var Value: string);
+    procedure QRExpr3Print(sender: TObject; var Value: string);
+    procedure QRExpr14Print(sender: TObject; var Value: string);
+    procedure QRExpr17Print(sender: TObject; var Value: string);
+    procedure QRExpr32Print(sender: TObject; var Value: string);
+    procedure QRExpr28Print(sender: TObject; var Value: string);
+    procedure QRLabel14Print(sender: TObject; var Value: string);
+    procedure QRExpr10Print(sender: TObject; var Value: string);
+    procedure QRLabel23Print(sender: TObject; var Value: string);
+    procedure QRExpr26Print(sender: TObject; var Value: string);
+    procedure QRLabel11Print(sender: TObject; var Value: string);
+    procedure QRExpr29Print(sender: TObject; var Value: string);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    pi_CashSno,pi_CashSnoIp,pi_RefundSno,pi_DepositSno,pi_DepositRefundSno,pi_CreditSno,
+    pi_CreditRefundSno,pi_ReceiptSno,pi_ReceiptRefundSno, pi_ServiceTPSno : Integer;
+
+    pf_CashColn,pf_CashColnIp,pf_CashRefund,pf_Deposit,pf_AdjDeposit,pf_ReceiptColn,pf_ReceiptRefund : Double;
+  end;
+
+var
+     Form_QRUserWiseCollnDetail_Manipal: TForm_QRUserWiseCollnDetail_Manipal;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.FormCreate(Sender: TObject);
+begin
+     lbl_Address.Caption:=gs_HospitalAddress;
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRExpr10Print(sender: TObject; var Value: string);
+begin
+     pf_ReceiptColn:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_ReceiptColn);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRExpr14Print(sender: TObject; var Value: string);
+begin
+     pf_CashRefund:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_CashRefund);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRExpr17Print(sender: TObject; var Value: string);
+begin
+     pf_Deposit:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_Deposit);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRExpr26Print(sender: TObject;
+  var Value: string);
+begin
+    pf_CashColnIp:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_CashColnIp);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRExpr28Print(sender: TObject; var Value: string);
+begin
+     Value:=FormatFloat('#,##0.00',((pf_CashColn+pf_CashColnIp+pf_Deposit+pf_ReceiptColn) - (pf_AdjDeposit+pf_CashRefund+pf_ReceiptRefund)));
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRExpr29Print(sender: TObject;
+  var Value: string);
+begin
+     pf_ReceiptRefund:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_ReceiptRefund);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRExpr32Print(sender: TObject; var Value: string);
+begin
+     pf_AdjDeposit:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_AdjDeposit);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRExpr3Print(sender: TObject; var Value: string);
+begin
+     pf_CashColn:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_CashColn);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRLabel11Print(sender: TObject;
+  var Value: string);
+begin
+     pi_ReceiptRefundSno:=pi_ReceiptRefundSno+1;
+     Value:=IntToStr(pi_ReceiptRefundSno);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRLabel14Print(sender: TObject; var Value: string);
+begin
+     pi_ReceiptSno:=pi_ReceiptSno+1;
+     Value:=IntToStr(pi_ReceiptSno);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRLabel23Print(sender: TObject;
+  var Value: string);
+begin
+     pi_CashSnoIp:=pi_CashSnoIp+1;
+     Value:=IntToStr(pi_CashSnoIP);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRLabel2Print(sender: TObject; var Value: string);
+begin
+     pi_DepositSno:=pi_DepositSno+1;
+     Value:=IntToStr(pi_DepositSno);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRLabel61Print(sender: TObject; var Value: string);
+begin
+     pi_DepositRefundSno:=pi_DepositRefundSno+1;
+     Value:=IntToStr(pi_DepositRefundSno);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRLabel_CrReundNoPrint(sender: TObject; var Value: string);
+begin
+     pi_CreditRefundSno:=pi_CreditRefundSno+1;
+     Value:=IntToStr(pi_CreditRefundSno);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRLabelOPCrPrint(sender: TObject; var Value: string);
+begin
+     pi_CreditSno:=pi_CreditSno+1;
+     Value:=IntToStr(pi_CreditSno);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRLabelOPCSPrint(sender: TObject; var Value: string);
+begin
+     pi_CashSno:=pi_CashSno+1;
+     Value:=IntToStr(pi_CashSno);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRLabelOPRefundPrint(sender: TObject; var Value: string);
+begin
+     pi_RefundSno:=pi_RefundSno+1;
+     Value:=IntToStr(pi_RefundSno);
+end;
+
+procedure TForm_QRUserWiseCollnDetail_Manipal.QRLabel_HosNamePrint(sender: TObject;
+  var Value: string);
+begin
+     Value:=gs_HospitalName;
+     pi_CashSno:=0;
+     pi_CashSnoIp:=0;
+     pi_RefundSno:=0;
+     pi_DepositSno:=0;
+     pi_DepositRefundSno:=0;
+     pi_CreditSno:=0;
+     pi_CreditRefundSno:=0;
+     pi_ReceiptSno:=0;
+     pi_ReceiptRefundSno:=0;
+     pi_ServiceTPSno:=0;
+end;
+
+end.

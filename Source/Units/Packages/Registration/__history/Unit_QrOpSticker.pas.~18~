@@ -1,0 +1,270 @@
+unit Unit_QrOpSticker;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Fxn,dbtables, DBAccess, Ora, OraSmart, MemDS, OraError,DM,
+  Dialogs, QuickRpt, ExtCtrls, QRCtrls, qrBarcode,ServerDate;
+
+type
+  TForm_OPSticker = class(TForm)
+    QrOPSticker: TQuickRep;
+    PageHeaderBand1: TQRBand;
+    lbl_PatientName: TQRLabel;
+    DetailBand1: TQRBand;
+    QRLabel1: TQRLabel;
+    QRLabel2: TQRLabel;
+    lbl_hosno: TQRLabel;
+    QRLabel4: TQRLabel;
+    QRLabel5: TQRLabel;
+    lbl_AgeGender: TQRLabel;
+    QRLabel7: TQRLabel;
+    QRLabel8: TQRLabel;
+    QRLabel9: TQRLabel;
+    QRLabel10: TQRLabel;
+    lbl_Address: TQRLabel;
+    lbl_PhoneNo: TQRLabel;
+    QRLabel19: TQRLabel;
+    QRLabel20: TQRLabel;
+    lbl_datetime: TQRLabel;
+    lbl_username: TQRLabel;
+    lbl_dept: TQRLabel;
+    QRLabel_QueueNo: TQRLabel;
+    QRLBL_QueueCap: TQRLabel;
+    QRLabel_ChargeAmt: TQRLabel;
+    QRLabel_Time: TQRLabel;
+    QRLabel11: TQRLabel;
+    QRLabel12: TQRLabel;
+    QRLabel_PatientType: TQRLabel;
+    QRLabel_ECHSNO: TQRLabel;
+    QrBarcode: TQRAsBarcode;
+    procedure FormCreate(Sender: TObject);
+    function GetRegVisitAmount(VisitDate,VisitTime : string):Double;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+     procedure LabelPositionMovement;
+  end;
+
+var
+  Form_OPSticker: TForm_OPSticker;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_OPSticker.LabelPositionMovement;
+begin
+     //QrOPSticker.Margins.Top:=QrOPSticker.Margins.Top+gi_OPDStickerHeight;
+     lbl_dept.Top:=lbl_dept.Top+gi_OPDStickerHeight;
+
+     QRLabel_PatientType.Top:=QRLabel_PatientType.Top+gi_OPDStickerHeight;
+     QRLabel_ECHSNO.Top:=QRLabel_ECHSNO.Top+gi_OPDStickerHeight;
+
+     //QRLabel3.Top:=QRLabel3.Top+gi_OPDStickerHeight;
+     //QRLabel6.Top:=QRLabel6.Top+gi_OPDStickerHeight;
+     lbl_datetime.Top:=lbl_datetime.Top+gi_OPDStickerHeight;
+
+     QRLabel4.Top:=QRLabel4.Top+gi_OPDStickerHeight;
+     QRLabel5.Top:=QRLabel5.Top+gi_OPDStickerHeight;
+     lbl_hosno.Top:=lbl_hosno.Top+gi_OPDStickerHeight;
+
+     QRLabel11.Top:=QRLabel11.Top+gi_OPDStickerHeight;
+     QRLabel12.Top:=QRLabel12.Top+gi_OPDStickerHeight;
+     QRLabel_Time.Top:=QRLabel_Time.Top+gi_OPDStickerHeight;
+
+     QRLabel1.Top:=QRLabel1.Top+gi_OPDStickerHeight;
+     QRLabel2.Top:=QRLabel2.Top+gi_OPDStickerHeight;
+     lbl_PatientName.Top:=lbl_PatientName.Top+gi_OPDStickerHeight;
+
+     QRLabel7.Top:=QRLabel7.Top+gi_OPDStickerHeight;
+     QRLabel8.Top:=QRLabel8.Top+gi_OPDStickerHeight;
+     lbl_AgeGender.Top:=lbl_AgeGender.Top+gi_OPDStickerHeight;
+     QRLabel19.Top:=QRLabel19.Top+gi_OPDStickerHeight;
+     QRLabel20.Top:=QRLabel20.Top+gi_OPDStickerHeight;
+     lbl_PhoneNo.Top:=lbl_PhoneNo.Top+gi_OPDStickerHeight;
+
+     QRLabel9.Top:=QRLabel9.Top+gi_OPDStickerHeight;
+     QRLabel10.Top:=QRLabel10.Top+gi_OPDStickerHeight;
+     lbl_Address.Top:=lbl_Address.Top+gi_OPDStickerHeight;
+
+     lbl_username.Top:=lbl_username.Top+gi_OPDStickerHeight;
+
+
+     QRLabel_ChargeAmt.Top:=QRLabel_ChargeAmt.Top+gi_OPDStickerHeight;
+     QRLBL_QueueCap.Top:=QRLBL_QueueCap.Top+gi_OPDStickerHeight;
+     QRLabel_QueueNo.Top:=QRLabel_QueueNo.Top+gi_OPDStickerHeight;
+end;
+
+procedure TForm_OPSticker.FormCreate(Sender: TObject);
+Var
+     Qry:TOraQuery;
+     lf_RegCharge : Double;
+     ls_Address,ls_FirstDepartment,ls_FirstDoc:String;
+begin
+     SetPrinter('Sticker Printer');
+
+     LabelPositionMovement;
+     QrBarcode.Text:=IntToStr(gi_PatientID);
+
+     Qry:=TOraQuery.Create(Nil);
+     with Qry do
+     begin
+          Close;
+          Session := DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add(' Select Pavi_VisitDate VisitDate, Pavi_VisitTime VisitTime,PAVI_DOCWISEQUEUENO DOCWISEQUEUENO,PAVI_DEPWISEQUEUENO DEPWISEQUEUENO,');
+          SQL.Add(' (Select DEPT_DepName From HS_Dept_Department where DEPT_DepID=PAVI_DEPID) DepName,');
+          sql.Add(' (Select usma_username from hs_usma_usermain where usma_userid=PAVI_DATAPOSTBY) UserName,');
+          SQL.Add(' (Select Doct_Docname from hs_doct_doctor where doct_docID=PAVI_DOCID) Docname');
+          SQL.Add(' From HS_PAVI_PatientVisit where PAVI_PatientVisitID In (Select Max(PAVI_PatientVisitID) From');
+          SQL.Add(' HS_PAVI_PatientVisit where PAVI_PatientId='+IntToStr(gi_PatientID)+' and PAVI_VISITDATE='+QuotedStr(gs_LastVisitDate)+' and PAVI_DEPID > 0 and PAVI_IsVisitCancel=''N'')');
+          Open;
+
+          ls_FirstDepartment:=Qry.FieldByName('DepName').AsString;
+          ls_FirstDoc:= Qry.FieldByName('Docname').AsString;
+
+          QRLabel_QueueNo.Enabled:=False;
+          QRLBL_QueueCap.Enabled:=False;
+          if gs_ISQUEUENOINREG='Y' then
+          Begin
+               QRLabel_QueueNo.Enabled:=True;
+               QRLBL_QueueCap.Enabled:=True;
+               if (FieldByName('DEPWISEQUEUENO').AsInteger=0) and (FieldByName('DOCWISEQUEUENO').AsInteger=0)  then
+               QRLabel_QueueNo.Caption:='NA'
+               else if Qry.FieldByName('DEPWISEQUEUENO').AsInteger>0 then
+               QRLabel_QueueNo.Caption:=IntToStr(FieldByName('DEPWISEQUEUENO').AsInteger)
+               else if FieldByName('DOCWISEQUEUENO').AsInteger>0 then
+               QRLabel_QueueNo.Caption:=IntToStr(FieldByName('DOCWISEQUEUENO').AsInteger);
+          End;
+
+          if gs_IsDocCompForRegFollowup='Y' then
+          Begin
+               lbl_dept.Caption:=Qry.FieldByName('DEPNAME').AsString+' / '+Qry.FieldByName('Docname').AsString;
+          End
+          else
+          Begin
+               lbl_dept.Caption:=ls_FirstDepartment;//FieldByName('DENAME').AsString;
+          End;
+
+          lbl_username.Caption:=Qry.FieldByName('username').AsString;
+
+          IF gs_IsAmtShowInRegSticker='Y' Then
+          Begin
+               QRLabel_ChargeAmt.Enabled:=True;
+               lf_RegCharge:=GetRegVisitAmount(FieldByName('VisitDate').AsString,FieldByName('VisitTime').AsString);
+               if lf_RegCharge > 0 then
+               QRLabel_ChargeAmt.Caption:='Reg Charge (Rs) : '+FormatFloat('0.00',lf_RegCharge)
+               else
+               QRLabel_ChargeAmt.Enabled:=False;
+          End
+          else
+          Begin
+               QRLabel_ChargeAmt.Enabled:=False;
+          End;
+
+
+
+          Close;
+          Session := DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add(' Select * from VW_HS_PATIENTMAIN');
+          SQL.Add(' Where PatientID='+IntToStr(gi_PatientID));
+          Open;
+          lbl_hosno.Caption:=IntToStr(gi_PatientID);
+
+          if gs_HospitalNameForCode='MAN' then
+          Begin
+               IF (Qry.FieldByName('PatientTypeCode').AsString='ECG') or (Qry.FieldByName('PatientTypeCode').AsString='ECS') or
+               (Qry.FieldByName('PatientTypeCode').AsString='ECP') or (Qry.FieldByName('SCHEMEID').AsInteger=99) Then
+               Begin
+                    if Qry.FieldByName('SCHEMEID').AsInteger=99 then
+                    begin
+                         QRLabel_PatientType.left:=180;
+                         QRLabel_PatientType.Caption:='Mem No.:';
+                         QRLabel_ECHSNO.Caption:=Qry.FieldByName('CARDNO').AsString;
+                    end
+                    else
+                    begin
+                         QRLabel_PatientType.Caption:='ECHS:';
+                         QRLabel_ECHSNO.Caption:=Qry.FieldByName('ECHSNO').AsString;
+                    end;
+               End
+               Else
+               begin
+                    QRLabel_PatientType.Caption:='';
+                    QRLabel_ECHSNO.Caption:='';
+               end;
+          End;
+
+          lbl_PatientName.Caption:=FieldByName('Title').AsString+' '+FieldByName('PATIENTNAME').AsString;
+          lbl_AgeGender.Caption:=FieldByName('CURRENTAGE').AsString+'/'+Copy(FieldByName('Gender').AsString,1,1);
+
+          if Trim(FieldByName('DistrictName').AsString)<>'' then
+          ls_Address:=FieldByName('DistrictName').AsString;
+
+          if Trim(FieldByName('VdcName').AsString)<>'' then
+          Begin
+               if Trim(ls_Address)<>'' then
+               ls_Address:=ls_Address+','+FieldByName('VdcName').AsString
+               Else
+               ls_Address:=FieldByName('DistrictName').AsString;
+          End;
+
+          if Trim(FieldByName('WardNo').AsString)<>'' then
+          Begin
+               if Trim(ls_Address)<>'' then
+               ls_Address:=ls_Address+'-'+FieldByName('WardNo').AsString
+               Else
+               ls_Address:=FieldByName('WardNo').AsString;
+          End;
+
+          if Trim(FieldByName('Address').AsString)<>'' then
+          Begin
+               if Trim(ls_Address)<>'' then
+               ls_Address:=ls_Address+','+FieldByName('Address').AsString
+               Else
+               ls_Address:=FieldByName('Address').AsString;
+          End;
+
+          lbl_datetime.Caption:=FieldByName('regdate').AsString;
+          QRLabel_Time.Caption:='/ '+copy(FieldByName('regtime').AsString,0,5);
+
+          lbl_Address.Caption:=ls_Address;
+          if (FieldByName('MOBILENO').AsString<>'') and (FieldByName('phoneNO').AsString<>'') then
+          lbl_PhoneNo.Caption:=FieldByName('MOBILENO').AsString+','+FieldByName('phoneNO').AsString
+          else if  FieldByName('MOBILENO').AsString<>'' then
+          lbl_PhoneNo.Caption:=FieldByName('MOBILENO').AsString
+          else if  FieldByName('phoneNO').AsString<>'' then
+          lbl_PhoneNo.Caption:=FieldByName('phoneNO').AsString
+          Else
+          lbl_PhoneNo.Caption:='NA';
+
+          lbl_username.Caption:=FieldByName('username').AsString;
+     end;
+     Qry.Free;
+end;
+
+function TForm_OPSticker.GetRegVisitAmount(VisitDate,VisitTime : string):Double;
+Var
+     Qry:TOraQuery;
+begin
+     Qry:=TOraQuery.Create(Nil);
+     with Qry do
+     begin
+          Close;
+          Session := DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add(' Select Sum((BIDE_Amount+BIDE_VatAmt)-(BIDE_Amount*BIDE_DisPer/100)) NetRegCharge From HS_BIDE_BILLDETAIL');
+          SQL.Add(' Where BIDE_PatientID='+IntToStr(gi_PatientID));
+          SQL.Add(' and BIDE_BillDate='+#39+VisitDate+#39+' and BIDE_BillTime='+#39+VisitTime+#39);
+          Open;
+     end;
+     Result:=Qry.FieldByName('NetRegCharge').AsFloat;
+     Qry.Free;
+end;
+
+
+end.

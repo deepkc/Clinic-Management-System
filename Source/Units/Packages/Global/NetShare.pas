@@ -1,0 +1,137 @@
+unit NetShare;
+
+interface
+
+Uses
+    Windows, Messages, SysUtils, Classes, Graphics, Controls, Dialogs,
+    StdCtrls,AclApi, AccCtrl;
+    //**************************************************************************
+//**************** UNIT CREATED BY VICKY PANDEY ****************************
+//****************  USING NETAPI32 FOR WINNT    ****************************
+//****************  FILE CREATED  10-APRIL-2011  12:45 PM ******************
+
+// USES C:\WINDOWS\SYSTEM32\NETAPI32.DLL
+
+// ADD THIS UNIT IN PROJECT AND CALL PROCEDURE SHAREFOLDER();
+// EG. Uses Netshare;
+//     procedure ButtonClick (Sender:Tobject);
+//     begin
+//          ShareFolder('Vicky','Vicky''s folder','D:\test');
+//     end;
+//**************************************************************************
+type
+  PShareInfo2 = ^TShareInfo2;
+  TShareInfo2 = packed record
+    shi2_netname: PWideChar;
+    shi2_type: DWORD;
+    shi2_remark: PWideChar;
+    shi2_permissions: DWORD;
+    shi2_max_uses: DWORD;
+    shi2_current_uses: DWORD;
+    shi2_path: PWideChar;
+    shi2_passwd: PWideChar;
+  end;
+
+const
+  SECURITY_WORLD_SID_AUTHORITY: TSidIdentifierAuthority = (Value: (0, 0, 0, 0, 0, 1));
+  SECURITY_WORLD_RID = ($00000000);
+
+  NERR_Success = 0;
+
+  advapi = 'advapi32.dll';
+  netapi = 'netapi32.dll';
+
+procedure BuildExplicitAccessWithNameW(pExplicitAccess: PEXPLICIT_ACCESS_W; pTrusteeName: PWideChar;
+  AccessPermissions: DWORD; AccessMode: ACCESS_MODE; Ineritance: DWORD); stdcall;
+  external advapi name 'BuildExplicitAccessWithNameW';
+function GetNamedSecurityInfoW(pObjectName: PWideChar; ObjectType: SE_OBJECT_TYPE; SecurityInfo: SECURITY_INFORMATION;
+  ppsidOwner, ppsidGroup: PPSID; ppDacl, ppSacl: PACL; var ppSecurityDescriptor: PSECURITY_DESCRIPTOR): DWORD; stdcall;
+  external advapi name 'GetNamedSecurityInfoW';
+function NetShareAdd(servername: PWideChar; level: DWORD; buf: Pointer; parm_err: LPDWORD): DWORD; stdcall;
+  external netapi;
+function NetShareDel(servername, netname: PWideChar; reserved: DWORD): DWORD; stdcall; external netapi;
+function SetNamedSecurityInfoW(pObjectName: PWideChar; ObjectType: SE_OBJECT_TYPE; SecurityInfo: SECURITY_INFORMATION;
+  ppsidOwner, ppsidGroup: PPSID; ppDacl, ppSacl: PACL): DWORD; stdcall; external advapi name 'SetNamedSecurityInfoW';
+procedure WideShareDirectory(const Directory, ShareName, Description: WideString; ReadOnly: Boolean);
+
+implementation
+
+procedure NetApiCheck(RetValue: Cardinal);
+begin
+  if RetValue <> ERROR_SUCCESS then
+    RaiseLastOSError(RetValue);
+end;
+
+function WideGetEveryoneName: WideString;
+var
+  psid: PSECURITY_DESCRIPTOR;
+  Dummy: WideString;
+  NameLen, DomainNameLen: Cardinal;
+  Use: SID_NAME_USE;
+begin
+  Result := '';
+
+  if not AllocateAndInitializeSid(SECURITY_WORLD_SID_AUTHORITY, 1, SECURITY_WORLD_RID, 0, 0, 0, 0, 0, 0, 0, psid) then
+    Exit;
+  try
+    NameLen := 0;
+    DomainNameLen := 0;
+    Use := 0;
+    if LookupAccountSidW(nil, psid, nil, NameLen, nil, DomainNameLen, Use) or
+      (GetLastError <> ERROR_INSUFFICIENT_BUFFER) then
+      Exit;
+
+    if NameLen = 1 then
+      Exit;
+
+    SetLength(Result, NameLen - 1);
+    SetLength(Dummy, DomainNameLen);
+
+    if not LookupAccountSidW(nil, psid, PWideChar(Result), NameLen, PWideChar(Dummy), DomainNameLen, Use) then
+      Result := '';
+  finally
+    FreeSid(psid);
+  end;
+end;
+
+function WideDeleteShare(const ShareName: WideString): Boolean;
+begin
+  Result := NetShareDel(nil, PWideChar(ShareName), 0) = NERR_Success;
+end;
+
+procedure WideShareDirectory(const Directory, ShareName, Description: WideString; ReadOnly: Boolean);
+var
+  ShareInfo: TShareInfo2;
+  OldAcl, NewAcl: PACL;
+  psid: PSECURITY_DESCRIPTOR;
+  ExplicitAccess: EXPLICIT_ACCESS_W;
+begin
+  FillChar(ShareInfo, SizeOf(ShareInfo), 0);
+  ShareInfo.shi2_netname := PWideChar(ShareName);
+  ShareInfo.shi2_type := 0;//STYPE_DISKTREE;
+  ShareInfo.shi2_remark := PWideChar(Description);
+  ShareInfo.shi2_max_uses := 100;//SHI_USES_UNLIMITED;
+  ShareInfo.shi2_path := PWideChar(Directory);
+  NetApiCheck(NetShareAdd(nil, 2, @ShareInfo, nil));
+  // Full Control to Everyone is granted by default
+  if not ReadOnly then
+    Exit;
+
+  NetApiCheck(GetNamedSecurityInfoW(PWideChar(ShareName), SE_LMSHARE, DACL_SECURITY_INFORMATION, nil, nil, @OldAcl, nil,
+    psid));
+  try
+    FillChar(ExplicitAccess, SizeOf(ExplicitAccess), 0);
+    BuildExplicitAccessWithNameW(@ExplicitAccess, PWideChar(WideGetEveryoneName),
+      GENERIC_READ or STANDARD_RIGHTS_READ or SPECIFIC_RIGHTS_ALL, SET_ACCESS, NO_INHERITANCE);
+    NetApiCheck(SetEntriesInAclW(1, @ExplicitAccess, OldAcl, NewAcl));
+    try
+      NetApiCheck(SetNamedSecurityInfoW(PWideChar(ShareName), SE_LMSHARE, DACL_SECURITY_INFORMATION, nil, nil, NewAcl,
+        nil));
+    finally
+      LocalFree(HLOCAL(NewAcl));
+    end;
+  finally
+    LocalFree(HLOCAL(psid));
+  end;
+end;
+end.

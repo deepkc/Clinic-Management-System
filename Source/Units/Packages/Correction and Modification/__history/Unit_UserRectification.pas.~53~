@@ -1,0 +1,325 @@
+unit Unit_UserRectification;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+     ComCtrls, ExtCtrls, StdCtrls, Buttons, DBCtrls, Db, DBTables, OleCtrls,
+     DateEditXControl_TLB, ServerDate, Grids, DBGrids, Fxn, Variants, DM, Unit_Master,
+  MemDS,DBAccess, Ora;
+
+type
+     TForm_UserRectification = class(TForm)
+          Panel1: TPanel;
+          StatusBar1: TStatusBar;
+          Panel2: TPanel;
+          Label1: TLabel;
+          Label3: TLabel;
+          Label4: TLabel;
+          DS_PrevDoctor: TDataSource;
+    DBLCB_PrevDoctor: TDBLookupComboBox;
+          EditRemarks: TEdit;
+          Label5: TLabel;
+    DBLCB_ActualDoc: TDBLookupComboBox;
+    DBLCB_PrevHos: TDBLookupComboBox;
+          Label6: TLabel;
+    DBLCB_ActualHos: TDBLookupComboBox;
+          Label7: TLabel;
+          Query_ActDoctor: TQuery;
+          DS_ActulaDoctor: TDataSource;
+          Edit_PatientId: TEdit;
+          Label8: TLabel;
+          BB_Save: TBitBtn;
+          BB_Close: TBitBtn;
+    Label_PatientName: TLabel;
+    OraQuery_Void: TOraQuery;
+    OraQuery_PrevDoctor: TOraQuery;
+    OraQuery_Process: TOraQuery;
+    OraQuery_Hospital: TOraQuery;
+    DS_Hospital: TDataSource;
+    EditBillNo: TEdit;
+    OraQuery_ActualHos: TOraQuery;
+    OraQuery_ActualDoctor: TOraQuery;
+    Ds_ActualDoc: TDataSource;
+    Ds_ActualHos: TDataSource;
+    OraQuery_SaveLog: TOraQuery;
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure FormShow(Sender: TObject);
+          procedure DBLCB_PrevHosKeyPress(Sender: TObject; var Key: Char);
+          procedure DBLCB_PrevDoctorKeyPress(Sender: TObject; var Key: Char);
+          procedure DBLCB_ActualHosKeyPress(Sender: TObject; var Key: Char);
+          procedure DBLCB_ActualDocKeyPress(Sender: TObject; var Key: Char);
+          procedure BB_SaveClick(Sender: TObject);
+          procedure BB_CloseClick(Sender: TObject);
+    procedure EditBillNoKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_PatientIdKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_ActualHosClick(Sender: TObject);
+     private
+          { Private declarations }
+     public
+          b_FlagNew: Boolean;
+          pi_OldDocPaymentId, pi_PatientId: Integer;
+          ps_AccessFrom: String;
+          { Public declarations }
+
+     end;
+
+var
+     Form_UserRectification: TForm_UserRectification;
+
+implementation
+
+{$R *.DFM}
+
+procedure TForm_UserRectification.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if key=VK_F12 then BB_SaveClick(Sender);
+
+     IF Key = 27 Then
+          Close;
+end;
+
+procedure TForm_UserRectification.BB_CloseClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_UserRectification.BB_SaveClick(Sender: TObject);
+Var
+     li_Maxid,li_prevdoc,li_actualdoc: Integer;
+begin
+     IF Trim(Edit_PatientId.Text) = '' Then
+     Begin
+          MessageDlg(' You Must Have To Put Patient No.', mtWarning, [mbok], 0);
+          Edit_PatientId.SetFocus;
+          Exit;
+     End;
+
+     if Trim(EditBillNo.Text)='' then
+     begin
+          MessageDlg(' You Must Have To Put Bill No.', mtInformation, [mbok], 0);
+          DBLCB_ActualHos.SetFocus;
+          Exit;
+     end;
+
+     IF Trim(DBLCB_ActualHos.KeyValue) = null Then
+     Begin
+          MessageDlg(' Plz Select Actual Referal Hospital.', mtInformation, [mbok], 0);
+          DBLCB_ActualHos.SetFocus;
+          Exit;
+     End;
+
+     IF Trim(EditRemarks.Text) = '' Then
+     Begin
+          MessageDlg(' Plz Input the remarks detail.', mtInformation, [mbok], 0);
+          EditRemarks.SetFocus;
+          Exit;
+     End;
+
+
+     if DBLCB_PrevDoctor.KeyValue<=0 then
+     li_prevdoc:=DBLCB_PrevDoctor.KeyValue
+     else
+     li_prevdoc:=0;
+
+     if DBLCB_ActualDoc.KeyValue<=0 then
+     li_actualdoc:=DBLCB_ActualDoc.KeyValue
+     else
+     li_actualdoc:=0;
+
+
+
+
+     if DBLCB_ActualDoc.KeyValue<=0 then
+     begin
+          if MessageDlg('Are You Sure to Continue Without Referal Doctor ?',mtConfirmation,[mbYes,mbNo],0)=mrNo then
+          begin
+               DBLCB_ActualDoc.SetFocus;
+               Exit;
+          end;
+     end;
+
+
+
+
+
+     Try
+          DM_Hospital.Db.StartTransaction;
+
+          With OraQuery_SaveLog do
+          Begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               li_Maxid := GetMaxId('HS_LOG_PATIENTRECTIFICATION', 'PARE_ID');
+               sql.Add(' Insert Into HS_LOG_PATIENTRECTIFICATION(PARE_ID,PARE_PATIENTID,PARE_BILLNO,PARE_PREVHOS,PARE_PREVDOC');
+               sql.Add('  ,PARE_ACTUALDOC,PARE_ACTUALHOS,PARE_REMARKS,PARE_USERID,PARE_MODIFIEDDATE,PARE_MODIFIEDTIME,PARE_MACID');
+               sql.Add('   )Values (');
+               sql.Add(IntToStr(li_Maxid) + ' ,' + (Edit_PatientId.Text) + ' ,' + QuotedStr(EditBillNo.Text) + ' ,' + QuotedStr(DBLCB_PrevHos.KeyValue)
+                 + ',');
+               sql.Add(QuotedStr(li_prevdoc) + ',' + QuotedStr(li_actualdoc.KeyValue) + ',');
+               sql.Add(QuotedStr(DBLCB_ActualHos.KeyValue) + ',' + QuotedStr(EditRemarks.Text) + ',' +IntToStr(gi_UserID) + ',' + QuotedStr(ServerDate.TodaysDate)+','+QuotedStr(ServerDate.TodaysTime)+','+quotedStr(gs_MacID));
+               sql.Add(')');
+               sql.savetofile('C:\abct11.txt');
+               ExecSQL;
+          End;
+
+
+          With OraQuery_Process do
+          Begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               sql.add(' Update patienttest Set ');
+               sql.add(' refdocid=' +QuotedStr(DBLCB_ActualDoc.KeyValue)+',');
+               sql.add(' refhoscode=' +QuotedStr(DBLCB_ActualHos.KeyValue));
+               sql.add(' where BillNo=' + #39 + EditBillNo.Text + #39);
+               sql.add(' and patientid=' + #39 + Edit_PatientId.Text+ #39);
+               ExecSQL;
+          End;
+
+          DM_Hospital.Db.Commit;
+          ShowDoneMessage;
+     Except
+          DM_Hospital.Db.RollBack;
+          MessageDlg('Failuer To Save Data.', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     DBLCB_PrevDoctor.KeyValue := 0;
+     DBLCB_ActualDoc.KeyValue := 0;
+     DBLCB_PrevHos.KeyValue:=Null;
+     DBLCB_ActualHos.KeyValue:=Null;
+     EditBillNo.Text := '';
+     EditRemarks.Text := '';
+End;
+
+
+
+
+
+procedure TForm_UserRectification.FormShow(Sender: TObject);
+begin
+
+     OraQuery_Hospital.Close;
+     OraQuery_Hospital.Session:=DM_Hospital.DB;
+     OraQuery_Hospital.Open;
+
+     OraQuery_PrevDoctor.Close;
+     OraQuery_PrevDoctor.Session:=DM_Hospital.DB;
+     OraQuery_PrevDoctor.Open;
+
+     OraQuery_ActualHos.Close;
+     OraQuery_ActualHos.Session:=DM_Hospital.DB;
+     OraQuery_ActualHos.Open;
+
+     OraQuery_ActualDoctor.Close;
+     OraQuery_ActualDoctor.Session:=DM_Hospital.DB;
+     OraQuery_ActualDoctor.Open;
+
+     DBLCB_PrevHos.KeyValue:=Null;
+     DBLCB_ActualHos.KeyValue:=Null;
+     DBLCB_PrevDoctor.KeyValue:=0;
+     DBLCB_ActualDoc.KeyValue:=0;
+
+     EditBillNo.Text := '';
+     EditRemarks.Text := '';
+     Edit_PatientId.Text:='';
+     Edit_PatientId.SetFocus;
+end;
+
+
+
+
+procedure TForm_UserRectification.EditBillNoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    IF Key = #13 Then
+    BEGIN
+        IF Trim(EditBillNo.Text) = '' Then
+        Begin
+              MessageDlg('Plz Put Bill No.', mtInformation, [mbok], 0);
+              EditBillNo.SetFocus;
+              Exit;
+        End;
+
+        With OraQuery_Void do
+        Begin
+              Close;
+              sql.Clear;
+              sql.add('select REFHOSCODE,REFDOCID ');
+              sql.add(' From PatientTest where BillNo=' + #39 + EditBillNo.Text + #39);
+              sql.add(' and patientid=' + #39 + Edit_PatientId.Text + #39);
+              Open;
+        End;
+
+        DBLCB_PrevHos.KeyValue:=OraQuery_Void.FieldByName('refhoscode').AsString;
+        DBLCB_PrevDoctor.KeyValue:=OraQuery_Void.FieldByName('refdocid').AsString;
+    END;
+
+end;
+
+procedure TForm_UserRectification.Edit_PatientIdKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     IF Key = #13 Then
+     Begin
+          IF Trim(Edit_PatientId.Text) = '' Then
+          Begin
+               MessageDlg('Plz Put Patient No.', mtInformation, [mbok], 0);
+               Edit_PatientId.SetFocus;
+               Exit;
+          End;
+          with OraQuery_Void do
+          begin
+               Close;
+               sql.Clear;
+               sql.add('select PAMA_PATIENTNAME');
+               sql.add(' From hs_pama_patientmain where pama_patientid=' +Trim(Edit_PatientId.text));
+               Open;
+          end;
+          Label_PatientName.Caption:= OraQuery_Void.FieldByName('PAMA_PATIENTNAME').AsString;
+          EditBillNo.SetFocus;
+     End;
+end;
+
+procedure TForm_UserRectification.DBLCB_PrevHosKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #13 Then
+          DBLCB_PrevDoctor.SetFocus;
+end;
+
+procedure TForm_UserRectification.DBLCB_PrevDoctorKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #13 Then
+          DBLCB_ActualHos.SetFocus;
+end;
+
+procedure TForm_UserRectification.DBLCB_ActualHosClick(Sender: TObject);
+begin
+      with OraQuery_ActualDoctor do
+      begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.clear;
+          sql.Add('select redo_DocId as DocId,REDO_DOCNAME docname ');
+          sql.Add(' from hs_redo_referaldoctor');
+          SQL.Add(' where REDO_HOSPITALCODE='+QuotedStr(DBLCB_ActualHos.KeyValue));
+          sql.Add(' order by REDO_DOCNAME');
+          Open;
+      end;
+end;
+
+procedure TForm_UserRectification.DBLCB_ActualHosKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #13 Then
+          DBLCB_ActualDoc.SetFocus;
+end;
+
+procedure TForm_UserRectification.DBLCB_ActualDocKeyPress(Sender: TObject; var Key: Char);
+begin
+     IF Key = #13 Then
+          EditBillNo.SetFocus;
+end;
+
+end.

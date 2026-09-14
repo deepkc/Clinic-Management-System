@@ -1,0 +1,12 @@
+select distinct  t.testname,pt.depid,pt.patienttestid,pt.patientid,pr.runno,
+(select (fname || ' ' || mname || ' ' || lname) from patientmain where patientid=pt.patientid)as patientname,
+(select modifytime from patientmain where patientid=pt.patientid)as modifytime from patienttest pt,testname t,patientrun pr
+where PT.TESTNAMEID=t.testnameid and pt.patienttestid=pr.patienttestid
+  and T.LINEEDIT='T'
+and pt.depid=12
+  and pt.patientid=pr.patientid
+  and pt.testdate>='2015/05/07' and pt.testdate<='2015/05/07'
+and  2=2
+and 1=1
+and 1=1
+order by patientname

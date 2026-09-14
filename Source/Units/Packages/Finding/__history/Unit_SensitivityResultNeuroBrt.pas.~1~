@@ -1,0 +1,220 @@
+unit Unit_SensitivityResultNeuroBrt;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm, serverdate,
+     Dialogs, StdCtrls, CheckLst, Buttons, ExtCtrls, DB, Grids, DBGrids, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError;
+
+type
+     TForm_SensitivityResultNeuroBrt = class(TForm)
+          Panel2: TPanel;
+          BB_Save: TBitBtn;
+          BB_Close: TBitBtn;
+          DBGrid1: TDBGrid;
+          DS_SensitiveMedicine: TDataSource;
+    lbl_Name: TLabel;
+    QueryList: TQuery;
+    Query_TempProcess: TQuery;
+    Edit_MedicineSearch: TEdit;
+    cb_Result: TComboBox;
+    dbgrd1: TDBGrid;
+    dbgrd2: TDBGrid;
+    dbgrd3: TDBGrid;
+    DS_S: TDataSource;
+    ds_PS: TDataSource;
+    ds_R: TDataSource;
+    qry_s: TQuery;
+    qry_ps: TQuery;
+    qry_r: TQuery;
+    CheckBox_SearchCode: TCheckBox;
+          procedure FormCreate(Sender: TObject);
+          procedure BB_CloseClick(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure FormShow(Sender: TObject);
+          procedure DBGrid1KeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_MedicineSearchChange(Sender: TObject);
+    procedure Edit_MedicineSearchKeyPress(Sender: TObject; var Key: Char);
+    procedure cb_ResultKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+     private
+          { Private declarations }
+     public
+          { Public declarations }
+          procedure RefreshData;
+     end;
+
+var
+     Form_SensitivityResultNeuroBrt: TForm_SensitivityResultNeuroBrt;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_SensitivityResultNeuroBrt.BB_CloseClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_SensitivityResultNeuroBrt.cb_ResultKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     if (Key=13) and (cb_Result.Text<>'') then
+          begin
+              QueryList.Locate('Medicine',QueryList.FieldByName('Medicine').AsString,[]);
+              QueryList.edit;
+              QueryList.FieldByName('Result').AsString:=cb_Result.Text;
+              QueryList.Post;
+              RefreshData;
+              Edit_MedicineSearch.SetFocus;
+          end;
+end;
+
+procedure TForm_SensitivityResultNeuroBrt.DBGrid1KeyPress(Sender: TObject; var Key: Char);
+Var
+     val: String;
+begin
+     {key:=UpCase(Key);
+   if Not(key in [#13,#8,#27,#16]) then
+   begin
+      if not(key in['Y']) then
+      begin
+            Table_SensitiveMedicine.Close;
+            Table_SensitiveMedicine.Open;
+          //To go to the medicine by pressing first alphabet............
+         With Query_TempProcess do
+         Begin
+              Close;
+              DatabaseName:=gs_TempPath;
+              sql.Clear;
+              sql.add(' Select * from sensitivemedicine.db where Medicine Like '''+lowercase(Key)+'%''');
+              Open;
+         End;
+         Table_SensitiveMedicine.First;
+         Table_SensitiveMedicine.Locate('Medicine',Query_TempProcess.FieldByName('Medicine').AsString,[]);
+         key:=#0;
+         beep;
+      end;
+   end; }
+
+
+     if Key = #13 then
+     begin
+          val := Trim(DBGrid1.Fields[1].Text);
+         if gi_compileValue in [3,10] then
+         begin
+              if 1=1 then
+              begin
+                   QueryList.Edit;
+                   DBGrid1.Fields[1].Value := UpperCase(val);
+                   QueryList.Post;
+                   QueryList.Next;
+              end
+              else
+                   DBGrid1.Fields[1].Value := '';
+         end
+         else
+         begin
+             if (UpperCase(val) = 'S') or (UpperCase(val) = 'MS') or (UpperCase(val) = 'R') or (UpperCase(val) = '') or (UpperCase(val) = 'PS') then
+                begin
+                     QueryList.Edit;
+                     DBGrid1.Fields[1].Value := UpperCase(val);
+                     QueryList.Post;
+                     QueryList.Next;
+                end
+             else
+                     DBGrid1.Fields[1].Value := '';
+         end;
+         RefreshData;
+
+     end;
+end;
+
+procedure TForm_SensitivityResultNeuroBrt.Edit_MedicineSearchChange(Sender: TObject);
+begin
+     if CheckBox_SearchCode.Checked=true then
+     begin
+          with QueryList do
+          Begin
+              IF trim(Edit_MedicineSearch.Text) <> '' Then
+              Begin
+                  Filter := 'Medcode =' + #39 + Edit_MedicineSearch.Text + '*' + #39;
+                  Filtered := true;
+              End
+              Else
+              Filtered := false;
+          End;
+     end
+     else
+     begin
+          with QueryList do
+         Begin
+              IF trim(Edit_MedicineSearch.Text) <> '' Then
+              Begin
+                   Filter := 'Medicine =' + #39 + Edit_MedicineSearch.Text + '*' + #39;
+                   Filtered := true;
+              End
+              Else
+                   Filtered := false;
+         End;
+     end;
+
+     //BB_RefreshClick(Sender);
+end;
+
+procedure TForm_SensitivityResultNeuroBrt.Edit_MedicineSearchKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     cb_Result.SetFocus;
+end;
+
+procedure TForm_SensitivityResultNeuroBrt.FormCreate(Sender: TObject);
+begin
+     lbl_Name.Caption:=GetTestName(gi_PatientTestID);
+end;
+
+procedure TForm_SensitivityResultNeuroBrt.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = 27 then
+          BB_CloseClick(Sender);
+end;
+
+procedure TForm_SensitivityResultNeuroBrt.FormShow(Sender: TObject);
+begin
+     with QueryList do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          SQL[1]:='Where TestNameID='+IntToStr(gi_TestNameId);
+          SQL[2]:='And RepNo='+IntToStr(Gi_RepNo);
+          Open;
+          //SQL.SaveToFile('c:\error.txt');
+     end;
+     RefreshData;
+end;
+
+procedure TForm_SensitivityResultNeuroBrt.RefreshData;
+begin
+     with qry_s do
+     begin
+          Close;
+          DatabaseName:=gs_temppath;
+          Open;
+     end;
+     with qry_ps do
+     begin
+          Close;
+          DatabaseName:=gs_temppath;
+          Open;
+     end;
+     with qry_r do
+     begin
+          Close;
+          DatabaseName:=gs_temppath;
+          Open;
+     end;
+end;
+
+end.

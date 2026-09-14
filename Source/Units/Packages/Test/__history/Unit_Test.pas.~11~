@@ -1,0 +1,609 @@
+unit Unit_Test;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm, serverdate, DBGridExportToExcel, Unit_Master,
+     Dialogs, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, StdCtrls, ExtCtrls, Grids, DBGrids, DBCtrls, Buttons, ComCtrls;
+
+type
+     TForm_Test = class(TForm)
+          Panel2: TPanel;
+          BB_Save: TBitBtn;
+          BB_Close: TBitBtn;
+          BB_New: TBitBtn;
+          PageControl1: TPageControl;
+          TabSheet1: TTabSheet;
+          Label1: TLabel;
+          Label2: TLabel;
+          SpeedButton1: TSpeedButton;
+          SpeedButton2: TSpeedButton;
+          DBLCB_Dep: TDBLookupComboBox;
+          DBGrid1: TDBGrid;
+          TabSheet2: TTabSheet;
+          Label3: TLabel;
+          Label10: TLabel;
+          le_LRangeG: TLabeledEdit;
+          Le_HRangeG: TLabeledEdit;
+          le_Test: TLabeledEdit;
+          CB_IsHeading: TCheckBox;
+          Query_Department: TOraQuery;
+          Ds_Department: TDataSource;
+          Query_list: TOraQuery;
+          Ds_List: TDataSource;
+          Dblcb_Test: TDBLookupComboBox;
+          Query_Test: TOraQuery;
+          DS_Test: TDataSource;
+          lbl_DepartmentName: TLabel;
+          lbl_TestName: TLabel;
+          Label7: TLabel;
+          Label4: TLabel;
+          Label5: TLabel;
+          Label6: TLabel;
+          Label9: TLabel;
+          Label12: TLabel;
+          Label13: TLabel;
+          le_LRangeM: TEdit;
+          Le_HRangeM: TEdit;
+          le_LRangeF: TEdit;
+          Le_HRangeF: TEdit;
+          le_LRangeC: TEdit;
+          Le_HRangeC: TEdit;
+          Label14: TLabel;
+          le_DisplayOrder: TLabeledEdit;
+          DBlCB_Unit: TDBLookupComboBox;
+          Label8: TLabel;
+          Query_Unit: TOraQuery;
+          Ds_Unit: TDataSource;
+          edit_suffix: TEdit;
+          Label11: TLabel;
+          CB_IsActive: TCheckBox;
+          LE_Abbreviation: TLabeledEdit;
+          Memo_SpecialRange: TMemo;
+          Label15: TLabel;
+          Shape2: TShape;
+          Label16: TLabel;
+          CB_WorkList: TCheckBox;
+          Cb_PatientTestList: TCheckBox;
+          BitBtn1: TBitBtn;
+          Cb_IsSubjective: TCheckBox;
+          DBGrid2: TDBGrid;
+          Label17: TLabel;
+          Query_Log: TOraQuery;
+          DS_Log: TDataSource;
+    le_DisplayRange: TLabeledEdit;
+    Query_TestName: TOraQuery;
+    DS_TestName: TDataSource;
+    CB_Extended: TCheckBox;
+    CB_GlobalSearch: TCheckBox;
+    Edit_TestName: TEdit;
+    DBGrid_TestNameList: TDBGrid;
+    le_CptCode: TLabeledEdit;
+    lbl1: TLabel;
+    Label18: TLabel;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Label19: TLabel;
+    Edit_SIUnit: TEdit;
+          procedure BB_CloseClick(Sender: TObject);
+          procedure BB_NewClick(Sender: TObject);
+          procedure Dblcb_TestClick(Sender: TObject);
+          procedure DBLCB_DepClick(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure SpeedButton1Click(Sender: TObject);
+          procedure PageControl1Change(Sender: TObject);
+          procedure BB_SaveClick(Sender: TObject);
+          procedure DBGrid1DblClick(Sender: TObject);
+          procedure SpeedButton2Click(Sender: TObject);
+          procedure FormKeyPress(Sender: TObject; var Key: Char);
+          procedure le_LRangeMKeyPress(Sender: TObject; var Key: Char);
+          procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+          procedure BitBtn1Click(Sender: TObject);
+          procedure DBlCB_UnitKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure CB_ExtendedClick(Sender: TObject);
+    procedure CB_GlobalSearchClick(Sender: TObject);
+    procedure Edit_TestNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure Edit_TestNameKeyPress(Sender: TObject; var Key: Char);
+    procedure DBGrid_TestNameListDblClick(Sender: TObject);
+    procedure Edit_TestNameChange(Sender: TObject);
+    procedure DBLCB_DepKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+     private
+          pb_isnew: Boolean;
+          pi_TestId: Integer;
+          { Private declarations }
+     public
+          { Public declarations }
+     end;
+
+var
+     Form_Test: TForm_Test;
+
+implementation
+
+uses Unit_AltWorkListSetup;
+
+{$R *.dfm}
+
+procedure TForm_Test.BB_CloseClick(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+     Begin
+          PageControl1.ActivePageIndex := 0;
+          Query_list.Close;
+          Query_list.Session:=Dm_Hospital.Db;
+          Query_list.Open;
+          BB_Save.Enabled:=false;
+     End
+     else
+          Close;
+end;
+
+procedure TForm_Test.BB_NewClick(Sender: TObject);
+begin
+     pb_isnew := true;
+     PageControl1.ActivePageIndex := 1;
+     lbl_DepartmentName.Caption := DBLCB_Dep.Text;
+     lbl_TestName.Caption := Dblcb_Test.Text;
+     BB_Save.Enabled:=True;
+     Cb_PatientTestList.Checked:=True;
+end;
+
+procedure TForm_Test.BB_SaveClick(Sender: TObject);
+Var
+     TESTNAMEID, DISPLAYORDER, DEPORDER: Integer;
+     TUNIT, LRANGEG, HRANGEG, LRANGEF, HRANGEF, LRANGEC, HRANGEC, TEST, LRANGEM, HRANGEM, SUFFIX, ABBREVIATION, SPECIALRANGE,DisplayRange, WORKLIST,
+       PATIENTTESTLIST,CptCode,SIUnit: String;
+     ISHEADING, ISACTIVE, ISSUBJECTIVE: Boolean;
+     CRITICALLOW,CRITICALHIGH:string;
+begin
+     if Dblcb_Test.keyvalue<=0 then
+     begin
+          ShowMessage('Please Choose Testname');
+          PageControl1.ActivePageIndex := 0;
+          Dblcb_Test.SetFocus;
+          Exit;
+
+     end;
+
+    TESTNAMEID := Dblcb_Test.KeyValue;
+     if le_DisplayOrder.Text = '' then
+          DISPLAYORDER := 0
+     else
+          DISPLAYORDER := StrToInt(le_DisplayOrder.Text);
+     DEPORDER := 0;
+     TUNIT := VarToStr(DBlCB_Unit.Text);
+     LRANGEG := le_LRangeG.Text;
+     HRANGEG := Le_HRangeG.Text;
+     LRANGEF := le_LRangeF.Text;
+     HRANGEF := Le_HRangeF.Text;
+     LRANGEM := le_LRangeM.Text;
+     HRANGEM := Le_HRangeM.Text;
+     LRANGEC := le_LRangeC.Text;
+     HRANGEC := Le_HRangeC.Text;
+     SUFFIX := edit_suffix.Text;
+     ABBREVIATION := LE_Abbreviation.Text;
+     SPECIALRANGE := StringReplace(Memo_SpecialRange.Text,'''','''''',[rfReplaceAll]);
+     CRITICALLOW:=Edit1.Text;
+     CRITICALHIGH:=Edit2.Text;
+     SIUnit:=Edit_SIUnit.Text;
+
+     if Length(SPECIALRANGE)>500 then
+     begin
+        MessageDlg('Special Range cannot be more than 500 characters.',mtError,[mbok],0);
+        Exit;
+     end;
+
+     DisplayRange := StringReplace(le_DisplayRange.Text,'''','''''',[rfReplaceAll]);
+     CptCode:=StringReplace(le_CptCode.Text,'''','''''',[rfReplaceAll]);
+     TEST := le_Test.Text;
+     if CB_WorkList.Checked = true then
+          WORKLIST := 'Y'
+     else
+          WORKLIST := 'N';
+     if Cb_PatientTestList.Checked = true then
+          PATIENTTESTLIST := 'Y'
+     else
+          PATIENTTESTLIST := 'N';
+     if CB_IsHeading.Checked = true then
+          ISHEADING := true
+     else
+          ISHEADING := false;
+     if CB_IsActive.Checked = true then
+          ISACTIVE := true
+     else
+          ISACTIVE := false;
+
+     if Cb_IsSubjective.Checked = true then
+          ISSUBJECTIVE := true
+     else
+          ISSUBJECTIVE := false;
+     try
+          DM_Hospital.DB.StartTransaction;
+          try
+               if gi_compileValue=1 then
+               begin
+                  if pb_isnew then
+                      SaveTest_DHULIKHEL(TESTNAMEID, DISPLAYORDER, DEPORDER, TUNIT, LRANGEG, HRANGEG, LRANGEF, HRANGEF, LRANGEC, HRANGEC, TEST, LRANGEM, HRANGEM,CRITICALLOW,CRITICALHIGH,
+                           SUFFIX, ABBREVIATION, SPECIALRANGE,DISPLAYRANGE, WORKLIST, PATIENTTESTLIST,CptCode, ISHEADING, ISACTIVE, ISSUBJECTIVE)
+                  else
+                      UpdateTest_dhulikhel(pi_TestId, TESTNAMEID, DISPLAYORDER, DEPORDER, TUNIT, LRANGEG, HRANGEG, LRANGEF, HRANGEF, LRANGEC, HRANGEC, TEST,
+                           LRANGEM,CRITICALLOW,CRITICALHIGH, HRANGEM, SUFFIX, ABBREVIATION, SPECIALRANGE,DISPLAYRANGE, WORKLIST, PATIENTTESTLIST,CptCode, ISHEADING, ISACTIVE, ISSUBJECTIVE);
+               end
+               else
+               begin
+                 if pb_isnew then
+                      SaveTest(TESTNAMEID, DISPLAYORDER, DEPORDER, TUNIT, LRANGEG, HRANGEG, LRANGEF, HRANGEF, LRANGEC, HRANGEC, TEST, LRANGEM, HRANGEM,
+                           SUFFIX, ABBREVIATION, SPECIALRANGE,DISPLAYRANGE, WORKLIST, PATIENTTESTLIST,CptCode,SIUnit, ISHEADING, ISACTIVE, ISSUBJECTIVE)
+                 else
+                      UpdateTest(pi_TestId, TESTNAMEID, DISPLAYORDER, DEPORDER, TUNIT, LRANGEG, HRANGEG, LRANGEF, HRANGEF, LRANGEC, HRANGEC, TEST,
+                           LRANGEM, HRANGEM, SUFFIX, ABBREVIATION, SPECIALRANGE,DISPLAYRANGE, WORKLIST, PATIENTTESTLIST,CptCode,SIUnit, ISHEADING, ISACTIVE, ISSUBJECTIVE);
+               end;
+          except
+               if gi_compileValue=1 then
+               begin
+                  if pb_isnew then
+                      SaveTest_DHULIKHEL(TESTNAMEID, DISPLAYORDER, DEPORDER, TUNIT, LRANGEG, HRANGEG, LRANGEF, HRANGEF, LRANGEC, HRANGEC, TEST, LRANGEM, HRANGEM,CRITICALLOW,CRITICALHIGH,
+                           SUFFIX, ABBREVIATION, SPECIALRANGE,DISPLAYRANGE, WORKLIST, PATIENTTESTLIST,CptCode, ISHEADING, ISACTIVE, ISSUBJECTIVE)
+                  else
+                      UpdateTest_dhulikhel(pi_TestId, TESTNAMEID, DISPLAYORDER, DEPORDER, TUNIT, LRANGEG, HRANGEG, LRANGEF, HRANGEF, LRANGEC, HRANGEC, TEST,
+                           LRANGEM,CRITICALLOW,CRITICALHIGH, HRANGEM, SUFFIX, ABBREVIATION, SPECIALRANGE,DISPLAYRANGE, WORKLIST, PATIENTTESTLIST,CptCode, ISHEADING, ISACTIVE, ISSUBJECTIVE);
+               end
+               else
+               begin
+                 if pb_isnew then
+                      SaveTest(TESTNAMEID, DISPLAYORDER, DEPORDER, TUNIT, LRANGEG, HRANGEG, LRANGEF, HRANGEF, LRANGEC, HRANGEC, TEST, LRANGEM, HRANGEM,
+                           SUFFIX, ABBREVIATION, SPECIALRANGE,DISPLAYRANGE, WORKLIST, PATIENTTESTLIST,CptCode,SIUnit, ISHEADING, ISACTIVE, ISSUBJECTIVE)
+                 else
+                      UpdateTest(pi_TestId, TESTNAMEID, DISPLAYORDER, DEPORDER, TUNIT, LRANGEG, HRANGEG, LRANGEF, HRANGEF, LRANGEC, HRANGEC, TEST,
+                           LRANGEM, HRANGEM, SUFFIX, ABBREVIATION, SPECIALRANGE,DISPLAYRANGE, WORKLIST, PATIENTTESTLIST,CptCode,SIUnit, ISHEADING, ISACTIVE, ISSUBJECTIVE);
+               end;
+          end;
+          DM_Hospital.DB.Commit;
+          ShowDoneMessage;
+          ClearAll(PageControl1.Pages[1]);
+          pb_isnew := true;
+     except
+          DM_Hospital.DB.Rollback;
+          MsgBox(1005, 0, '', '', '');
+     end;
+     RefreshQuery(Query_Log,gs_DatabaseName);
+end;
+
+procedure TForm_Test.BitBtn1Click(Sender: TObject);
+begin
+     Try
+          Form_AltWorkListSetup := TForm_AltWorkListSetup.Create(Nil);
+          Form_AltWorkListSetup.ShowModal;
+     Finally
+          Form_AltWorkListSetup.Free;
+     End;
+
+end;
+
+procedure TForm_Test.CB_ExtendedClick(Sender: TObject);
+begin
+     if CB_Extended.Checked=False then
+     Begin
+          Query_TestName.Close;
+          Query_TestName.Open;
+     End;
+end;
+
+procedure TForm_Test.CB_GlobalSearchClick(Sender: TObject);
+ begin
+     if CB_GlobalSearch.Checked then
+     Begin
+          Query_TestName.Close;
+          if gi_compileValue in [1,2,5] then
+            Query_TestName.SQL[2]:='And isactive=''T'''
+          else
+            Query_TestName.SQL[2]:=' and tena_IsActive=''Y''';
+          Query_TestName.Open;
+          Edit_TestName.Text := '';
+          Edit_TestName.Visible := true;
+          Edit_TestName.Width := 160;
+          Edit_TestName.SetFocus;
+          Edit_TestName.Top := Dblcb_Test.Top;
+          Edit_TestName.Left := Dblcb_Test.Left;
+          DBGrid_TestNameList.Visible := false;
+          DBGrid_TestNameList.Visible := true;
+          DBGrid_TestNameList.Left := Dblcb_Test.Left;
+          DBGrid_TestNameList.Width := 421;
+          DBGrid_TestNameList.Top := 421;
+          DBGrid_TestNameList.Top := Dblcb_Test.Top + 22;
+          DBGrid_TestNameList.Height := 200;
+     End
+     Else
+     Begin
+          Query_TestName.Close;
+          Dblcb_Test.KeyValue := NULL;
+          DBLCB_Dep.KeyValue := NULL;
+          Edit_TestName.Visible := false;
+          DBGrid_TestNameList.Visible := false;
+     End;
+end;
+
+procedure TForm_Test.DBGrid1DblClick(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex := 1;
+     pb_isnew := false;
+     BB_Save.Enabled:=True;
+     lbl_DepartmentName.Caption := DBLCB_Dep.Text;
+
+     if CB_GlobalSearch.Checked then
+        lbl_TestName.Caption := Edit_TestName.text
+     else
+     lbl_TestName.Caption := Dblcb_Test.Text;
+
+     with Query_list do
+     begin
+          le_LRangeG.Text := FieldByName('LRangeG').AsString;
+          Le_HRangeG.Text := FieldByName('HRangeG').AsString;
+          le_LRangeF.Text := FieldByName('LRangeF').AsString;
+          Le_HRangeF.Text := FieldByName('HRangeF').AsString;
+          le_LRangeM.Text := FieldByName('LRangeM').AsString;
+          Le_HRangeM.Text := FieldByName('HRangeM').AsString;
+          le_LRangeC.Text := FieldByName('LRangeC').AsString;
+          Le_HRangeC.Text := FieldByName('HRangeC').AsString;
+          Edit_SIUnit.Text := FieldByName('SIUnit').AsString;
+          Edit1.Text:= FieldByName('CriticalLow').AsString;
+          Edit2.Text:= FieldByName('CriticalHigh').AsString;
+          LE_Abbreviation.Text := FieldByName('Abbreviation').AsString;
+          Memo_SpecialRange.Text := FieldByName('SpecialRange').AsString;
+          le_DisplayRange.Text := FieldByName('DisplayRange').AsString;
+          le_CptCode.Text:=FieldByName('CptCode').AsString;
+          edit_suffix.Text := FieldByName('Suffix').AsString;
+          if FieldByName('WorkList').AsString = 'Y' then
+               CB_WorkList.Checked := true
+          else
+               CB_WorkList.Checked := false;
+
+          if FieldByName('PatientTestList').AsString = 'Y' then
+               Cb_PatientTestList.Checked := true
+          else
+               Cb_PatientTestList.Checked := false;
+
+          if FieldByName('IsHeading').AsString = 'Y' then
+               CB_IsHeading.Checked := true
+          else
+               CB_IsHeading.Checked := false;
+          if FieldByName('IsActive').AsString = 'Y' then
+               CB_IsActive.Checked := true
+          else
+               CB_IsActive.Checked := false;
+          if FieldByName('IsSubjective').AsString = 'Y' then
+               Cb_IsSubjective.Checked := true
+          else
+               Cb_IsSubjective.Checked := false;
+          le_Test.Text := FieldByName('Test').AsString;
+          DBlCB_Unit.KeyValue := FieldByName('Unit').AsString;
+          le_DisplayOrder.Text := FieldByName('DisplayOrder').AsString;
+          pi_TestId := FieldByName('TestId').AsInteger;
+     end;
+end;
+
+procedure TForm_Test.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+     if (Query_list.FieldByName('IsActive').AsString = 'F') then
+     begin
+          with DBGrid1.Canvas do
+          begin
+               Brush.Color := clWebLavender;
+               // Font.Color := clWhite;
+          end;
+          DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     end;
+end;
+
+procedure TForm_Test.DBGrid_TestNameListDblClick(Sender: TObject);
+begin
+     if (Query_TestName.recordcount > 0) and (DBGrid_TestNameList.Visible = true) then
+          Edit_TestName.Text := Query_TestName.FieldByName('TestName').AsString;
+
+     DBGrid_TestNameList.Visible := false;
+
+     Dblcb_Test.KeyValue := Query_TestName.FieldByName('Tena_TestNameID').AsInteger;
+     DBLCB_Dep.KeyValue := Query_TestName.FieldByName('Tena_DepID').AsInteger;
+     Dblcb_TestClick(Self);
+end;
+
+procedure TForm_Test.DBLCB_DepClick(Sender: TObject);
+begin
+     with Query_Test do
+     begin
+          Close;
+          Session:=Dm_Hospital.Db;
+          SQL[1] := 'From '+gs_Hos_DB_UserName+'.Hs_Tena_TestName where tena_testnameid in (select tena_testnameid from '+gs_Hos_DB_UserName+'.Hs_tena_testname where tena_depid=' + IntToStr(DBLCB_Dep.KeyValue) + ')';
+          Open;
+     end;
+end;
+
+procedure TForm_Test.DBLCB_DepKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    if Key=VK_DELETE then
+    begin
+      DBLCB_Dep.KeyValue:=null;
+    end;
+end;
+
+procedure TForm_Test.Dblcb_TestClick(Sender: TObject);
+begin
+     with Query_list do
+     begin
+          Close;
+          Session:=Dm_Hospital.Db;
+          SQL[1] := 'Where TestNameID=' + IntToStr(Dblcb_Test.KeyValue);
+          Open;
+     end;
+     with Query_Log do
+     begin
+          Close;
+          Session:=Dm_Hospital.Db;
+          SQL[1] := 'Where TestnameID=' + IntToStr(Query_list.FieldByName('TestNameID').AsInteger);
+          Open;
+     end;
+end;
+
+procedure TForm_Test.DBlCB_UnitKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = VK_DELETE then
+          DBlCB_Unit.KeyValue := -1;
+end;
+
+procedure TForm_Test.Edit_TestNameChange(Sender: TObject);
+begin
+     if CB_Extended.Checked = false then
+     Begin
+          With Query_TestName do
+          begin
+               Filtered := false;
+               If Edit_TestName.Text <> '' then
+               Begin
+                    Filter := 'TestName=' + #39 + uppercase(Edit_TestName.Text) + '*'#39;
+                    Filtered := true;
+               End
+               else
+                    Filtered := false;
+          end;
+     End
+     Else
+     Begin
+          With Query_TestName do
+          begin
+               Filtered := false;
+               Close;
+               SQL.Clear;
+               SQL.Add(' Select Tena_TestNameId,Tena_TestNameCode,Trim(Tena_TestName) TestName,Tena_DepId From '+gs_Hos_DB_UserName+'.Hs_Tena_TestName');
+               SQL.Add(' where Tena_DepId In (Select Dept_DepId From '+gs_Hos_DB_UserName+'.Hs_Dept_Department where Dept_Deptype=''P'')');
+               SQL.Add(' and Tena_IsActive=''T'' and Tena_TestName Like ''%' + uppercase(Edit_TestName.Text) + '%''');
+               SQL.Add(' Order by Trim(TestName)');
+               Open;
+          end;
+     End;
+end;
+
+procedure TForm_Test.Edit_TestNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     If Not(Key = 13) Then
+          DBGrid_TestNameList.Visible := true;
+
+     IF (Key = VK_Down) and (Query_TestName.recordcount > 0) Then
+     Begin
+          Query_TestName.Next;
+          // Edit_TestName.Text:=Query_TestName.FieldByName('TestName').AsString;
+     End;
+
+     IF (Key = VK_Up) and (Query_TestName.recordcount > 0) Then
+     Begin
+          Query_TestName.Prior;
+          // Edit_TestName.Text:=Query_TestName.FieldByName('TestName').AsString;
+     End;
+
+     if Key = VK_DELETE then
+          Edit_TestName.Text := '';
+end;
+
+procedure TForm_Test.Edit_TestNameKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+     begin
+          if (Query_TestName.recordcount > 0) and (DBGrid_TestNameList.Visible = true) then
+               Edit_TestName.Text := Query_TestName.FieldByName('TestName').AsString;
+
+          DBGrid_TestNameList.Visible := false;
+
+          Dblcb_Test.KeyValue := Query_TestName.FieldByName('tena_TestNameID').AsInteger;
+          DBLCB_Dep.KeyValue := Query_TestName.FieldByName('tena_DepID').AsInteger;
+          Dblcb_TestClick(Self);
+     End;
+end;
+
+procedure TForm_Test.FormCreate(Sender: TObject);
+begin
+     with Query_Department do
+     begin
+          Close;
+          Sql.Clear;
+          Session:=Dm_Hospital.Db;
+          Sql.Add('Select * from '+gs_Hos_DB_UserName+'.Hs_Dept_Department');
+          Sql.Add('Where dept_deptype=''P''');
+          Sql.Add('Order by dept_DepName');
+          Open;
+     end;
+     BB_Save.Enabled:=false;
+     Query_Unit.Close;
+     Query_Unit.Session:=Dm_Hospital.Db;
+     Query_Unit.Open;
+     PageControl1.ActivePageIndex := 0;
+     Shape2.Brush.Color := clWebLavender;
+end;
+
+procedure TForm_Test.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = VK_F1 then
+     Begin
+          CB_GlobalSearch.Checked := Not(CB_GlobalSearch.Checked);
+          if CB_GlobalSearch.Checked then
+               DBGrid_TestNameList.Visible := true
+          Else
+          Begin
+               DBGrid_TestNameList.Visible := false;
+               Query_list.Close;
+          End;
+
+     End;
+
+     if key=VK_F2 then
+     Begin
+          CB_Extended.Checked := Not(CB_Extended.Checked);
+          CB_ExtendedClick(Sender);
+     End;
+
+
+     if Key = 27 then
+          BB_CloseClick(Sender);
+end;
+
+procedure TForm_Test.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if (Key = #13) and (not(ActiveControl = Memo_SpecialRange)) then
+          keybd_event(9, 13, 0, 0);
+end;
+
+procedure TForm_Test.le_LRangeMKeyPress(Sender: TObject; var Key: Char);
+begin
+     OnlyNumericExtended(Sender, Key);
+end;
+
+procedure TForm_Test.PageControl1Change(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+          PageControl1.ActivePageIndex := 0
+     else
+          PageControl1.ActivePageIndex := 1;
+end;
+
+procedure TForm_Test.SpeedButton1Click(Sender: TObject);
+begin
+     if MsgBox(1002, 1, '', '', '') then
+     begin
+          DeleteTest(Query_list.FieldByName('TestID').AsInteger);
+     end;
+     Query_list.Close;
+     Query_list.Open;
+     RefreshQuery(Query_Log,gs_DatabaseName);
+end;
+
+procedure TForm_Test.SpeedButton2Click(Sender: TObject);
+begin
+     if MsgBox(1010, 1, '', '', '') then
+     begin
+          ExportDBGrid(Form_Test, DBGrid1, true, 'Test List', TodaysDateVS + ' BS -' + TodaysDate + ' AD');
+     end;
+end;
+
+end.

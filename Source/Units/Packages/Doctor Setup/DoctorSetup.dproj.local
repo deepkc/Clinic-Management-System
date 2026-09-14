@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2011/12/29 13:03:43.128.pas,C:\Users\vicky\Documents\RAD Studio\Projects\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Doctor Setup\Unit_DoctorSetup.pas</Transaction>
+    <Transaction>2011/12/29 13:03:43.128.dfm,C:\Users\vicky\Documents\RAD Studio\Projects\Unit1.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Doctor Setup\Unit_DoctorSetup.dfm</Transaction>
+    <Transaction>2011/12/29 13:03:47.720.dproj,C:\Users\vicky\Documents\RAD Studio\Projects\Package1.dproj=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Doctor Setup\DoctorSetup.dproj</Transaction>
+    <Transaction>2017/07/14 16:20:05.998.pas,E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Doctor Setup\Unit_HospitalSetup.pas=</Transaction>
+    <Transaction>2017/07/14 16:20:05.998.dfm,E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Doctor Setup\Unit_HospitalSetup.dfm=</Transaction>
+    <Transaction>2017/07/14 16:20:09.374.pas,E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Doctor Setup\Unit_ReferalDoctorSetup.pas=</Transaction>
+    <Transaction>2017/07/14 16:20:09.374.dfm,E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Doctor Setup\Unit_ReferalDoctorSetup.dfm=</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="-1" SortType="1"/>
+</BorlandProject>

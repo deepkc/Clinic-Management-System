@@ -1,0 +1,393 @@
+unit Unit_ViewLabReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, Buttons, ExtCtrls, OleCtrls, DateEditXControl_TLB, Db,
+  DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Grids, DBGrids, ServerDate, Spin;
+
+type
+  TForm_ViewLabReport = class(TForm)
+    Panel1: TPanel;
+    BtnCancel: TBitBtn;
+    Panel2: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label_PatientID: TLabel;
+    Label_InPatientID: TLabel;
+    Label_Name: TLabel;
+    Label_Age: TLabel;
+    Label_Ward: TLabel;
+    Label_Doctor: TLabel;
+    GroupBox2: TGroupBox;
+    Label28: TLabel;
+    Label29: TLabel;
+    CB_SearchByDate: TCheckBox;
+    Dex_From: TDateEditX;
+    Dex_To: TDateEditX;
+    Query_GetPatientTest: TOraQuery;
+    DS_GetPatientTest: TDataSource;
+    TempTable_LabReport: TOraTable;
+    Chk_SensitiveResult: TCheckBox;
+    Query_Process: TOraQuery;
+    Table_SensitivityResult: TOraTable;
+    DataSource_SensitiveMedicine: TDataSource;
+    Label7: TLabel;
+    Shape1: TShape;
+    CB_BeforeAdmission: TCheckBox;
+    BB_Refresh: TBitBtn;
+    Panel3: TPanel;
+    DBGrid1: TDBGrid;
+    DBGrid_SensitivityResult: TDBGrid;
+    Btn_From: TButton;
+    Btn_To: TButton;
+    GroupBox1: TGroupBox;
+    SPE_NoofDays: TSpinEdit;
+    Label8: TLabel;
+    Label9: TLabel;
+    procedure BtnCancelClick(Sender: TObject);
+    procedure CB_SearchByDateClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure Chk_SensitiveResultClick(Sender: TObject);
+    procedure SPE_NoofDaysChange(Sender: TObject);
+    procedure CB_BeforeAdmissionClick(Sender: TObject);
+    procedure BB_RefreshClick(Sender: TObject);
+    procedure Btn_FromClick(Sender: TObject);
+    procedure Btn_ToClick(Sender: TObject);
+  private
+    { Private declarations }
+    ps_TodaysDate:String;
+    procedure CreateTempTable;
+    procedure CreateTableSensitivityResult;
+    Function IsSensitive(TestNameId:Integer):Boolean;
+  public
+    { Public declarations }
+    pi_PatientID,pi_InPatientID:Integer;
+  end;
+
+var
+  Form_ViewLabReport: TForm_ViewLabReport;
+
+implementation
+
+uses Fxn_Hos;
+
+{$R *.DFM}
+
+procedure TForm_ViewLabReport.BtnCancelClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_ViewLabReport.Btn_FromClick(Sender: TObject);
+begin
+     ChangeDateSystem(Dex_From,Btn_From);
+     ChangeDateSystem(Dex_To,Btn_To);
+end;
+
+procedure TForm_ViewLabReport.Btn_ToClick(Sender: TObject);
+begin
+     ChangeDateSystem(Dex_From,Btn_From);
+     ChangeDateSystem(Dex_To,Btn_To);
+end;
+
+procedure TForm_ViewLabReport.CB_SearchByDateClick(Sender: TObject);
+begin
+     IF CB_SearchByDate.Checked Then
+     Begin
+          DEX_From.Enabled:=True;
+          DEX_To.Enabled:=True;
+     End
+     Else
+     Begin
+          DEX_From.Enabled:=False;
+          DEX_To.Enabled:=False;
+     End;
+end;
+
+procedure TForm_ViewLabReport.BB_RefreshClick(Sender: TObject);
+var
+     ls_OldTestDate,ls_OldBillNo,ls_OldTestCode:String;
+begin
+     If CB_SearchByDate.Checked then
+     Begin
+          With Query_GetPatientTest do
+          begin
+               Close;
+               Session := DM_Hospital.DB;
+               //if CB_BeforeAdmission.checked=true then
+               sql[7]:='PT.PatientID='+inttostr(Self.pi_PatientID)+' And';
+               //else
+               //sql[7]:='PT.InPatientID='+inttostr(Self.pi_InPatientId)+' And';
+               sql[8]:='(PT.TestDate >='+Quotedstr(DEX_From.Text)+' and PT.TestDate <='+Quotedstr(DEX_To.text)+')';
+               //sql.savetofile('C:\WardLabViewReport.txt');
+               Open;
+          end;
+     End
+     Else
+     Begin
+          DEX_From.VSDateAsDays:=(DEX_From.VSDateAsDays)-StrToInt(SPE_NoofDays.Text);
+          With Query_GetPatientTest Do
+          Begin
+               Close;
+               DatabaseName:=gs_DatabaseName;
+               //if CB_BeforeAdmission.checked=true then
+               sql[7]:='PT.PatientID='+inttostr(Self.pi_PatientID)+' And';
+               //else
+               //sql[7]:='PT.InPatientID='+inttostr(Self.pi_InPatientId)+' And';
+               sql[8]:='(PT.TestDate >='+Quotedstr(DEX_From.Text)+' and PT.TestDate <='+Quotedstr(DEX_To.text)+')';
+               //sql.savetofile('C:\WardLabViewReport.txt');
+               Open;
+          End;
+          DEX_From.Text:=TodaysDate;
+     End;
+     TempTable_LabReport.Close;
+     TempTable_LabReport.EmptyTable;
+     TempTable_LabReport.Open;
+     With Query_GetPatientTest Do
+     Begin
+          While Not Eof Do
+          Begin
+               TempTable_LabReport.Append;
+               TempTable_LabReport.FieldByName('TestNameCode').AsString:=FieldByName('TestNameCode').AsString;
+               If FieldByName('Test').AsString='' Then
+               TempTable_LabReport.FieldByName('TestName').AsString:=FieldByName('TestName').AsString
+               Else
+               TempTable_LabReport.FieldByName('TestName').AsString:=FieldByName('Test').AsString;
+               //TempTable_LabReport.FieldByName('TestDate').AsString:=FieldByName('TestDate').AsString;
+               If ls_OldTestCode<>FieldByName('TestNameCode').AsString Then
+               Begin
+                    TempTable_LabReport.FieldByName('BillNo').AsString:=FieldByName('BillNo').AsString;
+                    TempTable_LabReport.FieldByName('TestDate').AsString:=FieldByName('TestDate').AsString;
+                    TempTable_LabReport.FieldByName('TestTime').AsString:=FieldByName('TestTime').AsString;
+               End
+               Else
+               Begin
+                    TempTable_LabReport.FieldByName('BillNo').AsString:='';
+                    TempTable_LabReport.FieldByName('TestDate').AsString:='';
+                    TempTable_LabReport.FieldByName('TestTime').AsString:='';
+               End;
+               TempTable_LabReport.FieldByName('TestNameID').AsInteger:=FieldByName('TestNameID').AsInteger;
+               TempTable_LabReport.FieldByName('PatientTestID').AsInteger:=FieldByName('PatientTestID').AsInteger;
+               TempTable_LabReport.FieldByName('Finding').AsString:=FieldByName('Finding').AsString;
+               TempTable_LabReport.FieldByName('RefRange').AsString:=FieldByName('RefRange').AsString;
+               TempTable_LabReport.FieldByName('Unit').AsString:=FieldByName('Unit').AsString;
+               TempTable_LabReport.Post;
+               ls_OldTestCode:=FieldByName('TestNameCode').AsString;
+               Next;
+          End;
+          TempTable_LabReport.First;
+     End;
+end;
+
+procedure TForm_ViewLabReport.FormShow(Sender: TObject);
+begin
+     ps_TodaysDate:=ServerDate.TodaysDate;
+     DEX_From.Text:=ps_TodaysDate;
+     DEX_To.Text:=ps_TodaysDate;
+     SPE_NoofDays.text:='5';
+     BB_RefreshClick(Self);
+end;
+
+procedure TForm_ViewLabReport.CreateTempTable;
+begin
+     IF TempTable_LabReport.Active Then TempTable_LabReport.Active:=False;
+     IF FileExists(gs_TempPath+'\ViewLabReport.db') Then DeleteFile(gs_TempPath+'\ViewLabReport.db');
+     With TempTable_LabReport do
+     begin
+          Close;
+          databasename:=gs_TempPath;
+          tablename:='ViewLabReport.db';
+          tableType:=ttdefault;
+          FieldDefs.Clear;
+          Fielddefs.add('TestName',ftString,100);
+          Fielddefs.add('TestNameCode',ftString,10);
+          Fielddefs.add('TestNameID',ftInteger);
+          Fielddefs.add('PatientTestID',ftInteger);
+          Fielddefs.add('TestDate',ftString,10);
+          Fielddefs.add('TestTime',ftString,10);
+          Fielddefs.add('BillNo',ftString,20);
+          Fielddefs.add('LabNo',ftString,20);
+          Fielddefs.add('Finding',ftString,100);
+          Fielddefs.add('RefRange',ftString,30);
+          Fielddefs.add('Unit',ftString,25);
+          createtable;
+     End;
+end;
+
+procedure TForm_ViewLabReport.FormCreate(Sender: TObject);
+begin
+     CreateTempTable;
+     CreateTableSensitivityResult;
+     DEX_From.systemofdate:=gi_datesystem;
+     DEX_To.systemofdate:=gi_datesystem;
+     DEX_From.text:=TodaysDate;
+     DEX_To.text:=TodaysDate;
+
+
+end;
+
+procedure TForm_ViewLabReport.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     If Key=vk_Escape Then Close;
+     if Key=VK_F5 then BB_RefreshClick(Sender);
+     if Key=VK_F1 then CB_BeforeAdmission.Checked:=not(CB_BeforeAdmission.Checked);
+     if Key=VK_F2 then Chk_SensitiveResult.Checked:=not(Chk_SensitiveResult.Checked);
+
+end;
+
+procedure TForm_ViewLabReport.DBGrid1DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+     If Trim(TempTable_LabReport.FieldByName('RefRange').AsString)=''  Then
+     Begin
+          DBGrid1.Canvas.Font.Color:=clBlue;
+          DBGrid1.Columns[2].Font.Style:=[fsBold];
+          DBGrid1.Columns[3].Font.Style:=[fsBold];
+          DBGrid1.DefaultDrawDataCell(rect,Column.Field,State);
+     End;
+end;
+
+procedure TForm_ViewLabReport.DBGrid1CellClick(Column: TColumn);
+begin
+     If IsSensitive(TempTable_LabReport.FieldByName('TestNameId').AsInteger)=True Then
+     Begin
+          Chk_SensitiveResult.Visible:=True;
+          Table_SensitivityResult.Close;
+          Table_SensitivityResult.EmptyTable;
+          Table_SensitivityResult.Exclusive:=True;
+          Table_SensitivityResult.Open;
+          with Query_Process do
+          Begin
+               close;
+               sql.clear;
+               sql.add(' Select SMT.SensitiveMedicineID,SM.MEDICINE,SMT.TESTNAMEID,SR.RESULT');
+               sql.add(' From SensitivityResult SR,SENSITIVEMEDICINETESTWISE SMT,SensitiveMedicine SM where');
+               sql.add(' SR.SMTWID=SMT.SMTWID And SMT.SENSITIVEMEDICINEID=SM.SENSITIVEMEDICINEID and');
+               sql.add(' SR.PatientID='+IntToStr(pi_PatientID));
+               sql.add(' and SR.PatientTestId='+TempTable_LabReport.FieldByName('PatientTestId').AsString);
+               sql.add(' and SMT.TestNameId='+TempTable_LabReport.FieldByName('TestNameId').AsString);
+               sql.add(' Order by SM.MEDICINE');
+               Open;
+
+               First;
+               while not eof do
+               Begin
+                    Table_SensitivityResult.Append;
+                    Table_SensitivityResult.FieldByName('MedicineId').AsInteger:=FieldByName('SensitiveMedicineId').AsInteger;
+                    Table_SensitivityResult.FieldByName('Medicine').AsString:=FieldByName('Medicine').AsString;
+                    {Table_SensitivityResult.FieldByName('Sensitive').AsString:='';
+                    Table_SensitivityResult.FieldByName('Intermediate').AsString:='';
+                    Table_SensitivityResult.FieldByName('Resistant').AsString:='';
+                    Table_SensitivityResult.Post;}
+                    IF Query_Process.FieldByName('Result').AsString='S' Then
+                    Table_SensitivityResult.FieldByName('Sensitive').AsString:='Y'
+                    Else IF Query_Process.FieldByName('Result').AsString='I' Then
+                    Table_SensitivityResult.FieldByName('Intermediate').AsString:='Y'
+                    Else IF Query_Process.FieldByName('Result').AsString='R' Then
+                    Table_SensitivityResult.FieldByName('Resistant').AsString:='Y';
+                    Next;
+               End;
+          End;
+     End
+     Else
+     Begin
+          Table_SensitivityResult.Close;
+          Chk_SensitiveResult.Checked:=False;
+          Chk_SensitiveResult.Visible:=False;
+          DBGrid_SensitivityResult.Visible:=False;
+     End;
+end;
+
+function TForm_ViewLabReport.IsSensitive(TestNameId: Integer): Boolean;
+begin
+     Result:=False;
+     With Query_Process Do
+     Begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          sql.Clear;
+          sql.Add('Select * From SENSITIVEMEDICINETESTWISE where TestNameId='+IntToStr(TestNameId));
+          Open;
+          If Query_Process.FieldByName('TestNameId').AsInteger > 0 Then
+          Result:=True
+          Else
+          Result:=False;
+     End;
+end;
+
+procedure TForm_ViewLabReport.Chk_SensitiveResultClick(Sender: TObject);
+begin
+     IF Chk_SensitiveResult.Checked=True then
+     Begin
+          DBGrid_SensitivityResult.Visible:=True;
+          ActiveControl:=DBGrid_SensitivityResult;
+          Table_SensitivityResult.Edit;
+          Table_SensitivityResult.First;
+          DBGrid_SensitivityResult.SelectedIndex:=1;
+     End
+     Else
+     DBGrid_SensitivityResult.Visible:=False;
+end;
+
+procedure TForm_ViewLabReport.CreateTableSensitivityResult;
+begin
+     IF Table_SensitivityResult.Active Then Table_SensitivityResult.Active:=False;
+   IF FileExists(gs_TempPath+'\ViewSensitivityResult.db') Then DeleteFile(gs_TempPath+'\ViewSensitivityResult.db');
+   with Table_SensitivityResult do
+   Begin
+      DatabaseName:=gs_TempPath;
+      TableName:='ViewSensitivityResult.db';
+      TableType:=ttDefault;
+      FieldDefs.Clear;
+      FieldDefs.Add('MedicineId',ftInteger);
+      FieldDefs.Add('Medicine',ftString,50);
+      FieldDefs.Add('Sensitive',ftString,2);
+      FieldDefs.Add('Intermediate',ftString,2);
+      FieldDefs.Add('Resistant',ftString,2);
+      IndexDefs.Clear;
+      CreateTable;
+   End;
+   Table_SensitivityResult.DatabaseName:=gs_TempPath;
+   Table_SensitivityResult.Close;
+   Table_SensitivityResult.EmptyTable;
+   Table_SensitivityResult.Exclusive:=True;
+   Table_SensitivityResult.open;
+end;
+
+procedure TForm_ViewLabReport.SPE_NoofDaysChange(Sender: TObject);
+begin
+     if StrToInt(SPE_NoofDays.Text)<0 then
+     SPE_NoofDays.Text:='0';
+
+end;
+
+procedure TForm_ViewLabReport.CB_BeforeAdmissionClick(Sender: TObject);
+begin
+     (*if CB_BeforeAdmission.checked=true then
+     begin
+          SPE_NoofDays.Visible:=true;
+          label8.Visible:=true
+     end
+     else
+     begin
+          SPE_NoofDays.Visible:=false;
+          label8.Visible:=false;
+          DEX_From.text:=todaysdate;
+     end;*)
+end;
+
+end.

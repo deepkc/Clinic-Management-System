@@ -1,0 +1,2956 @@
+object Form_DischargeBilling: TForm_DischargeBilling
+  Left = 0
+  Top = 0
+  Caption = 'Discharge Billing'
+  ClientHeight = 700
+  ClientWidth = 1129
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  WindowState = wsMaximized
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object GroupBox4: TGroupBox
+    Left = 0
+    Top = 131
+    Width = 1129
+    Height = 569
+    Align = alClient
+    TabOrder = 0
+    DesignSize = (
+      1129
+      569)
+    object SPB_InvestigationCharge: TSpeedButton
+      Left = 565
+      Top = 20
+      Width = 40
+      Height = 22
+      Caption = '(F1)'
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        3333333333333333333333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333FF3333333333333003333
+        3333333333773FF3333333333309003333333333337F773FF333333333099900
+        33333FFFFF7F33773FF30000000999990033777777733333773F099999999999
+        99007FFFFFFF33333F7700000009999900337777777F333F7733333333099900
+        33333333337F3F77333333333309003333333333337F77333333333333003333
+        3333333333773333333333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      Layout = blGlyphRight
+      NumGlyphs = 2
+      ParentFont = False
+      OnClick = SPB_InvestigationChargeClick
+    end
+    object SpeedButtonBedCharge: TSpeedButton
+      Left = 563
+      Top = 184
+      Width = 40
+      Height = 22
+      Caption = '(F2)'
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        3333333333333333333333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333FF3333333333333003333
+        3333333333773FF3333333333309003333333333337F773FF333333333099900
+        33333FFFFF7F33773FF30000000999990033777777733333773F099999999999
+        99007FFFFFFF33333F7700000009999900337777777F333F7733333333099900
+        33333333337F3F77333333333309003333333333337F77333333333333003333
+        3333333333773333333333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      Layout = blGlyphRight
+      NumGlyphs = 2
+      ParentFont = False
+      OnClick = SpeedButtonBedChargeClick
+    end
+    object SpeedButtonMedicineCharge: TSpeedButton
+      Left = 563
+      Top = 412
+      Width = 40
+      Height = 22
+      Caption = '(F4)'
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        3333333333333333333333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333FF3333333333333003333
+        3333333333773FF3333333333309003333333333337F773FF333333333099900
+        33333FFFFF7F33773FF30000000999990033777777733333773F099999999999
+        99007FFFFFFF33333F7700000009999900337777777F333F7733333333099900
+        33333333337F3F77333333333309003333333333337F77333333333333003333
+        3333333333773333333333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      Layout = blGlyphRight
+      NumGlyphs = 2
+      ParentFont = False
+      OnClick = SpeedButtonMedicineChargeClick
+    end
+    object Label21: TLabel
+      Left = 338
+      Top = 391
+      Width = 103
+      Height = 20
+      AutoSize = False
+      Color = clBlack
+      ParentColor = False
+    end
+    object SpeedButtonConvertFrgToSpl: TSpeedButton
+      Left = 217
+      Top = 527
+      Width = 190
+      Height = 23
+      Caption = 'Convert Foreigner to Others (F6)'
+      Enabled = False
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333303
+        333333333333337FF3333333333333903333333333333377FF33333333333399
+        03333FFFFFFFFF777FF3000000999999903377777777777777FF0FFFF0999999
+        99037F3337777777777F0FFFF099999999907F3FF777777777770F00F0999999
+        99037F773777777777730FFFF099999990337F3FF777777777330F00FFFFF099
+        03337F773333377773330FFFFFFFF09033337F3FF3FFF77733330F00F0000003
+        33337F773777777333330FFFF0FF033333337F3FF7F3733333330F08F0F03333
+        33337F7737F7333333330FFFF003333333337FFFF77333333333000000333333
+        3333777777333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      Visible = False
+      OnClick = SpeedButtonConvertFrgToSplClick
+    end
+    object SPB_RoundVisit: TSpeedButton
+      Left = 565
+      Top = 314
+      Width = 40
+      Height = 22
+      Caption = '(F3)'
+      Flat = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        3333333333333333333333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333FF3333333333333003333
+        3333333333773FF3333333333309003333333333337F773FF333333333099900
+        33333FFFFF7F33773FF30000000999990033777777733333773F099999999999
+        99007FFFFFFF33333F7700000009999900337777777F333F7733333333099900
+        33333333337F3F77333333333309003333333333337F77333333333333003333
+        3333333333773333333333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      Layout = blGlyphRight
+      NumGlyphs = 2
+      OnClick = SPB_RoundVisitClick
+    end
+    object SPB_BedDetail: TSpeedButton
+      Left = 562
+      Top = 211
+      Width = 45
+      Height = 22
+      Hint = 'Alternate Fraction Function (F9)'
+      Caption = 'Alt.&B Fxn'
+      Enabled = False
+      Flat = True
+      ParentShowHint = False
+      ShowHint = True
+      Visible = False
+    end
+    object Label11: TLabel
+      Left = 3
+      Top = -4
+      Width = 207
+      Height = 18
+      AutoSize = False
+      Caption = 'Hospital Charges'
+      Color = 16742263
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -12
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+      Layout = tlCenter
+    end
+    object LabelBedChrageCap: TLabel
+      Left = 4
+      Top = 166
+      Width = 207
+      Height = 18
+      AutoSize = False
+      Caption = 'Bed Charges'
+      Color = 16742263
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -12
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+      Layout = tlCenter
+    end
+    object Label_RoundVisitCap: TLabel
+      Left = 3
+      Top = 294
+      Width = 207
+      Height = 18
+      AutoSize = False
+      Caption = 'Doctor Service(Round Visit)'
+      Color = 16742263
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -12
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+      Layout = tlCenter
+    end
+    object Label_MedCap: TLabel
+      Left = 3
+      Top = 397
+      Width = 207
+      Height = 18
+      AutoSize = False
+      Caption = 'Medicine Charges'
+      Color = 16742263
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -12
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+      Layout = tlCenter
+    end
+    object Label_DischargeStatus: TLabel
+      Left = 6
+      Top = 555
+      Width = 288
+      Height = 13
+      Alignment = taCenter
+      Caption = 'Patient Financial Discharge(Final Billing) Completed'
+      Color = clBtnFace
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clFuchsia
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      Visible = False
+    end
+    object Label7: TLabel
+      Left = 626
+      Top = 2
+      Width = 183
+      Height = 14
+      Caption = 'Pharmacy Clearance Complete'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 33023
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object SpeedButton1: TSpeedButton
+      Left = 408
+      Top = 527
+      Width = 154
+      Height = 23
+      Caption = 'Fraction Mgmt. (F7)'
+      Enabled = False
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333300000000
+        0000333377777777777733330FFFFFFFFFF033337F3FFF3F3FF733330F000F0F
+        00F033337F777373773733330FFFFFFFFFF033337F3FF3FF3FF733330F00F00F
+        00F033337F773773773733330FFFFFFFFFF033337FF3333FF3F7333300FFFF00
+        F0F03333773FF377F7373330FB00F0F0FFF0333733773737F3F7330FB0BF0FB0
+        F0F0337337337337373730FBFBF0FB0FFFF037F333373373333730BFBF0FB0FF
+        FFF037F3337337333FF700FBFBFB0FFF000077F333337FF37777E0BFBFB000FF
+        0FF077FF3337773F7F37EE0BFB0BFB0F0F03777FF3733F737F73EEE0BFBF00FF
+        00337777FFFF77FF7733EEEE0000000003337777777777777333}
+      NumGlyphs = 2
+      Visible = False
+      OnClick = SpeedButton1Click
+    end
+    object Label5: TLabel
+      Left = 335
+      Top = 500
+      Width = 42
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Bill No. :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Lbl_BillNo: TLabel
+      Left = 387
+      Top = 495
+      Width = 176
+      Height = 23
+      Caption = '###########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object DBGrid_Investigation: TDBGrid
+      Left = 4
+      Top = 17
+      Width = 558
+      Height = 148
+      Hint = 'After add Investigation Press Ctrl+Enter;'
+      Color = clBtnFace
+      DataSource = DS_InvestigationCharge
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 2
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'DepId'
+          Visible = False
+        end
+        item
+          Color = clHighlightText
+          Expanded = False
+          FieldName = 'TestNameCategory'
+          Title.Alignment = taCenter
+          Title.Caption = 'Test Name Category'
+          Width = 173
+          Visible = True
+        end
+        item
+          ButtonStyle = cbsEllipsis
+          Expanded = False
+          FieldName = 'Total'
+          Title.Alignment = taCenter
+          Width = 85
+          Visible = True
+        end
+        item
+          Alignment = taRightJustify
+          Color = clHighlightText
+          Expanded = False
+          FieldName = 'TaxAmt'
+          Title.Alignment = taCenter
+          Title.Caption = 'Svr. Tax'
+          Width = 56
+          Visible = True
+        end
+        item
+          ButtonStyle = cbsEllipsis
+          Expanded = False
+          FieldName = 'DISCOUNT'
+          Title.Alignment = taCenter
+          Title.Caption = 'Discount'
+          Width = 55
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'NETTOTAL'
+          Title.Alignment = taCenter
+          Title.Caption = 'Net Total'
+          Width = 78
+          Visible = True
+        end>
+    end
+    object DBGrid_MedicineCharge: TDBGrid
+      Left = 3
+      Top = 417
+      Width = 558
+      Height = 77
+      Hint = 'After add Investigation Press Ctrl+Enter;'
+      Color = clBtnFace
+      DataSource = DS_MedicineCharge
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Color = clHighlightText
+          Expanded = False
+          FieldName = 'Medicine'
+          Title.Alignment = taCenter
+          Width = 170
+          Visible = True
+        end
+        item
+          ButtonStyle = cbsEllipsis
+          Expanded = False
+          FieldName = 'Total'
+          Title.Alignment = taCenter
+          Width = 109
+          Visible = True
+        end
+        item
+          ButtonStyle = cbsEllipsis
+          Expanded = False
+          FieldName = 'Discount'
+          Title.Alignment = taCenter
+          Width = 56
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'NetTotal'
+          Title.Alignment = taCenter
+          Title.Caption = 'Net Total'
+          Width = 84
+          Visible = True
+        end
+        item
+          Expanded = False
+          Title.Alignment = taCenter
+          Title.Caption = 'Tax'
+          Visible = False
+        end
+        item
+          Expanded = False
+          FieldName = 'ReturnStatus'
+          Title.Alignment = taCenter
+          Title.Caption = 'RS'
+          Width = 23
+          Visible = True
+        end>
+    end
+    object DBGrid_BedCharge: TDBGrid
+      Left = 3
+      Top = 181
+      Width = 558
+      Height = 111
+      Hint = 'After add Investigation Press Ctrl+Enter;'
+      Color = clBtnFace
+      DataSource = DS_BedCharge
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Color = clHighlightText
+          Expanded = False
+          FieldName = 'RoomType'
+          Title.Alignment = taCenter
+          Title.Caption = 'Room Type'
+          Width = 140
+          Visible = True
+        end
+        item
+          ButtonStyle = cbsEllipsis
+          Expanded = False
+          FieldName = 'TotalDays'
+          Title.Alignment = taCenter
+          Title.Caption = 'Tot. Days'
+          Width = 46
+          Visible = True
+        end
+        item
+          ButtonStyle = cbsEllipsis
+          Expanded = False
+          FieldName = 'Rate'
+          Title.Alignment = taCenter
+          Width = 45
+          Visible = True
+        end
+        item
+          Color = clHighlightText
+          Expanded = False
+          FieldName = 'Total'
+          Title.Alignment = taCenter
+          Width = 54
+          Visible = True
+        end
+        item
+          Color = clHighlightText
+          Expanded = False
+          FieldName = 'TaxAmt'
+          Title.Alignment = taCenter
+          Title.Caption = 'Svr. Tax'
+          Width = 45
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Discount'
+          Title.Alignment = taCenter
+          Width = 45
+          Visible = True
+        end
+        item
+          Color = clHighlightText
+          Expanded = False
+          FieldName = 'NetTotal'
+          Title.Alignment = taCenter
+          Title.Caption = 'Net Total'
+          Width = 69
+          Visible = True
+        end>
+    end
+    object DBGrid_DoctorService: TDBGrid
+      Left = 4
+      Top = 313
+      Width = 558
+      Height = 82
+      Color = clBtnFace
+      DataSource = DS_DoctorService
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 3
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'DocName'
+          ReadOnly = True
+          Title.Alignment = taCenter
+          Title.Caption = 'Doctor'
+          Width = 168
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qty'
+          Title.Alignment = taCenter
+          Title.Caption = 'Days'
+          Width = 28
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Total'
+          ReadOnly = True
+          Title.Alignment = taCenter
+          Width = 71
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'TaxAmt'
+          ReadOnly = True
+          Title.Alignment = taCenter
+          Title.Caption = 'Vat'
+          Width = 53
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Discount'
+          Title.Alignment = taCenter
+          Width = 47
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'NetTotal'
+          ReadOnly = True
+          Title.Alignment = taCenter
+          Title.Caption = 'Net Total'
+          Width = 63
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'RoomTypeCode'
+          Title.Alignment = taCenter
+          Title.Caption = 'Room Type Code'
+          Width = 89
+          Visible = True
+        end>
+    end
+    object GroupBox3: TGroupBox
+      Left = 609
+      Top = 22
+      Width = 242
+      Height = 500
+      Caption = 'Account'
+      TabOrder = 4
+      object Label16: TLabel
+        Left = 319
+        Top = 40
+        Width = 77
+        Height = 16
+        Caption = 'Extra Charge'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        Visible = False
+      end
+      object Label32: TLabel
+        Left = 13
+        Top = 12
+        Width = 91
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Service Charge :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label33: TLabel
+        Left = 17
+        Top = 165
+        Width = 87
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Total Discount :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label34: TLabel
+        Left = 23
+        Top = 263
+        Width = 81
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Deposit Total :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label50: TLabel
+        Left = 47
+        Top = 404
+        Width = 57
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Payment :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label51: TLabel
+        Left = 29
+        Top = 404
+        Width = 75
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Return Amt. :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Visible = False
+      end
+      object Label29: TLabel
+        Left = 46
+        Top = 432
+        Width = 58
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Pay Type :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label19: TLabel
+        Left = 224
+        Top = 185
+        Width = 14
+        Height = 16
+        Caption = '%'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Visible = False
+      end
+      object Label69: TLabel
+        Left = 32
+        Top = 111
+        Width = 72
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Grand Total :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object LabelGrandTotal: TLabel
+        Left = 106
+        Top = 107
+        Width = 11
+        Height = 20
+        Caption = '0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -16
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label83: TLabel
+        Left = 16
+        Top = 312
+        Width = 86
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Set Discount(%) :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label4: TLabel
+        Left = 34
+        Top = 34
+        Width = 70
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Bed Charge :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label_MedChrgCap: TLabel
+        Left = 28
+        Top = 81
+        Width = 76
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Med. Charge :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label6: TLabel
+        Left = 47
+        Top = 194
+        Width = 57
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Net Total :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object LabelNetTotal: TLabel
+        Left = 106
+        Top = 190
+        Width = 11
+        Height = 20
+        Caption = '0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -16
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object LabelBalanceTotal: TLabel
+        Left = 108
+        Top = 260
+        Width = 11
+        Height = 20
+        Caption = '0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -16
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label8: TLabel
+        Left = 28
+        Top = 228
+        Width = 76
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Hos. Deposit :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object LabelPaymentStatus: TLabel
+        Left = 40
+        Top = 369
+        Width = 64
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'To Be Paid :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label_SvrTaxCap: TLabel
+        Left = -4
+        Top = 142
+        Width = 108
+        Height = 13
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Hs. Svr. Tax @ 5% :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label15: TLabel
+        Left = 6
+        Top = 479
+        Width = 54
+        Height = 14
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Remarks:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        WordWrap = True
+      end
+      object Label13: TLabel
+        Left = 14
+        Top = 59
+        Width = 90
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Dr. Svr. Charge :'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object SPB_SetDiscount: TSpeedButton
+        Left = 108
+        Top = 330
+        Width = 89
+        Height = 16
+        Caption = 'Set &Discount'
+        Flat = True
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000120B0000120B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+          33333333333333333333333333333333333333333333333333FF333333333333
+          3000333333FFFFF3F77733333000003000B033333777773777F733330BFBFB00
+          E00033337FFF3377F7773333000FBFB0E000333377733337F7773330FBFBFBF0
+          E00033F7FFFF3337F7773000000FBFB0E000377777733337F7770BFBFBFBFBF0
+          E00073FFFFFFFF37F777300000000FB0E000377777777337F7773333330BFB00
+          000033333373FF77777733333330003333333333333777333333333333333333
+          3333333333333333333333333333333333333333333333333333333333333333
+          3333333333333333333333333333333333333333333333333333}
+        NumGlyphs = 2
+        OnClick = SPB_SetDiscountClick
+      end
+      object Label20: TLabel
+        Left = 216
+        Top = 333
+        Width = 15
+        Height = 13
+        Caption = 'F8'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label1: TLabel
+        Left = 3
+        Top = 292
+        Width = 102
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Final Pay/Refund :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label_FinalPayRefund: TLabel
+        Left = 109
+        Top = 289
+        Width = 11
+        Height = 20
+        Caption = '0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -16
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label_Status: TLabel
+        Left = 195
+        Top = 292
+        Width = 8
+        Height = 13
+        Caption = '0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label_CopayAmtCap: TLabel
+        Left = 125
+        Top = 275
+        Width = 94
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Co-Pay Amount :'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Visible = False
+      end
+      object Label_CopayAmt: TLabel
+        Left = 223
+        Top = 272
+        Width = 11
+        Height = 20
+        Caption = '0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -16
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Visible = False
+      end
+      object EditECharge: TEdit
+        Left = 401
+        Top = 50
+        Width = 154
+        Height = 21
+        Enabled = False
+        TabOrder = 7
+        Text = '0'
+        Visible = False
+      end
+      object Edit_TotDiscount: TEdit
+        Left = 106
+        Top = 161
+        Width = 133
+        Height = 21
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 1
+        Text = '0'
+      end
+      object Edit_InvestigationCharge: TEdit
+        Left = 106
+        Top = 10
+        Width = 133
+        Height = 21
+        TabStop = False
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 0
+      end
+      object CMBPayType: TComboBox
+        Left = 106
+        Top = 431
+        Width = 133
+        Height = 22
+        Style = csOwnerDrawFixed
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 3
+        OnChange = CMBPayTypeChange
+        Items.Strings = (
+          'CASH'
+          'CREDIT')
+      end
+      object GroupBox9: TGroupBox
+        Left = 6
+        Top = 162
+        Width = 22
+        Height = 20
+        Color = clBtnFace
+        ParentColor = False
+        TabOrder = 8
+        Visible = False
+        object Label35: TLabel
+          Left = 2
+          Top = 7
+          Width = 130
+          Height = 26
+          AutoSize = False
+          Color = clBlack
+          ParentColor = False
+        end
+        object LabelReAmt: TLabel
+          Left = 30
+          Top = 9
+          Width = 67
+          Height = 24
+          Caption = '000000'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clLime
+          Font.Height = -19
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+        end
+      end
+      object Edit_DisPer: TEdit
+        Left = 178
+        Top = 190
+        Width = 40
+        Height = 21
+        MaxLength = 3
+        ReadOnly = True
+        TabOrder = 2
+        Text = '0'
+        Visible = False
+      end
+      object EditCheckNo: TEdit
+        Left = 176
+        Top = 460
+        Width = 63
+        Height = 21
+        TabStop = False
+        TabOrder = 4
+        Visible = False
+      end
+      object Edi_DisPer: TEdit
+        Left = 108
+        Top = 308
+        Width = 110
+        Height = 21
+        TabOrder = 6
+        Text = '0'
+        OnKeyPress = Edi_DisPerKeyPress
+      end
+      object EditPayment: TEdit
+        Left = 106
+        Top = 401
+        Width = 133
+        Height = 24
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 5
+      end
+      object Edit_TotBedCharge: TEdit
+        Left = 106
+        Top = 32
+        Width = 133
+        Height = 21
+        TabStop = False
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 9
+      end
+      object Edit_TotMedicineCharge: TEdit
+        Left = 106
+        Top = 78
+        Width = 133
+        Height = 21
+        TabStop = False
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 10
+      end
+      object Edit_HosDeposit: TEdit
+        Left = 106
+        Top = 225
+        Width = 133
+        Height = 24
+        TabStop = False
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 11
+      end
+      object Edit_TotalTax: TEdit
+        Left = 106
+        Top = 138
+        Width = 133
+        Height = 21
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 12
+        Text = '0'
+      end
+      object EditGWSArmyNo: TEdit
+        Left = 64
+        Top = 474
+        Width = 176
+        Height = 21
+        Hint = 'GWS Army No'
+        Color = clMenu
+        MaxLength = 50
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 13
+      end
+      object EditMEP: TEdit
+        Left = 176
+        Top = 474
+        Width = 63
+        Height = 21
+        Hint = 'MEP'
+        CharCase = ecUpperCase
+        Color = clMenu
+        Enabled = False
+        MaxLength = 12
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 14
+        Visible = False
+      end
+      object Edit_TotDrSvrCharge: TEdit
+        Left = 106
+        Top = 55
+        Width = 132
+        Height = 21
+        TabStop = False
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 15
+      end
+      object CBDiscount: TCheckBox
+        Left = 0
+        Top = 310
+        Width = 14
+        Height = 17
+        TabOrder = 16
+        OnClick = CBDiscountClick
+      end
+      object GroupBox1: TGroupBox
+        Left = 105
+        Top = 358
+        Width = 135
+        Height = 34
+        Color = clBtnFace
+        ParentColor = False
+        TabOrder = 17
+        object Label14: TLabel
+          Left = 2
+          Top = 7
+          Width = 130
+          Height = 24
+          AutoSize = False
+          Color = clBlack
+          ParentColor = False
+          Transparent = False
+        end
+        object LabelPaidTotal: TLabel
+          Left = 5
+          Top = 8
+          Width = 42
+          Height = 23
+          Caption = '0.00'
+          Color = clBlack
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clLime
+          Font.Height = -19
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+          Transparent = False
+        end
+        object Shape1: TShape
+          Left = 64
+          Top = 40
+          Width = 65
+          Height = 65
+        end
+      end
+      object CB_NoDepositAdjustment: TCheckBox
+        Left = 4
+        Top = 347
+        Width = 220
+        Height = 17
+        Caption = 'No Deposit Adjustment (For Credit Bill)'
+        Enabled = False
+        TabOrder = 18
+        Visible = False
+        OnClick = CB_NoDepositAdjustmentClick
+      end
+    end
+    object CB_IsPaharmacyApproved: TCheckBox
+      Left = 609
+      Top = 0
+      Width = 16
+      Height = 17
+      Caption = 'Is Pharmacy Clearance Complete'
+      Color = 33023
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 33023
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 5
+    end
+    object Btn_DischargeInDeposit: TBitBtn
+      Left = 3
+      Top = 500
+      Width = 181
+      Height = 28
+      Caption = 'Di&scharge In Deposit'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Glyph.Data = {
+        F6060000424DF606000000000000360000002800000018000000180000000100
+        180000000000C0060000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFDADCDCB1B3B3A0A3A4ACAFAFCBCECFF1F2F2FFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFCBCECE658285326F75256E752E72794F7D81919EA0DEE0E0
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFC2CBCC2E858E24B5C935CBE13ECDE43CC2D82B
+        A8BC1592A5297A8694A4A6D8DBDCC2C7C7A7ADAD979E9F939B9C99A2A3ACB4B5
+        C6CCCDE8EAEAFFFFFFFFFFFFFFFFFFFFFFFFF5F9F95FA6AE3EDCF648D5EF52D3
+        EC59D3EC5ED5EF5CD5F14FCEEB32BFDA1195AD1F64701A6F7A0F8CA00E96AB0D
+        9BB10C9DB41199AD1F92A23B869271969EC8CDCEFFFFFFFFFFFFD1EDF050D6ED
+        5EDEF46FE8FB75E8FD78E8FD78E8FF6FE4FD65DCF65BD4F04BCFEC19AFCB0691
+        AF1DB1D221BCDC1EB8D61CB8D519B9D513B7D613C0E015C5E11DA1B891ACB2FE
+        FEFEB5F0FA66DFF775E6F97AE6FA79E5FB75E5FC6DDFF869DDF670E5FD70E3FB
+        5DD7F252D6F21AAECD167A8C12707E0B75840D7B8B0F8495118DA01398AD0F9E
+        BA18C3DF17B9D5BCCED2B7F0FB64DCF674E4FB76E5FC75E4FD72E4FD60DAF451
+        D1ED61DEF873E7FD72E7FC5CD7F26EE2F9269BB1056E7B057A8A04819205889C
+        0790A60997AE0E9FB60693B019B9D595C9D2D6F6FD58D6F465DFF970E4FD76E6
+        FE66DCF557D2EC4BD0EB60DEF771E8FD71E8FC70E5FA71E1F73BC0DB32AFC83C
+        B7D12DB2CE26B0CD24ADC815A6C10AA1BD0DB1CB0FB2D09DC8D1F5FDFE7CDFF5
+        55D7F36BE4FE6CE3FC4DD3EE4AD2EE58DDF768E6FC77E9FD78EAFC7BECFC5FDF
+        F640CEE844D3F354E1FF50DBFB5BD5F06AD5ED7DDBF063CFE621B3D013C2DE74
+        AFBBFFFFFFD6F6FD57D3F05CD9F46BE6FE4CD7F34CD4EF6AE5FB78EBFC7DECFB
+        83EFFD85EFFC68E2F74DD3EA2FC5E659DBF678E7FE8AEBFE94EFFF8CE8FA83E0
+        F282E1F435C6E274CCDBFFFFFFFFFFFFC9F3FC56D1EC51D4F063E4FB6EEAFD7E
+        EEFE86F0FE8AF2FE8BF3FD77E7F663DCF05CDCF34ED2EE70DBF188E8FB8EEDFD
+        85ECFC84EFFE7FEDFB7CE4F773E1F5AFEAF6FFFFFFFFFFFFFFFFFFD8F6FC7FDD
+        F055D0E864DCF16CDEF170E1F16FE1F263DDEF56D5E975EBFB5FD9F35AD3EC6B
+        DDF47DEAFC7BECFC7BEDFC83F3FE78EEFA66DCF1AAF3FDF5FDFEFFFFFFFFFFFF
+        FFFFFFFFFFFFF8FDFEC7F3FB8FE1F06AD5E94BD1E84BCFE760D9EC74ECFC6DE8
+        FF64E0F85EDAF26FE1F57DEDFD82F1FE84F4FE74E7F666D9EC98ECF7EDFCFEFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFFFFEFFDFEC6F5FD81E5F9
+        7DDEF165D4ED63DBF37BE7FB7DE8FA79E9FB71E5F55FD6EA5AD1E676DFEFB7F2
+        F9F2FDFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFBFEFFE2F9FDC3F2FCAAE9F597E1F08FDFED87DCEC96E4F0B3F1F9
+        D3F6FBF5FDFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9FEFFF3FCFEEEFAFCECF9FCEB
+        F9FCF0FBFDF6FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 6
+      OnClick = Btn_DischargeInDepositClick
+    end
+    object CB_ShowBillMergingRoomType: TCheckBox
+      Left = 993
+      Top = 1
+      Width = 246
+      Height = 17
+      Anchors = [akTop, akRight]
+      Caption = 'Show Bill Merging Room Type'
+      TabOrder = 7
+    end
+    object BitBtn_DischargeSlipPrint: TBitBtn
+      Left = 186
+      Top = 499
+      Width = 120
+      Height = 28
+      Caption = 'Discharge Slip'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00555555555550
+        00555555555FFF57775F55555500050BBB0555FFF57775777775500050EEE000
+        777057775777777775F709990777777770F0777775FFFFFFF7F7099990000000
+        F0F07F5557777777F7F70FFFFFFFFFF0F0F07F5555555557F7F70FFFFFFFFFF0
+        F0F07F5555555557F7F70FFFFFFFFFF0F0F07F5FF5FF5F57F7F70F77F77F7FF0
+        F0F07F7757757557F7F70FFFFFFFFFF0F0F07F5FF5FFF557F7F70F77F777FFF0
+        F0F07F7757775557F7F70FFFFFFFFFF0F0F07FF5F5F5F5F7F7F700F0F0F0F0F0
+        F00577F7F7F7F7F7F77F0070707070700005777777777777777F707070707070
+        55055757575757575F7555050505050500555575757575757755}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 8
+      OnClick = BitBtn_DischargeSlipPrintClick
+    end
+    object DBGrid_Implants: TDBGrid
+      Left = 3
+      Top = 438
+      Width = 558
+      Height = 53
+      Hint = 'After add Investigation Press Ctrl+Enter;'
+      Color = clBtnFace
+      DataSource = DS_SurgicalItemsCharge
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 9
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Visible = False
+      Columns = <
+        item
+          Color = clHighlightText
+          Expanded = False
+          FieldName = 'Medicine'
+          Title.Alignment = taCenter
+          Title.Caption = 'Implants'
+          Width = 170
+          Visible = True
+        end
+        item
+          ButtonStyle = cbsEllipsis
+          Expanded = False
+          FieldName = 'Total'
+          Title.Alignment = taCenter
+          Width = 109
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'TaxAmt'
+          Title.Alignment = taCenter
+          Title.Caption = 'Svr.Tax'
+          Visible = True
+        end
+        item
+          ButtonStyle = cbsEllipsis
+          Expanded = False
+          FieldName = 'Discount'
+          Title.Alignment = taCenter
+          Width = 56
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'NetTotal'
+          Title.Alignment = taCenter
+          Title.Caption = 'Net Total'
+          Width = 84
+          Visible = True
+        end
+        item
+          Expanded = False
+          Title.Alignment = taCenter
+          Title.Caption = 'Tax'
+          Visible = False
+        end
+        item
+          Expanded = False
+          FieldName = 'ReturnStatus'
+          Title.Alignment = taCenter
+          Title.Caption = 'RS'
+          Width = 23
+          Visible = True
+        end>
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 33
+    Width = 1129
+    Height = 98
+    Align = alTop
+    TabOrder = 1
+    DesignSize = (
+      1129
+      98)
+    object Label84: TLabel
+      Left = 3
+      Top = 59
+      Width = 72
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Admn. Date :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label85: TLabel
+      Left = 19
+      Top = 80
+      Width = 56
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Dis. Date :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label86: TLabel
+      AlignWithMargins = True
+      Left = 213
+      Top = 72
+      Width = 63
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Days Stay :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Lbl_TotalDayStays: TLabel
+      Left = 278
+      Top = 72
+      Width = 28
+      Height = 13
+      Alignment = taCenter
+      Caption = 'None'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object LabelExRate: TLabel
+      Left = 516
+      Top = 50
+      Width = 72
+      Height = 13
+      Alignment = taRightJustify
+      Caption = '($) Ex. Rate :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object SBP_Print: TSpeedButton
+      Left = 1039
+      Top = 2
+      Width = 41
+      Height = 22
+      Anchors = [akTop, akRight]
+      Caption = '&Print'
+      Flat = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+        00033FFFFFFFFFFFFFFF0888888888888880777777777777777F088888888888
+        8880777777777777777F0000000000000000FFFFFFFFFFFFFFFF0F8F8F8F8F8F
+        8F80777777777777777F08F8F8F8F8F8F9F0777777777777777F0F8F8F8F8F8F
+        8F807777777777777F7F0000000000000000777777777777777F3330FFFFFFFF
+        03333337F3FFFF3F7F333330F0000F0F03333337F77773737F333330FFFFFFFF
+        03333337F3FF3FFF7F333330F00F000003333337F773777773333330FFFF0FF0
+        33333337F3FF7F3733333330F08F0F0333333337F7737F7333333330FFFF0033
+        33333337FFFF7733333333300000033333333337777773333333}
+      NumGlyphs = 2
+      OnClick = SBP_PrintClick
+      ExplicitLeft = 879
+    end
+    object Lbl_Ward: TLabel
+      Left = 755
+      Top = 29
+      Width = 30
+      Height = 13
+      Caption = 'Ward'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label17: TLabel
+      Left = 715
+      Top = 29
+      Width = 36
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Ward :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label22: TLabel
+      Left = 681
+      Top = 50
+      Width = 70
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Room Type :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label23: TLabel
+      Left = 707
+      Top = 72
+      Width = 44
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Bed No :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Lbl_RoomType: TLabel
+      Left = 755
+      Top = 50
+      Width = 64
+      Height = 13
+      Caption = 'Room Type'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Lbl_BedNo: TLabel
+      Left = 755
+      Top = 72
+      Width = 38
+      Height = 13
+      Caption = 'Bed No'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 401
+      Top = 50
+      Width = 67
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Consultant :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Lbl_Consultant: TLabel
+      Left = 474
+      Top = 50
+      Width = 61
+      Height = 13
+      Caption = 'Consultant'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label24: TLabel
+      Left = 394
+      Top = 72
+      Width = 74
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Duty Doctor :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Lbl_DutyDoctor: TLabel
+      Left = 474
+      Top = 72
+      Width = 68
+      Height = 13
+      Caption = 'Duty Doctor'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Lbl_IPNoCap: TLabel
+      Left = 25
+      Top = 34
+      Width = 50
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Inpt. No :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label25: TLabel
+      Left = 9
+      Top = 10
+      Width = 66
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Hospital No:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label26: TLabel
+      Left = 235
+      Top = 28
+      Width = 41
+      Height = 14
+      Caption = 'Name :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object lbl_Patientname: TLabel
+      Left = 280
+      Top = 26
+      Width = 104
+      Height = 19
+      Caption = '########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label27: TLabel
+      Left = 386
+      Top = 8
+      Width = 82
+      Height = 14
+      Alignment = taRightJustify
+      Caption = 'Age/Gender :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Lbl_AgeGender: TLabel
+      Left = 474
+      Top = 8
+      Width = 54
+      Height = 14
+      Caption = '######'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label30: TLabel
+      Left = 397
+      Top = 28
+      Width = 71
+      Height = 14
+      Caption = 'Phone No. :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label31: TLabel
+      Left = 219
+      Top = 50
+      Width = 57
+      Height = 14
+      Caption = 'Address :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Lbl_address: TLabel
+      Left = 278
+      Top = 50
+      Width = 72
+      Height = 14
+      Caption = '########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Lbl_PhoneNo: TLabel
+      Left = 474
+      Top = 28
+      Width = 59
+      Height = 14
+      Caption = 'Phone No'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label_SchemeCap: TLabel
+      Left = 546
+      Top = 8
+      Width = 44
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Scheme :'
+    end
+    object Label_Scheme: TLabel
+      Left = 597
+      Top = 8
+      Width = 45
+      Height = 13
+      Caption = 'Scheme'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label_MedicareNo: TLabel
+      Left = 548
+      Top = 27
+      Width = 79
+      Height = 16
+      Caption = 'Medicare No'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clRed
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label2: TLabel
+      Left = 198
+      Top = 8
+      Width = 78
+      Height = 14
+      Caption = 'Hospital No :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label_HospitalNo: TLabel
+      Left = 278
+      Top = 6
+      Width = 104
+      Height = 19
+      Caption = '########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label_SpecialDeposit: TLabel
+      Left = 709
+      Top = 1
+      Width = 96
+      Height = 23
+      Caption = '######'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object LBL_PatientCategory: TLabel
+      Left = 938
+      Top = 66
+      Width = 96
+      Height = 23
+      Caption = '######'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label9: TLabel
+      Left = 832
+      Top = 72
+      Width = 102
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Patient Cateogry :'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object BB_Refresh: TBitBtn
+      Left = 968
+      Top = 39
+      Width = 158
+      Height = 28
+      Anchors = [akTop, akRight]
+      Caption = '&Refresh (F5)'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        B60D0000424DB60D000000000000360000002800000030000000180000000100
+        180000000000800D000001000000010000000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFEFEFEFBFBFBF4F4F4ECECECE6E6E6E2E2E2E2E2E2E6E6
+        E6ECECECF4F4F4FBFBFBFEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEFBFBFBF4F4F4
+        ECECECE6E6E6E2E2E2E2E2E2E6E6E6ECECECF4F4F4FBFBFBFEFEFEFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFDFDF4F4F4E3E3E3CD
+        CDCDBABABAADADADA5A5A5A5A5A5ADADADBABABACDCDCDE3E3E3F4F4F4FDFDFD
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFDFDFDF4F4F4E3E3E3CDCDCDBABABAADADADA5A5A5A5A5A5ADADADBA
+        BABACDCDCDE3E3E3F4F4F4FDFDFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFCFCFCEEEEEED3D3D3AFADAC887167815340964E2AB35323B755239F51
+        2C8956408B7268AFADACD3D3D3EEEEEEFCFCFCFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCFCFCEEEEEED3D3D3ADADAD727272
+        5454544E4E4E555555585858535353565656727272ADADADD3D3D3EEEEEEFCFC
+        FCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFDFDEEEEEECDCDCD92807A844E37B9
+        5823CB6E2DD37935DA833ADF873CE3833AE67D34DF6A2A95553996817ACDCDCD
+        EEEEEEFDFDFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFD
+        FDEEEEEECDCDCD8181815050505A5A5A6E6E6E7878788080808383838181817D
+        7D7D6D6D6D575757828282CDCDCDEEEEEEFDFDFDFFFFFFFFFFFFFFFFFFFEFEFE
+        F4F4F4D3D3D38D766D914C29BE652AC97735CF7E38D5823AD9853BDE893DE38D
+        3FE79040EB8F40EC7F36B45B2E92786DD3D3D3F4F4F4FEFEFEFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFEFEFEF4F4F4D3D3D37777774E4E4E656565757575
+        7A7A7A7F7F7F8181818585858A8A8A8B8B8B8B8B8B7F7F7F5D5D5D787878D3D3
+        D3F4F4F4FEFEFEFFFFFFFFFFFFFBFBFBE3E3E39C8B848C4827B8652BC37433C9
+        7936CE7D37D38139D8843BDC883CE18B3EE58E3FE99141EC9240ED8539B45A2E
+        9F8C84E3E3E3FBFBFBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBFBFBE3E3
+        E38B8B8B4B4B4B6464647171717676767A7A7A7D7D7D80808083838387878789
+        89898D8D8D8E8E8E8484845D5D5D8C8C8CE3E3E3FBFBFBFFFFFFFFFFFFF4F4F4
+        C8C6C580503BAF5C27BD6F30C27433C67434C86F31C9662AC65F25CB6126D86E
+        2EE07E37E58B3EE99141EB9140EB7E3599593DC9C6C5F4F4F4FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFF4F4F4C6C6C65050505B5B5B6D6D6D717171717171
+        6E6E6E6767676161616363637070707C7C7C8787878C8C8C8C8C8C7E7E7E5A5A
+        5AC6C6C6F4F4F4FFFFFFFFFFFFECECEC9A847D9C4A1DB5682EBB6F31BE6F31BD
+        642AA46446B89C91E6DEDBE6DEDBBA9C92B06847DE7732E48B3DE79040E88E3F
+        DC69299F877DECECECFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFECECEC8585
+        854C4C4C6666666D6D6D6C6C6C6464646666669C9C9CDEDEDEDEDEDE9C9C9C6A
+        6A6A7777778787878D8D8D8A8A8A6D6D6D878787ECECECFFFFFFFFFFFFE6E6E6
+        845C4CA65825B4692FB96D30B8652C9C5F41D0C3BFFDFDFDFFFFFFFFFFFFFDFD
+        FDD1C4BFAC6643DE7D37E38D3FE58E3FE27B3394614EE6E6E6FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFE6E6E65C5C5C5858586767676A6A6A646464616161
+        C4C4C4FDFDFDFFFFFFFFFFFFFDFDFDC4C4C46767677C7C7C8989898989897A7A
+        7A636363E6E6E6FFFFFFFFFFFFE2E2E280482DAF6A3BB2682EB66B30B05925A6
+        8B80F9F9F9FFFFFFFFFFFFFFFFFFFFFFFFFAFAFAAF9387D66D2DDE893DE08A3D
+        DF8139A85B35E9E9E9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE2E2E24949
+        496969696565656868685A5A5A8C8C8CF9F9F9FFFFFFFFFFFFFFFFFFFFFFFFFA
+        FAFA9393936F6F6F8585858686867F7F7F5D5D5DE9E9E9FFFFFFFFFFFFE2E2E2
+        843F1CBE875FBC7D4CB76E36A44F1FC4BDBAF9F9F9FFFFFFF9F9F9F3F3F3F9F9
+        F9FEFEFEE2DAD7A03C12C15921C35A21BE5520953A17F7F7F7FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFE2E2E24242428484847A7A7A6C6C6C515151BDBDBD
+        F9F9F9FFFFFFF9F9F9F3F3F3F9F9F9FEFEFEDADADA4242425C5C5C5D5D5D5959
+        593F3F3FF7F7F7FFFFFFFFFFFFE6E6E6833F1CC08C65C5926BC38A5EA25022B5
+        AEABEEEEEEFDFDFDEBEBEBD1D1D1DFDFDFF9F9F9FFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE6E6E64040
+        40898989909090878787515151AFAFAFEEEEEEFDFDFDEBEBEBD1D1D1DFDFDFF9
+        F9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFECECEC
+        814930B9835EC5946FC89771B1693F8B7167D2D2D2EEEEEEDCDCDC814730B3B3
+        B3DFDFDFF9F9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFECECEC4C4C4C808080909090949494686868727272
+        D2D2D2EEEEEEDCDCDC4A4A4AB3B3B3DFDFDFF9F9F9FFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFF4F4F48D6858AE744EC69774C89875BF85608E
+        5940988C87C3C3C3BDBDBD8F3A1283472EB3B3B3DFDFDFF9F9F9FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4F4F46969
+        697272729494949494948383835A5A5A8C8C8CC3C3C3BDBDBD3F3F3F494949B3
+        B3B3DFDFDFF9F9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBFBFB
+        B49F97985936C59777C89B79C99B79BD84608C583F7F645A8B8481AC592AC582
+        5983462EB3B3B3DFDFDFF9F9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFBFBFBA0A0A0595959949494979797989898828282
+        5858586565658484845A5A5A808080494949B3B3B3DFDFDFF9F9F9FFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEEDEBEA8D6250B17C5AC79C7CCA9E7DCB
+        9D7CC08965B26D43AB5B2CCC9873CF9A73C3815880462EB3B3B3DFDFDFF9F9F9
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEEBEB
+        EB6464647979799999999B9B9B9999998686866C6C6C5C5C5C9696969797977F
+        7F7F494949B3B3B3DFDFDFF9F9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FDFDFDC6B5AF926047BD8E6FC99F80CBA081CCA07FCDA07DCD9F7BCD9E79CE9C
+        76CD9971C08057834830CBCBCBF3F3F3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFDFDB6B6B66060608B8B8B9C9C9C9E9E9E
+        9D9D9D9C9C9C9B9B9B9A9A9A9999999595957E7E7E4B4B4BCBCBCBF3F3F3FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCFCFCBAA49D956149B48161CA
+        A083CBA182CBA080CCA07ECC9E7BCC9C77CC9B74C9966FB3724F87503CF9F9F9
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFCFCFCA6A6A66161617F7F7F9E9E9E9D9D9D9D9D9D9D9D9D9A9A9A98989897
+        9797939393707070545454F9F9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFDFDFDC9B9B39267559B5D3CB27D5AC08F6EC89B7ACA9E7CCA9D
+        7AC99975B97E588E5941F9F9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFDFDBABABA6868685D5D5D
+        7B7B7B8D8D8D9898989B9B9B9A9A9A9595957C7C7C5A5A5AF9F9F9FFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEF4F2F1C0
+        ABA49973648952398D4823C29476C89A7AB67F5C8C5741F9F9F9FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFEFEFEF2F2F2ACACAC7575755555554A4A4A9292929696967D
+        7D7D595959F9F9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE1E1E18A421AB37F
+        60895741F9F9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFE1E1E14444447D7D7D595959F9F9F9FFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFEBEBEB6F2C0D865541F9F9F9FFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBEBEB2F2F2F575757F9
+        F9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9F9F9805240F9F9
+        F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFF9F9F9555555F9F9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 10
+      OnClick = BB_RefreshClick
+    end
+    object DEX_AdmnDate: TDateEditX
+      Left = 77
+      Top = 56
+      Width = 94
+      Height = 21
+      TabOrder = 0
+      ControlData = {
+        545046300A5444617465456469745200044C656674024D03546F700238057769
+        647468025E0B4461746541442E5965617203D4070C4461746541442E4D6F6E74
+        6802070A4461746541442E446179021E0B4461746556532E59656172030D080C
+        4461746556532E4D6F6E746802040A4461746556532E446179020F0852656164
+        4F6E6C79090000}
+    end
+    object DEX_DisDate: TDateEditX
+      Left = 77
+      Top = 77
+      Width = 94
+      Height = 21
+      TabOrder = 1
+      ControlData = {
+        545046300A5444617465456469745200044C656674024D03546F70024D057769
+        647468025E0B4461746541442E5965617203D4070C4461746541442E4D6F6E74
+        6802070A4461746541442E446179021E0B4461746556532E59656172030D080C
+        4461746556532E4D6F6E746802040A4461746556532E446179020F0852656164
+        4F6E6C79090000}
+    end
+    object Btn_AdmnDate: TButton
+      Left = 143
+      Top = 57
+      Width = 27
+      Height = 17
+      Caption = 'AD'
+      TabOrder = 2
+      OnClick = Btn_AdmnDateClick
+    end
+    object Btn_DisDate: TButton
+      Left = 143
+      Top = 78
+      Width = 27
+      Height = 17
+      Caption = 'AD'
+      TabOrder = 3
+      OnClick = Btn_DisDateClick
+    end
+    object EditExRate: TEdit
+      Left = 593
+      Top = 46
+      Width = 67
+      Height = 21
+      TabOrder = 4
+      Visible = False
+    end
+    object CheckBoxPreview: TCheckBox
+      Left = 969
+      Top = 6
+      Width = 72
+      Height = 15
+      Anchors = [akTop, akRight]
+      Caption = 'Previe&w'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 5
+    end
+    object Edit_NoOFCopy: TEdit
+      Left = 1086
+      Top = 3
+      Width = 16
+      Height = 21
+      Anchors = [akTop, akRight]
+      TabOrder = 6
+      Text = '2'
+    end
+    object Edit_InpatientNo: TEdit
+      Left = 77
+      Top = 29
+      Width = 110
+      Height = 27
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 7
+      OnKeyPress = Edit_InpatientNoKeyPress
+    end
+    object Edit_HospitalNo: TEdit
+      Left = 77
+      Top = 1
+      Width = 110
+      Height = 27
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      NumbersOnly = True
+      ParentFont = False
+      TabOrder = 8
+      OnExit = Edit_HospitalNoExit
+      OnKeyPress = Edit_HospitalNoKeyPress
+    end
+    object CB_Detail: TCheckBox
+      Left = 969
+      Top = 21
+      Width = 72
+      Height = 15
+      Anchors = [akTop, akRight]
+      Caption = '&Detail'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 9
+    end
+    object BitBtn_DepositAddReturn: TBitBtn
+      AlignWithMargins = True
+      Left = 968
+      Top = 67
+      Width = 158
+      Height = 29
+      Anchors = [akTop, akRight]
+      Caption = 'Deposit Add && Return (F4)'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 11
+      OnClick = BitBtn_DepositAddReturnClick
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1129
+    Height = 33
+    Align = alTop
+    TabOrder = 2
+    object BB_Save: TBitBtn
+      Left = 914
+      Top = 1
+      Width = 105
+      Height = 31
+      Margins.Left = 0
+      Margins.Top = 6
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = '&Save (F12)'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        1800000000000003000001000000010000000000000000000000000000975233
+        9A55359954349652339652339652339652339652339652339652339A55359B55
+        359853349451320000009451369D5534BD5A22BB5A24B75926C7B0A4C8B5ACC8
+        B5ACC8B5ACC8B5ACC8B5ACC9B5ABBF6532B759269B55358040408F5030A05633
+        C46127C46127C46127D3CDCBD4D4D5D4D4D5D4D4D5CB9373C7784AD3CFCDC66F
+        3BC461279D56348F50308F5030A15734CB672CCB672CCB672CDED8D5DFDFE0DF
+        DFE0DFDFE0D18A61CB672CDED8D5CD7541CB672C9E56348F50308F5030A15834
+        D26E30D26E30D26E30EAE5E1ECECECECECECECECECDA9367D26E30EAE5E1D57D
+        46D26E309E56358F50308F5030A25835D67233D67233D67233F3E7E0F7F7F7F7
+        F7F7F7F7F7F2E4DBF0DCD0F7F5F5DA824AD672339E57358F50308F5030A35935
+        DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB7636DB76
+        36DB76369F57358F50308F5030A35935DF7A39F2ECE8FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFDDCBBFDF7A399F57358F50308F5030A45A36
+        E4803EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE7DB
+        D3E4803E9F58368F50308F5030A45B37E98746FCFCFCFCFCFCFCFCFCFCFCFCFC
+        FCFCFCFCFCFCFCFCFCFCFCFCFCFCE5D9D1E98746A058368F50308F5030A55C38
+        EE9150F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3DED3
+        CCEE9150A059378F5030945231A55D3AF49C5DE5E5E5E5E5E5E5E5E5E5E5E5E5
+        E5E5E5E5E5E5E5E5E5E5E5E5E5E5DAD4CFF49C5DA059378F5030945231A65F3B
+        F8A668D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3D3CCC7
+        C3F8A668A05A389955339F5535A45D3BF9AC6FD0CECDD3D3D3D3D3D3D3D3D3D3
+        D3D3D3D3D3D3D3D3D3D3D3D3D3D3CCC7C4F9AC6F9E58378E55390000009C5534
+        9B55359B55359B55359B55359B55359B55359B55359B55359B55359B55359B55
+        359B55359C553400000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000}
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 0
+      OnClick = BB_SaveClick
+    end
+    object BB_Close: TBitBtn
+      Left = 1019
+      Top = 1
+      Width = 109
+      Height = 31
+      Margins.Left = 0
+      Margins.Top = 6
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Close[ESC]'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        18000000000000030000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFF6569BA717FE06B6EBEFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFDFEFFFFFFFFFFFFB9BADD7A83E6
+        6A80FF273CD9EBECF6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7677
+        C58788D9FFFFFFFFFFFFA0A1D34D54DE2536EB0B20D9E3E3F3FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFDCDCEE0E16C0B1B2DEFFFFFFFFFFFFE9E9F41519BF
+        060EDB0412D87B7DC3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2C34BA1822
+        C1FFFFFFFFFFFFFFFFFFFFFFFF5A5BBA0002CF0309D8080FC1DADAECFFFFFFFF
+        FFFFFFFFFFFFFFFF7A7CC50C21DF9C9DD2FFFFFFFFFFFFFFFFFFFFFFFFFDFDFE
+        1E1FB00001D00106D52326B1FFFFFFFFFFFFFFFFFFA9AAD30C28E52733BEFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE8E9F41112B50000D10103CE5A5CB9FF
+        FFFFB1B2D90B1FD40C26DFD2D1E7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFE2E3F21516B50000D20101C44D4EB8070EC30514E16F70BEFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F5FA2D2DB00001CC00
+        00CC0103D13639B3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFE2E2F23236B70207CF0103D20001C97777C2FFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7174CA0F1ED10717E40510DE0E
+        13BA0507C10608CC6162BEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9B9BD2
+        4F58D23D57F71D3CFA0D26F01921BFEBEBF6C4C4E5191BBE2325D44A4ABBF9F9
+        FCFFFFFFFFFFFFFFFFFF8487D0A2ABF78D9DFF6A7FFF3A55F9313BC1EFEFF7FF
+        FFFFFFFFFFFDFDFE5B5CBF4041D1494AC4A2A2D5FFFFFFFFFFFF8788CCB6BBF5
+        A3ACFB6973E17678C8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC8C8E65555
+        C16061CC5A5ABDADAED9DFDFEF9192D29A9DE29596D2FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFEDEDF77C7DC96162C58383CB}
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 1
+      OnClick = BB_CloseClick
+    end
+    object BitBtn_Deposit: TBitBtn
+      Left = 795
+      Top = 1
+      Width = 119
+      Height = 31
+      Align = alRight
+      Anchors = []
+      Caption = '&Deposit (F11)'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00550000000005
+        555555777777777FF5555500000000805555557777777777FF555550BBBBB008
+        05555557F5FFF7777FF55550B000B03080555557F77757F777F55550BBBBB033
+        00555557F55557F577555550BBBBB03305555557FFFFF7F57F55555000000033
+        05555557777777F57F555550BBBBB03305555557F5FFF7F57F555550B000B033
+        05555557F77757F57F555550BBBBB03305555557F55557F57F555550BBBBB033
+        05555557FFFFF7FF7F55550000000003055555777777777F7F55550777777700
+        05555575FF5555777F5555500B3B3B300555555775FF55577FF555555003B3B3
+        005555555775FFFF77F555555570000000555555555777777755}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 2
+      OnClick = BitBtn_DepositClick
+    end
+    object BitBtn_BedExchange: TBitBtn
+      Left = 633
+      Top = 1
+      Width = 162
+      Height = 31
+      Align = alRight
+      Caption = 'Bed Exchange (F10)'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        3333333333333333333333333333333333333FFF333333333333000333333333
+        3333777FFF3FFFFF33330B000300000333337F777F777773F333000E00BFBFB0
+        3333777F773333F7F333000E0BFBF0003333777F7F3337773F33000E0FBFBFBF
+        0333777F7F3333FF7FFF000E0BFBF0000003777F7F3337777773000E0FBFBFBF
+        BFB0777F7F33FFFFFFF7000E0BF000000003777F7FF777777773000000BFB033
+        33337777773FF733333333333300033333333333337773333333333333333333
+        3333333333333333333333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 3
+      OnClick = BitBtn_BedExchangeClick
+    end
+    object BitBtn_EmrPtClearance: TBitBtn
+      Left = 445
+      Top = 1
+      Width = 188
+      Height = 31
+      Align = alRight
+      Caption = 'EMR. Patient Clearance'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        3333333333333333333333333333333333333FFF333333333333000333333333
+        3333777FFF3FFFFF33330B000300000333337F777F777773F333000E00BFBFB0
+        3333777F773333F7F333000E0BFBF0003333777F7F3337773F33000E0FBFBFBF
+        0333777F7F3333FF7FFF000E0BFBF0000003777F7F3337777773000E0FBFBFBF
+        BFB0777F7F33FFFFFFF7000E0BF000000003777F7FF777777773000000BFB033
+        33337777773FF733333333333300033333333333337773333333333333333333
+        3333333333333333333333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 4
+      OnClick = BitBtn_EmrPtClearanceClick
+    end
+  end
+  object DS_InvestigationCharge: TDataSource
+    DataSet = OraQuery_InvestigationCharge
+    Left = 459
+    Top = 221
+  end
+  object DS_MedicineCharge: TDataSource
+    Left = 176
+    Top = 482
+  end
+  object DS_DoctorService: TDataSource
+    Left = 219
+    Top = 157
+  end
+  object DS_BedCharge: TDataSource
+    Left = 250
+    Top = 255
+  end
+  object Query_BedDetail: TOraQuery
+    SQL.Strings = (
+      
+        'Select DepId,Department,Sum(Total) as Total,Sum(TaxAmt) as TaxAm' +
+        't,Sum(Discount) as Discount,'
+      'Sum(NetTotal) as NetTotal From ServiceCharge.db '
+      'Group By DepId,Department Order by Department'
+      ' ')
+    Left = 74
+    Top = 238
+  end
+  object Query_GetServiceCharge: TOraQuery
+    SQL.Strings = (
+      'Select * FROM SERVICEBILLDETAIL SBD WHERE SBD.PatientId=1'
+      'AND BillDetailId=0'
+      
+        'AND SBD.SERVICEBILLDETAILID NOT IN (SELECT SERVICEBILLDETAILID F' +
+        'ROM TESTCANCEL WHERE SERVICEBILLDETAILID=SBD.SERVICEBILLDETAILID' +
+        ')'
+      ' ')
+    Left = 91
+    Top = 355
+  end
+  object Query_GetBedCharge: TOraQuery
+    SQL.Strings = (
+      
+        'Select IPD.INDE_InpatientDId InpatientDId,IPD.INDE_BedCharge Bed' +
+        'Charge,IPD.INDE_INPTDate INPTDate,IPD.INDE_INTIME INTIME,IPD.IND' +
+        'E_VatAmt VatAmt,IPD.INDE_OUTTime OUTTime,'
+      
+        '(Select Inre_DisBillDate From Hs_Inre_Inpatientreg where InRe_In' +
+        'patientId=IPD.INDE_InpatientId) as DisBillDate,'
+      
+        'IPD.INDE_OUTDate OUTDate,IPD.INDE_DisPer DisPer,InitCap(RT.RoomT' +
+        'ype)RoomType,IPD.INDE_RoomTypeId RoomTypeId,(SELECT ROOMTYPECODE' +
+        ' FROM ROOMTYPE WHERE ROOMTYPEID=IPD.INDE_RoomTypeId)ROOMTYPECODE' +
+        ',IPD.INDE_BedNo BedNo,IPD.INDE_WardId WardId'
+      
+        'From Hs_Inde_InpatientDetail IPD,RoomType RT Where IPD.INDE_Room' +
+        'TypeId=RT.RoomTypeId'
+      'and IPD.INDE_InPatientId=:InpatientId'
+      '')
+    Left = 251
+    Top = 371
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'InpatientId'
+      end>
+  end
+  object Query_GetMedicineCharge: TOraQuery
+    Left = 295
+    Top = 379
+  end
+  object Query_Process: TOraQuery
+    SQL.Strings = (
+      
+        'Select DepId,Department,Sum(Total) as Total,Sum(TaxAmt) as TaxAm' +
+        't,Sum(Discount) as Discount,'
+      'Sum(NetTotal) as NetTotal From ServiceCharge.db '
+      'Group By DepId,Department Order by Department'
+      ' ')
+    Left = 370
+    Top = 174
+  end
+  object Query_AdmitedDate: TOraQuery
+    SQL.Strings = (
+      
+        'select Inre_AdmnDate as INPTDate,Inre_DocId DocId,(Select DOct_D' +
+        'ocName From Hs_Doct_Doctor where Doct_DocId=Hs_Inre_InpatientReg' +
+        '.Inre_Docid) as DocName,Inre_MemberNo MemberNo '
+      'From Hs_Inre_InpatientReg  where Inre_InpatientId=:IPID')
+    Left = 300
+    Top = 170
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'IPID'
+      end>
+  end
+  object QueryPatientInfo: TOraQuery
+    SQL.Strings = (
+      
+        'Select Distinct PM.PatientId ,PM.Title||'#39' '#39'||PM.FName||'#39' '#39'||PM.L' +
+        'Name as Name,'
+      'PM.Address,PM.WardNo,'
+      
+        'PM.Age||'#39' -'#39'||SubStr(PM.AgeType,1,1)||'#39'  / '#39'||SubStr(PM.Gender,1' +
+        ',1) as AgeSex'
+      ',BD.PayType,BD.DisBillDate,BD.DisBillTime,BD.BillNo,'
+      
+        'BD.SchemeId,BD.DisBillBy,BD.InPatientId,BD.CommunityId,BD.Member' +
+        'No,'
+      
+        '(Select UserName From UserMain where UserId=BD.DisBillBy and Row' +
+        'Num=1) as UserName'
+      
+        'From PatientMain PM,BillDetail BD where BD.PatientId=PM.PatientI' +
+        'd and'
+      'BD.BillNo=:BillNo and PM.PatientId=:PID'
+      ' '
+      ' '
+      ' ')
+    Left = 308
+    Top = 330
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'BillNo'
+      end
+      item
+        DataType = ftInteger
+        Name = 'PID'
+      end>
+  end
+  object Query_DischargeDate: TOraQuery
+    SQL.Strings = (
+      
+        'Select IPD.INDE_InptDate InptDate,IPD.INDE_BedNo BedNo,IPD.INDE_' +
+        'RoomTypeId RoomTypeId,RT.RoomType,W.WardName'
+      
+        'From Hs_Inde_InpatientDetail IPD,RoomType RT,Ward W where IPD.IN' +
+        'DE_INPTDate '
+      
+        'In (select Max(Inde_INPTDate)  as INPTDate From Hs_Inde_Inpatien' +
+        'tdetail '
+      
+        'where Inde_InpatientId=:IPID) and IPD.INDE_RoomTypeId=RT.RoomTyp' +
+        'eId and '
+      'IPD.INDE_WardId=W.WardId and IPD.INDE_InPatientId=:IPID')
+    Left = 464
+    Top = 249
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'IPID'
+      end
+      item
+        DataType = ftInteger
+        Name = 'IPID'
+      end>
+  end
+  object Query_PtCommunity: TOraQuery
+    SQL.Strings = (
+      'Select S.SchemeName From Scheme S,InpatientReg IR where '
+      'S.SchemeId=IR.SchemeId and IR.InpatientId=:IPID')
+    Left = 332
+    Top = 176
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'IPID'
+      end>
+  end
+  object Query_Bill: TOraQuery
+    SQL.Strings = (
+      'Select * From FinalDischargeBill.db Order By PaymentCategory')
+    Left = 905
+    Top = 175
+    object Query_BillPaymentCategory: TStringField
+      FieldName = 'PaymentCategory'
+      Size = 100
+    end
+    object Query_BillTotal: TFloatField
+      FieldName = 'Total'
+    end
+    object Query_BillTaxAmt: TFloatField
+      FieldName = 'TaxAmt'
+    end
+    object Query_BillDiscount: TFloatField
+      FieldName = 'Discount'
+    end
+    object Query_BillNetTotal: TFloatField
+      FieldName = 'NetTotal'
+    end
+  end
+  object Query_DepositDetail: TOraQuery
+    SQL.Strings = (
+      
+        'Select DepositId as IPDID,DrAmount As DepositAmt,0 as DollarAmou' +
+        'nt,DepositDate as ModifyDate,DepositNo  as BillNo,'#39#39' DepStatus F' +
+        'rom Deposit Where'
+      'InpatientId=:IPID'
+      'Order By DepositDate,DepositNo'
+      ''
+      ' ')
+    Left = 50
+    Top = 174
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'IPID'
+      end>
+  end
+  object Query_SubProcess: TOraQuery
+    SQL.Strings = (
+      
+        'Select Distinct PM.PatientId ,PM.Title||'#39' '#39'||PM.FName||'#39' '#39'||PM.L' +
+        'Name as Name,'
+      'PM.Address,PM.WardNo,'
+      
+        'PM.Age||'#39' -'#39'||SubStr(PM.AgeType,1,1)||'#39'  / '#39'||SubStr(PM.Gender,1' +
+        ',1) as AgeSex'
+      ',BD.PayType,BD.DisBillDate,BD.DisBillTime,BD.BillNo,'
+      
+        'BD.SchemeId,BD.DisBillBy,BD.InPatientId,BD.CommunityId,BD.Member' +
+        'No'
+      
+        'From PatientMain PM,BillDetail BD where BD.PatientId=PM.PatientI' +
+        'd and'
+      'BD.BillNo=:BillNo and PM.PatientId=:PID'
+      ' '
+      ' '
+      ' ')
+    Left = 244
+    Top = 330
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'BillNo'
+      end
+      item
+        DataType = ftInteger
+        Name = 'PID'
+      end>
+  end
+  object Query_GetAdmittedPatientInfo: TOraQuery
+    SQL.Strings = (
+      
+        'Select * From VW_HS_ADMNPATIENTCURRENTINFO where InpatientId=:In' +
+        'patientId')
+    Left = 232
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'InpatientId'
+      end>
+  end
+  object OraQuery_InvestigationCharge: TOraQuery
+    SQL.Strings = (
+      
+        'Select ServiceBillDetailId,PatientId,InpatientId,BillDate,Servic' +
+        'e,ServiceType,Sum(Qty) as Qty,Round(Sum(Amount*Qty),2) as Gross,' +
+        'Round(Sum(VatAmt),2) as VatAmt,Round(Sum(Amount*Qty*DisPer/100),' +
+        '2) as Discount,'
+      
+        'Round(Sum((Amount*Qty)+VatAmt-(Amount*Qty*DisPer/100)),2) As Net' +
+        'Total From ('
+      
+        'Select ServiceBillDetailId,PatientId,InpatientId,BillDate,Servic' +
+        'e,ServiceType,Amount,Qty,DisPer,VatAmt,(Select TestNameCategory ' +
+        'From TestNameCategory where TNCategoryCode=TN.TNCategoryCode)'
+      'as TestNameCategory'
+      'FROM SERVICEBILLDETAIL SBD,TestName TN WHERE'
+      
+        'SBD.Service=TN.TestNameCode and SBD.PatientId=:PatientId AND Bil' +
+        'lDetailId=0'
+      
+        'AND SBD.SERVICEBILLDETAILID NOT IN (SELECT SERVICEBILLDETAILID F' +
+        'ROM TESTCANCEL WHERE SERVICEBILLDETAILID=SBD.SERVICEBILLDETAILID' +
+        ')'
+      
+        ') Group by ServiceBillDetailId,PatientId,InpatientId,BillDate,Se' +
+        'rvice,ServiceType'
+      'Order by BillDate Desc,ServiceType')
+    Left = 424
+    Top = 216
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'PatientId'
+      end>
+  end
+  object Query_IsAdditionalDoctorAdded: TOraQuery
+    SQL.Strings = (
+      'Select * From AdditionalCosultantVisit '
+      'where InpatientId=:InpatientId '
+      '      and StartDate>=:StartDate'
+      'Order by DocCode')
+    Left = 520
+    Top = 168
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'InpatientId'
+      end
+      item
+        DataType = ftString
+        Name = 'StartDate'
+      end>
+  end
+  object Query_AutoChargeItem: TOraQuery
+    SQL.Strings = (
+      'Select * From FinalDischargeBill.db Order By PaymentCategory')
+    Left = 865
+    Top = 175
+  end
+  object Query_RoomTypeWiseCharge: TOraQuery
+    SQL.Strings = (
+      'Select * From FinalDischargeBill.db Order By PaymentCategory')
+    Left = 497
+    Top = 431
+  end
+  object QRCompositeReport1: TQRCompositeReport
+    OnAddReports = QRCompositeReport1AddReports
+    Options = []
+    PrinterSettings.Copies = 1
+    PrinterSettings.OutputBin = Auto
+    PrinterSettings.Duplex = False
+    PrinterSettings.FirstPage = 0
+    PrinterSettings.LastPage = 0
+    PrinterSettings.UseStandardprinter = False
+    PrinterSettings.UseCustomBinCode = False
+    PrinterSettings.CustomBinCode = 0
+    PrinterSettings.ExtendedDuplex = 0
+    PrinterSettings.UseCustomPaperCode = False
+    PrinterSettings.CustomPaperCode = 0
+    PrinterSettings.PrintMetaFile = False
+    PrinterSettings.PrintQuality = 0
+    PrinterSettings.Collate = 0
+    PrinterSettings.ColorOption = 0
+    PrinterSettings.Orientation = poPortrait
+    PrinterSettings.PaperSize = Letter
+    PageCount = 0
+    Left = 357
+    Top = 96
+  end
+  object QueryCheckFileStatus: TOraQuery
+    SQL.Strings = (
+      
+        'Select FIST_FILEID FileId,FIST_STATUS Status,FIST_CURSTATUS CurS' +
+        'tatus,FIST_RACKNO RackNo,FIST_FileMemberId FILEMEMBERID From HS_' +
+        'FIST_FILESTATUS Where FIST_FileId In ('
+      'Select Max(FIST_FileId) as FileId From HS_FIST_FILESTATUS '
+      'Where FIST_Patientid=:PID'
+      ')')
+    Left = 472
+    Top = 129
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'PID'
+      end>
+  end
+  object Query_MutualDocForShare: TOraQuery
+    Left = 904
+    Top = 352
+  end
+  object Query_Specialdeposit: TOraQuery
+    Left = 904
+    Top = 248
+  end
+  object Timer1: TTimer
+    Enabled = False
+    OnTimer = Timer1Timer
+    Left = 888
+    Top = 416
+  end
+  object DS_SurgicalItemsCharge: TDataSource
+    Left = 439
+    Top = 482
+  end
+  object Query_DepoToBeAdjust: TOraQuery
+    SQL.Strings = (
+      'Select * From HS_DEPO_Deposit where DEPO_INPATIENTID=1799'
+      
+        'and DEPO_REFERENCENO Is Null and NVL(DEPO_REFERENCETYPE,'#39'NA'#39') No' +
+        't In ('#39'ADJ. IN DISCHARGE'#39','#39'DISCHARGE ADJUSTED DEPOSIT'#39')'
+      
+        'and DEPO_DepositNo Not In (Select DEPO_REFERENCENO From HS_DEPO_' +
+        'Deposit where DEPO_InpatientID=1799 and DEPO_REFERENCENO Is Not ' +
+        'NULL'
+      
+        'and NVL(DEPO_REFERENCETYPE,'#39'NA'#39') Not In ('#39'ADJ. IN DISCHARGE'#39','#39'DI' +
+        'SCHARGE ADJUSTED DEPOSIT'#39'))')
+    Left = 968
+    Top = 216
+  end
+  object Query_GetBedWiseSvrCharge: TOraQuery
+    Left = 1080
+    Top = 32
+  end
+  object Table_FinalDischargeBill: TTable
+    Left = 136
+    Top = 224
+  end
+  object Table_FinalTableDetail: TTable
+    Left = 640
+    Top = 32
+  end
+  object Table_DoctorService: TTable
+    Left = 216
+    Top = 224
+  end
+  object Table_BedCharge: TTable
+    Left = 288
+    Top = 232
+  end
+  object Table_DailyBed: TTable
+    Left = 328
+    Top = 232
+  end
+  object Table_AllIndoorService: TTable
+    Left = 176
+    Top = 224
+  end
+  object Table_MedicineCharge: TTable
+    Left = 456
+    Top = 344
+  end
+  object Table_SurgicalItemsCharge: TTable
+    Left = 416
+    Top = 352
+  end
+  object Table_FinalDischBillDetail: TTable
+    Left = 496
+    Top = 344
+  end
+  object Table_InvestigationCharge: TTable
+    Left = 136
+    Top = 192
+  end
+  object Query_DisplayMedicineCharge: TQuery
+    Left = 152
+    Top = 232
+  end
+  object Query_TempProcess: TQuery
+    Left = 544
+    Top = 104
+  end
+  object Query_InvestigationCharge: TQuery
+    Left = 592
+    Top = 120
+  end
+end

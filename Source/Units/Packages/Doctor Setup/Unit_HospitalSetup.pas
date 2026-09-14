@@ -1,0 +1,255 @@
+unit Unit_HospitalSetup;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm, DbGridExportToExcel,ServerDate,Unit_Master,
+     Dialogs, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, ExtCtrls, Grids, DBGrids, StdCtrls, Buttons, ComCtrls;
+
+type
+     TForm_HospitalSetup = class(TForm)
+          Panel2: TPanel;
+          BB_Save: TBitBtn;
+          BB_Close: TBitBtn;
+          BB_New: TBitBtn;
+          PageControl1: TPageControl;
+          TabSheet1: TTabSheet;
+          Label2: TLabel;
+          SpeedButton1: TSpeedButton;
+          SpeedButton2: TSpeedButton;
+          Edit_Search: TEdit;
+          DBGrid1: TDBGrid;
+          TabSheet2: TTabSheet;
+    le_Hospitalcode: TLabeledEdit;
+    le_Hosname: TLabeledEdit;
+          Query_Department: TOraQuery;
+          Ds_Department: TDataSource;
+          Query_list: TOraQuery;
+          Ds_List: TDataSource;
+    le_HosAddress: TLabeledEdit;
+    le_HosPhone: TLabeledEdit;
+          cb_isactive: TCheckBox;
+    Query_process: TOraQuery;
+    le_Email: TLabeledEdit;
+          procedure PageControl1Change(Sender: TObject);
+          procedure BB_NewClick(Sender: TObject);
+          procedure BB_CloseClick(Sender: TObject);
+          procedure Edit_SearchChange(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure BB_SaveClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+     private
+          pb_isnew: Boolean;
+          pi_hospitalsetupID: integer;
+          { Private declarations }
+     public
+          { Public declarations }
+     end;
+
+var
+     Form_HospitalSetup: TForm_HospitalSetup;
+
+implementation
+
+uses Unit_DoctorSetup;
+
+//Procedure SaveDoctorSetup(DOCCODE, DACTIVE, DOCNAME, QUALIFICATION, SPECIALIZATION: String); stdcall;
+{Procedure SaveHospitalSetup(HOSCODE, DACTIVE, HOSNAME, ADDRESS, PHONE,EMAIL: String); stdcall;
+external 'MidasFunction.bpl';
+Procedure UpdateHospitalSetup(setupid:Integer;HOSCODE, DACTIVE, HOSNAME, ADDRESS, PHONE,EMAIL: String); stdcall;
+external 'MidasFunction.bpl'; }
+{$R *.dfm}
+
+procedure TForm_HospitalSetup.BB_CloseClick(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+     Begin
+          PageControl1.ActivePageIndex := 0;
+          Query_list.Close;
+          Query_list.Session:=DM_Hospital.DB;
+          Query_list.Open;
+     End
+     else
+          Close;
+end;
+
+procedure TForm_HospitalSetup.BB_NewClick(Sender: TObject);
+begin
+     pb_isnew := true;
+     le_Hospitalcode.ReadOnly:=false;
+     PageControl1.ActivePageIndex := 1;
+     ClearAll(PageControl1.Pages[1]);
+    // le_Doccode.Text:=GetNextDoccode_mangalam;
+end;
+
+procedure TForm_HospitalSetup.BB_SaveClick(Sender: TObject);
+Var
+     HOSCODE, DACTIVE, HOSNAME, Address, Phone,Email: String;
+var OraQuery1:TOraQuery;
+begin
+     if (le_Hospitalcode.Text = '') or (le_Hosname.Text = '') then
+     begin
+          MsgBox(1006, 0, '', '', '');
+          exit;
+     end;
+
+     HOSCODE := le_Hospitalcode.Text;
+
+     if cb_isactive.Checked = true then
+          DACTIVE := 'Y'
+     else
+          DACTIVE := 'N';
+     HOSNAME := le_Hosname.Text;
+     Address := le_HosAddress.Text;
+     Phone := le_HosPhone.Text;
+     Email:=le_Email.Text;
+
+     OraQuery1:=TOraQuery.Create(nil);
+
+
+     try
+          if pb_isnew then
+          begin
+               with OraQuery1 do
+               begin
+                    Close;
+                    Session:=DM_Hospital.DB;
+                    sql.Clear;
+                    sql.Add('select HOSE_HOSPITALCODE from HS_HOSE_HOSPITALSETUP where HOSE_HOSPITALCODE='+QuotedStr(HOSCODE));
+                    Open;
+               end;
+
+               if OraQuery1.RecordCount>0 then
+               begin
+                    ShowMessage('The Hoscode is already exist !!!');
+                    le_Hospitalcode.SetFocus;
+                    exit;
+               end;
+               OraQuery1.free;
+               SaveHospitalSetup(HOSCODE,DACTIVE,HOSNAME,Address,Phone,Email);
+          end
+          else
+               UpdateHospitalSetup(pi_hospitalsetupID,HOSCODE,DACTIVE,HOSNAME,Address,Phone,Email);
+          ShowDoneMessage;
+          ClearAll(PageControl1.Pages[1]);
+          le_Hospitalcode.SetFocus;
+          pb_isnew := true;
+     except
+          MsgBox(1005, 0, '', '', '');
+     end;
+     Query_list.Close;
+     Query_list.Session:=DM_Hospital.DB;
+     Query_list.Open;
+     PageControl1.ActivePageIndex := 0;
+end;
+
+procedure TForm_HospitalSetup.DBGrid1DblClick(Sender: TObject);
+begin
+     if Query_list.RecordCount=0 then
+     begin
+          ShowMessage('Sorry There is No Data For Update!!!');
+          exit;
+     end;
+
+     with Query_list do
+     begin
+          PageControl1.ActivePageIndex:=1;
+          pb_isnew:=false;
+          le_Hospitalcode.Text:=FieldByName('hose_hospitalcode').AsString;
+          le_Hosname.Text:=FieldByName('hose_hospitalname').AsString;
+          le_HosAddress.Text:=FieldByName('hose_hospitaladdress').AsString;
+          le_HosPhone.Text:=FieldByName('hose_hospitalnumber').AsString;
+          le_Email.Text:=FieldByName('hose_hospitalemail').AsString;
+          pi_hospitalsetupID:=FieldByName('hose_hospitalsetupid').AsInteger;
+          le_Hosname.SetFocus;
+          if FieldByName('hose_isactive').AsString='Y' then
+          cb_isactive.Checked:=true
+          else
+          cb_isactive.Checked:=false;
+
+          le_Hospitalcode.ReadOnly:=True;
+     end;
+end;
+
+procedure TForm_HospitalSetup.Edit_SearchChange(Sender: TObject);
+begin
+
+     Edit_Search.Text := StringReplace(Edit_Search.Text, '''', '''''', [rfReplaceAll]);
+     with Query_list do
+     Begin
+          IF Trim(Edit_Search.Text) <> '' Then
+          Begin
+               Filter := 'hospitalname =' + #39 + Trim(Edit_Search.Text) + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TForm_HospitalSetup.FormCreate(Sender: TObject);
+begin
+     Query_list.Close;
+     Query_list.Session:=DM_Hospital.DB;
+     Query_list.Open;
+     PageControl1.ActivePageIndex := 0;
+end;
+
+procedure TForm_HospitalSetup.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = 27 then
+          BB_CloseClick(Sender);
+end;
+
+procedure TForm_HospitalSetup.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     keybd_event(9,13,0,0);
+end;
+
+procedure TForm_HospitalSetup.PageControl1Change(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+          PageControl1.ActivePageIndex := 0
+     else
+          PageControl1.ActivePageIndex := 1;
+end;
+
+procedure TForm_HospitalSetup.SpeedButton1Click(Sender: TObject);
+begin
+     if ((gi_UserID=1)) then
+     begin
+          If MessageDlg('Are you sure you want to delete this Hospital?', mtConfirmation, [mbYes,MbNo], 0) = mrYes then
+          begin
+               With Query_Process do
+               Begin
+                    Close;
+                    sql.Clear;
+                    sql.Add(' Delete From hospitalsetup where hospitalsetupid=' + IntToStr(Query_list.FieldbyName('hospitalsetupid').AsInteger));
+                    ExecSQL;
+               End;
+          end;
+          Query_list.Close;
+          Query_list.Open;
+     end
+     else
+     begin
+          MessageDlg('Please Contact your System Administrator to delete the doctor details !', mtConfirmation, [mbok], 0);
+     end;
+
+end;
+
+procedure TForm_HospitalSetup.SpeedButton2Click(Sender: TObject);
+begin
+     if MsgBox(1010, 1, '', '', '') then
+     begin
+          //ExportDBGrid(Form_HopitalSetup, DBGrid1, true, 'Doctors List ', TodaysDateVS + ' BS -' + TodaysDate + ' AD');
+     end;
+end;
+
+end.

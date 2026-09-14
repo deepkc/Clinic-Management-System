@@ -1,0 +1,260 @@
+unit unit_TBExaminationReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  QuickRpt, Qrctrls, ExtCtrls, Db, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, jpeg;
+         
+type
+  TForm_TBExaminationReport = class(TForm)
+    QuickRep1: TQuickRep;
+    QRBand1: TQRBand;
+    TitleBand1: TQRBand;
+    QRLabel4: TQRLabel;
+    QRLabel3: TQRLabel;
+    QRDBText5: TQRDBText;
+    QRLabel6: TQRLabel;
+    QRLabel7: TQRLabel;
+    QRLabel8: TQRLabel;
+    QRLabel9: TQRLabel;
+    QRLabel10: TQRLabel;
+    QRLabel14: TQRLabel;
+    QRShape1: TQRShape;
+    QRLabel1: TQRLabel;
+    QRLabel2: TQRLabel;
+    QRLabel11: TQRLabel;
+    QRLabel15: TQRLabel;
+    QRShape2: TQRShape;
+    QRShape3: TQRShape;
+    QRShape4: TQRShape;
+    QRShape9: TQRShape;
+    QRLabel31: TQRLabel;
+    QRLabel73: TQRLabel;
+    QRLabelPDate: TQRLabel;
+    QueryMain: TOraQuery;
+    QRDBText2: TQRDBText;
+    QRDBText3: TQRDBText;
+    QRDBText4: TQRDBText;
+    QRDBText6: TQRDBText;
+    QRDBText9: TQRDBText;
+    QRDBText10: TQRDBText;
+    QRDBText12: TQRDBText;
+    QRLabel37: TQRLabel;
+    QRLabel75: TQRLabel;
+    QRLabel76: TQRLabel;
+    QRShape38: TQRShape;
+    QRShape39: TQRShape;
+    QRShape40: TQRShape;
+    QRLabel80: TQRLabel;
+    QRLabel81: TQRLabel;
+    QRLabel83: TQRLabel;
+    QRLabel84: TQRLabel;
+    QRLabel85: TQRLabel;
+    QRLabel87: TQRLabel;
+    QueryFooter: TOraQuery;
+    QRImage1: TQRImage;
+    QRLabel91: TQRLabel;
+    QRLabel92: TQRLabel;
+    QRLabel93: TQRLabel;
+    QRLabel96: TQRLabel;
+    QRShape42: TQRShape;
+    QRLabel97: TQRLabel;
+    QRLabel98: TQRLabel;
+    QRShape43: TQRShape;
+    QRDBText37: TQRDBText;
+    QRLabel100: TQRLabel;
+    QRLabel101: TQRLabel;
+    QRLabel95: TQRLabel;
+    QRShape10: TQRShape;
+    QRLabel30: TQRLabel;
+    QRLabel47: TQRLabel;
+    QRDBText44: TQRDBText;
+    QRLabel12: TQRLabel;
+    img_Nonspecific: TQRImage;
+    QRLabel16: TQRLabel;
+    QRLabel17: TQRLabel;
+    img_Inactive: TQRImage;
+    QRLabel18: TQRLabel;
+    img_active: TQRImage;
+    QRLabel19: TQRLabel;
+    QRLabel20: TQRLabel;
+    QRLabel21: TQRLabel;
+    QRLabel22: TQRLabel;
+    img_infective: TQRImage;
+    img_noninfective: TQRImage;
+    img_Drugsensitive: TQRImage;
+    img_MDR: TQRImage;
+    QRLabel23: TQRLabel;
+    QRLabel24: TQRLabel;
+    QRLabel25: TQRLabel;
+    QRLabel26: TQRLabel;
+    QRLabel27: TQRLabel;
+    QRLabel28: TQRLabel;
+    img_Undertreatment: TQRImage;
+    img_Cured: TQRImage;
+    img_complicated: TQRImage;
+    img_Failed: TQRImage;
+    img_Defaulted: TQRImage;
+    QRLabel33: TQRLabel;
+    QRLabel34: TQRLabel;
+    QRLabel35: TQRLabel;
+    QRShape6: TQRShape;
+    QRShape7: TQRShape;
+    QRShape8: TQRShape;
+    QRShape11: TQRShape;
+    QRLabel38: TQRLabel;
+    QRLabel39: TQRLabel;
+    QRLabel40: TQRLabel;
+    QRLabel29: TQRLabel;
+    QRLabel41: TQRLabel;
+    QRLabel42: TQRLabel;
+    img_Positive: TQRImage;
+    img_Negetive: TQRImage;
+    QRLabel43: TQRLabel;
+    QRLabel44: TQRLabel;
+    QRLabel45: TQRLabel;
+    QRLabel46: TQRLabel;
+    QRLabel48: TQRLabel;
+    QRDBText11: TQRDBText;
+    QRDBText13: TQRDBText;
+    QRDBText14: TQRDBText;
+    QRDBText15: TQRDBText;
+    img_male: TQRImage;
+    img_Female: TQRImage;
+    QRShape12: TQRShape;
+    QRShape13: TQRShape;
+    QRDBText1: TQRDBText;
+    QRDBText7: TQRDBText;
+    QRLabel5: TQRLabel;
+    QRLabel13: TQRLabel;
+    QRDBText8: TQRDBText;
+    QRShape5: TQRShape;
+    QRLabel36: TQRLabel;
+    QRDBText16: TQRDBText;
+    QRLabel32: TQRLabel;
+    procedure QRLabel96Print(sender: TObject; var Value: String);
+    procedure QRLabel93Print(sender: TObject; var Value: String);
+    procedure QRLabel95Print(sender: TObject; var Value: String);
+    procedure QRDBText21Print(sender: TObject; var Value: String);
+    procedure QRDBText22Print(sender: TObject; var Value: String);
+    procedure QRDBText23Print(sender: TObject; var Value: String);
+    procedure QRDBText24Print(sender: TObject; var Value: String);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    ls_Gender:String;
+  end;
+
+var
+  Form_TBExaminationReport: TForm_TBExaminationReport;
+
+implementation
+
+uses Unit_GlobalFxnVar;
+
+{$R *.DFM}
+
+procedure TForm_TBExaminationReport.QRLabel96Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HosPhEPS;
+end;
+
+procedure TForm_TBExaminationReport.QRLabel93Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HosName;
+end;
+
+procedure TForm_TBExaminationReport.QRLabel95Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HosAddress;
+end;
+
+procedure TForm_TBExaminationReport.QRDBText21Print(sender: TObject;
+  var Value: String);
+var
+     lf_Value,lf_LowR,lf_HighR:Double;
+begin
+     lf_Value:=StrToFloat(Value);
+     If ls_Gender='MALE' Then
+     Begin
+          lf_LowR:=17;
+          lf_HighR:=59;
+     End
+     Else
+     Begin
+          lf_LowR:=14;
+          lf_HighR:=36;
+     End;
+
+    { If (lf_Value<lf_LowR) or (lf_Value>lf_HighR) Then
+     QRDBText21.Font.Style:=[fsBold]
+     Else
+     QRDBText21.Font.Style:=[];    }
+end;
+
+procedure TForm_TBExaminationReport.QRDBText22Print(sender: TObject;
+  var Value: String);
+var
+     lf_Value,lf_LowR,lf_HighR:Double;
+begin
+     lf_Value:=StrToFloat(Value);
+     If ls_Gender='MALE' Then
+     Begin
+          lf_LowR:=21;
+          lf_HighR:=72;
+     End
+     Else
+     Begin
+          lf_LowR:=9;
+          lf_HighR:=52;
+     End;
+
+     {If (lf_Value<lf_LowR) or (lf_Value>lf_HighR) Then
+     QRDBText22.Font.Style:=[fsBold]
+     Else
+     QRDBText22.Font.Style:=[];        }
+end;
+
+procedure TForm_TBExaminationReport.QRDBText23Print(sender: TObject;
+  var Value: String);
+var
+     lf_Value,lf_LowR,lf_HighR:Double;
+begin
+     lf_Value:=StrToFloat(Value);
+     lf_LowR:=200;
+
+     {If (lf_Value>=lf_LowR)  Then
+     QRDBText23.Font.Style:=[fsBold]
+     Else
+     QRDBText23.Font.Style:=[];         }
+end;
+
+procedure TForm_TBExaminationReport.QRDBText24Print(sender: TObject;
+  var Value: String);
+var
+     lf_Value,lf_LowR,lf_HighR:Double;
+begin
+     lf_Value:=StrToFloat(Value);
+     If ls_Gender='MALE' Then
+     Begin
+          lf_LowR:=40;
+          lf_HighR:=54;
+     End
+     Else
+     Begin
+          lf_LowR:=37;
+          lf_HighR:=47;
+     End;
+
+     {If (lf_Value<lf_LowR) or (lf_Value>lf_HighR) Then
+     QRDBText24.Font.Style:=[fsBold]
+     Else
+     QRDBText24.Font.Style:=[];           }
+end;
+
+end.

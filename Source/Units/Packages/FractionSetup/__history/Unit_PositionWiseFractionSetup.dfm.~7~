@@ -1,0 +1,859 @@
+object Form_PositionWiseFractionSetup: TForm_PositionWiseFractionSetup
+  Left = 293
+  Top = 165
+  Caption = 'Position Wise Fraction(Commession) Setup'
+  ClientHeight = 534
+  ClientWidth = 845
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poDesigned
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object PageControl1: TPageControl
+    Left = 0
+    Top = 28
+    Width = 845
+    Height = 487
+    ActivePage = TabSheet1
+    Align = alClient
+    TabOrder = 2
+    object TabSheet1: TTabSheet
+      object Label_TesNameCap: TLabel
+        Left = 21
+        Top = 5
+        Width = 51
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Test Name'
+      end
+      object Label9: TLabel
+        Left = 35
+        Top = 88
+        Width = 37
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Position'
+      end
+      object Label1: TLabel
+        Left = 26
+        Top = 47
+        Width = 46
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Fraction :'
+      end
+      object LabelCommAmt: TLabel
+        Left = 77
+        Top = 47
+        Width = 26
+        Height = 13
+        Caption = '0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label2: TLabel
+        Left = 45
+        Top = 130
+        Width = 27
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Name'
+      end
+      object SBDelete: TSpeedButton
+        Left = 803
+        Top = 1
+        Width = 29
+        Height = 25
+        Flat = True
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000120B0000120B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333000000000
+          3333333777777777F3333330F777777033333337F3F3F3F7F3333330F0808070
+          33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+          33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+          333333F7F7F7F7F7F3F33030F080707030333737F7F7F7F7F7333300F0808070
+          03333377F7F7F7F773333330F080707033333337F7F7F7F7F333333070707070
+          33333337F7F7F7F7FF3333000000000003333377777777777F33330F88877777
+          0333337FFFFFFFFF7F3333000000000003333377777777777333333330777033
+          3333333337FFF7F3333333333000003333333333377777333333}
+        NumGlyphs = 2
+        OnClick = SBDeleteClick
+      end
+      object Label3: TLabel
+        Left = 1
+        Top = 28
+        Width = 71
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Test Rate(Rs.)'
+      end
+      object Label_TestPrice: TLabel
+        Left = 77
+        Top = 28
+        Width = 26
+        Height = 13
+        Caption = '0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label5: TLabel
+        Left = 15
+        Top = 194
+        Width = 54
+        Height = 13
+        Caption = 'Actual(%)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label6: TLabel
+        Left = 20
+        Top = 218
+        Width = 49
+        Height = 13
+        Caption = 'Amt (Rs)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label11: TLabel
+        Left = 529
+        Top = 158
+        Width = 36
+        Height = 14
+        Caption = 'F.P.W.D'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label12: TLabel
+        Left = 529
+        Top = 139
+        Width = 36
+        Height = 14
+        Caption = 'F.P.F.C '
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label13: TLabel
+        Left = 570
+        Top = 139
+        Width = 177
+        Height = 13
+        Caption = '- Fixed Person For Commession'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label14: TLabel
+        Left = 570
+        Top = 158
+        Width = 211
+        Height = 13
+        Caption = '- Fraction Proportional With Discount'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label10: TLabel
+        Left = 529
+        Top = 180
+        Width = 25
+        Height = 14
+        Caption = 'C.F.F'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label15: TLabel
+        Left = 569
+        Top = 179
+        Width = 218
+        Height = 13
+        Caption = '- Compulsory (To Choose) For Fraction'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object SB_mattype: TSpeedButton
+        Left = 337
+        Top = 85
+        Width = 23
+        Height = 20
+        Flat = True
+        Glyph.Data = {
+          DE000000424DDE0000000000000076000000280000000D0000000D0000000100
+          0400000000006800000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+          F000FFFFFFFFFFFFF000FFFFF000FFFFF000FFFFF0F0FFFFF000FFFFF0F0FFFF
+          F000FF0000F0000FF000FF0FFFFFFF0FF000FF0000F0000FF000FFFFF0F0FFFF
+          F000FFFFF0F0FFFFF000FFFFF000FFFFF000FFFFFFFFFFFFF000FFFFFFFFFFFF
+          F000}
+        OnClick = SB_mattypeClick
+      end
+      object Label16: TLabel
+        Left = 226
+        Top = 26
+        Width = 65
+        Height = 13
+        Caption = 'Fraction For :'
+      end
+      object Label_FractionFor: TLabel
+        Left = 292
+        Top = 27
+        Width = 65
+        Height = 13
+        Caption = 'FractionFor'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object SpeedButton1: TSpeedButton
+        Left = 772
+        Top = 1
+        Width = 29
+        Height = 25
+        Flat = True
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000130B0000130B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+          00033FFFFFFFFFFFFFFF0888888888888880777777777777777F088888888888
+          8880777777777777777F0000000000000000FFFFFFFFFFFFFFFF0F8F8F8F8F8F
+          8F80777777777777777F08F8F8F8F8F8F9F0777777777777777F0F8F8F8F8F8F
+          8F807777777777777F7F0000000000000000777777777777777F3330FFFFFFFF
+          03333337F3FFFF3F7F333330F0000F0F03333337F77773737F333330FFFFFFFF
+          03333337F3FF3FFF7F333330F00F000003333337F773777773333330FFFF0FF0
+          33333337F3FF7F3733333330F08F0F0333333337F7737F7333333330FFFF0033
+          33333337FFFF7733333333300000033333333337777773333333}
+        NumGlyphs = 2
+        OnClick = SpeedButton1Click
+      end
+      object SPB_DoctorWiseFrctSetup: TSpeedButton
+        Left = 232
+        Top = 211
+        Width = 172
+        Height = 22
+        Caption = 'Doctor Wise Setup     (F6)'
+        Flat = True
+        Glyph.Data = {
+          FA0E0000424DFA0E00000000000036000000280000002E0000001B0000000100
+          180000000000C40E0000C40E0000C40E00000000000000000000B9878AFFFFFF
+          FBFEFEFEFBFFFDFFFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFDFCFFFFFFF4EF
+          EFD0C6C88D7F80524B4BA09A9BEEEBEA605D5EB6ADAEB4B3B4FFFFFFFFFFFFFF
+          FFFFE6E7E7FBFCFBFEFEFEFDFDFDFDFDFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFF0000B9878AFFFFFFFBFEFEFEFBFFFDFFFDFFFFFFFFFFFFFFFFFFFDFD
+          FDFFFFFFFAF7FAF9F4F7E3D6DCC7B8BCA9969CCFC1C6786B6FCBBABFFCF1F3A6
+          9B9E969597FFFFFFD8D8D39093A09A8F9CC8C1C4FFFFFFFAFBFAFBFCFEFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000B9878AFFFFFFFBFEFEFEFBFFFDFF
+          FDFFFDFFFFFCFFFEFBFEFEFCFEFDF9FBF8F7FB8B888FF2ECF2E1D6DFD7C8D0C5
+          B9C47C6D77D2C3CAF8EDF37B7779B1B0B07A7479959A953E476B867A9EACA1AB
+          FFFEFBF8F9F6FBFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000B987
+          8AFFFFFFFBFEFEFEFBFFFDFFFDFFFDFFFFFBFDFDFAFCF7F5F6EEEBECBAB9C0E2
+          E2E5E8E5E9E9E5E9D0C7CEA8A1AB6A616BD3CAD1FFFDFF4A4A4DAAACA7FFFFFF
+          B9C3D73742731C295D000000DBDDDBFFFFFAFFFEFCFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFF0000B9878AFFFFFFFAFEFEFEF9FDFCFFFDFDFAFDFBF4FAFA
+          F4F9E9E2E8CCC6CBFAF8FDF0EDF3F7F3F9FCF7FDA39DA3E2DEE6635B66AEA7B1
+          969397858589FFFFFFB0B7DE63759E505C99435DA5141C439FA3A7FFFFFDFEFC
+          F8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000B9878AFFFFFFFAFEFEFE
+          FBFFFCFEFCFCF4FBF7F0F7EAE2E9EEE8EDE2DBE1FCF2F9F4E9F1F9F3F8FCF6FB
+          CCC5CBC5BDC9796E79918691F9F3FAB0B0B1D9E3FD8EA3EA304C783A437E6377
+          CF8495E68F97BDFEFFFFFDFCFCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          0000B9878AFFFFFFFAFEFEFEFCFFFAFDFBF4ECF1FBF4FADDD6DCD8D1D7FAF4FA
+          FEF5FAF7EEF5FCF3F9C2B9C0C8C2C7706672FFFFFF9E8E9AE8DCE3BCB8BAB7CB
+          FA6780C82A426E1A1C517382DE6677DB424F91DBE0E7FDFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFF0000B7878AFFFFFFF9FEFEFFFCFFF8FBF8FAF5F8
+          ECE5EBAEA7ABF3EFF2FDF7FAFAF6F6F6F3F5E2DAE0BCB7BCC3C1C48B8187FFF9
+          FFAEA1A9C7BDC1DDDFE799B3E6586C92686E8A484F7E91A3F05D6FD27885CC5C
+          5F75FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000B7878AFFFFFF
+          FAFEFEFEFCFEF5F8F6FAF3F7DAD3D7FDF9FBFCF6F9FCF6FAFCFAFAFFFFFF3F3C
+          44847E8BFAF5FDB4A9ACE0D8E3D2C8D3B9AFB8C9CFE2A3B0DB565F78A2ABAEB7
+          C0D458639C7886E51F286B464A62FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFF0000B7878AFFFFFFFAFEFEFEFCFFF3F6F3F9F1F5F8F1F4FCF5F7FDF7
+          FAFEF9FCFFFFFFA7A6AB2F2E45A7A5B4FFFFFFC9BFC0BCB4BEF6F0F9DAD4DAE7
+          EAFB807F9F6667776D7575A5B0BF47527C4955A8384380878A9BFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000B7878AFFFFFFF9FDFEFDFCFEF4F6
+          F5FCF8F8F7F1F2F5EFF0FFFBFCFFFAFAFFFFFF3D3C4A66688758576DA4A0A8FF
+          F8F9B4AFB5F0EBEFECE0E2F7EEFBCAC6D7C8C9DA8D94AF434C773942733E4A91
+          1C2459A6ACB4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000B887
+          8AFFFFFFFAFDFEFEFCFFF3F5F3F9F5F4FAF2F3FDF7F6FFF9F7FFFFFF9F9BA44D
+          4D60696E8F595D7D959399BFB8BA726A72F8F2F5F0DFDDF9E7F1EEEAF1A09DB7
+          7B80B22E3875616B994856951C254CFFFFFFFDFFF8FFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFF0000B9878AFFFFFFFAFDFEFEFCFFFAFDFBE3E2E3F4E6EDFD
+          EFEDFDF9F7ECEDF552526FB1B8CC9DABD9606EB0ACACCC9999A7555259CBBBC1
+          CBB5BAE3CAD1CEBBC269656ACDD4E5434D83565E84ADB4CBA0A6B6F9FFFFFBFF
+          F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000B9878AFFFFFFFBFEFEFE
+          FCFFFDFFFEF8F7F2E0D7D7EFE5E5FAFAFF8288A3B0B9EDBCC8F4B2C6FF6273D0
+          2E317D545F7B161A2C58525E806F7AA9959EA89497A9A2A2FFFFFF9598AFA4A9
+          B3FFFFFFFFFFFFF6F9F6FDFEF9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          0000B9878AFFFFFFFBFEFEFEFBFFFCFFFDFDFFFAFEFCFAE4DFDCE8EBF37680B3
+          B1C5FFB6CEF8A3C0F791ACFF344394344772121D391315273F374260545B6C5F
+          5FFFFBF5FDFCF9FFFFFFFFFFFFFEFCF9FFFDFCFFFFFBFEFEFBFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFF0000B9878AFFFFFFFBFEFEFEFBFFFDFFFEF7FBFC
+          FDFDFDFFFFFCF6F9FC252C5B8295CBC5DAFCB9D4FD98B2FC3B4A8D212F60414E
+          74070A1E1011182D2C2CE2E1E2FCFEF8FBFCF6FEFCFFFEFEF9FEFEFAFEFCFCFE
+          FDFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000B9878AFFFFFF
+          FBFEFEFEFBFFFDFFFDF6FCFFFCFCFDFFFEF6E2E2E1A6A8BEAAB2EFBFCAF0A2B2
+          E1A1B1F6424986141F4E3D476F4E5468B4B7B8EFF2F1FBFFFFF5FEF9F9FCFAFC
+          FCFFFCFDFDFAFFFEF8FDFFFBFAFEFEFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFF0000B9878AFFFFFFFBFEFEFEFBFFFEFFFDFDFFFDFFFEFEFFFFF8F2F7
+          F4B0B8C9A4AAD9AEB8EC92A0E07786C1303C7909183E1119409598AAFFFFFFFF
+          FDFFFDFBFCFEFEFEFEFEFEFFFEFFFFFFFFFEFFFFFEFFFFFFFEFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000B9878AFFFFFFFBFEFEFEFBFFFDFF
+          FDFEFEFFFFFCFFFEFDFAF4FEFCC0D0E0606AA78796D2384B7A3F55969FADFE60
+          78B6192A628389A1FFFFFFFAF9F4FDFBFCFEFEFEFDFDFDFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000B987
+          8AFFFFFFFBFEFEFEFBFFFDFFFDFFFEFDFFFBFFFCFBFDF5FEFDCBDDEA5860A2B3
+          C6FF99B4EA92A9EE7F8CE7556FBB33478A2E375AFEFFFDFFFEF8FAFAF9FFFFFF
+          FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFF0000B9878AFFFFFFFBFEFEFEFBFFFEFFFEFCFEFAFFFCFFFF
+          FDFDF8FBF8FEFFFF29376A98ABE6A6BBFE9FB2FE8A9AEC7189CE4353931C2347
+          E4E9EAFFFFFEFAFAFAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000B9878AFFFFFFFBFEFDFE
+          FCFFFCFFFEFBFFF7FFFDFFFFFCFCFDFBF5FFFFFF4C5B7D7081BBAFBDFF97A6F6
+          4F5FA524356F090E41161B3B92979EFDFEFFF9F9FAFFFFFFFFFFFEFFFFFEFFFF
+          FEFFFFFEFFFFFEFFFFFEFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          0000BA8789FFFFFFF8FEFDFCFEFEF4FFFCFCFFFAFAFFFAF9FFFDF3FDFDFDFFFF
+          919FAD2739604D649F1F356C05163B000622253049202F44929AA2F3FCFEFAFE
+          FCFDFFFEFCFFFDFCFFFDFDFFFDFDFFFDFDFFFDFCFFFDFCFFFDFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFF0000BD888BFFFFFFFDFBFEFEFBFFFDFFFEFDFFFC
+          FDFCFDFDFDFFFDFAFDFEFBFFF8F9FC22293D0B163D58668E3C4967232A45161A
+          33575A6AFCFDFFF9F8FAFDFAFDFEFCFFFEFBFFFDFBFFFEFBFFFEFBFFFEFBFFFE
+          FBFFFDFBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000B6878AFFFFFF
+          F8FDFFFDFDFFF9FFFFFBFFFFF9FFFDFBFEFDFAFEFEFAFFFFFFFFFFBDC4CE2E39
+          4F0E1B3A1A2D48414E5BC2CCD1FFFFFFF5FDFDF7FEFCFAFEFEFCFFFFFCFFFFFC
+          FFFFFCFFFEFCFFFEFCFFFEFCFFFFFCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFF0000B99091FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FEFFFFFDFDFFFFFFFFFFFFFFFFF8FDFDEAF2FEFFFFFFFFFFFFFDFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000C6676CD8C6C2D6BDBDD9BABCD7BC
+          BBD6BCBCD6BCBBD8BCBAD8BCB9D9BCB9D5BBB9D8BCB8D9BBB7DABFBCDDBFBCD7
+          B9B9D7BABAD7BBBCD7BBBCD8BCBDD7BBBCD7BBBBD7BBBBD7BBBCD7BBBCD7BBBC
+          D7BBBCD7BBBCD7BBBCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000}
+        NumGlyphs = 2
+        OnClick = SPB_DoctorWiseFrctSetupClick
+      end
+      object Label_Mode: TLabel
+        Left = 623
+        Top = 5
+        Width = 85
+        Height = 19
+        Caption = 'New Mode'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clFuchsia
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object DBGridCommType: TDBGrid
+        Left = 0
+        Top = 240
+        Width = 835
+        Height = 216
+        DataSource = DS_PositionWiseFraction
+        TabOrder = 10
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+        OnDrawColumnCell = DBGridCommTypeDrawColumnCell
+        OnDblClick = DBGridCommTypeDblClick
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'POSITIONNAME'
+            Title.Alignment = taCenter
+            Title.Caption = 'Position'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -13
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 114
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'NAME'
+            Title.Alignment = taCenter
+            Title.Caption = 'Name'
+            Width = 103
+            Visible = True
+          end
+          item
+            Expanded = False
+            Title.Caption = 'Is Default Doc.'
+            Width = 79
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ISFIXEDPERSONFORFRACTION'
+            Title.Alignment = taCenter
+            Title.Caption = 'F.P.F.C '
+            Width = 42
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ISFRACTIONPROPWITHDISPER'
+            Title.Alignment = taCenter
+            Title.Caption = 'F.P.W.D'
+            Width = 44
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ISCOMPFORFRACTION'
+            Title.Alignment = taCenter
+            Title.Caption = 'C.F.F'
+            Width = 38
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'FractionRate'
+            Title.Alignment = taCenter
+            Title.Caption = 'Rate (%)'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -13
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
+            Width = 66
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'FRACTIONAMOUNT'
+            Title.Alignment = taCenter
+            Title.Caption = 'Amt. (Rs)'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'FRACTIONRATESTD'
+            Title.Caption = 'Rate (%) Std.'
+            Width = 80
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'FRACTIONAMOUNTSTD'
+            Title.Caption = 'Amt. (Rs) Std.'
+            Width = 87
+            Visible = True
+          end>
+      end
+      object Edit_FractionRate: TEdit
+        Left = 76
+        Top = 192
+        Width = 65
+        Height = 21
+        TabOrder = 7
+        OnExit = Edit_FractionRateExit
+        OnKeyPress = Edit_FractionRateKeyPress
+      end
+      object CB_STD: TCheckBox
+        Left = 417
+        Top = 218
+        Width = 35
+        Height = 17
+        Caption = 'std'
+        Checked = True
+        Enabled = False
+        State = cbChecked
+        TabOrder = 9
+      end
+      object DBLCB_TestName: TDBLookupComboBox
+        Left = 76
+        Top = 2
+        Width = 285
+        Height = 21
+        KeyField = 'FRACTIONID'
+        ListField = 'DESCRIPTION'
+        ListSource = DS_TestName
+        TabOrder = 0
+        OnClick = DBLCB_TestNameClick
+        OnKeyDown = DBLCB_TestNameKeyDown
+      end
+      object Edit_PositionName: TEdit
+        Left = 388
+        Top = 2
+        Width = 21
+        Height = 21
+        TabStop = False
+        CharCase = ecUpperCase
+        ReadOnly = True
+        TabOrder = 1
+        Visible = False
+      end
+      object Edit_Name: TEdit
+        Left = 388
+        Top = 30
+        Width = 259
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 3
+        Visible = False
+        OnKeyPress = Edit_NameKeyPress
+      end
+      object CB_FixedCommession: TCheckBox
+        Left = 76
+        Top = 109
+        Width = 248
+        Height = 17
+        Caption = 'Fixed Person(Position) Getting Fraction  (F1)'
+        TabOrder = 4
+        OnClick = CB_FixedCommessionClick
+      end
+      object CB_FractionProportional: TCheckBox
+        Left = 76
+        Top = 152
+        Width = 249
+        Height = 17
+        Caption = 'Fraction Proportional With Discount              (F2)'
+        TabOrder = 5
+      end
+      object Edit_FractionAmount: TEdit
+        Left = 76
+        Top = 216
+        Width = 65
+        Height = 21
+        Color = clScrollBar
+        ReadOnly = True
+        TabOrder = 8
+        OnExit = Edit_FractionAmountExit
+        OnKeyPress = Edit_FractionAmountKeyPress
+      end
+      object CB_CompForFration: TCheckBox
+        Left = 76
+        Top = 169
+        Width = 246
+        Height = 17
+        Caption = 'Compulsory (To Choose) For Fraction          (F3)'
+        TabOrder = 6
+      end
+      object DBLCB_Position: TDBLookupComboBox
+        Left = 76
+        Top = 85
+        Width = 261
+        Height = 21
+        KeyField = 'POSITIONID'
+        ListField = 'POSITION'
+        ListSource = DS_Position
+        TabOrder = 2
+        OnKeyDown = DBLCB_PositionKeyDown
+        OnKeyPress = DBLCB_PositionKeyPress
+      end
+      object CB_DefaultDocPerson: TCheckBox
+        Left = 343
+        Top = 129
+        Width = 122
+        Height = 17
+        Caption = 'Default Doc./Person'
+        TabOrder = 11
+        OnClick = CB_DefaultDocPersonClick
+      end
+      object DBLCB_DefaultDocPos: TDBLookupComboBox
+        Left = 76
+        Top = 128
+        Width = 261
+        Height = 21
+        KeyField = 'DOCID'
+        ListField = 'DOCNAME'
+        ListSource = DS_DocPerosn
+        TabOrder = 12
+      end
+      object CB_IsActiveParticipant: TCheckBox
+        Left = 365
+        Top = 87
+        Width = 155
+        Height = 17
+        Caption = 'Is Active Fraction ( Position )'
+        Checked = True
+        State = cbChecked
+        TabOrder = 13
+      end
+      object CB_FBInTestPriceInsteadofFrctTotal: TCheckBox
+        Left = 78
+        Top = 66
+        Width = 362
+        Height = 17
+        Caption = 
+          'Treat 100 % to Test Price ( Instead of Fraction Total ) for Brea' +
+          'k Down'
+        TabOrder = 14
+      end
+      object RB_Rate: TRadioButton
+        Left = 147
+        Top = 193
+        Width = 74
+        Height = 17
+        Caption = 'Active '
+        Checked = True
+        Color = clScrollBar
+        ParentColor = False
+        TabOrder = 15
+        TabStop = True
+        OnClick = RB_RateClick
+      end
+      object RB_Amt: TRadioButton
+        Left = 147
+        Top = 218
+        Width = 74
+        Height = 17
+        Caption = 'Active '
+        Color = clScrollBar
+        ParentColor = False
+        TabOrder = 16
+        OnClick = RB_AmtClick
+      end
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 845
+    Height = 28
+    Align = alTop
+    TabOrder = 0
+    object BtnSave: TBitBtn
+      Left = 649
+      Top = 1
+      Width = 95
+      Height = 25
+      Caption = '&Save (F12)'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333330070
+        7700333333337777777733333333008088003333333377F73377333333330088
+        88003333333377FFFF7733333333000000003FFFFFFF77777777000000000000
+        000077777777777777770FFFFFFF0FFFFFF07F3333337F3333370FFFFFFF0FFF
+        FFF07F3FF3FF7FFFFFF70F00F0080CCC9CC07F773773777777770FFFFFFFF039
+        99337F3FFFF3F7F777F30F0000F0F09999937F7777373777777F0FFFFFFFF999
+        99997F3FF3FFF77777770F00F000003999337F773777773777F30FFFF0FF0339
+        99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
+        93337FFFF7737777733300000033333333337777773333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BtnSaveClick
+    end
+    object BtnCancel: TBitBtn
+      Left = 745
+      Top = 1
+      Width = 98
+      Height = 25
+      Hint = 'Cancel as well as Exit'
+      Cancel = True
+      Caption = '&Cancel [ESC]'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        333333333333333333333333333333333333333FFF33FF333FFF339993370733
+        999333777FF37FF377733339993000399933333777F777F77733333399970799
+        93333333777F7377733333333999399933333333377737773333333333990993
+        3333333333737F73333333333331013333333333333777FF3333333333910193
+        333333333337773FF3333333399000993333333337377737FF33333399900099
+        93333333773777377FF333399930003999333337773777F777FF339993370733
+        9993337773337333777333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+      OnClick = BtnCancelClick
+    end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 515
+    Width = 845
+    Height = 19
+    Panels = <
+      item
+        Width = 50
+      end
+      item
+        Width = 50
+      end>
+  end
+  object Query_TestName: TOraQuery
+    SQL.Strings = (
+      
+        'Select FRAC_FRACTIONID FractionId,FRAC_TESTNAMEID TestNameId,FRA' +
+        'C_DESCRIPTION Description,FRAC_DEPID DepId,FRAC_ISRATEAMT IsRate' +
+        'Amt,FRAC_FRACTIONAMOUNT FractionAmount,FRAC_FRACTIONRATE Fractio' +
+        'nRate From'
+      'HS_FRAC_FRACTION where FRAC_FRACTIONTYPE=3'
+      'Order By FRAC_DESCRIPTION')
+    Left = 660
+    Top = 79
+  end
+  object DS_TestName: TDataSource
+    DataSet = Query_TestName
+    Left = 740
+    Top = 95
+  end
+  object DS_PositionWiseFraction: TDataSource
+    DataSet = Query_PositionWiseFraction
+    Left = 147
+    Top = 326
+  end
+  object Query_Void: TOraQuery
+    Left = 244
+    Top = 366
+  end
+  object Query_Position: TOraQuery
+    SQL.Strings = (
+      
+        'select posi_positionid positionid,posi_position position,POSI_IS' +
+        'REVSEPARATEHEAD ISREVSEPARATEHEAD from HS_POSI_POSITION')
+    Left = 444
+    Top = 350
+  end
+  object DS_Position: TDataSource
+    DataSet = Query_Position
+    Left = 508
+    Top = 374
+  end
+  object Query_DocPerson: TOraQuery
+    SQL.Strings = (
+      
+        'Select doct_DocId DocId,doct_DocCode DocCode,doct_DocName DocNam' +
+        'e From hs_doct_Doctor where Doct_isActive='#39'Y'#39
+      'Order By doct_DocName')
+    Left = 588
+    Top = 92
+  end
+  object DS_DocPerosn: TDataSource
+    DataSet = Query_DocPerson
+    Left = 640
+    Top = 120
+  end
+  object Query_PositionWiseFraction: TOraQuery
+    SQL.Strings = (
+      
+        'Select FR.FRAC_Description Description,PWF.POWF_PositionId Posit' +
+        'ionId,PWF.POWF_Name Name,PWF.POWF_PositionWiseFractionId Positio' +
+        'nWiseFractionId,PWF.POWF_FractionId FractionId,'
+      
+        'FR.FRAC_FractionRate FractionRateTotal,FR.FRAC_FractionAmount Fr' +
+        'actionAmountTotal,PWF.POWF_FractionRateStd FractionRateStd,PWF.P' +
+        'OWF_FractionAmountStd FractionAmountStd,PWF.POWF_PositionName Po' +
+        'sitionName,PWF.POWF_FractionRate FractionRate,'
+      
+        'PWF.POWF_FractionAmount fractionamount,FR.FRAC_ISRATEAMT ISRATEA' +
+        'MT,PWF.POWF_IsFixedPersonForFraction IsFixedPersonForFraction,PW' +
+        'F.POWF_ISFRCTBREAKINTESTPRICE ISFractionBreakInTestPrice,'
+      
+        'PWF.POWF_IsFractionPropWithDisPer IsFractionPropWithDisPer,PWF.P' +
+        'OWF_ISCOMPFORFRACTION ISCOMPFORFRACTION,PWF.POWF_IsDefaultDoc Is' +
+        'DefaultDoc,PWF.POWF_DocID DocID,PWF.POWF_ISActive ISActive'
+      'From HS_POWF_POSITIONWISEFRACTION PWF'
+      
+        ',HS_FRAC_FRACTION FR where PWF.POWF_FractionId=FR.FRAC_FractionI' +
+        'd'
+      'and PWF.POWF_FractionId=:FractionId')
+    Left = 104
+    Top = 312
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'FractionId'
+      end>
+  end
+end

@@ -1,0 +1,1192 @@
+unit Unit_QrBNBHistoPathInvestigativeResult;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, Serverdate, dm,RichEdit,Unit_master,
+     Dialogs, QuickRpt, QRCtrls, ExtCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, jpeg, DBCtrls, StdCtrls, qrBarcode, QRPDFFilt, ComCtrls,
+  pngimage;
+
+type
+     TForm_BNBHistoQrPathFinding = class(TForm)
+    Qr_BNBHistorFinding: TQuickRep;
+          GroupFooterBand1: TQRBand;
+          GroupFooterBand2: TQRBand;
+    DetailBand1: TQRBand;
+    Table_Findings: TTable;
+    Table_Footnote: TTable;
+    Table_Footer: TTable;
+    ChildBand1: TQRChildBand;
+    QRLabel31: TQRLabel;
+    QRRichTextFindingDetail: TQRRichText;
+    QRDBtext_Title: TQRDBText;
+    QRLabel12: TQRLabel;
+    SummaryBand1: TQRBand;
+    QRLabel25: TQRLabel;
+    lbl_dateh: TQRLabel;
+    QRLabel33: TQRLabel;
+    QRLabel34: TQRLabel;
+    lbl_verifybyh: TQRLabel;
+    QRLabel43: TQRLabel;
+    QRLabel47: TQRLabel;
+    QRSysData2: TQRSysData;
+    QRLabel48: TQRLabel;
+    lbl_totpageh: TQRLabel;
+    QRLabel9: TQRLabel;
+    lbl_Qualification_LT: TQRLabel;
+    lbl_DocName_LT: TQRLabel;
+    lbl_Specialization_LT: TQRLabel;
+    QRShape5: TQRShape;
+    QRShape8: TQRShape;
+    SignatureRT: TQRImage;
+    Image_BanitaT: TQRImage;
+    Image_RojinaT: TQRImage;
+    Image_JivanT: TQRImage;
+    SignatureLT: TQRImage;
+    Image_DeepakRajT: TQRImage;
+    Image_MeeraT: TQRImage;
+    Image_SanjeetPanditT: TQRImage;
+    Image_BudhaT: TQRImage;
+    Image_BimalT: TQRImage;
+    Image_ShankerT: TQRImage;
+    Image_UshaT: TQRImage;
+    Image_LaxmanT: TQRImage;
+    Image_PradipT: TQRImage;
+    QRLabel28: TQRLabel;
+    lbl_Qualification_CT: TQRLabel;
+    lbl_Docname_CT: TQRLabel;
+    lbl_Specialization_CT: TQRLabel;
+    QRShape2: TQRShape;
+    SignatureCT: TQRImage;
+    QRLabel51: TQRLabel;
+    lbl_DocName_RT: TQRLabel;
+    lbl_Qualification_RT: TQRLabel;
+    lbl_Specialization_RT: TQRLabel;
+    QRLabel29: TQRLabel;
+    PageFooterBand1: TQRBand;
+    QRImage_Bottom: TQRImage;
+    QRLabel22: TQRLabel;
+    lbl_Date: TQRLabel;
+    QRLabel13: TQRLabel;
+    QRLabel14: TQRLabel;
+    lbl_Verifiedby: TQRLabel;
+    QRLabel26: TQRLabel;
+    QRLabel27: TQRLabel;
+    QRSysData1: TQRSysData;
+    QRLabel32: TQRLabel;
+    lbl_totpage: TQRLabel;
+    QRLabel2: TQRLabel;
+    lbl_Qualification_LD: TQRLabel;
+    lbl_Docname_LD: TQRLabel;
+    QRLabel5: TQRLabel;
+    lbl_Specialization_LD: TQRLabel;
+    QRShape11: TQRShape;
+    QRShape1: TQRShape;
+    Image_GaneshB: TQRImage;
+    Image_JyotiB: TQRImage;
+    Image_AnilB: TQRImage;
+    SignatureLD: TQRImage;
+    Image_SanjeetPanditD: TQRImage;
+    Image_MeeraD: TQRImage;
+    Image_DeepakRajD: TQRImage;
+    QRImage_BottomNepalCancer: TQRImage;
+    Image_RajendraD: TQRImage;
+    Image_BimalD: TQRImage;
+    Image_ShankerD: TQRImage;
+    Image_UshaD: TQRImage;
+    Image_LaxmanD: TQRImage;
+    Image_PradipD: TQRImage;
+    QRLabel30: TQRLabel;
+    lbl_Qualification_CD: TQRLabel;
+    lbl_DocName_CD: TQRLabel;
+    lbl_Specialization_CD: TQRLabel;
+    QRShape3: TQRShape;
+    SignatureCD: TQRImage;
+    QRLabel_EndoFReport: TQRLabel;
+    SignatureRD: TQRImage;
+    lbl_DocName_RD: TQRLabel;
+    lbl_Qualification_RD: TQRLabel;
+    lbl_Specialization_RD: TQRLabel;
+    lbl_Docid_Ld: TQRLabel;
+    lbl_docid_CD: TQRLabel;
+    lbl_docid_Rd: TQRLabel;
+    lbl_docid_Ct: TQRLabel;
+    lbl_Docid_LT: TQRLabel;
+    lbl_docid_Rt: TQRLabel;
+    PageHeaderBand1: TQRBand;
+    lbl1: TQRLabel;
+    lbl2: TQRLabel;
+    lbl3: TQRLabel;
+    lbl4: TQRLabel;
+    lbl5: TQRLabel;
+    lbl_ReportedDate: TQRLabel;
+    lbl_Name: TQRLabel;
+    lbl_HosNo: TQRLabel;
+    lbl6: TQRLabel;
+    lbl7: TQRLabel;
+    lbl8: TQRLabel;
+    lbl9: TQRLabel;
+    lbl10: TQRLabel;
+    lbl_agegender: TQRLabel;
+    lbl11: TQRLabel;
+    lbl12: TQRLabel;
+    lbl_RegisteredDate: TQRLabel;
+    lbl13: TQRLabel;
+    lbl14: TQRLabel;
+    lbl_referaldoc: TQRLabel;
+    lbl15: TQRLabel;
+    lbl16: TQRLabel;
+    lbl17: TQRLabel;
+    lbl18: TQRLabel;
+    lbl19: TQRLabel;
+    QRShape9: TQRShape;
+    QRShape10: TQRShape;
+    QrImage_Top: TQRImage;
+    QRDBText7: TQRDBText;
+    QRShape6: TQRShape;
+    QRShape7: TQRShape;
+    QRImage_TopNepalCancer: TQRImage;
+    lbl20: TQRLabel;
+    lbl21: TQRLabel;
+    lbl_Printdate: TQRLabel;
+    lbl22: TQRLabel;
+    lbl23: TQRLabel;
+    lbl_sampno: TQRLabel;
+    lbl24: TQRLabel;
+    lbl25: TQRLabel;
+    lbl_patienttype: TQRLabel;
+    lbl26: TQRLabel;
+    lbl27: TQRLabel;
+    QRAsBarcode_Sampleno: TQRAsBarcode;
+    lbl28: TQRLabel;
+    QRDBText1: TQRDBText;
+    OraQuery_FooterVerifiedBy: TOraQuery;
+    OraQuery_CollectedBy: TOraQuery;
+    OraQuery_PerformedBy: TOraQuery;
+    OraQuery_FindingPostBy: TOraQuery;
+    OraQuery_Title: TOraQuery;
+    OraQuery_Finding: TOraQuery;
+          procedure FormCreate(Sender: TObject);
+          procedure QRSubDetail1BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+          procedure FormDestroy(Sender: TObject);
+          procedure PageHeaderBand1AfterPrint(Sender: TQRCustomBand; BandPrinted: Boolean);
+          procedure QRSubDetail1AfterPrint(Sender: TQRCustomBand; BandPrinted: Boolean);
+          procedure Table_FooterAfterScroll(DataSet: TDataSet);
+          procedure SubDetail_SampleSourceBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    procedure lbl_DocName_RDPrint(sender: TObject; var Value: string);
+    procedure lbl_DocName_CDPrint(sender: TObject; var Value: string);
+    procedure lbl_DocName_RTPrint(sender: TObject; var Value: string);
+    procedure lbl_Docname_LTPrint(sender: TObject; var Value: string);
+    procedure PageFooterBand1AfterPrint(Sender: TQRCustomBand; BandPrinted: Boolean);
+    procedure DetailBand1AfterPrint(Sender: TQRCustomBand; BandPrinted: Boolean);
+    procedure QRLabel4Print(sender: TObject; var Value: string);
+    procedure DetailBand1BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    procedure Qr_BNBHistorFindingApplyPrinterSettings(Sender: TObject; var Cancel: Boolean; DevMode: Pointer);
+    procedure OraQuery_FindingAfterScroll(DataSet: TDataSet);
+    procedure QRLabel80Print(sender: TObject; var Value: string);
+    procedure QRLabel81Print(sender: TObject; var Value: string);
+    procedure lbl_LabTechHPrint(sender: TObject; var Value: string);
+    procedure lbl_LabTechPrint(sender: TObject; var Value: string);
+     private
+          ItemsCount: integer;
+          ps_deptype:String;
+          { Private declarations }
+          procedure CreateFindingsTable;
+          Procedure PrintBarcode;
+          Procedure AddSignature;
+          Procedure LoadPatientClinicalData;
+     public
+          { Public declarations }
+     end;
+
+var
+     Form_BNBHistoQrPathFinding: TForm_BNBHistoQrPathFinding;
+
+implementation
+
+Procedure UpdateTestProgressStatus(BillNo, GroupPatientTestId: String; PatientTestId, TestProgressStatus: integer);
+  stdcall; external 'MidasFunction.bpl';
+{$R *.dfm}
+
+procedure TForm_BNBHistoQrPathFinding.AddSignature;
+begin
+     SignatureRT.Enabled:=true;
+     SignatureRD.Enabled:=true;
+     SignatureLT.Enabled:=true;
+     SignatureLD.Enabled:=true;
+     SignatureCD.Enabled:=True;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.CreateFindingsTable;
+begin
+     if FileExists(gs_temppath + '\Findings.db') then
+     begin
+          with Table_Findings do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'Findings.db';
+               DeleteTable;
+          end;
+     end;
+     with Table_Findings do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          TableName := 'Findings.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('TestNameID', ftInteger);
+          FieldDefs.Add('TestID', ftInteger);
+          FieldDefs.Add('TestHead', ftString, 64);
+          FieldDefs.Add('Test', ftString, 64);
+          FieldDefs.Add('Finding', ftString, 100);
+          FieldDefs.Add('Range', ftString, 100);
+          FieldDefs.Add('Unit', ftString, 32);
+          FieldDefs.Add('Extra', ftString, 100);
+          FieldDefs.Add('ExtraFinding', ftString, 100);
+          FieldDefs.Add('SampleNo', ftString, 32);
+          FieldDefs.Add('Flag', ftString, 1);
+          FieldDefs.Add('IsSubjective', ftString, 1);
+          CreateTable;
+     end;
+
+     if FileExists(gs_temppath + '\FindingFooter.db') then
+     begin
+          with Table_Footer do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'FindingFooter.db';
+               DeleteTable;
+          end;
+     end;
+     with Table_Footer do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          TableName := 'FindingFooter.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('SampleNO', ftString, 64);
+          FieldDefs.Add('SampleSource', ftString, 64);
+          FieldDefs.Add('Collected', ftString, 32);
+          FieldDefs.Add('Collectedby', ftString, 32);
+          FieldDefs.Add('Received', ftString, 32);
+          FieldDefs.Add('ReceivedBy', ftString, 32);
+          CreateTable;
+     end;
+
+     if FileExists(gs_temppath + '\Footnote.db') then
+     begin
+          with Table_Footnote do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'Footnote.db';
+               DeleteTable;
+          end;
+     end;
+     with Table_Footnote do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          TableName := 'Footnote.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('FootNote', ftMemo);
+          CreateTable;
+     end;
+
+end;
+
+procedure TForm_BNBHistoQrPathFinding.DetailBand1AfterPrint(Sender: TQRCustomBand; BandPrinted: Boolean);
+begin
+//     QRShape2.Height:=QRRichText1.Height;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.DetailBand1BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+     {if (DetailBand1.Expanded > 0) then
+     begin
+        QRShape2.Size.Height := DetailBand1.size.Height + DetailBand1.Expanded-50;
+     end; }
+end;
+
+procedure TForm_BNBHistoQrPathFinding.FormCreate(Sender: TObject);
+Var
+     I:Integer;
+     Refno,refno1,refno2:String;
+begin
+     if gb_isHalfPage then
+     begin
+          PageFooterBand1.Enabled := false;
+          SummaryBand1.Enabled := true;
+     end
+     else
+     begin
+       PageFooterBand1.Enabled := false;
+          SummaryBand1.Enabled := true;
+     end;
+
+     if gb_ReportLineRemove then
+     begin
+       //QRShape2.Enabled:=false;
+     end;
+
+
+     (*Clearing report footer*)
+     //QRShape5.Enabled:=False;
+     QRLabel9.Caption:='';
+     lbl_DocName_LT.Caption:='';
+     lbl_Qualification_LT.Caption:='';
+     lbl_Specialization_LT.Caption:='';
+
+
+     //QRShape8.Enabled:=False;
+     QRLabel29.Caption:='';
+     lbl_DocName_RT.Caption:='';
+     lbl_Qualification_RT.Caption:='';
+     lbl_Specialization_RT.Caption:='';
+
+
+     //QRShape1.Enabled:=False;
+     QRLabel2.Caption:='';
+     lbl_Docname_LD.Caption:='';
+     lbl_Qualification_LD.Caption:='';
+     lbl_Specialization_LD.Caption:='';
+
+
+     //QRShape11.Enabled:=False;
+     QRLabel5.Caption:='';
+     lbl_DocName_RD.Caption:='';
+     lbl_Qualification_RD.Caption:='';
+     lbl_Specialization_RD.Caption:='';
+
+     (*************************)
+
+
+     ps_deptype:=GetUserDepType(gi_UserID);
+
+     if ps_deptype='R' then
+     begin
+          QRLabel9.Enabled:=true;
+          QRLabel29.Enabled:=TRUE;
+          QRLabel2.Enabled:=True;
+          QRLabel5.Enabled:=TRUE;
+          PageFooterBand1.Enabled:=False;
+          SummaryBand1.Enabled:=True;
+     end
+     else
+     begin
+          QRLabel5.Enabled:=False;
+          QRLabel2.Enabled:=False;
+          //lbl_DocName_RD.Left:=32;
+          //lbl_Qualification_RD.Left:=32;
+          //lbl_Specialization_RD.Left:=32;
+          //QRShape11.Left:=32;
+
+          //lbl_Docname_LD.Left:=512;
+          //lbl_Qualification_LD.Left:=512;
+          //lbl_Specialization_LD.Left:=512;
+          //QRShape1.Left:=512;
+
+     end;
+
+     if gs_CalledFrom = 'VERIFICATION' then
+     begin
+          //QRLabel25.Enabled := false;
+          //lbl_dateh.Enabled := false;
+          //QRLabel33.Enabled := false;
+          //QRLabel34.Enabled := false;
+          //lbl_verifybyh.Enabled := false;
+          //QRLabel43.Enabled := false;
+          //QRLabel47.Enabled := false;
+          //QRSysData2.Enabled := false;
+          //QRLabel48.Enabled := false;
+          //lbl_totpageh.Enabled := false;
+          //QRLabel22.Enabled := false;
+          //lbl_Date.Enabled := false;
+          //QRLabel13.Enabled := false;
+          //QRLabel14.Enabled := false;
+          //lbl_Verifiedby.Enabled := false;
+          //QRLabel26.Enabled := false;
+          //QRLabel27.Enabled := false;
+          //QRSysData1.Enabled := false;
+          //QRLabel32.Enabled := false;
+          //lbl_totpage.Enabled := false;
+
+          //QRShape5.Enabled := false;
+//          QRLabel9.Enabled := false;
+//          QRShape8.Enabled := false;
+//          QRLabel29.Enabled := false;
+//          QRShape1.Enabled := false;
+//          QRLabel2.Enabled := false;
+//          QRShape1.Enabled := false;
+          //QRLabel1.Enabled := false;
+
+
+
+          //lbl_Qualification_LT.Enabled := false;
+          //lbl_Qualification_RT.Enabled := false;
+          //lbl_Qualification_LD.Enabled := false;
+          //lbl_Qualification_RD.Enabled := false;
+
+          //lbl_DocName_LT.Enabled := false;
+          //lbl_DocName_RT.Enabled := false;
+          //lbl_Docname_LD.Enabled := false;
+          //lbl_DocName_RD.Enabled := false;
+
+          //lbl_Specialization_LT.Enabled := false;
+          //lbl_Specialization_RT.Enabled := false;
+          //lbl_Specialization_LD.Enabled := false;
+          //lbl_Specialization_RD.Enabled := false;
+     end;
+     if gb_HideIndication then
+     begin
+          // QRLabel28.Enabled := false;
+          // QRLabel29.Enabled := false;
+          // QRLabel30.Enabled := false;
+          // QRLabel31.Enabled := false;
+          // QRLabel41.Enabled := false;
+          // QRLabel46.Enabled := false;
+     end;
+
+     if gi_compileValue=3 then
+     begin
+       //QRImage1.Enabled:=false;
+       //QRLabel11.Enabled:=False;
+       //QRLabel28.Enabled:=false;
+       //QRShape2.Enabled:=True;
+       //QRLabel8.Enabled:=False;
+       //QRLabel7.Enabled:=False;
+     end;
+
+     CreateFindingsTable;
+     LoadPatientData(gi_PatientID);
+    // QRLabel12.Caption := Gs_PatientIdCaption;
+     lbl_Name.Caption := Gs_PatientName;
+     Lbl_HosNo.Caption := IntToStr(gi_PatientID);
+     Lbl_sampno.Caption := gs_SampleNo;
+     QRAsBarcode_Sampleno.Text:=  FormatFloat('000000',StrtoInt(Copy(gs_SampleNo,7,length(gs_SampleNo))));
+     lbl_Date.Caption := TodaysDate + ' AD - ' + TodaysDateVS + ' BS' + TodaysTime;
+     lbl_dateh.Caption := TodaysDate + ' AD - ' + TodaysDateVS + ' BS' + TodaysTime;
+     lbl_agegender.Caption := Gs_Age + ' / ' + copy(Gs_Gender, 1, 1);
+     lbl_Verifiedby.Caption := gs_UserName;
+     lbl_verifybyh.Caption := gs_UserName;
+     //lbl_referaldoc.Caption := GetRefDocfrompatienttest(gs_billno);
+     lbl_referaldoc.Caption := GetRefDocfrompatienttest(gs_billno);
+     lbl_RegisteredDate.Caption := GetSampleRegesteredDate(gs_SampleNo);
+     lbl_ReportedDate.Caption := GetFindingPostDate(gs_SampleNo);
+     lbl_patienttype.Caption:=GetOPDWard(Gs_BillNo);
+     
+
+     //lbl_RegisteredDate.Caption := GetSampleRegesteredDate(gs_SampleNo);
+     //lbl_ReportedDate.Caption := GetFindingPostDate(gs_SampleNo);
+
+     //refno:=GetRefNoFromPatientTest(gi_PatientTestID);
+
+     //refno1:=Copy(refno,1,pos(':',refno)-1);
+     //refno2:=Copy(refno,pos(':',refno)+1,length(refno));
+
+     //lblRefNo1.Caption:=Trim(refno1);
+     //lblRefNo1.Enabled:=true;
+     //lblrefno2.Caption:=Trim(refno2);
+
+
+
+     //lbl_CptCode.Caption:=GetCptCode(gi_PatientTestID);
+
+
+     if 1=2 then
+     //if LoadImageFromDB(gi_PatientID) then
+     begin
+          // QRImage_Main.Picture.LoadFromFile(gs_picpath + '\' + IntToStr(gi_PatientID) + 'IMAGEMAIN.JPG');
+          // QRImage_Main.Enabled := true;
+          // QRShape1.Enabled := true;
+     end;
+
+//          if ps_deptype='RADIOLOGY' then
+//          begin
+//               lbl_Qualification_LD.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Checked by',1);
+//               lbl_Docname_LD.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Checked by',1);
+//               lbl_Specialization_LD.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Checked by',1);
+//          end
+//          else
+//          begin
+//               lbl_Qualification_LD.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Verified by',2);
+//               lbl_Docname_LD.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Verified by',2);
+//               lbl_Specialization_LD.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Verified by',2);
+//          end;
+
+
+
+          if gb_IsEmergencyReporting then
+          begin
+               lbl_DocName_RT.Enabled:=true;
+               lbl_Qualification_RT.Enabled:=true;
+               lbl_Specialization_RT.Enabled:=true;
+               lbl_DocName_RT.Enabled:=true;
+               lbl_Qualification_RT.Enabled:=true;
+               lbl_Specialization_RT.Enabled:=true;
+               lbl_DocName_RD.Caption :=' Medical Lab Technologist';
+               lbl_Qualification_RD.Caption := '[ Final Report Will be Issued ';
+               lbl_Specialization_RD.Caption := 'After Validated by Pathologist. ]';
+               lbl_DocName_RT.Caption :=' Medical Lab Technologist';
+               lbl_Qualification_RT.Caption := '[ Final Report Will be Issued ';
+               lbl_Specialization_RT.Caption := 'After Validated by Pathologist. ]';
+               QRLabel29.Enabled:=True;
+               QRLabel29.Caption:='Non-verified Report';
+
+               lbl_DocName_LT.Enabled:=false;
+               lbl_Qualification_LT.Enabled:=false;
+               lbl_Specialization_LT.Enabled:=false;
+               QRShape5.Enabled:=false;
+
+               lbl_DocName_CT.Enabled:=false;
+               lbl_Qualification_CT.Enabled:=false;
+               lbl_Specialization_CT.Enabled:=false;
+               QRShape2.Enabled:=false;
+          end
+
+        else
+        begin
+            if gs_ReportFooterRegulation='U' then  // user wise footer
+            begin
+                {if gi_compileValue=12 then
+                begin
+                    with OraQuery_FooterVerifiedBy do
+                    begin
+                        Close;
+                        SQL.Clear;
+                        Session:=Dm_Hospital.Db;
+                        SQL.Add('select docname||''''||l_name docname,QUALIFICATION,SPECIALIZATION,nmcno from doctor');
+                        SQL.Add('where docid='+InttoStr(Gi_RefDocId));
+                        SQL.savetofile('c:/footercheckverify.txt');
+                        Open;
+                        if Gi_RefDocId>0 then
+                        begin
+                            lbl_DocName_RT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('docname').AsString+','+OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                            lbl_DocName_RD.Caption:= OraQuery_FooterVerifiedBy.FieldByName('docname').AsString+','+OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString ;
+                            //lbl_Qualification_RT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                            //lbl_Qualification_RD.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                            lbl_Specialization_RT.Caption :=OraQuery_FooterVerifiedBy.FieldByName('SPECIALIZATION').AsString;
+                            lbl_Specialization_RD.Caption :=OraQuery_FooterVerifiedBy.FieldByName('SPECIALIZATION').AsString;
+                            if ORAQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString<>'' then
+                            LBL_NMCNO_RT.Caption :='NMC NO . :' +ORAQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString
+                            else
+                            LBL_NMCNO_RT.Caption:='';
+                            if ORAQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString<>'' then
+                            LBL_NMCNO_Rd.Caption :='NMC NO . :' +ORAQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString
+                            else
+                            LBL_NMCNO_Rd.Caption:='';
+                            QRLabel29.Enabled:=True;
+                            QRShape8.Enabled:=True;
+                            QRLabel5.Enabled:=True;
+                            QRShape11.Enabled:=True;
+                        end
+                        else
+                        begin
+                            lbl_DocName_RT.enabled:=False;
+                            lbl_DocName_RD.enabled:=False;
+                            //lbl_Qualification_RT.enabled:=False;
+                            //lbl_Qualification_RD.enabled:=False;
+                            lbl_Specialization_RT.enabled:=False;
+                            lbl_Specialization_RD.enabled:=False;
+                            LBL_NMCNO_RT.enabled:=False;
+                            LBL_NMCNO_Rd.enabled:=False;
+                            LBL_NMCNO_Rd.Caption:='';
+                            QRLabel29.Enabled:=False;
+                            QRShape8.Enabled:=False;
+                            QRLabel5.Enabled:=False;
+                            QRShape11.Enabled:=False;
+                        end;
+
+                    end;
+                end
+                else }
+                begin
+                    with OraQuery_FooterVerifiedBy do
+                    begin
+                        Close;
+                        SQL.Clear;
+                        Session:=Dm_Hospital.Db;
+                        SQL.add ('select fullname,(select SPECIALIZATION from doctor WHERE DOCID=l.DOCTORID)specialization');
+                        SQL.Add(',(select qualification from doctor WHERE DOCID=l.DOCTORID)qualification,(select NMCNO from doctor where  DOCID=l.DOCTORID)NMCNO');
+                        SQL.Add(', (select signature from doctor WHERE DOCID=l.DOCTORID)signature from lab_usermain l where username in ( ');
+                        SQL.add ('Select distinct verifiedby from vw_sample_collected');
+                        SQL.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                        SQL.savetofile('c:/footercheckverify.txt');
+                        Open;
+                        lbl_DocName_RT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString+','+OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                        lbl_DocName_RD.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString+','+OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString ;
+                        lbl_Qualification_RT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                        lbl_Qualification_RD.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                        lbl_Specialization_RT.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                        lbl_Specialization_RD.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+
+                    end;
+                end;
+
+                with OraQuery_CollectedBy do
+                begin
+                    Close;
+                    SQL.Clear;
+                    Session:=Dm_Hospital.Db;
+                    SQL.add ('select fullname,(select SPECIALIZATION from doctor WHERE DOCID=l.DOCTORID)specialization');
+                    SQL.Add(',(select qualification from doctor WHERE DOCID=l.DOCTORID)qualification,(select NMCNO from doctor where  DOCID=l.DOCTORID)NMCNO');
+                    SQL.Add(', (select signature from doctor WHERE DOCID=l.DOCTORID)signature from lab_usermain l where username in ( ');
+                    SQL.add ('Select distinct collectedby from vw_sample_collected');
+                    SQL.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                    SQL.savetofile('c:/footercheckcollected.txt');
+                    Open;
+                    //lbl_DocName_LT.Caption:= OraQuery_CollectedBy.FieldByName('fullname').AsString;
+                    //lbl_DocName_LD.Caption:= OraQuery_CollectedBy.FieldByName('fullname').AsString;
+                    //lbl_Qualification_LT.Caption := OraQuery_CollectedBy.FieldByName('qualification').AsString;
+                    //lbl_Qualification_LD.Caption := OraQuery_CollectedBy.FieldByName('qualification').AsString;
+                    //lbl_Specialization_LT.Caption := OraQuery_CollectedBy.FieldByName('specialization').AsString;
+                    //lbl_Specialization_LD.Caption := OraQuery_CollectedBy.FieldByName('specialization').AsString;
+//                  if OraQuery_CollectedBy.FieldByName('NMCNO').AsString<>'' then
+//                  LBL_NMCNO_RD.Caption :='NMC NO . :' +OraQuery_CollectedBy.FieldByName('NMCNO').AsString
+//                  else
+//                  LBL_NMCNO_RD.Caption:='';
+//
+//                  if OraQuery_CollectedBy.FieldByName('NMCNO').AsString<>'' then
+//                  LBL_NMCNO_Rt.Caption :='NMC NO . :' +OraQuery_CollectedBy.FieldByName('NMCNO').AsString
+//                  else
+//                  LBL_NMCNO_Rt.Caption:='';
+                end;
+                if gi_compileValue=12 then
+                begin
+                    with OraQuery_PerformedBy do
+                    begin
+                        Close;
+                        SQL.Clear;
+                        Session:=Dm_Hospital.Db;
+                        SQL.Add('select docname||''''||l_name docname,QUALIFICATION,SPECIALIZATION,nmcno from doctor');
+                        SQL.Add('where docid=(select DocTorId from lab_usermain where UserId='+InttoStr(GI_UserId)+')');
+                        SQL.savetofile('c:/footercheckverify.txt');
+                        Open;
+                    end;
+                    lbl_DocName_CT.Caption:= OraQuery_PerformedBy.FieldByName('docname').AsString+','+OraQuery_PerformedBy.FieldByName('qualification').AsString;
+                    lbl_DocName_CD.Caption:= OraQuery_PerformedBy.FieldByName('docname').AsString+','+OraQuery_PerformedBy.FieldByName('qualification').AsString;
+                    lbl_Qualification_CT.Caption := OraQuery_PerformedBy.FieldByName('qualification').AsString;
+                    lbl_Qualification_CD.Caption := OraQuery_PerformedBy.FieldByName('qualification').AsString;
+                    lbl_Specialization_CT.Caption :=OraQuery_PerformedBy.FieldByName('specialization').AsString;
+                    lbl_Specialization_CD.Caption :=OraQuery_PerformedBy.FieldByName('specialization').AsString;
+                    if OraQuery_PerformedBy.FieldByName('NMCNO').AsString<>'' then
+
+                end
+                else
+                begin
+                    with OraQuery_PerformedBy do
+                    begin
+                        Close;
+                        SQL.Clear;
+                        Session:=Dm_Hospital.Db;
+
+                        sql.add ('select fullname,(select SPECIALIZATION from doctor WHERE DOCID=l.DOCTORID)specialization');
+                        sql.Add(',(select qualification from doctor WHERE DOCID=l.DOCTORID)qualification,(select NMCNO from doctor where  DOCID=l.DOCTORID)NMCNO');
+                        sql.Add(',(select signature from doctor WHERE DOCID=l.DOCTORID)signature from lab_usermain l where username in ( ');
+                        sql.add ('Select distinct findingpostby from vw_sample_collected');
+                        sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                        //sql.savetofile('c:/footercheckperformed.txt');
+                        open;
+                        lbl_DocName_CT.Caption:= OraQuery_PerformedBy.FieldByName('fullname').AsString+','+OraQuery_PerformedBy.FieldByName('qualification').AsString;
+                        lbl_DocName_CD.Caption:= OraQuery_PerformedBy.FieldByName('fullname').AsString+','+OraQuery_PerformedBy.FieldByName('qualification').AsString;
+                        lbl_Qualification_CT.Caption := OraQuery_PerformedBy.FieldByName('qualification').AsString;
+                        lbl_Qualification_CD.Caption := OraQuery_PerformedBy.FieldByName('qualification').AsString;
+                        lbl_Specialization_CT.Caption :=OraQuery_PerformedBy.FieldByName('specialization').AsString;
+                        lbl_Specialization_CD.Caption :=OraQuery_PerformedBy.FieldByName('specialization').AsString;
+
+                    end;
+                end;
+
+              {***if gb_Signature= true then
+              begin
+                  SignatureLT.Picture.Graphic:=OraQuery_CollectedBy.FieldByName('signature').AsString;
+                  SignatureLD.Picture.Graphic:=OraQuery_CollectedBy.FieldByName('signature').AsString;
+                  SignatureRT.Picture.Graphic:=OraQuery_FooterVerifiedBy.FieldByName('signature').AsString;
+                  SignatureRD.Picture.Graphic:=OraQuery_FooterVerifiedBy.FieldByName('signature').AsString;
+                  SignatureCT.Picture.Graphic:=OraQuery_PerformedBy.FieldByName('signature').AsString;
+                  SignatureCD.Picture.Graphic:=OraQuery_PerformedBy.FieldByName('signature').AsString;
+              end; ***}
+          end
+          else if gs_ReportFooterRegulation='S' then  // checkbox wise footer
+          begin
+
+               lbl_DocName_LT.Caption:='';
+               lbl_DocName_LD.Caption:='';
+               lbl_DocName_CT.Caption:='';
+               lbl_DocName_CD.Caption:='';
+               lbl_DocName_RT.Caption:='';
+               lbl_DocName_RD.Caption:='';
+
+          with OraQuery_FooterVerifiedBy do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('SELECT PRF.SAMPLENO,RF.DOCID,RF.DOCNAME,RF.SPECIALIZATION,RF.QUALIFICATION');
+                  sql.Add('FROM PATIENT_REPORT_FOOTER PRF,REPORT_FOOTER RF WHERE RF.DOCID=PRF.DOCID AND PRF.SAMPLENO=' +QuotedStr(gs_SampleNo));
+                  Sql.Add(' And PRF.DepType='+QuotedStr(ps_deptype));
+                  //sql.savetofile('c:/footerverify.txt');
+                  open;
+                  I:=0;
+                  while not OraQuery_FooterVerifiedBy.eof do
+                  begin
+                    if I=0 then
+                    begin
+                         lbl_DocName_LT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('DOCNAME').AsString;
+                         lbl_DocName_LD.Caption:= OraQuery_FooterVerifiedBy.FieldByName('DOCNAME').AsString;
+                         lbl_Qualification_LT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                         lbl_Qualification_LD.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                         lbl_Specialization_LT.Caption := OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                         lbl_Specialization_LD.Caption := OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                    end
+                    else if I=1 then
+                    begin
+                         lbl_DocName_CT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('DOCNAME').AsString;
+                         lbl_DocName_CD.Caption:= OraQuery_FooterVerifiedBy.FieldByName('DOCNAME').AsString;
+                         lbl_Qualification_CT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                         lbl_Qualification_CD.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                         lbl_Specialization_CT.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                         lbl_Specialization_CD.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                    end
+                    else if I=2 then
+                    begin
+                         lbl_DocName_RT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('DOCNAME').AsString;
+                         lbl_DocName_RD.Caption:= OraQuery_FooterVerifiedBy.FieldByName('DOCNAME').AsString;
+                         lbl_Qualification_RT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                         lbl_Qualification_RD.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                         lbl_Specialization_RT.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                         lbl_Specialization_RD.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                    end;
+                    OraQuery_FooterVerifiedBy.Next;
+                    I:=I+1;
+                  end;
+
+
+                  if Trim(lbl_DocName_RT.Caption)=''  then
+                  begin
+                    lbl_DocName_RT.Enabled:=False;
+                    lbl_Qualification_RT.Enabled := False;
+                    lbl_Specialization_RT.Enabled :=False;
+                    QRShape8.Enabled:=False;
+                  end;
+                  if lbl_DocName_RD.Caption='' then
+                  begin
+                    lbl_DocName_RD.Enabled:=False;
+                    lbl_Qualification_RD.Enabled := False;
+                    lbl_Specialization_RD.Enabled :=False;
+                    QRShape11.Enabled:=False;
+                  end;
+
+                  if lbl_DocName_CT.Caption='' then
+                  begin
+                       lbl_Docname_CT.Enabled:=False;
+                       lbl_Qualification_CT.Enabled:=False;
+                       lbl_Specialization_CT.Enabled:=False;
+                       QRShape2.Enabled := false;
+                  end;
+                  if lbl_DocName_CD.Caption='' then
+                  begin
+                       lbl_DocName_CD.Enabled:=False;
+                       lbl_Qualification_CD.Enabled:=False;
+                       lbl_Specialization_CD.Enabled:=False;
+                       //QRShape12.Enabled := false;
+                  end;
+
+                  if (lbl_Docname_LD.Caption='') then
+                  begin
+                       lbl_Docname_LD.Enabled:=False;
+                       lbl_Qualification_LD.Enabled:=False;
+                       lbl_Specialization_LD.Enabled:=False;
+                       QRShape1.Enabled:=False;
+                  end;
+
+                  if (lbl_DocName_LT.Caption='')  then
+                  begin
+                       lbl_DocName_LT.Enabled:=False;
+                       lbl_Qualification_LT.Enabled:=False;
+                       lbl_Specialization_LT.Enabled:=False;
+                       QRShape5.Enabled:=False;
+                  end;
+
+               {//lbl_Qualification_LD.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Left');
+               lbl_Docname_LD.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Left');
+               lbl_Specialization_LD.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Left');
+               //QRLabel2.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Left');
+               if Trim(lbl_Docname_LD.Caption)='' then
+                    QRShape1.Enabled:=False;
+
+
+               //lbl_Qualification_RD.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Right');
+               lbl_DocName_RD.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Right');
+               lbl_Specialization_RD.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Right');
+               QRLabel5.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Right');
+               if Trim(lbl_DocName_RD.Caption)='' then
+                    QRShape11.Enabled:=False;
+
+               //lbl_Qualification_CD.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Center');
+               lbl_DocName_CD.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Center');
+               lbl_Specialization_CD.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Center');
+               //QRLabel30.Caption := GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Center');
+               if Trim(lbl_DocName_CD.Caption) = '' then
+                    QRShape2.Enabled := false;
+
+               //lbl_Qualification_CT.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Left');
+               lbl_DocName_LT.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Left');
+               lbl_Specialization_LT.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Left');
+               qRLabel9.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Left');
+               if Trim(lbl_DocName_LT.Caption)='' then
+                    QRShape5.Enabled:=False;
+
+               //lbl_Qualification_RT.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Right');
+               lbl_DocName_RT.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Right');
+               lbl_Specialization_RT.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Right');
+               QRLabel29.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Right');
+               if Trim(lbl_DocName_RT.Caption)='' then
+                    QRShape8.Enabled:=False;
+
+               //lbl_Qualification_CT.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Center');
+               lbl_Docname_CT.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'cENTER');
+               lbl_Specialization_CT.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'CENTER');
+               //QRLabel28.Caption := GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Center');
+               if Trim(lbl_Docname_CT.Caption) = '' then
+                    QRShape5.Enabled := false; }
+              end;
+          end
+          else if gs_ReportFooterRegulation='C' then//Manual Report Footer
+              begin
+              with OraQuery_FindingPostBy do
+              begin
+                    Close;
+                    SQL.Clear;
+                    SQL.Add('select doctorid,fullname from lab_usermain l where username in (Select distinct findingpostby from vw_sample_collected');
+                    SQL.Add('Where PatientTestID in('+Gs_SelectedPatientTestID+'))');
+                    //sql.SaveToFile('C:\UserFooter.txt');
+                    Open;
+                    lbl_DocName_LT.Caption:= UpperCase(OraQuery_FindingPostBy.FieldByName('Fullname').AsString);
+                    lbl_Docname_LD.Caption:= UpperCase(OraQuery_FindingPostBy.FieldByName('Fullname').AsString);
+                    lbl_Qualification_LT.Caption:='Lab Technician';
+                    lbl_Qualification_LD.Caption:='Lab Technician';
+                    lbl_Docid_Ld.Caption:=IntToStr(OraQuery_FindingPostBy.FieldByName('doctorid').AsInteger);
+              end;
+                   lbl_Qualification_RD.Caption := GetManualFooternameRightQualification(gs_userdepid);
+                   lbl_DocName_RD.Caption := GetManualFooternameRight(gs_userdepid);
+                   lbl_Specialization_RD.Caption :=GetManualFooternameRightSpecialization(gs_userdepid);
+                   QRLabel5.Caption :=GetManualFooternameRightStatus(gs_userdepid);
+                   lbl_docid_Rd.Caption:=GetManualFooterDocidRight(gs_userdepid);
+                   if Trim(lbl_DocName_RD.Caption) = '' then
+                        QRShape3.Enabled := false;
+
+
+                  {lbl_Qualification_LD.Caption := GetManualFooternameLeftQualification(gs_userdepid);
+                  lbl_Docname_LD.Caption := GetManualFooternameLeft(gs_userdepid);
+                  lbl_Specialization_LD.Caption := GetManualFooternameLeftSpecialization(gs_userdepid);
+                  QRLabel2.Caption := GetManualFooternameLeftStatus(gs_userdepid);
+                  if Trim(QRLabel2.Caption) = '' then
+                     QRShape3.Enabled := false; }
+
+                   lbl_Qualification_CD.Caption := GetManualFooternameCenterQualification(gs_userdepid);
+                   lbl_DocName_CD.Caption := GetManualFooternameCenter(gs_userdepid);
+                   lbl_Specialization_CD.Caption := GetManualFooternameCenterSpecialization(gs_userdepid);
+                   QRLabel30.Caption := GetManualFooternameCenterStatus(gs_userdepid);
+                   lbl_docid_CD.Caption:=GetManualFooterDocidCenter(gs_userdepid);
+                   if Trim(lbl_DocName_CD.Caption) = '' then
+                        QRShape3.Enabled := false;
+
+
+                  lbl_Qualification_CT.Caption :=GetManualFooternameCenterQualification(gs_userdepid);
+                  lbl_Docname_CT.Caption :=GetManualFooternameCenter(gs_userdepid);
+                  lbl_Specialization_CT.Caption :=GetManualFooternameCenterSpecialization(gs_userdepid);
+                  QRLabel28.Caption := GetManualFooternameCenterStatus(gs_userdepid);
+                  lbl_docid_Ct.Caption:=GetManualFooterDocidCenter(gs_userdepid);
+                  if Trim(lbl_Docname_CT.Caption) = '' then
+                        QRShape5.Enabled := false;
+
+
+                  {lbl_Qualification_LT.Caption := GetManualFooternameLeftQualification(gs_userdepid);
+                  lbl_DocName_LT.Caption :=GetManualFooternameLeft(gs_userdepid);
+                  lbl_Specialization_LT.Caption := GetManualFooternameLeftSpecialization(gs_userdepid);
+                  QRLabel9.Caption := GetManualFooternameLeftStatus(gs_userdepid);
+                  if Trim(QRLabel9.Caption) = '' then
+                     QRShape5.Enabled := false; }
+
+                  lbl_Qualification_RT.Caption :=GetManualFooternameRightQualification(gs_userdepid);
+                  lbl_DocName_RT.Caption := GetManualFooternameRight(gs_userdepid);
+                  lbl_Specialization_RT.Caption := GetManualFooternameRightSpecialization(gs_userdepid);
+                  QRLabel29.Caption := GetManualFooternameRightStatus(gs_userdepid);
+                  lbl_docid_Rt.Caption:=GetManualFooterDocidRight(gs_userdepid);
+                  if Trim(lbl_DocName_RT.Caption) = '' then
+                    QRShape8.Enabled := false;
+
+                  if (UpperCase(lbl_docid_Rt.Caption)<>UpperCase(lbl_Docid_LT.Caption)) and (UpperCase(lbl_docid_Ct.Caption)<>UpperCase(lbl_Docid_LT.Caption)) then
+                  begin
+                         lbl_DocName_LT.Enabled:=True;
+                         lbl_Qualification_LT.Enabled:=True;
+                         lbl_Specialization_LT.Enabled:=False;
+                         QRShape5.Enabled := True;
+
+                  end
+                  else
+                  begin
+                       QRShape5.Enabled:=False;
+                       lbl_DocName_LT.Enabled:=False;
+                       lbl_Qualification_LT.Enabled:=False;
+                       lbl_Specialization_LT.Enabled:=False;
+                  end;
+                  if (UpperCase(lbl_docid_Rd.Caption)<>UpperCase(lbl_Docid_LD.Caption)) and (UpperCase(lbl_docid_CD.Caption)<>UpperCase(lbl_Docid_Ld.Caption)) then
+                  begin
+                      lbl_Docname_LD.Enabled:=True;
+                      lbl_Qualification_LD.Enabled:=True;
+                      lbl_Specialization_LD.Enabled:=False;
+                      QRShape1.Enabled := True;
+                  end
+                  else
+                  begin
+                       QRShape1.Enabled := False;
+                       lbl_Docname_LD.Enabled:=False;
+                       lbl_Qualification_LD.Enabled:=False;
+                       lbl_Specialization_LD.Enabled:=False;
+                  end;
+                  OraQuery_FindingPostBy.Free;
+              end;
+
+     end;
+
+          LoadPatientClinicalData;
+
+          with OraQuery_Title do
+          begin
+              close;
+              Session:=DM_Hospital.DB;
+              if  ps_deptype='H' then
+                  sql[1]:='(select editfindingid from patienttestspecial_lab'
+              else if ps_deptype='R' then
+                  sql[1]:='(select editfindingid from patienttestspecial_Radio';
+              sql[2]:='where patienttestid='+IntToStr(gi_PatientTestID)+')';
+              open;
+          end;
+
+
+     if gb_ReportLineRemove then
+     begin
+       //QRShape2.Enabled:=false;
+     end;
+
+     Table_Footer.Close;
+     Table_Footer.DatabaseName := gs_temppath;
+     Table_Footer.Open;
+     Table_Footnote.Close;
+     Table_Footnote.DatabaseName := gs_temppath;
+     Table_Footnote.Open;
+     if gb_Signature then
+     AddSignature;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.FormDestroy(Sender: TObject);
+begin
+     Table_Findings.Free;
+     Table_Footer.Free;
+     Gs_SelectedTestNameList := '';
+     gb_SingleDep:=false;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.lbl_DocName_CDPrint(sender: TObject; var Value: string);
+begin
+     if Trim(Value)='' then
+     //QRShape1.Enabled:=False;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.lbl_Docname_LTPrint(sender: TObject; var Value: string);
+begin
+     if Trim(Value)='' then
+     //QRShape5.Enabled:=False;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.lbl_DocName_RDPrint(sender: TObject; var Value: string);
+begin
+     if Trim(Value)='' then
+     //QRShape11.Enabled:=False;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.lbl_DocName_RTPrint(sender: TObject; var Value: string);
+begin
+     if Trim(Value)='' then
+     //QRShape8.Enabled:=False;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.lbl_LabTechHPrint(sender: TObject;
+  var Value: string);
+begin
+     Value:=gs_UserName;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.lbl_LabTechPrint(sender: TObject;
+  var Value: string);
+begin
+     Value:=gs_UserName;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.LoadPatientClinicalData;
+Var
+     Qry:TOraQuery;
+     MyRichEdit:TRichEdit;
+begin
+     Qry:=TOraQuery.Create(Nil);
+     with Qry do
+     begin
+          Close;
+          Session:=Dm_Hospital.Db;
+          SQL.Clear;
+          if ps_deptype='H' then
+              SQL.Add('select * from Vw_ClinicalFinding_lab')
+          else if ps_deptype='R' then
+               SQL.Add('select * from Vw_ClinicalFinding_Radio');
+          SQL.Add('Where Status=1 and PatientTestID=' + IntToStr(gi_PatientTestID));
+//          SQL.Add('And Delete_Status=''N''');
+          SQL.Add('Order by Sn');
+          //SQL.SaveToFile('C:\clinical.txt');
+          Open;
+     end;
+     {MyRichEdit:=TRichEdit.Create(Nil);
+     MyRichEdit.Parent:=Self;
+     MyRichEdit.Visible:=False;
+
+     MyRichEdit1:=TRichEdit.Create(Nil);
+     MyRichEdit1.Parent:=Self;
+     MyRichEdit1.Visible:=False;}
+//     MyRichEdit.Color:=clBlue;
+     //LoadDataInRichEdit(Qry, MyRichEdit, 'Result','TitleOne');
+     //QRRichText1.ParentRichEdit:=MyRichEdit;
+     //LoadDataInRichEditTitle(Qry, MyRichEdit1, 'Result','TitleOne');
+     //QRRichText2.ParentRichEdit:=MyRichEdit1;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.OraQuery_FindingAfterScroll(DataSet: TDataSet);
+var
+     ms: TMemoryStream;
+     rtfString: AnsiString;
+begin
+     ms := TMemoryStream.Create;
+     {}
+     {MyRichEdit:=TRichEdit.Create(Nil);
+     MyRichEdit.Parent:=Self;
+     MyRichEdit.Visible:=False;
+     LoadDataInRichEdit(orqryGetFindings,MyRichEdit,'Result');}
+     rtfString := OraQuery_Finding.FieldByName('Result').AsAnsiString;
+     QRLabel31.Caption:= OraQuery_Finding.FieldByName('titleone').AsAnsiString;
+     ms.Clear;
+     ms.Write(PAnsiChar(rtfString)^, Length(rtfString));
+     ms.Position := 0;
+
+     QRRichTextFindingDetail.Lines.LoadFromStream(ms);
+     ms.Free;
+     //qrdbtxttITLE1.Font.Style := [fsBold];
+end;
+
+procedure TForm_BNBHistoQrPathFinding.PageFooterBand1AfterPrint(Sender: TQRCustomBand; BandPrinted: Boolean);
+begin
+     //QRShape2.Height:=QRRichText1.Height;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.PageHeaderBand1AfterPrint(Sender: TQRCustomBand; BandPrinted: Boolean);
+begin
+     //ItemsCount := 0;
+
+     //ItemsCount := 0;
+     with OraQuery_Finding do
+     begin
+          Close;
+          Session:=Dm_Hospital.Db;
+          SQL.Clear;
+          if ps_deptype='H' then
+          SQL.Add('select * from Vw_ClinicalFinding_Lab')
+          else if ps_deptype='R' then
+               SQL.Add('select * from Vw_ClinicalFinding_Radio');
+          SQL.Add('Where Status=1 and PatientTestID=' + IntToStr(gi_PatientTestID));
+//          SQL.Add('And Delete_Status=''N''');
+          SQL.Add('Order by Sn');
+          Open;
+     end;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.PrintBarcode;
+Var
+     Day, DayNo, SAMPLENO: String;
+begin
+     // gs_SampleNo := Edit_PreviousSampleNo.Text;
+     Day := copy(gs_SampleNo, 8, 1);
+     if Day = 'S' then
+          DayNo := '1'
+     else if Day = 'M' then
+          DayNo := '2'
+     else if Day = 'T' then
+          DayNo := '3'
+     else if Day = 'W' then
+          DayNo := '4'
+     else if Day = 'H' then
+          DayNo := '5'
+     else if Day = 'F' then
+          DayNo := '6';
+     // SAMPLENO := copy(gs_SampleNo, 1, 6) + DayNo + copy(gs_SampleNo, 9, 999);
+     SAMPLENO := gs_SampleNo;
+     // qrBarcode.Text := SAMPLENO;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.Qr_BNBHistorFindingApplyPrinterSettings(Sender: TObject; var Cancel: Boolean; DevMode: Pointer);
+begin
+     UpdateTestProgressStatus(Gs_BillNo, Gs_SelectedPatientTestID, 0, gi_Printing);
+end;
+
+procedure TForm_BNBHistoQrPathFinding.QRLabel4Print(sender: TObject; var Value: string);
+begin
+     //ShowMessage(IntToStr(QRRichText1.Lines.Count));
+     //QRShape2.Height:=(QRRichText1.Lines.Count)*6+10;
+//     QRRichText1.Frame.DrawTop:=true;
+//     QRRichText1.Frame.DrawLeft:=true;
+     //QRRichText1.AutoStretch:=True;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.QRLabel80Print(sender: TObject;
+  var Value: string);
+begin
+    value:=gs_HospitalName;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.QRLabel81Print(sender: TObject;
+  var Value: string);
+begin
+     value:=gs_HospitalAddress;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.QRSubDetail1AfterPrint(Sender: TQRCustomBand; BandPrinted: Boolean);
+begin
+     // if ItemsCount > 32 then
+     // QrFinding.NewPage;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.QRSubDetail1BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+     // if (Table_Findings.FieldByName('Flag').AsString = 'H') or (Table_Findings.FieldByName('Flag').AsString = 'L') then
+     // Sender.Color := clWebLightCyan
+     // else
+     // Sender.Color := clWhite;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.SubDetail_SampleSourceBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+     if gb_HideSource then
+          PrintBand := false;
+end;
+
+procedure TForm_BNBHistoQrPathFinding.Table_FooterAfterScroll(DataSet: TDataSet);
+begin
+     gs_SampleNo := Table_Footer.FieldByName('SampleNo').AsString;
+     PrintBarcode;
+end;
+
+end.

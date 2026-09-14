@@ -1,0 +1,218 @@
+unit UnitNoofTestDone;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, fxn,dm,serverdate,
+  Dialogs, ComCtrls, StdCtrls, OleCtrls, DateEditXControl_TLB, Buttons, DBCtrls,UnitRepNoofTestDoneDetail,
+  ExtCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Grids, DBGrids;
+
+type
+  TFormNoofTestDone = class(TForm)
+    Panel1: TPanel;
+    Btn_Preview: TButton;
+    Panel2: TPanel;
+    Label3: TLabel;
+    DBLCB_DepName: TDBLookupComboBox;
+    GroupBox1: TGroupBox;
+    label2: TLabel;
+    Label1: TLabel;
+    BtnTo: TSpeedButton;
+    BtnFrom: TSpeedButton;
+    DateEditXTo: TDateEditX;
+    DateEditxFrom: TDateEditX;
+    StatusBar1: TStatusBar;
+    QueryDepartment: TOraQuery;
+    DS_Dept: TDataSource;
+    CB_Detail: TCheckBox;
+    BitBtn1: TBitBtn;
+    procedure FormShow(Sender: TObject);
+    procedure BtnFromClick(Sender: TObject);
+    procedure BtnToClick(Sender: TObject);
+    procedure Btn_PreviewClick(Sender: TObject);
+    procedure DBLCB_DepNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure BitBtn1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+  pb_sendtoexcel:Boolean;
+    { Public declarations }
+  end;
+
+var
+  FormNoofTestDone: TFormNoofTestDone;
+
+implementation
+
+uses UnitRepNoofTestDone,UnitSendToExcel;
+
+{$R *.dfm}
+
+procedure TFormNoofTestDone.BitBtn1Click(Sender: TObject);
+begin
+     pb_sendtoexcel:=True;
+     Btn_PreviewClick(Sender);
+end;
+
+procedure TFormNoofTestDone.BtnFromClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditxFrom,BtnFrom);
+end;
+
+procedure TFormNoofTestDone.BtnToClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditXTo,BtnTo);
+end;
+
+procedure TFormNoofTestDone.Btn_PreviewClick(Sender: TObject);
+begin
+     DateEditxFrom.SystemOfDate := gi_datesystem;
+     DateEditXTo.SystemOfDate := gi_datesystem;
+     BtnFrom.Caption:=gs_DateCaption;
+     BtnTo.Caption:=gs_DateCaption;
+     gs_From := DateEditxFrom.text;
+     gs_to := DateEditXTo.text;
+    // DateEditxFrom.SystemOfDate := 0;
+   //  DateEditXTo.SystemOfDate := 0;
+   //  BtnFrom.Caption := 'BS';
+   //  BtnTo.Caption := 'BS';
+     if CB_Detail.Checked=True then
+     begin
+          try
+          FormRepNoofTestDoneDetail:=TFormRepNoofTestDoneDetail.Create(Nil);
+          with FormRepNoofTestDoneDetail do
+          begin
+               with QueryMain do
+               begin
+                    Close;
+                    Session:=DM_Hospital.DB;
+                    SQL[5]:='And BIDE_billdate>='+#39+gs_From+#39+' And BIDE_BillDate<='+#39+gs_to+#39;
+                    if DBLCB_DepName.KeyValue<>null then
+                    SQL[6]:='And BIDE_DepId='+IntToSTr(DBLCB_DepName.KeyValue)
+                    else
+                    SQL[6]:='And 1=1';
+                    Open;
+               end;
+               Date1.Caption:=DateEditxFrom.text;
+               Date2.Caption:=DateEditXTo.text;
+               if DBLCB_DepName.KeyValue<> Null then
+                    QRLabelUser.Caption:=DBLCB_DepName.Text
+               else
+                    QRLabelUser.Caption:='All( Test Only)';
+
+               if pb_sendtoexcel=True then
+               SendToExcels_query(QueryMain,nil,'No. Of Test Done',DateEditxFrom.text,'',gs_HospitalName, gs_HospitalAddress,0)
+               else
+               QuickRep1.Preview;
+          end;
+          finally
+          FormRepNoofTestDoneDetail.Free;
+          end;
+
+     end
+     else
+     begin
+     try
+          FormRepNoofTestDone:=TFormRepNoofTestDone.Create(Nil);
+          with FormRepNoofTestDone do
+          begin
+               with QueryMain do
+               begin
+                    close;
+                    Session:=DM_Hospital.DB;
+                    Sql.Clear;
+                    SQL.Add('Select Trim(ServiceType)ServiceType,DepID,Sum(NoofTest)NoofTest,Sum(Amount)Amount,Sum(VatAmt)VatAmt');
+                    SQL.Add(',Sum(Discount)Discount,Sum(CNoofTest)CNoofTest,Sum(CAmount)CAmount,Sum(CVatAmt)CVatAmt');
+                    SQL.Add(',Sum(CDiscount)CDiscount From');
+                    SQL.Add('(Select ServiceType, Depid, Sum(Qty) as NoofTest, Round(Sum(Amount),3) as Amount');
+                    SQL.Add(', Round(Sum(VatAmt),3) as VatAmt, Round(Sum(Discount),3) as Discount');
+                    SQL.Add(',0 as CNoofTest,0 as CAmount,0 as CVatAmt,0 as CDiscount');
+                    SQL.Add('from VW_User_Wise_Coll_Detail');
+                    SQL.Add('where (Billno like ''CS%'' or BillNo Like ''CR%'')');
+                    SQL.Add('and billdate Between '+#39+gs_From+#39+' and '+#39+gs_to+#39);
+                    SQL.Add(' Group by ServiceType,Depid');
+                    SQL.Add('Union');
+                    SQL.Add('Select ServiceType, Depid');
+                    SQL.Add(',0 as NoofTest,0 as Amount,0 as VatAmt,0 as Discount');
+                    SQL.Add(', NVl(Sum(Qty),0) as CNoofTest, Nvl(Round(Sum(Amount),3),0) as CAmount');
+                    SQL.Add(', NVL(Round(Sum(VatAmt),3),0) as CVatAmt');
+                    SQL.Add(', NVL(Round(Sum(Discount),3),0) as CDiscount');
+                    SQL.Add('from VW_User_Wise_Coll_Detail');
+                    SQL.Add('where Billno like ''RF%''');
+                    SQL.Add('and billdate Between '+#39+gs_From+#39+' and '+#39+gs_to+#39);
+                    SQL.Add('Group by ServiceType,Depid');
+                    SQL.Add(')');
+                    if DBLCB_DepName.KeyValue <> Null then
+                         Sql.Add('Where Depid ='+IntToStr(DBLCB_DepName.KeyValue));
+                    SQL.Add('Group By ServiceType,Depid');
+                    SQL.Add('Order by ServiceType');
+
+
+//                    Sql.Add('Select A.*,b.CNoofTest,b.CAmount,b.CVatAmt,b.Cdiscount from ');
+//                    Sql.Add('(Select ServiceType, Depid, Sum(Qty) as NoofTest, Round(Sum(Amount),3) as Amount, Round(Sum(VatAmt),3) as VatAmt, Round(Sum(Discount),3) as Discount');
+//                    Sql.Add('from VW_User_Wise_Coll_Detail');
+//                    Sql.Add('where Billno like ''CS%'' and billdate>='+#39+DateEditxFrom.text+#39+' and billdate<='+#39+DateEditxTo.Text+#39);
+//                    Sql.Add('Group by ServiceType,Depid) A');
+//                    Sql.Add(',');
+//                    Sql.Add('(Select ServiceType, Depid, NVl(Sum(Qty),0) as CNoofTest, Nvl(Round(Sum(Amount),3),0) as CAmount, NVL(Round(Sum(VatAmt),3),0) as CVatAmt, NVL(Round(Sum(Discount),3),0) as CDiscount');
+//                    Sql.Add('from VW_User_Wise_Coll_Detail');
+//                    Sql.Add('where Billno like ''RF%'' and billdate>='+#39+DateEditxFrom.text+#39+' and billdate<='+#39+DateEditxTo.Text+#39);
+//                    Sql.Add('Group by ServiceType,Depid) B');
+//                    Sql.Add('where A.serviceType=b.Servicetype(+)');
+//                    if DBLCB_DepName.KeyValue <> Null then
+//                    Sql.Add('and A.Depid ='+IntToStr(DBLCB_DepName.KeyValue));
+//                    SQL.Add('Order By A.ServiceType');
+                    //Sql.SaveToFile('D:\testcount.txt');
+                    Open;
+               end;
+               if DBLCB_DepName.KeyValue<> Null then
+                    QRLabelUser.Caption:=DBLCB_DepName.Text
+               else
+                    QRLabelUser.Caption:='All( Test Only)';
+               Date1.Caption:=DateEditxFrom.text;
+               Date2.Caption:=DateEditXTo.text;
+               if pb_sendtoexcel=True then
+               SendToExcels_query(QueryMain,nil,'No. Of Test Done',DateEditxFrom.text,'',gs_HospitalName, gs_HospitalAddress,0)
+               else
+               QuickRep1.Preview;
+          end;
+     finally
+          FormRepNoofTestDone.Free;
+     end;
+     end;
+end;
+
+procedure TFormNoofTestDone.DBLCB_DepNameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key=VK_DELETE then
+          DBLCB_DepName.KeyValue:=null;
+end;
+
+procedure TFormNoofTestDone.FormShow(Sender: TObject);
+begin
+     DateEditxFrom.SystemOfDate := gi_datesystem;
+     DateEditXTo.SystemOfDate := gi_datesystem;
+     DateEditxFrom.text := serverdate.TodaysDate;
+     DateEditXTo.text := serverdate.TodaysDate;
+     BtnFrom.Caption:=gs_DateCaption;
+     BtnTo.Caption:=gs_DateCaption;
+     DateEditxFrom.SystemOfDate := 0;
+     DateEditXTo.SystemOfDate := 0;
+     BtnFrom.Caption := 'BS';
+     BtnTo.Caption := 'BS';
+     with QueryDepartment do
+     begin
+          close;
+          Session:=DM_Hospital.DB;
+          open;
+     end;
+end;
+Initialization
+
+RegisterClass(TFormNoofTestDone);
+
+Finalization
+
+UnRegisterClass(TFormNoofTestDone);
+
+end.

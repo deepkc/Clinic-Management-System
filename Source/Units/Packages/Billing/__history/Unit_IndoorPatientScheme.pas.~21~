@@ -1,0 +1,489 @@
+unit Unit_IndoorPatientScheme;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Dialogs, StdCtrls, Buttons, ExtCtrls, dblookup, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Unit_Master,
+     Fxn,DM,
+     OleCtrls, DateEditXControl_TLB, ServerDate, DBCtrls;
+
+type
+     TForm_IndoorPatientScheme = class(TForm)
+          Panel2: TPanel;
+    BtnSave: TBitBtn;
+          BB_Close: TBitBtn;
+          Panel1: TPanel;
+          Label1: TLabel;
+          Label2: TLabel;
+          Label5: TLabel;
+          Label6: TLabel;
+          Label7: TLabel;
+          Edit_HospitalNo: TEdit;
+          Edit_IPNo: TEdit;
+          DBLookupCombo2: TDBLookupCombo;
+          Label4: TLabel;
+          Label9: TLabel;
+          Label10: TLabel;
+          Label12: TLabel;
+          Label13: TLabel;
+          Query_Save: TOraQuery;
+          DEX_InpatientDate: TDateEditX;
+    DBLCB_Community: TDBLookupComboBox;
+    Query_Community: TOraQuery;
+    DS_Community: TDataSource;
+    Query_Scheme: TOraQuery;
+    DS_Scheme: TDataSource;
+    DBLCB_Scheme: TDBLookupComboBox;
+    Label_Patientname: TLabel;
+    LabelInpatientDate: TLabel;
+    Label3: TLabel;
+    Label11: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    Lbl_Ward: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    Lbl_RoomType: TLabel;
+    Label21: TLabel;
+    Label22: TLabel;
+    Lbl_BedNo: TLabel;
+    Label8: TLabel;
+    Label14: TLabel;
+    Edit_MemberNo: TEdit;
+    Label17: TLabel;
+    Label20: TLabel;
+    Edit_Remarks: TEdit;
+          procedure BB_CloseClick(Sender: TObject);
+          procedure BtnSaveClick(Sender: TObject);
+          procedure FormShow(Sender: TObject);
+    procedure Edit_HospitalNoExit(Sender: TObject);
+    procedure Edit_HospitalNoKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_IPNoExit(Sender: TObject);
+    procedure Edit_IPNoKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_SchemeKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_CommunityKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_NewConsultantKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_CommunityClick(Sender: TObject);
+    procedure DBLCB_CommunityKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBLCB_SchemeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+     private
+          { Private declarations }
+     public
+          pi_Patientid,pi_InpatientId: Integer;
+
+          pi_CommunityId,pi_SchemeID : Integer;
+
+          ps_IsDischarged,ps_IsDischargeInDeposit, ps_MemberNo: String;
+
+          ps_CurrDocCode,ps_NewDocCode,ps_NewDepCode :String;
+
+          pi_DepId, pi_CCLogID : Integer;
+
+          procedure GetInpatientInfo(PatientId,InpatientId : Integer);
+          Function ClientSpecificValidation:Boolean;
+          { Public declarations }
+     end;
+
+var
+     Form_IndoorPatientScheme: TForm_IndoorPatientScheme;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_IndoorPatientScheme.BB_CloseClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_IndoorPatientScheme.BtnSaveClick(Sender: TObject);
+var
+     li_HospitalNo, li_IPNo: Integer;
+     ls_InpatientDate, ls_Hospital:string;
+     li_Department:Integer;
+     li_CurrentConsultant:Integer;
+     li_NewConsultant:Integer;
+begin
+     If trim(Edit_HospitalNo.text) = '' then
+     begin
+          MessageDlg('Enter HospitalNo.', mtConfirmation, [mbok], 0);
+          Edit_HospitalNo.SetFocus;
+          exit;
+     End;
+
+     If trim(Edit_IPNo.text) = '' then
+     begin
+          MessageDlg('Enter Inpatient No .', mtConfirmation, [mbok], 0);
+          Edit_HospitalNo.SetFocus;
+          exit;
+     End;
+
+     If Trim(DBLCB_Community.Text) = '' then
+     begin
+          MessageDlg('Please Select Community.', mtWarning, [mbok], 0);
+          DBLCB_Community.SetFocus;
+          exit;
+     End;
+
+     If Trim(DBLCB_Scheme.Text) = '' then
+     begin
+          MessageDlg('Please Select Scheme.', mtWarning, [mbok], 0);
+          DBLCB_Scheme.SetFocus;
+          exit;
+     End;
+
+     if pi_PatientId<>StrToInt(Edit_HospitalNo.Text) then
+     Begin
+          MessageDlg('Please Check Hospital No Properly and Try Again.',mtWarning,[mbok],0);
+          Edit_HospitalNo.SetFocus;
+          Exit;
+     End;
+
+     if pi_InPatientId<>StrToInt(Edit_IPNo.Text) then
+     Begin
+          MessageDlg('Please Check Inpatient No Properly and Try Again.',mtWarning,[mbok],0);
+          Edit_IPNo.SetFocus;
+          Exit;
+     End;
+
+     if ps_IsDischarged='Y' then
+     Begin
+          MessageDlg('Sorry Patient is Already Discharged.',mtWarning,[mbok],0);
+          Edit_HospitalNo.SetFocus;
+          Exit;
+     End;
+
+     if ps_IsDischargeInDeposit='Y' then
+     Begin
+          IF MessageDlg('Patient is in " Dischared In Deposit " mode. Eventhough Do You Want to Change Consultant ?',mtConfirmation,[mbYes,mbNo],0)=mrNo Then
+          Exit;
+     End;
+     if DBLCB_Scheme.KeyValue<>Null then
+     begin
+          if (IsRemarksCompulsory(DBLCB_Scheme.KeyValue)=True) and (Trim(Edit_Remarks.Text)='') then
+          begin
+               MessageDlg(' Please provide remarks', mtWarning, [MbOk], 0);
+               Edit_Remarks.SetFocus;
+               Exit;
+          end;
+     end;
+
+     //IF ClientSpecificValidation=False Then Exit;
+     if gb_IsEmrDisBilling=False then
+     begin
+          try
+               DM_Hospital.DB.StartTransaction;
+               with Query_Save do
+               begin
+                    Close;
+                    DatabaseName := gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add(' Update HS_INRE_Inpatientreg set INRE_CommunityId='+IntToStr(DBLCB_Community.KeyValue));
+                    SQL.Add(' ,INRE_SchemeId='+IntToStr(DBLCB_Scheme.KeyValue));
+                    if Trim(Edit_MemberNo.Text)<>'' then
+                    SQL.Add(' ,INRE_MemberNo='+#39+Edit_MemberNo.Text+#39);
+                    SQL.Add(' Where INRE_Patientid='+ IntToStr(pi_PatientId)+' and INRE_INPATIENTID='+IntToStr(pi_InPatientId));
+                    ExecSQL;
+               end;
+
+
+               gi_CommunityId:=DBLCB_Community.KeyValue;
+               gi_SchemeId:=DBLCB_Scheme.KeyValue;
+
+               {    SaveConsultantCorrection(BILLDETAILID,PATIENTID,INPATIENTID,DATAPOSTBY:Integer;
+               PATIENTTYPE,PREVDOCCODE,CURRDOCCODE,BILLNO,DATAPOSTDATE,DATAPOSTTIME,REMARKS:String);     }
+
+               DM_Hospital.DB.Commit;
+               ShowDoneMessage;
+          Except
+               DM_Hospital.DB.Rollback;
+               ShowMessage('Error has Been Occured');
+               exit;
+          end;
+     end
+     else
+     begin
+          try
+               DM_Hospital.DB.StartTransaction;
+               with Query_Save do
+               begin
+                    Close;
+                    DatabaseName := gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add(' Update HS_PAVI_PatientVisit set PAVI_CommunityId='+IntToStr(DBLCB_Community.KeyValue));
+                    SQL.Add(' ,PAVI_SchemeId='+IntToStr(DBLCB_Scheme.KeyValue));
+                    if Trim(Edit_MemberNo.Text)<>'' then
+                    SQL.Add(' ,PAVI_EMERGENCYNO='+#39+gs_EMRNoForMedPT+#39);
+                    SQL.Add(' Where PAVI_Patientid='+ IntToStr(pi_PatientId)+' and Pavi_patientVisitId='+IntToStr(gi_VisitId));
+                    ExecSQL;
+               end;
+
+
+               gi_CommunityId:=DBLCB_Community.KeyValue;
+               gi_SchemeId:=DBLCB_Scheme.KeyValue;
+
+               {    SaveConsultantCorrection(BILLDETAILID,PATIENTID,INPATIENTID,DATAPOSTBY:Integer;
+               PATIENTTYPE,PREVDOCCODE,CURRDOCCODE,BILLNO,DATAPOSTDATE,DATAPOSTTIME,REMARKS:String);     }
+
+               DM_Hospital.DB.Commit;
+               ShowDoneMessage;
+          Except
+               DM_Hospital.DB.Rollback;
+               ShowMessage('Error has Been Occured');
+               exit;
+          end;
+     end;
+end;
+
+Function TForm_IndoorPatientScheme.ClientSpecificValidation: Boolean;
+begin
+     if gs_HospitalNameForCode='MAN' then // Manipal
+     Begin
+          if (DBLCB_Scheme.KeyValue=22) Then
+          Begin
+               IF Trim(Edit_MemberNo.Text)='' then
+               begin
+                    MessageDlg('For Medicare Patient MCP NO. Is Compulsory.',mtWarning,[mbOK],0);
+                    Edit_MemberNo.ReadOnly:=False;
+                    Edit_MemberNo.Color:=clWhite;
+                    Edit_MemberNo.SetFocus;
+                    Result:=False;
+                    Exit;
+               end;
+
+               with Query_Save do
+               begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add(' Select * From Member where PatientId='+IntToStr(pi_Patientid));
+                    SQL.Add(' and MemberNo='+#39+Edit_MemberNo.Text+#39);
+                    Open;
+               end;
+
+               if Query_Save.FieldByName('MemberId').AsInteger=0  then
+               begin
+                    MessageDlg('This Member No. "'+Edit_MemberNo.Text+'" Doesn''t Belongs With This Hospital No. "'+IntToStr(pi_Patientid)+'".' ,mtWarning,[mbOK],0);
+                    Edit_MemberNo.ReadOnly:=False;
+                    Edit_MemberNo.Color:=clWhite;
+                    Edit_MemberNo.SetFocus;
+                    Result:=False;
+                    Exit;
+               end;
+          End;
+     End
+     else if gs_HospitalNameForCode='BNB' then
+     begin
+          if (DBLCB_Scheme.KeyValue=22) Then // 22 - BNB Specail
+          Begin
+               with Query_Save do
+               begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add(' Select Sum(SPDE_DrAmount-SPDE_CrAmount) as NetDeposit From HS_SPDE_SPECIALDEPOSIT');
+                    SQL.Add(' where SPDE_InPatientId='+IntToStr(pi_InPatientid));
+                    Open;
+               end;
+
+               if Query_Save.FieldByName('NetDeposit').AsFloat > 0 then
+               begin
+                    MessageDlg('Please Refund The OutStanding Deposit ( Rs. '+FloatToStr(Query_Save.FieldByName('NetDeposit').AsFloat)+' ) of The Patient Before Keeping In Special.' ,mtWarning,[mbOK],0);
+                    DBLCB_Scheme.SetFocus;
+                    Result:=False;
+                    Exit;
+               end;
+          End;
+     end;
+     Result:=True;
+end;
+
+procedure TForm_IndoorPatientScheme.DBLCB_CommunityClick(Sender: TObject);
+begin
+     if Trim(DBLCB_Community.Text)<>'' then
+     Begin
+          With Query_Scheme do
+          Begin
+               Close;
+               ParamByName('CommunityID').AsInteger:=DBLCB_Community.KeyValue;
+               Open;
+          End;
+     End;
+
+end;
+
+procedure TForm_IndoorPatientScheme.DBLCB_CommunityKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if key=VK_Delete then
+     DBLCB_Community.KeyValue:=-1;
+end;
+
+procedure TForm_IndoorPatientScheme.DBLCB_CommunityKeyPress(
+  Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     DBLCB_Scheme.SetFocus;
+end;
+
+procedure TForm_IndoorPatientScheme.DBLCB_SchemeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if key=VK_Delete then
+     DBLCB_Scheme.KeyValue:=-1;
+end;
+
+procedure TForm_IndoorPatientScheme.DBLCB_SchemeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     BtnSave.SetFocus;
+end;
+
+procedure TForm_IndoorPatientScheme.CB_NewConsultantKeyPress(
+  Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     BtnSave.SetFocus;
+end;
+
+procedure TForm_IndoorPatientScheme.Edit_HospitalNoExit(Sender: TObject);
+var Query:TOraQuery;
+begin
+     if Trim(Edit_HospitalNo.Text)<>'' then
+     //GetInpatientInfo(StrToInt(Edit_HospitalNo.Text),0);
+end;
+
+procedure TForm_IndoorPatientScheme.Edit_HospitalNoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if Key=#13 then
+     Edit_IPNo.SetFocus;
+end;
+
+procedure TForm_IndoorPatientScheme.Edit_IPNoExit(Sender: TObject);
+begin
+     if Trim(Edit_IPNo.Text)<>'' then
+     //GetInpatientInfo(0,StrToInt(Edit_IPNo.Text));
+end;
+
+procedure TForm_IndoorPatientScheme.Edit_IPNoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if Key=#13 then
+     DBLCB_Community.SetFocus;
+end;
+
+procedure TForm_IndoorPatientScheme.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key=VK_F12 then BtnSaveClick(Sender);
+     if Key=27 then Close;
+end;
+
+procedure TForm_IndoorPatientScheme.FormShow(Sender: TObject);
+begin
+      Edit_IPNo.Text:=IntToStr(pi_InpatientId);
+      Edit_HospitalNo.Text:=IntToStr(pi_PatientId);
+
+      IF Trim(Edit_IPNo.Text)='' Then Edit_IPNo.Text:='0';
+      if StrToInt(Edit_IPNo.Text) > 0 then
+      Edit_IPNoExit(Sender);
+
+      with Query_Community do
+      begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          Open;
+      end;
+
+      DBLCB_Community.KeyValue:=pi_CommunityId;
+      DBLCB_CommunityClick(Sender);
+      DBLCB_Scheme.KeyValue:=pi_SchemeId;
+
+      if Edit_HospitalNo.Enabled=False then DBLCB_Community.SetFocus;
+
+end;
+
+procedure TForm_IndoorPatientScheme.GetInpatientInfo(PatientId,InpatientId : Integer);
+Var Qry : TOraQuery;
+    Sender :TObject;
+begin
+     Qry:=TOraQuery.Create(nil);
+     if gb_IsEmrDisBilling=False then
+     begin
+          With Qry Do
+          Begin
+               Close;
+               DatabaseName:=gs_DatabaseName;
+               sql.Clear;
+               sql.add(' Select * From VW_HS_ADMNPATIENTCURRENTINFO');
+               if PatientId > 0 then
+               sql.add(' Where PatientId='+IntToStr(PatientId))
+               Else
+               sql.add(' Where InPatientId='+IntToStr(InPatientId));
+               sql.add(' Order by InpatientId Desc');
+               Open;
+          End;
+     end
+     else
+     begin
+          With Qry Do
+          Begin
+               Close;
+               DatabaseName:=gs_DatabaseName;
+               sql.Clear;
+               sql.add(' Select * From Vw_hs_Patientmain');
+               if PatientId > 0 then
+               sql.add(' Where PatientId='+IntToStr(PatientId));
+               Open;
+          End;
+     end;
+
+     if gb_IsEmrDisBilling=False then
+     begin
+          if Qry.FieldByName('InpatientId').AsInteger=0 then
+          Begin
+               if PatientId > 0 then
+               MessageDlg(' No Patient Admitted With this Hospital No.',mtWarning,[mbok],0)
+               Else
+               MessageDlg(' No Patient Admitted With this Inpatient No.',mtWarning,[mbok],0);
+               Exit;
+          End;
+     end;
+     if gb_IsEmrDisBilling=False then
+     begin
+          if PatientId > 0 then
+          Edit_IPNo.Text:=IntToStr(Qry.FieldByName('InpatientId').AsInteger)
+          Else
+          Edit_HospitalNo.Text:=IntToStr(Qry.FieldByName('Patientid').AsInteger);
+     end
+     else
+     begin
+          Edit_HospitalNo.Text:=IntToStr(Qry.FieldByName('Patientid').AsInteger);
+     end;
+
+     pi_Patientid:=Qry.FieldByName('PatientId').AsInteger;
+     pi_InpatientId:=Qry.FieldByName('InpatientId').AsInteger;
+
+     Label_Patientname.Caption:=Qry.FieldByName('PatientName').AsString;
+     if gb_IsEmrDisBilling=False then
+     begin
+          LabelInpatientDate.Caption:=Qry.FieldByName('AdmnDate').AsString;
+          Lbl_Ward.Caption:=Qry.FieldByName('Ward').AsString;
+          Lbl_RoomType.Caption:=Qry.FieldByName('RoomType').AsString;
+          Lbl_BedNo.Caption:=Qry.FieldByName('BedNo').AsString;
+          ps_IsDischarged:=Qry.FieldByName('IsDischarged').AsString;
+          ps_IsDischargeInDeposit:=Qry.FieldByName('IsDischarged').AsString;
+     end;
+
+     pi_CommunityId:=Qry.FieldByName('CommunityId').AsInteger;
+     pi_SchemeID:=Qry.FieldByName('SchemeId').AsInteger;
+
+     DBLCB_Community.KeyValue:=Qry.FieldByName('CommunityId').AsInteger;
+     DBLCB_CommunityClick(Sender);
+     DBLCB_Scheme.KeyValue:=Qry.FieldByName('SchemeId').AsInteger;
+
+     Qry.Free;
+end;
+
+end.

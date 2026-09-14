@@ -1,0 +1,9200 @@
+unit Unit_Billing;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  fxn, dm, serverdate, Unit_Master, PatientClass, Unit_Deposits,
+  Unit_PatientAdmission, Unit_DischargeBilling,
+  Dialogs, Grids, DBGrids, StdCtrls, Buttons, ExtCtrls, Spin, DBCtrls, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError,
+  DB, SMDBGrid, Unit_MasterFxnFraction, Unit_QrDepositSlip_Manipal,
+  Unit_QrSticker,
+  Unit_otherpatient, Calculator, OleCtrls, DateEditXControl_TLB, ComCtrls;
+
+type
+  TForm_Billing = class(TForm)
+    Panel_Top: TPanel;
+    Panel1: TPanel;
+    BB_Save: TBitBtn;
+    BitBtn_BringPending: TSpeedButton;
+    BitBtnPending: TSpeedButton;
+    Table_Billing: TOraTable;
+    DS_FinalBill: TDataSource;
+    DS_RefDoc: TDataSource;
+    Query_ReferingDocDept: TOraQuery;
+    DS_Scheme: TDataSource;
+    QueryScheme: TOraQuery;
+    DS_Community: TDataSource;
+    QueryCommunity: TOraQuery;
+    Table_TempBilling: TOraTable;
+    DS_Tempbilling: TDataSource;
+    DS_Testname: TDataSource;
+    Query_TestName: TOraQuery;
+    Query_TempBilling: TOraQuery;
+    Query_FinalBill: TOraQuery;
+    BB_Close: TBitBtn;
+    Timer1: TTimer;
+    bb_CustomerView: TSpeedButton;
+    Shape2: TShape;
+    Label16: TLabel;
+    Query_PackageTest: TOraQuery;
+    Query_TempProcess: TOraQuery;
+    DS_RATETYPE: TDataSource;
+    Query_RateType: TOraQuery;
+    Query_Process: TOraQuery;
+    Query_SubProcess: TOraQuery;
+    Table_Fraction: TOraTable;
+    Query_MutualDocForShare: TOraQuery;
+    Query_GetFrctInvoPerson: TOraQuery;
+    DS_GetFrctInvoPerson: TDataSource;
+    FontDialog1: TFontDialog;
+    Query_OldBill: TOraQuery;
+    DS_OldBill: TDataSource;
+    Query_OldTest: TOraQuery;
+    DS_OldTest: TDataSource;
+    Query_BillList: TOraQuery;
+    DS_BillList: TDataSource;
+    Query_TestList: TOraQuery;
+    DS_TestList: TDataSource;
+    BitBtn_Deposit: TBitBtn;
+    BitBtn_Admission: TBitBtn;
+    RB_OPBILL: TRadioButton;
+    RB_IPBILL: TRadioButton;
+    Panel_Grid: TPanel;
+    DBGrid_Billing: TSMDBGrid;
+    Panel_ItemSearch: TPanel;
+    Edit_TestNameCode: TEdit;
+    Edit_TestName: TEdit;
+    Edit_UnitPrice: TEdit;
+    Edit_Qty: TEdit;
+    Edit_SvrTaxEntry: TEdit;
+    Edit_Disper: TEdit;
+    Edit_DisAmount: TEdit;
+    SPB_AddItem: TSpeedButton;
+    Panel_BasicInfo: TPanel;
+    Panel_Refund: TPanel;
+    GroupBox4: TGroupBox;
+    SP_PatientSearch: TSpeedButton;
+    Label1: TLabel;
+    Label_SchemeCap: TLabel;
+    Le_HosNo: TLabeledEdit;
+    DBLCB_Scheme: TDBLookupComboBox;
+    CB_BILLTYPE: TDBLookupComboBox;
+    SpeedButton2: TSpeedButton;
+    lbl_OutStddeposit: TLabel;
+    Label_MeicarePatient: TLabel;
+    Label28: TLabel;
+    Label_PatientName: TLabel;
+    Label31: TLabel;
+    Label_AgeSex: TLabel;
+    CB_ViewOldBill: TCheckBox;
+    CB_ViewOldTest: TCheckBox;
+    Label6: TLabel;
+    Se_NoofPrint: TSpinEdit;
+    Label_RefDepDocCap: TLabel;
+    Label3: TLabel;
+    Label_InptNoCap: TLabel;
+    Label_IPNO: TLabel;
+    CheckBox9: TCheckBox;
+    DBLCB_RefDocCode: TDBLookupComboBox;
+    cb_extended: TCheckBox;
+    CheckBox3: TCheckBox;
+    BB_TestSelection: TBitBtn;
+    CB_Send2Web: TCheckBox;
+    CB_Send2Sms: TCheckBox;
+    CB_Send2Email: TCheckBox;
+    Cb_Qty: TCheckBox;
+    Cb_Label: TCheckBox;
+    Panel_Footer: TPanel;
+    GB_OldBill: TGroupBox;
+    Panel3: TPanel;
+    BitBtn_BarCode: TBitBtn;
+    BB_RePrintBill: TBitBtn;
+    BB_RefundBill: TBitBtn;
+    DBGrid_OldBill: TDBGrid;
+    GB_OldTest: TGroupBox;
+    Panel4: TPanel;
+    BitBtn_RePrintIPAdvanceReceipt: TBitBtn;
+    BitBtn_RePrintIPBarCode: TBitBtn;
+    BB_CancelService: TBitBtn;
+    DBGrid_OldTest: TDBGrid;
+    GB_PaymentInfo: TGroupBox;
+    Label2: TLabel;
+    Label19: TLabel;
+    Lbl_TotalItems: TLabel;
+    Label21: TLabel;
+    Lbl_BillNo: TLabel;
+    lbl_BenefitPackage: TLabel;
+    Label11: TLabel;
+    Label_DepositNo: TLabel;
+    Label20: TLabel;
+    Label_CoPaymentAmt: TLabel;
+    Shape1: TShape;
+    Image_Main: TImage;
+    Label5: TLabel;
+    Lbl_GrandTotal: TLabel;
+    Label15: TLabel;
+    lbl_DepositBalance: TLabel;
+    Label12: TLabel;
+    lbl_NetBalance: TLabel;
+    Label13: TLabel;
+    lbl_TenderAmt: TLabel;
+    Label17: TLabel;
+    Lbl_ReturnAmt: TLabel;
+    Label_BillingStatus: TLabel;
+    Edit_AddDeposit: TEdit;
+    Cb_DeductFromDeposit: TCheckBox;
+    Edit_MemberDeposit: TEdit;
+    GroupBox1: TGroupBox;
+    Label7: TLabel;
+    Label8: TLabel;
+    Le_SubTotal: TLabeledEdit;
+    Le_Discount: TLabeledEdit;
+    Le_Disper: TEdit;
+    CB_DirectDiscountSet: TCheckBox;
+    Le_NetTotal: TLabeledEdit;
+    Le_SvrTax: TLabeledEdit;
+    Le_GrandTotal: TLabeledEdit;
+    le_TotalDeposit: TLabeledEdit;
+    Le_NetBalance: TLabeledEdit;
+    CB_PayType: TComboBox;
+    Le_Payment: TLabeledEdit;
+    Le_Remarks: TLabeledEdit;
+    Edit_PreveBillNo: TEdit;
+    Label9: TLabel;
+    Query_RefundBillList: TOraQuery;
+    DS_RefundBillList: TDataSource;
+    Query_RefundBillItem: TOraQuery;
+    DBGrid_PrevBillNoInfo: TDBGrid;
+    DBGrid_Search: TDBGrid;
+    DBGrid_Doctor: TDBGrid;
+    Edit_TotalPrice: TEdit;
+    CB_Preview: TCheckBox;
+    Label14: TLabel;
+    Label18: TLabel;
+    CB_LoadFullRefundedItem: TCheckBox;
+    Label22: TLabel;
+    Label_AdmnDate: TLabel;
+    Label24: TLabel;
+    Label_NoOfDays: TLabel;
+    Shape4: TShape;
+    Label23: TLabel;
+    DateEditX_TodayBilling: TDateEditX;
+    Button_TodayBilling: TButton;
+    StatusBar1: TStatusBar;
+    Query_DefaultSchemeOPBill: TOraQuery;
+    Label_PayTypeFlash: TLabel;
+    Timer_PayTypeFlash: TTimer;
+    SPB_ViewDocument: TSpeedButton;
+    DBGrid_DocInvolved: TDBGrid;
+    Label_Fraction: TLabel;
+    SPB_FractionAddition: TSpeedButton;
+    Edit_DocCode: TEdit;
+    Query_Doctor: TOraQuery;
+    DS_Doctor: TDataSource;
+    SBLeft: TSpeedButton;
+    SBRight: TSpeedButton;
+    SPB_Left: TSpeedButton;
+    SPB_Right: TSpeedButton;
+    Label4: TLabel;
+    Label_DepositTotal: TLabel;
+    Label25: TLabel;
+    Label_TotalExp: TLabel;
+    CB_DayCare: TCheckBox;
+    Label_MKTGRefCap: TLabel;
+    DBLCB_MKTGReferral: TDBLookupComboBox;
+    Query_MKTReferral: TOraQuery;
+    DS_MKTReferral: TDataSource;
+    Table_MKTFraction: TOraTable;
+    Query_TempMKTGRefFraction: TOraQuery;
+    Query_TempSubProcess: TOraQuery;
+    BitBtn_DischargeBilling: TBitBtn;
+    QueryDisScheme: TOraQuery;
+    Le_MemberNo: TEdit;
+    SPB_Memberno: TSpeedButton;
+    RB_ERBill: TRadioButton;
+    CB_Patientcategory: TComboBox;
+    Label10: TLabel;
+    Label_BBImageCap: TLabel;
+    procedure CB_SchemeClick(Sender: TObject);
+    Procedure BB_SaveClick(Sender: TObject);
+    procedure Edit_TestNameChange(Sender: TObject);
+    procedure Edit_TestNameExit(Sender: TObject);
+    procedure Edit_TestNameKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Edit_QtyKeyPress(Sender: TObject; var Key: Char);
+    procedure SPB_AddItemClick(Sender: TObject);
+    procedure DBGrid_SearchKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Edit_QtyEnter(Sender: TObject);
+    procedure BB_CloseClick(Sender: TObject);
+    procedure BB_TestSelectionClick(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure Le_PaymentKeyPress(Sender: TObject; var Key: Char);
+    procedure DBGrid_BillingKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cb_extendedClick(Sender: TObject);
+    procedure Le_PaymentExit(Sender: TObject);
+    procedure Edit_TestNameKeyPress(Sender: TObject; var Key: Char);
+    procedure DBGrid_SearchDblClick(Sender: TObject);
+    procedure Le_DiscountExit(Sender: TObject);
+    procedure Le_DisperExit(Sender: TObject);
+    procedure bb_CustomerViewClick(Sender: TObject);
+    procedure CB_PayTypeChange(Sender: TObject);
+    procedure CB_PayTypeKeyPress(Sender: TObject; var Key: Char);
+    procedure Le_HosNoKeyPress(Sender: TObject; var Key: Char);
+    procedure Le_PaymentKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Cb_DeductFromDepositClick(Sender: TObject);
+    procedure Le_PaymentChange(Sender: TObject);
+    procedure Le_DiscountKeyPress(Sender: TObject; var Key: Char);
+    procedure Le_DisperKeyPress(Sender: TObject; var Key: Char);
+    procedure Le_HosNoExit(Sender: TObject);
+    procedure Edit_UnitPriceKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_PreviewClick(Sender: TObject);
+    procedure DBGrid_BillingDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBLCB_RefDocCodeKeyPress(Sender: TObject; var Key: Char);
+
+    procedure BitBtn_SetChargeClick(Sender: TObject);
+    procedure CB_BILLTYPEClick(Sender: TObject);
+    procedure DBGrid_BillingCellClick(Column: TColumn);
+    procedure Panel_BasicInfoClick(Sender: TObject);
+    procedure Edit_DisperKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_SchemeClick(Sender: TObject);
+    procedure Edit_TestNameCodeChange(Sender: TObject);
+    procedure Edit_TestNameCodeKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_TestNameCodeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Edit_DisperExit(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure DBLCB_SchemeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CB_ViewOldBillClick(Sender: TObject);
+    procedure CB_ViewOldTestClick(Sender: TObject);
+    procedure BitBtn_BarCodeClick(Sender: TObject);
+    procedure BB_RePrintBillClick(Sender: TObject);
+    procedure BitBtn_RePrintIPBarCodeClick(Sender: TObject);
+    procedure BitBtn_RePrintIPAdvanceReceiptClick(Sender: TObject);
+    procedure BB_RefundBillClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
+    procedure RB_OPBILLClick(Sender: TObject);
+    procedure RB_IPBILLClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure BitBtn_AdmissionClick(Sender: TObject);
+    procedure BitBtn_DischargeBillingClick(Sender: TObject);
+    procedure BitBtn_DepositClick(Sender: TObject);
+    procedure Edit_PreveBillNoKeyPress(Sender: TObject; var Key: Char);
+
+    procedure Edit_PreveBillNoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBGrid_BillingKeyPress(Sender: TObject; var Key: Char);
+    procedure Le_RemarksKeyPress(Sender: TObject; var Key: Char);
+    procedure DBGrid_PrevBillNoInfoDblClick(Sender: TObject);
+    procedure CB_CopayReceiptClick(Sender: TObject);
+    procedure DBLCB_SchemeKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_RefDocCodeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CB_BILLTYPEKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Button_TodayBillingClick(Sender: TObject);
+    procedure Timer_PayTypeFlashTimer(Sender: TObject);
+    procedure SPB_ViewDocumentClick(Sender: TObject);
+    procedure SPB_FractionAdditionClick(Sender: TObject);
+    procedure Edit_DocCodeChange(Sender: TObject);
+    procedure Edit_DocCodeExit(Sender: TObject);
+    procedure Edit_DocCodeKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_DocCodeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure SBRightClick(Sender: TObject);
+    procedure SBLeftClick(Sender: TObject);
+    procedure SPB_RightClick(Sender: TObject);
+    procedure SPB_LeftClick(Sender: TObject);
+    procedure CB_DayCareClick(Sender: TObject);
+    procedure DBLCB_MKTGReferralKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_MKTGReferralKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Le_MemberNoKeyPress(Sender: TObject; var Key: Char);
+    procedure SPB_MembernoClick(Sender: TObject);
+    procedure CB_PatientcategoryChange(Sender: TObject);
+  private
+    pf_TestPrice, pf_Dis, pf_SvrTax, pf_Qty, pf_TotalPrice, pf_disper,
+      pf_discount, pf_DiscountTotal, pf_Total, pf_subtotal, pf_grandtotal,
+      pf_SvrTaxTotal, pf_Payment, pf_NetTotal, pf_Return, pf_Deposit,
+      pf_AdvancRefund, pf_balance, pf_MemberDeposit, Pf_TotalDeposit,
+      Pf_FinalBillDiscount, Pf_FinalBillDisPer, Pf_DepositDeducted,
+      pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE, pf_DOLLARGROSSTOTAL,
+      pf_DOLLARTAXAMT, pf_DOLLARDISCOUNTTOTAL, pf_DOLLARNETTOTAL,
+      pf_DOLLORSERVICECHARGETOTAL, pf_DOLLARAMOUNT, pf_DOLLARVATAMT,
+      pf_DOLLARTOTALAMOUNT, pf_DOLLARDISCOUNT, pf_DOLLARSERVICECHARGE: Double;
+    pi_TotItems, pi_TotalItems, count: Integer;
+
+    pf_CurrBillTotal, pf_CurrRefundTotal, pf_PrevRefundTotal: Double;
+
+    Pi_CommunityID, Pi_SchemeID, pi_DocId, pf_RefDocId: Integer;
+
+    pi_MaxSaleMasterId, pi_MaxReturnMasterId, pi_InpatientId: Integer;
+
+    pf_PercentageAmt, pf_CopayAmts: Double;
+
+    ps_isCopaymentitem, ps_CopayItemsCodeList, ps_SampleNo, ps_DocCode,
+      ps_DocName,ps_PatientCategory: string;
+
+    Pb_NoDiscount, pb_MutualDocForShare: Boolean;
+    pb_IsIndoorPatient, pb_BloodBagRefund: Boolean;
+    pb_IslabDep, pb_IsMedicarePatient: Boolean;
+    Pb_ServiceBillMasterExist, pb_IsAdvanceExist: Boolean;
+    pb_isdelete, Pb_IsDayCare: Boolean;
+    pb_IsFinalSelectedTestName: Boolean;
+
+    ps_PatientTypeCode, ps_TestNameCode: String;
+    Ps_FracDoccode, Ps_FracDocName: STring;
+    Arr_SampleNo: Array of String;
+    ps_FinalBillNo, ps_RefBillNo, ps_DepositBillNo: String;
+    ps_LoadedTestID, ps_BillType, Ps_TodaysDate, Ps_TodaysTime: String;
+    Ps_HospitalBillNo, Ps_XrayBillNo, Ps_CtScanBillNo: string;
+
+    pf_IPRemainingBalance: Double;
+
+    { Private declarations }
+    Procedure LoadBill;
+    Procedure LoadMedicineCharge;
+    Procedure UpdatePharmacyTable;
+    Procedure LoadImage;
+    procedure CreateTableTempFraction;
+    procedure CreateTableTempReferralFraction;
+
+    procedure SaveServiceBill_Detail;
+    Function SaveServiceBill: Boolean;
+    Function SaveFinalBill: Boolean;
+    procedure SaveFinalBill_Detail;
+    procedure CheckServiceBillMaster;
+    Procedure SaveDepositDetail(DrAmount, CrAmount: Double; DepositType,
+      ReferenceType, Remarks: String);
+    Procedure UpdateDepositDetail;
+    Procedure LoadTestIDInVariable(TestNameID: string);
+    Procedure RemoveTestNameIDInVariable(TestNameID: String);
+    Procedure CalculateSum;
+    Procedure CalculateLabels;
+    Procedure CalculateLabels_ForRefunds;
+    procedure ReCalculateSumAmtAfterDeleteItem;
+    Function GetMax_TempSno: Integer;
+    Procedure UpdateCustomerPreview;
+    Procedure ToogleCustomerView;
+    Procedure CalculatePayment;
+    Procedure SaveDepositData;
+    Procedure SaveInvAdvanceDeposit(DrAmount, CrAmount: Double;
+      DepositRemarks: String);
+    Procedure PrintDepositSlip;
+  public
+    ProgressStatus, Pi_ClinicalDepId, Pi_DaycareDocId,pi_patientid: Integer;
+    Pb_IsPathoDep, pb_PharmacyRefundOnly,IsCreditParty: Boolean;
+    pf_DiscountPer:Double;
+    ps_IsDependent,ps_MemberNo:String;
+    { Public declarations }
+    Procedure ClearCustomerPreview;
+    Procedure PrintBill(CB_Preview: TCheckBox; NoOfPrint: Integer);
+    Procedure LoadServiceWiseFraction(TestNameCode, TNCategoryCode: String;
+      UnitTestCost, Qty: Double; DocId, DepId, TestNameID: Integer);
+    // Procedure LoadMKTReferallWiseFraction;
+    Procedure SaveDoctorFraction(ISFractionableTest, TestNameCode: String;MKTGREFPER, DOCREFPER: Double);
+    Procedure Mutually_Share_Fraction(doccode, ServiceType: string);
+    Procedure Display_Frct_Involve_Person(IsFractionableItem: string;TestNameID: Integer);
+    Function GetPharmacyCost: Double;
+    procedure GetReferralDocDepartment;
+    procedure GetReferalMKTPersonal;
+    procedure ReprintSticker(BillNo: String; PatientId: Integer;CBPreview: TCheckBox);
+    procedure CheckCoPaymentItem(TestCodeId: Integer;out IsCoPaymentitems: String);
+    Procedure GetCoPaymentAmt;
+    Procedure SaveCoPayReceipt;
+    Procedure GetIPBasicInfo;
+    Procedure ResetAllHistoryForNextNewBill;
+    Procedure CreateTableFinalBill;
+    procedure CreateTableTempBilling;
+    procedure EnabledDisabledSearchField(Status: String);
+    Function IsHospitalSpecificValidationPassed: Boolean;
+    procedure LoadForBillRefund(BillNo: string);
+    procedure ReLoadRefundChange;
+    function FractionDoctorInvolvementMessage: Boolean;
+    procedure DisplayMgmtInCaseDocCompForBilling;
+    procedure HospitalSpecificItemAdditionCondition;
+    Function IsValidForRefundOrCancel: Boolean;
+    procedure GetIPPatientOutStdFinanceInfo(InpatientId: Integer);
+    procedure SetMKTGREferralFractionRules;
+
+  end;
+
+var
+  Form_Billing: TForm_Billing;
+
+implementation
+
+uses Unit_BillingParent, Unit_QrBill, Unit_QRDischargeBill, Unit_TestList,
+  Unit_CustomerMonitor, Unit_QrDepositSlip,
+  Unit_BillDetail, Unit_DrInvolveInOperation, Unit_QrBill_Manipal,Unit_StaffMemberSearch;
+{$R *.dfm}
+{ TForm_Billing }
+
+procedure TForm_Billing.BB_CloseClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TForm_Billing.bb_CustomerViewClick(Sender: TObject);
+begin
+  ToogleCustomerView;
+end;
+
+procedure TForm_Billing.BB_RefundBillClick(Sender: TObject);
+begin
+  if Copy(Query_BillList.FieldByName('BillNo').AsString, 1, 2) = 'TP' then
+  begin
+    gi_BillCase := 1;
+    Gs_TempBillno := Query_BillList.FieldByName('BillNo').AsString;
+    LoadBill;
+  end
+  else
+  begin
+    gi_BillCase := 6;
+    Gs_TempBillno := Query_BillList.FieldByName('BillNo').AsString;
+    LoadBill;
+  end;
+
+end;
+
+procedure TForm_Billing.BB_RePrintBillClick(Sender: TObject);
+begin
+  if MessageDlg('Do You Want Re-Print Bill?', mtConfirmation, [mbYes, mbNo], 0)= mrYes then
+  Begin
+    Gs_BillNo := Query_BillList.FieldByName('BillNo').AsString;
+    gi_PatientID := Query_BillList.FieldByName('PatientId').AsInteger;
+    gi_InPatientID := Query_BillList.FieldByName('InPatientId').AsInteger;
+    if (Copy(Gs_BillNo, 1, 2) = 'CS') or (Copy(Gs_BillNo, 1, 2) = 'ME') or
+      (Copy(Gs_BillNo, 1, 2) = 'CR') then
+    begin
+      gi_BillCase := 2;
+      Gb_IsReprint := True;
+      PrintBill(CB_Preview, 2);
+      // Gb_IsReprint:=True;
+      // PrintBill(CB_Preview,1);
+    end
+    Else if (Copy(Gs_BillNo, 1, 2) = 'TP') then
+    begin
+      gi_BillCase := 0;
+      Gb_IsReprint := True;
+      PrintBill(CB_Preview, 1);
+    end
+    else if (Copy(Gs_BillNo, 1, 2) = 'RF') then
+    begin
+      gi_BillCase := 7;
+      Gb_IsReprint := True;
+      PrintBill(CB_Preview, 1);
+      if MessageDlg('Are you sure to print original bill ?', mtConfirmation,
+        [mbYes, mbNo], 0) = mrYes then
+      Begin
+        Gb_RefundBillExists := True; // Print Invoice Bill with Refund Information
+        Gs_BillNo := Edit_PreveBillNo.Text;
+        gi_BillCase := 2;
+        Gb_IsReprint := True;
+        PrintBill(CB_Preview, 1);
+        // Gs_BillNo := ls_RefBillNo;
+      End;
+      gi_BillCase := 6;
+    end
+    else if Copy(Gs_BillNo, 1, 2) = 'DP' then
+    begin
+      Gb_IsReprint := True;
+      PrintDepositSlip;
+    end;
+    Gs_BillNo := '';
+    gi_PatientID := Query_BillList.FieldByName('PatientId').AsInteger;
+    gi_InPatientID := Query_BillList.FieldByName('InPatientId').AsInteger;
+  End;
+end;
+
+Function TForm_Billing.IsHospitalSpecificValidationPassed: Boolean;
+Begin
+  if gi_HospitalId = 562 then // 562 -  Manipal
+  Begin
+    if (DBLCB_Scheme.KeyValue = 22) and (pf_CopayAmts > 0) then // 22 - Medicare
+    Begin
+      if Trim(Le_Payment.Text) = '' then
+        Le_Payment.Text := '0.0';
+      IF Abs(StrToFloat(Le_Payment.Text) - pf_CopayAmts) > 0.5 Then
+      Begin
+        MessageDlg(
+          'Sorry ! Payment Amount Should Be Match With The Co-Pay Amount : ' +
+            Label_CoPaymentAmt.Caption, mtWarning, [MbOk], 0);
+        Le_Payment.SetFocus;
+        Result := False;
+        Exit;
+      end;
+    End;
+  End;
+  Result := True;
+End;
+
+Procedure TForm_Billing.BB_SaveClick(Sender: TObject);
+var
+  lf_a, lf_b, Lf_TotalRefund: Double;
+  ls_FinalBillNo, ls_RefBillNo, ls_DepositBillNo, ls_BillType: String;
+  Key: Char;
+  MyTable: TOraTable;
+  MytableName: String;
+  Ps_RefDocCode: String;
+  Qry: TOraQuery;
+begin
+     // gi_billcase
+     // 0--> Service Bill Entry/Save
+     // 1--> Service Bill Load
+     // 2--> Service Bill to  Final Bill
+     // 3--> Final Bill Entry
+     // 4--> Final Bill Load
+     // 5-->Deposit bill
+     // 6-->Refund bill entry
+     IF IsRegisteredHospitalNo(gi_PatientID) = False Then
+     Begin
+          MessageDlg('Sorry ! Please Check Hospital No Properly. Anybody is Not Registered With This Number( ' + IntToStr(gi_PatientID) + ' )', mtWarning, [MbOk], 0);
+          ResetAllHistoryForNextNewBill;
+          Exit;
+     End;
+
+     IF IntToStr(gi_PatientID) <> Trim(Le_HosNo.Text) Then
+     Begin
+          MessageDlg('Hospital No Mismatch ! The displaying no is " ' +
+               Le_HosNo.Text + ' " but you are doing billing for this no " ' + IntToStr(gi_PatientID) + ' ".', mtWarning, [MbOk], 0);
+
+          Exit;
+     End;
+
+     Table_Billing.Close;
+     Table_Billing.Open;
+     if Table_Billing.Recordcount = 0 then
+     begin
+          count := 0;
+          MsgBox(1006, 0, '', '', '');
+          Exit;
+     end;
+
+     With Query_TempProcess do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          SQL.Clear;
+          SQL.Add(' Select Count(TestNameId) as Total,IsRecentBilled From Billing.db where IsRecentBilled Is Not Null');
+          SQL.Add(' Group By IsRecentBilled');
+          Open;
+          if Query_TempProcess.FieldByName('Total').AsInteger > 0 then
+          begin
+               MessageDlg('Please do Enter on Hospital No for Refreshing. Billing is Already Done on this Bill No : " ' + Query_TempProcess.FieldByName('IsRecentBilled').AsString + ' ".', mtWarning, [MbOk], 0);
+               Le_HosNo.SetFocus;
+               Exit;
+          end;
+     end;
+
+     if (gs_BillType <> 'REFUNDBILL') and (pb_IsMedicarePatient = True) then
+     Begin
+          if DBLCB_Scheme.KeyValue <> 22 then // 22 - Medicare
+          Begin
+               MessageDlg('For Medicare Patient Scheme Must Be Medicare.', mtWarning,[MbOk], 0);
+               Exit;
+          End;
+     End;
+
+     {if gi_BillCase <> 6 then
+          if FractionDoctorInvolvementMessage = False then
+          Exit;}
+
+     if Trim(CB_PayType.Text) = '' then
+     Begin
+          MessageDlg('Compulsory to choose pay type.', mtWarning, [MbOk], 0);
+          Exit;
+     End;
+     if CB_Patientcategory.ItemIndex=0 then
+     begin
+           ps_PatientCategory := CB_Patientcategory.Text;
+     end
+     else if CB_Patientcategory.ItemIndex=1 then
+     begin
+           ps_PatientCategory := CB_Patientcategory.Text;
+     end;
+
+     (* if DBLCB_MKTGReferral.KeyValue<>null then
+          LoadMKTReferallWiseFraction; *)
+
+     { if Trim(DBLCB_RefDocCode.Text) = '' then
+          begin
+          MessageDlg('You must have to select Referral Doctor.',mtwarning,[mbok],0);
+          DBLCB_RefDocCode.SetFocus;
+          exit;
+          end; }
+
+     if gs_BillType = 'IPBILL' then
+     Begin
+          if IsInpatient(gi_PatientID) = False then
+          begin
+               pi_InpatientId := 0;
+               gi_InPatientID := 0;
+               Label_IPNO.Caption := IntToStr(gi_InPatientID);
+               MessageDlg('Sorry this is not admitted patient.', mtWarning, [MbOk], 0);
+               Exit;
+          end;
+
+          if (gs_IsIPBillingUser='N') and (gs_ISTPBILLAPPFOROPUSER='N') then
+          begin
+               MessageDlg('Sorry This User Has No Authority For IP Billing as Well as This Inpatient Has No Credit Approval.', mtWarning, [MbOk], 0);
+               Le_HosNo.SetFocus;
+               Exit;
+          end;
+
+          Label_IPNO.Caption := IntToStr(gi_InPatientID);
+          (* if ((QueryScheme.FieldByName('SCHE_ISIPBILLCRFACILITY').AsString='N') Or (Trim(DBLCB_Scheme.Text)='')) and (CB_BILLTYPE.KeyValue='GEN') then
+               begin
+               if Trim(Le_Payment.Text)='' then Le_Payment.Text:='0';
+               if Abs((pf_grandtotal-StrToFloat(Le_Payment.Text))) >=0.5      then
+               begin
+               MessageDlg(' For General Patient Advance Amount Should be Equal to Grand Total Amount.',mtWarning,[mbOK],0);
+               Le_Payment.SetFocus;
+               Exit;
+               end;
+               end; *)
+          if ((QueryScheme.FieldByName('SCHE_ISIPBILLCRFACILITY').AsString = 'N') Or
+                    (Trim(DBLCB_Scheme.Text) = '')) and (CB_BILLTYPE.KeyValue <> 'GEN') then
+          begin
+               if ((pf_grandtotal - StrToFloat(Le_Payment.Text))) >= 0.5 then
+               Begin
+                    IF Not(MessageDlg(' Do You Want To Save Without Advance Deposit ?', mtWarning, [mbYes, mbNo], 0) = mrYes) Then
+                    Begin
+                         Le_Payment.SetFocus;
+                         Exit;
+                    End;
+
+                    if (Abs((pf_grandtotal - StrToFloat(Le_Payment.Text))) >= 0.5) and (StrToFloat(Le_Payment.Text) > 0) Then
+                    begin
+                         MessageDlg('Advance Amount & Bill Amount Should Be Same.', mtWarning,[MbOk], 0);
+                         Le_Payment.SetFocus;
+                    End;
+               End;
+          end;
+
+          Pi_ClinicalDepId := gi_ClinicalDepId;
+          ProgressStatus := 2;
+          pb_IsIndoorPatient := True;
+          ps_BillType := 'IP';
+
+          { if Trim(DBLCB_RefDocCode.Text) = '' then
+          begin
+               MessageDlg('You must have to select referral department.',mtwarning,[mbok],0);
+               DBLCB_RefDocCode.SetFocus;
+               exit;
+          end; }
+
+          if pf_IPRemainingBalance <= 0 then
+          begin
+               IF Not(MessageDlg('Hospital Charge is More Than Deposit Total. Do You Want to Continuee Providing Service ?', mtConfirmation, [mbYes, mbNo], 0) = mrYes) Then
+               Begin
+                    Le_HosNo.SetFocus;
+                    Exit;
+               End;
+          end;
+     End
+     Else if gs_BillType = 'OPBILL' then
+     begin
+          if CB_PayType.ItemIndex = 1 then
+          begin
+               if Trim(DBLCB_Scheme.Text) = '' then
+               begin
+                    MessageDlg('For Credit You Must Have to Mention Credit Scheme(Party)',mtWarning, [MbOk], 0);
+                    Exit;
+               end;
+
+               if (QueryScheme.FieldByName('SCHE_ISOPBILLCRFACILITY').AsString = 'N') then
+               Begin
+                    MessageDlg('Sorry ! This Scheme Has No Credit Facility.', mtWarning,[MbOk], 0);
+                    Exit;
+               End;
+          end;
+          Pi_ClinicalDepId := GetOPDCliniCalDepId(gi_PatientID);
+          ProgressStatus := 1;
+          pb_IsIndoorPatient := False;
+          ps_BillType := 'B';
+          gi_InPatientID := 0;
+          pi_InpatientId := 0;
+
+          { if Trim(DBLCB_RefDocCode.Text) = '' then
+          begin
+               MessageDlg('You must have to select referral department.',mtwarning,[mbok],0);
+               DBLCB_RefDocCode.SetFocus;
+               exit;
+          end; }
+
+          with Query_Process do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               SQL.Clear;
+               SQL.Add('select DOcId from ServiceWiseFraction Where TestNameCode In(''CHE002'',''CHE003'',''CHE004'',''CHE005'',''CHE006'')');
+               Open;
+          end;
+
+          if Query_Process.FieldByName('DOcId').AsInteger > 1 then
+          begin
+               Pb_IsDayCare := True;
+               Pi_DaycareDocId := Query_Process.FieldByName('DOcId').AsInteger;
+          end
+          else
+          begin
+               Pb_IsDayCare := False;
+               Pi_DaycareDocId := 0;
+          end;
+     end
+     Else if gs_BillType = 'REFUNDBILL' then
+     begin
+          (* if CB_PayType.ItemIndex = 1 then
+          begin
+               if Trim(DBLCB_Scheme.Text)='' then
+               begin
+                    MessageDlg('For Credit You Must Have to Mention Credit Scheme(Party)',mtWarning,[mbOK],0);
+                    Exit;
+               end;
+
+               if (QueryScheme.FieldByName('SCHE_ISOPBILLCRFACILITY').AsString='N') then
+               Begin
+                    MessageDlg('Sorry ! This Scheme Has No Credit Facility.',mtWarning,[mbOK],0);
+                    Exit;
+               End;
+          end; *)
+          if Trim(Le_Remarks.Text) = '' then
+          begin
+               MessageDlg('You must have to mention refund or cancel reason', mtWarning,[MbOk], 0);
+               Le_Remarks.SetFocus;
+               Exit;
+          end;
+          With Query_TempProcess do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               SQL.Clear;
+               SQL.Add(' Select Count(*) as NoOfReturn From Billing where Status=''C''');
+               Open;
+          end;
+          if Query_TempProcess.FieldByName('NoOfReturn').AsInteger = 0 then
+          begin
+               MessageDlg('You Must Have to Delete to Those Items Which You Want to Refund.',mtWarning, [MbOk], 0);
+               ActiveControl := DBGrid_Billing;
+               Exit;
+          end;
+          With Query_TempProcess do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               SQL.Clear;
+               SQL.Add(' Select Count(*) as NoOfReturn From Billing where Qty=0');
+               Open;
+          end;
+
+          if Query_TempProcess.FieldByName('NoOfReturn').AsInteger > 0 then
+          begin
+               MessageDlg('Qty. Must Be Grater Than 0', mtWarning, [MbOk], 0);
+               ActiveControl := DBGrid_Billing;
+               Exit;
+          end;
+     end;
+
+     if Trim(Le_Discount.Text) = '' then
+          Le_Discount.Text := '0.00';
+
+     if (pf_DiscountTotal > 0) and (Trim(DBLCB_Scheme.Text) = '') then
+     begin
+          MessageDlg('Please put discount scheme for discount facility.',mtInformation, [MbOk], 0);
+          DBLCB_Scheme.SetFocus;
+          Exit;
+     end;
+
+     if gi_HospitalId = 562 then // 562 - Manipal
+          Ps_RefDocCode := 'HOS01'
+     else
+     Begin
+          if DBLCB_RefDocCode.KeyValue <> Null then
+               Ps_RefDocCode := DBLCB_RefDocCode.KeyValue
+          else
+               Ps_RefDocCode := 'HOS01';
+     End;
+
+     if gi_BillCase = 3 then
+     begin
+          if Le_Discount.Text <> '' then
+          Pf_FinalBillDiscount := StrToFloat(StringReplace(Le_Discount.Text, ',', '', [rfReplaceAll]))
+          else
+               Pf_FinalBillDiscount := 0;
+          // Pf_finalbilldiscount variable added cuz pf_discount:=0 on load
+          if Le_Disper.Text <> '' then
+               Pf_FinalBillDisPer := StrToFloat(Le_Disper.Text)
+          else
+               Pf_FinalBillDisPer := 0;
+     end;
+
+     IF IsHospitalSpecificValidationPassed = False Then
+          Exit;
+
+     if gs_IsMKTGReferalForINV = 'Y' then
+     Begin
+          if (Trim(DBLCB_RefDocCode.Text) <> '') or (Trim(DBLCB_MKTGReferral.Text) <> '') then
+               SetMKTGREferralFractionRules;
+     End;
+
+     Ps_TodaysDate := TodaysDate;
+     Ps_TodaysTime := TodaysTime;
+     SetLength(Arr_SampleNo, 1);
+
+     IF Not(MessageDlg('Are you ready to do billing ?', mtConfirmation,[mbYes, mbNo], 0) = mrYes) Then
+     Exit;
+
+
+     if gs_BillType = 'REFUNDBILL' then
+     begin
+          if IsBillExist(Edit_PreveBillNo.Text) = False then
+          begin
+               MessageDlg('No Refund Items Exist With This Bill No. " ' +
+                         Edit_PreveBillNo.Text + ' "', mtWarning, [MbOk], 0);
+               Edit_PreveBillNo.SetFocus;
+               Exit;
+          end;
+
+          if gs_IsRefundInSvrDeptApproval = 'Y' then
+               if IsValidForRefundOrCancel = False then
+                    Exit;
+
+          if Query_RefundBillList.FieldByName('BILLTYPE').AsString = 'FINALBILL' then
+          Begin
+               Lf_TotalRefund := pf_PrevRefundTotal + pf_CurrRefundTotal;
+               if (Lf_TotalRefund - Query_RefundBillList.FieldByName('NetTotal').AsFloat) >= 0.1 then
+               begin
+                    MessageDlg('All Together Refund Total Including Previous Is " ' +
+                              FloatToStr(pf_PrevRefundTotal + pf_CurrRefundTotal)
+                              + ' " Exceeds ' + ' Billing Total " ' + FloatToStr
+                              (Query_RefundBillList.FieldByName('NetTotal').AsFloat) + ' ".',
+                         mtWarning, [MbOk], 0);
+                    Edit_PreveBillNo.SetFocus;
+                    Exit;
+               end;
+
+               if pf_CurrRefundTotal > pf_CurrBillTotal then
+               begin
+                    MessageDlg('Sorry ! Refund Amount Shouldn''t be More Than Bill Amount.',mtWarning, [MbOk], 0);
+                    Edit_PreveBillNo.SetFocus;
+                    Exit;
+               end;
+
+               ls_FinalBillNo := Gs_BillNo;
+               Qry := TOraQuery.Create(Nil);
+               BB_Save.Enabled := False;
+
+               try
+                    DM_Hospital.DB.StartTransaction;
+                    with Table_Billing do
+                    begin
+                         Close;
+                         Open;
+                         Gs_BillNo := GetNextBillNo('RF', 'HS_REDE_REFUNDDETAIL','REDE_REFUNDBILLNO');
+                         ls_RefBillNo := Gs_BillNo;
+                         while not eof do
+                         begin
+                              if (Table_Billing.FieldByName('Status').AsString = 'C') then
+                              begin
+                                   (* SaveRefundDetail(BillDetailID: Integer; RefundQty,RefundAmount,RefundVatAmt,RefundDiscount:Double;
+                                        RefundRemarks,IsBloodRefund : String); stdcall; *)
+                                   if Table_Billing.FieldByName('TestNameCode').AsString <> 'ONE001' then
+                                        SaveRefundDetail(Table_Billing.FieldByName('BillDetailID').AsInteger, Table_Billing.FieldByName('Qty').AsFloat,
+                                             Table_Billing.FieldByName('TestPrice').AsFloat,Table_Billing.FieldByName('SvrTax').AsFloat,
+                                             Table_Billing.FieldByName('Discount').AsFloat,Le_Remarks.Text, 'N')
+                                   Else
+                                   Begin
+                                        (* SaveRefundDetail(BillDetailID, RefundQty,RefundAmount,RefundVatAmt,RefundDiscount: Integer;
+                                             RefundRemarks,IsBloodRefund : String); *)
+                                        SaveRefundDetail(Table_Billing.FieldByName('BillDetailID')
+                                                  .AsInteger, Table_Billing.FieldByName('Qty').AsFloat,
+                                             Table_Billing.FieldByName('TestPrice').AsFloat,
+                                             Table_Billing.FieldByName('SvrTax').AsFloat,
+                                             Table_Billing.FieldByName('Discount').AsFloat,
+                                             Le_Remarks.Text, 'Y');
+                                   End;
+
+                                   if (Table_Billing.FieldByName('ISFRACTIONABLETEST').AsString = 'Y') or (Table_Billing.FieldByName('TestNameCode').AsString = 'DOCCH') then
+                                   begin
+
+                                        with Qry do
+                                        begin
+                                             Close;
+                                             DatabaseName := gs_DatabaseName;
+                                             SQL.Clear;
+                                             SQL.Add('Select * From HS_FRDE_FractionDetail where FRDE_Billdetailid='+IntToStr(Table_Billing.FieldByName('BillDetailID').AsInteger));
+                                             Open;
+                                        end;
+                                        while not Qry.eof do
+                                        begin
+
+                                             (* SaveRefundFractiondetail(FRACTIONDETAILID,PATIENTID,INPATIENTID,REFUNDDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,
+                                                             TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY : Integer; UNITTESTCOST,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+                                                             TESTNAMECODE,REFUNDBILLNO,REFUNDDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+                                                             ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME :String);*)
+
+                                             SaveRefundFractiondetail(Qry.FieldByName('FRDE_FractionDetailId').AsInteger,gi_PatientID, gi_InPatientID, gi_RefundDetailID, 0,
+                                                             Qry.FieldByName('FRDE_DepId').AsInteger, Qry.FieldByName('FRDE_DocID').AsInteger, 0,
+                                                             Qry.FieldByName('FRDE_FractionId').AsInteger,Qry.FieldByName('FRDE_PositionWiseFractionId').AsInteger,
+                                                             Gi_UserId, Qry.FieldByName('FRDE_UnitTestCost').AsFloat,
+                                                             Qry.FieldByName('FRDE_Qty').AsFloat, Qry.FieldByName('FRDE_FractionAmount').AsFloat,
+                                                             Qry.FieldByName('FRDE_FractionRate').AsFloat,
+                                                             Qry.FieldByName('FRDE_DisPer').AsFloat, Qry.FieldByName('FRDE_TestNameCode').AsString, Gs_BillNo, TodaysDate,
+                                                             Qry.FieldByName('FRDE_BillType').AsString, Qry.FieldByName('FRDE_PayType').AsString,
+                                                             Qry.FieldByName('FRDE_Isfractionpropwithdisper').AsString, '',
+                                                             Qry.FieldByName('FRDE_Isaddlumpsum').AsString,Qry.FieldByName('FRDE_Ischargedivide').AsString, '',TodaysDate, TodaysTime);
+                                                  Qry.next;
+                                        end;
+
+                                   end;
+                                   if CB_DayCare.Checked = True then
+                                   begin
+                                        with Qry do
+                                        begin
+                                             Close;
+                                             DatabaseName := gs_DatabaseName;
+                                             SQL.Clear;
+                                             SQL.Add('Select Sum(Depo_CrAmount)Cramount     From Hs_Depo_Deposit Where Depo_ReferenceNo=' + #39 + Edit_PreveBillNo.Text + #39);
+                                             Open;
+                                        end;
+                                        if Qry.FieldByName('Cramount').AsFloat > 0 then
+                                        begin
+                                             SaveDeposit(0, gi_InPatientID, gi_PatientID, 0, Gi_UserId, 0,gf_TotalRefundAmount, 0, 'DEPOSIT', 'OP DEPOSIT REFUND',
+                                                             Gs_BillNo, '', Table_Billing.FieldByName('TestNameCode').AsString, Ps_TodaysDate, Ps_TodaysTime, 'N',ps_PatientCategory,'N');//GetPatientCagetory(gi_PatientID)
+
+                                        end;
+                                   end;
+                              end;
+                              next;
+                         end;
+                         Gs_BillNo := ls_RefBillNo;
+
+                         if (DBLCB_Scheme.KeyValue = '22') and (pf_CopayAmts > 0) then
+                         begin
+                              if RB_OPBILL.Checked = True then
+                                   ls_BillType := 'OP'
+                              Else
+                                   ls_BillType := 'IP';
+                              Try
+                                   saveCreditPayment(gi_PatientID, gi_InPatientID, pf_grandtotal,
+                                        pf_CopayAmts, Gi_UserId, Edit_PreveBillNo.Text, Ps_TodaysDate,
+                                        Ps_TodaysTime, gs_MacId, ls_BillType, 'REFUND',
+                                        'Medicare Co-Payment', 'REFUND', 'Y', ps_CopayItemsCodeList);
+                              Except
+                                   saveCreditPayment(gi_PatientID, gi_InPatientID, pf_grandtotal,
+                                        pf_CopayAmts, Gi_UserId, Edit_PreveBillNo.Text, Ps_TodaysDate,
+                                        Ps_TodaysTime, gs_MacId, ls_BillType, 'REFUND',
+                                        'Medicare Co-Payment', 'REFUND', 'Y', ps_CopayItemsCodeList);
+                              End;
+                         end;
+                    end;
+
+                    With Query_TempProcess do
+                    begin
+                         Close;
+                         DatabaseName := gs_temppath;
+                         SQL.Clear;
+                         SQL.Add(' Update Billing.db Set IsRecentBilled=' + #39 +ls_RefBillNo + #39);
+                         ExecSQL;
+                    end;
+
+                    // DecreaseDocReferralCount(Ps_RefDocCode);
+                    ls_RefBillNo := Gs_BillNo;
+                    // LoadBill;
+                    ShowDoneMessage;
+                    DM_Hospital.DB.Commit;
+               except
+                    DM_Hospital.DB.Rollback;
+                    ShowMessage('Bill not saved');
+                    Exit;
+               end;
+               Qry.Free;
+
+               Lbl_BillNo.Visible := True;
+               Label21.Visible := True;
+               Lbl_BillNo.Caption := ls_RefBillNo;
+
+               if gi_HospitalId = 562 then // 562- Manipal
+               Begin
+                    if (DBLCB_Scheme.KeyValue = '22') and (pf_CopayAmts > 0) then // In Case of Medicare Co-Pay Refund Just Print Refund Receipt Only
+                    Begin
+                         Label11.Visible := True;
+                         Label_DepositNo.Visible := True;
+                         Label_DepositNo.Caption := Gs_ReceiptNo;
+
+                         Gs_BillNo := Gs_ReceiptNo;
+                         PrintDepositSlip;
+                    End;
+               End;
+
+               if MessageDlg('Are you sure to print ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+               Begin
+                    Gs_BillNo := ls_RefBillNo;
+                    gi_noOfPrint := 0;
+                    PrintBill(CB_Preview, 1);
+               end;
+
+               if MessageDlg('Are you sure to print original bill ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+               Begin
+                    Gb_RefundBillExists := True; // Print Invoice Bill with Refund Information
+                    Gs_BillNo := Edit_PreveBillNo.Text;
+                    gi_BillCase := 2;
+                    gi_noOfPrint := 0;
+                    PrintBill(CB_Preview, 1);
+                    Gs_BillNo := ls_RefBillNo;
+               End;
+               gi_BillCase := 6;
+          end
+          Else // Test Cancel
+          Begin
+               BB_Save.Enabled := False;
+               try
+                    DM_Hospital.DB.StartTransaction;
+                    Table_Billing.First;
+                    while not Table_Billing.eof do
+                    begin
+                         if Table_Billing.FieldByName('Status').AsString = 'C' then
+                              CancelServiceTest(Table_Billing.FieldByName('ServiceBillDetailId')
+                                        .AsInteger, 0, Le_Remarks.Text);
+                         Table_Billing.next;
+                    end;
+
+                    if (DBLCB_Scheme.KeyValue = '22') and (pf_CopayAmts > 0) then
+                    begin
+                         Try
+                              saveCreditPayment(gi_PatientID, gi_InPatientID, pf_grandtotal,
+                                   pf_CopayAmts, Gi_UserId, Edit_PreveBillNo.Text, Ps_TodaysDate,
+                                   Ps_TodaysTime, gs_MacId, 'IP', 'REFUND', 'Medicare Co-Payment',
+                                   'REFUND', 'Y', ps_CopayItemsCodeList);
+                         Except
+                              saveCreditPayment(gi_PatientID, gi_InPatientID, pf_grandtotal,
+                                   pf_CopayAmts, Gi_UserId, Edit_PreveBillNo.Text, Ps_TodaysDate,
+                                   Ps_TodaysTime, gs_MacId, 'IP', 'REFUND', 'Medicare Co-Payment',
+                                   'REFUND', 'Y', ps_CopayItemsCodeList);
+                         End;
+                    end;
+
+                    if (pf_AdvancRefund > 0) Then // and (Gs_ Like 'TP%') then
+                    Begin
+                         Gs_BillNo := Edit_PreveBillNo.Text;
+                         SaveInvAdvanceDeposit(0, pf_AdvancRefund, Le_Remarks.Text);
+                         Label_DepositNo.Caption := Gs_BillNo;
+                         Label_DepositNo.Visible := True;
+                         Label11.Visible := True;
+                    End
+                    Else
+                    Begin
+                         Label_DepositNo.Visible := False;
+                         Label11.Visible := False;
+                    End;
+                    DM_Hospital.DB.Commit;
+               Except
+                    DM_Hospital.DB.Rollback;
+                    Exit;
+               end;
+               ShowDoneMessage;
+
+               With Query_TempProcess do
+               begin
+                    Close;
+                    DatabaseName := gs_temppath;
+                    SQL.Clear;
+                    SQL.Add(' Update Billing.db Set IsRecentBilled=''IP TEST CANCEL''');
+                    ExecSQL;
+               end;
+
+               if (DBLCB_Scheme.KeyValue = '22') and (pf_CopayAmts > 0) then
+               Begin
+                    Gs_BillNo := Gs_ReceiptNo;
+                    PrintDepositSlip;
+               End;
+
+               if pf_AdvancRefund > 0 then
+               Begin
+                    Gs_BillNo := Gs_BillNo;
+                    PrintDepositSlip;
+               End;
+
+               if gs_CalledFormName <> 'Ward' then
+               begin
+                    // if MessageDlg('Are you sure to print remaining bill ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+                    Begin
+                         Gb_RefundBillExists := True; // Print Invoice Bill with Refund Information
+                         Gs_BillNo := Edit_PreveBillNo.Text;
+                         gi_BillCase := 0;
+                         Gb_IsReprint := False;
+                         Try
+                              gs_BillType := 'IPBILL';
+                              PrintBill(CB_Preview, 2);
+                              gs_BillType := 'REFUNDBILL';
+                         Except
+                              gs_BillType := 'REFUNDBILL';
+                         End;
+                         Gs_BillNo := ls_RefBillNo;
+                    End;
+               end;
+               gi_BillCase := 6;
+          End;
+          Exit;
+     end;
+
+     if (gi_BillCase = 0) then
+     begin
+          BB_Save.Enabled := False;
+          if not SaveServiceBill then
+          begin
+               MessageDlg('Failure to Save !', mtWarning, [MbOk], 0);
+               Exit;
+          end;
+
+          With Query_TempProcess do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               SQL.Clear;
+               SQL.Add(' Update Billing.db Set IsRecentBilled=' + #39 + ps_FinalBillNo +#39);
+               ExecSQL;
+          end;
+
+          Lbl_BillNo.Visible := True;
+          Label21.Visible := True;
+          Lbl_BillNo.Caption := ps_FinalBillNo;
+
+          if gi_HospitalId = 562 then
+          Begin
+               if pb_IslabDep then
+               begin
+                    if Cb_Label.Checked = True then
+                         ReprintSticker(ps_FinalBillNo, gi_PatientID, CB_Preview);
+               end;
+          End;
+
+          if Pi_SchemeID = 22 then // 22 - medicare
+          Begin
+               if (pf_CopayAmts > 0) then
+               Begin
+                    Gs_BillNo := Gs_ReceiptNo;
+                    PrintDepositSlip;
+                    ps_DepositBillNo := Gs_ReceiptNo;
+               End;
+          End;
+
+          if Trim(ps_DepositBillNo) <> '' then
+          Begin
+               Label11.Visible := True;
+               Label_DepositNo.Visible := True;
+               Label_DepositNo.Caption := ps_DepositBillNo;
+          End;
+
+          if gs_CalledFormName <> 'Ward' then
+          begin
+               // if MessageDlg('Do You Want to Print ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+               Begin
+                    Gs_BillNo := ps_FinalBillNo;
+                    gi_noOfPrint := 0;
+                    // PrintBill(CB_Preview,1);
+                    PrintBill(CB_Preview, 2);
+                    // pb_IslabDep:=False;
+               End;
+          end;
+
+          // IncreaseVisitCount(gi_PatientID);
+          // IncreaseDocReferralCount(Ps_RefDocCode);
+          // SimulateKeyPress(Self.Parent.Handle, VK_F5);
+          // Self.Parent.SendToBack;
+          (* if GetMonitorCount > 1 then
+               Frame_Billing.ClearCustomerPreview; *)
+          // Self.Free;
+          // FrameCleared := true;
+
+     end
+     else if gi_BillCase in [2, 3] then
+     begin
+          if CB_DayCare.Checked = True then
+          begin
+               if (pf_Deposit > 0) and (pf_Deposit < pf_grandtotal) then
+               begin
+                    MessageDlg('Net Amount Is Greater Than Deposit Please Add Deposit',mtWarning, [MbOk], 0);
+                    Exit;
+               end;
+          end;
+          BB_Save.Enabled := False;
+          Try
+               DM_Hospital.DB.StartTransaction;
+               GB_isDepositBill := False;
+               gi_InPatientID := 0;
+               if gi_BillCase = 3 then
+               begin
+                    SaveServiceBill_Detail;
+                    gi_BillCase := 2;
+                    LoadBill;
+               end;
+               SaveFinalBill_Detail;
+               ps_FinalBillNo := Gs_BillNo;
+               // SaveDepositData;
+               if CB_DayCare.Checked = True then
+               begin
+                    if pf_Deposit > 0 then
+                         SaveDeposit(0, gi_InPatientID, gi_PatientID, 0, Gi_UserId, 0, 0,pf_grandtotal, 'OP ADJ DEP REFUND',
+                                    'ADJ. IN OP', Gs_BillNo, '','', Ps_TodaysDate, Ps_TodaysTime, 'N',ps_PatientCategory,'N');//GetPatientCagetory(gi_PatientID)
+               end;
+
+               ps_DepositBillNo := '';
+               if (pf_CopayAmts > 0) then
+               Begin
+                    SaveCoPayReceipt;
+                    ps_DepositBillNo := Gs_BillNo;
+               End;
+
+               With Query_TempProcess do
+               begin
+                    Close;
+                    DatabaseName := gs_temppath;
+                    SQL.Clear;
+                    SQL.Add(' Update Billing.db Set IsRecentBilled=' + #39 +ps_FinalBillNo + #39);
+                    ExecSQL;
+               end;
+
+               ShowDoneMessage;
+               DM_Hospital.DB.Commit;
+          except
+               DM_Hospital.DB.Rollback;
+               gi_BillCase := 3;
+               Pb_ServiceBillMasterExist := False;
+               ShowMessage('Bill not Saved');
+               Exit;
+          End;
+
+          if Pb_IsDayCare then
+          begin
+               with Query_Process do
+               begin
+                    Close;
+                    DatabaseName := gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add('Select DACV_DayCareVisitID     From HS_DACV_DayCareVisit WHere DACV_PATIENTID='+ IntToStr(gi_PatientID));
+                    SQL.Add('And Dacv_VIsitDate=' + #39 + TodaysDate + #39);
+                    Open;
+               end;
+               if Query_Process.FieldByName('DACV_DayCareVisitID').AsInteger < 1 then
+               begin
+                    with Query_Process do
+                    begin
+                         Close;
+                         DatabaseName := gs_DatabaseName;
+                         SQL.Clear;
+                         SQL.Add('Insert Into HS_DACV_DayCareVisit(DACV_DayCareVisitID ,DACV_PatientID,');
+                         SQL.Add('DACV_DOCID,DACV_Remarks,DACV_VisitDate,DACV_VisitTime,DACV_VisitBy ,');
+                         SQL.Add('DACV_MACID,DACV_ISCANCEL,DACV_CancelBy )');
+                         SQL.Add('Values(');
+                         SQL.Add(IntToStr(GetMaxId('HS_DACV_DayCareVisit','DACV_DayCareVisitID')) + ',' + IntToStr(gi_PatientID));
+                         SQL.Add(',' + IntToStr(Pi_DaycareDocId)+ ','''',' + #39 + TodaysDate + #39);
+                         SQL.Add(',' + #39 + TodaysTime + #39 + ',' + IntToStr(Gi_UserId)+ ',' + #39 + gs_MacId + #39);
+                         SQL.Add(',''N''');
+                         SQL.Add(',''0''');
+                         SQL.Add(')');
+                         ExecSQL;
+                    end;
+               end;
+          end;
+          {
+               if pb_IslabDep then
+               begin
+               if Cb_Label.Checked=True then
+               ReprintSticker(ps_FinalBillNo,gi_PatientID, CB_Preview);
+               end; }
+
+          if Pi_SchemeID = 22 then // 22 - medicare
+          Begin
+               if (pf_CopayAmts > 0) then
+               Begin
+                    Label11.Visible := True;
+                    Label_DepositNo.Visible := True;
+                    Label_DepositNo.Caption := Gs_ReceiptNo;
+                    ps_DepositBillNo := Gs_ReceiptNo;
+
+                    Gs_BillNo := Gs_ReceiptNo;
+                    PrintDepositSlip;
+               End;
+          End;
+
+          Lbl_BillNo.Visible := True;
+          Label21.Visible := True;
+          Lbl_BillNo.Caption := Gs_BillNo;
+          // if MessageDlg('Do you want to print ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+          Begin
+               Gs_BillNo := ps_FinalBillNo;
+               gi_noOfPrint := 0;
+               // PrintBill(CB_Preview,1);
+               PrintBill(CB_Preview, 2);
+          End;
+
+          (* if gi_BillCase<>2 then
+               Begin
+               if Trim(Edit_AddDeposit.Text) <> '' then
+               begin
+               Gs_BillNo := ls_DepositBillNo;
+               PrintDepositSlip;
+               end;
+               End; *)
+     end;
+
+     Lbl_BillNo.Caption := Gs_BillNo;
+     ps_LoadedTestID := '';
+     pi_TotItems := 0;
+     pi_TotalItems := 0;
+     pf_TestPrice := 0;
+     pf_SvrTax := 0;
+     pf_Qty := 0;
+     pf_TotalPrice := 0;
+     pf_Total := 0;
+     pf_subtotal := 0;
+     pf_grandtotal := 0;
+     pf_SvrTaxTotal := 0;
+     pi_TotItems := 0;
+     pf_discount := 0;
+     pf_DiscountTotal := 0;
+     gi_BillCase := 3;
+     if Trim(ps_FinalBillNo) <> '' then
+     begin
+          Label21.Visible := True;
+          Lbl_BillNo.Visible := True;
+          Lbl_BillNo.Caption := ps_FinalBillNo;
+     end;
+
+     if Trim(ps_DepositBillNo) <> '' then
+     begin
+          Label11.Visible := True;
+          Label_DepositNo.Visible := True;
+          Label_DepositNo.Caption := ps_DepositBillNo;
+     end;
+
+     if gs_BillType = 'OPBILL' then
+          CB_PayType.ItemIndex := 0
+     Else
+          CB_PayType.ItemIndex := 1;
+
+     Pb_ServiceBillMasterExist := False;
+     Cb_Qty.Checked := True;
+     Cb_Label.Checked := True;
+
+
+     if (gs_BillType='IPBILL') or (gs_BillType='ERBILL') then
+     gi_BillCase:=0;
+
+     Le_HosNo.SetFocus;
+end;
+
+procedure TForm_Billing.SetMKTGREferralFractionRules;
+Var
+  lf_MKTGFractionPer, lf_FractionAmount: Double;
+  lb_IsRecordExist: Boolean;
+  li_REFERRALFRACTIONID: Integer;
+begin
+  With Query_TempMKTGRefFraction do
+  Begin
+    Close;
+    SQL.Clear;
+    DatabaseName := gs_temppath;
+    SQL.Add(' Select * From Billing.db');
+    Open;
+    First;
+    while Not eof do
+    begin
+      lf_MKTGFractionPer := 0;
+      if Trim(DBLCB_MKTGReferral.Text) <> '' then
+      Begin
+        IF GETMKTGREFERRALFRACTION(DBLCB_MKTGReferral.KeyValue,
+          Query_TempMKTGRefFraction.FieldByName('TestNameId').AsInteger,
+          Query_TempMKTGRefFraction.FieldByName('DepId').AsInteger) = True Then
+        begin
+          if (gf_MKTGFractionPer > 0) and (gf_MKTGFractionAmount = 0) then
+            gf_MKTGFractionAmount := RoundingAfterSecondPlace
+              (Query_TempMKTGRefFraction.FieldByName('TestPrice')
+                .AsFloat * gf_MKTGFractionPer / 100)
+          Else if (gf_MKTGFractionPer = 0) and (gf_MKTGFractionAmount > 0) then
+            gf_MKTGFractionPer := RoundingUserDefineDecaimalPart
+              (((gf_MKTGFractionAmount / Query_TempMKTGRefFraction.FieldByName
+                    ('TestPrice').AsFloat) * 100), 4);
+
+          lf_MKTGFractionPer := gf_MKTGFractionPer;
+          With Query_TempSubProcess do
+          begin
+            Close;
+            DatabaseName := gs_temppath;
+            SQL.Clear;
+            SQL.Add(' Update Billing.db Set REFFRACTIONPER=' + FloatToStr
+                (gf_MKTGFractionPer) + ',REFFRACTIONAMOUNT=' + FloatToStr
+                (gf_MKTGFractionAmount));
+            SQL.Add(' ,REFERRALFRACTIONID=' + IntToStr(gi_REFERRALFRACTIONID));
+            SQL.Add(' where TestNameId=' + IntToStr
+                (Query_TempMKTGRefFraction.FieldByName('TestNameId').AsInteger)
+              );
+            ExecSQL;
+          end;
+        end;
+      End;
+
+      if Trim(DBLCB_RefDocCode.Text) <> '' then
+      Begin
+        IF GETMKTGREFERRALFRACTION(DBLCB_RefDocCode.KeyValue,
+          Query_TempMKTGRefFraction.FieldByName('TestNameId').AsInteger,
+          Query_TempMKTGRefFraction.FieldByName('DepId').AsInteger) = True Then
+        begin
+          if (gf_MKTGFractionPer > 0) then // --and (gf_MKTGFractionAmount=0)
+            gf_MKTGFractionAmount := RoundingAfterSecondPlace
+              ((Query_TempMKTGRefFraction.FieldByName('TestPrice').AsFloat -
+                  (Query_TempMKTGRefFraction.FieldByName('TestPrice')
+                    .AsFloat * lf_MKTGFractionPer / 100))
+                * gf_MKTGFractionPer / 100)
+          Else if (gf_MKTGFractionPer = 0) and (gf_MKTGFractionAmount > 0) then
+            gf_MKTGFractionPer := RoundingUserDefineDecaimalPart
+              (((gf_MKTGFractionAmount / Query_TempMKTGRefFraction.FieldByName
+                    ('TestPrice').AsFloat) * 100), 4);
+
+          With Query_TempSubProcess do
+          begin
+            Close;
+            DatabaseName := gs_temppath;
+            SQL.Clear;
+            SQL.Add(' Update Billing.db Set DOCREFFRACTIONPER=' + FloatToStr (gf_MKTGFractionPer) + ',DOCREFFRACTIONAMOUNT=' + FloatToStr (gf_MKTGFractionAmount));
+            SQL.Add(' ,DOCREFERRALFRACTIONID=' + IntToStr(gi_REFERRALFRACTIONID));
+            SQL.Add(' where TestNameId=' + IntToStr
+                (Query_TempMKTGRefFraction.FieldByName('TestNameId').AsInteger)
+              );
+            ExecSQL;
+          end;
+        end;
+      End;
+      Query_TempMKTGRefFraction.next;
+    end;
+  End;
+end;
+
+Function TForm_Billing.IsValidForRefundOrCancel: Boolean;
+Var
+  ls_TestNameCode: string;
+begin
+     With Query_TempProcess do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          SQL.Clear;
+          SQL.Add(' Select * From Billing.db where Status=''C'' and IsValidForRefund=''N''');
+          Open;
+     end;
+
+     if Query_TempProcess.FieldByName('TestNameCode').AsString = '' then
+          Result := True
+     else
+     begin
+          Query_TempProcess.First;
+          while Not Query_TempProcess.eof do
+          begin
+               if ls_TestNameCode = '' then
+                    ls_TestNameCode := Query_TempProcess.FieldByName('TestNameCode').AsString
+               else
+                    ls_TestNameCode := ls_TestNameCode + ',' + Query_TempProcess.FieldByName ('TestNameCode').AsString;
+               Query_TempProcess.next;
+          end;
+
+          MessageDlg('Sorry ! The Given Test(' + ls_TestNameCode + ') Are Not Valid for Refund or Cancel.' + Char(10) +
+                    'Reason -> The Respective Department Should Have Grant to Refund or Cancel After Sample Collection.', mtWarning, [MbOk], 0);
+          Result := False;
+     end;
+end;
+
+procedure TForm_Billing.cb_extendedClick(Sender: TObject);
+begin
+  Edit_TestName.SetFocus;
+end;
+
+procedure TForm_Billing.CB_PatientcategoryChange(Sender: TObject);
+begin
+    if gs_PatientCategory<>CB_Patientcategory.Text then
+    begin
+          IF (MessageDlg(' Do You Want To Change Patient Category ?', mtWarning, [mbYes, mbNo], 0) = mrYes) Then
+          Begin
+               //
+          End
+          else
+          begin
+               if CB_Patientcategory.ItemIndex=0 then
+                    CB_Patientcategory.ItemIndex:=1
+               else
+                    CB_Patientcategory.ItemIndex :=0;
+          end;
+    end;
+end;
+
+procedure TForm_Billing.CB_PayTypeChange(Sender: TObject);
+begin
+  if CB_PayType.ItemIndex = 1 then
+  begin
+    CB_PayType.Color := clWebRed;
+    Le_Payment.Enabled := False;
+
+    if RB_OPBILL.Checked = True then
+      Timer_PayTypeFlash.Enabled := True;
+  end
+  else
+  begin
+    CB_PayType.Color := clWindow;
+    Le_Payment.Enabled := True;
+
+    Label_PayTypeFlash.Visible := False;
+    Timer_PayTypeFlash.Enabled := False;
+  end;
+end;
+
+procedure TForm_Billing.CB_PayTypeKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    if Le_Payment.Enabled then
+      Le_Payment.SetFocus
+    else
+      Le_Remarks.SetFocus;
+  end;
+
+end;
+
+procedure TForm_Billing.CB_PreviewClick(Sender: TObject);
+begin
+  if CB_Preview.Checked then
+    Gb_IsPreview := True
+  else
+    Gb_IsPreview := False;
+
+end;
+
+procedure TForm_Billing.CB_SchemeClick(Sender: TObject);
+begin
+//
+end;
+
+procedure TForm_Billing.CB_ViewOldBillClick(Sender: TObject);
+begin
+  if CB_ViewOldBill.Checked = True then
+  Begin
+    if (Trim(Le_HosNo.Text) = '') or (Le_HosNo.Text = '0') then
+    begin
+      MessageDlg('Please Put Hospital No First.', mtWarning, [MbOk], 0);
+      CB_ViewOldBill.Checked := False;
+      Exit;
+    end;
+
+    CB_ViewOldTest.Checked := False;
+    GB_OldBill.Visible := True;
+    GB_OldBill.BringToFront;
+    GB_OldTest.Visible := False;
+    GB_PaymentInfo.Visible := False;
+
+    // DBGrid_OldBill.Columns[7].Visible:=False;
+    DBGrid_OldBill.Columns[9].Visible := False;
+    DBGrid_OldBill.Columns[10].Visible := False;
+    if gs_BillType = 'OPBILL' then
+    begin
+      With Query_BillList do
+      Begin
+        Close;
+        DatabaseName := gs_DatabaseName;
+        SQL.Clear;
+        SQL.Add(' Select BIDE_BillNo BillNo,BIDE_BillDate BillDate,BIDE_BillTime BillTime,BIDE_PatientID PatientID,0 as InpatientId,BIDE_BillBy BillBy,');
+        SQL.Add(' Sum(BIDE_Amount*BIDE_Qty) as Total,Sum(BIDE_VatAmt) as VatAmt,Sum(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100) as Discount,');
+        SQL.Add(' Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal,');
+        SQL.Add(' (Select USMA_UserName From HS_USMA_UserMain Where USMA_UserId=BIDE_BillBy) UserName');
+        SQL.Add(' From HS_BIDE_BillDetail');
+        SQL.Add(' where BIDE_PatientId=' + Le_HosNo.Text +' and BIDE_BillType  in(''B'',''R'')');
+        SQL.Add(' Group By BIDE_BillNo,BIDE_BillDate,BIDE_BillTime,BIDE_BillBy,BIDE_PatientID');
+        SQL.Add(' Order by BIDE_BillNo Desc');
+        Open;
+      End;
+    end
+    Else if (gs_BillType = 'IPBILL') or (gs_BillType='ERBILL') then
+    begin
+      With Query_BillList do
+      Begin
+        Close;
+        DatabaseName := gs_DatabaseName;
+        SQL.Clear;
+        SQL.Add(' Select SEBD_BillNo BillNo,SEBD_BillDate BillDate,SEBD_BillTime BillTime,SEBD_PatientID PatientId,SEBD_InpatientId InpatientId,');
+        SQL.Add(' SEBD_BillBy BillBy,Sum(SEBD_Amount*SEBD_Qty) as Total,Sum(SEBD_VatAmt) as VatAmt,Sum(SEBD_Amount*SEBD_Qty*SEBD_DisPer/100) as Discount,');
+        SQL.Add(' Sum((SEBD_Amount*SEBD_Qty)+SEBD_VatAmt-(SEBD_Amount*SEBD_Qty*SEBD_DisPer/100)) as NetTotal,');
+        SQL.Add(' (Select USMA_UserName From HS_USMA_UserMain Where USMA_UserId=SEBD_BillBy) UserName');
+        SQL.Add(' From HS_SEBD_ServiceBillDetail');
+        if gs_BillType<>'ERBILL' then
+          SQL.Add(' where SEBD_PatientId=' + Le_HosNo.Text +' and SEBD_BillType In (''A'',''IP'')')
+        Else
+          SQL.Add(' where SEBD_PatientId='+Le_HosNo.Text+' and SEBD_EmergencyNo='+#39+gs_EMRNoForMedPT+#39);
+        SQL.Add(' Group By SEBD_BillNo,SEBD_BillDate,SEBD_BillTime,SEBD_BillBy,SEBD_PatientID,SEBD_InpatientId');
+        SQL.Add(' Order by BillDate Desc, BillTime Desc');
+        Open;
+      End;
+    end
+    Else if gs_BillType = 'REFUNDBILL' then
+    Begin
+      DBGrid_OldBill.Columns[9].Visible := True;
+      DBGrid_OldBill.Columns[10].Visible := True;
+      With Query_BillList do
+      Begin
+        Close;
+        DatabaseName := gs_DatabaseName;
+        SQL.Clear;
+        SQL.Add(' Select REDE_RefundBillNo BillNo,REDE_RefundDate BillDate,REDE_RefundTime as BillTime, REDE_PatientID PatientID,REDE_InpatientId InpatientId,REDE_RefundBy BillBy,');
+        SQL.Add(' Sum(REDE_Amount*REDE_Qty) as Total,Sum(REDE_VatAmt) as VatAmt,Sum(REDE_Amount*REDE_Qty*REDE_DisPer/100) as Discount,');
+        SQL.Add(' Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) as NetTotal,');
+        SQL.Add(' (Select USMA_UserName From HS_USMA_UserMain Where USMA_UserId=REDE_RefundBy) UserName,');
+        SQL.Add(' (Select Max(BIDE_BillNo) From HS_BIDE_BillDetail where BIDE_BillDetailId=(Select Max(REDE_BillDetailId) ');
+        SQL.Add(' From HS_REDE_RefundDetail where REDE_RefundBillNo=RD.REDE_RefundBillNo)) as PrevBillNo');
+        if RB_IPBILL.Checked = True then
+        Begin
+          SQL.Add( ' ,(Select Max(SEBD_BillNo) as TempBillNo From HS_SEBD_ServiceBillDetail where SEBD_BillDetailId In (');
+          SQL.Add(' Select  REDE_BillDetailId from HS_REDE_RefundDetail where REDE_PatientId='
+              + Le_HosNo.Text + ')) TempBillNo');
+        End
+        Else
+          SQL.Add(' ,'''' as TempBillNo');
+
+        SQL.Add(' From HS_REDE_RefundDetail RD');
+        SQL.Add(' where REDE_PatientId=' + Le_HosNo.Text +
+            ' and REDE_Service Not In (''OPDBC01'',''BLUBC01'')');
+        if RB_OPBILL.Checked = True then
+          SQL.Add(' and REDE_BillType=''B''')
+        Else
+          SQL.Add(' and REDE_BillType In (''IP'',''A'')');
+        SQL.Add(' Group By REDE_RefundBillNo,REDE_RefundDate,REDE_RefundTime, REDE_RefundBy,REDE_PatientID,REDE_InpatientId');
+        SQL.Add(' Order by REDE_RefundBillNo Desc');
+        Open;
+      End;
+    End;
+
+    DBGrid_OldBill.Columns[0].Title.Caption := 'Bill No';
+    DBGrid_OldBill.Columns[1].Title.Caption := 'Bill Date';
+    DBGrid_OldBill.Columns[2].Title.Caption := 'Bill Time';
+    DBGrid_OldBill.Columns[3].Title.Caption := 'IP No.';
+
+    DBGrid_OldBill.Columns[4].Title.Caption := 'Total';
+    DBGrid_OldBill.Columns[5].Visible := True;
+    DBGrid_OldBill.Columns[6].Visible := True;
+    DBGrid_OldBill.Columns[7].Title.Caption := 'Net Total';
+    DBGrid_OldBill.Columns[9].Title.Caption := 'Prev. Bill No';
+  End
+  else
+  begin
+    GB_PaymentInfo.Visible := True;
+    GB_PaymentInfo.BringToFront;
+    GB_OldBill.Visible := False;
+    GB_OldTest.Visible := False;
+  end;
+end;
+
+procedure TForm_Billing.CB_ViewOldTestClick(Sender: TObject);
+begin
+  if CB_ViewOldTest.Checked = True then
+  Begin
+    if (Trim(Le_HosNo.Text) = '') or (Le_HosNo.Text = '0') then
+    begin
+      MessageDlg('Please Put Hospital No First.', mtWarning, [MbOk], 0);
+      CB_ViewOldTest.Checked := False;
+      Exit;
+    end;
+
+    CB_ViewOldBill.Checked := False;
+    GB_OldBill.Visible := False;
+    GB_OldTest.Visible := True;
+    GB_OldTest.BringToFront;
+    GB_PaymentInfo.Visible := False;
+
+    if gs_BillType = 'OPBILL' then
+    begin
+      With Query_TestList do
+      Begin
+        Close;
+        DatabaseName := gs_DatabaseName;
+        SQL.Clear;
+        SQL.Add(' Select BIDE_BillNo BillNo,BIDE_BillDate BillDate,BIDE_PatientID PatientID,BIDE_BillBy BillBy,BIDE_Service Service,BIDE_ServiceType ServiceType,');
+        SQL.Add(' sum(bide_Qty)Qty,Sum(BIDE_Amount*BIDE_Qty) as Total,Sum(BIDE_VatAmt) as VatAmt,Sum(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100) as Discount,');
+        SQL.Add(' Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal,');
+        SQL.Add('(Select USMA_UserName From HS_USMA_UserMain Where USMA_UserId=BIDE_BillBy) UserName');
+        SQL.Add(' From HS_BIDE_BillDetail');
+        SQL.Add(' where BIDE_PatientId=' + Le_HosNo.Text + ' and BIDE_BillType  in(''B'',''R'')');
+        SQL.Add(' And Bide_BillDetailId Not In(Select Rede_BilldetailId From Hs_Rede_RefundDetail)');
+        SQL.Add(' Group By BIDE_BillNo,BIDE_BillDate,BIDE_BillBy,BIDE_PatientID,BIDE_Service,BIDE_ServiceType');
+        SQL.Add(' Order by BIDE_BillNo Desc');
+        Open;
+      End;
+    end
+    Else if gs_BillType = 'IPBILL' then
+    begin
+      With Query_TestList do
+      Begin
+        Close;
+        DatabaseName := gs_DatabaseName;
+        SQL.Clear;
+        SQL.Add(' Select SEBD_BillNo BillNo,SEBD_BillDate BillDate,SEBD_BillTime BillTime,SEBD_PatientID PatientId,SEBD_InpatientId InpatientId,');
+        SQL.Add(' SEBD_BillBy BillBy,SEBD_Service Service,SEBD_ServiceType ServiceType,sum(Sebd_qty)Qty,');
+        SQL.Add(' Sum(SEBD_Amount*SEBD_Qty) as Total,Sum(SEBD_VatAmt) as VatAmt,Sum(SEBD_Amount*SEBD_Qty*SEBD_DisPer/100) as Discount,');
+        SQL.Add(' Sum((SEBD_Amount*SEBD_Qty)+SEBD_VatAmt-(SEBD_Amount*SEBD_Qty*SEBD_DisPer/100)) as NetTotal,');
+        SQL.Add(' (Select USMA_UserName From HS_USMA_UserMain Where USMA_UserId=SEBD_BillBy) UserName');
+        SQL.Add(' From HS_SEBD_ServiceBillDetail');
+        SQL.Add(' where SEBD_PatientId=' + Le_HosNo.Text + ' and SEBD_BillType In (''IP'',''A'')');
+        SQL.Add(' And SEBD_ServiceBillDetailId Not In(Select Teca_ServiceBillDetailId From Hs_TEca_TestCancel)');
+        SQL.Add(' Group By SEBD_BillNo,SEBD_BillDate,SEBD_BillTime,SEBD_BillBy,SEBD_PatientID,SEBD_InpatientId,SEBD_Service,SEBD_ServiceType');
+        SQL.Add(' Order by SEBD_BillNo Desc');
+        // sql.saveToFile('C:\IPTest.txt');
+        Open;
+      End;
+    end
+    Else if gs_BillType = 'REFUNDBILL' then
+    begin
+      if RB_OPBILL.Checked = True then
+      Begin
+        With Query_TestList do
+        Begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add(' Select REDE_RefundBillNo BillNo,REDE_RefundDate BillDate,REDE_RefundTime RefundTime, REDE_PatientID PatientID,');
+          SQL.Add(' 0 as InpatientId, REDE_RefundBy BillBy,REDE_Service Service,REDE_ServiceType ServiceType,sum(rede_qty)Qty,');
+          SQL.Add(' Sum(REDE_Amount*REDE_Qty) as Total,Sum(REDE_VatAmt) as VatAmt,Sum(REDE_Amount*REDE_Qty*REDE_DisPer/100) as Discount,');
+          SQL.Add(' Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) as NetTotal,');
+          SQL.Add(' (Select USMA_UserName From HS_USMA_UserMain Where USMA_UserId=REDE_RefundBy) UserName');
+          SQL.Add(' From HS_REDE_RefundDetail');
+          SQL.Add(' where REDE_PatientId=' + Le_HosNo.Text +' and REDE_BillType=''B'' and REDE_Service Not In (''OPDBC01'',''BLUBC01'')');
+          SQL.Add(' Group By REDE_RefundBillNo,REDE_RefundDate,REDE_RefundTime, REDE_RefundBy,REDE_PatientID,REDE_Service,REDE_ServiceType');
+          SQL.Add(' Order by REDE_RefundBillNo Desc');
+          Open;
+        End;
+      End
+      Else
+      Begin
+        With Query_TestList do
+        Begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add(' Select REDE_RefundBillNo BillNo,REDE_RefundDate BillDate,REDE_RefundTime RefundTime, REDE_PatientID PatientID,');
+          SQL.Add(' REDE_InPatientID InPatientID,REDE_RefundBy BillBy,REDE_Service Service,REDE_ServiceType ServiceType,sum(rede_qty)Qty,');
+          SQL.Add(' Sum(REDE_Amount*REDE_Qty) as Total,Sum(REDE_VatAmt) as VatAmt,Sum(REDE_Amount*REDE_Qty*REDE_DisPer/100) as Discount,');
+          SQL.Add(' Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) as NetTotal,');
+          SQL.Add(' (Select USMA_UserName From HS_USMA_UserMain Where USMA_UserId=REDE_RefundBy) UserName');
+          SQL.Add(' From HS_REDE_RefundDetail');
+          SQL.Add(' where REDE_PatientId=' + Le_HosNo.Text + ' and REDE_BillType In (''IP'',''A'')');
+          SQL.Add(' Group By REDE_RefundBillNo,REDE_RefundDate,REDE_RefundTime, REDE_RefundBy,REDE_PatientID,REDE_InPatientID,REDE_Service,REDE_ServiceType');
+          SQL.Add(' Order by REDE_RefundBillNo Desc');
+          Open;
+        End;
+      End;
+    end
+  End
+  else
+  begin
+    GB_PaymentInfo.Visible := True;
+    GB_PaymentInfo.BringToFront;
+    GB_OldBill.Visible := False;
+    GB_OldTest.Visible := False;
+  end;
+end;
+
+procedure TForm_Billing.CheckServiceBillMaster;
+Var
+  Qry: TOraQuery;
+begin
+  Qry := TOraQuery.Create(nil);
+  with Qry do
+  begin
+    Close;
+    DatabaseName := gs_DatabaseName;
+    SQL.Clear;
+    SQL.Add('Select Count(SEBM_Billno)n from HS_SEBM_ServiceBillMaster Where SEBM_Billno='+ #39 + Gs_BillNo + #39);
+    Open;
+    if FieldByName('n').AsInteger > 0 then
+      Pb_ServiceBillMasterExist := True
+    else
+      Pb_ServiceBillMasterExist := False;
+  end;
+  Qry.Free;
+end;
+
+procedure TForm_Billing.ClearCustomerPreview;
+begin
+  with Form_CustomerMonitor do
+  begin
+    DBGrid_Billing.DataSource := nil;
+    lbl_patientid.Caption := '';
+    lbl_patientname.Caption := '';
+    Lbl_GrandTotal.Caption := '00.00';
+    lbl_DepositBalance.Caption := '00.00';
+    lbl_NetBalance.Caption := '00.00';
+    Lbl_ReturnAmt.Caption := '00.00';
+    lbl_TenderAmt.Caption := '00.00';
+    Lbl_TotalItems.Caption := '00.00';
+    Image_Main.Picture.Assign(nil);
+  end;
+end;
+
+procedure TForm_Billing.GetReferalMKTPersonal;
+begin
+  With Query_MKTReferral Do
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add(' Select MKRE_MKTGREFERRALID ID, MKRE_REFERRALPERSON NAME From HS_MKRE_MKTGREFERRAL');
+    SQL.Add(' Order by MKRE_REFERRALPERSON');
+    Open;
+  end;
+
+  DBLCB_MKTGReferral.KeyField := 'ID';
+  DBLCB_MKTGReferral.ListField := 'Name';
+  Label_MKTGRefCap.Caption := 'MKTG Personal';
+end;
+
+procedure TForm_Billing.GetReferralDocDepartment;
+begin
+  if gs_IsReferralDeptInBilling = 'Y' then // Referred By Department
+  Begin
+    With Query_ReferingDocDept Do
+    begin
+      Close;
+      SQL.Clear;
+      SQL.Add(' Select DEPT_DEPID ID,DEPT_DEPCODE CODE, Dept_DepName NAME From HS_DEPT_Department');
+      SQL.Add(' Where DEPT_IsReferralDept=''Y''');
+      SQL.Add(' Order by Dept_DepName');
+      Open;
+    end;
+
+    DBLCB_RefDocCode.KeyField := 'ID';
+    DBLCB_RefDocCode.ListField := 'Name';
+
+    Label_RefDepDocCap.Caption := 'Ref. Dept. :';
+  End
+  else
+  Begin
+    With Query_ReferingDocDept Do
+    begin
+      Close;
+      SQL.Clear;
+      SQL.Add(' Select DOCT_DOCID ID,DOCT_DOCCODE CODE, DOCT_DOCNAME NAME From HS_DOCT_DOCTOR');
+      SQL.Add(' Where DOCT_IsActive=''Y''');
+      SQL.Add(' Order by DOCT_DOCNAME');
+      Open;
+    end;
+
+    DBLCB_RefDocCode.KeyField := 'ID';
+    DBLCB_RefDocCode.ListField := 'Name';
+
+    Label_RefDepDocCap.Caption := 'Ref. Doc :';
+  End;
+
+  {if gs_IsMKTGReferalForINV = 'Y' then
+  begin
+    Label_MKTGRefCap.Visible := True;
+    DBLCB_MKTGReferral.Visible := True;
+  end
+  else
+  begin
+    Label_MKTGRefCap.Visible := True;
+    DBLCB_MKTGReferral.Visible := True;
+  end; }
+end;
+
+Procedure TForm_Billing.GetIPBasicInfo;
+Begin
+  With Query_Process do
+  Begin
+    Close;
+    SQL.Clear;
+    SQL.Clear;
+    SQL.Add(' Select * From  VW_HS_ADMNPATIENTCURRENTINFO where InpatientId=' + IntToStr(pi_InpatientId));
+    Open;
+  End;
+
+  DBLCB_RefDocCode.KeyValue := Query_Process.FieldByName('DOcId').AsInteger;
+  // CB_BILLTYPE.KeyValue:=Query_Process.FieldByName('CurPatientTypeCode').AsString;
+  gi_SchemeId := Query_Process.FieldByName('SchemeId').AsInteger;
+  gi_CommunityId := Query_Process.FieldByName('CommunityId').AsInteger;
+
+  if Trim(CB_BILLTYPE.KeyValue) = '' then
+    CB_BILLTYPE.KeyValue := 'GEN';
+
+  Label22.Visible := True;
+  Label_AdmnDate.Visible := True;
+  Label_AdmnDate.Caption := Query_Process.FieldByName('AdmnDate').AsString;
+
+  Label24.Visible := True;
+  Label_NoOfDays.Visible := True;
+  if Query_Process.FieldByName('TotalDaysOfStay').AsInteger > 0 then
+    Label_NoOfDays.Caption := IntToStr(Query_Process.FieldByName
+        ('TotalDaysOfStay').AsInteger)
+  else
+    Label_NoOfDays.Caption := IntToStr(Query_Process.FieldByName
+        ('TotalDaysOfStay').AsInteger + 1);
+  QueryScheme.Close;
+  QueryScheme.Open;
+
+  if Query_Process.FieldByName('SchemeId').AsInteger > 0 then
+  Begin
+    DBLCB_Scheme.KeyValue := Query_Process.FieldByName('SchemeId').AsInteger;
+    {if DBLCB_Scheme.KeyValue = 22 then // 22 - MEdicare
+    Begin
+      pb_IsMedicarePatient := True;
+      Edit_Disper.ReadOnly := True;
+      Edit_Disper.Color := clMenu;
+      Edit_DisAmount.ReadOnly := True;
+      Edit_DisAmount.Color := clMenu;
+    End
+    Else}
+    Begin
+      Edit_Disper.ReadOnly := False;
+      Edit_Disper.Color := clWhite;
+      Edit_DisAmount.ReadOnly := False;
+      Edit_DisAmount.Color := clWhite;
+    End;
+  End
+  Else
+  Begin
+    Edit_Disper.ReadOnly := False;
+    Edit_Disper.Color := clWhite;
+    Edit_DisAmount.ReadOnly := False;
+    Edit_DisAmount.Color := clWhite;
+  End;
+
+  gi_ClinicalDepId := Query_Process.FieldByName('CurDepId').AsInteger;
+  Pi_ClinicalDepId := Query_Process.FieldByName('CurDepId').AsInteger;
+End;
+
+procedure TForm_Billing.CreateTableFinalBill;
+begin
+  if FileExists(gs_temppath + '\Billing.db') then
+    DeleteFile(gs_temppath + '\Billing.db');
+  with Table_Billing do
+  begin
+    Close;
+    DatabaseName := gs_temppath;
+    TableName := 'Billing.db';
+    TableType := ttDefault;
+    FieldDefs.Clear;
+    FieldDefs.Add('SNO', ftInteger);
+    FieldDefs.Add('DepID', ftInteger);
+    FieldDefs.Add('PatientID', ftInteger);
+    FieldDefs.Add('ServiceBillDetailID', ftInteger);
+    FieldDefs.Add('BillDetailID', ftInteger);
+    FieldDefs.Add('BillNo', ftString, 15);
+    FieldDefs.Add('InPatientID', ftInteger);
+    FieldDefs.Add('PatientTestID', ftInteger);
+    FieldDefs.Add('DocCode', ftString, 10);
+    FieldDefs.Add('DocID', ftInteger);
+    FieldDefs.Add('AccountId', ftInteger);
+    FieldDefs.Add('TestNameCode', ftString, 32);
+    FieldDefs.Add('TNCategoryCode', ftString, 32);
+    FieldDefs.Add('TestNameId', ftInteger);
+    FieldDefs.Add('TestPackageId', ftInteger);
+    FieldDefs.Add('TestName', ftString, 100);
+    FieldDefs.Add('TestPrice', ftFloat);
+    FieldDefs.Add('PrevTestPrice', ftFloat);
+    FieldDefs.Add('TestPriceWithTax', ftFloat);
+    FieldDefs.Add('TestPriceAfterDiscount', ftFloat);
+    FieldDefs.Add('Qty', ftFloat);
+    FieldDefs.Add('PrevQty', ftFloat);
+    FieldDefs.Add('RefundQty', ftFloat);
+    FieldDefs.Add('TotalPrice', ftFloat);
+    FieldDefs.Add('SvrTax', ftFloat);
+    FieldDefs.Add('DisPer', ftFloat);
+    FieldDefs.Add('Discount', ftFloat);
+    FieldDefs.Add('NetTotal', ftFloat);
+    FieldDefs.Add('RefundTotal', ftFloat);
+    FieldDefs.Add('PharmacyCost', ftFloat);
+    FieldDefs.Add('CommunityID', ftInteger);
+    FieldDefs.Add('SchemeID', ftInteger);
+    FieldDefs.Add('RefDocCode', ftString, 10);
+    FieldDefs.Add('RefDocID', ftInteger);
+    FieldDefs.Add('Status', ftString, 1);
+    FieldDefs.Add('RefundBillNo', ftString, 15);
+    FieldDefs.Add('IsDiscountable', ftString, 1);
+    FieldDefs.Add('IsVatable', ftString, 1);
+    FieldDefs.Add('ISPACKAGETEST', ftString, 1);
+    FieldDefs.Add('ISFractionableTest', ftString, 1);
+    FieldDefs.Add('User', ftString, 32);
+    FieldDefs.Add('ChargeType', ftString, 32);
+    FieldDefs.Add('TestProgressStatus', ftInteger);
+    FieldDefs.Add('BillDate', ftString, 10);
+    FieldDefs.Add('BillTime', ftString, 12);
+    FieldDefs.Add('DisplayOrder', ftInteger);
+    FieldDefs.Add('DepType', ftString, 32);
+    FieldDefs.Add('LabDepID', ftInteger);
+    FieldDefs.Add('RateType', ftString, 5);
+    FieldDefs.Add('VerifiedBy', ftInteger);
+    FieldDefs.Add('OrgBillCategory', ftString, 3);
+    FieldDefs.Add('HOSPARTPER', ftString, 3);
+    FieldDefs.Add('IsCoPaymentItem', ftString, 1);
+    FieldDefs.Add('CoPaymentItemPercent', ftFloat);
+    FieldDefs.Add('IsRecentBilled', ftString, 17);
+    FieldDefs.Add('PatientTypeCode', ftString, 10);
+    FieldDefs.Add('IsValidForRefund', ftString, 1);
+
+    FieldDefs.Add('REFFRACTIONPER', ftFloat);
+    FieldDefs.Add('REFFRACTIONAMOUNT', ftFloat);
+    FieldDefs.Add('REFERRALFRACTIONID', ftInteger);
+
+    Fielddefs.add('WardId',ftInteger);
+
+    FieldDefs.Add('DOCREFFRACTIONPER', ftFloat);
+    FieldDefs.Add('DOCREFFRACTIONAMOUNT', ftFloat);
+    FieldDefs.Add('DOCREFERRALFRACTIONID', ftInteger);
+    FieldDefs.Add('Isot', ftString, 1);
+    CreateTable;
+  end;
+end;
+
+procedure TForm_Billing.CreateTableTempBilling;
+Var
+  Table: TOraTable;
+begin
+  Table := TOraTable.Create(nil);
+  if FileExists(gs_temppath + '\TempBilling.db') then
+  begin
+    with Table do
+    begin
+      Close;
+      DatabaseName := gs_temppath;
+      TableName := 'TempBilling.db';
+      DeleteTable;
+    end;
+  end;
+  with Table do
+  begin
+    Close;
+    DatabaseName := gs_temppath;
+    TableType := ttDefault;
+    TableName := 'TempBilling.db';
+    FieldDefs.Clear;
+    FieldDefs.Add('SNO', ftInteger);
+    FieldDefs.Add('DepID', ftInteger);
+    FieldDefs.Add('PatientID', ftInteger);
+    FieldDefs.Add('InpatientID', ftInteger);
+    FieldDefs.Add('PatientTestId', ftInteger);
+    FieldDefs.Add('CommunityID', ftInteger);
+    FieldDefs.Add('SchemeId', ftInteger);
+    FieldDefs.Add('ServiceBillDetailID', ftInteger);
+    FieldDefs.Add('TestNameID', ftInteger);
+    FieldDefs.Add('TestPackageId', ftInteger);
+    FieldDefs.Add('Doccode', ftString, 32);
+    FieldDefs.Add('DocID', ftInteger);
+    FieldDefs.Add('AccountId', ftInteger);
+    FieldDefs.Add('RefDoccode', ftString, 32);
+    FieldDefs.Add('RefDocID', ftInteger);
+    FieldDefs.Add('TestNameCode', ftString, 32);
+    FieldDefs.Add('TestNameID', ftInteger);
+    FieldDefs.Add('TNCategoryCode', ftString, 32);
+    FieldDefs.Add('TestName', ftString, 100);
+    FieldDefs.Add('TestPrice', ftFloat);
+    FieldDefs.Add('TestPriceWithTax', ftFloat);
+    FieldDefs.Add('TotalPrice', ftFloat);
+    FieldDefs.Add('Disper', ftFloat);
+    FieldDefs.Add('Discount', ftFloat);
+    FieldDefs.Add('Qty', ftFloat);
+    FieldDefs.Add('SvrTax', ftFloat);
+    FieldDefs.Add('NetTotal', ftFloat);
+    FieldDefs.Add('Status', ftString, 1);
+    FieldDefs.Add('DepType', ftString, 32);
+    FieldDefs.Add('LabDepID', ftInteger);
+    FieldDefs.Add('RateType', ftString, 5);
+    FieldDefs.Add('ISPACKAGETEST', ftString, 1);
+    FieldDefs.Add('ISFractionableTest', ftString, 1);
+    FieldDefs.Add('OrgBillCategory', ftString, 20);
+    FieldDefs.Add('HOSPARTPER', ftString, 20);
+    FieldDefs.Add('IsCoPaymentItem', ftString, 1);
+    FieldDefs.Add('CoPaymentItemPercent', ftFloat);
+    FieldDefs.Add('IsRecentBilled', ftString, 17);
+
+    FieldDefs.Add('REFFRACTIONPER', ftFloat);
+    FieldDefs.Add('REFFRACTIONAMOUNT', ftFloat);
+    FieldDefs.Add('REFERRALFRACTIONID', ftInteger);
+
+    FieldDefs.Add('DOCREFFRACTIONPER', ftFloat);
+    FieldDefs.Add('DOCREFFRACTIONAMOUNT', ftFloat);
+    FieldDefs.Add('DOCREFERRALFRACTIONID', ftInteger);
+
+    CreateTable;
+    Open;
+  end;
+
+  if FileExists(gs_temppath + '\TempTest.db') then
+  begin
+    with Table do
+    begin
+      Close;
+      DatabaseName := gs_temppath;
+      TableName := 'TempTest.db';
+      DeleteTable;
+    end;
+  end;
+  with Table Do
+  begin
+    Close;
+    DatabaseName := gs_temppath;
+    TableName := 'TempTest.db';
+    TableType := ttDefault;
+    FieldDefs.Clear;
+    FieldDefs.Add('KeyValue', ftInteger);
+    FieldDefs.Add('DepId', ftInteger);
+    FieldDefs.Add('TestNameId', ftInteger);
+    FieldDefs.Add('TestNameCode', ftString, 32);
+    FieldDefs.Add('TestName', ftString, 100);
+    FieldDefs.Add('TestPrice', ftFloat);
+    FieldDefs.Add('SvrTax', ftFloat);
+    FieldDefs.Add('TotalPrice', ftFloat);
+    CreateTable;
+  end;
+  with Table_TempBilling do
+  begin
+    Close;
+    DatabaseName := gs_temppath;
+    TableName := 'Tempbilling.db';
+  end;
+  Table.Free;
+end;
+
+procedure TForm_Billing.CreateTableTempFraction;
+Begin
+  // if Not FileExists(gs_temppath + '\ServiceWiseFraction.db') then
+  IF Table_Fraction.Active Then
+    Table_Fraction.Active := False;
+  // Begin
+  With Table_Fraction do
+  begin
+    Close;
+    DatabaseName := gs_temppath;
+    TableName := 'ServiceWiseFraction.db';
+    TableType := ttDefault;
+    FieldDefs.Clear;
+    FieldDefs.Add('Sno', ftInteger);
+    FieldDefs.Add('InpatientId', ftInteger);
+    FieldDefs.Add('BillDetailId', ftInteger);
+    FieldDefs.Add('DepId', ftInteger);
+    FieldDefs.Add('TestNameId', ftInteger);
+    FieldDefs.Add('TestNameCode', ftString, 25);
+    FieldDefs.Add('DocCode', ftString, 8);
+    FieldDefs.Add('DocId', ftInteger);
+    FieldDefs.Add('DocName', ftString, 50);
+    FieldDefs.Add('Description', ftString, 50);
+
+    FieldDefs.Add('FractionId', ftInteger);
+    FieldDefs.Add('PositionWiseFractionId', ftInteger);
+
+    FieldDefs.Add('MergePercent', ftFloat);
+    FieldDefs.Add('MergeAmount', ftFloat);
+
+    FieldDefs.Add('FractionRate', ftFloat);
+    FieldDefs.Add('FractionAmount', ftFloat);
+    FieldDefs.Add('FractionAmountOrg', ftFloat);
+    FieldDefs.Add('UnitTestCost', ftFloat);
+    FieldDefs.Add('DisPer', ftFloat);
+    FieldDefs.Add('Qty', ftFloat);
+
+    FieldDefs.Add('IsFixedPersonForFraction', ftString, 1);
+    FieldDefs.Add('IsFractionPropWithDisPer', ftString, 1);
+    FieldDefs.Add('IsDocCompAtBillingForSingFrct', ftString, 1);
+    FieldDefs.Add('IsFrctPostAtReportingTime', ftString, 1);
+
+    FieldDefs.Add('ISCOMPFORFRACTION', ftString, 1);
+    FieldDefs.Add('IsOperation', ftString, 1);
+    FieldDefs.Add('IsHospitalPart', ftString, 1);
+    FieldDefs.Add('IsRevenueSeparatehead', ftString, 1);
+    CreateTable;
+  End;
+  // End;
+end;
+
+procedure TForm_Billing.CreateTableTempReferralFraction;
+begin
+  IF Table_MKTFraction.Active Then
+    Table_MKTFraction.Active := False;
+
+  With Table_MKTFraction do
+  begin
+    Close;
+    DatabaseName := gs_temppath;
+    TableName := 'ServiceWiseMKTFraction.db';
+    TableType := ttDefault;
+    FieldDefs.Clear;
+    FieldDefs.Add('Sno', ftInteger);
+    FieldDefs.Add('DepId', ftInteger);
+    FieldDefs.Add('TestNameId', ftInteger);
+    FieldDefs.Add('TestNameCode', ftString, 25);
+    FieldDefs.Add('DocId', ftInteger);
+    FieldDefs.Add('Description', ftString, 50);
+
+    FieldDefs.Add('FractionRate', ftFloat);
+    FieldDefs.Add('FractionAmount', ftFloat);
+    CreateTable;
+  End;
+end;
+
+procedure TForm_Billing.DBGrid_BillingCellClick(Column: TColumn);
+begin
+  IF gs_ISFractionSharingActive = 'Y' Then
+  Begin
+    if gi_BillCase in [1] then
+      Display_Frct_Involve_Person(Query_TempBilling.FieldByName('ISFractionableTest').AsString,
+                         Table_Billing.FieldByName('TestNameID').AsInteger)
+    else if gi_BillCase in [0, 2, 3, 4, 6] then
+      Display_Frct_Involve_Person(Query_TempBilling.FieldByName
+          ('ISFractionableTest').AsString, Query_TempBilling.FieldByName
+          ('TestNameID').AsInteger);
+    // Display_Frct_Involve_Person(Query_TempBilling.FieldbyName('ISFractionableTest').AsString,Query_TempBilling.FieldByName('TestNameCode').AsString);
+  End;
+end;
+
+procedure TForm_Billing.DBGrid_BillingDrawColumnCell
+  (Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+  if gs_BillType = 'REFUNDBILL' then
+  Begin
+    IF (Table_Billing.FieldByName('Status').AsString = 'R') or
+      (Table_Billing.FieldByName('Status').AsString = 'C') Then
+    Begin
+      DBGrid_Billing.Canvas.Brush.Color := clOlive;
+      DBGrid_Billing.DefaultDrawDataCell(Rect, Column.Field, State);
+    End;
+  End
+  Else
+  Begin
+    IF (Query_TempBilling.FieldByName('Status').AsString = 'R') or
+      (Query_TempBilling.FieldByName('Status').AsString = 'C') Then
+    Begin
+      DBGrid_Billing.Canvas.Brush.Color := clOlive;
+      DBGrid_Billing.DefaultDrawDataCell(Rect, Column.Field, State);
+    End
+    Else IF (Query_TempBilling.FieldByName('ISFRACTIONABLETEST')
+        .AsString = 'Y') Then
+    Begin
+      DBGrid_Billing.Canvas.Brush.Color := $00BFBFFF; // $008A8AFF;
+      DBGrid_Billing.DefaultDrawDataCell(Rect, Column.Field, State);
+    End;
+  End;
+end;
+
+procedure TForm_Billing.DBGrid_BillingKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+Var
+  Query, CheckQry: TOraQuery;
+  li_TestNameId, li_ServiceBillDetailID: Integer;
+begin
+  Try
+    if (Key = VK_DELETE) and (gi_BillCase in [0, 3]) then
+    begin
+      if MsgBox(1002, 1, '', '', '') then
+      begin
+        Query := TOraQuery.Create(nil);
+        with Query do
+        begin
+          Close;
+          DatabaseName := gs_temppath;
+          SQL.Clear;
+          SQL.Add(' Delete from  Billing Where TestNameID=' + IntToStr
+              (Query_TempBilling.FieldByName('TestNameID').AsInteger));
+          li_TestNameId := Query_TempBilling.FieldByName('TestNameID')
+            .AsInteger;
+          ExecSQL;
+
+          if gs_ISFractionSharingActive = 'Y' then
+          Begin
+            Close;
+            DatabaseName := gs_temppath;
+            SQL.Clear;
+            SQL.Add(' Delete From  ServiceWiseFraction');
+            SQL.Add(' Where TestNameID=' + IntToStr
+                (Query_TempBilling.FieldByName('TestNameID').AsInteger));
+            ExecSQL;
+
+            Display_Frct_Involve_Person(Table_Billing.FieldByName
+                ('ISFractionableTest').AsString, Table_Billing.FieldByName
+                ('TestNameID').AsInteger);
+          End;
+
+        end;
+
+        RemoveTestNameIDInVariable(Query_TempBilling.FieldByName('TestNameID')
+            .AsString);
+        // ReCalculateSumAmtAfterDeleteItem;
+        CalculateLabels;
+        Query.Free;
+
+        Query_TempBilling.Close;
+        Query_TempBilling.DatabaseName := gs_temppath;
+        Query_TempBilling.Open;
+      end;
+    end
+    else if (Key = VK_DELETE) and (gs_BillType = 'REFUNDBILL') and
+      (Table_Billing.FieldByName('Status').AsString <> 'R') then
+    begin
+      if not MsgBox(1002, 1, '', '', '') then
+        Exit;
+      pb_isdelete := True;
+
+      if DBLCB_Scheme.KeyValue = '22' then // 22 - Medicare Scheme
+      Begin
+        if (Table_Billing.FieldByName('TestNameID').AsInteger <> 0) then
+        begin
+          pf_PercentageAmt := 0;
+          CheckCoPaymentItem(Table_Billing.FieldByName('TestNameID').AsInteger,
+            ps_isCopaymentitem);
+        end
+        else
+        begin
+          ps_isCopaymentitem := 'N';
+          pf_PercentageAmt := 0;
+        end;
+      End
+      Else
+      Begin
+        ps_isCopaymentitem := 'N';
+        pf_PercentageAmt := 0;
+      End;
+
+      Query := TOraQuery.Create(nil);
+      with Query do
+      begin
+        Close;
+        DatabaseName := gs_temppath;
+        SQL.Clear;
+        SQL.Add(' Update Billing Set Status=''C''');
+        SQL.Add(' ,IsCoPaymentItem=' + #39 + ps_isCopaymentitem + #39 +
+            ',CoPaymentItemPercent=' + FloatToStr(pf_PercentageAmt));
+        SQL.Add(' Where ServiceBillDetailID=' + IntToStr
+            (Table_Billing.FieldByName('ServiceBillDetailID').AsInteger));
+        li_TestNameId := Query_TempBilling.FieldByName('TestNameID').AsInteger;
+        li_ServiceBillDetailID := Table_Billing.FieldByName
+          ('ServiceBillDetailID').AsInteger;
+        ExecSQL;
+      end;
+
+      CalculateLabels_ForRefunds;
+      Query.Free;
+      Table_Billing.Close;
+      Table_Billing.Open;
+      Table_Billing.Locate('ServiceBillDetailID', li_ServiceBillDetailID, []);
+    end;
+  Except
+  End;
+
+  if (Key = 33) and (ActiveControl = DBGrid_Billing) then
+  begin
+    Edit_TestNameCode.SetFocus;
+  end;
+
+end;
+
+procedure TForm_Billing.DBGrid_BillingKeyPress(Sender: TObject; var Key: Char);
+begin
+  if gs_BillType = 'REFUNDBILL' then
+  Begin
+    if (Table_Billing.FieldByName('TestNameCode').AsString = 'ONE001') and
+      (gi_HospitalId = 562) then // Specail Case for Manipal Blood Refund
+    begin
+      IF (DBGrid_Billing.SelectedIndex = 4) or
+        (DBGrid_Billing.SelectedIndex = 5) then
+      Begin
+        if Key = #13 then
+        Begin
+          IF Table_Billing.FieldByName('Qty')
+            .AsFloat > Table_Billing.FieldByName('PrevQty').AsFloat then
+          begin
+            MessageDlg('Sorry You Are Trying to Refund " ' + FloatToStr
+                (Table_Billing.FieldByName('Qty').AsFloat)
+                + ' " More Than Billing Qty ' + ' " ' + FloatToStr
+                (Table_Billing.FieldByName('PrevQty').AsFloat) + ' "',
+              mtWarning, [MbOk], 0);
+
+            Table_Billing.FieldByName('Qty').AsFloat :=
+              Table_Billing.FieldByName('PrevQty').AsFloat;
+          end;
+          ReLoadRefundChange;
+          if DBGrid_Billing.SelectedIndex = 4 then
+            DBGrid_Billing.SelectedIndex := 5
+          Else
+            Table_Billing.next;
+        End;
+      End
+      Else
+        Exit;
+    end
+    else
+    begin
+      if DBGrid_Billing.SelectedIndex = 4 then // Cannot Change Test Price
+        Key := #0;
+
+      if Query_RefundBillList.FieldByName('BillType')
+        .AsString = 'ADVANCEBILL' then
+        Key := #0;
+
+      IF (DBGrid_Billing.SelectedIndex = 5) and
+        (Table_Billing.FieldByName('PrevQty').AsFloat > 1) then // Qty
+      Begin
+        if Key = #13 then
+        Begin
+          IF Table_Billing.FieldByName('Qty')
+            .AsFloat > Table_Billing.FieldByName('PrevQty').AsFloat then
+          begin
+            MessageDlg('Sorry You Are Trying to Refund " ' + FloatToStr
+                (Table_Billing.FieldByName('Qty').AsFloat)
+                + ' " More Than Billing Qty ' + ' " ' + FloatToStr
+                (Table_Billing.FieldByName('PrevQty').AsFloat) + ' "',
+              mtWarning, [MbOk], 0);
+
+            Table_Billing.FieldByName('Qty').AsFloat :=
+              Table_Billing.FieldByName('PrevQty').AsFloat;
+          end;
+          ReLoadRefundChange;
+          if DBGrid_Billing.SelectedIndex = 4 then
+            DBGrid_Billing.SelectedIndex := 5
+          Else
+            Table_Billing.next;
+        End;
+      End
+      Else
+        Exit;
+    end;
+  End;
+end;
+
+procedure TForm_Billing.ReLoadRefundChange;
+Var
+  lf_UnitCost, lf_Qty, lf_VatAmt, lf_Discount, lf_DisPer: Double;
+Begin
+  Table_Billing.Edit;
+  lf_UnitCost := DBGrid_Billing.Fields[4].Value;
+  lf_Qty := DBGrid_Billing.Fields[5].Value;
+  lf_DisPer := DBGrid_Billing.Fields[8].Value;
+  Table_Billing.FieldByName('TestPrice').AsFloat := lf_UnitCost;
+  Table_Billing.FieldByName('Qty').AsFloat := lf_Qty;
+  Table_Billing.FieldByName('TotalPrice').AsFloat := lf_UnitCost * lf_Qty;
+
+  if Gs_TaxRule = 'TAD' then
+  Begin
+    lf_Discount := lf_UnitCost * lf_Qty * lf_DisPer / 100;
+    if Table_Billing.FieldByName('SvrTax').AsFloat > 0 then
+      lf_VatAmt := ((lf_UnitCost * lf_Qty) - lf_Discount) * gf_TaxPercent / 100
+    Else
+      lf_VatAmt := 0;
+  end
+  Else
+  Begin
+    lf_Discount := lf_UnitCost * lf_Qty * lf_DisPer / 100;
+    if Table_Billing.FieldByName('SvrTax').AsFloat > 0 then
+      lf_VatAmt := lf_UnitCost * lf_Qty * gf_TaxPercent / 100
+    Else
+      lf_VatAmt := 0;
+  End;
+
+  Table_Billing.FieldByName('SvrTax').AsFloat := lf_VatAmt;
+  Table_Billing.FieldByName('Discount').AsFloat := lf_Discount;
+  Table_Billing.FieldByName('NetTotal').AsFloat := (lf_UnitCost * lf_Qty)
+    + lf_VatAmt - lf_Discount;
+  Table_Billing.Post;
+
+  CalculateLabels_ForRefunds;
+
+End;
+
+procedure TForm_Billing.DBGrid_PrevBillNoInfoDblClick(Sender: TObject);
+Var
+  Key: Char;
+begin
+  Edit_PreveBillNo.Text := Query_RefundBillList.FieldByName('BillNo').AsString;
+  Key := #13;
+  Edit_PreveBillNoKeyPress(Sender, Key);
+end;
+
+procedure TForm_Billing.DBGrid_SearchDblClick(Sender: TObject);
+begin
+  pb_IsFinalSelectedTestName := True;
+  Edit_TestName.Text := Query_TestName.FieldByName('TestName').AsString;
+  Edit_UnitPrice.Text:= FloatToStr(Query_TestName.FieldByName('TestPrice').AsFloat);
+  SPB_AddItemClick(Sender);
+  DBGrid_Search.Visible := False;
+  pb_IsFinalSelectedTestName := False;
+  Edit_TestName.SetFocus;
+end;
+
+procedure TForm_Billing.DBGrid_SearchKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = 13 then
+  begin
+    pb_IsFinalSelectedTestName := True;
+    Edit_TestName.Text := Query_TestName.FieldByName('TestName').AsString;
+    SPB_AddItemClick(Sender);
+    DBGrid_Search.Visible := False;
+    pb_IsFinalSelectedTestName := False;
+  end;
+end;
+
+procedure TForm_Billing.DBLCB_MKTGReferralKeyDown
+  (Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = VK_DELETE then
+    DBLCB_MKTGReferral.KeyValue := Null;
+end;
+
+procedure TForm_Billing.DBLCB_MKTGReferralKeyPress
+  (Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+    DBLCB_RefDocCode.SetFocus;
+end;
+
+procedure TForm_Billing.DBLCB_RefDocCodeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_Left) or (Key = VK_Prior) then
+    DBLCB_Scheme.SetFocus;
+  if Key = VK_DELETE then
+    DBLCB_RefDocCode.KeyValue := Null;
+end;
+
+procedure TForm_Billing.DBLCB_RefDocCodeKeyPress
+  (Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  Begin
+    if gs_IsDoctorCompForBilling = 'Y' then
+    Begin
+      Edit_DocCode.Text := 'HOS01';
+      ps_DocCode := 'HOS01';
+      pi_DocId := GetDefaultDoctorId;
+      //Edit_DocCode.SetFocus;
+    End
+    Else
+      Edit_TestNameCode.SetFocus;
+  End;
+end;
+
+procedure TForm_Billing.DBLCB_SchemeClick(Sender: TObject);
+begin
+     if Trim(DBLCB_Scheme.Text) <> '' then
+     Begin
+          if (gs_BillType = 'OPBILL') Then
+          Begin
+               IF QueryScheme.FieldByName('SCHE_ISOPBILLCRFACILITY').AsString = 'Y' then
+               Begin
+                    CB_PayType.ItemIndex := 1;
+                    Label_SchemeCap.Font.Color := clRed;
+                    Timer_PayTypeFlash.Enabled := True;
+               End
+               else
+               Begin
+                    CB_PayType.ItemIndex := 0;
+                    Label_SchemeCap.Font.Color := clBlack;
+                    Timer_PayTypeFlash.Enabled := False;
+               End;
+               //if ps_MemberNo<>'' then
+                    pf_disper:=QueryScheme.FieldByName('SCHE_OPBILLDISPER').AsFloat;
+                    Edit_Disper.Text:=floattostr(pf_disper);
+          End
+          Else if (gs_BillType = 'IPBILL') then
+          Begin
+               CB_PayType.ItemIndex := 1;
+               IF QueryScheme.FieldByName('SCHE_ISIPBILLCRFACILITY').AsString = 'Y' then
+                    Label_SchemeCap.Font.Color := clRed
+               Else
+                    Label_SchemeCap.Font.Color := clBlack;
+               //if ps_MemberNo<>'' then
+                    pf_disper:=QueryScheme.FieldByName('SCHE_IPBILLDISPER').AsFloat;
+                    Edit_Disper.Text:=floattostr(pf_disper);
+               Timer_PayTypeFlash.Enabled := False;
+          End;
+     End;
+end;
+
+procedure TForm_Billing.DBLCB_SchemeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = 8 then
+  Begin
+    DBLCB_Scheme.KeyValue := -1;
+    Edit_Disper.ReadOnly := False;
+    Edit_Disper.Color := clWhite;
+    Edit_DisAmount.ReadOnly := False;
+    Edit_DisAmount.Color := clWhite;
+  End;
+
+  if (Key = VK_Left) or (Key = VK_Prior) then
+    CB_BILLTYPE.SetFocus;
+  if Key = VK_DELETE then
+    DBLCB_Scheme.KeyValue := Null;
+end;
+
+procedure TForm_Billing.DBLCB_SchemeKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+    DBLCB_RefDocCode.SetFocus;
+end;
+
+procedure TForm_Billing.Edit_DisperExit(Sender: TObject);
+begin
+  if Trim(Edit_Disper.Text) = '' then
+    Edit_Disper.Text := '0';
+
+  if StrToFloat(Edit_Disper.Text) > 100 then
+  Begin
+    MessageDlg('Discount % Should not be More Than 100.', mtWarning, [MbOk], 0);
+    Edit_Disper.SetFocus;
+    Exit;
+  End;
+end;
+
+procedure TForm_Billing.Edit_DisperKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key in [#8] then
+    Exit;
+  if Key = #13 then
+    SPB_AddItemClick(Sender);
+  AvoidMultipleDecimal(Edit_Disper, Key);
+end;
+
+procedure TForm_Billing.Edit_DocCodeChange(Sender: TObject);
+begin
+  if (Trim(Edit_DocCode.Text) <> '') then
+  begin
+    with DBGrid_Doctor do
+    begin
+      left := 5; // 153;
+      // Top := 118;
+      Top := 192;
+      Height := 175;
+      Width := 430;
+      Visible := True;
+      BringToFront;
+    end;
+
+    with Query_Doctor do
+    begin
+      Close;
+      { SQL[1] := 'Where DOCT_IsActive=''Y'' and (Trim(DOCT_DocCode) like' + #39 + '%' + Trim(Edit_DocCode.Text) + '%' + #39+
+        ' Or DOCT_DocName Like '+#39+'%'+Trim(Edit_DocCode.Text)+'%'+#39+')'; }
+      SQL[1] :=
+        'Where DOCT_IsActive=''Y'' and (Trim(DOCT_DocName) Like ' + #39 + '%' +
+        Trim(Edit_DocCode.Text) + '%' + #39 + ')';
+      SQL.saveToFile('C:\Doctor.Txt');
+      Open;
+    end;
+
+  end
+  else
+    DBGrid_Doctor.Visible := False;
+end;
+
+procedure TForm_Billing.Edit_DocCodeExit(Sender: TObject);
+begin
+  if Query_Doctor.FieldByName('DOCT_DocId').AsInteger > 0 then
+  begin
+    pi_DocId := Query_Doctor.FieldByName('DOCT_DocId').AsInteger;
+    ps_DocCode := Query_Doctor.FieldByName('DOCT_DOCCODE').AsString;
+    ps_DocName := Query_Doctor.FieldByName('DOCT_DOCName').AsString;
+  end
+  Else
+  begin
+    pi_DocId := GetDefaultDoctorId;
+    ps_DocCode := 'HOS01';
+    Edit_DocCode.Text := 'HOS01';
+  end;
+  DBGrid_Doctor.Visible := False;
+end;
+
+procedure TForm_Billing.Edit_DocCodeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = vk_up then
+  Begin
+    Query_Doctor.Prior;
+    // Edit_DocCode.Text:=Query_Doctor.FieldByName('DOCT_DocCode').AsString;
+  End
+  else if Key = vk_down then
+  Begin
+    Query_Doctor.next;
+    // Edit_DocCode.Text:=Query_Doctor.FieldByName('DOCT_DocCode').AsString;
+  End;
+end;
+
+procedure TForm_Billing.Edit_DocCodeKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    if Trim(Edit_DocCode.Text) = '' then
+    Begin
+      Edit_DocCode.SetFocus;
+      Exit;
+    End;
+
+    if (DBGrid_Doctor.Visible = True) then
+      Edit_DocCode.Text := Query_Doctor.FieldByName('DOCT_DocCode').AsString;
+
+    IF IsDoctorExist(Edit_DocCode.Text) = False Then
+    Begin
+      MessageDlg('No Doctor Exist With this Code " ' + Edit_DocCode.Text +
+          ' ". Please Choose Another Doctor or Hospital or Self.', mtWarning,
+        [MbOk], 0);
+      Edit_DocCode.SetFocus;
+      Exit;
+    End;
+
+    ps_DocCode := Edit_DocCode.Text;
+    pi_DocId := Query_Doctor.FieldByName('DOCT_DocId').AsInteger;
+    ps_DocName := Query_Doctor.FieldByName('DOCT_DocName').AsString;
+
+    Edit_TestNameCode.SetFocus;
+    DBGrid_Doctor.Visible := False;
+  end;
+end;
+
+procedure TForm_Billing.Edit_TestNameCodeChange(Sender: TObject);
+begin
+  if (Trim(Edit_TestNameCode.Text) <> '') then
+  begin
+    with DBGrid_Search do
+    begin
+      if gs_IsDoctorCompForBilling = 'Y' then
+        left := 62
+      Else
+        left := 5; // 153;
+      // Top := 118;
+      Top := 192;
+      Height := 175;
+      Width := 650; // 560;
+      Visible := True;
+      BringToFront;
+    end;
+
+    with Query_TestName do
+    begin
+      Close;
+      if pb_IsFinalSelectedTestName = True then
+        SQL[1] := 'Where IsActive=''Y'' and Trim(TestNameCode)=' + #39 + Trim
+          (Edit_TestNameCode.Text) + #39
+      Else
+      Begin
+        if cb_extended.Checked = True then
+          SQL[1] :=
+            'Where IsActive=''Y'' and Trim(TestNameCode) like' + #39 + '%' +
+            Trim(Edit_TestNameCode.Text) + '%' + #39
+        else
+          SQL[1] :=
+            'Where IsActive=''Y'' and Trim(TestNameCode) Like ' + #39 + Trim
+            (Edit_TestNameCode.Text) + '%' + #39;
+      End;
+
+      if Trim(ps_LoadedTestID) <> '' then
+        // SQL[2] := 'And TestNameid||TestNameCode not in (' + #39 + ps_LoadedTestID + #39 + ')'
+        SQL[2] := 'And TestNameid not in (' + ps_LoadedTestID + ')'
+      else
+        SQL[2] := 'And 99=99';
+
+      SQL[3] := ' And PATIENTTYPECODE=' + QuotedStr(CB_BILLTYPE.KeyValue);
+
+      SQL[4] := ' ';
+
+      if gi_HospitalId = 562 then // 562 - Manipal
+        SQL[5] := ' Order by TestNameCode'
+      Else
+        SQL[5] := ' Order by TestNamecode';
+      // sql.saveToFile('C:\TestName.Txt');
+      Open;
+    end;
+    // NO IDEA
+    {
+      if CB_BillType.ItemIndex=0 then
+      Begin
+      DBGrid_Search.Columns[2].Visible:=True;
+      DBGrid_Search.Columns[3].Visible:=False;
+      DBGrid_Search.Columns[4].Visible:=False;
+      DBGrid_Search.Columns[5].Visible:=False;
+      End
+      Else if CB_BillType.ItemIndex=1 then
+      Begin
+      DBGrid_Search.Columns[3].Visible:=True;
+      DBGrid_Search.Columns[2].Visible:=False;
+      DBGrid_Search.Columns[4].Visible:=False;
+      DBGrid_Search.Columns[5].Visible:=False;
+      End
+      Else if CB_BillType.ItemIndex=2 then
+      Begin
+      DBGrid_Search.Columns[4].Visible:=True;
+      DBGrid_Search.Columns[2].Visible:=False;
+      DBGrid_Search.Columns[3].Visible:=False;
+      DBGrid_Search.Columns[5].Visible:=False;
+      End
+      Else if CB_BillType.ItemIndex=3 then
+      Begin
+      DBGrid_Search.Columns[5].Visible:=True;
+      DBGrid_Search.Columns[2].Visible:=False;
+      DBGrid_Search.Columns[3].Visible:=False;
+      DBGrid_Search.Columns[4].Visible:=False;
+      End
+      Else
+      Begin
+      DBGrid_Search.Columns[2].Visible:=True;
+      DBGrid_Search.Columns[3].Visible:=False;
+      DBGrid_Search.Columns[4].Visible:=False;
+      DBGrid_Search.Columns[5].Visible:=False;
+      End; }
+  end
+  else
+    DBGrid_Search.Visible := False;
+end;
+
+procedure TForm_Billing.Edit_TestNameCodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = vk_up then
+     Query_TestName.Prior
+     else if Key = vk_down then
+     Query_TestName.next
+     else if (Key = 13) then
+     begin
+          IF Edit_TestNameCode.Text <> '' Then
+          Begin
+               pb_IsFinalSelectedTestName := True;
+               Edit_TestNameCode.Text := Query_TestName.FieldByName('TestNameCode').AsString;
+               // Edit_TestName.Text := StringReplace(Query_TestName.FieldByName('TestName').AsString,'''','',[rfReplaceAll]);
+               Edit_TestName.Text := Query_TestName.FieldByName('TestName').AsString;
+
+               if Query_TestName.FieldByName('TestPrice').AsFloat > 0 then
+               Begin
+                    Edit_UnitPrice.Text := FloatToStr(Query_TestName.FieldByName('TestPrice').AsFloat);
+                    Edit_UnitPrice.ReadOnly := True;
+                    Edit_UnitPrice.Color := clMenu;
+               End
+               Else
+               Begin
+                    Edit_UnitPrice.ReadOnly := False;
+                    Edit_UnitPrice.Color := clWhite;
+               End;
+
+               if ps_MemberNo<>'' then
+               Edit_Disper.Text:=floattostr(pf_disper);
+
+               DBGrid_Search.Visible := False;
+               pb_IsFinalSelectedTestName := False;
+          End
+          Else
+               Edit_TestName.SetFocus;
+     end;
+end;
+
+procedure TForm_Billing.Edit_TestNameCodeKeyPress
+  (Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    if Trim(Edit_TestNameCode.Text) = '' then
+    Begin
+      // Edit_TestNameCode.SetFocus;
+      Edit_TestName.SetFocus;
+      Exit;
+    End;
+    // if Edit_TestName.Text='' then Edit_TestName.SetFocus;
+
+    Edit_UnitPrice.Clear;
+    if Cb_Qty.Checked then
+    begin
+      Edit_Qty.Clear;
+      Edit_Qty.Text := '1';
+      Edit_Qty.SetFocus;
+    end
+    else
+      SPB_AddItemClick(Sender);
+    Edit_Disper.Clear;
+    UpdateCustomerPreview;
+
+    Edit_TestName.SetFocus;
+  end;
+end;
+
+procedure TForm_Billing.Edit_PreveBillNoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  IF (Key = VK_ESCAPE) Then
+    Edit_PreveBillNo.Text := '';
+
+  IF (Key = vk_down) and (Query_RefundBillList.Active) Then
+  Begin
+    DBGrid_PrevBillNoInfo.Visible := True;
+    Query_RefundBillList.next;
+    Edit_PreveBillNo.Text := Query_RefundBillList.FieldByName('BillNo')
+      .AsString;
+  End;
+
+  IF (Key = vk_up) and (Query_RefundBillList.Active) Then
+  Begin
+    DBGrid_PrevBillNoInfo.Visible := True;
+    Query_RefundBillList.Prior;
+    Edit_PreveBillNo.Text := Query_RefundBillList.FieldByName('BillNo')
+      .AsString;
+  End;
+  // IF key=VK_Prior Then DBLookupComboBox_Community.SetFocus;
+end;
+
+procedure TForm_Billing.Edit_PreveBillNoKeyPress
+  (Sender: TObject; var Key: Char);
+begin
+     if Trim(Edit_PreveBillNo.Text) = '' then
+     Begin
+          if (Key = #13) then
+          begin
+               DBGrid_PrevBillNoInfo.left := 82;
+               DBGrid_PrevBillNoInfo.Top := 190;
+               DBGrid_PrevBillNoInfo.Height := 125;
+               DBGrid_PrevBillNoInfo.Width := 700;
+               DBGrid_PrevBillNoInfo.Visible := True;
+
+               if RB_OPBILL.Checked = True then
+               Begin
+                    With Query_RefundBillList do
+                    Begin
+                         Close;
+                         DatabaseName := gs_DatabaseName;
+                         SQL.Clear;
+                         SQL.Add(
+                              ' Select BIDE_BillNo BillNo,BIDE_BillNo FinalBillNo,BIDE_BillDate BillDate,BIDE_BillTime BillTime,BIDE_BillBy BillBy,');
+                         SQL.Add(
+                              ' (Select USMA_UserName From HS_USMA_UserMain where USMA_UserId=BIDE_BillBy) as UserName,');
+                         SQL.Add(
+                              ' Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal,''FINALBILL'' as BillType,');
+                         SQL.Add(
+                              ' NVL(Case when SubStr(BIDE_BillNo,1,2)=''ME'' Then (Select Sum(ReceivedAmount) as Total From CreditPayment where CrBillNo=BIDE_BillNo) Else 0 End,0) as DepositAmt');
+                         SQL.Add(' From HS_BIDE_BillDetail BD where BIDE_PatientId=' + IntToStr
+                                   (gi_PatientID) + ' and BIDE_BillType=''B''');
+                         SQL.Add(
+                              ' Group By BIDE_BillNo,BIDE_BillDate,BIDE_BillTime,BIDE_BillBy');
+                         SQL.Add(' Order by BIDE_BillDate Desc,BIDE_BillTime Desc');
+                         Open;
+                    End;
+               End
+               Else
+               Begin
+                    With Query_RefundBillList do
+                    Begin
+                         Close;
+                         DatabaseName := gs_DatabaseName;
+                         SQL.Clear;
+                         (* SQL.Add(' Select BIDE_BillNo BillNo,BIDE_BillDate BillDate,BIDE_BillTime BillTime,BIDE_BillBy BillBy,');
+                         SQL.Add(' (Select USMA_UserName From HS_USMA_UserMain where USMA_UserId=BIDE_BillBy) as UserName,');
+                         SQL.Add(' Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal,0 as DepositAmt,0 as CopayAmount,''FINALBILL'' as BillType');
+                         SQL.Add(' From HS_BIDE_BillDetail BD where BIDE_PatientId='+IntToStr(gi_PatientID)+' and BIDE_BillType In (''IP'',''A'')');
+                         SQL.Add(' Group By BIDE_BillNo,BIDE_BillDate,BIDE_BillTime,BIDE_BillBy');
+                         SQL.Add(' Union');
+                         SQL.Add(' Select SEBD_BillNo BillNo,SEBD_BillDate BillDate,SEBD_BillTime BillTime,SEBD_BillBy BillBy,');
+                         SQL.Add(' (Select USMA_UserName From HS_USMA_UserMain where USMA_UserId=SEBD_BillBy) as UserName,');
+                         SQL.Add(' Sum((SEBD_Amount*SEBD_Qty)+SEBD_VatAmt-(SEBD_Amount*SEBD_Qty*SEBD_DisPer/100)) as NetTotal,');
+                         SQL.Add(' NVL((Select Sum(DEPO_DrAmount-DEPO_CrAmount) From HS_DEPO_Deposit where DEPO_ReferenceNo=SEBD_BillNo),0) as DepositAmt,');
+                         SQL.Add(' (Select Sum(ReceivedAmount) From CreditPayment where CrBillNo=SEBD_BillNo) as CopayAmount,');
+                         SQL.Add(' ''ADVANCEBILL'' as BillType');
+                         SQL.Add(' From HS_SEBD_ServiceBillDetail SBD where SEBD_PatientId='+IntToStr(gi_PatientID)+' and SEBD_BillType In (''IP'',''A'')');
+                         SQL.Add(' and SEBD_BillDetailId=0');
+                         SQL.Add(' Group By SEBD_BillNo,SEBD_BillDate,SEBD_BillTime,SEBD_BillBy');
+                         SQL.Add(' Order by BillDate Desc,BillTime Desc'); *)
+                         SQL.Add(' Select BIDE_BillNo BillNo,BIDE_BillNo FinalBillNo,BIDE_BillDate BillDate,BIDE_BillTime BillTime,BIDE_BillBy BillBy,');
+                         SQL.Add(' (Select USMA_UserName From HS_USMA_UserMain where USMA_UserId=BIDE_BillBy) as UserName,');
+                         SQL.Add(' Sum((BIDE_Amount*BIDE_Qty)+BIDE_VatAmt-(BIDE_Amount*BIDE_Qty*BIDE_DisPer/100)) as NetTotal,0 as DepositAmt,0 as CopayAmount,''FINALBILL'' as BillType');
+                         SQL.Add(' From HS_BIDE_BillDetail BD where BIDE_PatientId=' + IntToStr(gi_PatientID) +
+                                                             ' and BIDE_BillType In (''IP'',''A'') and BIDE_ServiceBillDetailId=0');
+                         SQL.Add(' Group By BIDE_BillNo,BIDE_BillDate,BIDE_BillTime,BIDE_BillBy');
+                         SQL.Add(' Union');
+                         SQL.Add(' Select SEBD_BillNo BillNo,(Select Distinct BIDE_BillNo From HS_BIDE_BillDetail where BIDE_BillDetailId In (Select SEBD_BillDetailId From');
+                         SQL.Add(' HS_SEBD_ServiceBillDetail where SEBD_BillNo=SBD.SEBD_BillNo)) as FinalBillNo,');
+                         SQL.Add(' SEBD_BillDate BillDate,SEBD_BillTime BillTime,SEBD_BillBy BillBy,');
+                         SQL.Add(' (Select USMA_UserName From HS_USMA_UserMain where USMA_UserId=SEBD_BillBy) as UserName,');
+                         SQL.Add(' Sum((SEBD_Amount*SEBD_Qty)+SEBD_VatAmt-(SEBD_Amount*SEBD_Qty*SEBD_DisPer/100)) as NetTotal,');
+                         SQL.Add(' NVL((Select Sum(DEPO_DrAmount-DEPO_CrAmount) From HS_DEPO_Deposit where DEPO_ReferenceNo=SEBD_BillNo),0) as DepositAmt,');
+                         SQL.Add(' (Select Sum(ReceivedAmount) From CreditPayment where CrBillNo=SEBD_BillNo) as CopayAmount,     ''FINALBILL'' as BillType');
+                         SQL.Add(' From HS_SEBD_ServiceBillDetail SBD where SEBD_PatientId=' + IntToStr(gi_PatientID) +
+                                                  ' and SEBD_BillType In (''IP'',''A'')     and SEBD_BillDetailId > 0');
+                         SQL.Add(' Group By SEBD_BillNo,SEBD_BillDate,SEBD_BillTime,SEBD_BillBy');
+                         SQL.Add(' Union');
+                         SQL.Add(' Select SEBD_BillNo BillNo,SEBD_BillNo as FinalBillNo,SEBD_BillDate BillDate,SEBD_BillTime BillTime,SEBD_BillBy BillBy,');
+                         SQL.Add(' (Select USMA_UserName From HS_USMA_UserMain where USMA_UserId=SEBD_BillBy) as UserName,');
+                         SQL.Add(' Sum((SEBD_Amount*SEBD_Qty)+SEBD_VatAmt-(SEBD_Amount*SEBD_Qty*SEBD_DisPer/100)) as NetTotal,');
+                         SQL.Add(' NVL((Select Sum(DEPO_DrAmount-DEPO_CrAmount) From HS_DEPO_Deposit where DEPO_ReferenceNo=SEBD_BillNo),0) as DepositAmt,');
+                         SQL.Add(' (Select Sum(ReceivedAmount) From CreditPayment where CrBillNo=SEBD_BillNo) as CopayAmount,     ''ADVANCEBILL'' as BillType');
+                         SQL.Add(' From HS_SEBD_ServiceBillDetail SBD where SEBD_PatientId=' + IntToStr(gi_PatientID) +
+                                                  ' and SEBD_BillType In (''IP'',''A'')     and SEBD_BillDetailId=0');
+                         SQL.Add(' Group By SEBD_BillNo,SEBD_BillDate,SEBD_BillTime,SEBD_BillBy     Order by BillDate Desc,BillTime Desc');
+                         Open;
+                    End;
+               End;
+               Edit_PreveBillNo.Text := Query_RefundBillList.FieldByName('BillNo').AsString;
+          end;
+     End
+     else
+     begin
+          if (Key = #13) then
+          begin
+               if IsBillExist(Edit_PreveBillNo.Text) = False then
+               begin
+                    MessageDlg(' No Refund Items Exist With This Bill No. " ' +
+                              Edit_PreveBillNo.Text + ' "', mtWarning, [MbOk], 0);
+                    Edit_PreveBillNo.SetFocus;
+                    Exit;
+               end;
+
+               Label14.Visible := False;
+               Label18.Visible := False;
+               Lbl_BillNo.Visible := False;
+               Label21.Visible := False;
+
+               (* Get Scheme & Referral Dept *)
+               With Query_Process do
+               begin
+                    Close;
+                    DatabaseName := gs_DatabaseName;
+                    SQL.Clear;
+                    if (RB_OPBILL.Checked = True) or (Query_RefundBillList.FieldByName('BillType').AsString = 'FINALBILL') then
+                    Begin
+                         SQL.Add(' Select Distinct SEBD_DisSchemeId as SchemeId,(Select Distinct SEBD_RefDocID From HS_SEBD_ServiceBillDetail');
+                         SQL.Add(' where SEBD_ServiceBillDetailId=SBD.SEBD_ServiceBillDetailId and RowNum=1) as RefDocID,');
+                         SQL.Add(' (Select Distinct SEBD_RefDepID From HS_SEBD_ServiceBillDetail');
+                         SQL.Add(' where SEBD_ServiceBillDetailId=SBD.SEBD_ServiceBillDetailId and RowNum=1) as RefDepID');
+                         SQL.Add(' From HS_SEBD_ServiceBillDetail SBD where SEBD_BillDetailId In (');
+                         SQL.Add(' Select BIDE_BillDetailId From HS_BIDE_BillDetail');
+                         if (RB_IPBILL.Checked = True) and(Copy(Query_RefundBillList.FieldByName('BillNo').AsString, 1, 2)= 'TP') then
+                         SQL.Add(' where BIDE_BillNo=' + #39 +Query_RefundBillList.FieldByName('FinalBillNo').AsString + #39 + ') and NVL(SEBD_DisSchemeId,0) > 0')
+                         Else
+                         SQL.Add(' where BIDE_BillNo=' + #39 + Edit_PreveBillNo.Text + #39 +') and NVL(SEBD_DisSchemeId,0) > 0');
+
+                         if (RB_IPBILL.Checked = True) and (Copy(Query_RefundBillList.FieldByName('BillNo').AsString, 1, 2)= 'TP') then
+                         SQL.Add(' and SEBD_BillDetailId In (Select SEBD_BillDetailId From HS_SEBD_ServiceBillDetail where SEBD_BillNo=' + #39 + Query_RefundBillList.FieldByName('BillNo').AsString + #39 + ')');
+
+                    End
+                    else
+                    begin
+                         SQL.Add(' Select Distinct SEBD_DisSchemeId as SchemeId,SEBD_RefDocID as RefDocID, SEBD_RefDepID RefDepId');
+                         SQL.Add(' From HS_SEBD_ServiceBillDetail SBD where SEBD_BillNo=' +#39 + Edit_PreveBillNo.Text + #39 +' and NVL(SEBD_DisSchemeId,0) > 0');
+                    end;
+                    Open;
+               end;
+
+               if Query_Process.FieldByName('SchemeId').AsInteger > 0 then
+                    DBLCB_Scheme.KeyValue := Query_Process.FieldByName('SchemeId').AsInteger
+               Else
+                    DBLCB_Scheme.KeyValue := -1;
+               DBLCB_Scheme.Enabled := False;
+
+               if gs_IsReferralDeptInBilling = 'Y' then // Referred By Department
+                    DBLCB_RefDocCode.KeyValue := Query_Process.FieldByName('RefDepID')
+                         .AsInteger
+               Else
+                    DBLCB_RefDocCode.KeyValue := Query_Process.FieldByName('RefDocID')
+                         .AsInteger;
+
+               if (Copy(Edit_PreveBillNo.Text, 1, 2) = 'CS') or
+                    ((Copy(Edit_PreveBillNo.Text, 1, 2) = 'TP') and
+                         (Query_RefundBillList.FieldByName('DepositAmt').AsFloat > 0)) then
+                    CB_PayType.ItemIndex := 0
+               Else
+                    CB_PayType.ItemIndex := 1;
+
+               Label20.Visible := False;
+               Label_CoPaymentAmt.Visible := False;
+
+               DBGrid_PrevBillNoInfo.Visible := False;
+               // LoadForBillRefund(Edit_PreveBillNo.Text);
+               LoadForBillRefund(Query_RefundBillList.FieldByName('FinalBillNo')
+                         .AsString);
+               ActiveControl := DBGrid_Billing;
+               Table_Billing.First;
+               DBGrid_Billing.SelectedIndex := 5;
+          end;
+     end;
+end;
+
+procedure TForm_Billing.LoadForBillRefund(BillNo: string);
+Var
+  li_RemQty: Double;
+Begin
+     Table_Billing.Close;
+     Table_Billing.DatabaseName := gs_temppath;
+     Table_Billing.EmptyTable;
+     Table_Billing.Open;
+
+     pi_TotItems := 0;
+
+     With Query_RefundBillItem do
+     Begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          SQL.Clear;
+          if (RB_OPBILL.Checked = True) or (Query_RefundBillList.FieldByName('BillType').AsString = 'FINALBILL') then
+          Begin
+               if CB_LoadFullRefundedItem.Checked = False then
+               SQL.Add(' Select R.*,NVL(Case When R.CancelStatus=''N'' and R.SampleReceivedBy > 0 Then ''N'' Else ''Y'' End,''Y'') IsValidForRefund From (');
+               SQL.Add(' SELECT BD.BIDE_REFDOCCODE REFDOCCODE,BD.BIDE_DISCOMMUNITYID COMMUNITYID,BD.BIDE_DISSCHEMEID SCHEMEID,BD.BIDE_SERVICEBILLDETAILID SERVICEBILLDETAILID,');
+               SQL.Add(' BD.BIDE_AMOUNT AMOUNT,BD.BIDE_VATAMT VATAMT,BD.BIDE_QTY QTY,BD.BIDE_TOTALAMOUNT TOTALAMOUNT,BD.BIDE_DISPER DISPER,BD.BIDE_DISCOUNT DISCOUNT,');
+               SQL.Add(' NVL((Select Sum(REDE_Qty) From HS_REDE_RefundDetail where REDE_BillDetailId=BIDE_BillDetailId),0) as RefundQty,');
+               SQL.Add(' NVL((Select Sum(REDE_VatAmt) From HS_REDE_RefundDetail where REDE_BillDetailId=BIDE_BillDetailId),0) as RefundVat,');
+               SQL.Add(' NVL((Select Sum(REDE_TotalAmount) From HS_REDE_RefundDetail where REDE_BillDetailId=BIDE_BillDetailId),0) as RefundTotal,BD.BIDE_BILLNO BILLNO,');
+               SQL.Add(' BD.BIDE_PATIENTTESTID PATIENTTESTID,BD.BIDE_PATIENTID PATIENTID,BD.BIDE_INPATIENTID INPATIENTID,BD.BIDE_DEPID DEPID,BD.BIDE_DOCCODE DOCCODE,');
+               SQL.Add(' BD.BIDE_SERVICE SERVICE,BD.BIDE_SERVICETYPE SERVICETYPE,BD.BIDE_RATETYPE RATETYPE,BD.BIDE_BILLDETAILID BILLDETAILID,');
+               SQL.Add(' BD.BIDE_BILLDATE BILLDATE,BD.BIDE_BILLTIME BILLTIME,BD.BIDE_BILLBY VERIFIEDBY,BD.BIDE_ORGBILLCATEGORY ORGBILLCATEGORY,Bide_HosPartPer HOSPARTPER,');
+               SQL.Add(' BD.BIDE_ISFRACTIONABLETEST ISFRACTIONABLETEST,(SELECT TENA_TESTNAMEID FROM HS_TENA_TESTNAME WHERE TENA_TESTNAMECODE=BD.BIDE_SERVICE)TESTNAMEID,');
+               SQL.Add(' (SELECT TENA_TNCATEGORYCODE FROM HS_TENA_TESTNAME WHERE TENA_TESTNAMECODE=BD.BIDE_Service) TNCategoryCode,');
+               (*SQL.Add(' (SELECT BIMA_TOBESENTTOWEB FROM HS_BIMA_BILLMASTER WHERE BIMA_BILLNO=BD.BIDE_BILLNO)TOBE_SENTTOWEB,');
+               SQL.Add(' (SELECT BIMA_TOBESENTTOSMS FROM HS_BIMA_BILLMASTER WHERE BIMA_BILLNO=BD.BIDE_BILLNO)TOBE_SENTTOSMS,');
+               SQL.Add(' (SELECT BIMA_TOBESENTTOEMAIL FROM HS_BIMA_BILLMASTER WHERE BIMA_BILLNO=BD.BIDE_BILLNO)TOBE_SENTTOEMAIL,');*)
+               SQL.Add(' ''N'' as TOBE_SENTTOWEB,''N'' as TOBE_SENTTOSMS,''N'' as TOBE_SENTTOEMAIL,');
+               SQL.Add(' BIDE_ISVATABLETEST ISVATABLE,');
+               SQL.Add(' (SELECT Max(REDE_REFUNDBILLNO) FROM HS_REDE_REFUNDDETAIL WHERE REDE_BILLDETAILID=BD.BIDE_BILLDETAILID)REFUNDBILLNO,');
+               if RB_OPBILL.Checked=True then
+               begin
+                    SQL.Add(' NVL((Select NVL(CancelStatus,''N'') From PatientTest PT where PatientID=BIDE_PatientID and BillDetailId=BIDE_BillDetailId and RowNum=1),''Y'') CancelStatus,');
+                    SQL.Add(' NVL((Select NVL(SampleTakenBy,0) SampleReceivedBy From SampleCollection where PatientTestId In (Select PatientTestId');
+                    SQL.Add(' From PatientTest PT where PatientID=BIDE_PatientID and BillDetailId=BIDE_BillDetailId) and RowNum=1 and UndoStatus=0),0) SampleReceivedBy');
+               end
+               else
+               begin
+                    SQL.Add(' NVL((Select NVL(CancelStatus,''N'') From PatientTest PT where PatientID=BIDE_PatientID and ServiceBillDetailId=BIDE_ServiceBillDetailId and RowNum=1),''Y'') CancelStatus,');
+                    SQL.Add(' NVL((Select NVL(SampleTakenBy,0) SampleReceivedBy From SampleCollection where PatientTestId In (Select PatientTestId');
+                    SQL.Add(' From PatientTest PT where PatientID=BIDE_PatientID and ServiceBillDetailId=BIDE_ServiceBillDetailId) and RowNum=1 and UndoStatus=0),0) SampleReceivedBy');
+               end;
+
+               SQL.Add(' FROM HS_BIDE_BILLDETAIL BD WHERE BIDE_BILLNO=' + #39 + BillNo +#39);
+               if (RB_IPBILL.Checked = True) and (Copy(Query_RefundBillList.FieldByName('BillNo').AsString, 1, 2)= 'TP') then
+                    SQL.Add(' and BIDE_BillDetailId In (Select SEBD_BillDetailId From HS_SEBD_ServiceBillDetail where SEBD_BillNo=' + #39 + Query_RefundBillList.FieldByName('BillNo').AsString + #39 + ')');
+               if CB_LoadFullRefundedItem.Checked = False then
+                    SQL.Add(' ) R where (QTY-RefundQty) > 0 ');
+          End
+          Else
+          Begin
+               SQL.Add(' Select Z.* From (');
+               SQL.Add(' Select R.*,NVL(Case When R.CancelStatus=''N'' and R.SampleReceivedBy > 0 Then ''N'' Else ''Y'' End,''Y'') IsValidForRefund,');
+               SQL.Add(' Case when TECA_TestCancelId > 0 Then Qty Else 0 End as RefundQty,Case when TECA_TestCancelId > 0 Then TOTALAMOUNT Else 0 End as RefundTotal,');
+               SQL.Add(' Case when TECA_TestCancelId > 0 Then VATAMT Else 0 End as RefundVat     From (');
+               SQL.Add(' SELECT SEBD_REFDOCCODE REFDOCCODE,SEBD_DISCOMMUNITYID COMMUNITYID,SEBD_DISSCHEMEID SCHEMEID,SEBD_SERVICEBILLDETAILID SERVICEBILLDETAILID,');
+               SQL.Add(' SEBD_AMOUNT AMOUNT,SEBD_VATAMT VATAMT,SEBD_QTY QTY,SEBD_TOTALAMOUNT TOTALAMOUNT,SEBD_DISPER DISPER,SEBD_DISCOUNT DISCOUNT,SEBD_BILLNO BILLNO,');
+               SQL.Add(' SEBD_PATIENTTESTID PATIENTTESTID,SEBD_PATIENTID PATIENTID,SEBD_INPATIENTID INPATIENTID,SEBD_DEPID DEPID,SEBD_DOCCODE DOCCODE,');
+               SQL.Add(' SEBD_SERVICE SERVICE,SEBD_SERVICETYPE SERVICETYPE,SEBD_BillType BillType, SEBD_RATETYPE RATETYPE,SEBD_BILLDETAILID BILLDETAILID,');
+               SQL.Add(' SEBD_BILLDATE BILLDATE,SEBD_BILLTIME BILLTIME,SEBD_BILLBY VERIFIEDBY,SEBD_ORGBILLCATEGORY ORGBILLCATEGORY,SEBD_ISVATABLETEST ISVATABLE,SEBD_HosPartPer HOSPARTPER,');
+               SQL.Add(' SEBD_ISFRACTIONABLETEST ISFRACTIONABLETEST,(SELECT TENA_TESTNAMEID FROM HS_TENA_TESTNAME WHERE TENA_TESTNAMECODE=SEBD_SERVICE)TESTNAMEID,');
+               SQL.Add(' (SELECT TENA_TNCATEGORYCODE FROM HS_TENA_TESTNAME WHERE TENA_TESTNAMECODE=SEBD_Service and RowNum=1) TNCategoryCode,');
+               (*SQL.Add(' (SELECT SEBM_TOBESENTTOWEB FROM HS_SEBM_SERVICEBILLMASTER WHERE SEBM_BILLNO=SEBD_BILLNO and RowNum=1)TOBE_SENTTOWEB,');
+               SQL.Add(' (SELECT SEBM_TOBESENTTOSMS FROM HS_SEBM_SERVICEBILLMASTER WHERE SEBM_BILLNO=SEBD_BILLNO and RowNum=1)TOBE_SENTTOSMS,');
+               SQL.Add(' (SELECT SEBM_TOBESENTTOEMAIL FROM HS_SEBM_SERVICEBILLMASTER WHERE SEBM_BILLNO=SEBD_BILLNO and RowNum=1)TOBE_SENTTOEMAIL,');*)
+               SQL.Add(' ''N'' as TOBE_SENTTOWEB,''N'' as TOBE_SENTTOSMS,''N'' as TOBE_SENTTOEMAIL,');
+               SQL.Add(' (SELECT Max(TECA_TestCancelId) FROM HS_TECA_TESTCANCEL WHERE TECA_ServiceBillDetailID=SEBD_ServiceBillDetailId) TECA_TestCancelId,');
+               SQL.Add(' (SELECT Max(TECA_BillNo) FROM HS_TECA_TESTCANCEL WHERE TECA_ServiceBillDetailID=SEBD_ServiceBillDetailId) RefundBillNo,');
+               SQL.Add(' NVL((Select NVL(CancelStatus,''N'') From PatientTest PT where PatientID=BIDE_PatientID and ServiceBillDetailId=BIDE_ServiceBillDetailId and RowNum=1),''Y'') CancelStatus,');
+               SQL.Add(' NVL((Select NVL(SampleTakenBy,0) SampleReceivedBy From SampleCollection where PatientTestId In (Select PatientTestId');
+               SQL.Add(' From PatientTest PT where PatientID=SEBD_PatientID and ServiceBillDetailId=SEBD_ServiceBillDetailId) and RowNum=1 and UndoStatus=0),0) SampleReceivedBy');
+               SQL.Add(' FROM HS_SEBD_SERVICEBILLDETAIL BD WHERE SEBD_BILLNO=' + #39 +BillNo + #39);
+               SQL.Add(' ) R ) Z where (QTY-RefundQty) > 0');
+          End;
+          sql.saveToFile('C:\RefundDetail.Txt');
+          Open;
+          First;
+          while not Query_RefundBillItem.eof do
+          Begin
+               with Table_Billing do
+               begin
+                    Append;
+                    FieldByName('ServiceBillDetailID').AsInteger :=Query_RefundBillItem.FieldByName('ServiceBillDetailID').AsInteger;
+                    FieldByName('BillDetailID').AsInteger :=Query_RefundBillItem.FieldByName('BillDetailID').AsInteger;
+                    FieldByName('BillNo').AsString := Query_RefundBillItem.FieldByName('BillNo').AsString;
+                    FieldByName('PatientId').AsInteger := Query_RefundBillItem.FieldByName('PatientId').AsInteger;
+                    FieldByName('InPatientId').AsInteger := Query_RefundBillItem.FieldByName('InPatientId').AsInteger;
+                    FieldByName('DepId').AsInteger := Query_RefundBillItem.FieldByName('DepId').AsInteger;
+                    FieldByName('PatientTestID').AsInteger :=Query_RefundBillItem.FieldByName('PatientTestId').AsInteger;
+                    FieldByName('Doccode').AsString := Query_RefundBillItem.FieldByName('Doccode').AsString;
+                    FieldByName('TestNameCode').AsString := Query_RefundBillItem.FieldByName('Service').AsString;
+                    FieldByName('TNCategoryCode').AsString :=Query_RefundBillItem.FieldByName('TNCategoryCode').AsString;
+                    FieldByName('TestNameId').AsInteger := Query_RefundBillItem.FieldByName('TestNameId').AsInteger;
+                    FieldByName('TestName').AsString := Query_RefundBillItem.FieldByName('ServiceType').AsString;
+                    FieldByName('ISFRACTIONABLETEST').AsString :=Query_RefundBillItem.FieldByName('ISFRACTIONABLETEST').AsString;
+                    FieldByName('TestPrice').AsFloat := Query_RefundBillItem.FieldByName('Amount').AsFloat;
+                    FieldByName('PrevTestPrice').AsFloat := Query_RefundBillItem.FieldByName('Amount').AsFloat;
+                    li_RemQty := Query_RefundBillItem.FieldByName('Qty').AsFloat - Query_RefundBillItem.FieldByName('RefundQty').AsFloat;
+                    FieldByName('Qty').AsFloat := li_RemQty;
+                    FieldByName('PrevQty').AsFloat := li_RemQty;
+                    FieldByName('RefundQty').AsFloat := Query_RefundBillItem.FieldByName('RefundQty').AsFloat;
+                    FieldByName('TotalPrice').AsFloat := Query_RefundBillItem.FieldByName('Amount').AsFloat * li_RemQty;
+                    FieldByName('DisPer').AsFloat := Query_RefundBillItem.FieldByName('DisPer').AsFloat;
+                    pf_disper := Query_RefundBillItem.FieldByName('DisPer').AsFloat;
+                    FieldByName('SvrTax').AsFloat := Query_RefundBillItem.FieldByName('VatAmt').AsFloat - Query_RefundBillItem.FieldByName('RefundVat').AsFloat;
+                    FieldByName('Discount').AsFloat := Query_RefundBillItem.FieldByName('Discount').AsFloat;
+                    pf_discount := Query_RefundBillItem.FieldByName('Discount').AsFloat;
+                    FieldByName('NetTotal').AsFloat :=(Query_RefundBillItem.FieldByName('Amount').AsFloat * li_RemQty)+ Query_RefundBillItem.FieldByName('VatAmt')
+                         .AsFloat - Query_RefundBillItem.FieldByName('Discount').AsFloat - Query_RefundBillItem.FieldByName('RefundVat').AsFloat;
+                    FieldByName('RefundTotal').AsFloat := Query_RefundBillItem.FieldByName('RefundTotal').AsFloat;
+                    FieldByName('CommunityId').AsInteger := Query_RefundBillItem.FieldByName('CommunityId').AsInteger;
+                    FieldByName('SchemeId').AsInteger := Query_RefundBillItem.FieldByName('SchemeId').AsInteger;
+                    FieldByName('RefDocCode').AsString := Query_RefundBillItem.FieldByName('RefDocCode').AsString;
+                    FieldByName('RateType').AsString := Query_RefundBillItem.FieldByName('RateType').AsString;
+                    FieldByName('OrgBillCategory').AsString :=Query_RefundBillItem.FieldByName('OrgBillCategory').AsString;
+                    FieldByName('HOSPARTPER').AsString := Query_RefundBillItem.FieldByName('HOSPARTPER').AsString;
+                    FieldByName('IsVatable').AsString := Query_RefundBillItem.FieldByName('IsVatable').AsString;
+                    FieldByName('IsValidForRefund').AsString :=Query_RefundBillItem.FieldByName('IsValidForRefund').AsString;
+
+                    if gi_BillCase = 2 then
+                    begin
+                         FieldByName('IsDiscountable').AsString :=Query_RefundBillItem.FieldByName('IsDiscountable').AsString;
+                         FieldByName('IsVatable').AsString := Query_RefundBillItem.FieldByName('IsVatable').AsString;
+                         FieldByName('User').AsString := Query_RefundBillItem.FieldByName('UserName').AsString;
+                         FieldByName('TestProgressStatus').AsInteger :=Query_RefundBillItem.FieldByName('TestProgressStatus').AsInteger;
+
+                         FieldByName('BillDate').AsString := Query_RefundBillItem.FieldByName('BillDate').AsString;
+                         FieldByName('BillTime').AsString := Query_RefundBillItem.FieldByName('BillTime').AsString;
+                         FieldByName('BillNo').AsString := Query_RefundBillItem.FieldByName('BillNo').AsString;
+                         FieldByName('DisplayOrder').AsInteger := 1;
+                         FieldByName('DepType').AsString := Query_RefundBillItem.FieldByName('DepType').AsString;
+                         FieldByName('LabDepId').AsInteger := Query_RefundBillItem.FieldByName('LabDepID').AsInteger;
+                         FieldByName('VerifiedBy').AsInteger :=Query_RefundBillItem.FieldByName('VerifiedBy').AsInteger;
+                    end;
+
+                    if (Trim(Query_RefundBillItem.FieldByName('RefundBillNo').AsString)<> '') and (li_RemQty = 0) then
+                    FieldByName('Status').AsString := 'R';
+
+                    FieldByName('RefundBillNo').AsString := Query_RefundBillItem.FieldByName('RefundBillNo').AsString;
+                    pi_TotItems := pi_TotItems + 1;
+                    Post;
+               end;
+               Query_RefundBillItem.next;
+          End;
+     end;
+     CalculateLabels;
+
+     With Query_Process do // Get Prev. Refund Total
+     begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add(' SELECT Sum((REDE_Amount*REDE_Qty)+REDE_VatAmt-(REDE_Amount*REDE_Qty*REDE_DisPer/100)) As RefundTotal');
+          SQL.Add(' FROM HS_REDE_REFUNDDETAIL WHERE REDE_BILLDETAILID In (');
+          SQL.Add(' Select BIDE_BILLDETAILID FROM HS_BIDE_BILLDETAIL BD WHERE BIDE_BILLNO='+ #39 + BillNo + #39);
+
+          if (RB_IPBILL.Checked = True) and (Copy(Query_RefundBillList.FieldByName('BillNo').AsString, 1, 2) = 'TP') then
+          SQL.Add(' and BIDE_BillDetailId In (Select SEBD_BillDetailId From HS_SEBD_ServiceBillDetail where SEBD_BillNo=' + #39 + Query_RefundBillList.FieldByName('BillNo').AsString + #39 + ')');
+
+          SQL.Add(' )');
+          Open;
+     end;
+     pf_PrevRefundTotal := Query_Process.FieldByName('RefundTotal').AsFloat;
+
+     DS_Tempbilling.DataSet := Table_Billing;
+
+     Query_TempBilling.Close;
+     Query_TempBilling.DatabaseName := gs_temppath;
+     Query_TempBilling.Open;
+end;
+
+procedure TForm_Billing.Edit_QtyEnter(Sender: TObject);
+begin
+  // Edit_Qty.Text := '1';
+end;
+
+procedure TForm_Billing.Edit_QtyKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    if Strtoint(Edit_Qty.Text) > 10 then
+    Begin
+      if (MessageDlg('Qty Is Greater then 10. Do you Really wish to put this quantity by yourself?', mtConfirmation, [mbYes, mbNo], 0) <> mrYes) then
+      Begin
+        Edit_Qty.SetFocus;
+        Exit;
+      End;
+    End;
+
+    if StrToFloat(Edit_UnitPrice.Text) > 0 then
+    begin
+      // if Trim(DBLCB_Scheme.Text)<>'' then
+      if gs_CalledFormName = 'Ward' then
+        SPB_AddItemClick(Sender)
+      Else
+        Edit_Disper.SetFocus
+        (* Else
+          Begin
+          SPB_AddItemClick(Sender);
+          Edit_UnitPrice.Clear;
+          End; *)
+    end;
+  end;
+
+end;
+
+procedure TForm_Billing.Edit_TestNameChange(Sender: TObject);
+begin
+  if (Trim(Edit_TestName.Text) <> '') then
+  begin
+    with DBGrid_Search do
+    begin
+      if gs_IsDoctorCompForBilling = 'Y' then
+        left := 137
+      Else
+        left := 80;
+      Top := 192;
+      Height := 175;
+      Width := 650; // 560;
+      Visible := True;
+      BringToFront;
+    end;
+
+    with Query_TestName do
+    begin
+      Close;
+      if pb_IsFinalSelectedTestName = True then
+        SQL[1] :='Where IsActive=''Y'' and Trim(TestName)=' + #39 + StringReplace
+          (Trim(Edit_TestName.Text), '''', '''''', [rfReplaceAll]) + #39
+      Else
+      Begin
+        if cb_extended.Checked = True then
+          SQL[1] :='Where IsActive=''Y'' and Trim(TestName) like' + #39 +
+            '%' + StringReplace(Trim(Edit_TestName.Text), '''', '''''',
+            [rfReplaceAll]) + '%' + #39
+        else
+          SQL[1] :='Where IsActive=''Y'' and Trim(TestName) Like ' + #39 +
+            StringReplace(Trim(Edit_TestName.Text), '''', '''''',
+            [rfReplaceAll]) + '%' + #39;
+      End;
+
+      if ps_LoadedTestID <> '' then
+        // SQL[2] := 'And TestNameid||TestNameCode not in (' + #39 + ps_LoadedTestID + #39 + ')'
+        SQL[2] := 'And TestNameid not in (' + ps_LoadedTestID + ')'
+      else
+        SQL[2] := 'And 99=99';
+
+      SQL[3] := ' And PATIENTTYPECODE=' + QuotedStr(CB_BILLTYPE.KeyValue);
+
+      if Trim(Edit_TestNameCode.Text) <> '' then
+        SQL[4] := ' And TestNameCode=' + #39 + Edit_TestNameCode.Text + #39
+      Else
+        SQL[4] := ' ';
+
+      if gi_HospitalId = 562 then // 562 - Manipal
+        SQL[5] := ' Order by TestNameCode'
+      Else
+        SQL[5] := ' Order by TestName';
+      // sql.saveToFile('C:\TestName2nd.Txt');
+      Open;
+    end;
+    // NO IDEA
+    {
+      if CB_BillType.ItemIndex=0 then
+      Begin
+      DBGrid_Search.Columns[2].Visible:=True;
+      DBGrid_Search.Columns[3].Visible:=False;
+      DBGrid_Search.Columns[4].Visible:=False;
+      DBGrid_Search.Columns[5].Visible:=False;
+      End
+      Else if CB_BillType.ItemIndex=1 then
+      Begin
+      DBGrid_Search.Columns[3].Visible:=True;
+      DBGrid_Search.Columns[2].Visible:=False;
+      DBGrid_Search.Columns[4].Visible:=False;
+      DBGrid_Search.Columns[5].Visible:=False;
+      End
+      Else if CB_BillType.ItemIndex=2 then
+      Begin
+      DBGrid_Search.Columns[4].Visible:=True;
+      DBGrid_Search.Columns[2].Visible:=False;
+      DBGrid_Search.Columns[3].Visible:=False;
+      DBGrid_Search.Columns[5].Visible:=False;
+      End
+      Else if CB_BillType.ItemIndex=3 then
+      Begin
+      DBGrid_Search.Columns[5].Visible:=True;
+      DBGrid_Search.Columns[2].Visible:=False;
+      DBGrid_Search.Columns[3].Visible:=False;
+      DBGrid_Search.Columns[4].Visible:=False;
+      End
+      Else
+      Begin
+      DBGrid_Search.Columns[2].Visible:=True;
+      DBGrid_Search.Columns[3].Visible:=False;
+      DBGrid_Search.Columns[4].Visible:=False;
+      DBGrid_Search.Columns[5].Visible:=False;
+      End; }
+  end
+  else
+    DBGrid_Search.Visible := False;
+end;
+
+procedure TForm_Billing.Edit_TestNameExit(Sender: TObject);
+begin
+  // DBGrid_Search.Visible := false;
+end;
+
+procedure TForm_Billing.Edit_TestNameKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = vk_up then
+    Query_TestName.Prior
+  else if Key = vk_down then
+    Query_TestName.next
+  else if (Key = 13) and (Edit_TestName.Text <> '') then
+  begin
+    pb_IsFinalSelectedTestName := True;
+    Edit_TestName.Text := Query_TestName.FieldByName('TestName').AsString;
+    DBGrid_Search.Visible := False;
+    pb_IsFinalSelectedTestName := False;
+    if Query_TestName.FieldByName('TestPrice').AsFloat > 0 then
+    Begin
+      Edit_UnitPrice.Text := FloatToStr(Query_TestName.FieldByName('TestPrice').AsFloat);
+      Edit_UnitPrice.ReadOnly := True;
+      Edit_UnitPrice.Color := clMenu;
+    End
+    Else
+    Begin
+      Edit_UnitPrice.ReadOnly := False;
+      Edit_UnitPrice.Color := clWhite;
+    End;
+    if ps_MemberNo<>'' then
+          Edit_Disper.Text:=floattostr(pf_disper);
+  end
+  else if Key = VK_F12 then
+  begin
+    BB_SaveClick(Sender);
+    Key := 0;
+  end;
+end;
+
+procedure TForm_Billing.Edit_TestNameKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    if Edit_TestName.Text = '' then
+    Begin
+      Edit_TestName.SetFocus;
+      Exit;
+    End;
+
+    Edit_UnitPrice.Clear;
+    if Cb_Qty.Checked then
+    begin
+      Edit_Qty.Clear;
+      Edit_Qty.Text := '1';
+      Edit_Qty.SetFocus;
+    end
+    else
+      SPB_AddItemClick(Sender);
+    // Edit_Disper.Clear;
+    if Query_TestName.FieldByName('TestPrice').AsFloat = 0 then
+    begin
+      Edit_UnitPrice.Text := '0';
+      Edit_UnitPrice.Enabled := True;
+      Edit_UnitPrice.ReadOnly := False;
+      Edit_UnitPrice.SetFocus;
+    end
+    else if Query_TestName.FieldByName('ISTESTPRICEEDITABLE').AsString = 'Y' then
+    begin
+      Edit_UnitPrice.Text := '0';
+      Edit_UnitPrice.Enabled := True;
+      Edit_UnitPrice.ReadOnly := False;
+      Edit_UnitPrice.SetFocus;
+    end
+    else
+    begin
+      (* if Trim(DBLCB_Scheme.Text)<>'' then
+        Edit_Disper.SetFocus
+        else
+        SPB_AddItemClick(Sender); *)
+      Edit_UnitPrice.Text := FloatToStr(Query_TestName.FieldByName('TestPrice').AsFloat);
+      Edit_UnitPrice.Enabled := False;
+      Edit_UnitPrice.ReadOnly := True;
+      Edit_Qty.SetFocus;
+    end;
+    if ps_MemberNo<>'' then
+          Edit_Disper.Text:=floattostr(pf_disper);
+    UpdateCustomerPreview;
+  end;
+end;
+
+procedure TForm_Billing.Edit_UnitPriceKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    if StrToFloat(Edit_UnitPrice.Text) > 0 then
+    begin
+      if Trim(DBLCB_Scheme.Text) <> '' then
+        Edit_Disper.SetFocus
+      Else
+      Begin
+        SPB_AddItemClick(Sender);
+        Edit_UnitPrice.Clear;
+      End;
+    end;
+  end;
+end;
+
+procedure TForm_Billing.Le_DiscountExit(Sender: TObject);
+Var
+  Discount, tot, DISPER, TestPriceWithDis, SvrTaxWithDis, Qty: Double;
+  lf_Discount: Double;
+begin
+  // exit;
+
+  if Trim(Le_Discount.Text) = '' then
+    Le_Disper.Text := '0.00';
+
+  if StrToFloat(Le_Discount.Text) > pf_subtotal then
+  Begin
+    MessageDlg('Discount Percent(100) Exceed !', mtWarning, [MbOk], 0);
+    Le_Disper.SetFocus;
+    Exit;
+  End;
+
+  if (Le_Discount.Text <> '') and (Le_SubTotal.Text <> '') then
+  begin
+    lf_Discount := StrToFloat(StringReplace(Le_Discount.Text, ',', '',
+        [rfReplaceAll]));
+    lf_Discount := GetNoOfDecimalPartOfFloatNum(lf_Discount, 2);
+    DISPER := GetNoOfDecimalPartOfFloatNum
+      ((lf_Discount / pf_subtotal) * 100, 2);
+    lf_Discount := GetNoOfDecimalPartOfFloatNum
+      ((DISPER / 100) * pf_subtotal, 2);
+    Le_Discount.Text := FormatFloat('#0.00', (lf_Discount));
+    Le_Disper.Text := FloatToStr(GetNoOfDecimalPartOfFloatNum(DISPER, 2));
+  end;
+  With Table_Billing do
+  begin
+    Close;
+    Open;
+    while not eof do
+    begin
+      Edit;
+      FieldByName('Disper').AsFloat := StrToFloat(FormatFloat('#0.00', DISPER));
+      Discount := (DISPER / 100) * FieldByName('TestPrice').AsFloat;
+      FieldByName('Discount').AsFloat := StrToFloat(FormatFloat('#0.00', Discount));
+      TestPriceWithDis := FieldByName('TestPrice').AsFloat -((DISPER / 100) * FieldByName('TestPrice').AsFloat);
+      SvrTaxWithDis := (gf_TaxPercent / 100) * TestPriceWithDis;
+      FieldByName('NetTotal').AsFloat := StrToFloat(FormatFloat('#0.00', (TestPriceWithDis + SvrTaxWithDis)));
+      Qty := FieldByName('Qty').AsInteger;
+      FieldByName('SvrTax').AsFloat := GetNoOfDecimalPartOfFloatNum(SvrTaxWithDis, 2);
+      Post;
+      next;
+    end;
+  end;
+  RefreshQuery(Query_TempBilling, gs_temppath);
+  CalculateLabels;
+  Le_Payment.Clear;
+
+  { if (Le_Discount.Text <> '') and (Le_NetBalance.Text <> '') then
+    begin
+    lf_Discount:=0;
+    lf_Discount:=StrToFloat(StringReplace(Le_Discount.Text,',','',[rfReplaceAll]));
+    Le_Disper.Clear;
+    Le_Disper.Text := FormatFloat('0.00', (0));
+    Le_DisperExit(Sender);
+
+    lf_Discount:=GetNoOfDecimalPartOfFloatNum(lf_Discount/(1+gf_TaxPercent/100),4);
+
+    DISPER := (100 * lf_Discount) / pf_subtotal;
+    Le_Disper.Text := FloatToStr(GetNoOfDecimalPartOfFloatNum(DISPER,4));
+    //Le_Disper.Text := FormatFloat('0.00', (DISPER));
+    // pf_disper := DISPER;
+    //pf_discount := dis;
+    //CalculateSum;
+    //Le_Payment.SetFocus;
+    Le_DisperExit(Sender);
+    end; }
+end;
+
+procedure TForm_Billing.Le_DiscountKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+    Le_DiscountExit(Sender);
+
+  OnlyNumeric(Sender, Key);
+end;
+
+procedure TForm_Billing.Le_DisperExit(Sender: TObject);
+Var
+  Discount, tot, DISPER: Double;
+  TestPriceWithDis, SvrTaxWithDis, NetTotal, Qty: Double;
+begin
+  // exit;
+
+  if Trim(Le_Disper.Text) = '' then
+    Le_Disper.Text := '0.00';
+
+  if StrToFloat(Le_Disper.Text) > 100 then
+  Begin
+    MessageDlg('Discount Percent(100) Exceed !', mtWarning, [MbOk], 0);
+    Le_Disper.SetFocus;
+    Exit;
+  End;
+
+  if (Le_Disper.Text <> '') and (Le_SubTotal.Text <> '') then
+  begin
+    DISPER := StrToFloat(Le_Disper.Text);
+    Discount := (DISPER / 100) * pf_Total;
+    Le_Discount.Text := FormatFloat('0.00', (Discount));
+    With Table_Billing do
+    begin
+      Close;
+      DatabaseName := gs_temppath;
+      Open;
+      while not eof do
+      begin
+        Edit;
+        FieldByName('Disper').AsFloat := StrToFloat(FormatFloat('#0.00', DISPER));
+        Discount := (DISPER / 100) * FieldByName('TestPrice').AsFloat;
+        FieldByName('Discount').AsFloat := StrToFloat(FormatFloat('#0.00', Discount));
+        TestPriceWithDis := FieldByName('TestPrice').AsFloat -((DISPER / 100) * FieldByName('TestPrice').AsFloat);
+        SvrTaxWithDis := (gf_TaxPercent / 100) * TestPriceWithDis;
+        FieldByName('NetTotal').AsFloat := StrToFloat(FormatFloat('#0.00', (TestPriceWithDis + SvrTaxWithDis)));
+        Qty := FieldByName('Qty').AsInteger;
+        FieldByName('SvrTax').AsFloat := GetNoOfDecimalPartOfFloatNum(SvrTaxWithDis, 2);
+        Post;
+        next;
+      end;
+    end;
+    RefreshQuery(Query_TempBilling, gs_temppath);
+    CalculateLabels;
+    Le_Payment.Clear;
+    Le_Payment.SetFocus;
+  end;
+end;
+
+procedure TForm_Billing.Le_DisperKeyPress(Sender: TObject; var Key: Char);
+begin
+  IF Key = #8 then
+    Exit;
+  if Key = #13 then
+    Le_DisperExit(Sender);
+  AvoidMultipleDecimal(Le_Disper, Key);
+  Key := Key;
+end;
+
+procedure TForm_Billing.Le_HosNoExit(Sender: TObject);
+Var
+  Key: Char;
+begin
+  (* Key := #13;
+    Le_HosNoKeyPress(Sender, Key);
+    DBLCB_RefDocCode.SetFocus; *)
+end;
+
+procedure TForm_Billing.Le_HosNoKeyPress(Sender: TObject; var Key: Char);
+var
+  Qry: TOraQuery;
+begin
+     if Key = #13 then
+     begin
+          EnabledDisabledSearchField('ENABLED');
+          ResetAllHistoryForNextNewBill;
+          Label_IPNO.Caption := 'NA';
+          Label_IPNO.Caption := '0';
+
+          if (Trim(Le_HosNo.Text) <> '') and (Trim(Le_HosNo.Text) <> '0') then
+          begin
+               gi_PatientID := Strtoint(Le_HosNo.Text);
+               IF IsRegisteredHospitalNo(gi_PatientID) = False Then
+               Begin
+                    MessageDlg('Sorry ! Please Check Hospital No Properly. Anybody is Not Registered With This Number( ' +Le_HosNo.Text + ').', mtWarning, [MbOk], 0);
+                    // MakeBlankPatientInfo;
+                    ResetAllHistoryForNextNewBill;
+                    Exit;
+               End;
+               LoadPatientData(gi_PatientID);
+               Label_PatientName.Caption := Gs_Title + ' ' + Gs_PatientName;
+               Label_AgeSex.Caption := Gs_CurrentAgeGender;
+               if gs_PatientCategory='BNB' then
+                    CB_Patientcategory.ItemIndex :=0
+               else
+                    CB_Patientcategory.ItemIndex :=1;
+
+               if gs_BillType = 'OPBILL' then
+               Begin
+                    if IsInpatient(gi_PatientID) then
+                    begin
+                         pi_InpatientId := 0;
+                         gi_InPatientID := 0;
+                         IF MessageDlg('This Patient is Currently Admitted. Do You Want to Continue ?',mtWarning, [mbYes, mbNo], 0) = mrNo Then
+                         begin
+                              Le_HosNo.SetFocus;
+                              Exit;
+                         end;
+                         Label_InptNoCap.Visible := True;
+                         Label_IPNO.Visible := True;
+                         Label_IPNO.Caption := IntToStr(gi_InPatientID);
+                    end;
+                    DBLCB_Scheme.KeyValue := -1;
+               End;
+
+               if gs_BillType = 'IPBILL' then
+               Begin
+                    if IsInpatient(gi_PatientID) = False then
+                    begin
+                         pi_InpatientId := 0;
+                         gi_InPatientID := 0;
+                         Label_IPNO.Caption := IntToStr(gi_InPatientID);
+                         MessageDlg('Sorry this is not admitted patient.', mtWarning, [MbOk],0);
+                         Exit;
+                    end;
+
+                    if (gs_IsIPBillingUser='N') and (gs_ISTPBILLAPPFOROPUSER='N') then
+                    begin
+                         MessageDlg('Sorry This User Has No Authority For IP Billing as Well as This Inpatient Has No Credit Approval.', mtWarning, [MbOk], 0);
+                         Le_HosNo.SetFocus;
+                         Exit;
+                    end;
+
+                    if (gs_IsIPBillingUser='N') and (gs_ISTPBILLAPPFOROPUSER='Y') then
+                    Begin
+                         Label_BBImageCap.Caption:='IP Credit Facility';
+                         Label_BBImageCap.Visible:=True;
+                         Label_BBImageCap.Enabled:=True;
+                    End
+                    Else
+                    Label_BBImageCap.Visible:=False;
+
+
+                    Label_IPNO.Caption := IntToStr(gi_InPatientID);
+                    GetIPPatientOutStdFinanceInfo(gi_InPatientID);
+
+                    gi_SchemeId := 0; // CONCESSION 2010 MAY
+                    gi_CommunityId := 0; // CONCESSION 2010 MAY
+
+                    Pi_CommunityID := 0;
+                    Pi_SchemeID := 0;
+                    DBLCB_Scheme.KeyValue := -1;
+               End;
+
+               if gs_BillType = 'ERBILL' then
+               Begin
+                    if gs_EMRNoForMedPT='' then
+                    Begin
+                         MessageDlg('Sorry this is not Emergency patient.', mtWarning, [MbOk],0);
+                         Exit;
+                    End;
+                    Label_IPNO.Caption := gs_EMRNoForMedPT;
+               End;
+
+               // Form_MainPatientAdministration.LoadPatientBasicInfo;
+
+               // Gi_MemberID := GetMemberID(gi_PatientID);
+               With Query_Process do
+               Begin
+                    Close;
+                    DatabaseName := gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add(' Select MEMB_MemberId MemberId,MEMB_PatientId PatientId,MEMB_MemberNo MemberNo,Memb_schemeid,Memb_Communityid,');
+                    SQL.Add(' memb_employeeno From HS_MEMB_MEMBER where MEMB_PatientId=' + IntToStr(gi_PatientID));
+                    SQL.Add(' and MEMB_IsActive=''Y''');
+                    Open;
+                    if Query_Process.FieldByName('MemberId').AsInteger > 0 then
+                    Begin
+                         gi_SchemeId := Query_Process.FieldByName('Memb_schemeid').AsInteger;
+                         gi_CommunityId := Query_Process.FieldByName('Memb_Communityid').AsInteger;
+                         gs_memberNo := Query_Process.FieldByName('memb_employeeno').AsString;
+                         Le_MemberNo.Text := Query_Process.FieldByName('MemberNo').AsString;
+                         Pi_CommunityID := Query_Process.FieldByName('Memb_Communityid').AsInteger;
+                         Pi_SchemeID := Query_Process.FieldByName('Memb_schemeid').AsInteger;
+                         pb_IsMedicarePatient := True;
+                         DBLCB_Scheme.KeyValue := Pi_SchemeID;
+                         CB_PayType.ItemIndex := 1;
+
+                         Edit_Disper.ReadOnly := True;
+                         Edit_Disper.Color := clMenu;
+                         Edit_DisAmount.ReadOnly := True;
+                         Edit_DisAmount.Color := clMenu;
+
+                         if gs_BillType = 'IPBILL' then
+                         Begin
+                              if Copy(gs_memberNo, 1, 1) = 'A' then
+                                   CB_BILLTYPE.KeyValue := 'SPL'
+                              Else if Copy(gs_memberNo, 1, 1) = 'B' then
+                                   CB_BILLTYPE.KeyValue := 'PVT'
+                              Else
+                                   CB_BILLTYPE.KeyValue := 'GEN';
+                         End
+                         Else
+                              CB_BILLTYPE.KeyValue := 'GEN';
+
+                         Label_MeicarePatient.Visible := True;
+
+                         Edit_Disper.Color := clMenu;
+                         Edit_Disper.ReadOnly := True;
+
+                         Le_MemberNo.Text := gs_memberNo;
+                         Le_Payment.EditLabel.Caption := '(F3)Co-Payment:';
+
+                         (* Last Visit Department *)
+                         Close;
+                         SQL.Clear;
+                         SQL.Add('Select PAVI_PatientVisitID,PAVI_SchemeId,PAVI_CommunityId,PAVI_PatientTypeCode,PAVI_DEPID as DEPID,Pavi_Docid DocId,');
+                         SQL.Add(' PAVI_EMERGENCYNO,PAVI_ISEMRSERVICECOMPLETED,PAVI_ISEMERFINANCIALCLEARED');
+                         SQL.Add(' From  HS_PAVI_PatientVisit where PAVI_PatientVisitID In (');
+                         SQL.Add(' Select Max(PAVI_PatientVisitID) From HS_PAVI_PatientVisit PV');
+                         SQL.Add(' where PAVI_PatientId=' + IntToStr(gi_PatientID)+ ' and PAVI_ISVISITCANCEL=''N'')');
+                         Open;
+
+                         if (Query_Process.FieldByName('DEPID').AsInteger=85) and (Query_Process.FieldByName('PAVI_ISEMRSERVICECOMPLETED').AsString='N')
+                         and (gs_BillType<>'ERBILL') and (gi_InPatientId=0) then
+                         begin
+                              MessageDlg('Sorry This is Emergency Patient, So Before Completing Emergency '+
+                              'Service Do Billing From EMR. Billing.',mtWarning,[mbOK],0);
+                              Le_HosNo.SetFocus;
+                              Exit;
+                         end;
+
+                         DBLCB_RefDocCode.KeyValue := Query_Process.FieldByName('DocId').AsInteger;
+
+                    End
+                    Else
+                    Begin
+                         if gs_BillType = 'OPBILL' then
+                         Begin
+                              Close;
+                              SQL.Clear;
+                              SQL.Add(' Select PAVI_PatientVisitID,PAVI_SchemeId,PAVI_CommunityId,PAVI_PatientTypeCode,PAVI_DEPID as DEPID,Pavi_Docid DocId,');
+                              SQL.Add(' NVL(S.SCHE_ISOPBILLCRFACILITY,''N'') IsOPCreditFacility,NVL(S.SCHE_ISOPBILLDISEDITABLE,''N'') IsDiscountFacility');
+                              SQL.Add(' From  HS_PAVI_PatientVisit,HS_SCHE_Scheme S where PAVI_PatientVisitID In (');
+                              SQL.Add(' Select Max(PAVI_PatientVisitID) From HS_PAVI_PatientVisit PV');
+                              SQL.Add(' where PAVI_PatientId=' + IntToStr(gi_PatientID) + ' and PAVI_ISVISITCANCEL=''N'') and PAVI_SchemeId=S.Sche_SchemeId(+)');
+                              Open;
+
+                              if Query_Process.FieldByName('PAVI_SchemeId').AsInteger > 0 then
+                              Begin
+                                   gi_SchemeId := Query_Process.FieldByName('PAVI_SchemeId').AsInteger;
+                                   gi_CommunityId := Query_Process.FieldByName('PAVI_CommunityId').AsInteger;
+                                   DBLCB_Scheme.KeyValue := Pi_SchemeID;
+                                   CB_PayType.ItemIndex := 0;
+                              End
+                              else
+                              Begin
+                                   {
+                                   gi_SchemeId:=Query_DefaultSchemeOPBill.FieldByName('SCHE_SchemeId').AsInteger;
+                                   gi_CommunityId:=Query_DefaultSchemeOPBill.FieldByName('SCHE_CommunityId').AsInteger;
+
+                                   pi_SchemeId:=Query_DefaultSchemeOPBill.FieldByName('SCHE_SchemeId').AsInteger;
+                                   pi_CommunityId:=Query_DefaultSchemeOPBill.FieldByName('SCHE_CommunityId').AsInteger; }
+
+                                   DBLCB_Scheme.KeyValue := Pi_SchemeID;
+
+                                   gs_memberNo := '';
+                                   CB_PayType.ItemIndex := 0;
+                              End;
+
+                              DBLCB_RefDocCode.KeyValue := Query_Process.FieldByName('DocId').AsInteger;
+
+                              if Trim(Query_Process.FieldByName('PAVI_PatientTypeCode').AsString)<> '' then
+                              Begin
+                                   IF (gs_calledfrom='SpecialOPDBilling') and (gs_BillType='OPBILL') Then
+                                   Begin
+                                        if Query_Process.FieldByName('PAVI_PatientTypeCode').AsString='FRG' then
+                                        CB_BILLTYPE.KeyValue :='FRG'
+                                        Else
+                                        CB_BILLTYPE.KeyValue :='SPC';
+                                   End
+                                   Else IF (gs_calledfrom='NormalOPDBilling') and (gs_BillType='OPBILL') Then
+                                   Begin
+                                        if Query_Process.FieldByName('PAVI_PatientTypeCode').AsString='FRG' then
+                                        CB_BILLTYPE.KeyValue :='FRG'
+                                        Else
+                                        CB_BILLTYPE.KeyValue :='GEN';
+                                   End
+                                   Else
+                                   CB_BILLTYPE.KeyValue := Query_Process.FieldByName('PAVI_PatientTypeCode').AsString;
+
+                                   if (Query_Process.FieldByName('PAVI_PatientTypeCode').AsString = 'ECG') or
+                                   (Query_Process.FieldByName('PAVI_PatientTypeCode').AsString = 'ECP') or
+                                   (Query_Process.FieldByName('PAVI_PatientTypeCode').AsString = 'ECS') then
+                                   Begin
+                                        Label_MeicarePatient.Caption := 'ECHS PATIENT';
+
+                                        SPB_ViewDocument.Visible := False;
+
+                                        Edit_Disper.ReadOnly := True;
+                                        Edit_Disper.Color := clMenu;
+                                        Edit_DisAmount.ReadOnly := True;
+                                        Edit_DisAmount.Color := clMenu;
+
+                                        Label_MeicarePatient.Visible := True;
+                                        CB_BILLTYPE.Enabled := False;
+                                        CB_BILLTYPE.Font.Color := clRed;
+                                        CB_BILLTYPE.Font.Style := [fsBold];
+                                        CB_PayType.ItemIndex := 1;
+                                        DBLCB_Scheme.KeyValue := 91;
+
+                                        gi_SchemeId := 91; // ECHS
+                                        gi_CommunityId := 85; // ECHS
+
+                                        Pi_CommunityID := 85;
+                                        Pi_SchemeID := 91;
+
+                                        With Query_RateType do
+                                        Begin
+                                             Close;
+                                             SQL.Clear;
+                                             SQL.Add(' SELECT * FROM HS_PATY_PATIENTTYPE');
+                                             SQL.Add(' Where PATY_PATIENTTYPECODE In (''ECG'',''ECP'',''ECS'')');
+                                             SQL.Add(' ORDER BY PATY_DISPLAYORDER');
+                                             Open;
+                                        End;
+
+                                   End
+                                   Else
+                                   Begin
+                                        CB_BILLTYPE.Enabled := True;
+                                        CB_BILLTYPE.Font.Color := clBlack;
+                                        CB_BILLTYPE.Font.Style := [];
+
+                                        With Query_RateType do
+                                        Begin
+                                             Close;
+                                             SQL.Clear;
+                                             SQL.Add(' SELECT * FROM HS_PATY_PATIENTTYPE');
+                                             SQL.Add(' Where PATY_PATIENTTYPECODE Not In (''ECG'',''ECP'',''ECS'')');
+                                             SQL.Add(' ORDER BY PATY_DISPLAYORDER');
+                                             Open;
+                                        End;
+                                   End;
+                              End
+                              Else
+                              Begin
+                                   if gs_HospitalNameForCode='BNB' then
+                                   Begin
+                                        IF (gs_calledfrom='SpecialOPDBilling') and (gs_BillType='OPBILL') Then
+                                        Begin
+                                             if Query_Process.FieldByName('PAVI_PatientTypeCode').AsString='FRG' then
+                                             CB_BILLTYPE.KeyValue :='FRG'
+                                             Else
+                                             CB_BILLTYPE.KeyValue :='SPC';
+                                        End
+                                        Else IF (gs_calledfrom='NormalOPDBilling') and (gs_BillType='OPBILL') Then
+                                        Begin
+                                             if Query_Process.FieldByName('PAVI_PatientTypeCode').AsString='FRG' then
+                                             CB_BILLTYPE.KeyValue :='FRG'
+                                             Else
+                                             CB_BILLTYPE.KeyValue :='GEN';
+                                        End;
+                                   End
+                                   Else
+                                   CB_BILLTYPE.KeyValue := 'GEN';
+                              End;
+
+                              Edit_Disper.Color := clWhite;
+                              Edit_Disper.ReadOnly := False;
+                              Le_Payment.EditLabel.Caption := '(F3)Payment:';
+                         End;
+                    End;
+               End;
+
+               if (gs_BillType = 'IPBILL') or ((gs_BillType = 'REFUNDBILL') and (RB_IPBILL.Checked = True)) then
+               Begin
+                    Qry := TOraQuery.Create(Nil);
+                    with Qry do
+                    begin
+                         Close;
+                         DatabaseName := gs_DatabaseName;
+                         SQL.Clear;
+                         SQL.Add(' Select * from  VW_HS_ADMNPATIENTCURRENTINFO');
+                         SQL.Add(' Where PatientID=' + IntToStr(gi_PatientID));
+                         SQL.Add(' and ISDISCHARGED=''N''');
+                         Open;
+                         if Qry.FieldByName('ISDISCHARGED').AsString = 'N' then
+                         Begin
+                              gi_InPatientID := FieldByName('InPatientId').AsInteger;
+                              pi_InpatientId := FieldByName('InPatientId').AsInteger;
+                              GS_WardRoomType := FieldByName('Ward').AsString + '/' + FieldByName('Roomtype').AsString;
+                              GS_Consultant := FieldByName('Consultant').AsString;
+                              Gs_AdmittedDate := FieldByName('AdmnDate').AsString;
+                              Gs_DischargeDate := FieldByName('DisDate').AsString;
+                              Gi_TotalDaysOfStay := FieldByName('TotalDaysOfStay').AsInteger;
+                              DBLCB_RefDocCode.KeyValue := FieldByName('DocId').AsInteger;
+
+                              Label_IPNO.Caption := IntToStr(gi_InPatientID);
+
+                              if Pi_SchemeID <> 22 then
+                              CB_BILLTYPE.KeyValue := Qry.FieldByName('PATIENTTYPECODE').AsString;
+
+                              if (Qry.FieldByName('PATIENTTYPECODE').AsString = 'ECG') or
+                                (Qry.FieldByName('PATIENTTYPECODE').AsString = 'ECP') or
+                                (Qry.FieldByName('PATIENTTYPECODE').AsString = 'ECS') then
+                              Begin
+                                   Label_MeicarePatient.Caption := 'ECHS PATIENT';
+                                   Label_MeicarePatient.Visible := True;
+                                   CB_BILLTYPE.Enabled := False;
+                                   CB_BILLTYPE.Font.Color := clRed;
+                                   CB_BILLTYPE.Font.Style := [fsBold];
+                                   CB_PayType.ItemIndex := 1;
+                                   DBLCB_Scheme.KeyValue := 91;
+
+                                   SPB_ViewDocument.Visible := True;
+
+                                   gi_SchemeId := 91; // ECHS
+                                   gi_CommunityId := 85; // ECHS
+
+                                   Pi_CommunityID := 85;
+                                   Pi_SchemeID := 91;
+
+                                   With Query_RateType do
+                                   Begin
+                                        Close;
+                                        SQL.Clear;
+                                        SQL.Add(' SELECT * FROM HS_PATY_PATIENTTYPE');
+                                        SQL.Add(' Where PATY_PATIENTTYPECODE In (''ECG'',''ECP'',''ECS'')');
+                                        SQL.Add(' ORDER BY PATY_DISPLAYORDER');
+                                        Open;
+                                   End;
+                                   Query_RateType.Locate('PATY_PATIENTTYPECODE', Qry.FieldByName('PatientTypeCode').AsString, []);
+                                   CB_BILLTYPE.KeyValue := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+                              End;
+                         End
+                         Else
+                         Begin
+                              gi_InPatientID := 0;
+                              GS_WardRoomType := '';
+                              GS_Consultant := '';
+                              Gs_AdmittedDate := '';
+                              Gs_DischargeDate := '';
+                              Gi_TotalDaysOfStay := 0;
+                              With Query_RateType do
+                              Begin
+                                   Close;
+                                   SQL.Clear;
+                                   SQL.Add(' SELECT * FROM HS_PATY_PATIENTTYPE');
+                                   SQL.Add(' Where PATY_PATIENTTYPECODE Not In (''ECG'',''ECP'',''ECS'')');
+                                   SQL.Add(' ORDER BY PATY_DISPLAYORDER');
+                                   Open;
+                              End;
+
+                              if gs_HospitalNameForCode='BNB' then
+                              begin
+                                   if Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString='FRG' then
+                                   CB_BILLTYPE.KeyValue:='FRG'
+                                   Else
+                                   CB_BILLTYPE.KeyValue :='GEN';
+                              end
+                              Else
+                              CB_BILLTYPE.KeyValue := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+                         End;
+                         GetIPBasicInfo;
+                    end;
+
+                    if gi_SchemeId = 22 then // 22 -Medicare
+                    Begin
+                         Edit_Disper.Color := clMenu;
+                         Edit_Disper.ReadOnly := True;
+                    End
+                    else
+                    begin
+                         Edit_Disper.Color := clWhite;
+                         Edit_Disper.ReadOnly := False;
+                    end;
+
+                    Le_Payment.EditLabel.Caption := '(F3)Advance Amt:';
+                    CB_PayType.ItemIndex := 1;
+                    CB_PayType.Enabled := False;
+               End;
+
+               if gs_BillType = 'REFUNDBILL' then
+               begin
+                    With Query_Process do
+                    Begin
+                         Close;
+                         DatabaseName := gs_DatabaseName;
+                         SQL.Clear;
+                         SQL.Add(' Select MEMB_MemberId MemberId,MEMB_PatientId PatientId,MEMB_MemberNo MemberNo');
+                         SQL.Add(' From HS_MEMB_Member where MEMB_PatientId=' + IntToStr(gi_PatientID));
+                         SQL.Add(' and MEMB_IsActive=''Y''');
+                         Open;
+                         if Query_Process.FieldByName('MemberId').AsInteger > 0 then
+                         Begin
+                              gi_SchemeId := 22;
+                              gi_CommunityId := 18;
+                              gs_memberNo := Query_Process.FieldByName('MemberNo').AsString;
+                              Le_MemberNo.Text := Query_Process.FieldByName('MemberNo').AsString;
+                              Pi_CommunityID := 18;
+                              Pi_SchemeID := 22;
+                              DBLCB_Scheme.KeyValue := Pi_SchemeID;
+                         End;
+                    end;
+
+                    if RB_IPBILL.Checked = True then
+                    Begin
+
+                    End;
+               end;
+
+               ps_PatientTypeCode := CB_BILLTYPE.KeyValue;
+
+               pf_Deposit := GetDepositBalance(gi_PatientID);
+               le_TotalDeposit.Text := FloatToStr(pf_Deposit);
+
+               if pf_Deposit > 0 then
+               begin
+                    Label4.Visible := True;
+                    Label_DepositTotal.Visible := True;
+                    Label_DepositTotal.Caption := FloatToStr(pf_Deposit);
+                    Label3.Visible := True;
+                    lbl_OutStddeposit.Visible := True;
+               end;
+
+               (* if gb_IsFinManConnected=True then
+                   lbl_DepositBalance.Caption:=FloatToStr(GetPatientDepositFromFinman(gi_PatientID));
+                   //lbl_remainingbalance.Caption :='0'; //FloatToStr(GetDepositBalance(gi_PatientID));
+                   le_TotalDeposit.Text := '0';//lbl_remainingbalance.Caption;
+                   if Gi_MemberID > 0 then
+                   begin
+                   lbl_BenefitPackage.Caption := '';//GetBenefitPackageName(Gi_MemberID);
+                   lbl_BenefitPackage.Visible := true;
+                   pf_MemberDeposit :=0; //GetTotalMemberDeposit(gi_PatientID, lbl_BenefitPackage.Caption);
+                   Cb_DeductFromDeposit.Checked := true;
+                   Pi_CommunityID := 0;//GetMemberCommunityID(Gi_MemberID);
+                   Pi_SchemeID := 0;//GetMemberSchemeID(Gi_MemberID);
+                   if (Pi_CommunityID > 0) and (Pi_SchemeID > 0) then
+                   begin
+                   CB_Scheme.Checked := true;
+                   DBLCB_Community.KeyValue := Pi_CommunityID;
+                   DBLCB_CommunityClick(Sender);
+                   DBLCB_Scheme.KeyValue := Pi_SchemeID;
+                   end;
+                   end;
+                   Le_MemberNo.Text := IntToStr(Gi_MemberID);
+
+
+
+                   if (pf_MemberDeposit > 0) then
+                   Pb_NoDiscount := true
+                   else
+                   begin
+                   Pb_NoDiscount := False;
+                   Cb_DeductFromDeposit.Checked := False;
+                   end;
+
+                   *)
+
+               // Edit_MemberDeposit.Text := FormatFloat('#0,0.00', pf_MemberDeposit);
+               // LoadPatientData(gi_PatientID);
+               if Gs_PatientName = '' then
+               begin
+                   Le_HosNo.SetFocus;
+                   Exit;
+               end
+               else
+               begin
+                    LoadImage;
+               end;
+               // with Form_BillingParent do
+               // begin
+                    // lbl_Hosno.Caption:=IntToStr(gi_PatientID);
+                    // lbl_patientname.Caption:=Gs_PatientName;
+               // end;
+          end
+          else
+          begin
+               if gi_BillCase = 3 then
+               begin
+                    if gs_BillType <> 'REFUNDBILL' then
+                    Begin
+                         Try
+                              Form_otherPatient := TForm_otherPatient.Create(Nil);
+                              With Form_otherPatient do
+                              begin
+                                ShowModal;
+                              end;
+                         Finally
+                              Form_otherPatient.Free;
+                         End;
+                         LoadPatientData(gi_PatientID);
+                         Le_HosNo.Text := IntToStr(gi_PatientID);
+
+                         if gi_PatientID > 0 then
+                         Begin
+                              Key := #13;
+                              Le_HosNoKeyPress(Sender, Key);
+                              DBLCB_RefDocCode.SetFocus;
+                         End
+                         else
+                         Le_HosNo.SetFocus;
+                         // Le_HosNoExit(Sender);
+                    End;
+               end;
+          end;
+
+          Label21.Visible := False;
+          Lbl_BillNo.Visible := False;
+          Label11.Visible := False;
+          Label_DepositNo.Visible := False;
+          // Edit_TestName.SetFocus;
+          if gi_PatientID > 0 then
+          Begin
+               if gs_BillType = 'REFUNDBILL' then
+               Edit_PreveBillNo.SetFocus
+               Else
+               Edit_TestNameCode.SetFocus;
+               //DBLCB_Scheme.SetFocus; // DBLCB_RefDocCode.SetFocus;
+          End;
+     end;
+end;
+
+procedure TForm_Billing.Le_MemberNoKeyPress(Sender: TObject; var Key: Char);
+begin
+     If Key=#13 then
+     Begin
+          If (Trim(Le_MemberNo.Text)<>'') then
+          Begin
+               IF RB_IPBILL.Checked=True Then
+               Begin
+                    with Query_Process Do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Select inre_InpatientId From Hs_Inre_InpatientReg where Inre_MemberNo='+Le_MemberNo.Text);
+                         sql.add(' and Inre_Discharged=''NO''');
+                         Open;
+                    End;
+                    Le_HosNo.Text:=IntToStr(Query_Process.FieldByName('Inre_InPatientId').AsInteger);
+                    Le_HosNoKeyPress(Sender,key);
+               End
+               Else
+               Begin
+                    with Query_Process Do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' Select Pama_PatientId From Hs_Pama_PatientMain where Pama_MemberNo='+Quotedstr(Le_MemberNo.Text));
+                         Open;
+                    End;
+                    Le_HosNo.Text:=IntToStr(Query_Process.FieldByName('Pama_PatientId').AsInteger);
+                    Le_HosNoKeyPress(Sender,key);
+               End;
+               IF ps_MemberNo<>'' Then
+               Begin
+                    DBLCB_Scheme.KeyValue:=pi_SchemeId; // Dependent
+                    DBLCB_Schemeclick(Sender);
+               End;
+          End;
+     End;
+end;
+
+procedure TForm_Billing.Le_PaymentChange(Sender: TObject);
+begin
+  CalculatePayment;
+end;
+
+procedure TForm_Billing.Le_PaymentExit(Sender: TObject);
+begin
+  (* if Le_Payment.Text <> '' then
+    begin
+    if StrToFloat(Le_Payment.Text) = 0 then
+    begin
+    MsgBox(1011, 0, '', '', '');
+    //Le_Payment.SetFocus;
+    end;
+    end; *)
+  // else
+  // Le_Payment.SetFocus
+end;
+
+procedure TForm_Billing.Le_PaymentKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if gi_compileValue = 2 then
+  begin
+    if Key = VK_F12 then
+      BB_SaveClick(Sender);
+  end;
+end;
+
+procedure TForm_Billing.Le_PaymentKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not(Key in [#8, #13, '0' .. '9', '-', DecimalSeparator]) then
+    Key := #0
+  else if ((Key = DecimalSeparator) or (Key = '-')) and
+    (Pos(Key, (Sender as TLabeledEdit).Text) > 0) then
+    Key := #0
+  else if (Key = '-') and ((Sender as TLabeledEdit).SelStart <> 0) then
+    Key := #0;
+
+  if Key = #13 then
+    BB_Save.SetFocus;
+end;
+
+procedure TForm_Billing.Le_RemarksKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+    BB_Save.SetFocus;
+end;
+
+procedure TForm_Billing.LoadBill;
+Var
+  Qry: TOraQuery;
+  ls_RefDoc: string;
+  li_Communityid, li_SchemdID, li_RefDepID: Integer;
+  TestPriceWithDis, SvrTaxWithDis, TotalPriceWithDis, lf_DiscountTotal: Double;
+  Sender: TObject;
+
+Label JumpTo;
+
+begin
+
+  if (gb_IncludePharmacyChargeOnly = True) and (gi_BillCase in [2, 4, 6, 7])
+    then
+    Goto JumpTo;
+
+  Qry := TOraQuery.Create(nil);
+  with Table_Billing do
+  begin
+    Close;
+    DatabaseName := gs_temppath;
+    TableName := 'Billing.db';
+    EmptyTable;
+    Open;
+  end;
+
+  with Qry do
+  begin
+    Close;
+    DatabaseName := gs_DatabaseName;
+    SQL.Clear;
+    if gi_BillCase in [1, 2] then
+    begin
+      SQL.Add('SELECT SBD.SEBD_DOCID DOCID,SBD.SEBD_REFDOCID REFDOCID,SBD.SEBD_DISCOMMUNITYID COMMUNITYID,SBD.SEBD_DISSCHEMEID SCHEMEID,nvl(SEBD_WARDID,0) WardId,');
+      SQL.Add('SEBD_ACCHEADID AccountId,SBD.SEBD_SERVICEBILLDETAILID SERVICEBILLDETAILID,SEBD_REFERRALFRACTIONID REFERRALFRACTIONID,SEBD_DOCREFERRALFRACTIONID DOCREFERRALFRACTIONID,');
+      SQL.Add('SBD.SEBD_AMOUNT AMOUNT,SBD.SEBD_VATAMT VATAMT,SBD.SEBD_QTY QTY,SBD.SEBD_TOTALAMOUNT TOTALAMOUNT,SBD.SEBD_DISPER DISPER,');
+      SQL.Add('SEBD_REFFRACTIONPER REFFRACTIONPER,SEBD_REFFRACTIONAMOUNT REFFRACTIONAMOUNT,SEBD_DOCREFFRACTIONPER DOCREFFRACTIONPER,SEBD_DOCREFFRACTIONAMOUNT DOCREFFRACTIONAMOUNT,SBD.SEBD_BILLNO BILLNO');
+      SQL.Add(',SBD.SEBD_PATIENTTESTID PATIENTTESTID,SBD.SEBD_PATIENTID PATIENTID,SBD.SEBD_INPATIENTID INPATIENTID,SBD.SEBD_DEPID DEPID');
+      SQL.Add(',SBD.SEBD_SERVICE SERVICE,SBD.SEBD_SERVICETYPE SERVICETYPE,SBD.SEBD_DISCOUNT DISCOUNT,SBD.SEBD_RATETYPE RATETYPE,SBD.SEBD_BILLDETAILID BILLDETAILID');
+      SQL.Add(',SBD.SEBD_BILLDATE BILLDATE,SBD.SEBD_BILLTIME BILLTIME,SBD.SEBD_BILLBY VERIFIEDBY,SBD.SEBD_ORGBILLCATEGORY ORGBILLCATEGORY');
+      SQL.Add(',(SELECT ORBC_HOSPARTPER FROM HS_ORBC_ORGBILLCATEGORY WHERE ORBC_ORGBILLCATEGORYCODE=SBD.SEBD_ORGBILLCATEGORY)HOSPARTPER');
+      SQL.Add(',(SELECT TESTNAMEID FROM PATIENTTEST WHERE PATIENTTESTID=SBD.SEBD_PATIENTTESTID)TESTNAMEID');
+      SQL.Add(',(SELECT TENA_TNCategoryCode FROM HS_TENA_TestName WHERE TENA_TestNameCode=SBD.SEBD_Service) TNCategoryCode');
+      SQL.Add(',SBD.SEBD_ISFRACTIONABLETEST ISFRACTIONABLETEST,(SELECT SEBM_TOBESENTTOWEB FROM HS_SEBM_SERVICEBILLMASTER WHERE SEBM_BILLNO=SBD.SEBD_BILLNO)TOBE_SENTTOWEB');
+      SQL.Add(' ,(SELECT SEBM_TOBESENTTOSMS FROM HS_SEBM_SERVICEBILLMASTER WHERE SEBM_BILLNO=SBD.SEBD_BILLNO)TOBE_SENTTOSMS');
+      SQL.Add(' ,(SELECT SEBM_TOBESENTTOEMAIL FROM HS_SEBM_SERVICEBILLMASTER WHERE SEBM_BILLNO=SBD.SEBD_BILLNO)TOBE_SENTTOEMAIL');
+      SQL.Add(' ,(SELECT DISTINCT TENP_ISVATABLE FROM HS_TENP_TESTNAMEPRICE WHERE  TENP_TESTNAMEID=(SELECT TENA_TESTNAMEID From HS_TENA_TestName WHERE TENA_TestNameCode=SBD.SEBD_Service) and Trim(TENP_PATIENTTYPECODE)=SBD.SEBD_PatientType)IsVatable');
+      SQL.Add(' ,(SELECT Max(TestProgressStatus)TestProgressStatus From PatientTest Where ServiceBillDetailID=SBD.SEBD_ServiceBillDetailID)TestProgressStatus');
+      SQL.Add(' ,(SELECT Distinct TENP_ISDISCOUNTABLE FROM HS_TENP_TESTNAMEPRICE WHERE  TENP_TESTNAMEID=(SELECT TENA_TESTNAMEID From HS_TENA_TestName WHERE TENA_TestNameCode=SBD.SEBD_Service) and Trim(TENP_PATIENTTYPECODE)=SBD.SEBD_PatientType)IsDiscountable');
+      SQL.Add(' ,(SELECT USMA_UserName From HS_USMA_USERMAIN Where USMA_UserID=SBD.SEBD_BillBy)UserName');
+      SQL.Add(' ,Case when NVL((SELECT TENA_LABDepId From HS_TENA_TestName WHERE TENA_TestNameCode=SBD.SEBD_Service),0) > 0 Then ''P'' ELSE ');
+      SQL.Add(' (SELECT DEPT_DepType FROM HS_DEPT_Department WHERE DEPT_DepID=SBD.SEBD_DepID) End DepType,');
+      SQL.Add(' NVL((SELECT TENA_LABDepId From HS_TENA_TestName WHERE TENA_TestNameCode=SBD.SEBD_Service),0) LabDepId');
+      if Trim(Gs_TempBillno) <> '' then
+        SQL.Add(' FROM HS_SEBD_SERVICEBILLDETAIL SBD WHERE SBD.SEBD_BILLNO in (' +Gs_TempBillno + ')')
+      else
+        SQL.Add(' FROM HS_SEBD_SERVICEBILLDETAIL SBD WHERE SBD.SEBD_BILLNO =' +#39 + Gs_BillNo + #39);
+      // SQL.Add('AND SBD.SERVICEBILLDETAILID=PT.SERVICEBILLDETAILID');
+      SQL.Add('AND SEBD_BillDetailId<>-1111 AND SBD.SEBD_SERVICEBILLDETAILID NOT IN (SELECT SEBD_SERVICEBILLDETAILID FROM HS_TECA_TESTCANCEL WHERE TECA_SERVICEBILLDETAILID=SBD.SEBD_SERVICEBILLDETAILID)');
+    end
+    else if gi_BillCase in [4, 6] then
+    begin
+      // SQL.Add('SELECT BD.*');
+
+      SQL.Add('SELECT BD.BIDE_DOCID DOCID,BD.BIDE_REFDOCID REFDOCID,BD.BIDE_DISCOMMUNITYID COMMUNITYID,BD.BIDE_DISSCHEMEID SCHEMEID,BIDE_AccountId as AccountId, BD.BIDE_SERVICEBILLDETAILID SERVICEBILLDETAILID');
+      SQL.Add(',BD.BIDE_AMOUNT AMOUNT,BD.BIDE_VATAMT VATAMT,BD.BIDE_QTY QTY,BD.BIDE_TOTALAMOUNT TOTALAMOUNT,BD.BIDE_DISPER DISPER,BD.BIDE_BILLNO BILLNO,nvl(bide_Wardid,0)Wardid');
+      SQL.Add(',BD.BIDE_PATIENTTESTID PATIENTTESTID,BD.BIDE_PATIENTID PATIENTID,BD.BIDE_INPATIENTID INPATIENTID,BD.BIDE_DEPID DEPID,0 REFERRALFRACTIONID,0 REFFRACTIONPER,0 REFFRACTIONAMOUNT');
+      SQL.Add(',0 DOCREFERRALFRACTIONID,0 DOCREFFRACTIONPER,0 DOCREFFRACTIONAMOUNT,BD.BIDE_SERVICE SERVICE,BD.BIDE_SERVICETYPE SERVICETYPE,BD.BIDE_DISCOUNT DISCOUNT,BD.BIDE_RATETYPE RATETYPE,BD.BIDE_BILLDETAILID BILLDETAILID');
+      SQL.Add(',BD.BIDE_BILLDATE BILLDATE,BD.BIDE_BILLTIME BILLTIME,BD.BIDE_BILLBY VERIFIEDBY,BD.BIDE_ORGBILLCATEGORY ORGBILLCATEGORY,BIDE_ISVATABLETEST ISVATABLE,Bide_HosPartPer HOSPARTPER');
+      SQL.Add(',BD.BIDE_ISFRACTIONABLETEST ISFRACTIONABLETEST,(SELECT TENA_TESTNAMEID FROM HS_TENA_TESTNAME WHERE TENA_TESTNAMECODE=BD.BIDE_SERVICE)TESTNAMEID');
+      SQL.Add(',(SELECT TENA_TNCATEGORYCODE FROM HS_TENA_TESTNAME WHERE TENA_TESTNAMECODE=BD.BIDE_Service) TNCategoryCode');
+      SQL.Add(' ,(SELECT BIMA_TOBESENTTOWEB FROM HS_BIMA_BILLMASTER WHERE BIMA_BILLNO=BD.BIDE_BILLNO)TOBE_SENTTOWEB');
+      SQL.Add(' ,(SELECT BIMA_TOBESENTTOSMS FROM HS_BIMA_BILLMASTER WHERE BIMA_BILLNO=BD.BIDE_BILLNO)TOBE_SENTTOSMS');
+      SQL.Add(' ,(SELECT BIMA_TOBESENTTOEMAIL FROM HS_BIMA_BILLMASTER WHERE BIMA_BILLNO=BD.BIDE_BILLNO)TOBE_SENTTOEMAIL');
+      SQL.Add(',(SELECT REDE_REFUNDBILLNO FROM HS_REDE_REFUNDDETAIL WHERE REDE_BILLDETAILID=BD.BIDE_BILLDETAILID)REFUNDBILLNO');
+      SQL.Add(' FROM HS_BIDE_BILLDETAIL BD WHERE BIDE_BILLNO=' + #39 +Gs_BillNo + #39);
+      SQL.Add('AND BIDE_BILLDETAILID NOT IN (SELECT TECA_BILLDETAILID FROM HS_TECA_TESTCANCEL WHERE TECA_BILLDETAILID=BD.BIDE_BILLDETAILID)');
+
+    end
+    else if gi_BillCase = 5 then
+    begin
+      SQL.Add('SELECT SBD.*');
+      SQL.Add(',(SELECT TESTNAMEID FROM TESTNAME WHERE TESTNAMECODE=SBD.SERVICE)TESTNAMEID');
+      SQL.Add(',(SELECT TNCategoryCode FROM TestName WHERE TestNameCode=BD.Service) TNCategoryCode');
+      // SQL.Add(',(SELECT PATIENTTESTID FROM PATIENTTEST WHERE SERVICEBILLDETAILID=SBD.SERVICEBILLDETAILID)PATIENTTESTIDMAIN');
+      SQL.Add(' ,(SELECT TOBE_SENTTOWEB FROM SERVICEBILLMASTER WHERE BILLNO=SBD.BILLNO)TOBE_SENTTOWEB');
+      SQL.Add(' ,(SELECT TOBE_SENTTOSMS FROM SERVICEBILLMASTER WHERE BILLNO=SBD.BILLNO)TOBE_SENTTOSMS');
+      SQL.Add(' ,(SELECT TOBE_SENTTOEMAIL FROM SERVICEBILLMASTER WHERE BILLNO=SBD.BILLNO)TOBE_SENTTOEMAIL');
+      SQL.Add(' FROM SERVICEBILLDETAIL SBD WHERE BILLNO IN (SELECT REFERENCENO FROM DEPOSIT');
+      SQL.Add(' WHERE DEPOSITNO=' + #39 + Gs_BillNo + #39 + ')');
+      SQL.Add('AND BillDetailId<>-1111 AND SERVICEBILLDETAILID NOT IN (SELECT SERVICEBILLDETAILID FROM TESTCANCEL WHERE BILLNO=SBD.BILLNO)');
+    end
+    else if gi_BillCase = 7 then
+    begin
+      SQL.Add('SELECT RD.*');
+      SQL.Add(',(SELECT TNCategoryCode FROM TestName WHERE TestNameCode=RD.Service) TNCategoryCode');
+      SQL.Add(',(SELECT TESTNAMEID FROM TESTNAME WHERE TESTNAMECODE=RD.SERVICE)TESTNAMEID');
+      SQL.Add(' FROM REFUNDDETAIL RD WHERE BILLNO=' + #39 + Gs_BillNo + #39);
+    end;
+    SQL.saveToFile('C:\BILL.TXT');
+    Open;
+    if gi_BillCase in [1, 2, 4, 5, 6] then
+    begin
+      if Qry.FieldByName('ToBe_SenttoWeb').AsString = 'Y' then
+        CB_Send2Web.Checked := True
+      else
+        CB_Send2Web.Checked := False;
+
+      if Qry.FieldByName('ToBe_senttosms').AsString = 'Y' then
+        CB_Send2Sms.Checked := True
+      else
+        CB_Send2Sms.Checked := False;
+
+      if Qry.FieldByName('ToBe_senttoemail').AsString = 'Y' then
+        CB_Send2Email.Checked := True
+      else
+        CB_Send2Email.Checked := False;
+    end;
+
+    if gi_BillCase = 1 then // IP Service Cancel
+      gi_InPatientID := Qry.FieldByName('InpatientId').AsInteger;
+
+    ls_RefDoc := '';
+    // ls_RefDoc := Qry.FieldByName('RefDocCode').AsString;
+    li_Communityid := Qry.FieldByName('CommunityId').AsInteger;
+    li_SchemdID := Qry.FieldByName('SchemeId').AsInteger;
+
+    QueryScheme.Close;
+    QueryScheme.Open;
+
+    DBLCB_Scheme.KeyValue := Qry.FieldByName('SchemeId').AsInteger;
+    DBLCB_Scheme.Enabled := True;
+
+    Query_ReferingDocDept.Close;
+    Query_ReferingDocDept.Open;
+
+    Try
+      IF Trim(Qry.FieldByName('RefDocID').AsString) <> '' then
+        li_RefDepID := Qry.FieldByName('RefDocID').AsInteger
+      else
+        li_RefDepID := 0;
+    except
+      li_RefDepID := 0;
+    End;
+
+    DBLCB_RefDocCode.KeyValue := li_RefDepID;
+    pf_TestPrice := 0;
+    pf_SvrTax := 0;
+    pf_Qty := 0;
+    pf_TotalPrice := 0;
+    pf_Total := 0;
+    pf_subtotal := 0;
+    pf_grandtotal := 0;
+    pf_SvrTaxTotal := 0;
+    pi_TotItems := 0;
+    pf_discount := 0;
+    pf_DiscountTotal := 0;
+    while not eof do
+    begin
+      pf_TestPrice := Qry.FieldByName('Amount').AsFloat;
+      pf_SvrTax := Qry.FieldByName('VatAmt').AsFloat;
+      pf_Qty := Qry.FieldByName('Qty').AsFloat;
+      pf_disper := Qry.FieldByName('DisPer').AsFloat;
+      pf_TotalPrice := pf_TestPrice * pf_Qty + pf_SvrTax;
+
+      lf_DiscountTotal := GetNoOfDecimalPartOfFloatNum((Qry.FieldByName('Amount').AsFloat * Qry.FieldByName('Qty')
+            .AsFloat * Qry.FieldByName('DisPer').AsFloat / 100), 4);
+
+      if Gs_TaxRule = 'TAD' then
+      begin
+        TestPriceWithDis := pf_TestPrice - ((pf_disper / 100) * pf_TestPrice);
+        if Qry.FieldByName('IsVatable').AsString = 'Y' then
+          SvrTaxWithDis := (gf_TaxPercent / 100) * TestPriceWithDis
+        Else
+          SvrTaxWithDis := 0;
+        TotalPriceWithDis := (TestPriceWithDis + SvrTaxWithDis) * pf_Qty;
+      end
+      else if Gs_TaxRule = 'TBD' then
+      begin
+        TotalPriceWithDis := pf_TestPrice * pf_Qty + pf_SvrTax -
+          ((pf_disper / 100) * pf_TestPrice * pf_Qty);
+      end;
+
+      (* if (pf_disper > 0) and (Gs_TaxRule='TAD') then
+        begin
+        TestPriceWithDis := pf_TestPrice - ((pf_disper / 100) * pf_TestPrice);
+        SvrTaxWithDis := (gf_TaxPercent / 100) * TestPriceWithDis;
+        TotalPriceWithDis := TestPriceWithDis + SvrTaxWithDis;
+        end
+        else
+        begin
+        TotalPriceWithDis := pf_TestPrice * pf_Qty + pf_SvrTax-((pf_disper / 100) * pf_TestPrice * pf_Qty);
+        end; *)
+
+      case gi_BillCase of
+        1, 5:
+          begin
+            with Table_Billing do
+            begin
+              Append;
+              pi_TotItems := pi_TotItems + 1;
+              FieldByName('ServiceBillDetailID').AsInteger := Qry.FieldByName('ServiceBillDetailID').AsInteger;
+              FieldByName('PatientId').AsInteger := Qry.FieldByName('PatientId').AsInteger;
+              FieldByName('InPatientId').AsInteger := Qry.FieldByName('InPatientId').AsInteger;
+              FieldByName('DepId').AsInteger := Qry.FieldByName('DepId').AsInteger;
+              FieldByName('PatientTestID').AsInteger := Qry.FieldByName('PatientTestId').AsInteger;
+              FieldByName('TestNameId').AsInteger := Qry.FieldByName('TestNameId').AsInteger;
+              FieldByName('DocID').AsInteger := Qry.FieldByName('DOCID').AsInteger;
+              // FieldByName('Doccode').AsString := Qry.FieldByName('Doccode').AsString;
+              FieldByName('TestNameCode').AsString := Qry.FieldByName('Service').AsString;
+              FieldByName('TestName').AsString := Qry.FieldByName('ServiceType').AsString;
+              FieldByName('TNCategoryCode').AsString := Qry.FieldByName('TNCategoryCode').AsString;
+              FieldByName('TestPrice').AsFloat := StrToFloat(FormatFloat('#0.00', pf_TestPrice));
+              FieldByName('Qty').AsFloat := pf_Qty;
+              FieldByName('TotalPrice').AsFloat := StrToFloat(FormatFloat('#0.00', pf_TotalPrice));
+              FieldByName('DisPer').AsFloat := Qry.FieldByName('DisPer').AsFloat;
+              FieldByName('Discount').AsFloat := lf_DiscountTotal;
+              FieldByName('SvrTax').AsFloat := StrToFloat(FormatFloat('#0.00', (pf_SvrTax)));
+              FieldByName('ISFRACTIONABLETEST').AsString := Qry.FieldByName('ISFRACTIONABLETEST').AsString;
+              FieldByName('NetTotal').AsFloat := StrToFloat(FormatFloat('#0.00', TotalPriceWithDis));
+              FieldByName('CommunityId').AsInteger := Qry.FieldByName('CommunityId').AsInteger;
+              FieldByName('SchemeId').AsInteger := Qry.FieldByName('SchemeId').AsInteger;
+              FieldByName('RefDocCode').AsString := Qry.FieldByName('RefDocCode').AsString;
+              FieldByName('RateType').AsString := Qry.FieldByName('RateType').AsString;
+              FieldByName('OrgBillCategory').AsString := Qry.FieldByName('OrgBillCategory').AsString;
+              FieldByName('HOSPARTPER').AsString := Qry.FieldByName('HOSPARTPER').AsString;
+              FieldByName('REFERRALFRACTIONID').AsInteger := Qry.FieldByName('REFERRALFRACTIONID').AsInteger;
+              FieldByName('REFFRACTIONPER').AsFloat := Qry.FieldByName('REFFRACTIONPER').AsFloat;
+              FieldByName('REFFRACTIONAMOUNT').AsFloat := Qry.FieldByName('REFFRACTIONAMOUNT').AsFloat;
+
+              FieldByName('Wardid').AsInteger := Qry.FieldByName('Wardid').AsInteger;
+
+              FieldByName('DOCREFERRALFRACTIONID').AsInteger := Qry.FieldByName('DOCREFERRALFRACTIONID').AsInteger;
+              FieldByName('DOCREFFRACTIONPER').AsFloat := Qry.FieldByName('DOCREFFRACTIONPER').AsFloat;
+              FieldByName('DOCREFFRACTIONAMOUNT').AsFloat := Qry.FieldByName('DOCREFFRACTIONAMOUNT').AsFloat;
+              FieldByName('AccountId').AsInteger := Qry.FieldByName('AccountId').AsInteger;
+
+              Post;
+              // pf_subtotal := pf_subtotal + (pf_TestPrice * pf_Qty);
+              // pf_SvrTaxTotal := pf_SvrTaxTotal + (pf_SvrTax * pf_Qty);
+              // pf_Total := pf_subtotal + pf_SvrTaxTotal;
+              // pf_grandtotal := pf_Total;
+            end;
+          end;
+        2, 4, 6, 7:
+          begin
+            with Table_Billing do
+            begin
+              Append;
+              if gi_BillCase = 2 then
+                FieldByName('ServiceBillDetailID').AsInteger := Qry.FieldByName('ServiceBillDetailID').AsInteger;
+              if Qry.FieldByName('BillDetailID').AsString <> '' then
+                FieldByName('BillDetailID').AsInteger := Qry.FieldByName('BillDetailID').AsInteger;
+              FieldByName('BillNo').AsString := Qry.FieldByName('BillNo').AsString;
+              FieldByName('PatientId').AsInteger := Qry.FieldByName('PatientId').AsInteger;
+              FieldByName('InPatientId').AsInteger := Qry.FieldByName('InPatientId').AsInteger;
+              FieldByName('DepId').AsInteger := Qry.FieldByName('DepId').AsInteger;
+              FieldByName('DocId').AsInteger := Qry.FieldByName('DocId').AsInteger;
+              FieldByName('AccountId').AsInteger := Qry.FieldByName('AccountId').AsInteger;
+              FieldByName('PatientTestID').AsInteger := Qry.FieldByName('PatientTestId').AsInteger;
+              FieldByName('TestNameCode').AsString := Qry.FieldByName('Service').AsString;
+              FieldByName('TNCategoryCode').AsString := Qry.FieldByName('TNCategoryCode').AsString;
+              FieldByName('TestNameId').AsInteger := Qry.FieldByName('TestNameId').AsInteger;
+              FieldByName('TestName').AsString := Qry.FieldByName('ServiceType').AsString;
+              FieldByName('TestPrice').AsFloat := StrToFloat(FormatFloat('#0.00', pf_TestPrice));
+              FieldByName('TestPriceAfterDiscount').AsFloat := StrToFloat(FormatFloat('#0.00', TestPriceWithDis));
+              FieldByName('ISFRACTIONABLETEST').AsString := Qry.FieldByName('ISFRACTIONABLETEST').AsString;
+              FieldByName('Qty').AsFloat := pf_Qty;
+              FieldByName('TotalPrice').AsFloat := StrToFloat(FormatFloat('#0.00', pf_TestPrice * pf_Qty));
+              // FieldByName('TotalPrice').AsFloat := StrToFloat(FormatFloat('#0.00', pf_TotalPrice));
+              FieldByName('DisPer').AsFloat := Qry.FieldByName('DisPer').AsFloat;
+              pf_disper := Qry.FieldByName('DisPer').AsFloat;
+              FieldByName('SvrTax').AsFloat := StrToFloat(FormatFloat('#0.00', pf_SvrTax));
+              FieldByName('Discount').AsFloat := Qry.FieldByName('Discount').AsFloat;
+              pf_discount := Qry.FieldByName('Discount').AsFloat;
+              FieldByName('NetTotal').AsFloat := StrToFloat(FormatFloat('#0.00', TotalPriceWithDis));
+              FieldByName('CommunityId').AsInteger := Qry.FieldByName('CommunityId').AsInteger;
+              FieldByName('SchemeId').AsInteger := Qry.FieldByName('SchemeId').AsInteger;
+              FieldByName('RefDocID').AsInteger := Qry.FieldByName('RefDocID').AsInteger;
+              // FieldByName('RefDocCode').AsString := Qry.FieldByName('RefDocCode').AsString;
+              FieldByName('RateType').AsString := Qry.FieldByName('RateType').AsString;
+              FieldByName('OrgBillCategory').AsString := Qry.FieldByName('OrgBillCategory').AsString;
+              FieldByName('HOSPARTPER').AsString := Qry.FieldByName('HOSPARTPER').AsString;
+
+              FieldByName('REFERRALFRACTIONID').AsInteger := Qry.FieldByName('REFERRALFRACTIONID').AsInteger;
+              FieldByName('REFFRACTIONPER').AsFloat := Qry.FieldByName('REFFRACTIONPER').AsFloat;
+              FieldByName('REFFRACTIONAMOUNT').AsFloat := Qry.FieldByName('REFFRACTIONAMOUNT').AsFloat;
+
+              FieldByName('DOCREFERRALFRACTIONID').AsInteger := Qry.FieldByName('DOCREFERRALFRACTIONID').AsInteger;
+              FieldByName('DOCREFFRACTIONPER').AsFloat := Qry.FieldByName('DOCREFFRACTIONPER').AsFloat;
+              FieldByName('DOCREFFRACTIONAMOUNT').AsFloat := Qry.FieldByName('DOCREFFRACTIONAMOUNT').AsFloat;
+
+              FieldByName('Wardid').AsInteger := Qry.FieldByName('Wardid').AsInteger;
+
+              if gi_BillCase = 2 then
+              begin
+                FieldByName('IsDiscountable').AsString := Qry.FieldByName('IsDiscountable').AsString;
+                FieldByName('IsVatable').AsString := Qry.FieldByName('IsVatable').AsString;
+                FieldByName('User').AsString := Qry.FieldByName('UserName').AsString;
+                FieldByName('TestProgressStatus').AsInteger := Qry.FieldByName('TestProgressStatus').AsInteger;
+
+                FieldByName('BillDate').AsString := Qry.FieldByName('BillDate').AsString;
+                FieldByName('BillTime').AsString := Qry.FieldByName('BillTime').AsString;
+                FieldByName('BillNo').AsString := Qry.FieldByName('BillNo').AsString;
+                FieldByName('DisplayOrder').AsInteger := 1;
+                FieldByName('DepType').AsString := Qry.FieldByName('DepType').AsString;
+                FieldByName('LabDepId').AsInteger := Qry.FieldByName('LabDepID').AsInteger;
+                FieldByName('VerifiedBy').AsInteger := Qry.FieldByName('VerifiedBy').AsInteger;
+              end;
+              if gi_BillCase in [4, 6] then
+              begin
+                pi_TotItems := pi_TotItems + 1;
+                FieldByName('RefundBillNo').AsString := Qry.FieldByName('RefundBillNo').AsString;
+                if Qry.FieldByName('RefundBillNo').AsString = '' then
+                begin
+                  // pf_subtotal := pf_subtotal + (pf_TestPrice * pf_Qty);
+                  // pf_SvrTaxTotal := pf_SvrTaxTotal + (pf_SvrTax * pf_Qty);
+                  // pf_Total := pf_subtotal + pf_SvrTaxTotal;
+                  // pf_DiscountTotal := pf_DiscountTotal + pf_discount;
+                  // pf_grandtotal := pf_Total - pf_DiscountTotal;
+                end;
+              end
+              else
+              begin
+                // pf_subtotal := pf_subtotal + (pf_TestPrice * pf_Qty);
+                // pf_SvrTaxTotal := pf_SvrTaxTotal + (pf_SvrTax * pf_Qty);
+                // pf_Total := pf_subtotal + pf_SvrTaxTotal;
+                // // pf_DiscountTotal := pf_DiscountTotal + pf_discount;
+                // // pf_grandtotal := pf_Total - pf_DiscountTotal;
+                // pf_grandtotal := pf_Total;
+              end;
+              Post;
+            end;
+          end;
+      end;
+      next;
+    end;
+  end;
+
+JumpTo :
+
+  pb_PharmacyRefundOnly := False;
+  if (gb_IncludePharmacyCharge) or (gb_IncludePharmacyChargeOnly = True) then
+  begin
+    (* if gi_BillCase in [2, 4, 6, 7] then
+      LoadMedicineCharge; *)
+  end;
+
+  Lbl_BillNo.Caption := Gs_BillNo;
+  Lbl_TotalItems.Caption := IntToStr(pi_TotItems);
+
+  (* if gi_BillCase = 5 then
+    pf_Deposit := GetTotalDepositDepNO(Gs_BillNo)
+    else
+    pf_Deposit := GetTotalDepositRefNo(Gs_BillNo); *)
+  if CB_DayCare.Checked = True then
+    pf_Deposit := GetDepositBalance(gi_PatientID)
+  else
+    pf_Deposit := 0;
+  // lbl_remainingbalance.Caption := FormatFloat('#0,0.00', (GetDepositBalance(gi_PatientID)));
+
+  pf_MemberDeposit := 0; // GetTotalMemberDeposit(gi_PatientID, lbl_BenefitPackage.Caption);
+  // Edit_MemberDeposit.Text := FormatFloat('#0,0.00', pf_MemberDeposit);
+  // pf_balance := pf_grandtotal - pf_Deposit;
+  // lbl_deposit.Caption := FormatFloat('#0,0.00', pf_Deposit);
+  // lbl_balance.Caption := FormatFloat('#0,0.00', pf_balance);
+  le_TotalDeposit.Text := FormatFloat('#0,0.00', pf_Deposit);
+  // Le_SubTotal.Text := FormatFloat('#0,0.00', pf_subtotal);
+
+  CalculateLabels;
+  { Le_NetBalance.Text := FormatFloat('#0,0.00', pf_Total);
+    //Le_Disper.Text := FormatFloat('#0,0.00', pf_disper);
+    pf_discount := (pf_disper / 100) * pf_Total;
+    Le_Discount.Text := FormatFloat('#0,0.00', pf_discount);
+    Le_SubTotal.Text := FormatFloat('#0,0.00', pf_subtotal);
+    Le_NetTotal.Text:=FormatFloat('#0,0.00', pf_NetTotal);
+    Le_SvrTax.Text := FormatFloat('#0,0.00', pf_SvrTaxTotal);
+    pf_grandtotal := pf_balance;
+    Le_GrandTotal.Text := FormatFloat('#0,0.00', pf_grandtotal);
+    Lbl_GrandTotal.Caption := FormatFloat('#0,0.00', pf_grandtotal);
+    Lbl_TotalAmt.Caption := FormatFloat('#0,0.00', pf_grandtotal); }
+
+  Query_TempBilling.Close;
+  Query_TempBilling.DatabaseName := gs_temppath;
+  Query_TempBilling.Open;
+end;
+
+procedure TForm_Billing.LoadImage;
+begin
+  try
+    Image_Main.Picture.Assign(nil);
+    if LoadImageFromDB(gi_PatientID) then
+      Image_Main.Picture.LoadFromFile(gs_picpath + '\' + IntToStr(gi_PatientID)
+          + 'IMAGEMAIN.JPG');
+  except
+  end;
+
+end;
+
+procedure TForm_Billing.LoadMedicineCharge;
+Var
+  lf_TestPrice, lf_TotalPrice, lf_SvrTax, lf_NetTotal, lf_PharmacyCost: Double;
+  Qry: TOraQuery;
+Begin
+  Qry := TOraQuery.Create(Nil);
+  with Qry do
+  begin
+    Close;
+    DatabaseName := gs_DatabaseName;
+    SQL.Clear;
+    SQL.Add('Select * from vw_hs_MedicineCharge Where PatientiD=' + IntToStr
+        (gi_PatientID));
+    Open;
+
+    pi_MaxSaleMasterId := FieldByName('SaleMasterID').AsInteger;
+    pi_MaxReturnMasterId := FieldByName('ReturnMasterID').AsInteger;
+    lf_SvrTax := 0;
+    lf_TestPrice := FieldByName('Total').AsFloat;
+    lf_TotalPrice := FieldByName('Total').AsFloat;
+    lf_NetTotal := FieldByName('NetTotal').AsFloat;
+    lf_PharmacyCost := FieldByName('PharmacyCost').AsFloat;
+
+    if lf_NetTotal < 0 then
+      pb_PharmacyRefundOnly := True;
+
+    if lf_TestPrice > 0 then
+    begin
+      with Table_Billing do
+      begin
+        (* SQL.Add('Select Count(TestPrice)C, Sum(TestPrice*Qty)SubTotal,Sum(TestPriceAfterDiscount*Qty)NetTotal
+          ,Sum(SvrTax)SvrTaxTotal,Sum(Discount)DiscountTotal');
+          SQL.Add('from FinalBill Where Status is Null And RefundBillNo is Null'); *)
+        Append;
+        FieldByName('PatientId').AsInteger := Qry.FieldByName('PatientId')
+          .AsInteger;
+        FieldByName('DepId').AsInteger := 50;
+        FieldByName('Doccode').AsString := 'HOS01';
+        FieldByName('TestNameCode').AsString := 'PHACH';
+        FieldByName('TestName').AsString := 'PHARMACY CHARGES';
+        FieldByName('TestPrice').AsFloat := StrToFloat
+          (FormatFloat('#0.00', lf_TestPrice));
+        // FieldByName('TestPriceAfterDiscount').AsFloat := StrToFloat(FormatFloat('#0.00', lf_TestPrice));
+        FieldByName('Qty').AsFloat := 1;
+        FieldByName('TotalPrice').AsFloat := StrToFloat
+          (FormatFloat('#0.00', lf_TotalPrice));
+        FieldByName('SvrTax').AsFloat := StrToFloat
+          (FormatFloat('#0.00', lf_SvrTax));
+        FieldByName('DisPer').AsFloat := Qry.FieldByName('DisPer').AsFloat;
+        FieldByName('Discount').AsFloat := Qry.FieldByName('Discount').AsFloat;
+        FieldByName('NetTotal').AsFloat := StrToFloat
+          (FormatFloat('#0.00', lf_NetTotal));
+        FieldByName('PharmacyCost').AsFloat := StrToFloat
+          (FormatFloat('#0.00', lf_PharmacyCost));
+        FieldByName('TestPriceAfterDiscount').AsFloat := StrToFloat
+          (FormatFloat('#0.00', lf_NetTotal));
+        FieldByName('IsDiscountable').AsString := 'N';
+        FieldByName('IsVatable').AsString := 'N';
+        FieldByName('User').AsString := 'Pharmacy';
+        Post;
+      end;
+    end;
+  end;
+end;
+
+procedure TForm_Billing.LoadTestIDInVariable(TestNameID: string);
+begin
+  ps_LoadedTestID := ps_LoadedTestID + ',' + TestNameID;
+  ps_LoadedTestID := Trim(ps_LoadedTestID);
+  if Copy(ps_LoadedTestID, 1, 1) = ',' then
+  begin
+    ps_LoadedTestID := Copy(ps_LoadedTestID, 2, 999);
+  end;
+end;
+
+procedure TForm_Billing.Panel_BasicInfoClick(Sender: TObject);
+begin
+  // ps_PatientTypeCode
+
+  IF gs_ISFractionSharingActive = 'Y' Then
+  Begin
+    (* if gi_BillCase in [1] then
+      Display_Frct_Involve_Person(Query_TempBilling.FieldbyName('ISFractionableTest').AsString,Query_TempBilling.FieldByName('TestNameCode').AsString)
+      else if gi_BillCase in [2, 3, 4, 6] then
+      Display_Frct_Involve_Person(Query_FinalBill.FieldbyName('ISFractionableTest').AsString,Query_FinalBill.FieldByName('TestNameCode').AsString); *)
+
+    (* Try
+      Application.CreateForm(TForm_DrInvolveInOperation,Form_DrInvolveInOperation);
+      With Form_DrInvolveInOperation Do
+      Begin
+      ps_PatientTypeCode:=Frame_Billing.ps_PatientTypeCode;
+      (*Label_PtName.Caption:=Labelname.Caption;
+      Label_Pthosno.Caption:=LabelNo.Caption;
+      Label_PtInpatientNo.Caption:=LabelIpNo.Caption;
+      Label_TestName.Caption:=TablePTTestTemp.FieldbyName('TestName') .asstring;
+      TestNameCode:=TablePTTestTemp.FieldbyName('TestNameCode') .asstring;
+      pi_TestNameId:=TablePTTestTemp.FieldbyName('TestNameID') .AsInteger;
+      //pf_TotNetAmt:=TablePTTestTemp.FieldbyName('Total') .AsFloat;
+      pf_TotNetAmt:=TablePTTestTemp.FieldbyName('CostPrice') .AsFloat;
+
+
+
+
+      Called_From:='OPBiling';
+      IF TablePTTestTemp.FieldbyName('DepId').AsInteger IN [8] Then
+      b_IsTestWise:=True
+      Else
+      Is_OT:=True;
+
+      With Table_Operation Do
+      Begin
+      DatabaseName:=gs_TempPath;
+      Close;
+      Open;
+      Filtered:=False;
+      Filter:='TestNameCode='+#39+TestNameCode+#39;
+      Filtered:=True;
+      If Recordcount > 0 Then
+      Is_New:=False
+      Else
+      Is_New:=True;
+      End; *)
+
+    (* Query_GetTempData.DatabaseName:=gs_TempPath;
+      Query_GetTempData.Close;
+      Query_GetTempData.ParamByName('TestNameCode').AsString:=TestNameCode;
+      Query_GetTempData.Open;
+
+      ShowModal;
+      End;
+      Finally
+      Form_DrInvolveInOperation.Free;
+      End; *)
+  End;
+end;
+
+procedure TForm_Billing.PrintBill(CB_Preview: TCheckBox; NoOfPrint: Integer);
+Var
+  i: Integer;
+begin
+  if IsIndoorDischargePatientBill(Gs_BillNo) = False then
+  Begin
+    try
+      Form_QRBill_Manipal := TForm_QRBill_Manipal.Create(nil);
+      if Gb_IsReprint then
+        Form_QRBill_Manipal.lbl_reprint.Enabled := True;
+      // if Gb_IsPreview then
+      // begin
+      with Form_QRBill_Manipal do
+      begin
+        QrBill.Prepare;
+        //lbl_totpage.Caption := IntToStr(QrBill.QRPrinter.PageCount);
+
+        for i := 0 to NoOfPrint - 1 do
+        begin
+          if i=0 then
+          QRLabel_BillStatus.Caption:='PATIENT COPY'
+          else
+          QRLabel_BillStatus.Caption:='OFFICE COPY';
+          IF CB_Preview.Checked = True Then
+            QrBill.PreviewModal
+          Else
+            QrBill.Print;
+        end;
+      end;
+    finally
+      Gb_IsReprint := False;
+      Form_QRBill_Manipal.Free;
+    end;
+  End
+  Else
+  Begin
+    LoadDischargeBillDetail(Gs_BillNo);
+    Try
+      Form_QRDischargeBill := TForm_QRDischargeBill.Create(Nil);
+      With Form_QRDischargeBill do
+      Begin
+        pf_Deposit := GetDepositTotal(Gs_BillNo);
+        pi_Sno := 0;
+        pb_IsDischargedBill := True;
+
+        if Gb_IsReprint = True then
+        Begin
+          pb_IsReprint := True;
+          lbl_reprint.Enabled := True;
+        End
+        Else
+        Begin
+          pb_IsReprint := False;
+          lbl_reprint.Enabled := False;
+        End;
+
+        LoadPatientInfo;
+        Qr_DischargeBill.Preview;
+      End;
+    Finally
+      Form_QRDischargeBill.Free;
+    End;
+  End;
+end;
+
+procedure TForm_Billing.PrintDepositSlip;
+Var
+  i: Integer;
+begin
+  try
+    // MyPatient := TPatient.Create;
+    // MyPatient.LoadData(gi_PatientID);
+    Form_QrDepositSlip_Manipal := TForm_QrDepositSlip_Manipal.Create(nil);
+    if Gb_IsReprint then
+      Form_QrDepositSlip_Manipal.lbl_reprint.Enabled := True;
+    with Form_QrDepositSlip_Manipal do
+    begin
+      QrDepositSlip.Prepare;
+      //lbl_totpage.Caption := IntToStr(QrDepositSlip.QRPrinter.PageCount);
+      QrDepositSlip.PreviewModal;
+    end;
+  finally
+    Gb_IsReprint := False;
+    Form_QrDepositSlip_Manipal.Free;
+  end;
+end;
+
+procedure TForm_Billing.RemoveTestNameIDInVariable(TestNameID: String);
+begin
+  ps_LoadedTestID := StringReplace(ps_LoadedTestID, TestNameID, '-1',
+    [rfReplaceAll]);
+end;
+
+procedure TForm_Billing.SaveInvAdvanceDeposit(DrAmount, CrAmount: Double;
+  DepositRemarks: String);
+var
+  li_DepositHeadId: Integer;
+begin
+  li_DepositHeadId := 8; // INVESTIGATION CHARGE
+  GB_isDepositBill := True;
+  SaveDeposit(li_DepositHeadId, gi_InPatientID, gi_PatientID, 0, Gi_UserId, 0,
+    DrAmount, CrAmount, 'INVESTIGATION CHARGE', 'ADVANCE DEPOSIT', Gs_BillNo,
+    '', DepositRemarks, Ps_TodaysDate, Ps_TodaysTime, 'N',ps_PatientCategory,'N');//GetPatientCagetory(gi_PatientID)
+end;
+
+procedure TForm_Billing.SaveDepositData;
+Var
+  lf_CrAmount, lf_DrAmount: Double;
+  li_DepositHeadId: Integer;
+begin
+  GB_isDepositBill := True;
+
+  li_DepositHeadId := 0;
+
+  if pf_Deposit > 0 then
+  begin
+    if pf_Deposit <= pf_grandtotal then
+    Begin
+      lf_CrAmount := pf_Deposit;
+      lf_DrAmount := 0;
+    End
+    else if pf_Deposit > pf_grandtotal then
+    Begin
+      lf_CrAmount := pf_grandtotal;
+      lf_DrAmount := 0;
+    End;
+
+    SaveDeposit(li_DepositHeadId, gi_InPatientID, gi_PatientID, 0, Gi_UserId,
+      0, lf_CrAmount, lf_DrAmount, '', '', '', '', '', Ps_TodaysDate,
+      Ps_TodaysTime, 'N',ps_PatientCategory,'N');//GetPatientCagetory(gi_PatientID)
+  end;
+
+  (*
+    if Edit_AddDeposit.Text <> '' then
+    begin
+    lf_DrAmount := StrToFloat(Edit_AddDeposit.Text);
+    { SaveDeposit(DEPOSITHEADID, INPATIENTID, PATIENTID, DEPOSITBY: Integer; DRAMOUNT, CRAMOUNT: Double;
+    DEPOSITTYPE, REFERENCETYPE, REFERENCENO, DEPOSITDATE, DEPOSITTIME, REMARKS: String) }
+    SaveDeposit(0, gi_InPatientID, gi_PatientID, gi_UserID, lf_DrAmount, 0, 'DEPOSIT', 'DIRECT', '', ps_TodaysDate, ls_BillTime,
+    'PATIENT DEPOSIT');
+    end; *)
+  GB_isDepositBill := False;
+end;
+
+procedure TForm_Billing.SaveDepositDetail(DrAmount, CrAmount: Double;
+  DepositType, ReferenceType, Remarks: String);
+Var
+  // lf_DrAmount, lf_CrAmount: Double;
+  ls_DepositType, ls_ReferenceType, ls_ReferenceNo, ls_TodaysDate,
+    ls_Remarks: String;
+  ls_tempbillno: String;
+begin
+  // if Le_Payment.Text <> '' then
+  // lf_DrAmount := StrToFloat(Le_Payment.Text);
+  // lf_CrAmount := Abs(pf_grandtotal);
+  ls_ReferenceNo := Gs_BillNo;
+  if gi_datesystem = 0 then
+    ls_TodaysDate := TodaysDateVS
+  else
+    ls_TodaysDate := TodaysDate;
+  // ls_Remarks := 'DEPOSIT FOR SERVICE BILL';
+  ls_Remarks := Remarks;
+  ls_tempbillno := Gs_BillNo;
+
+  (*
+    SaveDeposit(DEPOSITHEADID,INPATIENTID,PATIENTID,BANKID,DEPOSITBY : Integer ;DRAMOUNT,CRAMOUNT :Double;
+    DEPOSITTYPE,REFERENCETYPE,REFERENCENO,CHEQUENO,REMARKS,DEPOSITDATE,DEPOSITTIME :string); Stdcall;
+    *)
+  SaveDeposit(0, gi_InPatientID, gi_PatientID, 0, Gi_UserId, 0, DrAmount,
+    CrAmount, DepositType, ReferenceType, ls_ReferenceNo, '', '',
+    Ps_TodaysDate, Ps_TodaysTime, 'N',ps_PatientCategory,'N');//GetPatientCagetory(gi_PatientID)
+  (* Try
+    SaveDeposit(0, gi_InPatientID, gi_PatientID, gi_UserID, DrAmount, CrAmount, DepositType, ReferenceType, ls_ReferenceNo,
+    ls_TodaysDate, TodaysTime, ls_Remarks);
+    except
+    SaveDeposit(0, gi_InPatientID, gi_PatientID, gi_UserID, DrAmount, CrAmount, DepositType, ReferenceType, ls_ReferenceNo,
+    ls_TodaysDate, TodaysTime, ls_Remarks);
+    end; *)
+  UpdateTestProgressStatus(ls_tempbillno, '', 0, gi_Billed);
+end;
+
+Function TForm_Billing.SaveFinalBill: Boolean;
+begin
+  Result := False;
+  { Save Bill Master }
+  try
+    DM_Hospital.DB.StartTransaction;
+    try
+      SaveFinalBill_Detail;
+    except
+      SaveFinalBill_Detail;
+    end;
+    DM_Hospital.DB.Commit;
+    Result := True;
+    ShowDoneMessage;
+    Lbl_BillNo.Caption := Gs_BillNo;
+  except
+    DM_Hospital.DB.Rollback;
+  end;
+end;
+
+procedure TForm_Billing.SaveFinalBill_Detail;
+Var
+  ls_sendtoweb, ls_sendtosms, ls_sendtoemail, INITIAL, ls_IsVatable: String;
+  ls_FinalBillNo, Ls_NewSampleNo: String;
+  Qty, i, J, li_Community, li_Scheme, pi_DocFraDepId, li_TestNameId, li_Qty,
+    li_RefDepID, li_RefDocId, li_MKTGREFID: Integer;
+  lf_PharmacyCost, lf_FrctRate, lf_FrctAmt, lf_MKTGREFFRCTPER,
+    lf_DOCREFFRCTPER: Double;
+
+  ls_RateType: String;
+  Query_IsTestDeptInCommSetup: TOraQuery;
+
+begin
+  if CB_Send2Web.Checked = True then
+    ls_sendtoweb := 'Y'
+  else
+    ls_sendtoweb := 'N';
+  if CB_Send2Sms.Checked = True then
+    ls_sendtosms := 'Y'
+  else
+    ls_sendtosms := 'N';
+  if CB_Send2Email.Checked = True then
+    ls_sendtoemail := 'Y'
+  else
+    ls_sendtoemail := 'N';
+
+  if Trim(DBLCB_RefDocCode.Text) <> '' then
+  Begin
+    // if gs_IsReferralDeptInBilling='Y' then // Referred By Department
+    li_RefDepID := Pi_ClinicalDepId;
+    // else
+    // li_RefDepId:=DBLCB_RefDocCode.KeyValue;
+    li_RefDocId := DBLCB_RefDocCode.KeyValue;
+  End
+  else
+  Begin
+    // if gs_IsReferralDeptInBilling='Y' then // Referred By Department
+    li_RefDepID := Pi_ClinicalDepId;
+    // Else
+    // li_RefDepId:=0;
+    li_RefDocId := 0;
+  End;
+
+  if Trim(DBLCB_MKTGReferral.Text) <> '' then
+    li_MKTGREFID := DBLCB_MKTGReferral.KeyValue
+  Else
+    li_MKTGREFID := 0;
+
+  if Trim(DBLCB_Scheme.Text) = '' then
+  Begin
+    li_Scheme := 0;
+    li_Community := 0;
+  End
+  else
+  begin
+    li_Scheme := DBLCB_Scheme.KeyValue;
+    li_Community := QueryScheme.FieldByName('Sche_CommunityId').AsInteger;
+  end;
+
+
+
+  if CB_PayType.ItemIndex in [0] then
+    INITIAL := 'CS'
+  else
+  Begin
+    if (DBLCB_Scheme.KeyValue = 22) or (gs_memberNo <> '') then
+      INITIAL := 'ME'
+    Else
+      INITIAL := 'CR';
+  End;
+
+  ls_RateType := CB_BILLTYPE.KeyValue;
+  SetLength(Arr_SampleNo, 1);
+
+  gs_IsMultiOrgBilling := 'N';
+  if gs_IsMultiOrgBilling = 'N' then
+  begin
+
+    // if Pf_FinalBillDiscount = 0 then
+    // begin
+    // pf_disper := StrToFloat(Le_Disper.Text);
+    // pf_Dis := StrToFloat(Le_Discount.Text);
+    // end;
+
+    (* SaveBillMaster(PATIENTID, INPATIENTID, BILLBY, REFDOCID, VISITID: Integer;
+      GROSSTOTAL, TAXAMT, DISCOUNTTOTAL, NETTOTAL,SERVICECHARGETOTAL,DOLLAREXRATE,
+      DOLLARGROSSTOTAL, DOLLARTAXAMT, DOLLARDISCOUNTTOTAL, DOLLARNETTOTAL,DOLLORSERVICECHARGETOTAL : Double;
+      INITIAL, BILLDATE, BILLTIME, BILLTYPE, PAYTYPE, RATETYPE, PATIENTTYPE, REMARKS, SEND2WEB, SEND2SMS,
+      SEND2EMAIL: String); stdcall; *)
+
+    CheckServiceBillMaster;
+    Try
+      SaveBillMaster(gi_PatientID, gi_InPatientID, Gi_UserId, li_RefDocId,
+        gi_VisitId, pf_grandtotal, pf_SvrTax, pf_Dis, pf_NetTotal,
+        pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE, pf_DOLLARGROSSTOTAL,
+        pf_DOLLARTAXAMT, pf_DOLLARDISCOUNTTOTAL, pf_DOLLARNETTOTAL,
+        pf_DOLLORSERVICECHARGETOTAL, INITIAL, Ps_TodaysDate, Ps_TodaysTime,
+        'B', CB_PayType.Text, ls_RateType, ls_RateType, Le_Remarks.Text,
+        ls_sendtoweb, ls_sendtosms, ls_sendtoemail,ps_PatientCategory);//GetPatientCagetory(gi_PatientID)
+    Except
+      SaveBillMaster(gi_PatientID, gi_InPatientID, Gi_UserId, li_RefDocId,
+        gi_VisitId, pf_grandtotal, pf_SvrTax, pf_Dis, pf_NetTotal,
+        pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE, pf_DOLLARGROSSTOTAL,
+        pf_DOLLARTAXAMT, pf_DOLLARDISCOUNTTOTAL, pf_DOLLARNETTOTAL,
+        pf_DOLLORSERVICECHARGETOTAL, INITIAL, Ps_TodaysDate, Ps_TodaysTime,
+        'B', CB_PayType.Text, ls_RateType, ls_RateType, Le_Remarks.Text,
+        ls_sendtoweb, ls_sendtosms, ls_sendtoemail,ps_PatientCategory);//GetPatientCagetory(gi_PatientID)
+    End;
+
+    with Table_Billing do
+    begin
+      Close;
+      Open;
+      while not eof do
+      begin
+        Qty := FieldByName('Qty').AsInteger;
+        gi_ServiceBillDetailid := Table_Billing.FieldByName('ServiceBillDetailId').AsInteger;
+        gi_PatientTestID := Table_Billing.FieldByName('PatientTestID').AsInteger;
+        pf_disper := Table_Billing.FieldByName('DisPer').AsFloat;
+        pf_Dis := (FieldByName('Disper').AsFloat / 100) * FieldByName('TestPrice').AsFloat * Qty; // FieldByName('NetTotal').AsFloat;
+        ls_IsVatable := FieldByName('IsVatable').AsString;
+
+        (* SaveBillDetail(SERVICEBILLDETAILID, PATIENTID, INPATIENTID, PATIENTTESTID, BILLBY, DISCOMMUNITYID, DISSCHEMEID, CRCOMMUNITYID, CRSCHEMEID,
+          DEPID,CLINICALDEPID, REFDEPID,DOCID, REFDOCID, EMRDUTYDOCID, ACCHEADID: Integer;
+          AMOUNT, QTY, VATAMT, TOTALAMOUNT, DISPER, DISCOUNT, SERVICECHARGE, DOLLAREXRATE,DOLLARAMOUNT,DOLLARVATAMT,DOLLARTOTALAMOUNT,DOLLARDISCOUNT,DOLLARSERVICECHARGE: Double;
+          BILLNO, BILLDATE, BILLTIME,SERVICE, SERVICETYPE, BILLTYPE, PAYTYPE, RATETYPE, PATIENTTYPE, MEMBERNO,
+          ISVATABLETEST, ISDISCOUNTABLETEST, ISFRACTIONABLETEST, ISPACKAGETEST,TESTNAMETYPE,OrgBillCategory,HOSPARTPER: String); stdcall; *)
+
+        Try
+          SaveBillDetail(gi_ServiceBillDetailid, gi_PatientID, gi_InPatientID,gi_PatientTestID, Gi_UserId, li_Community, li_Scheme, li_Community,
+            li_Scheme, FieldByName('DepID').AsInteger, Pi_ClinicalDepId,li_RefDepID, FieldByName('DocID').AsInteger, li_RefDocId,
+            li_MKTGREFID, 0, FieldByName('AccountID').AsInteger,FieldByName('Wardid').asinteger, FieldByName('TestPrice').AsFloat, Qty,FieldByName('SvrTax').AsFloat, FieldByName('NetTotal').AsFloat,
+            pf_disper, pf_Dis, pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE,pf_DOLLARAMOUNT, pf_DOLLARVATAMT, pf_DOLLARTOTALAMOUNT,
+            pf_DOLLARDISCOUNT, pf_DOLLARSERVICECHARGE, Gs_BillNo,Ps_TodaysDate, Ps_TodaysTime, FieldByName('TestNameCode').AsString,
+            FieldByName('TestName').AsString, 'B', CB_PayType.Text,ls_RateType, ls_RateType, gs_memberNo, ls_IsVatable, '',
+            FieldByName('IsFractionableTest').AsString, '', '', FieldByName('OrgBillCategory').AsString, FieldByName('HOSPARTPER').AsString,
+            FieldByName('ISOT').AsString,ps_PatientCategory);//GetPatientCagetory(gi_PatientID)
+        except
+          SaveBillDetail(gi_ServiceBillDetailid, gi_PatientID, gi_InPatientID,
+            gi_PatientTestID, Gi_UserId, li_Community, li_Scheme, li_Community,
+            li_Scheme, FieldByName('DepID').AsInteger, Pi_ClinicalDepId,
+            li_RefDepID, FieldByName('DocID').AsInteger, li_RefDocId,
+            li_MKTGREFID, 0, FieldByName('AccountID').AsInteger,FieldByName('Wardid').asinteger, FieldByName('TestPrice').AsFloat, Qty,
+            FieldByName('SvrTax').AsFloat, FieldByName('NetTotal').AsFloat,
+            pf_disper, pf_Dis, pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE,
+            pf_DOLLARAMOUNT, pf_DOLLARVATAMT, pf_DOLLARTOTALAMOUNT,
+            pf_DOLLARDISCOUNT, pf_DOLLARSERVICECHARGE, Gs_BillNo,
+            Ps_TodaysDate, Ps_TodaysTime, FieldByName('TestNameCode').AsString,
+            FieldByName('TestName').AsString, 'B', CB_PayType.Text,
+            ls_RateType, ls_RateType, gs_memberNo, ls_IsVatable, '', FieldByName
+              ('IsFractionableTest').AsString, '', '', FieldByName
+              ('OrgBillCategory').AsString, FieldByName('HOSPARTPER').AsString,
+            FieldByName('ISOT').AsString,ps_PatientCategory);//GetPatientCagetory(gi_PatientID)
+        End;
+
+        if gi_BillCase = 2 then
+        begin
+          // if pf_Deposit> pf_grandtotal then
+          UpdatePatientTest(gi_ServiceBillDetailid, gi_BillDetailId, gi_Billed,
+            gi_BillingInvCtrl, Gs_BillNo);
+          UpdateServiceBillDetail(gi_ServiceBillDetailid, gi_BillDetailId);
+        End;
+
+        if gi_BillCase = 4 then
+        begin
+          if IsPathoRadioDep(FieldByName('DepID').AsInteger) then
+          // save patienttest for Pathological dep only
+          begin
+            if Qty > 1 then
+            begin
+              for i := 0 to Qty - 1 do
+              begin
+                SavePatientTest(0, gi_BillDetailId, 0, gi_PatientID,gi_InPatientID, Pi_ClinicalDepId, FieldByName('DepID').AsInteger,
+                    FieldByName('DOCID').AsInteger, FieldByName('TestNameID').AsInteger, FieldByName('TestPackageID').AsInteger,
+                    0, Gi_UserId, gi_Recommendation, gi_DoNotSync,gi_BillingInvCtrl, FieldByName('TestPrice').AsFloat,
+                    Gs_BillNo, FieldByName('Doccode').AsString, FieldByName('TestNameCode').AsString, Ps_TodaysDate, Ps_TodaysTime,
+                  CB_PayType.Text, Le_Remarks.Text, 'RE', Ps_TodaysDate,Ps_TodaysTime);
+              end;
+            end
+            else
+              SavePatientTest(0, gi_BillDetailId, 0, gi_PatientID,
+                gi_InPatientID, Pi_ClinicalDepId, FieldByName('DepID')
+                  .AsInteger, FieldByName('DOCID').AsInteger, FieldByName
+                  ('TestNameID').AsInteger, FieldByName('TestPackageID')
+                  .AsInteger, 0, Gi_UserId, gi_Recommendation, gi_DoNotSync,
+                gi_BillingInvCtrl, FieldByName('TestPrice').AsFloat, Gs_BillNo,
+                FieldByName('Doccode').AsString, FieldByName('TestNameCode')
+                  .AsString, Ps_TodaysTime, TodaysTime, CB_PayType.Text,
+                Le_Remarks.Text, 'RE', Ps_TodaysDate, TodaysTime);
+
+          end;
+        end;
+        ps_FinalBillNo := Gs_BillNo;
+        lf_MKTGREFFRCTPER := 0;
+        lf_DOCREFFRCTPER := 0;
+        SaveDoctorFraction(FieldByName('ISFractionableTest').AsString,
+          FieldByName('TestNameCode').AsString, lf_MKTGREFFRCTPER,
+          lf_DOCREFFRCTPER);
+        next;
+      end;
+    end;
+  end
+  else
+  begin
+    Query_IsTestDeptInCommSetup := TOraQuery.Create(nil);
+    Qry := TOraQuery.Create(Nil);
+    with Qry do
+    begin
+      Close;
+      DatabaseName := gs_temppath;
+      (* Saving Hospital Bill *)
+      SQL.Clear;
+      SQL.Add('Select * from FinalBill Where OrgBillCategory=''HOS''');
+      Open;
+      if FieldByName('ServiceBillDetailID').AsInteger > 0 then
+      begin
+        if CB_PayType.ItemIndex in [0, 1] then
+          INITIAL := 'CS'
+        else
+          INITIAL := 'CR';
+
+        SaveBillMaster(gi_PatientID, gi_InPatientID, Gi_UserId, li_RefDocId,
+          gi_VisitId, pf_grandtotal, pf_SvrTax, pf_Dis, pf_NetTotal,
+          pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE, pf_DOLLARGROSSTOTAL,
+          pf_DOLLARTAXAMT, pf_DOLLARDISCOUNTTOTAL, pf_DOLLARNETTOTAL,
+          pf_DOLLORSERVICECHARGETOTAL, INITIAL, Ps_TodaysDate, Ps_TodaysTime,
+          'B', CB_PayType.Text, ls_RateType, ls_RateType, Le_Remarks.Text,
+          ls_sendtoweb, ls_sendtosms, ls_sendtoemail,ps_PatientCategory);//GetPatientCagetory(gi_PatientID)
+        Ps_HospitalBillNo := Gs_BillNo;
+      end;
+      while not eof do
+      begin
+        Qty := FieldByName('Qty').AsInteger;
+        gi_ServiceBillDetailid := FieldByName('ServiceBillDetailId').AsInteger;
+        gi_PatientTestID := FieldByName('PatientTestID').AsInteger;
+        pf_disper := FieldByName('DisPer').AsFloat;
+        pf_Dis := (FieldByName('Disper').AsFloat / 100) * FieldByName
+          ('TestPrice').AsFloat * Qty; // FieldByName('NetTotal').AsFloat;
+        ls_IsVatable := FieldByName('IsVatable').AsString;
+
+        SaveBillDetail(gi_ServiceBillDetailid, gi_PatientID, gi_InPatientID,
+          gi_PatientTestID, Gi_UserId, li_Community, li_Scheme, li_Community,
+          li_Scheme, FieldByName('DepID').AsInteger, 0, li_RefDepID, FieldByName
+            ('DocID').AsInteger, li_RefDocId, li_MKTGREFID, 0, FieldByName('AccountID').AsInteger,FieldByName('Wardid').asinteger, FieldByName
+            ('TestPrice').AsFloat, Qty, FieldByName('SvrTax').AsFloat,
+          FieldByName('NetTotal').AsFloat, pf_disper, pf_Dis,
+          pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE, pf_DOLLARAMOUNT,
+          pf_DOLLARVATAMT, pf_DOLLARTOTALAMOUNT, pf_DOLLARDISCOUNT,
+          pf_DOLLARSERVICECHARGE, Gs_BillNo, Ps_TodaysDate, Ps_TodaysTime,
+          FieldByName('TestNameCode').AsString, FieldByName('TestName')
+            .AsString, 'B', CB_PayType.Text, ls_RateType, ls_RateType,
+          gs_memberNo, ls_IsVatable, '', '', '', '', FieldByName
+            ('OrgBillCategory').AsString, FieldByName('HOSPARTPER').AsString,
+          'N',ps_PatientCategory);//GetPatientCagetory(gi_PatientID)
+
+        if gi_BillCase = 2 then
+        begin
+          // if pf_Deposit> pf_grandtotal then
+          UpdatePatientTest(gi_ServiceBillDetailid, gi_BillDetailId, gi_Billed,
+            gi_BillingInvCtrl, Gs_BillNo);
+          UpdateServiceBillDetail(gi_ServiceBillDetailid, gi_BillDetailId);
+        end;
+
+        if gi_BillCase = 4 then
+        begin
+          if IsPathoRadioDep(FieldByName('DepID').AsInteger) then
+          // save patienttest for Pathological dep only
+          begin
+            if Qty > 1 then
+            begin
+              for i := 0 to Qty - 1 do
+              begin
+                SavePatientTest(0, gi_BillDetailId, 0, gi_PatientID,
+                  gi_InPatientID, Pi_ClinicalDepId, FieldByName('DepID')
+                    .AsInteger, FieldByName('DOCID').AsInteger, FieldByName
+                    ('TestNameID').AsInteger, FieldByName('TestPackageID')
+                    .AsInteger, 0, Gi_UserId, gi_Recommendation, gi_DoNotSync,
+                  gi_BillingInvCtrl, FieldByName('TestPrice').AsFloat,
+                  Gs_BillNo, FieldByName('Doccode').AsString, FieldByName
+                    ('TestNameCode').AsString, Ps_TodaysDate, Ps_TodaysTime,
+                  CB_PayType.Text, Le_Remarks.Text, 'RE', Ps_TodaysDate,
+                  Ps_TodaysTime);
+              end;
+            end
+            else
+              SavePatientTest(0, gi_BillDetailId, 0, gi_PatientID,
+                gi_InPatientID, Pi_ClinicalDepId, FieldByName('DepID')
+                  .AsInteger, FieldByName('DOCID').AsInteger, FieldByName
+                  ('TestNameID').AsInteger, FieldByName('TestPackageID')
+                  .AsInteger, 0, Gi_UserId, gi_Recommendation, gi_DoNotSync,
+                gi_BillingInvCtrl, FieldByName('TestPrice').AsFloat, Gs_BillNo,
+                FieldByName('Doccode').AsString, FieldByName('TestNameCode')
+                  .AsString, Ps_TodaysDate, Ps_TodaysTime, CB_PayType.Text,
+                Le_Remarks.Text, 'RE', Ps_TodaysDate, Ps_TodaysTime);
+
+          end;
+        end;
+        // SaveDoctorFraction;
+        next;
+
+      end;
+    end;
+
+    with Qry do
+    begin
+      Close;
+      DatabaseName := gs_temppath;
+      (* Saving Hospital Bill *)
+      SQL.Clear;
+      SQL.Add('Select * from FinalBill Where OrgBillCategory=''LAB''');
+      Open;
+      if FieldByName('ServiceBillDetailID').AsInteger > 0 then
+      begin
+        if CB_PayType.ItemIndex in [0, 1] then
+          INITIAL := 'LCS'
+        else
+          INITIAL := 'LCR';
+
+        SaveBillMaster(gi_PatientID, gi_InPatientID, Gi_UserId, li_RefDocId,
+          gi_VisitId, pf_grandtotal, pf_SvrTax, pf_Dis, pf_NetTotal,
+          pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE, pf_DOLLARGROSSTOTAL,
+          pf_DOLLARTAXAMT, pf_DOLLARDISCOUNTTOTAL, pf_DOLLARNETTOTAL,
+          pf_DOLLORSERVICECHARGETOTAL, INITIAL, Ps_TodaysDate, Ps_TodaysTime,
+          'B', CB_PayType.Text, ls_RateType, ls_RateType, Le_Remarks.Text,
+          ls_sendtoweb, ls_sendtosms, ls_sendtoemail,ps_PatientCategory);//GetPatientCagetory(gi_PatientID)
+        ps_FinalBillNo := Gs_BillNo;
+      end;
+      while not eof do
+      begin
+        Qty := FieldByName('Qty').AsInteger;
+        gi_ServiceBillDetailid := FieldByName('ServiceBillDetailId').AsInteger;
+        gi_PatientTestID := FieldByName('PatientTestID').AsInteger;
+        pf_disper := FieldByName('DisPer').AsFloat;
+        pf_Dis := (FieldByName('Disper').AsFloat / 100) * FieldByName
+          ('TestPrice').AsFloat * Qty; // FieldByName('NetTotal').AsFloat;
+        ls_IsVatable := FieldByName('IsVatable').AsString;
+
+        SaveBillDetail(gi_ServiceBillDetailid, gi_PatientID, gi_InPatientID,
+          gi_PatientTestID, Gi_UserId, li_Community, li_Scheme, li_Community,
+          li_Scheme, FieldByName('DepID').AsInteger, 0, li_RefDepID, FieldByName
+            ('DocID').AsInteger, li_RefDocId, li_MKTGREFID, 0, FieldByName('AccountID').AsInteger,FieldByName('Wardid').asinteger, FieldByName
+            ('TestPrice').AsFloat, Qty, FieldByName('SvrTax').AsFloat,
+          FieldByName('NetTotal').AsFloat, pf_disper, pf_Dis,
+          pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE, pf_DOLLARAMOUNT,
+          pf_DOLLARVATAMT, pf_DOLLARTOTALAMOUNT, pf_DOLLARDISCOUNT,
+          pf_DOLLARSERVICECHARGE, Gs_BillNo, Ps_TodaysDate, Ps_TodaysTime,
+          FieldByName('TestNameCode').AsString, FieldByName('TestName')
+            .AsString, 'B', CB_PayType.Text, ls_RateType, ls_RateType,
+          gs_memberNo, ls_IsVatable, '', '', '', '', FieldByName
+            ('OrgBillCategory').AsString, FieldByName('HOSPARTPER').AsString,
+          'N',ps_PatientCategory);//GetPatientCagetory(gi_PatientID)
+        if FieldByName('ISFractionableTest').AsString = 'Y' then
+        begin
+          li_TestNameId := GetTestNameIdFromTestCode
+            (FieldByName('TestNameCode').AsString);
+          With Query_IsTestDeptInCommSetup Do
+          Begin
+            Close;
+            DatabaseName := gs_DatabaseName;
+            SQL.Clear;
+            SQL.Add(
+              ' select FRAC_FRACTIONID Fractionid,Frac_depid Depid,Frac_TestNameId TestNameId,Frac_FractionAmount FractionAmount');
+            SQL.Add(
+              ',Frac_FractionRate FractionRate,Frac_IsRateAmt IsRateAm From hs_frac_Fraction Where ');
+            SQL.Add(' Frac_TestNameId=' + IntToStr(li_TestNameId));
+            Open;
+            pi_DocFraDepId := Query_IsTestDeptInCommSetup.FieldByName
+              ('TestNameId').AsInteger
+          End;
+          if pi_DocFraDepId > 0 then
+          begin
+            IF Query_IsTestDeptInCommSetup.FieldByName('IsRateAmt')
+              .AsString = 'A' Then
+              lf_FrctAmt := Query_IsTestDeptInCommSetup.FieldByName
+                ('FractionAmount').AsFloat
+            Else
+            begin
+              lf_FrctAmt := RoundingAfterSecondPlace
+                ((FieldByName('TestPrice')
+                    .AsFloat * Query_IsTestDeptInCommSetup.FieldByName
+                    ('FractionRate').AsFloat) / 100);
+              lf_FrctRate := Query_IsTestDeptInCommSetup.FieldByName
+                ('FractionRate').AsFloat;
+            end;
+            (* SaveFractiondetail(PATIENTID,INPATIENTID,BILLDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,
+              FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY : Integer;
+              UNITTESTCOST,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+              TESTNAMECODE,BILLNO,BILLDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+              ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME :String); *)
+
+            SaveFractiondetail(gi_PatientID, gi_InPatientID, gi_BillDetailId,
+              gi_ServiceBillDetailid, FieldByName('DepId').AsInteger,
+              li_RefDocId, FieldByName('TestNameId').AsInteger,
+              Query_IsTestDeptInCommSetup.FieldByName('FractionId').AsInteger,
+              0, Gi_UserId,0, FieldByName('TestPrice').AsFloat, FieldByName
+                ('TestPrice').AsFloat, Qty, lf_FrctAmt, lf_FrctRate, FieldByName
+                ('Disper').AsFloat, FieldByName('TestNameCode').AsString,
+              Gs_BillNo, Ps_TodaysDate, 'B', CB_PayType.Text, '',
+              'TEST WISE FRACTION', 'N', '', '', Ps_TodaysDate, Ps_TodaysTime,'N');
+          end;
+        end;
+
+        if gi_BillCase = 2 then
+        begin
+          // if pf_Deposit> pf_grandtotal then
+          UpdatePatientTest(gi_ServiceBillDetailid, gi_BillDetailId, gi_Billed,
+            gi_BillingInvCtrl, Gs_BillNo);
+          UpdateServiceBillDetail(gi_ServiceBillDetailid, gi_BillDetailId);
+        end;
+
+        if (gi_BillCase = 4) or (gi_BillCase = 2) then
+        begin
+          if IsPathoRadioDep(FieldByName('DepID').AsInteger) then
+          // save patienttest for Pathological dep only
+          begin
+            if Qty > 1 then
+            begin
+              for i := 0 to Qty - 1 do
+              begin
+                SavePatientTest(0, gi_BillDetailId, 0, gi_PatientID,
+                  gi_InPatientID, Pi_ClinicalDepId, FieldByName('DepID')
+                    .AsInteger, FieldByName('DOCID').AsInteger, FieldByName
+                    ('TestNameID').AsInteger, FieldByName('TestPackageID')
+                    .AsInteger, 0, Gi_UserId, gi_Recommendation, gi_DoNotSync,
+                  gi_BillingInvCtrl, FieldByName('TestPrice').AsFloat,
+                  Gs_BillNo, FieldByName('Doccode').AsString, FieldByName
+                    ('TestNameCode').AsString, Ps_TodaysDate, Ps_TodaysTime,
+                  CB_PayType.Text, Le_Remarks.Text, 'RE', Ps_TodaysDate,
+                  Ps_TodaysTime);
+              end;
+            end
+            else
+              SavePatientTest(0, gi_BillDetailId, 0, gi_PatientID,
+                gi_InPatientID, Pi_ClinicalDepId, FieldByName('DepID')
+                  .AsInteger, FieldByName('DOCID').AsInteger, FieldByName
+                  ('TestNameID').AsInteger, FieldByName('TestPackageID')
+                  .AsInteger, 0, Gi_UserId, gi_Recommendation, gi_DoNotSync,
+                gi_BillingInvCtrl, FieldByName('TestPrice').AsFloat, Gs_BillNo,
+                FieldByName('Doccode').AsString, FieldByName('TestNameCode')
+                  .AsString, Ps_TodaysDate, Ps_TodaysTime, CB_PayType.Text,
+                Le_Remarks.Text, 'RE', Ps_TodaysDate, Ps_TodaysTime);
+
+          end;
+        end;
+        next;
+      end;
+    end;
+
+    with Qry do
+    begin
+      Close;
+      DatabaseName := gs_temppath;
+      (* Saving Hospital Bill *)
+      SQL.Clear;
+      SQL.Add('Select * from FinalBill Where OrgBillCategory=''XRA''');
+      Open;
+      if FieldByName('ServiceBillDetailID').AsInteger > 0 then
+      begin
+        if CB_PayType.ItemIndex in [0, 1] then
+          INITIAL := 'XCS'
+        else
+          INITIAL := 'XCR';
+
+        SaveBillMaster(gi_PatientID, gi_InPatientID, Gi_UserId, li_RefDocId,
+          gi_VisitId, pf_grandtotal, pf_SvrTax, pf_Dis, pf_NetTotal,
+          pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE, pf_DOLLARGROSSTOTAL,
+          pf_DOLLARTAXAMT, pf_DOLLARDISCOUNTTOTAL, pf_DOLLARNETTOTAL,
+          pf_DOLLORSERVICECHARGETOTAL, INITIAL, Ps_TodaysDate, Ps_TodaysTime,
+          'B', CB_PayType.Text, ls_RateType, ls_RateType, Le_Remarks.Text,
+          ls_sendtoweb, ls_sendtosms, ls_sendtoemail,ps_PatientCategory);//,GetPatientCagetory(gi_PatientID)
+        Ps_XrayBillNo := Gs_BillNo;
+      end;
+      while not eof do
+      begin
+        Qty := FieldByName('Qty').AsInteger;
+        gi_ServiceBillDetailid := FieldByName('ServiceBillDetailId').AsInteger;
+        gi_PatientTestID := FieldByName('PatientTestID').AsInteger;
+        pf_disper := FieldByName('DisPer').AsFloat;
+        pf_Dis := (FieldByName('Disper').AsFloat / 100) * FieldByName
+          ('TestPrice').AsFloat * Qty; // FieldByName('NetTotal').AsFloat;
+        ls_IsVatable := FieldByName('IsVatable').AsString;
+
+        SaveBillDetail(gi_ServiceBillDetailid, gi_PatientID, gi_InPatientID,
+          gi_PatientTestID, Gi_UserId, li_Community, li_Scheme, li_Community,
+          li_Scheme, FieldByName('DepID').AsInteger, 0, li_RefDepID, FieldByName
+            ('DocID').AsInteger, li_RefDocId, li_MKTGREFID, 0, FieldByName('AccountID').AsInteger,FieldByName('Wardid').asinteger, FieldByName
+            ('TestPrice').AsFloat, Qty, FieldByName('SvrTax').AsFloat,
+          FieldByName('NetTotal').AsFloat, pf_disper, pf_Dis,
+          pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE, pf_DOLLARAMOUNT,
+          pf_DOLLARVATAMT, pf_DOLLARTOTALAMOUNT, pf_DOLLARDISCOUNT,
+          pf_DOLLARSERVICECHARGE, Gs_BillNo, Ps_TodaysDate, Ps_TodaysTime,
+          FieldByName('TestNameCode').AsString, FieldByName('TestName')
+            .AsString, 'B', CB_PayType.Text, ls_RateType, ls_RateType,
+          gs_memberNo, ls_IsVatable, '', '', '', '', FieldByName
+            ('OrgBillCategory').AsString, FieldByName('HOSPARTPER').AsString,
+          'N',ps_PatientCategory);//GetPatientCagetory(gi_PatientID)
+        if FieldByName('ISFractionableTest').AsString = 'Y' then
+        begin
+          li_TestNameId := GetTestNameIdFromTestCode
+            (FieldByName('TestNameCode').AsString);
+          With Query_IsTestDeptInCommSetup Do
+          Begin
+            Close;
+            DatabaseName := gs_DatabaseName;
+            SQL.Clear;
+            SQL.Add(
+              ' select FRAC_FRACTIONID Fractionid,Frac_depid Depid,Frac_TestNameId TestNameId,Frac_FractionAmount FractionAmount');
+            SQL.Add(
+              ',Frac_FractionRate FractionRate,Frac_IsRateAmt IsRateAm From hs_frac_Fraction Where ');
+            SQL.Add(' Frac_TestNameId=' + IntToStr(li_TestNameId));
+            Open;
+            pi_DocFraDepId := Query_IsTestDeptInCommSetup.FieldByName
+              ('TestNameId').AsInteger
+          End;
+          if pi_DocFraDepId > 0 then
+          begin
+            IF Query_IsTestDeptInCommSetup.FieldByName('IsRateAmt')
+              .AsString = 'A' Then
+              lf_FrctAmt := Query_IsTestDeptInCommSetup.FieldByName
+                ('FractionAmount').AsFloat
+            Else
+            begin
+              lf_FrctAmt := RoundingAfterSecondPlace
+                ((FieldByName('TestPrice')
+                    .AsFloat * Query_IsTestDeptInCommSetup.FieldByName
+                    ('FractionRate').AsFloat) / 100);
+              lf_FrctRate := Query_IsTestDeptInCommSetup.FieldByName
+                ('FractionRate').AsFloat;
+            end;
+            (* SaveFractiondetail(PATIENTID,INPATIENTID,BILLDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY : Integer;
+              UNITTESTCOST,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+              TESTNAMECODE,BILLNO,BILLDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+              ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME :String); *)
+
+            SaveFractiondetail(gi_PatientID, gi_InPatientID, gi_BillDetailId,
+              gi_ServiceBillDetailid, FieldByName('DepId').AsInteger,
+              li_RefDocId, FieldByName('TestNameID').AsInteger,
+              Query_IsTestDeptInCommSetup.FieldByName('FractionId').AsInteger,
+              0, Gi_UserId,0, FieldByName('TestPrice').AsFloat, FieldByName
+                ('TestPrice').AsFloat, Qty, lf_FrctAmt, lf_FrctRate, FieldByName
+                ('Disper').AsFloat, FieldByName('TestNameCode').AsString,
+              Gs_BillNo, Ps_TodaysDate, 'B', CB_PayType.Text, '',
+              'TEST WISE FRACTION', 'N', '', '', Ps_TodaysDate, Ps_TodaysTime,'N');
+          end;
+        end;
+
+        if gi_BillCase = 2 then
+        begin
+          // if pf_Deposit> pf_grandtotal then
+          UpdatePatientTest(gi_ServiceBillDetailid, gi_BillDetailId, gi_Billed,
+            gi_BillingInvCtrl, Gs_BillNo);
+          UpdateServiceBillDetail(gi_ServiceBillDetailid, gi_BillDetailId);
+        end;
+
+        if (gi_BillCase = 2) or (gi_BillCase = 2) then
+        begin
+          if IsPathoRadioDep(FieldByName('DepID').AsInteger) then
+          // save patienttest for Pathological dep only
+          begin
+            if Qty > 1 then
+            begin
+              for i := 0 to Qty - 1 do
+              begin
+                SavePatientTest(0, gi_BillDetailId, 0, gi_PatientID,
+                  gi_InPatientID, Pi_ClinicalDepId, FieldByName('DepID')
+                    .AsInteger, FieldByName('DOCID').AsInteger, FieldByName
+                    ('TestNameID').AsInteger, FieldByName('TestPackageID')
+                    .AsInteger, 0, Gi_UserId, gi_Recommendation, gi_DoNotSync,
+                  gi_BillingInvCtrl, FieldByName('TestPrice').AsFloat,
+                  Gs_BillNo, FieldByName('Doccode').AsString, FieldByName
+                    ('TestNameCode').AsString, Ps_TodaysDate, Ps_TodaysTime,
+                  CB_PayType.Text, Le_Remarks.Text, 'RE', Ps_TodaysDate,
+                  Ps_TodaysTime);
+              end;
+            end
+            else
+              SavePatientTest(0, gi_BillDetailId, 0, gi_PatientID,
+                gi_InPatientID, Pi_ClinicalDepId, FieldByName('DepID')
+                  .AsInteger, FieldByName('DOCID').AsInteger, FieldByName
+                  ('TestNameID').AsInteger, FieldByName('TestPackageID')
+                  .AsInteger, 0, Gi_UserId, gi_Recommendation, gi_DoNotSync,
+                gi_BillingInvCtrl, FieldByName('TestPrice').AsFloat, Gs_BillNo,
+                FieldByName('Doccode').AsString, FieldByName('TestNameCode')
+                  .AsString, Ps_TodaysDate, Ps_TodaysTime, CB_PayType.Text,
+                Le_Remarks.Text, 'RE', Ps_TodaysDate, Ps_TodaysTime);
+
+          end;
+        end;
+        next;
+      end;
+    end;
+
+    with Qry do
+    begin
+      Close;
+      DatabaseName := gs_temppath;
+      (* Saving Hospital Bill *)
+      SQL.Clear;
+      SQL.Add('Select * from FinalBill Where OrgBillCategory=''CTS''');
+      Open;
+      if FieldByName('ServiceBillDetailID').AsInteger > 0 then
+      begin
+        if CB_PayType.ItemIndex in [0, 1] then
+          INITIAL := 'CCS'
+        else
+          INITIAL := 'CCR';
+
+        SaveBillMaster(gi_PatientID, gi_InPatientID, Gi_UserId, li_RefDocId,
+          gi_VisitId, pf_grandtotal, pf_SvrTax, pf_Dis, pf_NetTotal,
+          pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE, pf_DOLLARGROSSTOTAL,
+          pf_DOLLARTAXAMT, pf_DOLLARDISCOUNTTOTAL, pf_DOLLARNETTOTAL,
+          pf_DOLLORSERVICECHARGETOTAL, INITIAL, Ps_TodaysDate, Ps_TodaysTime,
+          'B', CB_PayType.Text, ls_RateType, ls_RateType, Le_Remarks.Text,
+          ls_sendtoweb, ls_sendtosms, ls_sendtoemail,ps_PatientCategory);//GetPatientCagetory(gi_PatientID)
+        Ps_CtScanBillNo := Gs_BillNo;
+      end;
+
+      while not eof do
+      begin
+        Qty := FieldByName('Qty').AsInteger;
+        gi_ServiceBillDetailid := FieldByName('ServiceBillDetailId').AsInteger;
+        gi_PatientTestID := FieldByName('PatientTestID').AsInteger;
+        pf_disper := FieldByName('DisPer').AsFloat;
+        pf_Dis := (FieldByName('Disper').AsFloat / 100) * FieldByName
+          ('TestPrice').AsFloat * Qty; // FieldByName('NetTotal').AsFloat;
+        ls_IsVatable := FieldByName('IsVatable').AsString;
+
+        SaveBillDetail(gi_ServiceBillDetailid, gi_PatientID, gi_InPatientID,
+          gi_PatientTestID, Gi_UserId, li_Community, li_Scheme, li_Community,
+          li_Scheme, FieldByName('DepID').AsInteger, 0, li_RefDepID, FieldByName
+            ('DocID').AsInteger, li_RefDocId, li_MKTGREFID, 0, FieldByName('AccountID').AsInteger,FieldByName('Wardid').asinteger, FieldByName
+            ('TestPrice').AsFloat, Qty, FieldByName('SvrTax').AsFloat,
+          FieldByName('NetTotal').AsFloat, pf_disper, pf_Dis,
+          pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE, pf_DOLLARAMOUNT,
+          pf_DOLLARVATAMT, pf_DOLLARTOTALAMOUNT, pf_DOLLARDISCOUNT,
+          pf_DOLLARSERVICECHARGE, Gs_BillNo, Ps_TodaysDate, Ps_TodaysTime,
+          FieldByName('TestNameCode').AsString, FieldByName('TestName')
+            .AsString, 'B', CB_PayType.Text, ls_RateType, ls_RateType,
+          gs_memberNo, ls_IsVatable, '', '', '', '', FieldByName
+            ('OrgBillCategory').AsString, FieldByName('HOSPARTPER').AsString,
+          'N',ps_PatientCategory);//GetPatientCagetory(gi_PatientID)
+
+        if FieldByName('ISFractionableTest').AsString = 'Y' then
+        begin
+          li_TestNameId := GetTestNameIdFromTestCode
+            (FieldByName('TestNameCode').AsString);
+          With Query_IsTestDeptInCommSetup Do
+          Begin
+            Close;
+            DatabaseName := gs_DatabaseName;
+            SQL.Clear;
+            SQL.Add(
+              ' select FRAC_FRACTIONID Fractionid,Frac_depid Depid,Frac_TestNameId TestNameId,Frac_FractionAmount FractionAmount');
+            SQL.Add(
+              ',Frac_FractionRate FractionRate,Frac_IsRateAmt IsRateAm From hs_frac_Fraction Where ');
+            SQL.Add(' Frac_TestNameId=' + IntToStr(li_TestNameId));
+            Open;
+            pi_DocFraDepId := Query_IsTestDeptInCommSetup.FieldByName
+              ('TestNameId').AsInteger
+          End;
+          if pi_DocFraDepId > 0 then
+          begin
+            IF Query_IsTestDeptInCommSetup.FieldByName('IsRateAmt')
+              .AsString = 'A' Then
+              lf_FrctAmt := Query_IsTestDeptInCommSetup.FieldByName
+                ('FractionAmount').AsFloat
+            Else
+            begin
+              lf_FrctAmt := RoundingAfterSecondPlace
+                ((FieldByName('TestPrice')
+                    .AsFloat * Query_IsTestDeptInCommSetup.FieldByName
+                    ('FractionRate').AsFloat) / 100);
+              lf_FrctRate := Query_IsTestDeptInCommSetup.FieldByName
+                ('FractionRate').AsFloat;
+            end;
+            (* SaveFractiondetail(PATIENTID,INPATIENTID,BILLDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY : Integer;
+              UNITTESTCOST,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+              TESTNAMECODE,BILLNO,BILLDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+              ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME :String); *)
+
+            SaveFractiondetail(gi_PatientID, gi_InPatientID, gi_BillDetailId,
+              gi_ServiceBillDetailid, FieldByName('DepId').AsInteger,
+              li_RefDocId, FieldByName('TestNameID').AsInteger,
+              Query_IsTestDeptInCommSetup.FieldByName('FractionId').AsInteger,
+              0, Gi_UserId,0, FieldByName('TestPrice').AsFloat, FieldByName
+                ('TestPrice').AsFloat, Qty, lf_FrctAmt, lf_FrctRate, FieldByName
+                ('Disper').AsFloat, FieldByName('TestNameCode').AsString,
+              Gs_BillNo, Ps_TodaysDate, 'B', CB_PayType.Text, '',
+              'TEST WISE FRACTION', 'N', '', '', Ps_TodaysDate, Ps_TodaysTime,'N');
+            { if Query_MKTReferral.fieldbyname('REFR_TESTNAMEID').AsString= then
+
+              SaveReferralFractiondetail(gi_PatientId,gi_InPatientID,gi_BillDetailId,gi_ServiceBillDetailid,
+              FieldByName('DepId').AsInteger,li_RefDocId,FieldByName('TestNameID').AsInteger,
+              Query_IsTestDeptInCommSetup.FieldByName('FractionId').AsInteger,0,
+              gi_UserID,FieldByName('TestPrice').AsFloat,Qty,lf_FrctAmt,lf_FrctRate,FieldByName('Disper').AsFloat,
+              FieldByName('TestNameCode').AsString,Gs_BillNo,Ps_TodaysDate,'B',CB_PayType.Text,'','TEST WISE FRACTION','N',
+              '','',Ps_TodaysDate,Ps_TodaysTime); }
+          end;
+        end;
+
+        if gi_BillCase = 2 then
+        begin
+          // if pf_Deposit> pf_grandtotal then
+          UpdatePatientTest(gi_ServiceBillDetailid, gi_BillDetailId, gi_Billed,
+            gi_BillingInvCtrl, Gs_BillNo);
+          UpdateServiceBillDetail(gi_ServiceBillDetailid, gi_BillDetailId);
+        end;
+
+        if gi_BillCase = 4 then
+        begin
+          if IsPathoRadioDep(FieldByName('DepID').AsInteger) then
+          // save patienttest for Pathological dep only
+          begin
+            if Qty > 1 then
+            begin
+              for i := 0 to Qty - 1 do
+              begin
+                SavePatientTest(0, gi_BillDetailId, 0, gi_PatientID,
+                  gi_InPatientID, Pi_ClinicalDepId, FieldByName('DepID')
+                    .AsInteger, FieldByName('DOCID').AsInteger, FieldByName
+                    ('TestNameID').AsInteger, FieldByName('TestPackageID')
+                    .AsInteger, 0, Gi_UserId, gi_Recommendation, gi_DoNotSync,
+                  gi_BillingInvCtrl, FieldByName('TestPrice').AsFloat,
+                  Gs_BillNo, FieldByName('Doccode').AsString, FieldByName
+                    ('TestNameCode').AsString, Ps_TodaysDate, Ps_TodaysTime,
+                  CB_PayType.Text, Le_Remarks.Text, 'RE', Ps_TodaysDate,
+                  Ps_TodaysTime);
+              end;
+            end
+            else
+              SavePatientTest(0, gi_BillDetailId, 0, gi_PatientID,
+                gi_InPatientID, Pi_ClinicalDepId, FieldByName('DepID')
+                  .AsInteger, FieldByName('DOCID').AsInteger, FieldByName
+                  ('TestNameID').AsInteger, FieldByName('TestPackageID')
+                  .AsInteger, 0, Gi_UserId, gi_Recommendation, gi_DoNotSync,
+                gi_BillingInvCtrl, FieldByName('TestPrice').AsFloat, Gs_BillNo,
+                FieldByName('Doccode').AsString, FieldByName('TestNameCode')
+                  .AsString, Ps_TodaysDate, Ps_TodaysTime, CB_PayType.Text,
+                Le_Remarks.Text, 'RE', Ps_TodaysDate, Ps_TodaysTime);
+
+          end;
+        end;
+        next;
+
+      end;
+    end;
+  end;
+
+  if gb_IncludePharmacyCharge then
+  begin
+    if (pi_MaxSaleMasterId > 0) or (pi_MaxReturnMasterId > 0) then
+    Begin
+      UpdatePharmacyTable;
+      lf_PharmacyCost := GetPharmacyCost;
+      if lf_PharmacyCost > 0 then
+        UpdatePharmacyCost(gi_PatientID, gi_InPatientID, lf_PharmacyCost,
+          'PHACH', Gs_BillNo, 'SALES')
+      Else
+        UpdatePharmacyCost(gi_PatientID, gi_InPatientID, lf_PharmacyCost,
+          'PHACH', Gs_BillNo, 'REFUND');
+    End;
+  end;
+
+  ls_FinalBillNo := Gs_BillNo;
+  // if pf_Deposit > 0 then
+  // SaveDepositDetail(0, pf_Deposit, 'ADVANCE', 'BILL', 'ADVANCE FOR BILL');
+  // if Pf_DepositDeducted > 0 then
+  // SaveDepositDetail(0, Pf_DepositDeducted, 'DEPOSIT', lbl_BenefitPackage.Caption, 'DEPOSIT ADJUSTED');
+  // Gs_BillNo := ls_FinalBillNo;
+  // Pf_FinalBillDiscount := 0;
+end;
+
+Function TForm_Billing.SaveServiceBill: Boolean;
+begin
+  Result := False;
+  { Save Bill Master }
+  try
+    DM_Hospital.DB.StartTransaction;
+    try
+      SaveServiceBill_Detail;
+    except
+      SaveServiceBill_Detail;
+    end;
+
+    ps_FinalBillNo := Gs_BillNo;
+
+    ps_DepositBillNo := '';
+    if Trim(Le_Payment.Text) = '' then
+      Le_Payment.Text := '0';
+    if (StrToFloat(Le_Payment.Text) > 0) and (Pi_SchemeID <> 22) then
+    Begin
+      SaveInvAdvanceDeposit(StrToFloat(Le_Payment.Text), 0, Le_Remarks.Text);
+      Label_DepositNo.Caption := Gs_BillNo;
+      Label_DepositNo.Visible := True;
+      Label11.Visible := True;
+      ps_DepositBillNo := Gs_BillNo;
+    End;
+
+    ps_DepositBillNo := '';
+    if Pi_SchemeID = 22 then // 22 - medicare
+    Begin
+      if (pf_CopayAmts > 0) then
+      Begin
+        SaveCoPayReceipt;
+        ps_DepositBillNo := Gs_ReceiptNo;
+      End;
+    End;
+
+    DM_Hospital.DB.Commit;
+    Result := True;
+    ShowDoneMessage;
+  except
+    DM_Hospital.DB.Rollback;
+  end;
+end;
+
+procedure TForm_Billing.SaveServiceBill_Detail;
+Var
+  Ps_TodaysDate, ls_RateType, Ls_NewSampleNo, ls_WorkingSatus,ps_PatientCategory: String;
+  ls_RefDocCode, ls_sendtoweb, ls_sendtosms, ls_sendtoemail, UPASSWORD: String;
+  Qty, i, J, li_Community, li_Scheme, li_QueueNo, li_LabDepId, li_RefDepID,
+    li_RefDocId, li_MKTGREFID: Integer;
+  QrySave: TOraQuery;
+  Qry: TOraQuery;
+
+begin
+  QrySave := TOraQuery.Create(nil);
+  if CB_Send2Web.Checked = True then
+    ls_sendtoweb := 'Y'
+  else
+    ls_sendtoweb := 'N';
+  if CB_Send2Sms.Checked = True then
+    ls_sendtosms := 'Y'
+  else
+    ls_sendtosms := 'N';
+  if CB_Send2Email.Checked = True then
+    ls_sendtoemail := 'Y'
+  else
+    ls_sendtoemail := 'N';
+  if gi_datesystem = 0 then
+    Ps_TodaysDate := TodaysDateVS
+  else
+    Ps_TodaysDate := TodaysDate;
+  if Trim(DBLCB_RefDocCode.Text) = '' then
+  Begin
+    ls_RefDocCode := '';
+    li_RefDocId := 0;
+    li_RefDepID := 0;
+  End
+  else
+  Begin
+    // ls_RefDocCode := DBLCB_RefDocCode.KeyValue;
+    if gs_IsReferralDeptInBilling = 'Y' then // Referred By Doctor
+    Begin
+      li_RefDepID := DBLCB_RefDocCode.KeyValue;
+      li_RefDocId := 0;
+    End
+    Else
+    Begin
+      li_RefDocId := DBLCB_RefDocCode.KeyValue;
+      li_RefDepID := 0;
+    End;
+  End;
+  if CB_Patientcategory.ItemIndex=0 then
+  begin
+       ps_PatientCategory := CB_Patientcategory.Text;
+  end
+  else if CB_Patientcategory.ItemIndex=1 then
+  begin
+       ps_PatientCategory := CB_Patientcategory.Text;
+  end;
+
+  if Trim(DBLCB_MKTGReferral.Text) <> '' then
+    li_MKTGREFID := DBLCB_MKTGReferral.KeyValue
+  else
+    li_MKTGREFID := 0;
+
+  if Trim(DBLCB_Scheme.Text) = '' then
+  begin
+    li_Scheme := 0;
+    li_Community := 0;
+  end
+  else
+  Begin
+    li_Scheme := DBLCB_Scheme.KeyValue;
+    li_Community := QueryScheme.FieldByName('SCHE_CommunityId').AsInteger;
+  End;
+
+  J := 0;
+  i := 0;
+  SetLength(Arr_SampleNo, 1);
+
+  if gs_BillType = 'OPBILL' then
+    ls_WorkingSatus := 'REG'
+  Else
+    ls_WorkingSatus := 'INPATIENT';
+
+  pb_IslabDep := False;
+  ls_RateType := CB_BILLTYPE.KeyValue;
+
+  // CheckServiceBillMaster;
+  // UPASSWORD := MakeRNDString('5WCNtuYIr+UH7Bb2', 8);
+  if gi_BillCase = 1 then
+    Pb_ServiceBillMasterExist := True;
+
+  { SaveServiceBillMaster(PATIENTID, INPATIENTID, BILLBY, QUEUENO, VISITID: Integer;
+    GROSSTOTAL, TAXAMT, DISCOUNTTOTAL: Double; INITIAL, BILLDATE, BILLTIME, REFDOCCODE, BILLTYPE, PAYTYPE, RATETYPE,
+    PATIENTTYPE, REMARKS, MacID, SEND2WEB, SEND2SMS, SEND2EMAIL, UPASSWORD: String); stdcall; }
+
+  if not Pb_ServiceBillMasterExist then
+  Begin
+    Try
+      SaveServiceBillMaster(gi_PatientID, gi_InPatientID, Gi_UserId,
+        li_RefDocId, gi_VisitId, pf_grandtotal, pf_SvrTax,
+        Pf_FinalBillDiscount, pf_NetTotal, pf_SERVICECHARGETOTAL,
+        pf_DOLLAREXRATE, pf_DOLLARGROSSTOTAL, pf_DOLLARTAXAMT,
+        pf_DOLLARDISCOUNTTOTAL, pf_DOLLARNETTOTAL, pf_DOLLORSERVICECHARGETOTAL,
+        'TP', Ps_TodaysDate, Ps_TodaysTime, ps_BillType, CB_PayType.Text,
+        ls_RateType, ls_RateType, Le_Remarks.Text, ls_sendtoweb, ls_sendtosms,
+        ls_sendtoemail,ps_PatientCategory); //GetPatientCagetory(gi_PatientID)
+    Except
+      SaveServiceBillMaster(gi_PatientID, gi_InPatientID, Gi_UserId,
+        li_RefDocId, gi_VisitId, pf_grandtotal, pf_SvrTax,
+        Pf_FinalBillDiscount, pf_NetTotal, pf_SERVICECHARGETOTAL,
+        pf_DOLLAREXRATE, pf_DOLLARGROSSTOTAL, pf_DOLLARTAXAMT,
+        pf_DOLLARDISCOUNTTOTAL, pf_DOLLARNETTOTAL, pf_DOLLORSERVICECHARGETOTAL,
+        'TP', Ps_TodaysDate, Ps_TodaysTime, ps_BillType, CB_PayType.Text,
+        ls_RateType, ls_RateType, Le_Remarks.Text, ls_sendtoweb, ls_sendtosms,
+        ls_sendtoemail,ps_PatientCategory);//GetPatientCagetory(gi_PatientID)
+    End;
+  End
+  else
+    UpdateServiceBillMaster(Gi_UserId, pf_grandtotal, pf_SvrTax, pf_discount,
+      Gs_BillNo, Ps_TodaysDate, Ps_TodaysTime, ls_RefDocCode, ps_BillType,
+      CB_PayType.Text, ls_RateType, 'GENERAL', Le_Remarks.Text);
+
+  with QrySave do
+  begin
+    Close;
+    DatabaseName := gs_temppath;
+    SQL.Add(' Select * from Billing ');
+    Open;
+    while not eof do
+    begin
+      (* SaveServiceBillDetail(PATIENTID, INPATIENTID, PATIENTTESTID, BILLBY, DISCOMMUNITYID,
+        DISSCHEMEID, CRCOMMUNITYID, CRSCHEMEID, DEPID,CLINICALDEPID,REFDEPID,DOCID, REFDOCID, EMRDUTYDOCID, ACCHEADID: Integer;
+        AMOUNT, QTY, VATAMT, TOTALAMOUNT, DISPER, DISCOUNT, SERVICECHARGE, DOLLAREXRATE,DOLLARAMOUNT,DOLLARVATAMT,DOLLARTOTALAMOUNT,DOLLARDISCOUNT,DOLLARSERVICECHARGE: Double;
+        BILLNO, BILLDATE, BILLTIME,SERVICE, SERVICETYPE, BILLTYPE, PAYTYPE, RATETYPE, PATIENTTYPE, MEMBERNO,
+        ISVATABLETEST, ISDISCOUNTABLETEST, ISFRACTIONABLETEST, ISPACKAGETEST,TESTNAMETYPE,ORGBILLCATEGORY: String); stdcall; *)
+
+      Qty := FieldByName('Qty').AsInteger;
+      Try
+        SaveServiceBillDetail(gi_PatientID, gi_InPatientID, 0, Gi_UserId,
+          li_Community, li_Scheme, li_Community, li_Scheme, FieldByName('DepID').AsInteger, Pi_ClinicalDepId, li_RefDepID,
+           FieldByName('DocId').AsInteger, li_RefDocId, li_MKTGREFID, 0, FieldByName('AccountID').AsInteger,
+           FieldByName('REFERRALFRACTIONID').AsInteger, FieldByName('DOCREFERRALFRACTIONID').AsInteger, FieldByName('TestPrice').AsFloat,
+           Qty, FieldByName('SvrTax').AsFloat, FieldByName('NetTotal').AsFloat, FieldByName('Disper').AsFloat,
+           FieldByName('Discount').AsFloat, pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE,pf_DOLLARAMOUNT, pf_DOLLARVATAMT, pf_DOLLARTOTALAMOUNT,
+           pf_DOLLARDISCOUNT, pf_DOLLARSERVICECHARGE, FieldByName('REFFRACTIONPER').AsFloat, FieldByName('REFFRACTIONAMOUNT').AsFloat,
+           FieldByName('DOCREFFRACTIONPER').AsFloat, FieldByName('DOCREFFRACTIONAMOUNT').AsFloat, Gs_BillNo, Ps_TodaysDate,
+           Ps_TodaysTime, FieldByName('TestNameCode').AsString, FieldByName('TestName').AsString, ps_BillType, CB_PayType.Text, ls_RateType,
+           ls_RateType, gs_memberNo, '', '', FieldByName('isfractionabletest').AsString, '', '', FieldByName('ORGBILLCATEGORY').AsString,
+           FieldByName('ISOT').AsString,gs_EMRNoForMedPT,ps_PatientCategory); //GetPatientCagetory(gi_PatientID)
+      Except
+        SaveServiceBillDetail(gi_PatientID, gi_InPatientID, 0, Gi_UserId,
+          li_Community, li_Scheme, li_Community, li_Scheme, FieldByName('DepID').AsInteger, Pi_ClinicalDepId, li_RefDepID,
+           FieldByName('DocId').AsInteger, li_RefDocId, li_MKTGREFID, 0, FieldByName('AccountID').AsInteger,
+           FieldByName('REFERRALFRACTIONID').AsInteger, FieldByName('DOCREFERRALFRACTIONID').AsInteger, FieldByName('TestPrice').AsFloat,
+           Qty, FieldByName('SvrTax').AsFloat, FieldByName('NetTotal').AsFloat, FieldByName('Disper').AsFloat,
+           FieldByName('Discount').AsFloat, pf_SERVICECHARGETOTAL, pf_DOLLAREXRATE,pf_DOLLARAMOUNT, pf_DOLLARVATAMT, pf_DOLLARTOTALAMOUNT,
+           pf_DOLLARDISCOUNT, pf_DOLLARSERVICECHARGE, FieldByName('REFFRACTIONPER').AsFloat, FieldByName('REFFRACTIONAMOUNT').AsFloat,
+           FieldByName('DOCREFFRACTIONPER').AsFloat, FieldByName('DOCREFFRACTIONAMOUNT').AsFloat, Gs_BillNo, Ps_TodaysDate,
+           Ps_TodaysTime, FieldByName('TestNameCode').AsString, FieldByName('TestName').AsString, ps_BillType, CB_PayType.Text, ls_RateType,
+           ls_RateType, gs_memberNo, '', '', FieldByName('isfractionabletest').AsString, '', '', FieldByName('ORGBILLCATEGORY').AsString,
+           FieldByName('ISOT').AsString,gs_EMRNoForMedPT,ps_PatientCategory); //GetPatientCagetory(gi_PatientID)
+      End;
+
+      if FieldByName('ISPACKAGETEST').AsString = 'Y' then
+      Begin
+        With Query_PackageTest do
+        Begin
+          Close;
+          SQL.Clear;
+          SQL.Add(' Select TPD.TestNameId,TN.TENA_TESTNAMECODE TESTNAMECODE,TN.TENA_DepId DEPID,TN.TENA_TestName TestName From TestPackageDetail TPD,HS_TENA_TestName TN where');
+          SQL.Add(' TPD.TestNameId=TN.TEna_TestNameId and');
+          SQL.Add(' TPD.TestPackageId In (Select Tena_TestNameID From Hs_Tena_TestName where Tena_TestNameCode=' + #39 + QrySave.FieldByName('TestNameCode').AsString + #39 + ')');
+          Open;
+          First;
+          while Not eof do
+          Begin
+            (*
+              Try
+              SaveServiceBillDetailPackage(gi_PatientID, gi_InPatientID, 0, gi_UserID, li_Community, li_Scheme, Query_PackageTest.FieldByName('DepID').AsInteger,
+              Pi_ClinicalDepId,li_RefDepId, 0, ProgressStatus, 1, Qty, 0,0, 0, 0, Gs_BillNo, ps_TodaysDate,
+              ps_TodaysTime, Query_PackageTest.FieldByName('TestNameCode').AsString, Query_PackageTest.FieldByName('TestName').AsString,
+              ps_BillType, CB_PayType.Text,ls_RateType, ls_RateType, Gs_MemberNo, ls_RefDocCode, ls_RefDocCode, '', '', '', '');
+              Except
+              SaveServiceBillDetailPackage(gi_PatientID, gi_InPatientID, 0, gi_UserID, li_Community, li_Scheme, FieldByName('DepID').AsInteger,
+              Pi_ClinicalDepId,li_RefDepId, 0, ProgressStatus, 1, Qty, 0, 0, 0, 0, Gs_BillNo, ps_TodaysDate,
+              ps_TodaysTime, FieldByName('TestNameCode').AsString, FieldByName('TestName').AsString, ps_BillType, CB_PayType.Text,
+              ls_RateType, ls_RateType, Gs_MemberNo, ls_RefDocCode, ls_RefDocCode, '', '', '', '');
+
+              End; *)
+
+            Try
+              SavePatientTest(0, 0, gi_ServiceBillDetailid, gi_PatientID,
+                gi_InPatientID, Pi_ClinicalDepId, Query_PackageTest.FieldByName
+                  ('DepID').AsInteger, QrySave.FieldByName('DOCID').AsInteger,
+                Query_PackageTest.FieldByName('TestNameID').AsInteger, 0, 0,
+                Gi_UserId, gi_Billed, gi_DoNotSync, gi_BillingInvCtrl, 0,
+                Gs_BillNo, QrySave.FieldByName('Doccode').AsString,
+                Query_PackageTest.FieldByName('TestNameCode').AsString,
+                Ps_TodaysDate, Ps_TodaysTime, CB_PayType.Text, Le_Remarks.Text,
+                ls_WorkingSatus, Ps_TodaysDate, Ps_TodaysTime);
+            Except
+              SavePatientTest(0, 0, gi_ServiceBillDetailid, gi_PatientID,
+                gi_InPatientID, Pi_ClinicalDepId, Query_PackageTest.FieldByName
+                  ('DepID').AsInteger, QrySave.FieldByName('DOCID').AsInteger,
+                Query_PackageTest.FieldByName('TestNameID').AsInteger, 0, 0,
+                Gi_UserId, gi_Billed, gi_DoNotSync, gi_BillingInvCtrl, 0,
+                Gs_BillNo, QrySave.FieldByName('Doccode').AsString,
+                Query_PackageTest.FieldByName('TestNameCode').AsString,
+                Ps_TodaysDate, Ps_TodaysTime, CB_PayType.Text, Le_Remarks.Text,
+                ls_WorkingSatus, Ps_TodaysDate, Ps_TodaysTime);
+            End;
+            Query_PackageTest.next;
+          End;
+        End;
+      End;
+
+      if (Trim(QrySave.FieldByName('DepType').AsString) = 'P') or
+        (Trim(FieldByName('DepType').AsString) = 'R') or
+        (Trim(FieldByName('DepType').AsString) = 'H') then
+      // P- Pathological, R- Radiological, H- Histological
+      begin
+        pb_IslabDep := True;
+        if FieldByName('LabDepID').AsInteger = 0 then
+          li_LabDepId := FieldByName('DepID').AsInteger
+        else
+          li_LabDepId := FieldByName('LabDepID').AsInteger;
+
+        if FieldByName('TestNameId').AsInteger = 958 then
+        // Sepecial Case of Bone Marrow Biopsy
+          Qty := Qty * 2; // While Doing Reporting needs two record In manipal for this particular test billing.
+
+        for i := 0 to Qty - 1 do
+        begin
+
+          (* SavePatientTest(RefPatientTestId, BillDetailID, SERVICEBILLDETAILID, PATIENTID, INPATIENTID, RfDepid, DEPID, TestNameID,
+            TestPackageID, PRINTCOUNT, DATAPOSTBY, TestProgressStatus, SyncStatus, ControlStatus: Integer; TestAmount: Double;
+            BILLNO, DOCCODE, TestNameCode, TestDate, TestTime, PayStatus, REMARKS, WorkingStatus, DATAPOSTDATE, DATAPOSTTIME: String); *)
+
+          Try
+            SavePatientTest(0, 0, gi_ServiceBillDetailid, gi_PatientID,
+              gi_InPatientID, Pi_ClinicalDepId, li_LabDepId,
+              DBLCB_RefDocCode.KeyValue, FieldByName('TestNameID').AsInteger,
+              0, 0, Gi_UserId, gi_Recommendation, gi_DoNotSync,
+              gi_BillingInvCtrl, FieldByName('TestPrice').AsFloat, Gs_BillNo,
+              FieldByName('Doccode').AsString, FieldByName('TestNameCode')
+                .AsString, Ps_TodaysDate, Ps_TodaysTime, CB_PayType.Text,
+              Le_Remarks.Text, ls_WorkingSatus, Ps_TodaysDate, Ps_TodaysTime);
+          Except
+            SavePatientTest(0, 0, gi_ServiceBillDetailid, gi_PatientID,
+              gi_InPatientID, Pi_ClinicalDepId, li_LabDepId,
+              DBLCB_RefDocCode.KeyValue, FieldByName('TestNameID').AsInteger,
+              0, 0, Gi_UserId, gi_Recommendation, gi_DoNotSync,
+              gi_BillingInvCtrl, FieldByName('TestPrice').AsFloat, Gs_BillNo,
+              FieldByName('Doccode').AsString, FieldByName('TestNameCode')
+                .AsString, Ps_TodaysDate, Ps_TodaysTime, CB_PayType.Text,
+              Le_Remarks.Text, ls_WorkingSatus, Ps_TodaysDate, Ps_TodaysTime);
+          End;
+
+          IF gs_IsSampleCollectionPostAtBillingTime = 'Y' Then
+          // Sp. Case for Manipal Billing
+          Begin
+            try
+              if i = 0 then
+              begin
+                if Trim(ps_SampleNo) = '' then
+                  ps_SampleNo := GetNextSampleNo;
+                SaveSampleCollection(gi_PatientTestID, gi_PatientID, FieldByName
+                    ('TestNameID').AsInteger, Gi_UserId, Gs_BillNo,
+                  ps_SampleNo, Ps_TodaysDate, Ps_TodaysTime);
+                Arr_SampleNo[i] := ps_SampleNo;
+              end
+              else
+              begin
+                Ls_NewSampleNo := GetNextSampleNo;
+                SaveSampleCollection(gi_PatientTestID, gi_PatientID, FieldByName
+                    ('TestNameID').AsInteger, Gi_UserId, Gs_BillNo,
+                  Ls_NewSampleNo, Ps_TodaysDate, Ps_TodaysTime);
+                SetLength(Arr_SampleNo, length(Arr_SampleNo) + 1);
+                Arr_SampleNo[J + 1] := Ls_NewSampleNo;
+                Inc(J);
+              end;
+            except
+              if i = 0 then
+              begin
+                if Trim(ps_SampleNo) = '' then
+                  ps_SampleNo := GetNextSampleNo;
+                SaveSampleCollection(gi_PatientTestID, gi_PatientID, FieldByName
+                    ('TestNameID').AsInteger, Gi_UserId, Gs_BillNo,
+                  ps_SampleNo, Ps_TodaysDate, Ps_TodaysTime);
+              end
+              else
+              begin
+                for J := 1 to Qty do
+                begin
+                  Ls_NewSampleNo := GetNextSampleNo;
+                  SaveSampleCollection(gi_PatientTestID, gi_PatientID,
+                    FieldByName('TestNameID').AsInteger, Gi_UserId, Gs_BillNo,
+                    Ls_NewSampleNo, Ps_TodaysDate, Ps_TodaysTime);
+                end;
+              end;
+            end;
+          End;
+        end;
+      end;
+
+      if gi_BillCase = 0 then
+      Begin
+        SaveDoctorFraction(FieldByName('isfractionabletest').AsString,
+          FieldByName('TestNameCode').AsString, 0, 0);
+      End;
+      next;
+    end;
+  end;
+end;
+
+procedure TForm_Billing.SBLeftClick(Sender: TObject);
+begin
+  GB_OldBill.Width := 640;
+  SBRight.left := 612;
+  SBRight.Visible := True;
+  SBLeft.left := 612;
+  SBLeft.Visible := False;
+end;
+
+procedure TForm_Billing.SBRightClick(Sender: TObject);
+begin
+  GB_OldBill.Width := 874;
+  SBRight.left := 845;
+  SBRight.Visible := False;
+  SBLeft.left := 845;
+  SBLeft.Visible := True;
+end;
+
+procedure TForm_Billing.SPB_AddItemClick(Sender: TObject);
+Var
+  Qty, TestPrice, TestPriceWithDis, SvrTaxWithDis, TestPriceWithTaxWithDis,
+    TestPriceWithTax, SvrTax: Double;
+  li_MaxSno: Integer;
+  DISPER, Discount: Double;
+begin
+  ps_DocCode := Edit_DocCode.Text;
+  if Edit_Qty.Text = '' then
+    Edit_Qty.Text := '1';
+  with Table_Billing do
+  begin
+    Close;
+    DatabaseName := gs_temppath;
+    TableName := 'Billing.db';
+    Open;
+  end;
+  if (Edit_TestName.Text = '') or (Edit_Qty.Text = '') or
+    (Strtoint(Edit_Qty.Text) <= 0) then
+  begin
+    MsgBox(1006, 0, '', '', '');
+    if Edit_TestName.Text = '' then
+      Edit_TestName.SetFocus
+    else
+      Edit_Qty.SetFocus;
+    Exit;
+  end;
+  if Trim(Edit_Disper.Text) = '' then
+    Edit_Disper.Text := '0';
+  if StrToFloat(Edit_Disper.Text) > 100 then
+  Begin
+    MessageDlg(' Dis % Shouldn''t Be More Than 100.', mtWarning, [MbOk], 0);
+    Edit_Disper.SetFocus;
+    Exit;
+  End;
+  Qty := StrToFloat(Edit_Qty.Text);
+  if (Query_TestName.FieldByName('TestNameCode').AsString = 'ONE001') and
+    (RB_IPBILL.Checked = True) then
+  Begin
+    MessageDlg('Please Do OP Billing For Blood Bag.', mtWarning, [MbOk], 0);
+    Edit_TestNameCode.SetFocus;
+    Exit;
+  End;
+  if Edit_UnitPrice.Text <> '' then
+    TestPrice := StrToFloat(Edit_UnitPrice.Text)
+  else
+    TestPrice := Query_TestName.FieldByName('TestPrice').AsFloat;
+
+     if StrToFloat(Edit_UnitPrice.Text)=0 then
+     Begin
+          MessageDlg('TestPrice Should not be 0.', mtWarning, [MbOk], 0);
+          Edit_UnitPrice.SetFocus;
+          Exit;
+     End;
+
+  (* if Trim(DBLCB_Scheme.Text)<>'' then
+    begin
+    DISPER:=GetSchemeTestWiseDiscount(DBLCB_Scheme.KeyValue,Query_TestName.FieldByName('TestNameCode').AsString,Query_TestName.FieldByName('PatientTypeCode').AsString);
+    (*if Query_TestName.FieldByName('TestNameCode').AsString = 'PACK' then
+    DISPER := GetSchemeDiscount(Query_TestName.FieldByName('TestNameID').AsInteger, DBLCB_Scheme.KeyValue, 'PACKAGE')
+    else
+    DISPER := GetSchemeDiscount(Query_TestName.FieldByName('TestNameID').AsInteger, DBLCB_Scheme.KeyValue, 'TEST') *)
+  (* end
+    else
+    begin
+    if (Gi_MemberID > 0) and (Pb_NoDiscount = False) then
+    begin
+    if Query_TestName.FieldByName('TestNameCode').AsString = 'PACK' then
+    DISPER := GetMemberDiscount(Gi_MemberID, Query_TestName.FieldByName('TestNameID').AsInteger, 'PACKAGE')
+    else
+    DISPER := GetMemberDiscount(Gi_MemberID, Query_TestName.FieldByName('TestNameID').AsInteger, 'TEST');
+    end;
+
+    // if DBLCB_Scheme.KeyValue <> Null then
+    // begin
+    // if Query_TestName.FieldByName('TestNameCode').AsString = 'PACK' then
+    // DISPER := GetSchemeDiscount(Query_TestName.FieldByName('TestNameID').AsInteger, DBLCB_Scheme.KeyValue, 'PACKAGE')
+    // else
+    // DISPER := GetSchemeDiscount(Query_TestName.FieldByName('TestNameID').AsInteger, DBLCB_Scheme.KeyValue, 'TEST')
+    // end;
+    end; *)
+
+  if Query_TestName.FieldByName('TestPrice').AsFloat > 0 then
+  Begin
+    SvrTax := Query_TestName.FieldByName('VATAMT').AsFloat;
+    if Query_TestName.FieldByName('IsVatable').AsString = 'N' then
+      SvrTax := 0;
+    TestPriceWithTax := TestPrice + SvrTax;
+  End
+  Else
+  Begin
+    if Query_TestName.FieldByName('IsVatable').AsString = 'Y' then
+    Begin
+      SvrTax := (gf_TaxPercent / 100) * TestPrice;
+      TestPriceWithTax := TestPrice + ((gf_TaxPercent / 100) * TestPrice);
+    End
+    Else
+    Begin
+      SvrTax := 0;
+      TestPriceWithTax := TestPrice; // + ((gf_TaxPercent / 100) * TestPrice);
+    End;
+  End;
+  if Edit_Disper.Text <> '' then
+    DISPER := StrToFloat(Edit_Disper.Text);
+
+  if (DISPER > 0) then
+  begin
+    Discount := (DISPER / 100) * TestPrice;
+    TestPriceWithDis := TestPrice - Discount;
+    SvrTaxWithDis := (gf_TaxPercent / 100) * TestPriceWithDis;
+    TestPriceWithTaxWithDis := TestPriceWithDis + SvrTaxWithDis;
+    Le_Discount.Enabled := False;
+    Le_Disper.Enabled := False;
+  end;
+
+  with Table_Billing do
+  begin
+    Append;
+    FieldByName('SNO').AsInteger := GetMax_TempSno;
+    FieldByName('DepID').AsInteger := Query_TestName.FieldByName('DepID').AsInteger;
+
+    if Query_TestName.FieldByName('LABDEPID').AsInteger > 0 then
+    Begin
+      FieldByName('DepType').AsString := 'P';
+      FieldByName('LabDepID').AsInteger := Query_TestName.FieldByName('LabDepID').AsInteger;
+    End
+    else
+    begin
+      Table_Billing.FieldByName('DepType').AsString :=Query_TestName.FieldByName('DepType').AsString;
+      FieldByName('LabDepID').AsInteger := 0;
+    end;
+
+    FieldByName('PatientTypeCode').AsString := ps_PatientTypeCode;
+    FieldByName('TestNameID').AsInteger := Query_TestName.FieldByName('TestNameID').AsInteger;
+    FieldByName('ISPACKAGETEST').AsString := Query_TestName.FieldByName('ISPACKAGETEST').AsString;
+    if Query_TestName.FieldByName('TestNameCode').AsString = 'PACK' then
+      FieldByName('TestPackageID').AsInteger := Query_TestName.FieldByName('TestNameID').AsInteger;
+    // LoadTestIDInVariable(Query_TestName.FieldByName('TestNameID').AsString + Query_TestName.FieldByName('TestNameCode').AsString);
+    LoadTestIDInVariable(Query_TestName.FieldByName('TestNameID').AsString);
+    FieldByName('Doccode').AsString := ps_DocCode;
+    FieldByName('DocID').AsInteger := pi_DocId;
+    FieldByName('TestNameCode').AsString := StringReplace(Query_TestName.FieldByName('TestNameCode').AsString, '''', '''''',[rfReplaceAll]);
+    FieldByName('TestName').AsString := Query_TestName.FieldByName('TestName').AsString;
+    FieldByName('Isot').AsString := Query_TestName.FieldByName('IsOT').AsString;
+    FieldByName('TestPrice').AsFloat := TestPrice;
+    FieldByName('TestPriceWithTax').AsFloat := TestPriceWithTax;
+    FieldByName('TotalPrice').AsFloat := StrToFloat(FormatFloat('#0.00', (TestPrice * Qty)));
+    if (DISPER > 0) and (Gs_TaxRule = 'TAD') then
+      FieldByName('SvrTax').AsFloat := StrToFloat
+        (FormatFloat('#0.00', SvrTaxWithDis * Qty))
+    else
+      FieldByName('SvrTax').AsFloat := StrToFloat
+        (FormatFloat('#0.00', SvrTax * Qty));
+
+    FieldByName('AccountID').AsInteger := getaccounthead(Query_TestName.FieldByName('TestNameID').AsInteger);
+    FieldByName('OrgBillCategory').AsString := Query_TestName.FieldByName('OrgBillCategory').AsString;
+    FieldByName('Disper').AsFloat := StrToFloat(FormatFloat('#0.00', DISPER));
+    FieldByName('Discount').AsFloat := StrToFloat(FormatFloat('#0.00', Discount * Qty));
+    FieldByName('ISFRACTIONABLETEST').AsString := Query_TestName.FieldByName('ISFRACTIONABLEITEM').AsString;
+    FieldByName('Qty').AsFloat := Qty;
+    if (DISPER > 0) then
+    begin
+      if (Gs_TaxRule = 'TAD') then
+        FieldByName('NetTotal').AsFloat := StrToFloat
+          (FormatFloat('#0.00', (TestPriceWithTaxWithDis * Qty)))
+      else
+        FieldByName('NetTotal').AsFloat := StrToFloat
+          (FormatFloat('#0.00', (TestPriceWithTax - Discount) * Qty));
+    end
+    else
+      FieldByName('NetTotal').AsFloat := StrToFloat
+        (FormatFloat('#0.00', (TestPriceWithTax * Qty)));
+
+    HospitalSpecificItemAdditionCondition;
+
+    Post;
+    pi_TotalItems := pi_TotalItems + 1;
+    Lbl_TotalItems.Caption := IntToStr(pi_TotalItems);
+  end;
+
+  pb_IsFinalSelectedTestName := False;
+
+  if gi_HospitalId = 562 then // 562 - Manipal Case
+  Begin
+    if DBLCB_Scheme.KeyValue = '22' then // 22 - Medicare Scheme
+      GetCoPaymentAmt;
+  End;
+
+  { Doctor Fraction }
+  IF (gs_ISFractionSharingActive = 'Y') Then
+  Begin
+    IF Query_TestName.FieldByName('IsFractionableItem').AsString = 'Y' Then
+    Begin
+      LoadServiceWiseFraction(Query_TestName.FieldByName('TestNameCode')
+          .AsString, Query_TestName.FieldByName('TNCategoryCode').AsString,
+        TestPrice, Qty, pi_DocId, Query_TestName.FieldByName('DepID')
+          .AsInteger, Query_TestName.FieldByName('TestNameId').AsInteger);
+      Display_Frct_Involve_Person(Query_TestName.FieldByName
+          ('IsFractionableItem').AsString, Query_TestName.FieldByName
+          ('TestNameID').AsInteger);
+    End
+    Else
+    Begin
+      Label_Fraction.Visible := False;
+      DBGrid_DocInvolved.Visible := False;
+    End;
+  End
+  else
+  begin
+    Label_Fraction.Visible := False;
+    DBGrid_DocInvolved.Visible := False;
+  end;
+
+  CalculateLabels;
+
+  Edit_TestName.Clear;
+  Edit_Qty.Clear;
+  Edit_UnitPrice.Clear;
+  Edit_TestNameCode.Clear;
+
+  Query_TempBilling.Close;
+  Query_TempBilling.DatabaseName := gs_temppath;
+  Query_TempBilling.Open;
+
+  if gs_IsDoctorCompForBilling = 'Y' then
+  Begin
+    Edit_DocCode.Text := 'HOS01';
+    //Edit_DocCode.SetFocus;
+    DBGrid_Doctor.Visible := False;
+  End
+  Else
+    Edit_TestNameCode.SetFocus;
+  DBGrid_Search.Visible := False;
+  if Cb_DeductFromDeposit.Checked = True then
+    Cb_DeductFromDepositClick(Sender);
+end;
+
+procedure TForm_Billing.HospitalSpecificItemAdditionCondition;
+Begin
+  if gi_HospitalId = 562 then // 562 - Manipal
+  Begin
+    if DBLCB_Scheme.KeyValue = '22' then // 22 - Medicare Scheme
+    begin
+      if (Query_TestName.FieldByName('TestNameID').AsInteger <> 0) or
+        (Query_TestName.FieldByName('TestNameID').AsInteger <> Null) then
+      begin
+        pf_PercentageAmt := 0;
+        CheckCoPaymentItem(Query_TestName.FieldByName('TestNameID').AsInteger,
+          ps_isCopaymentitem);
+        if (ps_isCopaymentitem = 'Y') and (pf_PercentageAmt <> 0) then
+        begin
+          Table_Billing.FieldByName('IsCoPaymentItem').AsString :=
+            ps_isCopaymentitem;
+          Table_Billing.FieldByName('CoPaymentItemPercent').AsFloat :=
+            pf_PercentageAmt;
+        end
+        else
+        begin
+          Table_Billing.FieldByName('IsCoPaymentItem').AsString :=
+            ps_isCopaymentitem;
+          Table_Billing.FieldByName('CoPaymentItemPercent').AsFloat :=
+            pf_PercentageAmt;
+        end;
+      end;
+    end;
+  End;
+End;
+
+procedure TForm_Billing.SPB_ViewDocumentClick(Sender: TObject);
+begin
+  (* Try
+    Form_ImageUpload:=TForm_ImageUpload.Create(Nil);
+    With Form_ImageUpload do
+    Begin
+    SPB_LoadImage.Visible:=False;
+    SPB_DeleteImage.Visible:=False;
+    Form_ImageUpload.ShowModal;
+    End;
+    Finally
+    Form_ImageUpload.Free;
+    End; *)
+end;
+
+procedure TForm_Billing.SPB_FractionAdditionClick(Sender: TObject);
+begin
+  IF Query_TempBilling.FieldByName('ISFractionableTest').AsString = 'N' Then
+  Begin
+    MessageDlg('Sorry ! This is not Fractional Item.', mtInformation, [MbOk],
+      0);
+    Exit;
+  End;
+
+  try
+    Form_DrInvolveInOperation := TForm_DrInvolveInOperation.Create(nil);
+    With Form_DrInvolveInOperation do
+    begin
+      TestNameCode := Query_TempBilling.FieldByName('TestNameCode').AsString;
+      // Self.ps_TestNameCode;
+      ps_PatientTypeCode := Self.ps_PatientTypeCode;
+      Called_From := 'OPBilling';
+      ShowModal;
+    end;
+  finally
+    Form_DrInvolveInOperation.Free;
+  end;
+
+  Display_Frct_Involve_Person(Query_TempBilling.FieldByName
+      ('ISFractionableTest').AsString, Table_Billing.FieldByName('TestNameID')
+      .AsInteger);
+  (* With Query_GetFrctInvoPerson do
+    begin
+    Close;
+    DatabaseName:=gs_TempPath;
+    SQL[2]:=' and TestNameCode='+#39+ps_TestNameCode+#39;
+    Open;
+    end; *)
+end;
+
+procedure TForm_Billing.SPB_LeftClick(Sender: TObject);
+begin
+  GB_OldTest.Width := 640;
+  SPB_Right.left := 612;
+  SPB_Right.Visible := True;
+  SPB_Right.left := 612;
+  SPB_Right.Visible := False;
+end;
+
+procedure TForm_Billing.SPB_MembernoClick(Sender: TObject);
+var key:Char;
+begin
+     Try
+          Application.CreateForm(TForm_StaffMemberSearch,Form_StaffMemberSearch);
+          With Form_StaffMemberSearch do
+          Begin
+               ShowModal;
+          End;
+     Finally
+          ps_MemberNo:=Form_StaffMemberSearch.ps_MemberNo;
+          pi_PatientId:=Form_StaffMemberSearch.pi_PatientId;
+          ps_IsDependent:=Form_StaffMemberSearch.ps_IsDependent;
+          pi_SchemeId:=Form_StaffMemberSearch.pi_SchemeId;
+          pi_CommunityId:=Form_StaffMemberSearch.pi_communityid;
+          Le_MemberNo.Text:=ps_MemberNo;
+          gs_memberNo:=ps_MemberNo;
+          Le_HosNo.text:=inttostr(pi_patientid);
+          Form_StaffMemberSearch.Free;
+     End;
+     key:=#13;
+     IF Trim(Le_MemberNo.Text)<>'' Then
+          Le_MemberNoKeyPress(Sender,key)
+     Else
+          Le_HosNo.SetFocus;
+
+
+
+     IF ps_MemberNo<>'' Then
+     Begin
+          DBLCB_Scheme.KeyValue:=pi_SchemeId; // Dependent
+          DBLCB_SchemeClick(Sender);
+     End;
+end;
+
+procedure TForm_Billing.SPB_RightClick(Sender: TObject);
+begin
+  GB_OldTest.Width := 874;
+  SPB_Right.left := 845;
+  SPB_Right.Visible := False;
+  SPB_Right.left := 845;
+  SPB_Left.Visible := True;
+end;
+
+procedure TForm_Billing.SpeedButton2Click(Sender: TObject);
+begin
+  if FontDialog1.Execute then
+  begin
+    DBGrid_Search.Font.Style := FontDialog1.Font.Style;
+    DBGrid_Search.Font.Name := FontDialog1.Font.Name;
+    DBGrid_Search.Font.Color := FontDialog1.Font.Color;
+    DBGrid_Search.Font.Size := FontDialog1.Font.Size;
+  end;
+end;
+
+procedure TForm_Billing.BB_TestSelectionClick(Sender: TObject);
+begin
+  try
+    Form_Departmentlist := TForm_Departmentlist.Create(nil);
+    Form_Departmentlist.ShowModal;
+  finally
+    Form_Departmentlist.Free;
+    Timer1.Enabled := True;
+  end;
+end;
+
+procedure TForm_Billing.BitBtn_AdmissionClick(Sender: TObject);
+begin
+  Try
+    Form_PatientAdmission := TForm_PatientAdmission.Create(Nil);
+    Form_PatientAdmission.ShowModal;
+  finally
+    Form_PatientAdmission.Free;
+  End;
+end;
+
+procedure TForm_Billing.BitBtn_BarCodeClick(Sender: TObject);
+begin
+  if MessageDlg('Are you sure to re-print barcode sticker ?', mtConfirmation,
+    [mbYes, mbNo], 0) = mrYes then
+    ReprintSticker(Query_BillList.FieldByName('BillNo').AsString, gi_PatientID,
+      CB_Preview);
+end;
+
+procedure TForm_Billing.BitBtn_DepositClick(Sender: TObject);
+begin
+     Try
+          Form_Deposits := TForm_Deposits.Create(Nil);
+          With Form_Deposits do
+          Begin
+            Form_Deposits.ShowModal;
+          End;
+     Finally
+          Form_Deposits.Free;
+     End;
+end;
+
+procedure TForm_Billing.BitBtn_DischargeBillingClick(Sender: TObject);
+begin
+     Try
+          Form_DischargeBilling := TForm_DischargeBilling.Create(Nil);
+          With Form_DischargeBilling do
+          Begin
+               if RB_IPBILL.Checked = True then
+                    Form_DischargeBilling.ps_AccessFrom := 'IPBILLING'
+               Else
+                    Form_DischargeBilling.ps_AccessFrom := 'BILLING';
+               Form_DischargeBilling.ShowModal;
+          End;
+     Finally
+          Form_DischargeBilling.Free;
+     End;
+end;
+
+procedure TForm_Billing.BitBtn_RePrintIPAdvanceReceiptClick(Sender: TObject);
+begin
+     Gs_BillNo := Query_BillList.FieldByName('BillNo').AsString;
+     gi_PatientID := Query_BillList.FieldByName('PatientId').AsInteger;
+     if (Copy(Gs_BillNo, 1, 2) = 'CS') or (Copy(Gs_BillNo, 1, 2) = 'ME') or (Copy(Gs_BillNo, 1, 2) = 'CR') then
+     begin
+          gi_BillCase := 2;
+          Gb_IsReprint := True;
+          PrintBill(CB_Preview, 1);
+     end
+     Else if (Copy(Gs_BillNo, 1, 2) = 'TP') then
+     begin
+          gi_BillCase := 0;
+          Gb_IsReprint := True;
+          PrintBill(CB_Preview, 1);
+     end
+     else if (Copy(Gs_BillNo, 1, 2) = 'RF') then
+     begin
+          gi_BillCase := 7;
+          Gb_IsReprint := True;
+          PrintBill(CB_Preview, 1);
+     end
+     else if Copy(Gs_BillNo, 1, 2) = 'DP' then
+     begin
+          PrintDepositSlip;
+     end;
+     Gs_BillNo := '';
+     gi_PatientID := 0;
+end;
+
+procedure TForm_Billing.BitBtn_RePrintIPBarCodeClick(Sender: TObject);
+begin
+     if MessageDlg('Are you sure to re-print barcode sticker ?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+          ReprintSticker(Query_BillList.FieldByName('BillNo').AsString, gi_PatientID, CB_Preview);
+end;
+
+procedure TForm_Billing.BitBtn_SetChargeClick(Sender: TObject);
+Var
+  ls_TestName, ls_TestNameCode: String;
+  lf_TestPrice, lf_TestPriceWithTax, lf_VatAmt: Double;
+begin
+  (* if Trim(Edit_ChargeAmount.Text)='' then
+    Edit_ChargeAmount.Text:='0';
+
+    if StrToInt(Edit_ChargeAmount.Text) <=0 then
+    Begin
+    MessageDlg('Please Check Total Extra Charge for Transportation.',mtWarning,[mbok],0);
+    Exit;
+    End;
+
+    if Trim(Edit_DistanceDescription.Text)='' then
+    Begin
+    MessageDlg('Extra Transportation Distance is Compulsory.',mtWarning,[mbok],0);
+    Exit;
+    End;
+
+
+    Table_TempBilling.Locate('DepId',65,[]);
+    ls_TestName:=Table_TempBilling.FieldByName('TestName').AsString;
+    ls_TestNameCode:=Table_TempBilling.FieldByName('TestNameCode').AsString;
+
+    lf_TestPrice:= GetNoOfDecimalPartOfFloatNum(StrToFloat(Edit_ChargeAmount.Text)/(1+gf_TaxPercent/100),3);
+    lf_VatAmt:=StrToFloat(Edit_ChargeAmount.Text) - lf_TestPrice;
+
+
+    lf_TestPrice:= lf_TestPrice + Table_TempBilling.FieldByName('TestPrice').AsFloat;
+    lf_VatAmt:=lf_VatAmt + Table_TempBilling.FieldByName('SvrTax').AsFloat;
+
+    lf_TestPriceWithTax:=lf_TestPrice+lf_VatAmt;
+
+
+    With Query_TempProcess do
+    Begin
+    Close;
+    DatabaseName:=gs_temppath;
+    sql.Clear;
+    sql.Add(' Update TempBilling.db Set TestName='+#39+ls_TestName+' + '+Edit_DistanceDescription.Text+#39);
+    sql.Add(' ,TestPrice='+FloatToStr(lf_TestPrice)+',SvrTax='+FloatToStr(lf_VatAmt));
+    sql.Add(' ,TotalPrice='+FloatToStr(lf_TestPriceWithTax));
+    sql.Add(' ,TestPriceWithTax='+FloatToStr(lf_TestPriceWithTax*Table_TempBilling.FieldByName('Qty').AsFloat));
+    sql.Add(' ,NetTotal='+FloatToStr(lf_TestPriceWithTax*Table_TempBilling.FieldByName('Qty').AsFloat));
+    sql.Add(' Where TestNameCode='+#39+ls_TestNameCode+#39);
+    ExecSQL;
+    End;
+
+    Query_TempBilling.Close;
+    Query_TempBilling.DatabaseName := gs_temppath;
+    Query_TempBilling.Open;
+    Query_TempBilling.Locate('TestNameCode',ls_TestNameCode,[]);
+    Panel_Transportation.Visible:=False;
+    CalculateLabels; *)
+end;
+
+procedure TForm_Billing.Button_TodayBillingClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX_TodayBilling, Button_TodayBilling);
+end;
+
+procedure TForm_Billing.CalculateLabels_ForRefunds;
+Var
+     TestPriceWithDis, SvrTaxWithDis: Double;
+     Qry: TOraQuery;
+begin
+     pf_TestPrice := 0;
+     pf_SvrTax := 0;
+     pf_Qty := 0;
+     pf_TotalPrice := 0;
+     pf_disper := 0;
+     pf_discount := 0;
+     pf_NetTotal := 0;
+
+     pf_SvrTaxTotal := 0;
+     pf_Total := 0;
+     pf_DiscountTotal := 0;
+     pf_grandtotal := 0;
+     pf_subtotal := 0;
+
+     pi_TotalItems := 0;
+
+     Qry := TOraQuery.Create(Nil);
+     With Qry do
+     begin
+          Close;
+          SQL.Clear;
+          DatabaseName := gs_temppath;
+          SQL.Add(' Select Count(TestPrice)C,Sum(TestPrice*Qty)SubTotal,Sum(SvrTax)SvrTaxTotal,Sum(TestPrice*Qty)NetTotal,Sum(Discount)DiscountTotal ');
+          SQL.Add(' From Billing ');
+          if pb_isdelete = True then
+            SQL.Add(' Where Status=''C''');
+          Open;
+
+          pf_subtotal := FieldByName('Subtotal').AsFloat;
+          pf_SvrTaxTotal := FieldByName('SvrTaxTotal').AsFloat;
+          pf_DiscountTotal := FieldByName('DiscountTotal').AsFloat;
+          pi_TotalItems := FieldByName('C').AsInteger;
+
+          if Gs_TaxRule = 'TBD' then
+          begin
+            pf_NetTotal := pf_subtotal + pf_SvrTaxTotal;
+            pf_grandtotal := pf_NetTotal - pf_DiscountTotal;
+          end
+          else if Gs_TaxRule = 'TAD' then
+          begin
+            pf_NetTotal := FieldByName('SubTotal').AsFloat - pf_DiscountTotal;
+            pf_grandtotal := pf_NetTotal + pf_SvrTaxTotal;
+          end;
+
+          if pb_isdelete = True then
+          Begin
+               Label_CoPaymentAmt.left := 300;
+               Label_CoPaymentAmt.Alignment := taCenter;
+               if Query_RefundBillList.FieldByName('BillType').AsString <> 'ADVANCEBILL' then
+               Begin
+                    if (Copy(Query_RefundBillList.FieldByName('FinalBillNo').AsString, 1,2) = 'CS') and (RB_IPBILL.Checked = True) then
+                         Label_CoPaymentAmt.Caption := 'Cash Refund Amt. :' + FloatToStr(pf_grandtotal)
+                    Else if Copy(Edit_PreveBillNo.Text, 1, 2) = 'CS' then
+                         Label_CoPaymentAmt.Caption := 'Cash Refund Amt. :' + FloatToStr(pf_grandtotal)
+               else
+               Begin
+                    if Copy(Edit_PreveBillNo.Text, 1, 2) = 'ME' then
+                    Begin
+                         GetCoPaymentAmt;
+                         Label_CoPaymentAmt.Caption := 'Co-Pay Ref. Amt. :' + FloatToStr(pf_CopayAmts);
+                         Label20.Visible := False;
+                    End
+                    Else
+                    Label_CoPaymentAmt.Caption := 'Credit Refund';
+               End;
+          End
+          Else
+          Begin
+               IF Query_RefundBillList.FieldByName('DepositAmt').AsFloat > 0 Then
+               Begin
+                    Label_CoPaymentAmt.Caption := 'Advance Refund Amt. :' + FloatToStr(pf_grandtotal);
+                    pf_AdvancRefund := pf_grandtotal;
+               End
+               Else
+               Begin
+                    IF Query_RefundBillList.FieldByName('CopayAmount').AsFloat > 0 Then
+                    Begin
+                         GetCoPaymentAmt;
+                         Label_CoPaymentAmt.Caption := 'Co-Pay Ref. Amt. :' + FloatToStr(pf_CopayAmts);
+                         Label20.Visible := False;
+                    End
+                    Else
+                         Label_CoPaymentAmt.Caption := 'No Advance Taken';
+                         pf_AdvancRefund := 0;
+                    End;
+               End;
+
+               Label_CoPaymentAmt.Visible := True;
+               Label_CoPaymentAmt.Font.Color := clRed;
+               Label18.Caption := IntToStr(pi_TotalItems);
+          End;
+
+          pf_CurrRefundTotal := pf_grandtotal;
+          Le_SubTotal.Text := FormatFloat('#0,0.00', pf_subtotal);
+          Le_NetTotal.Text := FormatFloat('#0,0.00', pf_NetTotal);
+          Le_SvrTax.Text := FormatFloat('#0,0.00', pf_SvrTaxTotal);
+          Le_NetBalance.Text := FormatFloat('#0,0.00', pf_balance);
+          Le_Discount.Text := FormatFloat('#0,0.00', pf_DiscountTotal);
+          Le_GrandTotal.Text := FormatFloat('#0,0.00', pf_grandtotal);
+          Le_NetBalance.Text := FormatFloat('#0,0.00', pf_grandtotal);
+          le_TotalDeposit.Text := '0.00'; // FormatFloat('#0,0.00', pf_Deposit);
+          lbl_NetBalance.Caption := FormatFloat('#0,0.00', pf_grandtotal);
+     end;
+end;
+
+procedure TForm_Billing.CalculateLabels;
+Var
+     TestPriceWithDis, SvrTaxWithDis: Double;
+     Qry: TOraQuery;
+begin
+     pf_TestPrice := 0;
+     pf_SvrTax := 0;
+     pf_Qty := 0;
+     pf_TotalPrice := 0;
+     pf_disper := 0;
+     pf_discount := 0;
+     pf_NetTotal := 0;
+
+     pf_SvrTaxTotal := 0;
+     pf_Total := 0;
+     pf_DiscountTotal := 0;
+     pf_grandtotal := 0;
+     pf_subtotal := 0;
+
+     pi_TotalItems := 0;
+
+     Qry := TOraQuery.Create(Nil);
+
+     With Qry do
+     begin
+          Close;
+          SQL.Clear;
+          DatabaseName := gs_temppath;
+          SQL.Add(' Select Count(TestPrice)C,Sum(TestPrice*Qty)SubTotal,Sum(SvrTax)SvrTaxTotal,Sum(TestPrice*Qty)NetTotal,Sum(Discount)DiscountTotal ');
+          SQL.Add(' From Billing Where Status is Null');
+          Open;
+          pf_subtotal := FieldByName('Subtotal').AsFloat;
+          pf_SvrTaxTotal := FieldByName('SvrTaxTotal').AsFloat;
+          pf_DiscountTotal := FieldByName('DiscountTotal').AsFloat;
+          pi_TotalItems := FieldByName('C').AsInteger;
+
+          if Gs_TaxRule = 'TBD' then
+          begin
+               pf_NetTotal := pf_subtotal + pf_SvrTaxTotal;
+               pf_grandtotal := pf_NetTotal - pf_DiscountTotal;
+          end
+          else if Gs_TaxRule = 'TAD' then
+          begin
+               pf_NetTotal := FieldByName('SubTotal').AsFloat - pf_DiscountTotal;
+               pf_grandtotal := pf_NetTotal + pf_SvrTaxTotal;
+          end;
+
+          if CB_DayCare.Checked = True then
+               pf_Deposit := GetTotalDeposit(gi_PatientID)
+          else
+               pf_Deposit := 0;
+
+          if gi_BillCase = 1 then
+          Begin
+               Close;
+               DatabaseName := gs_temppath;
+               SQL.Clear;
+               SQL.Add(' Select Sum(TestPrice*Qty)SubTotal,Sum(SvrTax)SvrTaxTotal,Sum(TestPrice*Qty)NetTotal,Sum(Discount)DiscountTotal ');
+               SQL.Add('from TempBilling Where Status is Not Null');
+               Open;
+
+               if pb_IsAdvanceExist = True then
+               Begin
+                    pf_AdvancRefund := FieldByName('Subtotal').AsFloat + FieldByName('SvrTaxTotal').AsFloat - FieldByName('DiscountTotal').AsFloat;
+                    Label21.Visible := True;
+                    Label21.Caption := 'Refund AMT:';
+                    Lbl_BillNo.Visible := True;
+                    Lbl_BillNo.Caption := FloatToStr(pf_AdvancRefund);
+               End
+               Else
+               Begin
+                    Label21.Visible := True;
+                    Label21.Caption := 'Refund AMT:';
+                    Lbl_BillNo.Visible := True;
+                    Lbl_BillNo.Caption := 'No Advance Taken';
+                    pf_AdvancRefund := 0;
+               End;
+          End;
+          pf_balance := pf_Deposit - pf_grandtotal;
+
+          if CB_DayCare.Checked = True then
+               lbl_OutStddeposit.Caption := FormatFloat('#0,0.00', pf_balance);
+
+          Le_SubTotal.Text := FormatFloat('#0,0.00', pf_subtotal);
+          Le_NetTotal.Text := FormatFloat('#0,0.00', pf_NetTotal);
+          Le_SvrTax.Text := FormatFloat('#0,0.00', pf_SvrTaxTotal);
+          Le_NetBalance.Text := FormatFloat('#0,0.00', pf_balance);
+          Le_Discount.Text := FormatFloat('#0,0.00', pf_DiscountTotal);
+          Le_GrandTotal.Text := FormatFloat('#0,0.00', pf_grandtotal);
+          le_TotalDeposit.Text := FormatFloat('#0,0.00', pf_Deposit);
+
+          pf_CurrBillTotal := pf_grandtotal;
+          Lbl_GrandTotal.Caption := FormatFloat('#0,0.00', pf_grandtotal);
+          lbl_DepositBalance.Caption := FormatFloat('#0,0.00', pf_Deposit);
+          lbl_NetBalance.Caption := FormatFloat('#0,0.00', pf_balance);
+          Lbl_TotalItems.Caption := IntToStr(pi_TotalItems);
+     end;
+end;
+
+procedure TForm_Billing.CalculatePayment;
+Var
+     Payment: Double;
+begin
+     if (Le_Payment.Text = '') and (Edit_MemberDeposit.Text = '') then
+          Exit;
+
+     if Le_GrandTotal.Text = '' then
+          Le_GrandTotal.Text := '0';
+
+     pf_grandtotal := StrToFloat(StringReplace(Le_GrandTotal.Text, ',', '',[rfReplaceAll]));
+
+     if Le_Payment.Text <> '' then
+          Payment := StrToFloat(Le_Payment.Text);
+
+     if Cb_DeductFromDeposit.Checked then
+     begin
+          pf_Payment := Payment + pf_MemberDeposit;
+          if pf_grandtotal < pf_MemberDeposit then
+          begin
+               Pf_DepositDeducted := pf_grandtotal;
+          end
+          else
+          begin
+               Pf_DepositDeducted := pf_MemberDeposit;
+          end;
+     end
+     else
+     begin
+          pf_Payment := Payment;
+          Pf_DepositDeducted := 0;
+     end;
+
+     pf_Return := Abs(pf_Payment - pf_grandtotal);
+     lbl_TenderAmt.Caption := FormatFloat('#0,0.00', pf_Payment);
+     if pf_Payment > pf_grandtotal then
+     begin
+          Label17.Caption := 'Return Amt :';
+          Lbl_ReturnAmt.Font.Color := clAqua;
+     end
+     else
+     begin
+          Label17.Caption := 'Due Amt :';
+          Lbl_ReturnAmt.Font.Color := clRed;
+     end;
+     Lbl_ReturnAmt.Caption := FormatFloat('#0,0.00', pf_Return);
+     UpdateCustomerPreview;
+end;
+
+procedure TForm_Billing.CalculateSum;
+Var
+  i: Double;
+begin
+  i := 0;
+  i := pf_grandtotal - pf_discount;
+  Lbl_GrandTotal.Caption := FormatFloat('#0,0.00', i);
+  lbl_DepositBalance.Caption := FormatFloat('#0,0.00', i);
+  Le_GrandTotal.Text := FormatFloat('#0,0.00', i);
+end;
+
+procedure TForm_Billing.CB_BILLTYPEClick(Sender: TObject);
+begin
+  if CB_BILLTYPE.KeyValue <> '' then
+  begin
+    Query_TestName.Close;
+    Query_TestName.DatabaseName := gs_DatabaseName;
+    Query_TestName.SQL[3] := 'AND PATIENTTYPECODE=' + QuotedStr
+      (CB_BILLTYPE.KeyValue);
+    Query_TestName.Open;
+
+    ps_PatientTypeCode := CB_BILLTYPE.KeyValue;
+
+    With Query_TempProcess do
+    begin
+      Close;
+      DatabaseName := gs_temppath;
+      SQL.Clear;
+      SQL.Add(' Select Distinct PATIENTTYPECODE From Billing');
+      Open;
+    end;
+
+    if (ps_PatientTypeCode <> Query_TempProcess.FieldByName('PATIENTTYPECODE')
+        .AsString) and (Query_TempProcess.FieldByName('PATIENTTYPECODE')
+        .AsString <> '') then
+    begin
+      IF MessageDlg('You Are Trying To Change Rate Type From " ' +
+          Query_TempProcess.FieldByName('PATIENTTYPECODE')
+          .AsString + ' "' + ' To " ' + ps_PatientTypeCode +
+          ' ". Do You Want To Continue ?', mtWarning, [mbYes, mbNo], 0)
+        = mrYes Then
+      begin
+        With Query_TempProcess do
+        begin
+          Close;
+          DatabaseName := gs_temppath;
+          SQL.Clear;
+          SQL.Add(' Delete From Billing');
+          ExecSQL;
+        end;
+
+        Query_TempBilling.Close;
+        Query_TempBilling.DatabaseName := gs_temppath;
+        Query_TempBilling.Open;
+        ps_LoadedTestID := '';
+        Edit_TestNameCode.SetFocus;
+      end
+      Else
+        CB_BILLTYPE.KeyValue := Query_TempProcess.FieldByName('PATIENTTYPECODE')
+          .AsString;
+    end;
+  end;
+
+end;
+
+procedure TForm_Billing.CB_BILLTYPEKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_Left) or (Key = VK_Prior) then
+    Le_HosNo.SetFocus;
+end;
+
+procedure TForm_Billing.CB_CopayReceiptClick(Sender: TObject);
+begin
+  CB_ViewOldBillClick(Sender);
+end;
+
+procedure TForm_Billing.CB_DayCareClick(Sender: TObject);
+begin
+  CalculateLabels;
+end;
+
+procedure TForm_Billing.Cb_DeductFromDepositClick(Sender: TObject);
+begin
+  if Cb_DeductFromDeposit.Checked then
+  begin
+    pf_MemberDeposit := GetTotalMemberDeposit
+      (gi_PatientID, lbl_BenefitPackage.Caption);
+    Edit_MemberDeposit.Text := FormatFloat('#0,0.00', pf_MemberDeposit);
+    Pb_NoDiscount := True;
+  end
+  else
+  begin
+    pf_MemberDeposit := 0;
+    Edit_MemberDeposit.Text := FormatFloat('#0,0.00', pf_MemberDeposit);
+    Pb_NoDiscount := False;
+  end;
+  CalculatePayment;
+end;
+
+procedure TForm_Billing.Timer1Timer(Sender: TObject);
+Var
+  Qry: TOraQuery;
+begin
+  if Gb_TestListClosed then
+  begin
+    Query_TempBilling.Close;
+    Query_TempBilling.DatabaseName := gs_temppath;
+    Query_TempBilling.Open;
+    Qry := TOraQuery.Create(nil);
+    with Qry do
+    begin
+      Close;
+      DatabaseName := gs_temppath;
+      SQL.Clear;
+      // SQL.Add('Select sum(TestPrice*Qty)Total,sum(Svrtax*Qty)Svrtax from TempBilling');
+      SQL.Add(
+        'Select sum(TestPrice*Qty)Total,sum(Svrtax*Qty)Svrtax from Billing');
+      Open;
+      pf_Total := FieldByName('total').AsFloat;
+      pf_subtotal := pf_Total;
+      pf_SvrTax := FieldByName('SvrTax').AsFloat;
+      pf_grandtotal := pf_subtotal + pf_SvrTax;
+    end;
+    Qry.Free;
+    { ------------------------------------------- }
+
+    Le_NetBalance.Text := FormatFloat('#0,0.00', pf_Total);
+    Le_Discount.Text := '0.00';
+    Le_Disper.Text := '0.00';
+    Le_SubTotal.Text := FormatFloat('#0,0.00', pf_subtotal);
+    Le_SvrTax.Text := FormatFloat('#0,0.00', pf_SvrTax);
+    Lbl_GrandTotal.Caption := FormatFloat('#0,0.00', pf_grandtotal);
+    Le_GrandTotal.Text := FormatFloat('#0,0.00', pf_grandtotal);
+    lbl_DepositBalance.Caption := FormatFloat('#0,0.00', pf_Deposit);
+    lbl_NetBalance.Caption := FormatFloat('#0,0.00', pf_balance);
+    { ------------------------------------------- }
+  end;
+  Timer1.Enabled := False;
+end;
+
+procedure TForm_Billing.Timer_PayTypeFlashTimer(Sender: TObject);
+begin
+  IF Label_PayTypeFlash.Visible = True Then
+    Label_PayTypeFlash.Visible := False
+  Else
+    Label_PayTypeFlash.Visible := True;
+end;
+
+procedure TForm_Billing.ToogleCustomerView;
+begin
+  if GetMonitorCount = 1 then
+    Exit;
+
+  if Form_CustomerMonitor = nil then
+    Form_CustomerMonitor := TForm_CustomerMonitor.Create(nil);
+  if Form_CustomerMonitor <> nil then
+  begin
+    if bb_CustomerView.Caption = 'Customer Preview [OFF]' then
+    begin
+      with Form_CustomerMonitor do
+      begin
+        WindowState := wsNormal;
+        Show;
+        left := -1200;
+        WindowState := wsMaximized;
+      end;
+      bb_CustomerView.Caption := 'Customer Preview [ON]';
+    end
+    else
+    begin
+      Form_CustomerMonitor.WindowState := wsNormal;
+      Form_CustomerMonitor.Hide;
+      bb_CustomerView.Caption := 'Customer Preview [OFF]';
+    end;
+  end;
+end;
+
+procedure TForm_Billing.UpdateCustomerPreview;
+begin
+  if GetMonitorCount = 1 then
+    Exit;
+  with Form_CustomerMonitor do
+  begin
+    DBGrid_Billing.DataSource := Self.DBGrid_Billing.DataSource;
+    lbl_patientid.Caption := IntToStr(gi_PatientID);
+    lbl_patientname.Caption := Gs_PatientName;
+    Lbl_GrandTotal.Caption := Self.Lbl_GrandTotal.Caption;
+    lbl_DepositBalance.Caption := Self.lbl_DepositBalance.Caption;
+    lbl_NetBalance.Caption := Self.lbl_NetBalance.Caption;
+    Lbl_ReturnAmt.Caption := Self.Lbl_ReturnAmt.Caption;
+    lbl_TenderAmt.Caption := Self.lbl_TenderAmt.Caption;
+    Lbl_TotalItems.Caption := Self.Lbl_TotalItems.Caption;
+    Image_Main.Picture.Assign(Self.Image_Main.Picture);
+    Label17.Caption := Self.Label17.Caption;
+    Lbl_ReturnAmt.Font.Color := Self.Lbl_ReturnAmt.Font.Color;
+  end;
+end;
+
+procedure TForm_Billing.UpdateDepositDetail;
+Var
+  lf_CrAmount: Double;
+  ls_DepositType, ls_ReferenceType, ls_ReferenceNo, ls_TodaysDate,
+    ls_Remarks: String;
+begin
+  lf_CrAmount := StrToFloat(Le_Payment.Text);
+  ls_DepositType := 'BILL GENERATE';
+  ls_ReferenceType := 'BILL';
+  ls_ReferenceNo := Gs_BillNo;
+  if gi_datesystem = 0 then
+    ls_TodaysDate := TodaysDateVS
+  else
+    ls_TodaysDate := TodaysDate;
+  ls_Remarks := 'DEPOSIT FOR SERVICE BILL';
+  Try
+    UpdateDeposit(0, Gi_UserId, lf_CrAmount, ls_ReferenceNo, ls_Remarks);
+  except
+    UpdateDeposit(0, Gi_UserId, lf_CrAmount, ls_ReferenceNo, ls_Remarks);
+  End;
+end;
+
+procedure TForm_Billing.UpdatePharmacyTable;
+Var
+  Qry: TOraQuery;
+begin
+  Qry := TOraQuery.Create(Nil);
+  With Qry do
+  Begin
+    Close;
+    DatabaseName := gs_DatabaseName;
+    SQL.Clear;
+    SQL.Add(' Update SaleMaster Set Cashed=''Y'',BillNo=' + #39 + Gs_BillNo +
+        #39);
+    SQL.Add
+      (' where PatientTypeID=0 and ST=''N'' and STATUS1=1 and Cashed=''N''');
+    SQL.Add(' and CustomerId=' + IntToStr(gi_PatientID));
+    SQL.Add(' and SaleMasterId <=' + IntToStr(pi_MaxSaleMasterId));
+    ExecSQL;
+
+    if pb_PharmacyRefundOnly = False then
+    Begin
+      { Retrun master }
+      Close;
+      SQL.Clear;
+      SQL.Add(' Update ReturnMaster Set Cashed=''Y'',BillNo=' + #39 +
+          Gs_BillNo + #39);
+      SQL.Add(
+        ' where PatientTypeID=0 and ST=''N'' and Credit1=1 and Cashed=''N''');
+      SQL.Add(' and CustomerId=' + IntToStr(gi_PatientID));
+      SQL.Add(' and ReturnMasterId <=' + IntToStr(pi_MaxReturnMasterId));
+      ExecSQL;
+    End;
+  End;
+end;
+
+procedure TForm_Billing.RB_IPBILLClick(Sender: TObject);
+begin
+  if RB_IPBILL.Checked = True then
+  begin
+    if gs_BillType <> 'REFUNDBILL' then
+    Begin
+      Label_BillingStatus.Caption := 'IP Billing';
+      gs_BillType := 'IPBILL';
+      gi_BillCase := 0;
+    End
+    Else
+    Begin
+      Label_BillingStatus.Caption := 'Refund Billing(IP)';
+    End;
+    Le_HosNo.SetFocus;
+  end;
+end;
+
+procedure TForm_Billing.RB_OPBILLClick(Sender: TObject);
+begin
+  if RB_OPBILL.Checked = True then
+  Begin
+    if gs_BillType <> 'REFUNDBILL' then
+    Begin
+      Label_BillingStatus.Caption := 'OP Billing';
+      gs_BillType := 'OPBILL';
+      gi_BillCase := 3;
+    End
+    Else
+    Begin
+      Label_BillingStatus.Caption := 'Refund Billing(OP)';
+    End;
+    Le_HosNo.SetFocus;
+  End;
+end;
+
+procedure TForm_Billing.ReCalculateSumAmtAfterDeleteItem;
+Var
+  TestPrice, Qty, SvrTax: Double;
+Begin
+  if gi_BillCase in [0, 1] then
+  begin
+    Qty := Query_TempBilling.FieldByName('Qty').AsFloat;
+    TestPrice := Query_TempBilling.FieldByName('TestPrice').AsFloat;
+    SvrTax := Query_TempBilling.FieldByName('SvrTax').AsFloat;
+  end;
+  if gi_BillCase in [3, 6] then
+  begin
+    Qty := Query_FinalBill.FieldByName('Qty').AsFloat;
+    TestPrice := Query_FinalBill.FieldByName('TestPrice').AsFloat;
+    SvrTax := Query_FinalBill.FieldByName('SvrTax').AsFloat;
+  end;
+
+  { ------------------------------------------- }
+  pf_subtotal := pf_subtotal - (TestPrice * Qty);
+  // pf_SvrTax := pf_SvrTax - (SvrTax * QTY);
+  pf_SvrTaxTotal := pf_SvrTaxTotal - (SvrTax * Qty);
+  pf_SvrTax := pf_SvrTaxTotal;
+  pf_Total := pf_subtotal + pf_SvrTax;
+
+  pf_grandtotal := pf_Total - pf_Deposit;
+
+  Le_NetBalance.Text := FormatFloat('#0,0.00', pf_Total);
+  Le_Discount.Text := '0.00';
+  Le_Disper.Text := '0.00';
+  Le_SubTotal.Text := FormatFloat('#0,0.00', pf_subtotal);
+  Le_SvrTax.Text := FormatFloat('#0,0.00', pf_SvrTax);
+  Lbl_GrandTotal.Caption := FormatFloat('#0,0.00', pf_grandtotal);
+  Le_GrandTotal.Text := FormatFloat('#0,0.00', pf_grandtotal);
+  lbl_DepositBalance.Caption := FormatFloat('#0,0.00', pf_Deposit);
+
+  pi_TotItems := pi_TotItems - 1;
+  Lbl_TotalItems.Caption := IntToStr(pi_TotItems);
+  { ------------------------------------------- }
+End;
+
+Function TForm_Billing.GetMax_TempSno: Integer;
+Begin
+  With QueryTemp do
+  Begin
+    Close;
+    DatabaseName := gs_temppath;
+    SQL.Clear;
+    SQL.Add(' Select Max(SNo) MaxNo From Billing.db');
+    Open;
+  End;
+  Result := QueryTemp.FieldByName('MaxNo').AsInteger + 1;
+End;
+
+Procedure TForm_Billing.SaveDoctorFraction
+  (ISFractionableTest, TestNameCode: String; MKTGREFPER, DOCREFPER: Double);
+Var
+  li_BAECId: Integer;
+  ls_DocCode, ls_DocDep: String;
+  lf_FrctRate, lf_FrctAmt, lf_DisPer, lf_NewFRCTAmount, lf_NewUnitCost: Double;
+  ls_IsFractionableItem, ls_TestNameCode, ls_BillType: String;
+label mybookmark;
+Begin
+     if gi_BillCase = 0 then
+     begin
+          ls_IsFractionableItem := ISFractionableTest;
+          ls_TestNameCode := TestNameCode;
+          ls_BillType := 'IP';
+     end
+     else
+     begin
+          ls_IsFractionableItem := ISFractionableTest;
+          ls_TestNameCode := TestNameCode;
+          ls_BillType := 'B';
+     end;
+
+     IF (ls_IsFractionableItem = 'Y') Then
+     Begin
+          With Query_TempProcess Do
+          Begin
+               Close;
+               DatabaseName := gs_temppath;
+               SQL.Clear;
+               SQL.Add(' Select * From ServiceWiseFraction.db');
+               SQL.Add(' Where TestNameCode=' + #39 + ls_TestNameCode + #39);
+               Open;
+               First;
+               while not Query_TempProcess.eof Do
+               Begin
+                    lf_FrctRate := Query_TempProcess.FieldByName('FractionRate').AsFloat;
+                    lf_FrctAmt := Query_TempProcess.FieldByName('FractionAmount').AsFloat;
+
+                    pb_MutualDocForShare := False;
+                    {
+                      if ISOTITEM(Query_TempProcess.FieldByName('Testnameid').AsInteger)=True then
+                      begin
+                      Mutually_Share_Fraction(Query_TempProcess.FieldByName('DocCode').AsString,'SURGERY');
+                      if pb_MutualDocForShare=true then
+                      goto mybookmark
+                      else
+
+                      Mutually_Share_Fraction(Query_TempProcess.FieldByName('DocCode').AsString,'ANAESTHESIA');
+                      end; }
+
+                    mybookmark :
+                    if pb_MutualDocForShare = False then
+                    Begin
+                        (* SaveFractiondetail(PATIENTID,INPATIENTID,BILLDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY : Integer;
+                          UNITTESTCOST,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+                          TESTNAMECODE,BILLNO,BILLDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+                          ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME :String); *)
+                         lf_NewUnitCost := Query_TempProcess.FieldByName('UnitTestCost').AsFloat;
+                         if MKTGREFPER > 0 then
+                         lf_NewUnitCost := (Query_TempProcess.FieldByName('UnitTestCost').AsFloat - Query_TempProcess.FieldByName('UnitTestCost').AsFloat * MKTGREFPER / 100);
+
+                         if DOCREFPER > 0 then
+                         lf_NewUnitCost :=(lf_NewUnitCost - lf_NewUnitCost * DOCREFPER / 100);
+
+                         SaveFractiondetail(gi_PatientID, pi_InpatientId, gi_BillDetailId,gi_ServiceBillDetailid,
+                              Query_TempProcess.FieldByName('DepId').AsInteger, Query_TempProcess.FieldByName('DocID').AsInteger,
+                              Query_TempProcess.FieldByName('TestNameID').AsInteger,Query_TempProcess.FieldByName('FractionId').AsInteger,
+                              Query_TempProcess.FieldByName('PositionWiseFractionId').AsInteger,Gi_UserId,0, lf_NewUnitCost,
+                              Query_TempProcess.FieldByName('UnitTestCost').AsFloat, Query_TempProcess.FieldByName('Qty').AsFloat,
+                              RoundingAfterSecondPlace(lf_NewUnitCost * Query_TempProcess.FieldByName('FractionRate').AsFloat / 100),
+                              Query_TempProcess.FieldByName('FractionRate').AsFloat, Query_TempProcess.FieldByName('DisPer').AsFloat,
+                              Query_TempProcess.FieldByName('TestNameCode').AsString, Gs_BillNo,Ps_TodaysDate, ls_BillType,
+                              CB_PayType.Text, 'Y', '', 'N', 'N', '',Ps_TodaysDate, Ps_TodaysTime,
+                              Query_TempProcess.FieldByName('IsRevenueSeparatehead').AsString);
+                    End
+                    Else
+                    Begin
+                         lf_NewUnitCost := Query_TempProcess.FieldByName('UnitTestCost').AsFloat;
+                         if MKTGREFPER > 0 then
+                         lf_NewUnitCost := (Query_TempProcess.FieldByName('UnitTestCost').AsFloat -
+                                   Query_TempProcess.FieldByName('UnitTestCost').AsFloat * MKTGREFPER / 100);
+
+                         if DOCREFPER > 0 then
+                         lf_NewUnitCost :=(lf_NewUnitCost - lf_NewUnitCost * DOCREFPER / 100);
+
+                         Query_MutualDocForShare.First;
+                         While not Query_MutualDocForShare.eof do
+                         begin
+                              IF Query_MutualDocForShare.FieldByName('DocRate').AsFloat > 0 Then
+                              Begin
+                                  (* SaveFractiondetail(PATIENTID,INPATIENTID,BILLDETAILID,SERVICEBILLDETAILID,DEPID,DOCID,TESTNAMEID,FRACTIONID,POSITIONWISEFRACTIONID,DATAPOSTBY : Integer;
+                                    UNITTESTCOST,QTY,FRACTIONAMOUNT,FRACTIONRATE,DISPER:Double;
+                                    TESTNAMECODE,BILLNO,BILLDATE,BILLTYPE,PAYTYPE,ISFRACTIONPROPWITHDISPER,DESCRIPTION,ISADDLUMPSUM,
+                                    ISCHARGEDIVIDE,REMARKS,DATAPOSTDATE,DATAPOSTTIME :String); *)
+
+                                   SaveFractiondetail(gi_PatientID, pi_InpatientId, gi_BillDetailId,gi_ServiceBillDetailid,
+                                        Query_TempProcess.FieldByName('DepId').AsInteger, Query_TempProcess.FieldByName('DocID').AsInteger,
+                                        Query_TempProcess.FieldByName('TestNameID').AsInteger,Query_TempProcess.FieldByName('FractionId').AsInteger,
+                                        Query_TempProcess.FieldByName('PositionWiseFractionId').AsInteger, Gi_UserId,0, lf_NewUnitCost,
+                                        Query_TempProcess.FieldByName('UnitTestCost').AsFloat,Query_TempProcess.FieldByName('Qty').AsFloat,
+                                        // Query_TempProcess.FieldByName('FractionAmount').AsFloat * Query_MutualDocForShare.FieldByName('DocRate').AsFloat/100,
+                                        RoundingAfterSecondPlace((lf_NewUnitCost * Query_TempProcess.FieldByName('FractionRate').AsFloat / 100)
+                                            * Query_MutualDocForShare.FieldByName('DocRate').AsFloat / 100),
+                                        Query_TempProcess.FieldByName('FractionRate').AsFloat * Query_MutualDocForShare.FieldByName('DocRate').AsFloat / 100,
+                                        Query_TempProcess.FieldByName('DisPer').AsFloat, Query_TempProcess.FieldByName('TestNameCode').AsString,
+                                        Gs_BillNo, Ps_TodaysDate,ls_BillType, CB_PayType.Text, 'Y', '', 'N', 'N', '',Ps_TodaysDate, Ps_TodaysTime,
+                                        Query_TempProcess.FieldByName('IsRevenueSeparatehead').AsString);
+                              End;
+                              Query_MutualDocForShare.next;
+                         end;
+                    End;
+                    Query_TempProcess.next;
+               End;
+          End;
+     End;
+end;
+
+Procedure TForm_Billing.LoadServiceWiseFraction
+  (TestNameCode, TNCategoryCode: String; UnitTestCost, Qty: Double;
+  DocId, DepId, TestNameID: Integer);
+Var
+  li_DocId, li_Sno, li_TotNoForFract: Integer;
+  b_IsSingleCondt, lb_IsDoctorWiseFraction: Boolean;
+  lf_FractionRate, lf_FractionAmount: Double;
+  ls_DocCode: string;
+Begin
+     With Query_TempProcess do
+     Begin
+          Close;
+          DatabaseName := gs_temppath;
+          SQL.Clear;
+          SQL.Add(' Select * From  ServiceWiseFraction.db where TestNameCode=' +#39 + TestNameCode + #39);
+          Open;
+     End;
+
+     IF Query_TempProcess.Recordcount <= 0 Then
+     Begin
+          IF Trim(DBLCB_RefDocCode.Text) <> '' Then
+          Begin
+               li_DocId := Query_ReferingDocDept.FieldByName('ID').AsInteger;
+               ls_DocCode := Query_ReferingDocDept.FieldByName('Code').AsString;
+          End
+     Else
+     Begin
+          li_DocId := -1; // IF Doctor is not selected
+          ls_DocCode := '';
+     End;
+
+     if DocId <> 1 then // 1 - Hospital
+          li_DocId := DocId;
+
+     // b_IsSingleCondt:=True;
+     With Query_Process do
+     Begin
+          Close;
+          SQL.Clear;
+          SQL.Add(' Select PWC.*,DC.FRAC_DepId,DC.FRAC_FIXEDAMTDEDUCTONTESTPRICE,DOCT_DOCID,DOCT_DocCode,DOCT_Desig,DOCT_DocName');
+          SQL.Add(' From HS_POWF_PositionWiseFraction PWC, HS_FRAC_Fraction DC,HS_TENA_TestName TN,HS_DOCT_Doctor ');
+          SQL.Add(' where PWC.POWF_FractionId = DC.FRAC_FractionId and DC.FRAC_TestnameId=TN.TENA_TestNameId(+) ');
+          SQL.Add(' and POWF_DOCID=DOCT_DocID(+) and PWC.POWF_IsActive=''Y'' and ');
+          SQL.Add(' TN.TENA_TESTNAMEID=' + IntToStr(TestNameID));
+          Open;
+     End;
+
+     if Query_Process.FieldByName('POWF_POSITIONWISEFRACTIONID').AsInteger <= 0 then // Search For Department Wise Setup
+     Begin
+          With Query_Process do
+          Begin
+               Close;
+               SQL.Clear;
+               SQL.Add(' Select PWC.*,DC.FRAC_DepId,DC.FRAC_FIXEDAMTDEDUCTONTESTPRICE,DOCT_DOCID,DOCT_DocCode,DOCT_Desig,DOCT_DocName');
+               SQL.Add(' From HS_POWF_PositionWiseFraction PWC, HS_FRAC_Fraction DC,HS_TENA_TestName TN,HS_DOCT_Doctor ');
+               SQL.Add(' where PWC.POWF_FractionId = DC.FRAC_FractionId and DC.FRAC_TestnameId=TN.TENA_TestNameId(+) ');
+               SQL.Add(' and POWF_DOCID=DOCT_DocID(+) and PWC.POWF_IsActive=''Y'' and ');
+               SQL.Add(' DC.FRAC_DepId=' + IntToStr(DepId) + ' and FRAC_TestNameId=0');
+               Open;
+          End;
+     End;
+
+     li_TotNoForFract := Query_Process.Recordcount;
+
+     if Query_Process.FieldByName('POWF_POSITIONWISEFRACTIONID').AsInteger > 0 then // Test Name Wise Fraction
+     begin
+          With Query_TempProcess do
+          Begin
+               Close;
+               DatabaseName := gs_temppath;
+               SQL.Clear;
+               SQL.Add(' Select Max(Sno) as Sno From  ServiceWiseFraction.db');
+               Open;
+          End;
+
+          li_Sno := Query_TempProcess.FieldByName('Sno').AsInteger;
+          IF Not Table_Fraction.Active Then
+          Table_Fraction.Active := True;
+          Query_Process.First;
+          While Not Query_Process.eof do
+          Begin
+               { Check Particular Referral Doctor Wise or Not }
+               With Query_SubProcess do
+               Begin
+                    Close;
+                    DatabaseName := gs_DatabaseName;
+                    SQL.Clear;
+                    SQL.Add(' Select DOWF_DOCTORWISEFRACTIONID,DOWF_POSITIONWISEFRACTIONID,DOWF_FRACTIONRATE,DOWF_FRACTIONAMOUNT,');
+                    SQL.Add(' DOWF_ISFRACTIONPROPWITHDISPER,DOCT_DOCID,DOCT_DOCCODE,DOCT_DESIG,DOCT_DocName');
+                    SQL.Add(' From HS_DOWF_DoctorwiseFraction, HS_DOCT_Doctor');
+                    SQL.Add(' where DOWF_DOCID=DOCT_DOCID and DOWF_POSITIONWISEFRACTIONID='+IntToStr(Query_Process.FieldByName('POWF_POSITIONWISEFRACTIONID').AsInteger));
+                    SQL.Add(' and DOWF_DOCID=' + IntToStr(li_DocId)+ ' and DOWF_ISACTIVE=''T''');
+                    Open;
+               End;
+
+               if Query_SubProcess.FieldByName('DOWF_DOCTORWISEFRACTIONID').AsInteger = 0 then
+               Begin
+                    lb_IsDoctorWiseFraction := False;
+                    lf_FractionRate := Query_Process.FieldByName('POWF_FRACTIONRATE').AsFloat;
+                    lf_FractionAmount := Query_Process.FieldByName('POWF_FRACTIONAMOUNT').AsFloat;
+               End
+               else
+               begin
+                    lb_IsDoctorWiseFraction := True;
+                    lf_FractionRate := Query_SubProcess.FieldByName('DOWF_FRACTIONRATE').AsFloat;
+                    lf_FractionAmount := Query_SubProcess.FieldByName('DOWF_FRACTIONAMOUNT').AsFloat;
+               end;
+
+               if lf_FractionRate > 0 then
+                    lf_FractionAmount := 0;
+
+               With Table_Fraction Do
+               Begin
+                    Append;
+                    li_Sno := li_Sno + 1;
+                    FieldByName('Sno').AsInteger := li_Sno;
+
+                    FieldByName('FractionId').AsInteger := Query_Process.FieldByName('POWF_FRACTIONID').AsInteger;
+                    FieldByName('PositionWiseFractionId').AsInteger :=Query_Process.FieldByName('POWF_POSITIONWISEFRACTIONID').AsInteger;
+                    FieldByName('IsRevenueSeparatehead').AsString:=Query_Process.FieldByName('powf_IsRevSeparateHead').AsString;
+
+                    if Query_Process.FieldByName('POWF_ISFIXEDPERSONFORFRACTION').AsString = 'Y' then
+                    Begin
+                         FieldByName('DocID').AsInteger := Query_Process.FieldByName('DOCT_DOCID').AsInteger;
+                         FieldByName('DocCode').AsString := Query_Process.FieldByName('DOCT_DocCode').AsString;
+                         FieldByName('DocName').AsString := Query_Process.FieldByName('DOCT_DocName').AsString;
+                    End
+                    Else IF (Query_Process.FieldByName('POWF_POSITIONNAME').AsString = 'REFERAL DOCTOR') and (Trim(DBLCB_RefDocCode.Text) <> '') Then
+                    Begin
+                         FieldByName('DocID').AsInteger := DBLCB_RefDocCode.KeyValue;
+                         FieldByName('DocCode').AsString := Query_ReferingDocDept.FieldByName('DocCode').AsString;
+                         FieldByName('DocName').AsString := Query_ReferingDocDept.FieldByName('DocName').AsString;
+                    End
+                    Else if (DocId <> 1) and (li_TotNoForFract = 1) then // DocID=1 - Hospital
+                    Begin
+                        FieldByName('DocID').AsInteger := DocId;
+                        FieldByName('DocCode').AsString := ps_DocCode;
+                        FieldByName('DocName').AsString := ps_DocName;
+                    End
+                    Else
+                    Begin
+                        (* FieldbyName('DocID') .AsInteger:=DocId;
+                          FieldbyName('DocCode') .AsString:=Ps_DocCode;
+                          FieldbyName('DocName') .AsString:=ps_DocName; *)
+                    End;
+                    FieldByName('IsFixedPersonForFraction').AsString :=Query_Process.FieldByName('POWF_ISFIXEDPERSONFORFRACTION').AsString;
+                    FieldByName('IsFractionPropWithDisPer').AsString :=Query_Process.FieldByName('POWF_ISFRACTIONPROPWITHDISPER').AsString;
+                    FieldByName('IsDocCompAtBillingForSing').AsString :=Query_Process.FieldByName('POWF_ISCOMPFORFRACTION').AsString;
+                    FieldByName('TestNameCode').AsString := TestNameCode;
+                    FieldByName('TestNameId').AsInteger := TestNameID;
+                    FieldByName('DepId').AsInteger := DepId;
+                    FieldByName('UnitTestCost').AsFloat := UnitTestCost;
+                    FieldByName('Description').AsString := Query_Process.FieldByName('POWF_POSITIONNAME').AsString;
+                    FieldByName('ISCOMPFORFRACTION').AsString := Query_Process.FieldByName('POWF_ISCOMPFORFRACTION').AsString;
+                    FieldByName('Qty').AsFloat := Qty;
+                    FieldByName('InpatientId').AsInteger := pi_InpatientId;
+
+                    IF lf_FractionAmount > 0 Then
+                    Begin
+                         FieldByName('FractionRate').AsFloat := lf_FractionRate;
+                         FieldByName('FractionAmount').AsFloat := lf_FractionAmount;
+                         FieldByName('FractionAmountOrg').AsFloat := lf_FractionAmount;
+                    End
+                    Else
+                    Begin
+                         FieldByName('FractionRate').AsFloat := lf_FractionRate;
+                         FieldByName('FractionAmount').AsFloat := StrToFloat(FormatFloat('0.00', (UnitTestCost * lf_FractionRate / 100)));
+                         FieldByName('FractionAmountOrg').AsFloat := StrToFloat(FormatFloat('0.00', (UnitTestCost * lf_FractionRate / 100)));
+                    End;
+                    Post;
+               end;
+               Query_Process.next;
+          End;
+     end;
+  End
+End;
+
+Function TForm_Billing.GetPharmacyCost: Double;
+Begin
+  with Query_TempProcess do
+  begin
+    Close;
+    DatabaseName := gs_temppath;
+    SQL.Clear;
+    SQL.Add(' Select Sum(PharmacyCost) as PharmacyCost From Billing.db');
+    Open;
+  end;
+  Result := Query_TempProcess.FieldByName('PharmacyCost').AsFloat;
+End;
+
+Procedure TForm_Billing.Mutually_Share_Fraction(doccode, ServiceType: string);
+begin
+  With Query_MutualDocForShare do
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add(
+      ' select DRSBDID,DocCode,DocRate,ISREFCHRGDIVIDE From DocShareBreakDown where DRSGID=');
+    SQL.Add(' (select DRSGID From DocShareBreakDown Where DocCode=' + #39 +
+        doccode + #39 + ' and ServiceType=' + #39 + ServiceType + #39 + ')');
+    SQL.Add(' and ServiceType=' + #39 + ServiceType + #39 +
+        ' Order by DocRate Desc');
+    Open;
+  end;
+
+  IF Query_MutualDocForShare.FieldByName('DRSBDID').AsInteger >= 1 Then
+    pb_MutualDocForShare := True
+  else
+    pb_MutualDocForShare := False;
+end;
+
+Procedure TForm_Billing.Display_Frct_Involve_Person(IsFractionableItem: string;
+  TestNameID: Integer);
+Begin
+  IF (gs_ISFractionSharingActive = 'Y') and (IsFractionableItem = 'Y') Then
+  Begin
+    With Query_GetFrctInvoPerson do
+    Begin
+      Close;
+      DatabaseName := gs_temppath;
+      SQL.Clear;
+      SQL.Add(' Select * From ServiceWiseFraction.db ');
+      // Where IsFixedPersonForComm=''N''');
+      // sql.add(' Where TestNameCode='+#39+TestNameCode+#39);
+      SQL.Add(' Where TestNameID=' + IntToStr(TestNameID));
+      SQL.Add(' Order By DocName ');
+      Open;
+    End;
+
+    Label_Fraction.Visible := True;
+    Label_Fraction.Top := 89;
+
+    DBGrid_DocInvolved.Visible := True;
+    DBGrid_DocInvolved.Height := 120;
+    DBGrid_DocInvolved.Top := 108;
+
+    // SPB_DOCInvolvement.Enabled:=True;
+    // ps_TestNameCode := TestNameCode;
+  End
+  Else
+  Begin
+    Label_Fraction.Visible := False;
+    DBGrid_DocInvolved.Visible := False;
+    // SPB_DOCInvolvement.Enabled:=False;
+  End;
+End;
+
+procedure TForm_Billing.ReprintSticker(BillNo: String; PatientId: Integer;
+  CBPreview: TCheckBox);
+Var
+  Qry, Qry2: TOraQuery;
+  PatientName, SAMPLENO: String;
+  i: Integer;
+begin
+  Try
+    Qry := TOraQuery.Create(Nil);
+    Qry2 := TOraQuery.Create(Nil);
+    Form_Sticker := TForm_Sticker.Create(Nil);
+    with Form_Sticker do
+    begin
+      With Qry do
+      begin
+        Close;
+        DatabaseName := gs_DatabaseName;
+        SQL.Clear;
+        SQL.Add(
+          ' Select PatientTestID,TestNameCode,(Select TestNameId From HS_TENA_TestName where TENA_TestNameCode=PT.TestNameCode) as TestNameId');
+        SQL.Add(' From PatientTest PT where TestNameId=0 and BillNo=' + #39 +
+            BillNo + #39);
+        Open;
+
+        if (Qry.FieldByName('PatientTestId').AsInteger > 0) then
+        begin
+          With Qry2 Do
+          Begin
+            Close;
+            DatabaseName := gs_DatabaseName;
+            SQL.Clear;
+            SQL.Add(
+              ' Update PatientTest PT Set TestNameId=(Select TestNameID From TestName where TestNameCode=PT.TestnameCode)');
+            SQL.Add(' where TestNameId=0 and BillNo=' + #39 + BillNo + #39);
+            ExecSQL;
+          End;
+
+          Qry.First;
+          while Not Qry.eof do
+          Begin
+            With Qry2 Do
+            Begin
+              Close;
+              DatabaseName := gs_DatabaseName;
+              SQL.Clear;
+              SQL.Add(' Update SampleCollection Set TestNameId=' + IntToStr
+                  (Qry.FieldByName('TestNameId').AsInteger));
+              SQL.Add('  Where PatientTestId=' + IntToStr
+                  (Qry.FieldByName('PatientTestId').AsInteger));
+              ExecSQL;
+            End;
+            Qry.next;
+          End;
+        end;
+
+        Close;
+        DatabaseName := gs_DatabaseName;
+        SQL.Clear;
+        SQL.Add(
+          ' Select Distinct PatientID,Sampleno,(Select PAMA_PatientName from HS_PAMA_PatientMain Where PAMA_PatientId=Sc.PatientId)PatientName');
+        SQL.Add(' From SampleCollection Sc Where BillNo=' + #39 + BillNo +
+            #39 + ' and PatientId=' + IntToStr(PatientId));
+        Open;
+
+        PatientName := FieldByName('PatientName').AsString;
+        (* bill sticker *)
+        lbl_patientname.Caption := IntToStr(PatientId);
+        QrBarcode.Text := IntToStr(PatientId);
+        lbl_SampleNO.Caption := LowerCase(PatientName);
+        lbl_bottom.Caption := 'BILL';
+        lbl_DepName.Caption := '';
+        if CBPreview.Checked = True then
+          QrSticker.Preview
+        else
+          QrSticker.Print;
+        (* * *)
+        Qry.First;
+        While not Qry.eof do
+        begin
+          SAMPLENO := FieldByName('SampleNo').AsString;
+          if SAMPLENO = '' then
+            Exit;
+          with Qry2 do
+          begin
+            Close;
+            DatabaseName := gs_DatabaseName;
+            SQL.Clear;
+            SQL.Add(
+              ' Select Distinct TENA_SampleSourceID ,Case When TENA_SampleSourceID is null then TN.TENA_TestName');
+            SQL.Add(
+              ' Else (Select SampleSource From SampleSource Where SampleSourceID=TN.TENA_SampleSourceID)end as SampleSource');
+            SQL.Add(
+              ' ,Case When TENA_SampleSourceID is Null then (Select DEPT_DepName from HS_DEPT_Department Where DEPT_DepID=TN.TENA_labDepID)');
+            SQL.Add(
+              ' Else (Select DEPT_DepName from HS_DEPT_Department Where DEPT_DepID=Tn.TENA_DepID)end as DepName,TENA_DEPID as DEPID');
+            SQL.Add(
+              ' From HS_TENA_TestName Tn Where TENA_TestNameID in (Select TestNameId from PatientTest Where PatientTestID in');
+            SQL.Add(' (Select PatientTestId from SampleCollection where PatientId=' +IntToStr(PatientId));
+            SQL.Add(' and SampleNo=' + #39 + Qry.FieldByName('SampleNo').AsString + #39 + '))');
+            // SQL.SaveToFile('C:\Sample.Txt');
+            Open;
+            QrBarcode.Text := SAMPLENO;
+            lbl_SampleNO.Caption := SAMPLENO + ' (' + LowerCase(PatientName)
+              + ')';
+            Qry2.First;
+            While not Qry2.eof do
+            begin
+              lbl_patientname.Caption := IntToStr(PatientId);
+              lbl_bottom.Caption := FieldByName('SampleSource').AsString;
+              lbl_DepName.Caption := FieldByName('DepName').AsString;
+              if CBPreview.Checked = True then
+                QrSticker.Preview
+              else
+              begin
+                QrSticker.Print;
+                if FieldByName('DEPID').AsInteger = 4 then
+                // 4 -Biochemestry needs 2 Sample Sticker.
+                Begin
+                  for i := 1 to gi_NoofStickerBioChemistry - 1 do
+                    QrSticker.Print;
+                End;
+
+                if (FieldByName('DEPID').AsInteger = 27) and
+                  (FieldByName('TENA_SampleSourceID').AsInteger = 39) then
+                // 27 -Pathology needs 2 Sample Sticker.
+                Begin
+                  for i := 1 to gi_NoofStickerPathology - 1 do
+                    QrSticker.Print;
+                End;
+              end;
+              Qry2.next;
+            end;
+          end;
+          Qry.next;
+        end;
+      end;
+    end;
+  Finally
+    Qry.Free;
+    Qry2.Free;
+    Form_Sticker.Free;
+    SetPrinter('Bill Printer');
+  end;
+end;
+
+Procedure TForm_Billing.GetCoPaymentAmt;
+var
+  Qry_CopaymentAmt: TOraQuery;
+begin
+  // for coPayment
+  Qry_CopaymentAmt := TOraQuery.Create(Nil);
+  With Qry_CopaymentAmt do
+  begin
+    Close;
+    DatabaseName := gs_temppath;
+    SQL.Clear;
+    SQL.Add(
+      'select Sum ((CoPaymentItemPercent/100) *((TestPrice * QTY)+SvrTax)) as TotalCopaymentAmts From Billing.db');
+    SQL.Add(' where IsCoPaymentItem=''Y''');
+    Open;
+
+    IF Qry_CopaymentAmt.FieldByName('TotalCopaymentAmts').AsFloat > 0 Then
+    Begin
+      Label20.Visible := True;
+      Label_CoPaymentAmt.Visible := True;
+      pf_CopayAmts := StrToFloat
+        (Format('%.2f', [FieldByName('TotalCopaymentAmts').AsFloat]));
+      Label_CoPaymentAmt.Caption := FloatToStr(pf_CopayAmts);
+
+      Close;
+      DatabaseName := gs_temppath;
+      SQL.Clear;
+      SQL.Add('select Distinct TestNameCode From Billing.db');
+      SQL.Add(' where IsCoPaymentItem=''Y''');
+      Open;
+      First;
+      ps_CopayItemsCodeList := '';
+      while Not Qry_CopaymentAmt.eof do
+      begin
+        if Trim(ps_CopayItemsCodeList) = '' then
+          ps_CopayItemsCodeList := Qry_CopaymentAmt.FieldByName('TestNameCode')
+            .AsString
+        else
+          ps_CopayItemsCodeList := ps_CopayItemsCodeList + ',' +
+            Qry_CopaymentAmt.FieldByName('TestNameCode').AsString;
+        Qry_CopaymentAmt.next;
+      end;
+    end
+    Else
+    Begin
+      ps_CopayItemsCodeList := '';
+      pf_CopayAmts := 0;
+      Label_CoPaymentAmt.Caption := '0.00';
+      Label20.Visible := False;
+      Label_CoPaymentAmt.Visible := False;
+    End;
+  End;
+  Qry_CopaymentAmt.Free;
+end;
+
+procedure TForm_Billing.CheckCoPaymentItem(TestCodeId: Integer;
+  out IsCoPaymentitems: String);
+var
+  Qry_Check: TOraQuery;
+begin
+  // check Setup for Copayment Payable Percentage
+  Qry_Check := TOraQuery.Create(Nil);
+  With Qry_Check do
+  begin
+    Close;
+    DatabaseName := gs_DatabaseName;
+    SQL.Add('select * from Member_Copaymentitemsetup');
+    SQL.Add(' where testNameid =' + IntToStr(TestCodeId));
+    Open;
+  end;
+  if Qry_Check.FieldByName('MEMBERCOPAYMENTITEMID').AsInteger > 0 then
+  begin
+    pf_PercentageAmt := Qry_Check.FieldByName('PAYABLEPERCENTAGE').AsFloat;
+    IsCoPaymentitems := Qry_Check.FieldByName('IsActive').AsString;
+  end
+  else
+  begin
+    IsCoPaymentitems := 'N';
+    pf_PercentageAmt := 0;
+  end;
+  Qry_Check.Free;
+end;
+
+procedure TForm_Billing.SaveCoPayReceipt;
+Var
+  ps_Copaybillno, ls_CopayType: string;
+begin
+  if (DBLCB_Scheme.KeyValue = '22') and (pf_CopayAmts > 0) then
+  begin
+    if RB_OPBILL.Checked = True then
+      ls_CopayType := 'OP'
+    Else
+      ls_CopayType := 'IP';
+
+    if Label_CoPaymentAmt.Caption <> '0.00' then
+    begin
+      ps_Copaybillno := Gs_BillNo;
+      // if RadioButton_OPBilling.Checked=true then
+      Try
+        saveCreditPayment(gi_PatientID, gi_InPatientID, pf_grandtotal,
+          pf_CopayAmts, Gi_UserId, Gs_BillNo, Ps_TodaysDate, Ps_TodaysTime,
+          gs_MacId, ls_CopayType, 'CASH', 'Medicare Co-Payment', 'COLN', 'Y',
+          ps_CopayItemsCodeList);
+      Except
+        saveCreditPayment(gi_PatientID, gi_InPatientID, pf_grandtotal,
+          pf_CopayAmts, Gi_UserId, Gs_BillNo, Ps_TodaysDate, Ps_TodaysTime,
+          gs_MacId, ls_CopayType, 'CASH', 'Medicare Co-Payment', 'COLN', 'Y',
+          ps_CopayItemsCodeList);
+      End;
+      // else if RadioButton_IPBilling.Checked=true then
+      // saveCreditPayment(gi_PatientID,gi_InPatientID,StrToFloat(Le_GrandTotal.Text),pf_CopayAmts,gi_UserId,Gs_BillNo,ps_TodaysDate,ps_TodaysTime,gs_MacId,'IP','CASH')
+      // else if RadioButton_ERBilling.checked=true then
+      // saveCreditPayment(gi_PatientID,gi_InPatientID,StrToFloat(Le_GrandTotal.Text),pf_CopayAmts,gi_UserId,Gs_BillNo,ps_TodaysDate,ps_TodaysTime,gs_MacId,'ER','CASH');
+    end;
+  end;
+
+  (* if CheckBoxOPRef.Checked=true then
+    begin
+    IF pf_CopayAmts > 0 Then
+    Begin
+    pb_copayrefund:=true;
+    saveCreditPayment(pi_patientid,pi_InPatientId,StrToFloat(Edit_GrandTotal.Text),pf_CopayAmts,gi_UserId,ps_MyBillNo,ps_TodaysDate,ps_TodaysTime,gs_MacId,'OP','REFUND');
+    End;
+    end
+    else if CheckBoxIPRefund.Checked=true then
+    begin
+    IF pf_CopayAmts > 0 Then
+    Begin
+    pb_copayrefund:=true;
+    saveCreditPayment(pi_patientid,pi_InPatientId,StrToFloat(Edit_GrandTotal.Text),pf_CopayAmts,gi_UserId,ps_MyBillNo,ps_TodaysDate,ps_TodaysTime,gs_MacId,'IP','REFUND');
+    End;
+    end
+    else if CheckBoxErRefund.checked=true then
+    begin
+    IF pf_CopayAmts > 0 Then
+    Begin
+    pb_copayrefund:=true;
+    saveCreditPayment(pi_patientid,pi_InPatientId,StrToFloat(Edit_GrandTotal.Text),pf_CopayAmts,gi_UserId,ps_MyBillNo,ps_TodaysDate,ps_TodaysTime,gs_MacId,'ER','REFUND');
+    End;
+    end;
+    end; *)
+end;
+
+Procedure TForm_Billing.ResetAllHistoryForNextNewBill;
+Begin
+  BB_Save.Enabled := True;
+  DBLCB_RefDocCode.KeyValue := -1;
+  Timer_PayTypeFlash.Enabled := False;
+  Label_SchemeCap.Font.Color := clBlack;
+  GB_isDepositBill := False;
+  pb_IsMedicarePatient := False;
+
+  SPB_ViewDocument.Visible := False;
+
+  Gs_BillNo := '';
+  ps_SampleNo := '';
+  Gs_TempBillno := '';
+  ps_FinalBillNo := '';
+  ps_DepositBillNo := '';
+  ps_LoadedTestID := '';
+  gi_InPatientID := 0;
+  gi_PatientID := 0;
+  DBLCB_Scheme.KeyValue := -1;
+  gi_SchemeId := 0;
+  gi_CommunityId := 0;
+  Pi_CommunityID := 0;
+  Pi_SchemeID := 0;
+  pi_InpatientId := 0;
+  Edit_Disper.Text := '0';
+
+  Edit_Disper.ReadOnly := False;
+  Edit_Disper.Color := clWhite;
+  Edit_DisAmount.ReadOnly := False;
+  Edit_DisAmount.Color := clWhite;
+
+  Lbl_GrandTotal.Caption := '00.00';
+  lbl_DepositBalance.Caption := '00.00';
+  lbl_NetBalance.Caption := '00.00';
+  Lbl_ReturnAmt.Caption := '00.00';
+  lbl_TenderAmt.Caption := '00.00';
+  Lbl_TotalItems.Caption := '00.00';
+
+  Label_IPNO.Caption := '0';
+
+  QueryScheme.Close;
+  QueryScheme.Open;
+
+  Le_Payment.Text := '0';
+
+  gi_PatientID := 0;
+  gi_InPatientID := 0;
+  Gs_PatientName := '';
+  gs_address := '';
+  Gs_CurrentAge := '';
+  Gs_Gender := '';
+  gs_phoneno := '';
+  gs_Mobileno := '';
+  Cb_Qty.Checked := True;
+  Cb_Qty.Enabled := False;
+  Cb_Qty.Visible := False;
+  Cb_Label.Checked := True;
+  GB_PaymentInfo.Visible := True;
+  GB_PaymentInfo.BringToFront;
+  GB_OldBill.Visible := False;
+  GB_OldTest.Visible := False;
+
+  CB_BILLTYPE.KeyValue := 'GEN';
+  Label_MeicarePatient.Visible := False;
+  Le_MemberNo.Text := '';
+  gs_memberNo := '';
+  pb_IsAdvanceExist := False;
+  Le_Remarks.Text := '';
+
+  Label_AdmnDate.Visible := False;
+  Label_AdmnDate.Caption := 'None';
+  Label22.Visible := False;
+
+  Label24.Visible := False;
+  Label_NoOfDays.Visible := False;
+  Label_NoOfDays.Caption := 'None';
+
+  Label21.Visible := False;
+  Lbl_BillNo.Caption := '';
+  Lbl_BillNo.Visible := False;
+  Label11.Visible := False;
+  Label_DepositNo.Caption := '';
+  Label_DepositNo.Visible := False;
+
+  Label20.Visible := False;
+  Label_CoPaymentAmt.Caption := '';
+  Label_CoPaymentAmt.Visible := False;
+
+  // OutStd Info Of Inpaient
+  Label25.Visible := False;
+  Label_TotalExp.Visible := False;
+
+  Label4.Visible := False;
+  Label_DepositTotal.Visible := False;
+
+  Label3.Visible := False;
+  lbl_OutStddeposit.Visible := False;
+
+  IF CB_ViewOldBill.Checked Then
+    CB_ViewOldBill.Checked := False;
+  IF CB_ViewOldTest.Checked Then
+    CB_ViewOldTest.Checked := False;
+
+  if gs_BillType <> 'REFUNDBILL' then
+  begin
+    if RB_IPBILL.Checked = True then
+      gi_BillCase := 0
+    Else if RB_OPBILL.Checked = True then
+      gi_BillCase := 3
+    Else if RB_ERBill.Checked then
+          gi_BillCase := 0;
+
+  end;
+
+  if gi_BillCase = 0 then
+  Begin
+    // if Not FileExists(gs_temppath+'\TempBilling.db') then
+    if Not FileExists(gs_temppath + '\Billing.db') then
+      CreateTableFinalBill;
+    // CreateTableTempBilling;
+
+    with Table_TempBilling do
+    begin
+      Close;
+      DatabaseName := gs_temppath;
+      TableName := 'Billing.db';
+      EmptyTable;
+      Open;
+    end;
+    Query_TempBilling.Close;
+    Query_TempBilling.DatabaseName := gs_temppath;
+    Query_TempBilling.Open;
+
+    DBGrid_Billing.DataSource := DS_Tempbilling;
+    Le_Payment.EditLabel.Caption := '(F3) Advance Amt:';
+  End
+  Else if (gi_BillCase = 3) or (gi_BillCase = 2) then
+  Begin
+    if Not FileExists(gs_temppath + '\Billing.db') then
+      CreateTableFinalBill;
+
+    with Table_Billing do
+    begin
+      Close;
+      DatabaseName := gs_temppath;
+      TableName := 'Billing.db';
+      EmptyTable;
+      Open;
+    end;
+    (* Query_FinalBill.Close;
+      Query_FinalBill.DatabaseName:=gs_TempPath;
+      Query_FinalBill.Open; *)
+    Query_TempBilling.Close;
+    Query_TempBilling.DatabaseName := gs_temppath;
+    Query_TempBilling.Open;
+    // DBGrid_Billing.DataSource := DS_FinalBill;
+    DBGrid_Billing.DataSource := DS_Tempbilling;
+    Le_Payment.EditLabel.Caption := '(F3)Payment:';
+  End;
+End;
+
+procedure TForm_Billing.EnabledDisabledSearchField(Status: String);
+Begin
+  if Status = 'ENABLED' then
+  Begin
+    Edit_TestNameCode.Enabled := True;
+    Edit_TestName.Enabled := True;
+    Edit_Qty.Enabled := True;
+    Edit_UnitPrice.Enabled := True;
+    Edit_SvrTaxEntry.Enabled := True;
+    Edit_Disper.Enabled := True;
+    Edit_DisAmount.Enabled := True;
+    SPB_AddItem.Enabled := True;
+  End
+  Else
+  Begin
+    Edit_TestNameCode.Enabled := False;
+    Edit_TestName.Enabled := False;
+    Edit_Qty.Enabled := False;
+    Edit_UnitPrice.Enabled := False;
+    Edit_SvrTaxEntry.Enabled := False;
+    Edit_Disper.Enabled := True;
+    Edit_DisAmount.Enabled := True;
+    SPB_AddItem.Enabled := True;
+  End;
+End;
+
+procedure TForm_Billing.FormCreate(Sender: TObject);
+Var
+  Key: Char;
+  i: Integer;
+begin
+  Query_RateType.Close;
+  Query_RateType.DatabaseName := gs_DatabaseName;
+  Query_RateType.Open;
+
+  CB_BILLTYPE.KeyValue := Query_RateType.FieldByName('PATY_PATIENTTYPECODE')
+    .AsString;
+  ps_PatientTypeCode := Query_RateType.FieldByName('PATY_PATIENTTYPECODE')
+    .AsString;
+
+  Query_TestName.Close;
+  Query_TestName.DatabaseName := gs_DatabaseName;
+  Query_TestName.SQL[3] := 'AND PATIENTTYPECODE=' + QuotedStr
+    (CB_BILLTYPE.KeyValue);
+
+  if gi_HospitalId = 562 then // 562 - Manipal
+    Query_TestName.SQL[5] := 'Order by TestNameCode'
+  Else
+    Query_TestName.SQL[5] := 'Order by TestName';
+  Query_TestName.Open;
+
+  if not MenuAccess('CAMERA') then
+  begin
+    bb_CustomerView.Visible := False;
+  end;
+  count := 0;
+  Gb_IsPreview := True;
+
+  // GetReferralDocDepartment;
+
+  QueryCommunity.Close;
+  QueryCommunity.Open;
+
+  QueryScheme.Close;
+  QueryScheme.Open;
+
+  CreateTableFinalBill;
+  if gs_ISFractionSharingActive = 'Y' then
+    CreateTableTempFraction;
+
+  CreateTableTempReferralFraction;
+
+  // DBGrid_Billing.DataSource := DS_FinalBill;
+  DBGrid_Billing.DataSource := DS_Tempbilling;
+  // LoadBill;
+  LoadImage;
+
+  (* case gi_BillCase of
+    0:
+    begin
+    (*if gs_IsCounterUser = 'Y' then
+    gb_HideDetailInServiceBilling := False
+    Else
+    gb_HideDetailInServiceBilling := False; *)
+
+  // gi_PatientID := gi_NewPatientID;
+  (* Le_HosNo.Text := IntToStr(gi_PatientID);
+    pi_InpatientId:=gi_InPatientID;
+    CreateTableTempBilling;
+    CreateTableTempFraction;
+    CB_BillType.KeyValue := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    ps_PatientTypeCode := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    pi_TotalItems := 0;
+
+    GetReferralDocDepartment;
+    GetIPBasicInfo;
+
+
+    pf_Total := 0;
+    pf_Dis := 0;
+    pf_disper := 0;
+    pf_subtotal := 0;
+    pf_SvrTax := 0;
+    pf_grandtotal := 0;
+    DBGrid_Billing.DataSource := DS_Tempbilling;
+    if gi_PatientID > 0 then
+    LoadImage;
+    Label8.Visible := True;
+    CB_PayType.Visible := True;
+    CB_PayType.ItemIndex:=1;
+    CB_PayType.Enabled:=False;
+    // Edit4.Visible := false;
+    Le_Payment.Visible := True;
+    Le_Payment.EditLabel.Caption:='(F1) Advance Amt :';
+    Le_Remarks.Visible := False;
+    //CB_Preview.Visible := False;
+    Label6.Visible := False;
+    Se_NoofPrint.Visible := False;
+    BB_Reprint.Visible := False;
+
+    //Label13.Visible := False;
+    //Label17.Visible := False;
+    //Lbl_ReturnAmt.Visible := False;
+    //lbl_TenderAmt.Visible := False;
+
+    // Label11.Visible := false;
+    // Label3.Visible := false;
+    // lbl_deposit.Visible := false;
+    // lbl_balance.Visible := false;
+    EnabledDisabledSearchField('ENABLED');
+    //Panel_Search.SendToBack;
+    end;
+    1:
+    begin
+    (*if gs_IsCounterUser = 'Y' then
+    gb_HideDetailInServiceBilling := False
+    Else
+    gb_HideDetailInServiceBilling := False; *)
+  (* CreateTableTempBilling;
+    CreateTableTempFraction;
+    pi_TotalItems := 0;
+
+    GetReferralDocDepartment;
+
+    pf_Total := 0;
+    pf_Dis := 0;
+    pf_disper := 0;
+    pf_subtotal := 0;
+    pf_SvrTax := 0;
+    pf_grandtotal := 0;
+    DBGrid_Billing.DataSource := DS_Tempbilling;
+
+    With Query_Process Do
+    Begin
+    Close;
+    DatabaseName:=gs_DatabaseName;
+    sql.Clear;
+    sql.add(' Select NVL(Sum(DEPO_DrAmount-DEPO_CrAmount),0) as Total From HS_DEPO_Deposit where DEPO_ReferenceNo='+gs_TempBillNo);
+    Open;
+    End;
+
+    if Query_Process.FieldByName('Total').AsFloat <=0 then
+    pb_IsAdvanceExist:=False
+    Else
+    pb_IsAdvanceExist:=True;
+
+
+    LoadBill;
+    LoadImage;
+    Label8.Visible := False;
+    CB_PayType.Visible := False;
+    // Edit4.Visible := false;
+    Le_Payment.Visible := False;
+    Le_Remarks.Visible := True;
+    CB_BillType.KeyValue := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    ps_PatientTypeCode := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+
+    Label13.Visible := False;
+    Label17.Visible := False;
+    Lbl_ReturnAmt.Visible := False;
+    lbl_TenderAmt.Visible := False;
+
+    // Label11.Visible := false;
+    // Label12.Visible := false;
+    // lbl_deposit.Visible := false;
+    // lbl_balance.Visible := false;
+    BB_TestSelection.Visible := False;
+    cb_extended.Visible := False;
+    CB_Send2Web.Visible := False;
+    CB_Send2Sms.Visible := False;
+    CB_Send2Email.Visible := False;
+    //DBGrid_Billing.Top := DBGrid_Billing.Top - 45;
+    //DBGrid_Billing.Height := DBGrid_Billing.Height + 45;
+    //SB_Edit.Visible := False;
+
+    BB_Reprint.Visible := False;
+    DBGrid_Billing.BringToFront;
+    //Panel_Search.BringToFront;
+    EnabledDisabledSearchField('DISABLED');
+    end;
+    2:
+    begin
+    // Form_BillingParent.BB_FinalBilling.Enabled := false;
+    Le_HosNoKeyPress(Sender, Key);
+    Le_MemberNo.Text := Gs_MemberNo;
+
+    GetReferralDocDepartment;
+
+    QueryCommunity.Close;
+    QueryCommunity.Open;
+    QueryScheme.Close;
+    QueryScheme.Open;
+    CreateTableFinalBill;
+    CreateTableTempFraction;
+    DBGrid_Billing.DataSource := DS_FinalBill;
+    LoadBill;
+    LoadImage;
+    CB_BillType.KeyValue := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    ps_PatientTypeCode := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+
+    CB_PayType.ItemIndex := 0;
+
+    CB_Send2Web.Visible := False;
+    CB_Send2Sms.Visible := False;
+    CB_Send2Email.Visible := False;
+    BB_TestSelection.Visible := False;
+    cb_extended.Visible := False;
+    BB_Reprint.Visible := False;
+    Le_Payment.Visible := true;
+    Le_Payment.EditLabel.Caption:='(F1) Payment:';
+    Le_Remarks.Visible := true;
+    DBGrid_Billing.Top := DBGrid_Billing.Top - 45;
+    DBGrid_Billing.Height := DBGrid_Billing.Height + 45;
+
+    Label13.Visible := true;
+    Label17.Visible := true;
+    Lbl_ReturnAmt.Visible := true;
+    lbl_TenderAmt.Visible := true;
+
+    DBGrid_Billing.BringToFront;
+    //Panel_Search.BringToFront;
+    EnabledDisabledSearchField('DISABLED');
+    end;
+    3: // Direct Final Bill Entry
+    begin
+    //gi_PatientID := gi_NewPatientID;
+    pi_InpatientId:=0;
+    Le_HosNo.Text := IntToStr(gi_PatientID);
+
+    CreateTableFinalBill;
+    CreateTableTempFraction;
+    CB_BillType.KeyValue := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    ps_PatientTypeCode := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+
+    pi_TotalItems := 0;
+
+
+    GetReferralDocDepartment;
+
+
+    pf_Total := 0;
+    pf_Dis := 0;
+    pf_disper := 0;
+    pf_subtotal := 0;
+    pf_SvrTax := 0;
+    pf_grandtotal := 0;
+    DBGrid_Billing.DataSource := DS_FinalBill;
+    if gi_PatientID > 0 then
+    LoadImage;
+    Label8.Visible := true;
+    CB_PayType.Visible := true;
+    CB_PayType.ItemIndex := 0;
+    // Edit4.Visible := True;
+    Le_Payment.Visible := true;
+    Le_Payment.EditLabel.Caption:='(F1) Payment:';
+    Le_Remarks.Visible := true;
+    //CB_Preview.Visible := False;
+    Label6.Visible := False;
+    Se_NoofPrint.Visible := False;
+    BB_Reprint.Visible := False;
+    // Label11.Visible := false;
+    // Label12.Visible := false;
+    // lbl_deposit.Visible := false;
+    // lbl_balance.Visible := false;
+
+    Label13.Visible := true;
+    Label17.Visible := true;
+    Lbl_ReturnAmt.Visible := true;
+    lbl_TenderAmt.Visible := true;
+
+    Le_Discount.Visible := true;
+    Le_Disper.Visible := true;
+    //Panel_Search.SendToBack;
+    EnabledDisabledSearchField('ENABLED');
+    end;
+    4: // Direct Final Bill Load
+    begin
+    // Form_BillingParent.BB_FinalBilling.Enabled := false;
+    // Form_BillingParent.BB_RefundBill.Enabled := false;
+    pi_InpatientId:=0;
+    Le_HosNo.Text := IntToStr(gi_PatientID);
+    Le_MemberNo.Text := Gs_MemberNo;
+
+    GetReferralDocDepartment;
+
+    QueryCommunity.Close;
+    QueryCommunity.Open;
+    QueryScheme.Close;
+    QueryScheme.Open;
+    CreateTableFinalBill;
+    CreateTableTempFraction;
+    DBGrid_Billing.DataSource := DS_FinalBill;
+    LoadBill;
+    LoadImage;
+    BB_Reprint.Visible := true;
+    CB_BillType.KeyValue := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    ps_PatientTypeCode := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    CB_PayType.ItemIndex := 0;
+
+    Label13.Visible := true;
+    Label17.Visible := true;
+    Lbl_ReturnAmt.Visible := true;
+    lbl_TenderAmt.Visible := true;
+
+    BB_TestSelection.Visible := False;
+    cb_extended.Visible := False;
+    CB_Send2Web.Visible := False;
+    CB_Send2Sms.Visible := False;
+    CB_Send2Email.Visible := False;
+    DBGrid_Billing.Top := DBGrid_Billing.Top - 45;
+    DBGrid_Billing.Height := DBGrid_Billing.Height + 45;
+
+    Shape2.Visible := true;
+    Label16.Visible := true;
+    //SB_Edit.Visible := False;
+    DBGrid_Billing.BringToFront;
+
+    //Panel_Search.BringToFront;
+    EnabledDisabledSearchField('DISABLED');
+    end;
+    5:
+    begin
+    // Form_BillingParent.BB_FinalBilling.Enabled := false;
+    Le_HosNo.Text := IntToStr(gi_PatientID);
+    Le_MemberNo.Text := Gs_MemberNo;
+
+    GetReferralDocDepartment;
+
+    QueryCommunity.Close;
+    QueryCommunity.Open;
+    QueryScheme.Close;
+    QueryScheme.Open;
+    CreateTableTempBilling;
+    CreateTableTempFraction;
+    DBGrid_Billing.DataSource := DS_Tempbilling;
+    LoadBill;
+    LoadImage;
+
+    BB_TestSelection.Visible := False;
+    cb_extended.Visible := False;
+    CB_Send2Web.Visible := False;
+    CB_Send2Sms.Visible := False;
+    CB_Send2Email.Visible := False;
+    DBGrid_Billing.Top := DBGrid_Billing.Top - 45;
+    DBGrid_Billing.Height := DBGrid_Billing.Height + 45;
+
+    BB_Reprint.Visible := true;
+    CB_BillType.KeyValue := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    ps_PatientTypeCode := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    CB_PayType.ItemIndex := 0;
+    DBGrid_Billing.BringToFront;
+
+    //Panel_Search.BringToFront;
+    EnabledDisabledSearchField('DISABLED');
+    end;
+    6:
+    begin
+    // Form_BillingParent.BB_FinalBilling.Enabled := false;
+    // Form_BillingParent.BB_RefundBill.Enabled := false;
+    Le_HosNo.Text := IntToStr(gi_PatientID);
+    Le_MemberNo.Text := Gs_MemberNo;
+
+
+    BB_Reprint.Visible := False;
+    CB_BillType.KeyValue := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    ps_PatientTypeCode := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    CB_PayType.ItemIndex := 0;
+
+    BB_TestSelection.Visible := False;
+    cb_extended.Visible := False;
+    CB_Send2Web.Visible := False;
+    CB_Send2Sms.Visible := False;
+    CB_Send2Email.Visible := False;
+
+    Shape2.Visible := true;
+    Label16.Visible := true;
+    Le_Remarks.Visible:=True;
+
+    //DBGrid_Billing.Top := DBGrid_Billing.Top - 45;
+    //DBGrid_Billing.Height := DBGrid_Billing.Height + 45;
+    DBGrid_Billing.BringToFront;
+
+    //Panel_Search.BringToFront;
+    EnabledDisabledSearchField('DISABLED');
+    end;
+    7:
+    begin
+    Form_BillingParent.BB_FinalBilling.Enabled := False;
+    Form_BillingParent.BB_RefundBill.Enabled := False;
+    Le_HosNo.Text := IntToStr(gi_PatientID);
+    Le_MemberNo.Text := Gs_MemberNo;
+
+    GetReferralDocDepartment;
+
+    QueryCommunity.Close;
+    QueryCommunity.Open;
+    QueryScheme.Close;
+    QueryScheme.Open;
+    CreateTableFinalBill;
+    CreateTableTempFraction;
+    DBGrid_Billing.DataSource := DS_FinalBill;
+    LoadBill;
+    LoadImage;
+    BB_Reprint.Visible := true;
+    CB_BillType.KeyValue := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    ps_PatientTypeCode := Query_RateType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+    CB_PayType.ItemIndex := 0;
+
+    BB_TestSelection.Visible := False;
+    cb_extended.Visible := False;
+    CB_Send2Web.Visible := False;
+    CB_Send2Sms.Visible := False;
+    CB_Send2Email.Visible := False;
+    DBGrid_Billing.Top := DBGrid_Billing.Top - 45;
+    DBGrid_Billing.Height := DBGrid_Billing.Height + 45;
+
+
+    DBGrid_Billing.BringToFront;
+
+    //Panel_Search.BringToFront;
+    EnabledDisabledSearchField('DISABLED');
+    end;
+    end;
+    Le_HosNo.EditLabel.Caption := Gs_PatientIdCaption;
+
+
+
+
+
+
+    // if MenuAccess('CAMERA') then
+    // ToogleCustomerView;
+    Shape2.Brush.Color := clOlive;
+  *)
+  Table_Fraction.Close;
+  Table_Fraction.DatabaseName := gs_temppath;
+  Table_Fraction.EmptyTable;
+  Table_Fraction.Open;
+
+  if gb_HideDetailInServiceBilling then
+  begin
+    for i := 5 to 9 do
+    begin
+      DBGrid_Billing.Columns[i].Visible := False;
+    end;
+    Edit_UnitPrice.Visible := False;
+    Edit_SvrTaxEntry.Visible := False;
+    Edit_Disper.Visible := False;
+    Edit_DisAmount.Visible := False;
+    Le_SubTotal.Visible := False;
+    Le_Discount.Visible := False;
+    Le_Disper.Visible := False;
+    Label7.Visible := False;
+    Le_NetTotal.Visible := False;
+    Le_SvrTax.Visible := False;
+    Le_GrandTotal.Visible := False;
+    le_TotalDeposit.Visible := False;
+    Le_NetBalance.Visible := False;
+    CB_PayType.Visible := False;
+    Le_Payment.Visible := False;
+    Le_Remarks.Visible := False;
+    CB_DirectDiscountSet.Visible := False;
+    DBGrid_Search.Columns[2].Visible := False;
+  end;
+end;
+
+procedure TForm_Billing.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = 27 then
+  Begin
+    if MessageDlg('Are You Sure to Close ?', mtConfirmation, [mbYes, mbNo], 0)
+      = mrYes then
+      Close;
+  End;
+
+  if Key = VK_F1 then
+  Begin
+    if gs_BillType <> 'REFUNDBILL' then
+      gi_BillCase := 3;
+    RB_OPBILL.Checked := True;
+    Le_HosNo.SetFocus;
+  End;
+
+  if Key = VK_F2 then
+  Begin
+    if gs_BillType <> 'REFUNDBILL' then
+      gi_BillCase := 0;
+    RB_IPBILL.Checked := True;
+    Le_HosNo.SetFocus;
+  End;
+
+  if Key = VK_F3 then
+    Le_Payment.SetFocus;
+
+  if (Key = VK_F4) Then
+  Begin
+    IF Table_Billing.FieldByName('ISFractionableTest').AsString = 'Y' Then
+      SPB_FractionAdditionClick(Sender);
+  End;
+
+  IF Key = VK_F6 Then
+  begin
+    With FormCalculator Do
+    Begin
+      Try
+        FormCalculator := TFormCalculator.Create(Application);
+        ShowModal;
+      Finally
+        Free;
+      End;
+    End;
+  end;
+
+  if Key = VK_F9 then
+    BitBtn_AdmissionClick(Sender);
+  if Key = VK_F10 then
+    BitBtn_DischargeBillingClick(Sender);
+  if Key = VK_F11 then
+    BitBtn_DepositClick(Sender);
+
+  if (Key = VK_F12) and (BB_Save.Enabled = True) then
+    BB_SaveClick(Sender);
+end;
+
+procedure TForm_Billing.DisplayMgmtInCaseDocCompForBilling;
+begin
+  if gs_IsDoctorCompForBilling = 'Y' then
+  begin
+    DBGrid_Billing.Columns[1].Visible := True;
+    DBGrid_Billing.Columns[1].Width := 43;
+
+    Edit_DocCode.Enabled := True;
+    Edit_DocCode.Visible := True;
+    Edit_DocCode.left := 2;
+
+    DBGrid_Billing.Columns[2].Width := 66;
+    Edit_TestNameCode.left := 61;
+    Edit_TestNameCode.Width := 66;
+
+    Edit_TestName.left := 129;
+    Edit_UnitPrice.left := 434;
+
+    Edit_Qty.left := 507;
+
+    Edit_TotalPrice.left := 550;
+    DBGrid_Billing.Columns[6].Width := 65;
+
+    Edit_SvrTaxEntry.left := 616;
+    DBGrid_Billing.Columns[7].Width := 63;
+
+    Edit_Disper.left := 681;
+    DBGrid_Billing.Columns[8].Width := 54;
+
+    Edit_DisAmount.left := 742;
+    DBGrid_Billing.Columns[9].Width := 60;
+
+    SPB_AddItem.left := 809;
+
+    With Query_Doctor do
+    begin
+      Close;
+      DatabaseName := gs_DatabaseName;
+      SQL.Clear;
+      SQL.Add(
+        ' Select DOCT_DOCID,DOCT_DOCCODE,DOCT_Desig,DOCT_DocName From HS_DOCT_Doctor');
+      SQL.Add(' Where DOCT_IsActive=''Y''');
+      SQL.Add(' Order by DOCT_DocName');
+      Open;
+    end;
+
+    ps_DocCode := 'HOS01';
+    pi_DocId := GetDefaultDoctorId;
+
+    (* Edit_TestNameCode.Left:=Edit_TestNameCode.Left+Edit_DocCode.Width;
+      Edit_TestName.Left:=Edit_TestName.Left+Edit_DocCode.Width;
+      Edit_UnitPrice.Left:=Edit_UnitPrice.Left+Edit_DocCode.Width;
+      Edit_Qty.Left:=Edit_Qty.Left+Edit_DocCode.Width;
+      Edit_TotalPrice.Left:=Edit_TotalPrice.Left+Edit_DocCode.Width;
+      Edit_SvrTaxEntry.Left:=Edit_SvrTaxEntry.Left+Edit_DocCode.Width;
+      Edit_Disper.Left:=Edit_Disper.Left+Edit_DocCode.Width;
+      Edit_DisAmount.Left:=Edit_DisAmount.Left+Edit_DocCode.Width;
+      SPB_AddItem.Left:=SPB_AddItem.Left+Edit_DocCode.Width; *)
+  end
+  Else
+  begin
+    DBGrid_Billing.Columns[1].Visible := False;
+    Edit_DocCode.Enabled := False;
+    Edit_DocCode.Visible := False;
+
+    Edit_TestNameCode.left := 2;
+    Edit_TestNameCode.Width := 79;
+
+    Edit_TestName.left := 83;
+    Edit_UnitPrice.left := 390;
+    Edit_Qty.left := 465;
+    Edit_TotalPrice.left := 508;
+    Edit_SvrTaxEntry.left := 573;
+    Edit_Disper.left := 635;
+    Edit_DisAmount.left := 697;
+    SPB_AddItem.left := 763;
+
+    Query_Doctor.Close;
+    ps_DocCode := 'HOS01';
+    pi_DocId := GetDefaultDoctorId;
+  end;
+end;
+
+procedure TForm_Billing.FormShow(Sender: TObject);
+var Key: Char;
+begin
+     Panel_Refund.Visible := False;
+     Panel_ItemSearch.Visible := True;
+     GB_PaymentInfo.BringToFront;
+     DBLCB_RefDocCode.Visible := True;
+     //DBLCB_MKTGReferral.Visible := True;
+     cb_extended.Visible := True;
+
+     Label14.Visible := False;
+     Label18.Visible := False;
+
+     Le_SvrTax.EditLabel.Caption := FloatToStr(gf_TaxPercent)+ '% ' + gs_SvrTaxCap;
+     DBGrid_Billing.Columns[7].Title.Caption := gs_SvrTaxCap;
+
+     GetReferralDocDepartment;
+     GetReferalMKTPersonal;
+     DisplayMgmtInCaseDocCompForBilling;
+
+     DBGrid_Billing.Columns[11].Visible := False;
+     DBGrid_Billing.Columns[12].Visible := False;
+
+     Query_DefaultSchemeOPBill.Close;
+     Query_DefaultSchemeOPBill.Open;
+
+     if gs_BillType = 'OPBILL' then
+     Begin
+          gi_BillCase := 3;
+          RB_OPBILL.Checked := True;
+          RB_ERBill.Enabled:=False;
+          RB_ERBill.Visible:=False;
+          Label_BillingStatus.Caption := 'OP Billing';
+          Label_BillingStatus.left := 78;
+          CB_PayType.ItemIndex := 0;
+          CB_DayCare.Caption := 'Adjust DayCare Deposit';
+          Label_InptNoCap.Visible := False;
+          Label_IPNO.Visible := False;
+          //Le_HosNo.Text := IntToStr(gi_PatientID);
+
+          With QueryScheme do
+          Begin
+               Close;
+               SQL[1] := ' Where SCHE_ISACTIVE=''Y''';
+               Open;
+          End;
+     End
+     else if gs_CalledFormName = 'Ward' then
+     Begin
+          gi_BillCase := 0;
+          RB_IPBILL.Checked := True;
+          RB_ERBill.Enabled:=False;
+          RB_ERBill.Visible:=False;
+          Label_BillingStatus.Caption := 'IP Billing';
+          Label_BillingStatus.left := 78;
+          CB_PayType.ItemIndex := 1;
+
+          With QueryScheme do
+          Begin
+               Close;
+               SQL[1] := ' Where SCHE_ISACTIVE=''Y''';
+               Open;
+          End;
+
+          DBGrid_Billing.Columns[4].Visible := False;
+          DBGrid_Billing.Columns[6].Visible := False;
+          DBGrid_Billing.Columns[7].Visible := False;
+          DBGrid_Billing.Columns[8].Visible := False;
+          DBGrid_Billing.Columns[9].Visible := False;
+          DBGrid_Billing.Columns[10].Visible := False;
+          Edit_Qty.left := 434;
+          SPB_AddItem.left := 512;
+          Edit_UnitPrice.Visible := False;
+          Edit_TotalPrice.Visible := False;
+          Edit_SvrTaxEntry.Visible := False;
+          Edit_Disper.Visible := False;
+          Edit_DisAmount.Visible := False;
+          if gs_BillType = 'REFUNDBILL' then
+          Begin
+               RB_ERBILL.Visible:=False;
+               RB_OPBILL.Checked := True;
+               Label_BillingStatus.Caption := 'Refund Billing';
+               Label_BillingStatus.left := 10;
+               gi_BillCase := 6;
+               CB_PayType.ItemIndex := 1;
+               Panel_Refund.Visible := True;
+               Panel_ItemSearch.Visible := False;
+               DBLCB_RefDocCode.Visible := False;
+               Label_RefDepDocCap.Visible := False;
+               Edit_PreveBillNo.visible:=True;
+
+               SPB_FractionAddition.Visible := False;
+               // Label4.Visible:=False;
+               cb_extended.Visible := False;
+
+               CB_DayCare.Caption := 'Adjust DayCare Deposit At Refund';
+               Label14.Visible := True;
+               Label18.Visible := True;
+               DBGrid_Billing.Columns[11].Visible := True;
+               DBGrid_Billing.Columns[12].Visible := True;
+
+               BitBtn_Admission.Enabled := False;
+               BitBtn_Admission.Visible := False;
+
+               BitBtn_DischargeBilling.Enabled := False;
+               BitBtn_DischargeBilling.Visible := False;
+
+               BitBtn_Deposit.Enabled := False;
+               BitBtn_Deposit.Visible := False;
+
+               Le_Remarks.Text := 'Test Not Done';
+
+               With QueryScheme do
+               Begin
+                    Close;
+                    SQL[1] := ' Where 0=0';
+                    Open;
+               End;
+          End;
+     End
+     Else if gs_BillType = 'IPBILL' then
+     Begin
+          gi_BillCase := 0;
+          RB_IPBILL.Checked := True;
+          RB_ERBill.Enabled:=False;
+          RB_ERBill.Visible:=False;
+          Label_BillingStatus.Caption := 'IP Billing';
+          Label_BillingStatus.left := 78;
+          CB_PayType.ItemIndex := 1;
+          CB_Preview.Checked:=True;
+
+          With QueryScheme do
+          Begin
+               Close;
+               SQL[1] := ' Where SCHE_ISACTIVE=''Y''';
+               Open;
+          End;
+     End
+     Else if gs_BillType='ERBILL' then
+     Begin
+          gi_BillCase:=0;
+          RB_ERBill.Checked:=True;
+          RB_ERBill.Left:=10;
+
+          RB_OPBill.Visible:=False;
+          RB_OPBill.Enabled:=False;
+          RB_OPBill.Checked:=False;
+
+          RB_IPBill.Visible:=False;
+          RB_IPBill.Enabled:=False;
+
+          Label_InptNoCap.Caption:='EMR. No.';
+          Label_IPNO.Caption:=gs_EMRNoForMedPT;
+
+          Le_HosNo.Text:=IntToStr(gi_PatientId);
+          Key := #13;
+          Le_HosNoKeyPress(Sender, Key);
+
+          Label_BillingStatus.Caption:='ER Billing';
+          Label_BillingStatus.Left:=78;
+          CB_PayType.ItemIndex:=1;
+
+          With QueryScheme do
+          Begin
+               Close;
+               sql[1]:=' Where SCHE_ISACTIVE=''Y''';
+               Open;
+          End;
+
+          BitBtn_Admission.Visible:=False;
+          BitBtn_Admission.Enabled:=False;
+
+          BitBtn_DischargeBilling.Visible:=False;
+          BitBtn_DischargeBilling.Enabled:=False;
+
+          BitBtn_Deposit.Visible:=False;
+          BitBtn_Deposit.Enabled:=False;
+     End
+     Else if gs_BillType = 'REFUNDBILL' then
+     Begin
+          RB_ERBILL.Visible:=False;
+          RB_OPBILL.Checked := True;
+          Label_BillingStatus.Caption := 'Refund Billing';
+          Label_BillingStatus.left := 10;
+          gi_BillCase := 6;
+          CB_PayType.ItemIndex := 1;
+          Panel_Refund.Visible := True;
+          Panel_ItemSearch.Visible := False;
+          DBLCB_RefDocCode.Visible := False;
+          Label_RefDepDocCap.Visible := False;
+          Edit_PreveBillNo.visible:=True;
+
+          SPB_FractionAddition.Visible := False;
+          // Label4.Visible:=False;
+          cb_extended.Visible := False;
+
+          CB_DayCare.Caption := 'Adjust DayCare Deposit At Refund';
+          Label14.Visible := True;
+          Label18.Visible := True;
+          DBGrid_Billing.Columns[11].Visible := True;
+          DBGrid_Billing.Columns[12].Visible := True;
+
+          BitBtn_Admission.Enabled := False;
+          BitBtn_Admission.Visible := False;
+
+          BitBtn_DischargeBilling.Enabled := False;
+          BitBtn_DischargeBilling.Visible := False;
+
+          BitBtn_Deposit.Enabled := False;
+          BitBtn_Deposit.Visible := False;
+
+          Le_Remarks.Text := 'Test Not Done';
+
+          With QueryScheme do
+          Begin
+              Close;
+              SQL[1] := ' Where 0=0';
+              Open;
+          End;
+     End;
+
+     if gs_CalledFormName = 'Ward' then
+     begin
+          BitBtn_Admission.Visible := False;
+          BitBtn_Deposit.Visible := False;
+          BitBtn_DischargeBilling.Visible := False;
+          RB_OPBILL.Visible := False;
+          RB_IPBILL.Checked := True;
+     end;
+
+     if gs_calledfrom='SpecialOPDBilling' then
+     Begin
+          CB_BILLTYPE.KeyValue:='SPC';
+          //CB_BILLTYPE.Enabled:=False;
+     End;
+
+
+     DateEditX_TodayBilling.SystemOfDate := gi_datesystem;
+     ChangeCaption(Button_TodayBilling);
+     DateEditX_TodayBilling.Text := TodaysDate;
+
+     SBRight.left := 612;
+     SBRight.Top := 5;
+
+     SBLeft.left := 612;
+     SBLeft.Top := 5;
+     SBLeft.Visible := False;
+
+     SPB_Right.left := 612;
+     SPB_Right.Top := 5;
+
+     SPB_Left.left := 612;
+     SPB_Left.Top := 5;
+     SPB_Left.Visible := False;
+
+     StatusBar1.Panels[0].Text := 'User :' + gs_UserName;
+     StatusBar1.Panels[1].Text := 'Log In Date/Time :' + gs_UserLoginDate + '/' +gs_UserLoginTime;
+
+     WindowState := wsMaximized;
+     Le_HosNo.EditLabel.Caption := Gs_HosNoCaptionName;
+     Le_HosNo.Text := Gs_PatientIdCaption;
+     // Le_HosNo.Text:='';
+     key:=#13;
+     if (gs_BillType = 'IPBILL') or (gs_CalledFormName = 'Ward') then
+     Begin
+          Le_HosNoKeyPress(Sender,key);
+          Le_HosNo.SetFocus;
+     End
+     Else if gs_BillType<>'ERBILL' then
+     Begin
+          //Le_HosNo.Text:='';
+          Le_HosNo.SetFocus;
+     End;
+
+
+     if gi_HospitalID=566 then // 566- B & B Imaging;
+     Begin
+          Label_BBImageCap.Visible:=True;
+          Label_BBImageCap.Enabled:=True;
+          RB_IPBILL.Enabled:=False;
+          RB_IPBILL.Visible:=False;
+          BitBtn_Admission.Visible:=False;
+          BitBtn_DischargeBilling.Visible:=False;
+          BitBtn_Deposit.Visible:=False;
+     End;
+end;
+
+function TForm_Billing.FractionDoctorInvolvementMessage: Boolean;
+var
+  Qry1: TOraQuery;
+Begin
+  Qry1 := TOraQuery.Create(nil);
+  IF (gs_ISFractionSharingActive = 'Y') and (gi_BillCase <> 6) Then
+  // 3 - Refund Billing
+  Begin
+    With Qry1 do
+    Begin
+      Close;
+      DatabaseName := gs_temppath;
+      SQL.Clear;
+      SQL.Add(' Select TestNameCode,Count(TestNameCode) as Num From ServiceWiseFraction.db');
+      SQL.Add(' where IsFixedPersonForFraction=''N'' and (DocCode is null or DocCode=''HOS01'') Group By TestNameCode');
+      SQL.Add(' Having Count(TestNameCode)  >= 1');
+      Open;
+    End;
+    IF Qry1.FieldByName('Num').AsInteger >= 1 Then
+    Begin
+      if gi_BillCase in [0, 1] then
+      begin
+        Table_TempBilling.Locate('TestNameCode', Qry1.FieldByName('TestNameCode').AsString, []);
+        MessageDlg('Plz. Put Involve Doctor/Technician For The Investigation (' +
+            Table_TempBilling.FieldByName('TestName').AsString + ') .' + Char
+            (10) + Char(10) + Char(10) + ' For To Keep Doctor/Technician ',mtWarning, [MbOk], 0);
+      end
+      else
+      begin
+        Table_Billing.Locate('TestNameCode', Qry1.FieldByName('TestNameCode').AsString, []);
+        MessageDlg('Plz. Put Involve Doctor/Technician For The Investigation (' +
+            Table_Billing.FieldByName('TestName').AsString + ') .' + Char(10)
+            + Char(10) + Char(10) + ' For To Keep Doctor/Technician ',mtWarning, [MbOk], 0)
+      end;
+      // Display_Frct_Involve_Person;
+      Result := False;
+    End
+    else
+      Result := True;
+  End;
+  Qry1.Free;
+End;
+
+procedure TForm_Billing.GetIPPatientOutStdFinanceInfo(InpatientId: Integer);
+Begin
+  Try
+    Ps_TodaysDate := TodaysDate;
+    With Query_Process do
+    Begin
+      Close;
+      DatabaseName := gs_DatabaseName;
+      SQL.Clear;
+      SQL.Add(' Select PatientTypeCode,PatientType,PatientId,InpatientId,PatientName,AgeGender,AdmnDate,WardRoomType,TotalDaysOfStay, ');
+      SQL.Add(' Round(HospitalCharge+MedicineCharge+BedCharge,2) TotalCharge,DepositTotal, ');
+      SQL.Add(' NVL(Case when DepositTotal <= (HospitalCharge+MedicineCharge+BedCharge) Then Round((HospitalCharge+MedicineCharge+BedCharge)-DepositTotal,2) End,0) TotalAmtDue, ');
+      SQL.Add(' NVL(Case when DepositTotal > (HospitalCharge+MedicineCharge+BedCharge) Then Round(DepositTotal-(HospitalCharge+MedicineCharge+BedCharge),2) End,0) OutStdBalance ');
+      SQL.Add(' ,GName,GRelation,GMobileNo,Consultant,DisInCareOf ');
+      SQL.Add(' From (   ');
+      SQL.Add(' Select Z.PatientId,Z.InpatientId,IPR.INRE_PatientTypeCode,PatientTypeCode,(Select PATY_PatientType From HS_PATY_PatientType where PATY_PatientTypeCode=IPR.INRE_PatientTypeCode) as PatientType, ');
+      SQL.Add(' INITCAP (PAMA_Title||'' ''||PM.PAMA_PATIENTNAME) AS PatientName,CAST (GetCurrentAge (PM.PAMA_PatientId)|| '' / ''|| SUBSTR (PM.PAMA_Gender, 1, 1) AS VarChar2 (12)) AgeGender, ');
+      SQL.Add(' IPR.INRE_AdmnDate AdmnDate,W.WardName||'' / ''||RT.ROOMTYPE as WardRoomType, ');
+      SQL.Add(' TO_DATE (CASE WHEN IPR.INRE_IsDisInDeposit = ''Y'' THEN IPR.INRE_DisInDepositDate WHEN IPR.INRE_IsDischarged = ''N'' THEN ');
+      SQL.Add(' GetNepDateFromEng(TO_CHAR (SYSDATE, ''YYYY/MM/DD'')) ELSE IPR.INRE_DisDate END,''YYYY/MM/DD'')- TO_DATE (IPR.INRE_AdmnDate, ''YYYY/MM/DD'') AS TotalDaysOfStay, ');
+      SQL.Add(' GetHospitalCharge(Z.PatientId) as HospitalCharge,NVL(GetMedicineCharge(Z.InpatientId),0) as MedicineCharge ');
+      SQL.Add(' ,GetBedCharge(Z.InpatientId) BedCharge,NVL(GetTotalDeposit(Z.InPatientId),0) as DepositTotal ');
+      SQL.Add(' ,(Select Name From InpatientRelatives where InpatientId=Z.InpatientId and RowNum=1) GName ');
+      SQL.Add(' ,(Select Relation From InpatientRelatives where InpatientId=Z.InpatientId and RowNum=1) GRelation ');
+      SQL.Add(' ,(Select MobileNo From InpatientRelatives where InpatientId=Z.InpatientId and RowNum=1) GMobileNo ');
+      SQL.Add(' ,(Select DOCT_DocName From HS_DOCT_Doctor where DOCT_DOCID=IPR.INRE_DocID and RowNum=1) as Consultant ');
+      SQL.Add(' ,IPR.INRE_DisInCareOf DisInCareOf');
+      SQL.Add(' From ( ');
+      SQL.Add(' Select INDE_PatientId PatientId,INDE_InpatientId InpatientId,INDE_WardID WardId,INDE_RoomTypeID RoomTypeId');
+      SQL.Add(' From HS_INDE_InpatientDetail Where INDE_InpatientDID In (Select INDE_InpatientDID  ');
+      SQL.Add(' From (Select INDE_InpatientId,Max(INDE_InpatientDID) INDE_InpatientDID From HS_INDE_InpatientDetail  ');
+      SQL.Add(' where INDE_InpatientId In (Select INRE_InpatientID From HS_INRE_InpatientReg IPR where INRE_IsDischarged=''N'' and INRE_IsDisInDeposit=''N''');
+      SQL.Add(' and INRE_InpatientId=' + IntToStr(InpatientId));
+      SQL.Add(' and INRE_AdmnDate <=' + #39 + Ps_TodaysDate + #39 +' and (Trim(INRE_DisDate) > ' + #39 + Ps_TodaysDate + #39 +' or Trim(INRE_DisDate) is NULL)');
+      SQL.Add(' and (Case when Trim(INRE_DisInDepositDate) is null Then Trim(INRE_DisDate) Else ');
+      SQL.Add(' INRE_DisInDepositDate End > ' + #39 + Ps_TodaysDate + #39 +' or (Trim(INRE_DisDate) is NULL and INRE_IsDisInDeposit=''N''))');
+      SQL.Add(' ) Group By INDE_InpatientId))) Z,HS_INRE_InpatientReg IPR,Ward W,RoomType RT,HS_PAMA_PatientMain PM  ');
+      SQL.Add(' where Z.PatientId=PM.PAMA_PatientId and Z.InpatientId=IPR.INRE_InpatientId');
+      SQL.Add(' and Z.WardID=W.WardID and Z.RoomTypeID=RT.RoomTypeID');
+      SQL.Add(' )');
+      SQL.Add(' Order by Decode(PatientTypeCode,''GEN'',1,''PVT'',2,''SPL'',3,''ICU'',4,''NSS'',5,''NSI'',6,''ECG'',7,8),AdmnDate Desc ');
+      SQL.saveToFile('C:\Detail.Txt');
+      Open;
+    end;
+    Label_TotalExp.Caption := FormatFloat('0.00', Query_Process.FieldByName('TotalCharge').AsFloat);
+    Label_DepositTotal.Caption := FormatFloat('0.00', Query_Process.FieldByName('DepositTotal').AsFloat);
+    if Query_Process.FieldByName('OutStdBalance').AsFloat > 0 then
+    Begin
+      pf_IPRemainingBalance := Query_Process.FieldByName('OutStdBalance').AsFloat;
+      lbl_OutStddeposit.Caption := FormatFloat('0.00', Query_Process.FieldByName('OutStdBalance').AsFloat);
+      lbl_OutStddeposit.Font.Color := clBlue;
+    End
+    Else
+    begin
+      pf_IPRemainingBalance := -Query_Process.FieldByName('TotalAmtDue').AsFloat;
+      lbl_OutStddeposit.Caption := '( ' + FormatFloat('0.00', Query_Process.FieldByName('TotalAmtDue').AsFloat) + ' )';
+      lbl_OutStddeposit.Font.Color := clRed;
+    end;
+
+    // OutStd Info Of Inpaient
+    Label25.Visible := True;
+    Label_TotalExp.Visible := True;
+
+    Label4.Visible := True;
+    Label_DepositTotal.Visible := True;
+
+    Label3.Visible := True;
+    lbl_OutStddeposit.Visible := True;
+
+  except
+
+  End;
+End;
+
+end.

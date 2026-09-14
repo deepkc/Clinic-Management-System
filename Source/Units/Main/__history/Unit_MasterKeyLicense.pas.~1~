@@ -1,0 +1,56 @@
+unit Unit_MasterKeyLicense;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls;
+
+type
+  TForm_MasterKeyLicense = class(TForm)
+    Label1: TLabel;
+    Button1: TButton;
+    Edit_MasterKey: TEdit;
+    Label3: TLabel;
+    Label5: TLabel;
+    procedure Button1Click(Sender: TObject);
+    procedure Edit_MasterKeyKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_MasterKeyLicense: TForm_MasterKeyLicense;
+
+implementation
+
+uses Fxn;
+
+{$R *.dfm}
+
+procedure TForm_MasterKeyLicense.Button1Click(Sender: TObject);
+begin
+     if Trim(Edit_MasterKey.Text)=gs_masterkey then
+     begin
+           gb_LicenseExpiredMidas:=True;
+          ShowMessage('Please Update the License '+char(13)+' to get Full functionality of the System !!!');
+          close;
+     end
+     else
+     begin
+          ShowMessage('Sorry !! The Password is incorrect');
+          Edit_MasterKey.Text:='';
+          exit;
+     end;
+end;
+
+procedure TForm_MasterKeyLicense.Edit_MasterKeyKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     Button1Click(sender);
+end;
+
+end.

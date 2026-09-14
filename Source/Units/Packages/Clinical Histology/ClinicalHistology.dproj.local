@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2017/07/12 17:05:18.292.dproj,C:\Users\user\Documents\RAD Studio\Projects\Package1.dproj=C:\Users\user\Documents\RAD Studio\Projects\ClinicalHistology.dproj</Transaction>
+    <Transaction>2017/07/12 17:19:43.763.dproj,C:\Users\user\Documents\RAD Studio\Projects\ClinicalHistology.dproj=E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Clinical Histology\ClinicalHistology.dproj</Transaction>
+    <Transaction>2017/07/13 14:34:25.048.pas,E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Clinical Histology\Unit_ClinicalPathFinding.pas=</Transaction>
+    <Transaction>2017/07/13 14:34:25.048.dfm,E:\working_chandra\LAB SOURCES\CentralSourceLABGCoolBro\Source\Units\Packages\Clinical Histology\Unit_ClinicalPathFinding.dfm=</Transaction>
+  </Transactions>
+</BorlandProject>

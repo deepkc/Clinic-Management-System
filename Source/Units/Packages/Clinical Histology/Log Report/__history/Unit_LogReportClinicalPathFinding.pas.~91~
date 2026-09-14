@@ -1,0 +1,1626 @@
+unit Unit_LogReportClinicalPathFinding;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, StdCtrls, OleCtrls, DateEditXControl_TLB, Grids, DBGrids,
+  DB, MemDS, DBAccess, Ora, DBCtrls, Buttons, ComCtrls, dblookup;
+
+type
+  TForm_LogReportClinicalPathFinding = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    OraQuery_LogReportDbGrid: TOraQuery;
+    DS_LogReportDbGrid: TDataSource;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    DBLCB_MasterFormat: TDBLookupComboBox;
+    DBLCB_TestName: TDBLookupComboBox;
+    DBLCB_ReportType: TDBLookupComboBox;
+    OraQuery_Master: TOraQuery;
+    OraQuery_TestName: TOraQuery;
+    OraQuery_ReportType: TOraQuery;
+    GroupBox2: TGroupBox;
+    Label26: TLabel;
+    Edit_PatientId: TEdit;
+    SB_Search: TSpeedButton;
+    OraQuery_Search: TOraQuery;
+    SB_Close: TSpeedButton;
+    PageControl1: TPageControl;
+    DBGrid_LogReport: TDBGrid;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    GroupBox_Info: TGroupBox;
+    Label14: TLabel;
+    Lbl_Name: TLabel;
+    Label4: TLabel;
+    Lbl_HosNo: TLabel;
+    Label5: TLabel;
+    Lbl_AgeGender: TLabel;
+    Label6: TLabel;
+    Lbl_IdentificationNo: TLabel;
+    Label7: TLabel;
+    Lbl_DateOfAspiration: TLabel;
+    Label18: TLabel;
+    Lbl_RefDoc: TLabel;
+    Label8: TLabel;
+    Lbl_ReportDate: TLabel;
+    Label9: TLabel;
+    Lbl_RefNo: TLabel;
+    Label10: TLabel;
+    Lbl_CPTCode: TLabel;
+    Label41: TLabel;
+    Lbl_SiteOfAspiration: TLabel;
+    OraQuery_LoadInfo: TOraQuery;
+    Panel3: TPanel;
+    SB_Cancel: TBitBtn;
+    Memo1: TMemo;
+    Label27: TLabel;
+    Label_ReportType: TLabel;
+    Label48: TLabel;
+    Label_PatientTestId: TLabel;
+    GroupBox_DateRange: TGroupBox;
+    Label28: TLabel;
+    Label104: TLabel;
+    SB_From: TSpeedButton;
+    SB_To: TSpeedButton;
+    DateEditXFrom: TDateEditX;
+    DateEditXTo: TDateEditX;
+    Panel_Pap: TPanel;
+    Label11: TLabel;
+    Label29: TLabel;
+    Label30: TLabel;
+    Label33: TLabel;
+    Label34: TLabel;
+    Label36: TLabel;
+    Label38: TLabel;
+    Label39: TLabel;
+    Label40: TLabel;
+    Label80: TLabel;
+    Label81: TLabel;
+    Label88: TLabel;
+    RichEdit_PapDescription: TRichEdit;
+    Edit_PapNumber: TEdit;
+    RichEdit_PAPClinicalFeatures: TRichEdit;
+    RichEdit_PapComment: TRichEdit;
+    RichEdit_GeneralCatregorization: TRichEdit;
+    RichEdit_PapResults: TRichEdit;
+    RichEdit_ReportTitle: TRichEdit;
+    RichEdit_PapSpecimenType: TRichEdit;
+    RichEdit_PapAdequacy: TRichEdit;
+    Edit1_ReportType: TEdit;
+    Edit_Resident: TEdit;
+    Edit_Pathologist: TEdit;
+    Panel_FluidMalignant: TPanel;
+    Label99: TLabel;
+    Label100: TLabel;
+    Label101: TLabel;
+    Label102: TLabel;
+    Label103: TLabel;
+    Label105: TLabel;
+    Label106: TLabel;
+    Label107: TLabel;
+    Label108: TLabel;
+    Label117: TLabel;
+    RichEdit_FluidClinical: TRichEdit;
+    RichEdit_GrossAppearance: TRichEdit;
+    Edit_SpecimenReceived: TEdit;
+    Edit_AmountOfFluid: TEdit;
+    RichEdit_FluidDiagnosis: TRichEdit;
+    RichEdit_FluidComment: TRichEdit;
+    RichEdit_FluidDescription: TRichEdit;
+    edit_fluidmalignum: TEdit;
+    RichEdit_FluidMalignant: TRichEdit;
+    Edit_ReportType: TEdit;
+    Panel_FluidDC: TPanel;
+    Label91: TLabel;
+    Label92: TLabel;
+    Label93: TLabel;
+    Label94: TLabel;
+    Label95: TLabel;
+    Label96: TLabel;
+    Label97: TLabel;
+    Label98: TLabel;
+    Label118: TLabel;
+    Label119: TLabel;
+    Label120: TLabel;
+    Label122: TLabel;
+    Label123: TLabel;
+    Edit_Neutrophil: TEdit;
+    Edit_Lyamphocyte: TEdit;
+    Edit_Eosinophil: TEdit;
+    Edit_PlasmaCell: TEdit;
+    Edit_MastCell: TEdit;
+    RichEdit_OherFindings: TRichEdit;
+    Edit_FluidNumber: TEdit;
+    Edit_TypeSampleReceived: TEdit;
+    Edit_Macrophage: TEdit;
+    RichEdit_FReportTitle: TRichEdit;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Edit5: TEdit;
+    Panel_usgfnac: TPanel;
+    Label126: TLabel;
+    Label127: TLabel;
+    Label128: TLabel;
+    Label129: TLabel;
+    Label130: TLabel;
+    Label131: TLabel;
+    Label133: TLabel;
+    Label135: TLabel;
+    Label136: TLabel;
+    Label137: TLabel;
+    Label141: TLabel;
+    Label142: TLabel;
+    Label143: TLabel;
+    Edit_VSGNo: TEdit;
+    Edit_VSGTypeAspiration: TEdit;
+    Edit_VSGSiteAspiration: TEdit;
+    RichEdit_VSGClinical: TRichEdit;
+    RichEdit_VSGMicroscopic: TRichEdit;
+    RichEdit_VSGDaignosis: TRichEdit;
+    RichEdit_VSGComments: TRichEdit;
+    RichEdit_VSGTitle: TRichEdit;
+    Edit_VSGAdequateCellular: TEdit;
+    Edit_VSGAlcoholWet: TEdit;
+    Edit_VSGAirDried: TEdit;
+    Edit6: TEdit;
+    Panel_Fnac: TPanel;
+    Label17: TLabel;
+    Label23: TLabel;
+    Label25: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label19: TLabel;
+    Label35: TLabel;
+    Label42: TLabel;
+    Label43: TLabel;
+    Label84: TLabel;
+    Label85: TLabel;
+    Label90: TLabel;
+    RichEdit_Microscopic: TRichEdit;
+    RichEdit_Diagnosis: TRichEdit;
+    RichEdit_Comment: TRichEdit;
+    Edit_FNACNumber: TEdit;
+    Edit_PassNumber: TEdit;
+    RichEdit_ClinicalFeatures: TRichEdit;
+    RichEdit_TypesOfAspiration: TRichEdit;
+    RichEdit_FNACReportTitle: TRichEdit;
+    Edit9: TEdit;
+    Edit10: TEdit;
+    Edit11: TEdit;
+    Edit13: TEdit;
+    Panel_Bonemarrow: TPanel;
+    Label55: TLabel;
+    Label56: TLabel;
+    Label57: TLabel;
+    Label58: TLabel;
+    Label59: TLabel;
+    Label60: TLabel;
+    Label61: TLabel;
+    Label62: TLabel;
+    Label64: TLabel;
+    Label65: TLabel;
+    Label71: TLabel;
+    Label72: TLabel;
+    Label75: TLabel;
+    Label77: TLabel;
+    Label78: TLabel;
+    Label79: TLabel;
+    Label82: TLabel;
+    Label83: TLabel;
+    Label109: TLabel;
+    Label110: TLabel;
+    Label111: TLabel;
+    Label112: TLabel;
+    Label113: TLabel;
+    Label63: TLabel;
+    Label114: TLabel;
+    Label121: TLabel;
+    Label125: TLabel;
+    RichEdit_ClinicalDetails: TRichEdit;
+    Edit_Cellularity: TEdit;
+    RichEdit_Erythropoiesis: TRichEdit;
+    Edit_Myeloblasts: TEdit;
+    Edit_Metamylocytes: TEdit;
+    Edit_Erythroidratio: TEdit;
+    Edit_SpecialStain: TEdit;
+    RichEdit_BonemarrowComment: TRichEdit;
+    RichEdit_BoneCivilian: TRichEdit;
+    Edit_RBC: TEdit;
+    Edit_WBC: TEdit;
+    Edit_Platelets: TEdit;
+    Edit_Hemoparasite: TEdit;
+    RichEdit_Adequacy: TRichEdit;
+    Edit_Myeopoiesis: TEdit;
+    Edit_Myelogram: TEdit;
+    Edit_Megakaryopoiesis: TEdit;
+    Edit_Lymphopoiesis: TEdit;
+    Edit_BonePlasma: TEdit;
+    RichEdit_AbnormalCell: TRichEdit;
+    RichEdit_BoneDiagnosis: TRichEdit;
+    Edit_BoneNumber: TEdit;
+    Edit_BonemarrowAspiration: TEdit;
+    RichEdit_BoneReportTitle: TRichEdit;
+    Edit14: TEdit;
+    Edit15: TEdit;
+    Edit16: TEdit;
+    Panel_Surgical: TPanel;
+    Label44: TLabel;
+    Label46: TLabel;
+    Label47: TLabel;
+    Label15: TLabel;
+    Label49: TLabel;
+    Label50: TLabel;
+    Label51: TLabel;
+    Label52: TLabel;
+    Label86: TLabel;
+    Label87: TLabel;
+    Label16: TLabel;
+    Label124: TLabel;
+    Label139: TLabel;
+    Label140: TLabel;
+    Label144: TLabel;
+    RichEdit_Specimen: TRichEdit;
+    RichEdit_SurgicalGross: TRichEdit;
+    RichEdit_SurgicalMicroscopic: TRichEdit;
+    RichEdit_SurgicalDiagnosis: TRichEdit;
+    RichEdit_SurgicalComment: TRichEdit;
+    Edit_Surgpathnumber: TEdit;
+    Edit_BiopsySite: TEdit;
+    Edit_Stain: TEdit;
+    RichEdit_ClinicalFindings: TRichEdit;
+    RichEdit_SurgicalTitle: TRichEdit;
+    Edit17: TEdit;
+    Edit18: TEdit;
+    Edit19: TEdit;
+    Edit20: TEdit;
+    Label20: TLabel;
+    Label_UserName: TLabel;
+    Label32: TLabel;
+    Label_DateOfModification: TLabel;
+    Label_TimeOfModification: TLabel;
+    Label21: TLabel;
+    Panel_PBS: TPanel;
+    Label22: TLabel;
+    Label37: TLabel;
+    Label45: TLabel;
+    Label53: TLabel;
+    Label54: TLabel;
+    Label66: TLabel;
+    Edit_WBCs: TEdit;
+    Edit_PlateletsPBS: TEdit;
+    Edit_ParasitePBS: TEdit;
+    Edit_ReticulocytesPBS: TEdit;
+    RichEdit_Others: TRichEdit;
+    Edit_RBCs: TEdit;
+    Label67: TLabel;
+    Edit21: TEdit;
+    RichEdit1: TRichEdit;
+    Label68: TLabel;
+    OraDataSource_Search: TDataSource;
+    OraDataSource_ReportType: TDataSource;
+    OraDataSource_LoadInfo: TDataSource;
+    OraDataSource_TestName: TDataSource;
+    OraDataSource_Master: TDataSource;
+    Label24: TLabel;
+    Label31: TLabel;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    Edit7: TEdit;
+    Edit8: TEdit;
+    Label69: TLabel;
+    Label70: TLabel;
+    procedure FormShow(Sender: TObject);
+    procedure DBLCB_MasterFormatClick(Sender: TObject);
+    procedure DBLCB_TestNameClick(Sender: TObject);
+    procedure DBLCB_ReportTypeClick(Sender: TObject);
+    procedure SB_SearchClick(Sender: TObject);
+    procedure SB_CloseClick(Sender: TObject);
+    procedure DBGrid_LogReportDblClick(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
+    procedure SB_CancelClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure GroupBox_InfoClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure SB_FromClick(Sender: TObject);
+    procedure SB_ToClick(Sender: TObject);
+    procedure DBLCB_MasterFormatKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_TestNameKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_ReportTypeKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+     Pi_Panelid:Integer;
+     Pi_ValueCount:Integer;
+     Pi_ValueCount1:Integer;
+    { Public declarations }
+  end;
+
+var
+  Form_LogReportClinicalPathFinding: TForm_LogReportClinicalPathFinding;
+
+implementation
+
+uses ServerDate,Fxn,DM;
+
+{$R *.dfm}
+
+procedure TForm_LogReportClinicalPathFinding.BitBtn1Click(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex:=0;
+     GroupBox_Info.Visible:=False;
+     GroupBox1.Visible:=True;
+     GroupBox2.Visible:=True;
+     GroupBox_DateRange.Visible:=True;
+     //OraQuery_LogReportDbGrid.Free;
+     DBLCB_MasterFormat.KeyValue:=-1;
+     DBLCB_TestName.KeyValue:=-1;
+     DBLCB_ReportType.KeyValue:=-1;
+     OraQuery_LogReportDbGrid.Close;
+     Edit_PatientId.Text:='';
+
+end;
+
+procedure TForm_LogReportClinicalPathFinding.DBGrid_LogReportDblClick(
+  Sender: TObject);
+var Li_patientid:Integer;
+var Li_userid:Integer;
+var Qry:TOraQuery;
+var OraQry:TOraQuery;
+var OraQry1:TOraQuery;
+
+begin
+     Qry:=TOraQuery.Create(nil);
+     OraQry:=TOraQuery.Create(nil);
+
+     if OraQuery_LogReportDbGrid.RecordCount=0 then
+     begin
+          ShowMessage('No Data is Selected');
+          Exit;
+     end;
+
+     PageControl1.ActivePageIndex:=1;
+     GroupBox1.Visible:=False;
+     GroupBox2.Visible:=False;
+     GroupBox_DateRange.Visible:=False;
+     GroupBox_Info.Visible:=True;
+     SB_Cancel.Visible:=True;
+
+     Panel_Fnac.Visible:=false;
+     Panel_FluidDC.visible:=false;
+     Panel_usgfnac.visible:=false;
+     Panel_FluidMalignant.visible:=false;
+     Panel_Pap.visible:=false;
+     Panel_Bonemarrow.Visible:=false;
+     Panel_Surgical.Visible:=false;
+     Panel_PBS.visible:=false;
+
+
+     Lbl_SiteOfAspiration.Caption:='';
+     Lbl_DateOfAspiration.Caption:='';
+     Lbl_IdentificationNo.Caption:='';
+     Lbl_ReportDate.Caption:='';
+
+     Li_patientid:=OraQuery_LogReportDbGrid.FieldByName('patientid').AsInteger;
+     Li_userid:=OraQuery_LogReportDbGrid.FieldByName('USERID').AsInteger;
+
+     //LoadPatientData(pi_patientid);
+     with OraQuery_LoadInfo do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add('select * from lab_usermain where userid='+intToStr(Li_userid));
+          open;
+          Label_UserName.Caption := FieldByName('UserName').AsString+'/'+FieldByName('Userid').asString;
+     end;
+
+     Label_DateOfModification.Caption:=OraQuery_LogReportDbGrid.FieldByName('ModifiedDate').AsString;
+     Label_TimeOfModification.Caption:=OraQuery_LogReportDbGrid.FieldByName('ModifiedTime').AsString;
+     //LoadPatientData(pi_patientid);
+     with OraQuery_LoadInfo do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add('select * from HS_PAMA_patientmain where PAMA_Patientid='+intToStr(Li_patientid));
+          open;
+
+          Lbl_Name.Caption := FieldByName('PAMA_PATIENTNAME').AsString;
+          Lbl_HosNo.Caption:=FloatToStr(FieldByName('PAMA_PATIENTID').AsFloat);
+          Lbl_AgeGender.Caption:=FieldByName('PAMA_AGE').AsString+'/'+FieldByName('PAMA_GENDER').AsString;
+     end;
+
+     Lbl_DateOfAspiration.Caption:=OraQuery_LogReportDbGrid.FieldByName('SampleDate').AsString;
+     Lbl_ReportDate.Caption:=OraQuery_LogReportDbGrid.FieldByName('ReportDate').AsString;
+     Lbl_IdentificationNo.Caption:=OraQuery_LogReportDbGrid.FieldByName('IDENTIFICATIONNO').AsString;
+     Lbl_SiteOfAspiration.Caption:=OraQuery_LogReportDbGrid.FieldByName('samplesite').AsString;
+
+     with Qry do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add('Select RefNo,CptCode from PatientTest where patientid='+intToStr(Li_patientid));
+          open;
+
+          Lbl_RefNo.Caption:=FieldByName('RefNo').AsString;
+          Lbl_CPTCode.Caption:=FieldByName('CPTCODE').AsString;
+     end;
+     with Qry do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add('select reporttype from clinical_reportType where reporttypeid='+IntToSTr(OraQuery_LogReportDbGrid.FieldByName('REPORTFORMATID').AsInteger));
+          open;
+     end;
+     Label_ReportType.Caption:=DBLCB_ReportType.Text;
+     Label_PatientTestId.Caption:=OraQuery_LogReportDbGrid.FieldByName('patienttestid').AsString;
+
+
+     if Pi_Panelid=1 then
+     begin
+          Panel_Fnac.Visible:=True;
+          Panel_FluidDC.visible:=false;
+          Panel_usgfnac.visible:=false;
+          Panel_FluidMalignant.visible:=false;
+          Panel_Pap.visible:=false;
+          Panel_Bonemarrow.Visible:=false;
+          Panel_Surgical.Visible:=false;
+          Panel_PBS.Visible:=False;
+
+          Edit9.text:=DBLCB_ReportType.text;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('ReportTitle').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_FNACReportTitle.Lines.LoadFromFile('tt1.txt');
+
+
+          Edit_FNACNumber.Text:=OraQuery_LogReportDbGrid.FieldByName('FNACNUMBER').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('Clinicalfeatures').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_ClinicalFeatures.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('DIAGNOSIS').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_Diagnosis.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('MICRODESCRIPTION').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_Microscopic.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('Cmnt').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_Comment.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('Typeofaspiration').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_TypesOfAspiration.Lines.LoadFromFile('tt1.txt');
+
+          Edit13.Text:=OraQuery_LogReportDbGrid.FieldByName('PeerReview').AsString;
+          Lbl_RefDoc.Caption:= OraQuery_LogReportDbGrid.FieldByName('REFHOS').AsString+'/'+OraQuery_LogReportDbGrid.FieldByName('DOCNAME').AsString;
+
+          with OraQry do
+          begin
+               close;
+               Session:=DM_Hospital.db;
+               sql.clear;
+               sql.add('select rownum,(select doct_docname from hs_doct_doctor where DOCT_DOCID=DOCID)Docname,(select SPECIALIZATION from report_footer where docid=PRF.docid)Specialization from PATIENT_REPORT_FOOTER PRF where sampleno='+QuotedStr(OraQuery_LogReportDbGrid.FieldByName('sampleno').AsString));
+               open;
+          end;
+          while not OraQry.Eof do
+          begin
+               if OraQry.FieldByName('ROWNUM').AsInteger=1 then
+               begin
+                    Edit10.Text:= OraQry.FieldByName('DocName').AsString;
+                    Label25.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               if OraQry.FieldByName('ROWNUM').AsInteger=2 then
+               begin
+                    Edit11.Text:=OraQry.FieldByName('DocName').AsString;
+                    Label12.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               OraQry.Next;
+          end;
+
+     end
+     else if Pi_Panelid=2 then
+     begin
+          Panel_Surgical.Visible:=True;
+          Panel_Fnac.Visible:=false;
+          Panel_FluidDC.visible:=false;
+          Panel_usgfnac.visible:=false;
+          Panel_FluidMalignant.visible:=false;
+          Panel_Pap.visible:=false;
+          Panel_Bonemarrow.Visible:=false;
+          Panel_PBS.Visible:=False;
+
+          Edit17.Text:=DBLCB_ReportType.Text;
+          Edit_Surgpathnumber.Text:=OraQuery_LogReportDbGrid.FieldByName('SURGPATHNUMBER').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('ReportTitle').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_SurgicalTitle.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('CLINICALFINDINGS').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_ClinicalFindings.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('MICRODESCRIPTION').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_SurgicalMicroscopic.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('Procedure').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_Specimen.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('Diagnosis').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_SurgicalDiagnosis.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('GROSSDESCRIPTION').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_SurgicalGross.Lines.LoadFromFile('tt1.txt');
+
+          Edit20.Text:=OraQuery_LogReportDbGrid.FieldByName('PEERREVIEW').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('Cmnt').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_SurgicalComment.Lines.LoadFromFile('tt1.txt');
+
+          Edit_Stain.Text:=OraQuery_LogReportDbGrid.FieldByName('Stain').AsString;
+
+          Lbl_RefDoc.Caption:= OraQuery_LogReportDbGrid.FieldByName('REFHOS').AsString+'/'+OraQuery_LogReportDbGrid.FieldByName('DOCNAME').AsString;;
+
+
+          with OraQry do
+          begin
+               close;
+               Session:=DM_Hospital.db;
+               sql.clear;
+               sql.add('select rownum,(select doct_docname from hs_doct_doctor where DOCT_DOCID=DOCID)Docname,(select SPECIALIZATION from report_footer where docid=PRF.docid)Specialization from PATIENT_REPORT_FOOTER PRF where sampleno='+QuotedStr(OraQuery_LogReportDbGrid.FieldByName('sampleno').AsString));
+               open;
+          end;
+          while not OraQry.Eof do
+          begin
+               if OraQry.FieldByName('ROWNUM').AsInteger=1 then
+               begin
+                    Edit18.Text:= OraQry.FieldByName('DocName').AsString;
+                    Label51.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               if OraQry.FieldByName('ROWNUM').AsInteger=2 then
+               begin
+                    Edit19.Text:=OraQry.FieldByName('DocName').AsString;
+                    Label52.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               OraQry.Next;
+          end;
+     end
+     else if Pi_Panelid=3 then
+     begin
+          Panel_Bonemarrow.Visible:=True;
+          Panel_FluidDC.visible:=false;
+          Panel_usgfnac.visible:=false;
+          Panel_FluidMalignant.visible:=false;
+          Panel_Pap.visible:=false;
+          Panel_Fnac.Visible:=false;
+          Panel_Surgical.Visible:=false;
+          Panel_PBS.Visible:=False;
+
+          Edit14.Text:=DBLCB_ReportType.Text;
+          Edit_BoneNumber.Text:=OraQuery_LogReportDbGrid.FieldByName('Samplenumber').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('ReportTitle').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_BoneReportTitle.Lines.LoadFromFile('tt1.txt');
+
+          Edit_RBC.Text:=OraQuery_LogReportDbGrid.FieldByName('RBC').AsString;
+          Edit_WBC.Text:=OraQuery_LogReportDbGrid.FieldByName('WBC').AsString;
+          Edit_Platelets.Text:=OraQuery_LogReportDbGrid.FieldByName('PLATELETS').AsString;
+          Edit_Hemoparasite.Text:=OraQuery_LogReportDbGrid.FieldByName('HEMOPARASITE').AsString;
+          Edit_BonemarrowAspiration.Text:=OraQuery_LogReportDbGrid.FieldByName('BONEMARROWASPIRATION').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('ADEQUACY').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_Adequacy.Lines.LoadFromFile('tt1.txt');
+
+          Edit_Cellularity.Text:=OraQuery_LogReportDbGrid.FieldByName('CELLULARITY').AsString;
+          Edit_Erythroidratio.Text:=OraQuery_LogReportDbGrid.FieldByName('MERATIO').AsString;
+          Edit_Myeopoiesis.Text:=OraQuery_LogReportDbGrid.FieldByName('MYEOPOIESIS').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('ERYTHROPOIESIS').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_Erythropoiesis.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('CLINICALFEATURES').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_BoneCivilian.Lines.LoadFromFile('tt1.txt');
+
+          Edit_Myeloblasts.Text:=OraQuery_LogReportDbGrid.FieldByName('MYELOBLASTS').AsString;   //asInteger
+          Edit_Metamylocytes.Text:=OraQuery_LogReportDbGrid.FieldByName('METAMYELOCYTES').AsString;  // asInteger
+          Edit_Myeopoiesis.Text:=OraQuery_LogReportDbGrid.FieldByName('MYEOPOIESIS').AsString;
+          Edit_Myelogram.Text:=OraQuery_LogReportDbGrid.FieldByName('MYEOLOGRAM').AsString;
+          Edit_Megakaryopoiesis.Text:=OraQuery_LogReportDbGrid.FieldByName('MEGAKARYOPOIESIS').AsString;
+          Edit_Lymphopoiesis.Text:=OraQuery_LogReportDbGrid.FieldByName('LYMPHOPOIESIS').AsString;
+          Edit_BonePlasma.Text:=OraQuery_LogReportDbGrid.FieldByName('PLASMACELLS').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('ABNORMALCELLS').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_AbnormalCell.Lines.LoadFromFile('tt1.txt');
+
+          Edit_SpecialStain.Text:=OraQuery_LogReportDbGrid.FieldByName('SPECIALSTAIN').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('Diagnosis').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_BoneDiagnosis.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('Cmnt').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_BonemarrowComment.Lines.LoadFromFile('tt1.txt');
+          Lbl_RefDoc.Caption:= OraQuery_LogReportDbGrid.FieldByName('REFHOS').AsString+'/'+OraQuery_LogReportDbGrid.FieldByName('DOCNAME').AsString;;
+
+          with OraQry do
+          begin
+               close;
+               Session:=DM_Hospital.db;
+               sql.clear;
+               sql.add('select rownum,(select doct_docname from hs_doct_doctor where DOCT_DOCID=DOCID)Docname,(select SPECIALIZATION from report_footer where docid=PRF.docid)Specialization from PATIENT_REPORT_FOOTER PRF where sampleno='+QuotedStr(OraQuery_LogReportDbGrid.FieldByName('sampleno').AsString));
+               open;
+          end;
+          while not OraQry.Eof do
+          begin
+               if OraQry.FieldByName('ROWNUM').AsInteger=1 then
+               begin
+                    Edit15.Text:= OraQry.FieldByName('DocName').AsString;
+                    Label79.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               if OraQry.FieldByName('ROWNUM').AsInteger=2 then
+               begin
+                    Edit16.Text:=OraQry.FieldByName('DocName').AsString;
+                    Label78.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               OraQry.Next;
+          end;
+
+     end
+
+     else if Pi_Panelid=4 then
+     begin
+          Panel_FluidDC.visible:=True;
+          Panel_usgfnac.visible:=false;
+          Panel_FluidMalignant.visible:=false;
+          Panel_Pap.visible:=false;
+          Panel_Fnac.Visible:=false;
+          Panel_Bonemarrow.Visible:=false;
+          Panel_Surgical.Visible:=false;
+          Panel_PBS.Visible:=False;
+
+          Edit1.text:=DBLCB_ReportType.text;
+          Edit_FluidNumber.Text:=OraQuery_LogReportDbGrid.FieldByName('FLUIDNUMBER').AsString;
+          Edit_TypeSampleReceived.Text:=OraQuery_LogReportDbGrid.FieldByName('SAMPLERECEIVED').AsString;
+
+          Edit_Neutrophil.Text:=OraQuery_LogReportDbGrid.FieldByName('NEUTROPHIL').AsString;
+          Edit_Lyamphocyte.Text:=OraQuery_LogReportDbGrid.FieldByName('LYMPHOCYTE').AsString;
+
+          Edit_Eosinophil.Text:=OraQuery_LogReportDbGrid.FieldByName('EOSINOPHIL').AsString;
+          Edit_MastCell.Text:=OraQuery_LogReportDbGrid.FieldByName('MASTCELL').AsString;
+          Edit_PlasmaCell.Text:=OraQuery_LogReportDbGrid.FieldByName('PLASMACELL').AsString;
+          Edit_Macrophage.Text:=OraQuery_LogReportDbGrid.FieldByName('MACROPHAGE').AsString;
+          Edit_MastCell.Text:=OraQuery_LogReportDbGrid.FieldByName('MASTCELL').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('ReportTitle').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_FReportTitle.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('OTHERFINDINGS').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_OherFindings.Lines.LoadFromFile('tt1.txt');
+          Lbl_RefDoc.Caption:= OraQuery_LogReportDbGrid.FieldByName('REFHOS').AsString+'/'+OraQuery_LogReportDbGrid.FieldByName('DOCNAME').AsString;;
+
+          with OraQry do
+          begin
+               close;
+               Session:=DM_Hospital.db;
+               sql.clear;
+               sql.add('select rownum,(select doct_docname from hs_doct_doctor where DOCT_DOCID=DOCID)Docname,(select SPECIALIZATION from report_footer where docid=PRF.docid)Specialization from PATIENT_REPORT_FOOTER PRF where sampleno='+QuotedStr(OraQuery_LogReportDbGrid.FieldByName('sampleno').AsString));
+               open;
+          end;
+          while not OraQry.Eof do
+          begin
+               if OraQry.FieldByName('ROWNUM').AsInteger=1 then
+               begin
+                    Edit2.Text:= OraQry.FieldByName('DocName').AsString;
+                    Label120.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               if OraQry.FieldByName('ROWNUM').AsInteger=2 then
+               begin
+                    Edit5.Text:=OraQry.FieldByName('DocName').AsString;
+                    Label119.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               OraQry.Next;
+          end;
+
+     end
+
+     else if Pi_panelid=5 then
+     begin
+          Panel_FluidMalignant.visible:=True;
+          Panel_Pap.visible:=false;
+          Panel_FluidDC.visible:=false;
+          Panel_usgfnac.visible:=false;
+          Panel_Fnac.Visible:=false;
+          Panel_Bonemarrow.Visible:=false;
+          Panel_Surgical.Visible:=false;
+          Panel_PBS.Visible:=False;
+
+          Edit_ReportType.text:=DBLCB_ReportType.text;
+          Edit_SpecimenReceived.text:=OraQuery_LogReportDbGrid.FieldByName('SPECIMEN').AsString;
+          Edit_AmountOfFluid.text:=OraQuery_LogReportDbGrid.FieldByName('AMOUNTOFFLUID').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('ReportTitle').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_FluidMalignant.Lines.LoadFromFile('tt1.txt');
+
+          edit_fluidmalignum.Text:=OraQuery_LogReportDbGrid.FieldByName('FLUIDNUMBER').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('CLINICALFEATURES').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_FluidClinical.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('APPERANCE').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_GrossAppearance.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('DESCRIPTION').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_FluidDescription.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('DIAGNOSIS').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_FluidDiagnosis.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('CMNT').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_FluidComment.Lines.LoadFromFile('tt1.txt');
+
+          Lbl_RefDoc.Caption:= OraQuery_LogReportDbGrid.FieldByName('REFHOS').AsString+'/'+OraQuery_LogReportDbGrid.FieldByName('DOCNAME').AsString;;
+
+          with OraQry do
+          begin
+               close;
+               Session:=DM_Hospital.db;
+               sql.clear;
+               sql.add('select rownum,(select doct_docname from hs_doct_doctor where DOCT_DOCID=DOCID)Docname,(select SPECIALIZATION from report_footer where docid=PRF.docid)Specialization from PATIENT_REPORT_FOOTER PRF where sampleno='+QuotedStr(OraQuery_LogReportDbGrid.FieldByName('sampleno').AsString));
+               open;
+          end;
+          while not OraQry.Eof do
+          begin
+               if OraQry.FieldByName('ROWNUM').AsInteger=1 then
+               begin
+                    Edit3.Text:= OraQry.FieldByName('DocName').AsString;
+                    Label24.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               if OraQry.FieldByName('ROWNUM').AsInteger=2 then
+               begin
+                    Edit4.Text:=OraQry.FieldByName('DocName').AsString;
+                    Label31.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               OraQry.Next;
+          end;
+
+     end
+
+     else if Pi_Panelid=6 then
+     begin
+          Panel_Pap.visible:=True;
+          Panel_FluidDC.visible:=false;
+          Panel_usgfnac.visible:=false;
+          Panel_FluidMalignant.visible:=false;
+          Panel_Fnac.Visible:=false;
+          Panel_Bonemarrow.Visible:=false;
+          Panel_Surgical.Visible:=false;
+          Panel_PBS.Visible:=False;
+
+          Edit1_ReportType.text:=DBLCB_ReportType.text;
+          Edit_PapNumber.Text:=OraQuery_LogReportDbGrid.FieldByName('PAPNUMBER').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('ReportTitle').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_ReportTitle.Lines.LoadFromFile('tt1.txt');
+
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('CLINICALFEATURES').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_PAPClinicalFeatures.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('MISCROSCOPIC').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_PapDescription.Lines.LoadFromFile('tt1.txt');
+
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('SPECIMEN').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_PapSpecimenType.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('ADEQUACY').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_PapAdequacy.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('GENCATEGORY').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_GeneralCatregorization.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('RESULTS').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_PapResults.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('Cmnt').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_PapComment.Lines.LoadFromFile('tt1.txt');
+
+          Lbl_RefDoc.Caption:= OraQuery_LogReportDbGrid.FieldByName('REFHOS').AsString+'/'+OraQuery_LogReportDbGrid.FieldByName('DOCNAME').AsString;;
+
+          with OraQry do
+          begin
+               close;
+               Session:=DM_Hospital.db;
+               sql.clear;
+               sql.add('select rownum,(select doct_docname from hs_doct_doctor where DOCT_DOCID=DOCID)Docname,(select SPECIALIZATION from report_footer where docid=PRF.docid)Specialization from PATIENT_REPORT_FOOTER PRF where sampleno='+QuotedStr(OraQuery_LogReportDbGrid.FieldByName('sampleno').AsString));
+               open;
+          end;
+          while not OraQry.Eof do
+          begin
+               if OraQry.FieldByName('ROWNUM').AsInteger=1 then
+               begin
+                    Edit_Resident.Text:= OraQry.FieldByName('DocName').AsString;
+                    Label33.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               if OraQry.FieldByName('ROWNUM').AsInteger=2 then
+               begin
+                    Edit_Pathologist.Text:=OraQry.FieldByName('DocName').AsString;
+                    Label34.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               OraQry.Next;
+          end;
+
+     end
+
+     else if Pi_panelid=7 then
+     begin
+          Panel_usgfnac.visible:=true;
+          Panel_FluidMalignant.visible:=false;
+          Panel_Pap.visible:=false;
+          Panel_FluidDC.visible:=false;
+          Panel_Fnac.Visible:=false;
+          Panel_Bonemarrow.Visible:=false;
+          Panel_Surgical.Visible:=false;
+          Panel_PBS.Visible:=False;
+
+          Edit6.text:=DBLCB_ReportType.text;
+          Edit_VSGNo.Text:=OraQuery_LogReportDbGrid.FieldByName('VSGFNACNUMBER').AsString;
+          Edit_VSGTypeAspiration.text:=OraQuery_LogReportDbGrid.FieldByName('TYPEASPIRATION').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('ReportTitle').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_VSGTitle.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('CLINICALFINDINGS').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_VSGClinical.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('MICROSCOPIC').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_VSGMicroscopic.Lines.LoadFromFile('tt1.txt');
+
+          Edit_VSGAirDried.Text:=OraQuery_LogReportDbGrid.FieldByName('AIRDRIED').AsString;
+          //Edit_VSGSiteAspiration.text:
+
+          Edit_VSGAlcoholWet.Text:=OraQuery_LogReportDbGrid.FieldByName('ALCOHOLWET').AsString;
+
+          Edit_VSGAdequateCellular.Text:=OraQuery_LogReportDbGrid.FieldByName('ADEQUATECELLULAR').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('DAIGNOSIS').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_VSGDaignosis.Lines.LoadFromFile('tt1.txt');
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('CMNT').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_VSGComments.Lines.LoadFromFile('tt1.txt');
+
+          Lbl_RefDoc.Caption:= OraQuery_LogReportDbGrid.FieldByName('REFHOS').AsString+'/'+OraQuery_LogReportDbGrid.FieldByName('DOCNAME').AsString;;
+
+          with OraQry do
+          begin
+               close;
+               Session:=DM_Hospital.db;
+               sql.clear;
+               sql.add('select rownum,(select doct_docname from hs_doct_doctor where DOCT_DOCID=DOCID)Docname,(select SPECIALIZATION from report_footer where docid=PRF.docid)Specialization from PATIENT_REPORT_FOOTER PRF where sampleno='+QuotedStr(OraQuery_LogReportDbGrid.FieldByName('sampleno').AsString));
+               open;
+          end;
+          while not OraQry.Eof do
+          begin
+               if OraQry.FieldByName('ROWNUM').AsInteger=1 then
+               begin
+                    Edit7.Text:= OraQry.FieldByName('DocName').AsString;
+                    Label69.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               if OraQry.FieldByName('ROWNUM').AsInteger=2 then
+               begin
+                    Edit8.Text:=OraQry.FieldByName('DocName').AsString;
+                    Label70.Caption:=OraQry.FieldByName('Specialization').AsString;
+               end;
+               OraQry.Next;
+          end;
+
+
+     end
+     else if Pi_panelid=8 then
+     begin
+          Panel_PBS.Visible:=True;
+          Panel_usgfnac.visible:=false;
+          Panel_FluidMalignant.visible:=false;
+          Panel_Pap.visible:=false;
+          Panel_FluidDC.visible:=false;
+          Panel_Fnac.Visible:=false;
+          Panel_Bonemarrow.Visible:=false;
+          Panel_Surgical.Visible:=false;
+
+
+
+          Edit21.text:=DBLCB_ReportType.text;
+          Edit_RBCs.Text:=OraQuery_LogReportDbGrid.FieldByName('RBC').AsString;
+          Edit_WBCs.text:=OraQuery_LogReportDbGrid.FieldByName('WBC').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('ReportTitle').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit1.Lines.LoadFromFile('tt1.txt');
+
+
+          Edit_PlateletsPBS.Text:=OraQuery_LogReportDbGrid.FieldByName('Platelets').AsString;
+          //Edit_VSGSiteAspiration.text:
+
+          Edit_ParasitePBS.Text:=OraQuery_LogReportDbGrid.FieldByName('Parasite').AsString;
+
+          Edit_ReticulocytesPBS.Text:=OraQuery_LogReportDbGrid.FieldByName('Reticulocytes').AsString;
+
+          Memo1.Lines.Clear;
+          Memo1.Lines.Text:=OraQuery_LogReportDbGrid.FieldByName('CMNT').AsString;
+          Memo1.Lines.SaveToFile('tt1.txt');
+          RichEdit_Others.Lines.LoadFromFile('tt1.txt');
+
+          Lbl_RefDoc.Caption:= OraQuery_LogReportDbGrid.FieldByName('REFHOS').AsString+'/'+OraQuery_LogReportDbGrid.FieldByName('DOCNAME').AsString;;
+
+     end;
+
+     Qry.Free;
+     OraQry.free;
+
+end;
+
+procedure TForm_LogReportClinicalPathFinding.DBLCB_MasterFormatClick(
+  Sender: TObject);
+begin
+     DBLCB_ReportType.KeyValue:=-1;
+     Edit_PatientId.text:='';
+     if DBLCB_MasterFormat.KeyValue=Null then
+     begin
+          DBLCB_MasterFormat.KeyValue:=-1;
+          {ShowMessage('Please Select Master Format');
+          DBLCB_MasterFormat.SetFocus;}
+     end
+     Else
+     Begin
+          With OraQuery_TestName do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               //ParamByName('ID').AsString:=DBLCB_MasterFormat.KeyValue;
+               sql[1]:=('where twms_mastersetupid='+IntToStr(DBLCB_MasterFormat.KeyValue));
+               Open;
+          End;
+
+     End;
+end;
+
+procedure TForm_LogReportClinicalPathFinding.DBLCB_MasterFormatKeyPress(
+  Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     begin
+          DBLCB_TestName.setfocus;
+     end;
+end;
+
+procedure TForm_LogReportClinicalPathFinding.DBLCB_ReportTypeClick(
+  Sender: TObject);
+var OraQuery_ProcessLog:TOraQuery;
+
+begin
+     OraQuery_ProcessLog:=TOraQuery.Create(nil);
+     OraQuery_LogReportDbGrid.Close;
+     //OraQuery_ReportType.Close;
+     Pi_Panelid:=0;
+     Pi_ValueCount:=0;
+     if (DBLCB_TestName.KeyValue<=0) or (DBLCB_TestName.KeyValue=null) then
+     begin
+          DBLCB_ReportType.KeyValue:=-1;
+          DBLCB_TestName.SetFocus;
+          ShowMessage('Please Select Test Name');
+          Exit;
+     end;
+     if DBLCB_MasterFormat.KeyValue<=0 then
+     begin
+          DBLCB_MasterFormat.SetFocus;
+          ShowMessage('Please Select Master Format');
+          Exit;
+     end;
+
+     if DBLCB_ReportType.KeyValue=null then
+          DBLCB_ReportType.KeyValue:=-1
+     else
+     begin
+          with OraQuery_ProcessLog do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('select Distinct(FNIL_REPORTFORMATID) from LB_FNIL_FNACINVESTIGATIONLOG');
+               Open;
+               First;
+          end;
+          while not OraQuery_ProcessLog.eof do
+          begin
+               if OraQuery_ProcessLog.FieldByName('FNIL_REPORTFORMATID').AsInteger=DBLCB_ReportType.KeyValue then
+               begin
+                    if Pi_ValueCount=0 then
+                    begin
+                         Pi_Panelid:=1;
+                         Pi_ValueCount:=1;
+                         with OraQuery_LogReportDbGrid do
+                         begin
+                              Close;
+                              Session:=DM_Hospital.DB;
+                              SQL.Clear;
+                              SQL.Add('select FNIL_REPORTDATE as ReportDate,FNIL_PATIENTID as Patientid,FNIL_PATIENTTESTID as Patienttestid,FNIL_REPORTFORMATID as Reportformatid,FNIL_IDENTIFICATIONNO as identificationno,FNIL_REFDOC as REFDOC,FNIL_SAMPLEDATE as SampleDate,');
+                              SQL.Add('(select pama_patientname from hs_pama_patientmain where pama_patientid=FNIL_PATIENTID)PatientName,FNIL_IDENTIFICATIONNO as IDENTIFICATIONNO,FNIL_SAMPLESITE as samplesite,FNIL_REPORTTITLE as ReportTitle,FNIL_FNACNUMBER as FNACNUMBER,');
+                              SQL.Add('FNIL_FNACINVESTIGATIONID,FNIL_PEERREVIEW as PeerReview,FNIL_MODIFIEDDATE as MODIFIEDDATE,FNIL_MODIFIEDTIME as MODIFIEDTIME,');
+                              sql.Add('(select username from lab_usermain where userid=FNIL_USERID)USERName,FNIL_USERID as USERID,');
+                              sql.add('(select redo_docname from hs_redo_referaldoctor where REDO_DOCID=FNIL_REFDOC)DOCNAME,');
+                              SQL.Add('(select hose_hospitalname from hs_hose_hospitalsetup where hose_hospitalcode=FNIL_REFHOS)REFHOS,FNIL_SAMPLENO as SAMPLENO,');
+                              SQL.Add ('FNIL_CLINICALFEATURES as Clinicalfeatures,FNIL_DIAGNOSIS as Diagnosis,FNIL_MICRODESCRIPTION as MICRODESCRIPTION,FNIL_COMMENT as Cmnt,FNIL_TYPEOFASPIRATION as Typeofaspiration from LB_FNIL_FNACINVESTIGATIONLOG where FNIL_REPORTFORMATID='+intToStr(DBLCB_ReportType.KeyValue));
+
+                              if Edit_Patientid.text<>'' then
+                              begin
+                                   SQL.add(' and FNIL_PATIENTID='+Edit_PatientId.Text);
+                              end;
+                              SQL.Add(' And FNIL_MODIFIEDDATE between '+QuotedStr(DateEditXFrom.text)+' AND '+QuotedStr(DateEditXTo.text));
+                              SQL.Add(' order by FNIL_MODIFIEDDATE,FNIL_MODIFIEDTIME Desc');
+                              //SQL.SaveToFile('C:\LogReport.txt');
+                              Open;
+                         end;
+                    end;
+
+               end;
+               OraQuery_ProcessLog.next;
+          end;
+
+          with OraQuery_ProcessLog do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('select Distinct(SUIL_REPORTFORMATID) from LB_SUIL_Surginvestigationlog');
+               Open;
+               First;
+          end;
+          while not OraQuery_ProcessLog.Eof do
+          begin
+               if OraQuery_ProcessLog.FieldByName('SUIL_REPORTFORMATID').AsInteger=DBLCB_ReportType.KeyValue then
+               begin
+                    if Pi_ValueCount=0 then
+                    begin
+                         Pi_ValueCount:=1;
+                         Pi_Panelid:=2;
+                         with OraQuery_LogReportDbGrid do
+                         begin
+                              Close;
+                              Session:=DM_Hospital.DB;
+                              SQL.Clear;
+                              SQL.Add('select SUIL_REPORTDATE as ReportDate,SUIL_PATIENTID as Patientid,SUIL_PATIENTTESTID as Patienttestid,SUIL_REPORTFORMATID as Reportformatid,SUIL_IDENTIFICATIONNO as identificationno,SUIL_REFDOC as REFDOC,SUIL_SAMPLEDATE as SampleDate,');
+                              SQL.Add('SUIL_SURGPATHNUMBER as SURGPATHNUMBER,SUIL_CLINICALFEATURES as CLINICALFEATURES,SUIL_MICRODESCRIPTION as MICRODESCRIPTION,SUIL_PROCEDURE as Procedure,SUIL_DIAGNOSIS as Diagnosis,SUIL_GROSSDESCRIPTION as GROSSDESCRIPTION,SUIL_PEERREVIEW as PEERREVIEW,');
+                              SQL.Add('SUIL_COMMENT as Cmnt,SUIL_STAIN as Stain,SUIL_PATHOLOGISTID as PATHOLOGISTID,SUIL_RESIDENTID as RESIDENTID,SUIL_CLINICALFINDINGS as CLINICALFINDINGS,SUIL_MODIFIEDDATE as MODIFIEDDATE,SUIL_MODIFIEDTIME as MODIFIEDTIME,');
+                              sql.Add('(select username from lab_usermain where userid=SUIL_USERID)USERNAME,SUIL_USERID as USERID,');
+                              sql.add('(select redo_docname from hs_redo_referaldoctor where REDO_DOCID=SUIL_REFDOC)DOCNAME,');
+                              SQL.Add('(select hose_hospitalname from hs_hose_hospitalsetup where hose_hospitalcode=SUIL_REFHOS)REFHOS,');
+                              SQL.Add('(select pama_patientname from hs_pama_patientmain where pama_patientid=SUIL_PATIENTID)PatientName,SUIL_IDENTIFICATIONNO as IDENTIFICATIONNO,SUIL_SAMPLESITE as samplesite,SUIL_REPORTTITLE as ReportTitle from LB_SUIL_Surginvestigationlog where ');
+                              SQL.Add('SUIL_REPORTFORMATID='+intToStr(DBLCB_ReportType.KeyValue));
+
+                              if Edit_Patientid.text<>'' then
+                              begin
+                                   SQL.add(' and SUIL_PATIENTID='+Edit_PatientId.Text);
+                              end;
+                              SQL.Add(' And SUIL_MODIFIEDDATE between '+QuotedStr(DateEditXFrom.text)+' AND '+QuotedStr(DateEditXTo.text));
+                              SQL.Add(' order by SUIL_MODIFIEDDATE,SUIL_MODIFIEDTIME Desc');
+                              //SQL.SaveToFile('C:\ttt.txt');
+                              open;
+                         end;
+                    end;
+               end;
+               OraQuery_ProcessLog.next;
+          end;
+
+
+          with OraQuery_ProcessLog do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('select Distinct(BOIL_REPORTFORMATID) from LB_BOIL_BONEMARROWINVLOG');
+               Open;
+               First;
+          end;
+          while not OraQuery_ProcessLog.Eof do
+          begin
+               if OraQuery_ProcessLog.FieldByName('BOIL_REPORTFORMATID').AsInteger=DBLCB_ReportType.KeyValue then
+               begin
+                    if Pi_ValueCount=0 then
+                    begin
+                         Pi_ValueCount:=1;
+                         Pi_Panelid:=3;
+                         with OraQuery_LogReportDbGrid do
+                         begin
+                              Close;
+                              Session:=DM_Hospital.DB;
+                              SQL.Clear;
+                              SQL.Add('select BOIL_REPORTDATE as ReportDate,BOIL_PATIENTID as Patientid,BOIL_PATIENTTESTID as Patienttestid,BOIL_REPORTFORMATID as Reportformatid,BOIL_IDENTIFICATIONNO as identificationno,BOIL_REFDOC as REFDOC,BOIL_SAMPLEDATE as SampleDate,');
+                              SQL.Add('BOIL_SAMPLENUMBER as Samplenumber,BOIL_CIVILIANFEATURES as CIVILIANFEATURES,BOIL_RBC as RBC,BOIL_WBC as WBC,BOIL_PLATELETS as PLATELETS,BOIL_HEMOPARASITE as HEMOPARASITE,BOIL_BONEMARROWASPIRATION as BONEMARROWASPIRATION,');
+                              SQL.Add('BOIL_ADEQUACY as ADEQUACY,BOIL_CELLULARITY as CELLULARITY,BOIL_ERYTHROIDRATIO as ERYTHROIDRATIO,BOIL_ERYTHROPOIESIS as ERYTHROPOIESIS,BOIL_CLINICALFEATURES as CLINICALFEATURES,BOIL_MYELOBLASTS as MYELOBLASTS,BOIL_METAMYELOCYTES as METAMYELOCYTES,');
+                              SQL.Add('BOIL_MYEOPOIESIS as MYEOPOIESIS,BOIL_MYEOLOGRAM as MYEOLOGRAM,BOIL_MEGAKARYOPOIESIS as MEGAKARYOPOIESIS,BOIL_LYMPHOPOIESIS as LYMPHOPOIESIS,BOIL_PLASMACELLS as PLASMACELLS,BOIL_ABNORMALCELLS as ABNORMALCELLS,BOIL_SPECIALSTAIN as SPECIALSTAIN,');
+                              SQL.Add('BOIL_DIAGNOSIS as Diagnosis,BOIL_COMMENT as Cmnt,BOIL_MERATIO as MERATIO,BOIL_MODIFIEDDATE as MODIFIEDDATE,BOIL_MODIFIEDTIME as MODIFIEDTIME,');
+                              sql.Add('(select username from lab_usermain where userid=BOIL_USERID)USERNAME,BOIL_USERID as USERID,');
+                              sql.add('(select redo_docname from hs_redo_referaldoctor where REDO_DOCID=BOIL_REFDOC)DOCNAME,');
+                              SQL.Add('(select hose_hospitalname from hs_hose_hospitalsetup where hose_hospitalcode=BOIL_REFHOS)REFHOS,');
+                              SQL.Add('(select pama_patientname from hs_pama_patientmain where pama_patientid=BOIL_PATIENTID)PatientName,BOIL_IDENTIFICATIONNO as IDENTIFICATIONNO,BOIL_SAMPLESITE as samplesite,BOIL_REPORTTITLE as ReportTitle from LB_BOIL_BONEMARROWINVLOG where ');
+                              sql.Add(' BOIL_REPORTFORMATID='+intToStr(DBLCB_ReportType.KeyValue));
+
+                              if Edit_Patientid.text<>'' then
+                              begin
+                                   SQL.add(' and BOIL_PATIENTID='+Edit_PatientId.Text);
+                              end;
+                              SQL.Add(' And BOIL_MODIFIEDDATE between '+QuotedStr(DateEditXFrom.text)+' AND '+QuotedStr(DateEditXTo.text));
+                              SQL.Add(' order by BOIL_MODIFIEDDATE,BOIL_MODIFIEDTIME Desc');
+                              //SQL.SaveToFile('C:\ttt.txt');
+                              open;
+                         end;
+                    end;
+
+               end;
+               OraQuery_ProcessLog.next;
+          end;
+
+          with OraQuery_ProcessLog do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('select Distinct(FLDL_REPORTFORMATID) from LB_FLDL_FLUIDFORDCLOG');
+               Open;
+               First;
+          end;
+          while not OraQuery_ProcessLog.Eof do
+          begin
+               if OraQuery_ProcessLog.FieldByName('FLDL_REPORTFORMATID').AsInteger=DBLCB_ReportType.KeyValue then
+               begin
+                    if Pi_ValueCount=0 then
+                    begin
+                         Pi_ValueCount:=1;
+                         Pi_Panelid:=4;
+                         with OraQuery_LogReportDbGrid do
+                         begin
+                              Close;
+                              Session:=DM_Hospital.DB;
+                              SQL.Clear;
+                              SQL.Add('select FLDL_REPORTDATE as ReportDate,FLDL_PATIENTID as Patientid,FLDL_PATIENTTESTID as Patienttestid,FLDL_REPORTFORMATID as Reportformatid,FLDL_IDENTIFICATIONNO as identificationno,FLDL_REFDOC as REFDOC,FLDL_SAMPLEDATE as SampleDate,');
+                              SQL.Add('FLDL_FLUIDNUMBER as FLUIDNUMBER,FLDL_SAMPLERECEIVED as SAMPLERECEIVED,FLDL_NEUTROPHIL as NEUTROPHIL,FLDL_LYMPHOCYTE as LYMPHOCYTE,FLDL_EOSINOPHIL as EOSINOPHIL,FLDL_MASTCELL as MASTCELL,FLDL_PLASMACELL as PLASMACELL,FLDL_MACROPHAGE as MACROPHAGE,');
+                              SQL.Add(',FLDL_MODIFIEDDATE as MODIFIEDDATE,FLDL_MODIFIEDTIME as MODIFIEDTIME,(select username from lab_usermain where userid=FLDL_USERID)USERNAME,');
+                              SQL.Add('FLDL_USERID as USERID,FLDL_OTHERFINDINGS as OTHERFINDINGS,');
+                              sql.add('(select redo_docname from hs_redo_referaldoctor where REDO_DOCID=FLDL_REFDOC)DOCNAME,');
+                              SQL.Add('(select hose_hospitalname from hs_hose_hospitalsetup where hose_hospitalcode=FLDL_REFHOS)REFHOS,');
+                              SQL.Add('(select pama_patientname from hs_pama_patientmain where pama_patientid=FLDL_PATIENTID)PatientName,FLDL_IDENTIFICATIONNO as IDENTIFICATIONNO,FLDL_SAMPLESITE as samplesite,FLDL_REPORTTITLE as ReportTitle from LB_FLDL_FLUIDFORDCLOG where FLDL_REPORTFORMATID='+intToStr(DBLCB_ReportType.KeyValue));
+
+                              if Edit_Patientid.text<>'' then
+                              begin
+                                   SQL.add(' and FLDL_PATIENTID='+Edit_PatientId.Text);
+                              end;
+                              SQL.Add(' and FLDL_MODIFIEDDATE between '+QuotedSTr(DateEditXFrom.text)+' and '+QuotedStr(DateEditXTo.text));
+                              SQL.Add(' order by FLDL_MODIFIEDDATE,FLDL_MODIFIEDTIME Desc');
+                              //SQL.SaveToFile('C:\ttt.txt');
+                              open;
+                         end;
+                    end;
+
+               end;
+               OraQuery_ProcessLog.next;
+          end;
+
+          with OraQuery_ProcessLog do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('select Distinct(FLML_REPORTFORMATID) from LB_FLML_FLUIDMALIGNANTINVLOG');
+               Open;
+               First;
+          end;
+          while not OraQuery_ProcessLog.Eof do
+          begin
+               if OraQuery_ProcessLog.FieldByName('FLML_REPORTFORMATID').AsInteger=DBLCB_ReportType.KeyValue then
+               begin
+                    if Pi_ValueCount=0 then
+                    begin
+                         Pi_ValueCount:=1;
+                         Pi_Panelid:=5;
+                         with OraQuery_LogReportDbGrid do
+                         begin
+                              Close;
+                              Session:=DM_Hospital.DB;
+                              SQL.Clear;
+                              SQL.Add('select FLML_REPORTDATE as ReportDate,FLML_PATIENTID as Patientid,FLML_PATIENTTESTID as Patienttestid,FLML_REPORTFORMATID as Reportformatid,FLML_IDENTIFICATIONNO as identificationno,FLML_REFDOC as REFDOC,FLML_SAMPLEDATE as SampleDate,');
+                              SQL.Add('FLML_FLUIDNUMBER as FLUIDNUMBER,FLML_CLINICALFEATURES as CLINICALFEATURES,FLML_SPECIMEN as SPECIMEN,FLML_AMOUNTOFFLUID as AMOUNTOFFLUID,FLML_APPERANCE as APPERANCE,FLML_DESCRIPTION as DESCRIPTION,FLML_DIAGNOSIS as DIAGNOSIS,');
+                              SQL.Add('FLML_COMMENT as CMNT,FLML_SPECIMEN as SPECIMEN,FLML_MODIFIEDDATE as MODIFIEDDATE, FLML_MODIFIEDTIME as MODIFIEDTIME,(select username from lab_usermain where userid=FLML_USERID)USERNAME,');
+                              sql.add('FLML_USERID as USERID,');
+                              sql.add('(select redo_docname from hs_redo_referaldoctor where REDO_DOCID=FLML_REFDOC)DOCNAME,');
+                              SQL.Add('(select hose_hospitalname from hs_hose_hospitalsetup where hose_hospitalcode=FLML_REFHOS)REFHOS,');
+                              SQL.Add('(select pama_patientname from hs_pama_patientmain where pama_patientid=FLML_PATIENTID)PatientName,FLML_IDENTIFICATIONNO as IDENTIFICATIONNO,FLML_SAMPLESITE as samplesite,FLML_REPORTTITLE as ReportTitle from LB_FLML_FLUIDMALIGNANTINVLOG where ');
+                              sql.Add(' FLML_REPORTFORMATID='+intToStr(DBLCB_ReportType.KeyValue));
+
+                              if Edit_Patientid.text<>'' then
+                              begin
+                                   SQL.add(' and FLML_PATIENTID='+Edit_PatientId.Text);
+                              end;
+                              SQL.Add(' and FLML_MODIFIEDDATE between '+QuotedSTr(DateEditXFrom.text)+' and '+QuotedStr(DateEditXTo.text));
+                              SQL.Add(' order by FLML_MODIFIEDDATE,FLML_MODIFIEDTIME Desc');
+                              //SQL.SaveToFile('C:\ttt.txt');
+                              open;
+                         end;
+                    end;
+
+               end;
+               OraQuery_ProcessLog.next;
+          end;
+
+          with OraQuery_ProcessLog do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('select Distinct(PAIL_REPORTFORMATID) from LB_PAIL_PAPINVESTIGATIONLOG');
+               Open;
+               First;
+          end;
+          while not OraQuery_ProcessLog.Eof do
+          begin
+               if OraQuery_ProcessLog.FieldByName('PAIL_REPORTFORMATID').AsInteger=DBLCB_ReportType.KeyValue then
+               begin
+                    if Pi_ValueCount=0 then
+                    begin
+                         Pi_ValueCount:=1;
+                         Pi_Panelid:=6;
+                         with OraQuery_LogReportDbGrid do
+                         begin
+                              Close;
+                              Session:=DM_Hospital.DB;
+                              SQL.Clear;
+                              SQL.Add('select PAIL_REPORTDATE as ReportDate,PAIL_PATIENTID as Patientid,PAIL_PATIENTTESTID as Patienttestid,PAIL_REPORTFORMATID as Reportformatid,PAIL_IDENTIFICATIONNO as identificationno,PAIL_REFDOC as REFDOC,PAIL_SAMPLEDATE as SampleDate,');
+                              SQL.Add('PAIL_PAPNUMBER as PAPNUMBER,PAIL_ADEQUACY as ADEQUACY,PAIL_GENCATEGORY as GENCATEGORY,PAIL_RESULTS as RESULTS,PAIL_COMMENT as Cmnt,PAIL_CLINICALFEATURES as CLINICALFEATURES,');
+                              SQL.Add(',PAIL_CLINICALFEATURES as CLINICALFEATURES,PAIL_MISCROSCOPIC as MISCROSCOPIC,PAIL_SPECIMEN as SPECIMEN,PAIL_MODIFIEDDATE as MODIFIEDDATE,PAIL_MODIFIEDTIME as MODIFIEDTIME,');
+                              sql.Add('(select username from lab_usermain where userid=PAIL_USERID)USERNAME,PAIL_USERID as USERID,');
+                              sql.add('(select redo_docname from hs_redo_referaldoctor where REDO_DOCID=PAIL_REFDOC)DOCNAME,');
+                              SQL.Add('(select hose_hospitalname from hs_hose_hospitalsetup where hose_hospitalcode=PAIL_REFHOS)REFHOS,');
+                              SQL.Add('(select pama_patientname from hs_pama_patientmain where pama_patientid=PAIL_PATIENTID)PatientName,PAIL_IDENTIFICATIONNO as IDENTIFICATIONNO,PAIL_SAMPLESITE as samplesite,PAIL_REPORTTITLE as ReportTitle from LB_PAIL_PAPINVESTIGATIONLOG where ');
+                              sql.Add(' PAIL_REPORTFORMATID='+intToStr(DBLCB_ReportType.KeyValue));
+
+                              if Edit_Patientid.text<>'' then
+                              begin
+                                   SQL.add(' and PAIL_PATIENTID='+Edit_PatientId.Text);
+                              end;
+                              SQL.Add(' and PAIL_MODIFIEDDATE between '+QuotedSTr(DateEditXFrom.text)+' and '+QuotedStr(DateEditXTo.text));
+                              SQL.Add(' order by PAIL_MODIFIEDDATE,PAIL_MODIFIEDTIME Desc');
+                              //SQL.SaveToFile('C:\ttt.txt');
+                              open;
+                         end;
+                    end;
+
+               end;
+               OraQuery_ProcessLog.next;
+          end;
+
+          with OraQuery_ProcessLog do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('select Distinct(USFL_REPORTTYPEID) from LB_USFL_USGFNACLOG');
+               Open;
+               First;
+          end;
+          while not OraQuery_ProcessLog.Eof do
+          begin
+               if OraQuery_ProcessLog.FieldByName('USFL_REPORTTYPEID').AsInteger=DBLCB_ReportType.KeyValue then
+               begin
+                    if Pi_ValueCount=0 then
+                    begin
+                         Pi_ValueCount:=1;
+                         Pi_Panelid:=7;
+                         with OraQuery_LogReportDbGrid do
+                         begin
+                              Close;
+                              Session:=DM_Hospital.DB;
+                              SQL.Clear;
+                              SQL.Add('select USFL_REPORTDATE as ReportDate,USFL_PATIENTID as Patientid,USFL_PATIENTTESTID as Patienttestid,USFL_REPORTTYPEID as Reportformatid,USFL_IDENTIFICATIONNO as identificationno,USFL_REFDOC as REFDOC,USFL_SAMPLEDATE as SampleDate,');
+                              SQL.Add('USFL_VSGFNACNUMBER as VSGFNACNUMBER,USFL_CLINICALFINDINGS as CLINICALFINDINGS,USFL_AIRDRIED as AIRDRIED,USFL_MICROSCOPIC as MICROSCOPIC,USFL_ALCOHOLWET as ALCOHOLWET,USFL_ADEQUATECELLULAR as ADEQUATECELLULAR,USFL_TYPEASPIRATION as TYPEASPIRATION,');
+                              SQL.Add(',USFL_COMMENTS as CMNT,USFL_DAIGNOSIS as Daignosis,USFL_MODIFIEDDATE as MODIFIEDDATE,USFL_MODIFIEDTIME as MODIFIEDTIME,(select username from lab_usermain where userid=USFL_USERID)USERNAME,');
+                              sql.Add('USFL_USERID as USERID,');
+                              sql.add('(select redo_docname from hs_redo_referaldoctor where REDO_DOCID=USFL_REFDOC)DOCNAME,');
+                              SQL.Add('(select hose_hospitalname from hs_hose_hospitalsetup where hose_hospitalcode=USFL_REFHOS)REFHOS,');
+                              SQL.Add('(select pama_patientname from hs_pama_patientmain where pama_patientid=USFL_PATIENTID)PatientName,USFL_IDENTIFICATIONNO as IDENTIFICATIONNO,USFL_SITEASPIRATION as samplesite,USFL_REPORTTITLE as ReportTitle from LB_USFL_USGFNACLOG where USFL_REPORTTYPEID='+intToStr(DBLCB_ReportType.KeyValue));
+
+                              if Edit_Patientid.text<>'' then
+                              begin
+                                   SQL.add(' and USFL_PATIENTID='+Edit_PatientId.Text);
+                              end;
+                              SQL.Add(' and USFL_MODIFIEDDATE between '+QuotedSTr(DateEditXFrom.text)+' and '+QuotedStr(DateEditXTo.text));
+                              SQL.Add(' order by USFL_MODIFIEDDATE,USFL_MODIFIEDTIME Desc');
+                              //SQL.SaveToFile('C:\ttt.txt');
+                              open;
+                         end;
+                    end;
+
+               end;
+               OraQuery_ProcessLog.next;
+          end;
+
+          with OraQuery_ProcessLog do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('select Distinct(PBIL_REPORTFORMATID) from LB_PBIL_PBSINVESTIGATIONLOG');
+               Open;
+               First;
+          end;
+          while not OraQuery_ProcessLog.Eof do
+          begin
+               if OraQuery_ProcessLog.FieldByName('PBIL_REPORTFORMATID').AsInteger=DBLCB_ReportType.KeyValue then
+               begin
+                    if Pi_ValueCount=0 then
+                    begin
+                         Pi_ValueCount:=1;
+                         Pi_Panelid:=8;
+                         with OraQuery_LogReportDbGrid do
+                         begin
+                              Close;
+                              Session:=DM_Hospital.DB;
+                              SQL.Clear;
+                              SQL.Add('select PBIL_REPORTDATE as ReportDate,PBIL_PATIENTID as Patientid,PBIL_PATIENTTESTID as Patienttestid,PBIL_REPORTFORMATID as Reportformatid,PBIL_IDENTIFICATIONNO as identificationno,PBIL_SAMPLEDATE as SampleDate,');
+                              SQL.Add('PBIL_WBC as WBC,PBIL_RBC as RBC,PBIL_PLATELETS as PLATELETS,PBIL_PARASITE as PARASITE,PBIL_RETICULOCYTES as RETICULOCYTES,PBIL_SAMPLESITE as SAMPLESITE,');
+                              SQL.Add('PBIL_REPORTTITLE as REPORTTITLE,PBIL_REFDEPID as REFDEPID,PBIL_REFWARDCODE as REFWARDCODE,PBIL_COMMENT as CMNT,PBIL_MODIFIEDTIME as MODIFIEDTIME,PBIL_MODIFIEDDATE as MODIFIEDDATE,');
+                              sql.Add('(select username from lab_usermain where userid=PBIL_USERID)USERNAME,PBIL_USERID as USERID,PBIL_REFDOC as REFDOC,');
+                              sql.add('(select redo_docname from hs_redo_referaldoctor where REDO_DOCID=PBIL_REFDOC)DOCNAME,');
+                              SQL.Add('(select hose_hospitalname from hs_hose_hospitalsetup where hose_hospitalcode=PBIL_REFHOS)REFHOS,');
+                              SQL.Add('(select pama_patientname from hs_pama_patientmain where pama_patientid=PBIL_PATIENTID)PatientName,PBIL_IDENTIFICATIONNO as IDENTIFICATIONNO from LB_PBIL_PBSINVESTIGATIONLOG where PBIL_REPORTFORMATID='+intToStr(DBLCB_ReportType.KeyValue));
+
+                              if Edit_Patientid.text<>'' then
+                              begin
+                                   SQL.add(' and PBIL_PATIENTID='+Edit_PatientId.Text);
+                              end;
+                              SQL.Add(' and PBIL_MODIFIEDDATE between '+QuotedSTr(DateEditXFrom.text)+' and '+QuotedStr(DateEditXTo.text));
+                              SQL.Add(' order by PBIL_MODIFIEDDATE,PBIL_MODIFIEDTIME Desc');
+                              //SQL.SaveToFile('C:\ttt.txt');
+                              open;
+                         end;
+                    end;
+
+               end;
+               OraQuery_ProcessLog.next;
+          end;
+
+     end;
+     OraQuery_ProcessLog.free;
+
+end;
+
+procedure TForm_LogReportClinicalPathFinding.DBLCB_ReportTypeKeyPress(
+  Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_PatientId.setfocus;
+     end;
+end;
+
+procedure TForm_LogReportClinicalPathFinding.DBLCB_TestNameClick(
+  Sender: TObject);
+begin
+     Edit_PatientId.text:='';
+
+     if DBLCB_MasterFormat.KeyValue<=0 then
+     begin
+          DBLCB_MasterFormat.SetFocus;
+          DBLCB_TestName.KeyValue:=-1;
+          ShowMessage('Please Select Master Format');
+          Exit;
+     end;
+
+     if DBLCB_TestName.KeyValue=Null then
+     DBLCB_TestName.KeyValue:=-1
+     Else
+     Begin
+          With OraQuery_ReportType do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               //ParamByName('ID').AsString:=DBLCB_TestName.KeyValue;
+               sql[1]:=('where testnameid='+IntToStr(DBLCB_TestName.KeyValue));
+               Open;
+          End;
+     End;
+end;
+
+procedure TForm_LogReportClinicalPathFinding.DBLCB_TestNameKeyPress(
+  Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     begin
+          DBLCB_ReportType.setfocus;
+     end;
+end;
+
+procedure TForm_LogReportClinicalPathFinding.FormCreate(Sender: TObject);
+begin
+     KeyPreview:=True;
+end;
+
+procedure TForm_LogReportClinicalPathFinding.FormKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if Key=#27 then
+     close;
+end;
+
+procedure TForm_LogReportClinicalPathFinding.FormShow(Sender: TObject);
+begin
+     OraQuery_Master.Close;
+     OraQuery_Master.Open;
+     OraQuery_TestName.Close;
+     OraQuery_TestName.Open;
+     OraQuery_ReportType.Close;
+     OraQuery_ReportType.Open;
+     PageControl1.ActivePageIndex:=0;
+     GroupBox_Info.Visible:=False;
+     SB_Cancel.Visible:=False;
+     SB_Close.Visible:=True;
+
+     GroupBox1.Visible:=True;
+     GroupBox2.Visible:=True;
+     GroupBox_DateRange.Visible:=True;
+
+     DateEditXFrom.text:=ServerDate.TodaysDate;
+     DateEditXTo.text:=ServerDate.TodaysDate;
+     //OraQuery_LogReportDbGrid.Close;
+     //OraQuery_LogReportDbGrid.Open;
+
+end;
+
+procedure TForm_LogReportClinicalPathFinding.GroupBox_InfoClick(
+  Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_LogReportClinicalPathFinding.PageControl1Change(
+  Sender: TObject);
+begin
+     if  PageControl1.ActivePageIndex=1 then
+     PageControl1.ActivePageIndex:=0
+     else
+     PageControl1.ActivePageIndex:=1;
+
+
+
+end;
+
+procedure TForm_LogReportClinicalPathFinding.SB_SearchClick(Sender: TObject);
+var OraQuery_ProcessLog:TOraQuery;
+
+begin
+      if Edit_Patientid.text<>'' then
+      begin
+          Form_LogReportClinicalPathFinding.DBLCB_ReportTypeClick(Sender);
+      end
+      else
+      begin
+           ShowMessage('Please Enter the Patient Id ');
+           Edit_Patientid.setFocus;
+           Exit;
+      end;
+
+end;
+
+procedure TForm_LogReportClinicalPathFinding.SB_ToClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditXTo,SB_To);
+     ChangeDateSystem(DateEditXFrom,SB_From);
+end;
+
+procedure TForm_LogReportClinicalPathFinding.SB_CloseClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_LogReportClinicalPathFinding.SB_FromClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditXFrom,SB_From);
+     ChangeDateSystem(DateEditXTo,SB_To);
+     //DateEditXFrom.text:=ServerDate.TodaysDateVS;
+end;
+
+procedure TForm_LogReportClinicalPathFinding.SB_CancelClick(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex:=0;
+     SB_Cancel.Visible:=False;
+     GroupBox_Info.Visible:=False;
+     GroupBox2.Visible:=True;
+     GroupBox1.Visible:=True;
+end;
+
+end.

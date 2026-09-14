@@ -1,0 +1,370 @@
+unit Unit_BillingParent;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Dialogs, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, StdCtrls, Buttons, ComCtrls, Spin, OleCtrls, fxn, ServerDate,
+     Unit_BillListFrame, Unit_IndoorPatientList, Unit_OutdoorPatientList,
+     DateEditXControl_TLB, Grids, DBGrids, ExtCtrls,Unit_Billing;
+
+type
+     TForm_BillingParent = class(TForm)
+          Panel_Parent: TPanel;
+          StatusBar1: TStatusBar;
+          Panel2: TPanel;
+          BB_Close: TBitBtn;
+          BB_FinalBilling: TBitBtn;
+          Panel1: TPanel;
+          Label1: TLabel;
+          SpeedButton3: TSpeedButton;
+          Label16: TLabel;
+          lbl_Hosno: TLabel;
+          Label3: TLabel;
+          lbl_patientname: TLabel;
+          Dex_Today: TDateEditX;
+          Panel3: TPanel;
+          QueryBlank: TOraQuery;
+          DS_List: TDataSource;
+          QueryList: TOraQuery;
+          Label8: TLabel;
+          CB_PatientType: TComboBox;
+          Panel_list: TPanel;
+          PageControl1: TPageControl;
+          TabSheet1: TTabSheet;
+          Label2: TLabel;
+          DBGrid1: TDBGrid;
+          Edit_PatientID: TEdit;
+          Edit_Fname: TEdit;
+          Edit2: TEdit;
+          Edit4: TEdit;
+          Edit5: TEdit;
+          Edit6: TEdit;
+          Edit7: TEdit;
+          Edit8: TEdit;
+          Edit9: TEdit;
+          Edit10: TEdit;
+          Edit11: TEdit;
+          Edit1: TEdit;
+          GroupBox1: TGroupBox;
+          Label4: TLabel;
+          SpeedButton1: TSpeedButton;
+          Label5: TLabel;
+          SpeedButton2: TSpeedButton;
+          CheckBox1: TCheckBox;
+          Dex_From: TDateEditX;
+          Dex_To: TDateEditX;
+          GroupBox2: TGroupBox;
+          Label6: TLabel;
+          Label7: TLabel;
+          SpeedButton4: TSpeedButton;
+          Se_Day: TSpinEdit;
+          TabSheet2: TTabSheet;
+          Label9: TLabel;
+          lbl_InpatientNo: TLabel;
+          BB_RefundBill: TBitBtn;
+          procedure BB_FinalBillingClick(Sender: TObject);
+          procedure BB_CloseClick(Sender: TObject);
+          procedure CB_PatientTypeClick(Sender: TObject);
+          procedure PageControl1Change(Sender: TObject);
+          procedure FormShow(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure SpeedButton3Click(Sender: TObject);
+          procedure SpeedButton1Click(Sender: TObject);
+          procedure SpeedButton2Click(Sender: TObject);
+          procedure Se_DayKeyPress(Sender: TObject; var Key: Char);
+          procedure Se_DayChange(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure FormKeyPress(Sender: TObject; var Key: Char);
+          procedure BB_RefundBillClick(Sender: TObject);
+     private
+          { Private declarations }
+     public
+          { Public declarations }
+          procedure clearFrame;
+     end;
+
+var
+     Form_BillingParent: TForm_BillingParent;
+     //Frame_Billing: Unit_BillingFrame.TFrame_Billing;
+     Frame_BillList: Unit_BillListFrame.TFrame_BillList;
+     Frame_IndoorPatientList: Unit_IndoorPatientList.TFrame_IndoorPatientList;
+     Frame_OutdoorPatientList: Unit_OutdoorPatientList.TFrame_OutdoorPatientList;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_BillingParent.BB_CloseClick(Sender: TObject);
+begin
+     if FrameCleared or (gs_CalledFrom = 'BILLING') then
+          Close
+     else
+          clearFrame;
+     // Close;
+end;
+
+procedure TForm_BillingParent.BB_FinalBillingClick(Sender: TObject);
+begin
+     Frame_BillList:=TFrame_BillList.create(nil);
+     Gs_BillNo := Frame_BillList.QueryList.FieldByName('BillNo').AsString;
+     //Label8.Visible := false;
+    // CB_PatientType.Visible := false;
+     { SERVICE
+       FINAL BILL
+       DEPOSIT
+       ADVANCE
+       REFUND }
+     if (Frame_BillList.CB_BillType.ItemIndex = 0) and Gb_isServiceBill then
+          gi_BillCase := 1;
+     if (Frame_BillList.CB_BillType.ItemIndex = 0) and (Gb_isServiceBill = false) then
+          gi_BillCase := 2;
+     if Frame_BillList.CB_BillType.ItemIndex = 1 then
+          gi_BillCase := 4
+     else if Frame_BillList.CB_BillType.ItemIndex = 2 then
+          gi_BillCase := 5
+     else if Frame_BillList.CB_BillType.ItemIndex = 4 then
+          gi_BillCase := 7;
+     { ***************************************** }
+     clearFrame;
+     //Panel_Parent.BringToFront;
+     //
+     Frame_Billing := TFrame_Billing.Create(nil);
+     with Frame_Billing do
+     begin
+          Parent := Panel_Parent;
+          Align := alClient;
+          Show;
+          if gi_BillCase = 2 then
+               CB_PayType.SetFocus;
+          FrameCleared := false;
+     end;
+
+     { ***************************************** }
+end;
+
+procedure TForm_BillingParent.BB_RefundBillClick(Sender: TObject);
+begin
+     if not CheckAccess('REFUND BILL') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+     if Frame_BillList.QueryList.RecordCount = 0 then
+     begin
+          MsgBox(1026, 0, '', '', '');
+          exit;
+     end;
+     if Frame_BillList.CB_BillType.ItemIndex <> 1 then
+     begin
+          MsgBox(1013, 0, '', '', '');
+          exit;
+     end;
+
+     Gs_BillNo := Frame_BillList.QueryList.FieldByName('BillNo').AsString;
+     Label8.Visible := false;
+     CB_PatientType.Visible := false;
+     gi_BillCase := 6;
+     { ***************************************** }
+     clearFrame;
+     Panel_Parent.BringToFront;
+     (*Frame_Billing := TFrame_Billing.Create(nil);
+     with Frame_Billing do
+     begin
+          Parent := Panel_Parent;
+          Align := alClient;
+          Show;
+          FrameCleared := false;
+     end;*)
+     { ***************************************** }
+end;
+
+procedure TForm_BillingParent.clearFrame;
+Var
+     i: integer;
+     Sender:Tobject;
+begin
+     FrameCleared := false;
+     // For i:= 0 to PageControl1.Pages[0].ControlCount -1 do
+     // begin
+     // if (PageControl1.Pages[0].controls[i] is Tframe) then
+     // begin
+     // Tframe(PageControl1.Pages[0].Controls[i]).free;
+     // FrameCleared:=true;
+     // end;
+     // end;
+     (*For i := 0 to Panel_Parent.ControlCount - 1 do
+     begin
+          if (Panel_Parent.Controls[i] is Tframe) then
+          begin
+               if Panel_Parent.Controls[i].Name = 'Frame_Billing' then
+               begin
+                    Frame_BillList.BB_RefreshClick(Sender);
+//                    Frame_BillList.QueryList.Close;
+//                    Frame_BillList.QueryList.Open;
+                    // label8.Visible:=true;
+                    // CB_PatientType.Visible:=true;
+                    if GetMonitorCount > 1 then
+                         Frame_Billing.ClearCustomerPreview;
+                    FreeAndNil(Frame_Billing);
+               end
+               else
+                    Tframe(Panel_Parent.Controls[i]).free;
+               FrameCleared := true;
+          end;
+     end;
+     Panel_list.BringToFront;*)
+end;
+
+procedure TForm_BillingParent.FormCreate(Sender: TObject);
+begin
+     Dex_Today.ADDateAsText := TodaysDate;
+     Dex_Today.SystemOfDate := gi_datesystem;
+     SpeedButton3.Caption := gs_DateCaption;
+     Dex_From.SystemOfDate := gi_datesystem;
+     Dex_To.SystemOfDate := gi_datesystem;
+     SpeedButton1.Caption := gs_DateCaption;
+     SpeedButton2.Caption := gs_DateCaption;
+     Dex_From.text := gs_From;
+     Dex_To.text := gs_to;
+     CB_PatientType.Visible := false;
+     Label8.Visible := false;
+     PageControl1.Pages[0].TabVisible := false;
+     Label16.Caption := Gs_PatientIdCaption;
+     DBGrid1.Columns[0].Title.Caption := Gs_PatientIdCaption;
+     Self.Caption := Self.Caption + ' User: ' + gs_UserName;
+end;
+
+procedure TForm_BillingParent.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     (*if (Shift = [ssCtrl,ssShift]) and (Frame_BillList <> nil) then
+     begin
+          Frame_BillList.Edit_Search.Clear;
+          Frame_BillList.Edit_Search.SetFocus;
+     end
+     else if Key = 27 then
+     begin
+          BB_CloseClick(Sender);
+          Key:=0;
+     end
+     else if (Key = VK_F12) and (Frame_Billing <> nil) then
+     begin
+          Frame_Billing.BB_SaveClick(Sender);
+          Key:=0;
+     end;*)
+end;
+
+procedure TForm_BillingParent.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     (*if (Key = #13) and (Frame_Billing = nil) then
+          keybd_event(9, 13, 0, 0);*)
+end;
+
+procedure TForm_BillingParent.FormShow(Sender: TObject);
+begin
+     FrameCleared := true;
+     { ***************************************** }
+     Frame_BillList := TFrame_BillList.Create(nil);
+     with Frame_BillList do
+     begin
+          Parent := PageControl1.Pages[1];
+          Align := alClient;
+          Show;
+          Edit_Search.SetFocus;
+     end;
+     { ***************************************** }
+end;
+
+procedure TForm_BillingParent.PageControl1Change(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+     begin
+          Label8.Visible := false;
+          CB_PatientType.Visible := false;
+     end
+     else
+     begin
+          Label8.Visible := true;
+          CB_PatientType.Visible := true;
+     end;
+end;
+
+procedure TForm_BillingParent.SpeedButton1Click(Sender: TObject);
+begin
+     ChangeDateSystem(Dex_From, SpeedButton1);
+end;
+
+procedure TForm_BillingParent.SpeedButton2Click(Sender: TObject);
+begin
+     ChangeDateSystem(Dex_To, SpeedButton2);
+end;
+
+procedure TForm_BillingParent.SpeedButton3Click(Sender: TObject);
+begin
+     ChangeDateSystem(Dex_Today, SpeedButton3);
+end;
+
+procedure TForm_BillingParent.Se_DayChange(Sender: TObject);
+begin
+     if Se_Day.text <> '' then
+     begin
+          if StrToInt(Se_Day.text) < 0 then
+               Se_Day.text := '0';
+     end;
+end;
+
+procedure TForm_BillingParent.Se_DayKeyPress(Sender: TObject; var Key: Char);
+begin
+     if not(Key in ['0' .. '9', #8]) then
+          Key := #8;
+end;
+
+procedure TForm_BillingParent.CB_PatientTypeClick(Sender: TObject);
+begin
+     if CB_PatientType.ItemIndex = 0 then
+     begin
+          { ***************************************** }
+          clearFrame;
+          FrameCleared := true;
+          { ***************************************** }
+     end
+     else if CB_PatientType.ItemIndex = 1 then
+     begin
+          { ***************************************** }
+          clearFrame;
+          Frame_IndoorPatientList := TFrame_IndoorPatientList.Create(nil);
+          with Frame_IndoorPatientList do
+          begin
+               Parent := PageControl1.Pages[0];
+               Align := alClient;
+               Show;
+               FrameCleared := false;
+          end;
+          { ***************************************** }
+     end
+     else if CB_PatientType.ItemIndex = 2 then
+     begin
+          { ***************************************** }
+          clearFrame;
+          Frame_OutdoorPatientList := TFrame_OutdoorPatientList.Create(nil);
+          with Frame_OutdoorPatientList do
+          begin
+               Parent := PageControl1.Pages[0]; ;
+               Align := alClient;
+               Show;
+               FrameCleared := false;
+          end;
+          { ***************************************** }
+     end;
+
+end;
+
+Initialization
+
+RegisterClass(TForm_BillingParent);
+
+Finalization
+
+UnRegisterClass(TForm_BillingParent);
+
+end.

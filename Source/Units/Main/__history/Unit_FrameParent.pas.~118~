@@ -1,0 +1,1646 @@
+unit Unit_FrameParent;
+
+interface
+
+uses {Unit_RegAccountFrame, }
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Dialogs, DelphiTwain, ExtCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, StdCtrls, Spin, Grids, DBGrids, OleCtrls, DateEditXControl_TLB, Buttons,
+     ComCtrls, Fxn, SerVerDate, Unit_NewPatient, DbGridExportToExcel,
+     Unit_BillingParent, dm,
+     Unit_ServiceDetail,Jpeg,
+     //Unit_Parent,
+     DBCtrls, ExtDlgs;
+type
+     TFrame_Parent = class(TFrame)
+          // DBLCB_District: TDBLookupComboBox;
+          Panel_Parent: TPanel;
+          Panel_list: TPanel;
+          QueryBlank: TOraQuery;
+          DS_List: TDataSource;
+          QueryList: TOraQuery;
+          Timer_CheckBillingClosed: TTimer;
+          Timer_ChkNewPatientClosed: TTimer;
+          Twain: TDelphiTwain;
+          Query_Dep: TOraQuery;
+          DS_Dep: TDataSource;
+    Panel1: TPanel;
+    Sb_Queuelist: TSpeedButton;
+    SPBPatientInOut: TSpeedButton;
+    SB_CancelReg: TSpeedButton;
+    SPB_OPDCount: TSpeedButton;
+    SPBServiceBillDetail: TSpeedButton;
+    SPB_ServiceAcknowledge: TSpeedButton;
+    BtnDoctorVisit: TBitBtn;
+    BtnServiceComplete: TBitBtn;
+    SPB_Investigation: TSpeedButton;
+    Panel2: TPanel;
+    SPBUploadPrescription: TSpeedButton;
+    SavePictureDialog1: TSavePictureDialog;
+    OpenPictureDialog1: TOpenPictureDialog;
+    SPBUndoDischarge: TSpeedButton;
+    SPB_EmrDutyDocConsultant: TSpeedButton;
+    SB_HospitalVisit: TSpeedButton;
+    BitBtnRefund: TBitBtn;
+    SB_ChangeDepartment: TSpeedButton;
+    SPB_PatientAdmn: TSpeedButton;
+    StatusBar1: TStatusBar;
+    Panel3: TPanel;
+    Label2: TLabel;
+    Label110: TLabel;
+    Label116: TLabel;
+    Edit_Search: TEdit;
+    GroupBox1: TGroupBox;
+    Label4: TLabel;
+    SPB_From: TSpeedButton;
+    Label5: TLabel;
+    SPB_To: TSpeedButton;
+    DEX_From: TDateEditX;
+    DEX_To: TDateEditX;
+    CB_All: TCheckBox;
+    DBLC_Dep: TDBLookupComboBox;
+    GroupBox2: TGroupBox;
+    Label6: TLabel;
+    Label7: TLabel;
+    BB_Refresh: TSpeedButton;
+    se_days: TSpinEdit;
+    Edit3: TEdit;
+    Edit12: TEdit;
+    CB_WithRepeatVisit: TCheckBox;
+    GB_PatientAdmission: TGroupBox;
+    RB_AllRegPatient: TRadioButton;
+    RB_OutStdPatient: TRadioButton;
+    SPBRegisteredPateintFromFrontDesk: TSpeedButton;
+    SpeedButton5: TSpeedButton;
+    Panel4: TPanel;
+    Edit_PatientID: TEdit;
+    Edit_FirstName: TEdit;
+    Edit_LastName: TEdit;
+    Edit_AgeSex: TEdit;
+    Edit_PhoneNo: TEdit;
+    Edit_MobileNo: TEdit;
+    Edit_CareOf: TEdit;
+    Edit_DepCode: TEdit;
+    Edit_LastVisitDate: TEdit;
+    Edit_VisitTime: TEdit;
+    Edit_Address: TEdit;
+    Edit_District: TEdit;
+    DBGrid1: TDBGrid;
+    CB_DateRange: TCheckBox;
+    SPB_DayCareReg: TSpeedButton;
+    Panel5: TPanel;
+    BitBtnOutPt: TBitBtn;
+    BitBtn8: TBitBtn;
+    BitBtnInpatient: TBitBtn;
+    BitBtnMLC: TBitBtn;
+    CB_GlobalSearch: TCheckBox;
+    SPB_VisitDetail: TSpeedButton;
+    Edit_FileNo: TEdit;
+    CB_ByCRNo: TCheckBox;
+    SPB_NewCRNo: TSpeedButton;
+    Edit1: TEdit;
+    Label117: TLabel;
+    Edit11: TEdit;
+    Label105: TLabel;
+    Edit5: TEdit;
+    Label1: TLabel;
+    BitBtn_DocVisit: TBitBtn;
+    Queryexcel: TOraQuery;
+    ds_excel: TDataSource;
+    DBGrid2: TDBGrid;
+    BTN_CARD: TBitBtn;
+    Query_patientmain: TOraQuery;
+          procedure Edit_PatientIDChange(Sender: TObject);
+          procedure Edit_FnameChange(Sender: TObject);
+          procedure Edit_FirstNameChange(Sender: TObject);
+          procedure Edit_LastNameChange(Sender: TObject);
+          procedure Edit_AgeSexChange(Sender: TObject);
+          procedure Edit_PhoneNoChange(Sender: TObject);
+          procedure Edit_MobileNoChange(Sender: TObject);
+          procedure Edit_SearchKeyPress(Sender: TObject; var Key: Char);
+          procedure SPB_TodayDateClick(Sender: TObject);
+          procedure SPB_FromClick(Sender: TObject);
+          procedure SPB_ToClick(Sender: TObject);
+          procedure BB_RefreshClick(Sender: TObject);
+          procedure DBGrid1CellClick(Column: TColumn);
+          procedure DBGrid1DblClick(Sender: TObject);
+          procedure QueryListAfterOpen(DataSet: TDataSet);
+          procedure QueryListAfterScroll(DataSet: TDataSet);
+          procedure SpeedButton5Click(Sender: TObject);
+          procedure CB_AllClick(Sender: TObject);
+          procedure SB_HospitalVisitClick(Sender: TObject);
+          procedure SB_ChangeDepartmentClick(Sender: TObject);
+          procedure SB_CancelRegClick(Sender: TObject);
+          procedure sb_saveClick(Sender: TObject);
+          procedure SPB_PatientAdmnClick(Sender: TObject);
+          procedure se_daysChange(Sender: TObject);
+          procedure se_daysKeyPress(Sender: TObject; var Key: Char);
+    procedure Sb_QueuelistClick(Sender: TObject);
+    procedure SPBPatientInOutClick(Sender: TObject);
+    procedure SPB_OPDCountClick(Sender: TObject);
+    procedure SPB_ServiceAcknowledgeClick(Sender: TObject);
+    procedure SPBServiceBillDetailClick(Sender: TObject);
+    procedure BtnDoctorVisitClick(Sender: TObject);
+    procedure BtnServiceCompleteClick(Sender: TObject);
+    procedure SPB_InvestigationClick(Sender: TObject);
+    procedure SPBUploadPrescriptionClick(Sender: TObject);
+    procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure SPBUndoDischargeClick(Sender: TObject);
+    procedure SPB_EmrDutyDocConsultantClick(Sender: TObject);
+    procedure SPBRegisteredPateintFromFrontDeskClick(Sender: TObject);
+    procedure BitBtnRefundClick(Sender: TObject);
+    procedure Edit_DepCodeChange(Sender: TObject);
+    procedure Edit_LastVisitDateChange(Sender: TObject);
+    procedure Edit_VisitTimeChange(Sender: TObject);
+    procedure Edit_AddressChange(Sender: TObject);
+    procedure Edit_DistrictChange(Sender: TObject);
+    procedure Edit_CareOfChange(Sender: TObject);
+    procedure CB_DateRangeClick(Sender: TObject);
+    procedure SPB_VisitDetailClick(Sender: TObject);
+    procedure BitBtnInpatientClick(Sender: TObject);
+    procedure BitBtnOutPtClick(Sender: TObject);
+    procedure CB_GlobalSearchClick(Sender: TObject);
+    procedure SPB_NewCRNoClick(Sender: TObject);
+    procedure Edit_FileNoChange(Sender: TObject);
+    procedure SPB_DayCareRegClick(Sender: TObject);
+    procedure BitBtn_DocVisitClick(Sender: TObject);
+    procedure BTN_CARDClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+     private
+          { Private declarations }
+     public
+          { Public declarations }
+
+
+          Frame_NewPatient: Unit_NewPatient.TFrame_NewPatient;
+          //Frame_Billing: Unit_BillingFrame.TFrame_Billing;
+
+          Constructor Create(Aowner: TComponent); Override;
+          destructor Destroy; Override;
+          procedure clearFrame;
+          procedure LoadFrame(Name: String);
+          Procedure LoadForm(Name: String);
+          Procedure RefreshList;
+          Procedure ShowPatientCountStatus;
+          Procedure ShowHideButtons;
+
+     end;
+
+implementation
+
+uses Unit_MainFormPatientAdministration,UnitSendToExcel,Unit_QrCard_BNB, UnitRegRefundReprint;
+
+
+{uses Unit_MainFormPatientAdministration, Unit_ChangeDepDoc,
+     Unit_DoctorIncomeChange,
+     Unit_QueueList, Unit_RegisteredPatientFromFrontDesk, Unit_MainFormOPDGuided, UnitRegRefundReprint,
+  Unit_DoctorWiseVisit;  }
+
+Function TodaysDate: String; stdcall; external 'Global.bpl';
+Function TodaysDateVS: String; stdcall; external 'Global.bpl';
+Procedure ShowDoneMessage; Stdcall; external 'Global.bpl';
+//procedure LoadPatientData(PatientId: integer); Stdcall; external 'Global.bpl';
+Procedure CreateForm_NewPatient; Stdcall; external 'NewPatient.bpl';
+{$R *.dfm}
+{ TFrame_Parent }
+
+
+
+procedure TFrame_Parent.BitBtn_DocVisitClick(Sender: TObject);
+begin
+     {with Form_DocWiseVisit do
+     Begin
+          Try
+               Form_DocWiseVisit:=TForm_DocWiseVisit.Create(Self);
+               Showmodal;
+          Finally
+               Free;
+          End;
+     End; }
+end;
+
+procedure TFrame_Parent.BitBtn1Click(Sender: TObject);
+begin
+  FormCard_BNB := TFormCard_BNB.Create(nil);
+     Try
+          With FormCard_BNB do
+          Begin
+              // gi_PatientId:=QueryList.FieldByName('PatientId').AsInteger;
+              QrCard.preview
+              // ShowModal;
+          End;
+     Finally
+          FormCard_BNB.Free;
+     End;
+end;
+
+procedure TFrame_Parent.BitBtnInpatientClick(Sender: TObject);
+begin
+     {with Form_PatientSearch do
+     Begin
+          Try
+               Form_PatientSearch:=TForm_PatientSearch.Create(Self);
+               Caption:='Indoor Patient';
+               ps_ReportType:='IP';
+               Showmodal;
+          Finally
+               Free;
+          End;
+     End; }
+end;
+
+procedure TFrame_Parent.BitBtnOutPtClick(Sender: TObject);
+begin
+     {with Form_PatientSearch do
+     Begin
+          Try
+               Form_PatientSearch:=TForm_PatientSearch.Create(Self);
+               Caption:='Outdoor Patient';
+               ps_ReportType:='OP';
+               Showmodal;
+          Finally
+               Free;
+          End;
+     End; }
+end;
+
+procedure TFrame_Parent.BitBtnRefundClick(Sender: TObject);
+begin
+     Try
+          FormRegRefundReprint:=TFormRegRefundReprint.Create(Nil);
+          With FormRegRefundReprint do
+          Begin
+               gi_PatientId:=QueryList.FieldByName('PatientId').AsInteger;
+               FormRegRefundReprint.ShowModal;
+          End;
+     Finally
+          FormRegRefundReprint.Free;
+     End;
+     Edit_Search.SetFocus;
+end;
+
+procedure TFrame_Parent.BtnDoctorVisitClick(Sender: TObject);
+begin
+     //Form_MainOPDGuided.Pb_ServiceCompleted:=False;
+     //Form_MainOPDGuided.LoadVisitService;
+end;
+
+procedure TFrame_Parent.BtnServiceCompleteClick(Sender: TObject);
+begin
+     {with Form_MainOPDGuided do
+     begin
+          Pb_ServiceCompleted:=True;
+          LoadVisitService;
+     end; }
+end;
+
+procedure TFrame_Parent.BTN_CARDClick(Sender: TObject);
+begin
+      FormCard_BNB := TFormCard_BNB.Create(nil);
+     Try
+          With FormCard_BNB do
+          Begin
+              // gi_PatientId:=QueryList.FieldByName('PatientId').AsInteger;
+              QuickRep1.preview
+              // ShowModal;
+          End;
+     Finally
+          FormCard_BNB.Free;
+     End;
+end;
+
+procedure TFrame_Parent.CB_AllClick(Sender: TObject);
+begin
+     if CB_All.Checked = true then
+          DBLC_Dep.Enabled := false
+     else
+     begin
+          DBLC_Dep.Enabled := true;
+          with Query_Dep do
+          begin
+               Close;
+               Session :=DM_Hospital.DB;
+               SQL[1] := 'where 1=1';
+               Open;
+          end;
+     end;
+
+     RefreshList;
+end;
+
+procedure TFrame_Parent.CB_DateRangeClick(Sender: TObject);
+begin
+     if CB_DateRange.Checked=True then
+     Begin
+          Label6.Enabled:=False;
+          se_days.Text:='0';
+          se_days.Enabled:=False;
+          Label7.Enabled:=False;
+
+          Label4.Enabled:=True;
+          Label5.Enabled:=True;
+
+          DEX_From.Enabled:=True;
+          DEX_From.Color:=clWhite;
+
+          DEX_To.Enabled:=True;
+          DEX_To.Color:=clWhite;
+
+          SPB_From.Enabled:=True;
+          SPB_To.Enabled:=True;
+     End
+     Else
+     Begin
+          Label6.Enabled:=True;
+          se_days.Text:='0';
+          se_days.Enabled:=True;
+          Label7.Enabled:=True;
+
+          Label4.Enabled:=False;
+          Label5.Enabled:=False;
+
+          DEX_From.Enabled:=False;
+          DEX_From.Color:=clMenu;
+
+          DEX_To.Enabled:=False;
+          DEX_To.Color:=clMenu;
+
+          SPB_From.Enabled:=False;
+          SPB_To.Enabled:=False;
+     End;
+
+end;
+
+procedure TFrame_Parent.CB_GlobalSearchClick(Sender: TObject);
+begin
+     if CB_GlobalSearch.Checked=True then Edit_Search.SetFocus;
+end;
+
+procedure TFrame_Parent.clearFrame;
+Var
+     i: integer;
+begin
+     try
+          For i := 0 to Panel_Parent.ControlCount - 1 do
+          begin
+               if (Panel_Parent.Controls[i] is TFrame) then
+               begin
+                    if TFrame(Panel_Parent.Controls[i]).Name = 'Frame_NewPatient' then
+                    begin
+                         Frame_NewPatient.OffCamera;
+                         // BB_NewPatient.Enabled := true;
+                         RefreshList;
+                    end;
+                    if TFrame(Panel_Parent.Controls[i]).Name = 'Frame_Billing' then
+                    begin
+                         // BB_NewPatient.Enabled := true;
+                         RefreshList;
+                         //Frame_Billing.clearCustomerPreview;
+                    end;
+                    TFrame(Panel_Parent.Controls[i]).Free;
+                    FrameCleared := true;
+               end;
+          end;
+          Panel_list.BringToFront;
+     except
+          Self.clearFrame;
+     end;
+end;
+
+constructor TFrame_Parent.Create(Aowner: TComponent);
+begin
+     inherited;
+     FrameCleared := true;
+     // Dex_Today.ADDateAsText := TodaysDate;
+     // Dex_Today.SystemOfDate := gi_datesystem;
+     // SPB_TodayDate.Caption := gs_DateCaption;
+     Panel1.Visible:=False;
+     //Panel2.Visible:=False;
+     DEX_From.SystemOfDate := gi_datesystem;
+     DEX_From.Text := TodaysDate;
+
+     SPB_From.Caption := gs_DateCaption;
+     DEX_To.SystemOfDate := gi_datesystem;
+     DEX_To.Text := TodaysDate;
+
+     SPB_To.Caption := gs_DateCaption;
+     DBGrid1.Color := clWebLightBlue;
+
+     if gs_CalledFormName = 'PA' then
+     begin
+         // SB_HospitalVisit.Visible := true;
+          SB_CancelReg.Visible := true;
+         // SB_ChangeDepartment.Visible := true;
+
+     end
+     else
+     begin
+          SB_HospitalVisit.Visible := false;
+          SB_CancelReg.Visible := false;
+          SB_ChangeDepartment.Visible := false;
+
+     end;
+
+     // DBGrid1.Columns[0].Title.Caption := Gs_PatientIdCaption;
+     //
+     // Form_MainOPDGuided.Label16.Caption := Gs_PatientIdCaption;
+     Self.Caption := Self.Caption + ' User: ' + gs_UserName;
+     if gi_LoggedInDoctorId > 0 then
+     begin
+          with QueryBlank do
+          begin
+               Close;
+               Session :=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('select DOCT_DEPCODE as DEPCODE from HS_DOCT_DOCTOR where DOCT_DOCID=' + IntTOstr(gi_LoggedInDoctorId));
+               Open;
+          end;
+          with Query_Dep do
+          begin
+               Close;
+               Session :=DM_Hospital.DB;
+               SQL[1] := 'where DEPT_DEPCODE=' + #39+QueryBlank.FieldByName('DEPCODE').AsString+#39;
+               Open;
+          end;
+          DBLC_Dep.KeyValue := QueryBlank.FieldByName('depid').AsInteger;
+     end;
+     Edit_Search.Clear;
+
+     if gs_CalledFrom<>'PatientAdmission' then
+     RefreshList;
+
+     gb_FrameParent := false;
+     DBLC_Dep.Enabled := false;
+
+
+     if (gs_CalledFormName='OPD') or (gs_CalledFormName='EMR') then
+     Begin
+          SPB_PatientAdmn.Visible:=False;
+          SPB_ServiceAcknowledge.Left:=SPB_PatientAdmn.Left;
+          SPB_ServiceAcknowledge.Top:=SPB_PatientAdmn.Top;
+     End;
+
+
+     DBGrid1.Columns[0].Title.Caption:=Gs_HosNoCaptionName;
+
+     //ShowHideButtons;
+end;
+
+procedure TFrame_Parent.DBGrid1CellClick(Column: TColumn);
+begin
+     // if lb_TestDetail.Visible = true then
+     // begin
+     // SpeedButton1Click(Self);
+     // exit;
+     // end;
+     Gs_PatientIdCaption:=QueryList.FieldByName('PatientID').AsString;
+     gi_PatientId := QueryList.FieldByName('PatientID').AsInteger;
+//     LoadPatientData(gi_PatientID);
+end;
+
+procedure TFrame_Parent.DBGrid1DblClick(Sender: TObject);
+begin
+     {if QueryList.FieldByName('PatientId').AsInteger = 0 then
+     Begin
+          messagedlg('Please Select the Patient', mtInformation, [mbok], 0);
+          exit;
+     End;
+
+     if gs_CalledFrom='PatientAdmission' then
+     Begin
+          Form_MainPatientAdministration.BitBtn_AdmissionClick(sender);
+          Exit;
+     End;
+
+
+     gi_patientid := QueryList.FieldByName('PatientId').AsInteger;
+     gs_PrevRegSearchData:=IntToStr(gi_patientid);
+     gs_CalledFrom := 'NewPatient';
+     gs_RegistrationType:='MODIFYDATA';
+     gb_IsRegInfoModify:=True;
+     Form_MainPatientAdministration.LoadNewPatient;
+     gb_FrameParent := false; }
+     if gi_compileValue <> 26 then
+     Exit;
+
+     gs_RegistrationType := 'MODIFYDATA';
+
+     Try
+          Form_MainPatientAdministration.BB_Save.Visible := true;
+          Form_MainPatientAdministration.BB_Save.Enabled := true;
+
+          Form_MainPatientAdministration.BB_New.Visible := true;
+          Form_MainPatientAdministration.BB_New.Enabled := true;
+
+          gb_PatientDataLoaded := true;
+
+          gi_patientid := QueryList.FieldByName('PatientId').AsInteger;
+          { ***************************************** }
+          clearFrame;
+          Panel_Parent.BringToFront;
+          Frame_NewPatient := TFrame_NewPatient.Create(Self);
+          with Frame_NewPatient do
+          begin
+               pb_isnew := false;
+               Parent := Panel_Parent;
+               Align := alClient;
+               FrameCleared := false;
+          end;
+          { ******************************************** }
+          with Frame_NewPatient do
+          begin
+               LoadPatientData(gi_patientid);
+               BB_EditMode.Visible := false;
+               gs_CalledFrom := 'NewPatient';
+               GB_BasicInformation.Enabled := false;
+               GB_Address.Enabled := false;
+               GB_Others.Enabled := false;
+
+               with Query_patientmain do
+               begin
+                    close;
+                    sql.clear;
+                    sql.add('select pama.*,(select SCHE_SCHEME from HS_SCHE_Scheme where sche_schemeid=pama_schemeid)scheme from hs_pama_patientmain pama where pama_patientid = '+gi_patientid);
+                    SQL.SaveToFile('C:\acb.txt');
+                    open;
+               end;
+               Gi_schemesid:= query_patientmain.fieldbyname('PAMA_SCHEMEID').AsInteger;
+
+               with Query_Process do
+               Begin
+                    Close;
+                    Session :=DM_Hospital.DB;
+                    SQL.Clear;
+                    SQL.Add('select * from HS_TITL_title where Upper(TITL_TitleName)=' + #39 + UpperCase(Gs_Title) + #39);
+                    Open;
+               End;
+               DBLCB_title.KeyValue := Query_Process.FieldByName('TITL_TITLEID').AsInteger;
+
+               IF (Query_Process.FieldByName('TITL_TITLEID').AsInteger=0) then
+               Begin
+                    if Gs_Gender='MALE' Then
+                    DBLCB_title.KeyValue:=1
+                    Else
+                    DBLCB_title.KeyValue:=2;
+               End;
+
+               CB_Gender.ItemIndex := CB_Gender.Items.IndexOf(Gs_Gender);
+               Le_FName.Text := Gs_Fname;
+               Le_LName.Text := Gs_Lname;
+               label_patientname.caption := Gs_Fname + ' ' + Gs_Lname;
+               le_Age.Text := Gs_Age;
+               CB_AgeType.ItemIndex := CB_AgeType.Items.IndexOf(Gs_agetype);
+               Dex_Dob.VSDateAsText := Gs_DobVS;
+
+               if Gs_IsActualDOB='Y' then
+               CB_IsRealDOB.Checked:=True
+               Else
+               CB_IsRealDOB.Checked:=False;
+
+               CB_MaritalStatus.ItemIndex := CB_MaritalStatus.Items.IndexOf(Gs_MaritalStatus);
+               DBLCB_Religion.KeyValue := Gi_ReligionID;
+               DBLCB_Country.KeyValue := Gi_CountryID;
+               DBLCB_District.KeyValue := Gi_DistrictID;
+               DBLCB_VDC.KeyValue := Gi_VdcID;
+               Le_WardNo.Text := Gs_WardNo;
+               Le_Address.Text := Gs_Address;
+               //Le_PhoneNo.Text := Gs_PhoneNo;
+               Le_MobileNo.Text := Gs_MobileNo;
+               Memo_Remarks.Text := Gs_Remarks;
+               le_Email.Text := Gs_Email;
+               DBLCB_Occupation.KeyValue := Gi_OccupationID;
+               DBLCB_Education.KeyValue := Gi_EducationID;
+               Le_Relative.Text := Gs_NexttoKin;
+               DBLCB_Relation.KeyValue := Gi_RelationID;
+               Le_Company.Text := Gs_Company;
+               Le_PinNo.Text := Gs_Pinno;
+               IF Pb_LoadVisit=True Then
+               Edit_HospitalNo.SetFocus;
+
+               MeidcareNo;
+               //Frame_OPDVisit.GetOPDVisitCharge;
+
+               if Gs_IsParty then
+                    Cb_IsParty.Checked := true
+               else
+                    Cb_IsParty.Checked := false;
+
+               EditModeColorOnOff;
+               TS_Registration.Visible:=True;
+               Show;
+               {
+               try
+                    if LoadImageFromDB(gi_patientid) then
+                         Image_Main.Picture.LoadFromFile(gs_picpath + '\' + IntTOstr(gi_patientid) + 'IMAGEMAIN.JPG');
+               except
+               end;
+               }
+          end;
+     Except
+     End;
+end;
+
+procedure TFrame_Parent.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+     if QueryList.FieldByName('InpatientId').AsInteger > 0  then
+     Begin
+          DBGrid1.Canvas.Font.Color:=clRed;
+          DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     End
+     Else IF QueryList.FieldByName('FollowUpCount').AsInteger > 1 then
+     Begin
+          DBGrid1.Canvas.Font.Color:=$004080FF;
+          DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     End
+     Else IF QueryList.FieldByName('NoOfAdmittedTime').AsInteger > 0 then
+     Begin
+          DBGrid1.Canvas.Font.Color:=$00C212AC;
+          DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     End;
+
+     (*if QueryList.FieldByName('ErPatientCategory').AsString='I' then
+          DBGrid1.Canvas.Brush.Color := clRed
+     else if QueryList.FieldByName('ErPatientCategory').AsString='II' then
+          DBGrid1.Canvas.Brush.Color := clYellow
+     else if QueryList.FieldByName('ErPatientCategory').AsString='III' then
+          DBGrid1.Canvas.Brush.Color := clGreen
+     else if QueryList.FieldByName('ErPatientCategory').AsString='IV' then
+          DBGrid1.Canvas.Brush.Color := clBlack;
+
+     if DataCol=1 then
+          DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);*)
+end;
+
+destructor TFrame_Parent.Destroy;
+begin
+
+     inherited;
+end;
+
+procedure TFrame_Parent.Edit_FirstNameChange(Sender: TObject);
+begin
+     Edit_FirstName.Text := StringReplace(Edit_FirstName.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_FirstName.Text) <> '' Then
+          Begin
+               Filter := 'FName =' + #39 + Edit_FirstName.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TFrame_Parent.Edit_LastNameChange(Sender: TObject);
+begin
+     Edit_LastName.Text := StringReplace(Edit_LastName.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_LastName.Text) <> '' Then
+          Begin
+               Filter := 'LName =' + #39 + Edit_LastName.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TFrame_Parent.Edit_LastVisitDateChange(Sender: TObject);
+begin
+     Edit_LastVisitDate.Text := StringReplace(Edit_LastVisitDate.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_LastVisitDate.Text) <> '' Then
+          Begin
+               Filter := 'VISITDATE =' + #39 + Edit_LastVisitDate.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TFrame_Parent.Edit_FileNoChange(Sender: TObject);
+begin
+     Edit_FileNo.Text := StringReplace(Edit_FileNo.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_FileNo.Text) <> '' Then
+          Begin
+               Filter := 'FileNoStr =' + #39 + Edit_FileNo.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TFrame_Parent.Edit_AddressChange(Sender: TObject);
+begin
+     Edit_Address.Text := StringReplace(Edit_Address.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_Address.Text) <> '' Then
+          Begin
+               Filter := 'FullAddress =' + #39 + Edit_Address.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TFrame_Parent.Edit_AgeSexChange(Sender: TObject);
+begin
+     Edit_AgeSex.Text := StringReplace(Edit_AgeSex.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_AgeSex.Text) <> '' Then
+          Begin
+               Filter := 'currentagegender =' + #39 + Edit_AgeSex.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TFrame_Parent.Edit_CareOfChange(Sender: TObject);
+begin
+     Edit_CareOf.Text := StringReplace(Edit_CareOf.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_CareOf.Text) <> '' Then
+          Begin
+               Filter := 'NEXTTOKIN =' + #39 + Edit_CareOf.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TFrame_Parent.Edit_DepCodeChange(Sender: TObject);
+begin
+     Edit_DepCode.Text := StringReplace(Edit_DepCode.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_DepCode.Text) <> '' Then
+          Begin
+               Filter := 'DEPCODE =' + #39 + Edit_DepCode.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+
+end;
+
+procedure TFrame_Parent.Edit_DistrictChange(Sender: TObject);
+begin
+     Edit_District.Text := StringReplace(Edit_District.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_District.Text) <> '' Then
+          Begin
+               Filter := 'DistrictName =' + #39 + Edit_District.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TFrame_Parent.Edit_PhoneNoChange(Sender: TObject);
+begin
+     Edit_PhoneNo.Text := StringReplace(Edit_PhoneNo.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_PhoneNo.Text) <> '' Then
+          Begin
+               Filter := 'PHONENO =' + #39 + Edit_PhoneNo.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TFrame_Parent.Edit_MobileNoChange(Sender: TObject);
+begin
+     Edit_MobileNo.Text := StringReplace(Edit_MobileNo.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_MobileNo.Text) <> '' Then
+          Begin
+               Filter := 'MOBILENO =' + #39 + Edit_MobileNo.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TFrame_Parent.Edit_FnameChange(Sender: TObject);
+begin
+//     Edit_Fname.Text := StringReplace(Edit_Fname.Text, '''', '''''', [rfReplaceAll]);
+//     with QueryList do
+//     Begin
+//          IF trim(Edit_Fname.Text) <> '' Then
+//          Begin
+//               Filter := 'NonPatientId =' + Edit_Fname.Text;
+//               Filtered := true;
+//          End
+//          Else
+//               Filtered := false;
+//     End;
+end;
+
+procedure TFrame_Parent.Edit_PatientIDChange(Sender: TObject);
+begin
+     Edit_PatientID.Text := StringReplace(Edit_PatientID.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_PatientID.Text) <> '' Then
+          Begin
+               Filter := 'PatientIDSTR =' + #39 + Edit_PatientID.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TFrame_Parent.Edit_SearchKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+     begin
+          gs_From := DEX_From.ADDateAsText;
+          gs_to := DEX_To.ADDateAsText;
+          if trim(Edit_Search.Text) <> '' then
+          begin
+               with QueryList do
+               begin
+                    Close;
+                    Session :=DM_Hospital.DB;
+                    SQL.Clear;
+                    SQL.Add(' SELECT PM.*,Trim(PM.VdcName||'' ''||PM.wardNo||'' ''||PM.Address) as FullAddress');
+                    SQL.Add(' ,(Select Count(INRE_InpatientId) From HS_INRE_InpatientReg where INRE_InpatientId=PM.PatientId) as NoOfAdmittedTime');
+                    sql.add(',Nvl((Select Max(PAVI_VISITCOUNT) from HS_PAVI_PATIENTVISIT Where Pavi_PatientId=Pm.PatientId ANd PAVI_VISITDATE=to_Char(Sysdate,''YYYY/MM/DD'')),1)FollowUpCount');
+                    SQL.Add(' FROM VW_HS_PATIENTMAIN PM');
+                    if CB_GlobalSearch.Checked=False then
+                    Begin
+                         if IsStrANumber(Edit_Search.Text) then
+                         Begin
+                              IF CB_ByCRNo.Checked=False Then
+                              SQL.Add('  Where PatientId=' + trim(Edit_Search.Text))
+                              Else
+                              SQL.Add('  Where FileNo=' + trim(Edit_Search.Text));
+                         End
+                         else
+                         Begin
+                              SQL.Add('  Where Upper(PatientName) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                              SQL.Add('  or  Upper(FName) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                              SQL.Add('  or  Upper(LName) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                         End;
+                    End
+                    else
+                    begin
+                         if IsStrANumber(Edit_Search.Text) then
+                         Begin
+                              SQL.Add('  Where (PatientId=' + trim(Edit_Search.Text));
+                              //SQL.Add('  or SubStr(CurrentAge,1,Length(CurrentAge)-2)=' + trim(Edit_Search.Text));
+                              SQL.Add('  or  PhoneNo=' + #39 + trim(Edit_Search.Text)+#39);
+                              SQL.Add('  or  MobileNo=' + #39 + trim(Edit_Search.Text)+#39);
+                              //SQL.Add('  or  MobileNo=' + #39 + trim(Edit_Search.Text)+#39);
+                              SQL.Add('  )');
+                         End
+                         else
+                         Begin
+                              SQL.Add('  Where (Upper(PatientName) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                              SQL.Add('  or  Upper(FName) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                              SQL.Add('  or  Upper(LName) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                              SQL.Add('  or  Upper(Gender) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                              SQL.Add('  or  Upper(Address) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                              SQL.Add('  or  Upper(DistrictName) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                              SQL.Add('  or  Upper(VdcName) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                              SQL.Add('  or  Upper(NextToKIN) Like' + #39 + trim(Edit_Search.Text) + '%' + #39);
+                              SQL.Add('  )');
+                         End;
+                    end;
+                    SQL.Add(' ORDER BY REGDATE DESC,REGTIME DESC');
+                    //SQL.SaveToFile('C:\GlobalPatientMain.txt');
+                    Open;
+               end;
+               gs_PrevRegSearchData:=Edit_Search.Text;
+          end
+          else
+          begin
+               Edit_PatientID.Clear;
+               RefreshList;
+               ShowPatientCountStatus;
+          end;
+     end;
+end;
+
+procedure TFrame_Parent.Edit_VisitTimeChange(Sender: TObject);
+begin
+     Edit_VisitTime.Text := StringReplace(Edit_VisitTime.Text, '''', '''''', [rfReplaceAll]);
+     with QueryList do
+     Begin
+          IF trim(Edit_VisitTime.Text) <> '' Then
+          Begin
+               Filter := 'VISITTIME =' + #39 + Edit_VisitTime.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TFrame_Parent.LoadForm(Name: String);
+begin
+     AClass := GetClass(Name);
+     if AClass <> nil then
+          with TComponentClass(AClass).Create(Application) as TForm do
+          begin
+               try
+                    ShowModal;
+               finally
+                    Free;
+               end;
+          end;
+end;
+
+procedure TFrame_Parent.LoadFrame(Name: String);
+begin
+
+end;
+
+procedure TFrame_Parent.QueryListAfterOpen(DataSet: TDataSet);
+begin
+     Exit;
+     if gs_CalledFormName = 'OPD' then
+     begin
+          gi_patientid := QueryList.FieldByName('PatientID').AsInteger;
+
+          //Form_MainOPDGuided.lbl_Hosno.Text := QueryList.FieldByName('PatientID').AsString;
+          Gs_PatientName := QueryList.FieldByName('Fname').AsString + ' ' + QueryList.FieldByName('LName')
+            .AsString;
+          GS_PatientDepCode := QueryList.FieldByName('Dename').AsString;
+          Gs_PatientDoctor := QueryList.FieldByName('DocName').AsString;
+          Gs_CurrentAgeGender := QueryList.FieldByName('AgeGender').AsString;
+          gi_VisitId := QueryList.FieldByName('VisitID').AsInteger;
+          //Form_MainOPDGuided.LoadPatientDetail;
+          GS_BloodGroup := QueryList.FieldByName('BloodGroup').AsString;
+     end
+     else
+     begin
+          gs_patientname := QueryList.FieldByName('Fname').AsString + ' ' + QueryList.FieldByName('LName').AsString;
+          Form_MainPatientAdministration.LoadPatientDetail;
+
+     end;
+end;
+
+procedure TFrame_Parent.QueryListAfterScroll(DataSet: TDataSet);
+begin
+     Exit;
+     if NewPatientClosed then
+     begin
+          if gs_CalledFormName = 'OPD' then
+          begin
+               //Form_MainOPDGuided.lbl_Hosno.Text := IntTOstr(gi_patientid);
+
+               Gs_PatientName := QueryList.FieldByName('Fname').AsString + ' ' + QueryList.FieldByName('LName')
+                 .AsString;
+               GS_PatientDepCode := QueryList.FieldByName('Dename').AsString;
+               Gs_PatientDoctor := QueryList.FieldByName('DocName').AsString;
+               Gs_CurrentAgeGender := QueryList.FieldByName('AgeGender').AsString;
+               gi_VisitId := QueryList.FieldByName('VisitID').AsInteger;
+               GS_BloodGroup := QueryList.FieldByName('BloodGroup').AsString;
+               //Form_MainOPDGuided.LoadPatientDetail;
+          end;
+     end
+     else
+     begin
+          gi_patientid := QueryList.FieldByName('PatientID').AsInteger;
+          if gs_CalledFormName = 'OPD' then
+          begin
+               //Form_MainOPDGuided.lbl_Hosno.Text := QueryList.FieldByName('PatientID').AsString;
+               Gs_PatientName := QueryList.FieldByName('Fname').AsString + ' ' + QueryList.FieldByName('LName')
+                 .AsString;
+               GS_PatientDepCode := QueryList.FieldByName('Dename').AsString;
+               Gs_PatientDoctor := QueryList.FieldByName('DocName').AsString;
+               Gs_CurrentAgeGender := QueryList.FieldByName('AgeGender').AsString;
+               gi_VisitId := QueryList.FieldByName('VisitID').AsInteger;
+               GS_BloodGroup := QueryList.FieldByName('BloodGroup').AsString;
+               //Form_MainOPDGuided.LoadPatientDetail;
+          end
+          else
+          begin
+               Form_MainPatientAdministration.LoadPatientDetail;
+               gs_patientname := QueryList.FieldByName('Fname').AsString + ' ' + QueryList.FieldByName('LName').AsString;
+          end;
+
+     end;
+end;
+
+procedure TFrame_Parent.BB_RefreshClick(Sender: TObject);
+begin
+     Edit_Search.Clear;
+     RefreshList;
+     ShowPatientCountStatus;
+end;
+
+procedure TFrame_Parent.RefreshList;
+Var ls_FromDate : string;
+refreshDate: string;
+  refreshdays: Integer;
+  refresh_date: TDateEditX;
+begin
+     gs_From := DEX_From.text;
+     gs_to := DEX_To.text;
+
+     if StrToInt(se_days.Text) > 0 then
+     begin
+          With QueryBlank do
+          begin
+               Close;
+               Session :=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add(' Select  TO_CHAR(SYSDATE-' + se_days.Text + ',''YYYY/MM/DD'') as FromDate From Dual');
+               Open;
+          end;
+          
+          ls_FromDate:=gs_From;
+          DEX_From.SystemOfDate:=gi_datesystem;
+          DEX_From.Text:=QueryBlank.FieldByName('FromDate').AsString;
+          DEX_From.SystemOfDate:=gi_datesystem;
+          if gi_datesystem = 0 then
+            begin
+              try
+                refresh_date := TDateEditX.Create(nil);
+                //refresh_date.ADDateAsText := TodaysDate;
+                refreshdays := (refresh_date.VSDateAsDays - StrtoInt(Se_Days.Text));
+                refresh_date.VSDateAsDays := refreshdays;
+                refreshDate := refresh_date.VSDateAsText;
+              finally
+                refresh_date.Free;
+              end;
+            end;
+          gs_to:=TodaysDate;
+          if gi_datesystem=0 then
+          gs_from:=refreshDate
+          else
+          gs_From:=DEX_From.Text;
+
+          DEX_From.Text:=ls_FromDate;
+     end;
+
+      ////////////////////////////////////////////////////////////////////////////
+     if gi_compileValue=23 then
+      begin
+          if Issendtoexcl=true then
+          begin
+               with Queryexcel do
+               begin
+                    Close;
+                    Session :=DM_Hospital.DB;
+                    SQL.Clear;
+                    SQL.Add(' select rownum as sn,patientid HospitalNo,FNAME,LNAME,agegender,visitcount,VISITDATE,VISITTIME,ADDRESS,DISTRICTNAME,MOBILENO,PHONENO,REGDATE,VISITCOUNTTOTAL,COUNTRYNAME,DOBAD,EMAIL');
+                    SQL.Add('from(SELECT PM.*,Trim(PM.VdcName||'' ''||PM.wardNo||'' ''||PM.Address) as FullAddress');
+                    SQL.Add(' ,(Select Count(INRE_InpatientId) From HS_INRE_InpatientReg where INRE_PatientId=PM.PatientId) as NoOfAdmittedTime');
+                    sql.add(',Nvl((Select Max(PAVI_VISITCOUNT) from HS_PAVI_PATIENTVISIT Where Pavi_PatientId=Pm.PatientId ANd PAVI_VISITDATE=to_Char(Sysdate,''YYYY/MM/DD'')),1)FollowUpCount');
+                    SQL.Add(' FROM VW_HS_PATIENTMAIN_ALL PM');
+                    //if StrToInt(se_days.Text) > 0 then
+                    IF (CB_DateRange.Checked=False) and  (StrToInt(se_days.Text)>0) Then
+                    begin
+                         if gs_FromEMR='EMR' then
+                         Begin
+                              SQL.Add(' Where PATIENTID in (Select PAVI_PATIENTID from HS_PAVI_PATIENTVISIT Where PAVI_VISITDATE> TO_CHAR(SYSDATE-' + se_days.Text + ',''YYYY/MM/DD'') And PAVI_DEPCODE In (''EMRGE''))');
+                              SQL.Add(' And VISITDATE> TO_CHAR(SYSDATE-' + se_days.Text + ',''YYYY/MM/DD'')');
+                              if CB_WithRepeatVisit.Checked=False then
+                              SQL.Add(' and PatientVisitId In (Select Max(PatientVisitId) From VW_HS_PATIENTMAIN_ALL Where PatientId=PM.PATIENTID and VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+')');
+                         End
+                         Else
+                         Begin
+                              (*SQL.Add(' Where PATIENTID in (Select PAVI_PATIENTID from HS_PAVI_PATIENTVISIT Where PAVI_VISITDATE> TO_CHAR(SYSDATE-' + se_days.Text + ',''YYYY/MM/DD''))');
+                              SQL.Add(' And VISITDATE> TO_CHAR(SYSDATE-' + se_days.Text + ',''YYYY/MM/DD'')');*)
+                              SQL.Add(' Where PATIENTID in (Select PAVI_PATIENTID from HS_PAVI_PATIENTVISIT Where PAVI_VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+')');
+                              if CB_WithRepeatVisit.Checked=False then
+                              SQL.Add(' and PatientVisitId In (Select Max(PatientVisitId) From VW_HS_PATIENTMAIN_ALL Where PatientId=PM.PATIENTID and VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+')');
+                         End;
+                    end
+                    else
+                    begin
+                         if gs_FromEMR='EMR' then
+                         Begin
+                               SQL.Add(' Where PATIENTID in (Select PAVI_PATIENTID from HS_PAVI_PATIENTVISIT Where PAVI_VISITDATE between' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+' And PAVI_DEPCODE In (''EMRGE''))');
+                               SQL.Add(' and VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39);
+                               if CB_WithRepeatVisit.Checked=False then
+                               SQL.Add(' and PatientVisitId In (Select Max(PatientVisitId) From VW_HS_PATIENTMAIN_ALL Where PatientId=PM.PATIENTID and VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+')');
+                         End
+                         Else
+                         Begin
+                               SQL.Add(' Where PATIENTID in (Select PAVI_PATIENTID from HS_PAVI_PATIENTVISIT Where PAVI_VISITDATE between' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+')');
+                               SQL.Add(' and VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39);
+                               if CB_WithRepeatVisit.Checked=False then
+                               SQL.Add(' and PatientVisitId In (Select Max(PatientVisitId) From VW_HS_PATIENTMAIN_ALL Where PatientId=PM.PATIENTID and VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+')');
+                         End;
+                    end;
+
+                    if Not CB_All.Checked then
+                    Begin
+                         if Trim(DBLC_Dep.Text)<>'' then
+                         SQL.Add(' And DEPCODE=' + #39+DBLC_Dep.KeyValue+#39);
+                    End;
+                    SQL.Add(' ORDER BY VisitDate DESC,VisitTime DESC)PA');
+                    //SQL.SaveToFile('C:\sendtoexcel.txt');
+                    Open;
+                    Issendtoexcl:=False;
+               end;
+          end;
+
+       if gs_FromEMR='EMR' then
+         Begin
+              CB_All.Enabled:=False;
+              DBGrid1.Columns[4].Visible:=True;
+              DBGrid1.Columns[21].Visible:=True;
+              DBGrid1.Columns[22].Visible:=True;
+         End
+         Else
+         Begin
+
+              DBGrid1.Columns[4].Visible:=False;
+              DBGrid1.Columns[21].Visible:=False;
+              DBGrid1.Columns[22].Visible:=False;
+              //CB_All.Enabled:=True;
+              CB_All.Enabled:=False;
+         End;
+      end;
+
+
+
+
+     //////////////////////////////////////////////////////////////////////////////
+
+         with QueryList do
+         begin
+              Close;
+              Session :=DM_Hospital.DB;
+              SQL.Clear;
+              SQL.Add(' select rownum as sn,PA.* from(SELECT PM.*,Trim(PM.VdcName||'' ''||PM.wardNo||'' ''||PM.Address) as FullAddress');
+              SQL.Add(' ,(Select Count(INRE_InpatientId) From HS_INRE_InpatientReg where INRE_PatientId=PM.PatientId) as NoOfAdmittedTime');
+              sql.add(',Nvl((Select Max(PAVI_VISITCOUNT) from HS_PAVI_PATIENTVISIT Where Pavi_PatientId=Pm.PatientId ANd PAVI_VISITDATE=to_Char(Sysdate,''YYYY/MM/DD'')),1)FollowUpCount');
+              SQL.Add(' FROM VW_HS_PATIENTMAIN_ALL PM');
+              //if StrToInt(se_days.Text) > 0 then
+              IF (CB_DateRange.Checked=False) and  (StrToInt(se_days.Text)>0) Then
+              begin
+                   if gs_FromEMR='EMR' then
+                   Begin
+                        SQL.Add(' Where PATIENTID in (Select PAVI_PATIENTID from HS_PAVI_PATIENTVISIT Where PAVI_VISITDATE> TO_CHAR(SYSDATE-' + se_days.Text + ',''YYYY/MM/DD'') And PAVI_DEPCODE In (''EMRGE''))');
+                        SQL.Add(' And VISITDATE> TO_CHAR(SYSDATE-' + se_days.Text + ',''YYYY/MM/DD'')');
+                        if CB_WithRepeatVisit.Checked=False then
+                        SQL.Add(' and PatientVisitId In (Select Max(PatientVisitId) From VW_HS_PATIENTMAIN_ALL Where PatientId=PM.PATIENTID and VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+')');
+                   End
+                   Else
+                   Begin
+                        (*SQL.Add(' Where PATIENTID in (Select PAVI_PATIENTID from HS_PAVI_PATIENTVISIT Where PAVI_VISITDATE> TO_CHAR(SYSDATE-' + se_days.Text + ',''YYYY/MM/DD''))');
+                        SQL.Add(' And VISITDATE> TO_CHAR(SYSDATE-' + se_days.Text + ',''YYYY/MM/DD'')');*)
+                        SQL.Add(' Where PATIENTID in (Select PAVI_PATIENTID from HS_PAVI_PATIENTVISIT Where PAVI_VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+')');
+                        if CB_WithRepeatVisit.Checked=False then
+                        SQL.Add(' and PatientVisitId In (Select Max(PatientVisitId) From VW_HS_PATIENTMAIN_ALL Where PatientId=PM.PATIENTID and VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+')');
+                   End;
+              end
+              else
+              begin
+                   if gs_FromEMR='EMR' then
+                   Begin
+                         SQL.Add(' Where PATIENTID in (Select PAVI_PATIENTID from HS_PAVI_PATIENTVISIT Where PAVI_VISITDATE between' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+' And PAVI_DEPCODE In (''EMRGE''))');
+                         SQL.Add(' and VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39);
+                         if CB_WithRepeatVisit.Checked=False then
+                         SQL.Add(' and PatientVisitId In (Select Max(PatientVisitId) From VW_HS_PATIENTMAIN_ALL Where PatientId=PM.PATIENTID and VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+')');
+                   End
+                   Else
+                   Begin
+                         SQL.Add(' Where PATIENTID in (Select PAVI_PATIENTID from HS_PAVI_PATIENTVISIT Where PAVI_VISITDATE between' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+')');
+                         SQL.Add(' and VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39);
+                         if CB_WithRepeatVisit.Checked=False then
+                         SQL.Add(' and PatientVisitId In (Select Max(PatientVisitId) From VW_HS_PATIENTMAIN_ALL Where PatientId=PM.PATIENTID and VISITDATE between ' + #39 + gs_From + #39 + ' and ' + #39 + gs_to + #39+')');
+                   End;
+              end;
+
+              if Not CB_All.Checked then
+              Begin
+                   if Trim(DBLC_Dep.Text)<>'' then
+                   SQL.Add(' And DEPCODE=' + #39+DBLC_Dep.KeyValue+#39);
+              End;
+              SQL.Add(' ORDER BY VisitDate DESC,VisitTime DESC)PA');
+              //SQL.SaveToFile('C:\PatientList.txt');
+              Open;
+         end;
+
+
+     if gs_FromEMR='EMR' then
+     Begin
+          CB_All.Enabled:=False;
+          DBGrid1.Columns[4].Visible:=True;
+          DBGrid1.Columns[21].Visible:=True;
+          DBGrid1.Columns[22].Visible:=True;
+     End
+     Else
+     Begin
+
+          DBGrid1.Columns[4].Visible:=False;
+          DBGrid1.Columns[21].Visible:=False;
+          DBGrid1.Columns[22].Visible:=False;
+          //CB_All.Enabled:=True;
+          CB_All.Enabled:=False;
+     End;
+end;
+
+procedure TFrame_Parent.ShowPatientCountStatus;
+Begin
+     With QueryBlank do
+     begin
+          Close;
+          Session :=DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add(' Select Sum(NewTotal) as NewTotal,Sum(FollowUpTotal) as FollowUpTotal,Sum(Total) as Total');
+          SQL.Add(' From VW_HS_STAT_RegVisitCount');
+          if gi_datesystem=1 then
+          SQL.Add(' where VisitDateEN>='+#39+gs_From+#39+' and VisitDateEn<='+#39+gs_To+#39)
+          Else
+          SQL.Add(' where VisitDateNP>='+#39+gs_From+#39+' and VisitDateNP<='+#39+gs_To+#39);
+          Open;
+     end;
+
+     StatusBar1.Panels[0].Text:='New Total : '+IntToStr(QueryBlank.FieldByName('NewTotal').AsInteger);
+     StatusBar1.Panels[1].Text:='Follow Total : '+IntToStr(QueryBlank.FieldByName('FollowUpTotal').AsInteger);
+     if gs_From=gs_To then
+     StatusBar1.Panels[2].Text:='Total : '+IntToStr(QueryBlank.FieldByName('Total').AsInteger)+' of Date : '+gs_From
+     else
+     StatusBar1.Panels[2].Text:='Total : '+IntToStr(QueryBlank.FieldByName('Total').AsInteger)+' of Date Between '+gs_From+' to '+gs_To;
+End;
+
+procedure TFrame_Parent.SB_CancelRegClick(Sender: TObject);
+begin
+     (*Try
+          Form_CancelRegistration := TForm_CancelRegistration.Create(Nil);
+          Form_CancelRegistration.ShowModal;
+     Finally
+          Form_CancelRegistration.Free;
+     End;*)
+end;
+
+procedure TFrame_Parent.SB_ChangeDepartmentClick(Sender: TObject);
+begin
+     {Form_DoctorIncomeCorrect := TForm_DoctorIncomeCorrect.Create(nil);
+     Try
+          With Form_DoctorIncomeCorrect do
+          Begin
+               Label_PatientName.Caption := QueryList.FieldByName('PatientName').AsString;
+               Edit_PatientID.Text := IntTOstr(QueryList.FieldByName('PatientId').AsInteger);
+               gi_PatientId:=QueryList.FieldByName('PatientId').AsInteger;
+               ShowModal;
+          End;
+     Finally
+          Form_DoctorIncomeCorrect.Free;
+     End;  }
+     Edit_Search.SetFocus;
+
+     // if gi_PatientID>0 then
+     // begin
+     // with Form_ChangeDepDoc do
+     // begin
+     // try
+     // Form_ChangeDepDoc:=TForm_ChangeDepDoc.Create(nil);
+     // Form_ChangeDepDoc.Lbl_HosNo.Caption:=inttostr(gi_PatientID);
+     // Form_ChangeDepDoc.lbl_patientname.Caption:=gs_patientname;
+     // Form_ChangeDepDoc.Lbl_Doctor.Caption:=Form_MainPatientAdministration.Ps_Doctor;
+     // //          Form_ChangeDepDoc.Lbl_Gender.Caption:=
+     // Form_ChangeDepDoc.Lbl_VisitNo.Caption:=inttostr(gi_visitid);
+     // Form_ChangeDepDoc.Lbl_Department.Caption:=Form_MainPatientAdministration.Ps_Department;
+     // //          Form_ChangeDepDoc.Lbl_Bg.Caption:=
+     // showmodal;
+     // finally
+     // free;
+     // end;
+     // end;
+     // end
+     // else
+     // begin
+     // messagedlg('Please Select the Patient first',mtInformation,[mbok],0);
+     // exit;
+     // end;
+end;
+
+procedure TFrame_Parent.SB_HospitalVisitClick(Sender: TObject);
+begin
+     if QueryList.FieldByName('PatientId').AsInteger = 0 then
+     Begin
+          messagedlg('Please Select the Patient', mtInformation, [mbok], 0);
+          exit;
+     End;
+     gs_PrevRegSearchData:=Edit_Search.Text;
+     gi_patientid := QueryList.FieldByName('PatientId').AsInteger;
+     gs_CalledFrom := 'NewPatient';
+     gs_RegistrationType:='FOLLOWUP';
+     gb_IsRegInfoModify:=False;
+     Form_MainPatientAdministration.LoadNewPatient;
+     gb_FrameParent := false;
+end;
+
+procedure TFrame_Parent.Sb_QueuelistClick(Sender: TObject);
+begin
+     {if Screen.MonitorCount>1 then
+     begin
+          Form_QueueList:=TForm_QueueList.Create(Nil);
+          Form_QueueList.WindowState := wsNormal;
+          Form_QueueList.Show;
+          Form_QueueList.left := -1200;
+          Form_QueueList.WindowState := wsMaximized;
+     end
+     else
+     begin
+          Try
+               Form_QueueList:=TForm_QueueList.Create(Nil);
+               Form_QueueList.WindowState := wsMaximized;
+               Form_QueueList.ShowModal;
+          Finally
+               Form_QueueList.Free;
+          End;
+     end; }
+end;
+
+procedure TFrame_Parent.sb_saveClick(Sender: TObject);
+begin
+     Frame_NewPatient.BB_SaveClick(Sender);
+end;
+
+procedure TFrame_Parent.se_daysChange(Sender: TObject);
+begin
+     if se_days.Text <> '' then
+     begin
+          if StrToInt(se_days.Text) < 0 then
+               se_days.Text := '0';
+     end;
+end;
+
+procedure TFrame_Parent.se_daysKeyPress(Sender: TObject; var Key: Char);
+begin
+     if not(Key in [#8, '0' .. '9']) then
+          Key := #0
+end;
+
+procedure TFrame_Parent.ShowHideButtons;
+begin
+     if gi_LoggedInDoctorId > 0 then
+     begin
+          SB_CancelReg.Visible:=False;
+          Sb_Queuelist.Visible:=False;
+          SPB_PatientAdmn.Visible:=False;
+          SPB_OPDCount.Visible:=False;
+          BtnServiceComplete.Visible:=False;
+          BtnDoctorVisit.Visible:=False;
+          SPBPatientInOut.Visible:=False;
+          SPBServiceBillDetail.Visible:=False;
+          SPB_ServiceAcknowledge.Visible:=False;
+          //Panel2.Visible:=False;
+          SB_HospitalVisit.Visible:=False;
+          SB_ChangeDepartment.Visible:=False;
+     end;
+end;
+
+procedure TFrame_Parent.SPB_DayCareRegClick(Sender: TObject);
+begin
+    { Form_DayCare := TForm_DayCare.Create(nil);
+     Try
+          With Form_DayCare do
+          Begin
+               gi_PatientId:=QueryList.FieldByName('PatientId').AsInteger;
+               ShowModal;
+          End;
+     Finally
+          Form_DayCare.Free;
+     End;    }
+     Edit_Search.SetFocus;
+end;
+
+procedure TFrame_Parent.SPB_EmrDutyDocConsultantClick(Sender: TObject);
+begin
+     {Try
+          Form_EMRDutyDocConsultant:=TForm_EMRDutyDocConsultant.Create(Nil);
+          Form_EMRDutyDocConsultant.pi_PatientId:=QueryList.FieldByName('PatientId').AsInteger;
+          Form_EMRDutyDocConsultant.pi_VisitId:=QueryList.FieldByName('VisitId').AsInteger;
+          Form_EMRDutyDocConsultant.ps_PatientType:=QueryList.FieldByName('PatientType').AsString;
+          Form_EMRDutyDocConsultant.ShowModal;
+     Finally
+          Form_EMRDutyDocConsultant.Free;
+     End; }
+end;
+
+procedure TFrame_Parent.SPB_FromClick(Sender: TObject);
+begin
+     ChangeDateSystem(DEX_To, SPB_To);
+     ChangeDateSystem(DEX_From, SPB_From);
+end;
+
+procedure TFrame_Parent.SPB_PatientAdmnClick(Sender: TObject);
+begin
+     if QueryList.FieldByName('PatientId').AsInteger <= 0 then
+     Begin
+          MessageDlg('Please first select patient.',mtInformation,[mbok],0);
+          Edit_Search.SetFocus;
+          Exit;
+     End;
+
+     gi_patientid := QueryList.FieldByName('PatientId').AsInteger;
+     (*LoadPatientData(gi_patientid);
+
+     Form_MainPatientAdministration.Panel_PatientBasicInfo.Visible := false;
+     Form_MainPatientAdministration.Label_DisplayInfo.Caption := 'Patient Admission';
+     gs_CalledFrom := 'Admission';
+     Form_MainPatientAdministration.Panel_Footer.Visible := false;
+     Form_MainPatientAdministration.DBGrid1.Visible := false;
+     Form_MainPatientAdministration.LoadPatientAdmission;*)
+
+    { Try
+          Form_PatientAdmission:=TForm_PatientAdmission.Create(Nil);
+          Form_PatientAdmission.ShowModal;
+     finally
+          Form_PatientAdmission.Free;
+     End; }
+end;
+
+procedure TFrame_Parent.SPB_ToClick(Sender: TObject);
+begin
+     ChangeDateSystem(DEX_To, SPB_To);
+     ChangeDateSystem(DEX_From, SPB_From);
+end;
+
+procedure TFrame_Parent.SPB_TodayDateClick(Sender: TObject);
+begin
+     // ChangeDateSystem(Dex_Today, SPB_TodayDate);
+end;
+
+procedure TFrame_Parent.SPBUploadPrescriptionClick(Sender: TObject);
+Var
+     Ps_ImagePath:String;
+     J: TJpegImage;
+begin
+     {Try
+          Form_ImageUpload:=TForm_ImageUpload.Create(Nil);
+          With Form_ImageUpload do
+          Begin
+               gi_PatientId:=QueryList.FieldByName('PatientId').AsInteger;
+               Form_ImageUpload.ShowModal;
+          End;
+     Finally
+          Form_ImageUpload.Free;
+     End;    }
+     Edit_Search.SetFocus;
+
+     (*J:= TJpegImage.Create;
+     //Ps_ImagePath:='\\192.168.2.244\image';
+     Ps_ImagePath:='\\'+GetServerIp+'\Prescription\'+IntToStr(gi_PatientID);
+     if not DirectoryExists(Ps_ImagePath) then
+          CreateDir(Ps_ImagePath);
+
+     if DirectoryExists(Ps_ImagePath) then
+     begin
+          if OpenPictureDialog1.Execute then
+          begin
+               J.LoadFromFile(OpenPictureDialog1.FileName);
+               J.SaveToFile(Ps_ImagePath+'\'+IntToStr(gi_PatientID)+'_'+IntToStr(gi_VisitId)+'_'+IntToStr(Random(999))+'.JPG');
+               ShowDoneMessage;
+          end;
+     end;*)
+end;
+
+procedure TFrame_Parent.SPBPatientInOutClick(Sender: TObject);
+begin
+     {Try
+          Form_PatientInOut:=TForm_PatientInOut.Create(Nil);
+          Form_PatientInOut.ShowModal;
+     Finally
+          Form_PatientInOut.Free;
+     End; }
+end;
+
+procedure TFrame_Parent.SPB_OPDCountClick(Sender: TObject);
+begin
+     {Try
+          Form_DoctorDeptWisePatientCount:=TForm_DoctorDeptWisePatientCount.Create(Nil);
+          Form_DoctorDeptWisePatientCount.ShowModal;
+     Finally
+          Form_DoctorDeptWisePatientCount.Free;
+     End; }
+end;
+
+procedure TFrame_Parent.SPBServiceBillDetailClick(Sender: TObject);
+begin
+     if gi_patientid < 1 then
+     begin
+          messagedlg('Please Select the Patient', mtInformation, [mbok], 0);
+          exit;
+     End;
+
+     gi_patientid := QueryList.FieldByName('PatientId').AsInteger;
+     try
+          Form_ServiceDetail:=TForm_ServiceDetail.Create(Nil);
+          Form_ServiceDetail.ShowModal;
+     finally
+          Form_ServiceDetail.Free;
+     end;
+end;
+
+procedure TFrame_Parent.SPB_InvestigationClick(Sender: TObject);
+begin
+    { Try
+          Form_RadiologyMain:=TForm_RadiologyMain.Create(Nil);
+          Form_RadiologyMain.ShowModal;
+     Finally
+          Form_RadiologyMain.Free;
+     End; }
+end;
+
+procedure TFrame_Parent.SPB_NewCRNoClick(Sender: TObject);
+begin
+     {Form_NewCRFileCreate := TForm_NewCRFileCreate.Create(nil);
+     Try
+          With Form_NewCRFileCreate do
+          Begin
+               gi_PatientId:=QueryList.FieldByName('PatientId').AsInteger;
+               ShowModal;
+          End;
+     Finally
+          Form_NewCRFileCreate.Free;
+     End;  }
+     Edit_Search.SetFocus;
+end;
+
+procedure TFrame_Parent.SPB_ServiceAcknowledgeClick(Sender: TObject);
+begin
+    { Try
+          Form_ServiceAcknowledge:=TForm_ServiceAcknowledge.Create(Nil);
+          Form_ServiceAcknowledge.ShowModal;
+     Finally
+          Form_ServiceAcknowledge.Free;
+     End;  }
+end;
+
+procedure TFrame_Parent.SPB_VisitDetailClick(Sender: TObject);
+begin
+     {Form_PatientVisitDetail := TForm_PatientVisitDetail.Create(nil);
+     Try
+          With Form_PatientVisitDetail do
+          Begin
+               gi_PatientId:=QueryList.FieldByName('PatientId').AsInteger;
+               ShowModal;
+          End;
+     Finally
+          Form_PatientVisitDetail.Free;
+     End; }
+     Edit_Search.SetFocus;
+end;
+
+procedure TFrame_Parent.SpeedButton5Click(Sender: TObject);
+begin
+     {if MsgBox(1010, 1, '', '', '') then
+     begin
+          ExportDBGrid(Form_Parent, DBGrid1, true, 'Patient List ', TodaysDateVS + ' BS -' + TodaysDate + ' AD');
+     end; }
+     Issendtoexcl:=True;
+     RefreshList;
+     SendToExcels(Queryexcel,nil,' Registered Patient List ',DEX_From.text+'-'+DEX_To.text,'',gs_HospitalName,gs_HospitalAddress,0);
+end;
+
+procedure TFrame_Parent.SPBUndoDischargeClick(Sender: TObject);
+begin
+     {if MessageDlg('Are you sure to Undo Discharge?',mtConfirmation,mbYesNo,0)=mrYes then
+     begin
+          UndoErDischarge(QueryList.Fieldbyname('PatientID').AsInteger,QueryList.Fieldbyname('VisitID').AsInteger);
+          ShowDoneMessage;
+          BB_RefreshClick(Sender);
+     end;  }
+end;
+
+procedure TFrame_Parent.SPBRegisteredPateintFromFrontDeskClick(Sender: TObject);
+begin
+     {Form_RegisteredPatientFromFrontDesk := TForm_RegisteredPatientFromFrontDesk.Create(nil);
+     Try
+          With Form_RegisteredPatientFromFrontDesk do
+          Begin
+               //Label_PatientName.Caption := QueryList.FieldByName('PatientName').AsString;
+               //Edit_PatientID.Text := IntTOstr(QueryList.FieldByName('PatientId').AsInteger);
+               ShowModal;
+
+          End;
+     Finally
+          Form_RegisteredPatientFromFrontDesk.Free;
+     End; }
+end;
+
+end.

@@ -1,0 +1,393 @@
+object FormVDC: TFormVDC
+  Left = 355
+  Top = 199
+  BorderStyle = bsSizeToolWin
+  Caption = 'Vdc Entry'
+  ClientHeight = 469
+  ClientWidth = 676
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object PageControlVDC: TPageControl
+    Left = 0
+    Top = 30
+    Width = 676
+    Height = 439
+    ActivePage = TabSheet1
+    Align = alClient
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    OnChanging = PageControlVDCChanging
+    object TabSheet1: TTabSheet
+      Caption = ' &Vdc          '
+      DesignSize = (
+        668
+        411)
+      object Label1: TLabel
+        Left = 7
+        Top = 56
+        Width = 59
+        Height = 13
+        Caption = 'Zone  Name'
+      end
+      object Label2: TLabel
+        Left = 242
+        Top = 56
+        Width = 69
+        Height = 13
+        Caption = 'District   Name'
+      end
+      object Shape13: TShape
+        Left = 3
+        Top = 24
+        Width = 168
+        Height = 18
+        Brush.Color = clBtnFace
+        Shape = stRoundRect
+      end
+      object Label9: TLabel
+        Left = 5
+        Top = 8
+        Width = 55
+        Height = 13
+        Caption = 'Search Key'
+      end
+      object DBLookupComboBoxZone: TDBLookupComboBox
+        Left = 4
+        Top = 75
+        Width = 195
+        Height = 21
+        Color = clWhite
+        KeyField = 'ZoneID'
+        ListField = 'ZoneName'
+        ListSource = DS_Zone
+        TabOrder = 0
+        OnClick = DBLookupComboBoxZoneClick
+      end
+      object DBLookupComboBoxDistric: TDBLookupComboBox
+        Left = 244
+        Top = 75
+        Width = 200
+        Height = 21
+        Color = clWhite
+        KeyField = 'DistrictID'
+        ListField = 'DistrictName'
+        ListSource = DataSourceQueryDistrict
+        TabOrder = 1
+        OnClick = DBLookupComboBoxDistricClick
+      end
+      object DBGrid1: TDBGrid
+        Left = 3
+        Top = 102
+        Width = 668
+        Height = 319
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        Color = clWhite
+        DataSource = DataSourceQueryVDC
+        TabOrder = 2
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'MS Sans Serif'
+        TitleFont.Style = []
+        OnDblClick = DBGrid1DblClick
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'VDCNAME'
+            Title.Alignment = taCenter
+            Title.Caption = 'VDC Name'
+            Width = 322
+            Visible = True
+          end>
+      end
+      object EditSearch: TEdit
+        Left = 5
+        Top = 26
+        Width = 164
+        Height = 14
+        BorderStyle = bsNone
+        CharCase = ecUpperCase
+        TabOrder = 3
+      end
+      object GroupBox2: TGroupBox
+        Left = -3
+        Top = -5
+        Width = 680
+        Height = 9
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 4
+      end
+      object GroupBox1: TGroupBox
+        Left = -1
+        Top = 45
+        Width = 679
+        Height = 9
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 5
+      end
+      object Button1: TButton
+        Left = 173
+        Top = 23
+        Width = 23
+        Height = 19
+        Caption = '&Go'
+        TabOrder = 6
+      end
+      object CB_ShowAllVDC: TCheckBox
+        Left = 208
+        Top = 23
+        Width = 97
+        Height = 17
+        Caption = 'Show All VDC'
+        TabOrder = 7
+        OnClick = CB_ShowAllVDCClick
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = '&New Vdc   '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ImageIndex = 1
+      ParentFont = False
+      object LabelVdc: TLabel
+        Left = 6
+        Top = 37
+        Width = 36
+        Height = 13
+        Caption = 'VDC ID'
+      end
+      object LabelVdcId: TLabel
+        Left = 68
+        Top = 37
+        Width = 29
+        Height = 13
+        Caption = '????'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clNavy
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object LabelVdcName: TLabel
+        Left = 6
+        Top = 81
+        Width = 53
+        Height = 13
+        Caption = 'VDC Name'
+      end
+      object Label3: TLabel
+        Left = 6
+        Top = 136
+        Width = 69
+        Height = 13
+        Caption = 'District   Name'
+      end
+      object EditName: TEdit
+        Left = 92
+        Top = 77
+        Width = 293
+        Height = 21
+        CharCase = ecUpperCase
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+      end
+      object DBLB_District: TDBLookupComboBox
+        Left = 92
+        Top = 131
+        Width = 294
+        Height = 21
+        Color = clWhite
+        KeyField = 'DistrictID'
+        ListField = 'DistrictName'
+        ListSource = DataSourceQueryDistrict
+        TabOrder = 1
+        OnClick = DBLB_DistrictClick
+      end
+      object CB_ChangeDistrict: TCheckBox
+        Left = 93
+        Top = 108
+        Width = 101
+        Height = 17
+        Caption = 'Change District'
+        TabOrder = 2
+        OnClick = CB_ChangeDistrictClick
+      end
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 676
+    Height = 30
+    Align = alTop
+    TabOrder = 1
+    DesignSize = (
+      676
+      30)
+    object BitBtnNew: TBitBtn
+      Left = 448
+      Top = 3
+      Width = 75
+      Height = 24
+      Anchors = [akTop, akRight]
+      Caption = '&New'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
+        333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
+        0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+        07333337F33333337F333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+        07333FF7F33333337FFFBBB0FFFFFFFF0BB37777F3333333777F3BB0FFFFFFFF
+        0BBB3777F3333FFF77773330FFFF000003333337F333777773333330FFFF0FF0
+        33333337F3337F37F3333330FFFF0F0B33333337F3337F77FF333330FFFF003B
+        B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
+        3BB33773333773333773B333333B3333333B7333333733333337}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BitBtnNewClick
+    end
+    object BitBtnSave: TBitBtn
+      Left = 529
+      Top = 3
+      Width = 75
+      Height = 24
+      Anchors = [akTop, akRight]
+      Caption = '&Save'
+      DoubleBuffered = True
+      Enabled = False
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333330070
+        7700333333337777777733333333008088003333333377F73377333333330088
+        88003333333377FFFF7733333333000000003FFFFFFF77777777000000000000
+        000077777777777777770FFFFFFF0FFFFFF07F3333337F3333370FFFFFFF0FFF
+        FFF07F3FF3FF7FFFFFF70F00F0080CCC9CC07F773773777777770FFFFFFFF039
+        99337F3FFFF3F7F777F30F0000F0F09999937F7777373777777F0FFFFFFFF999
+        99997F3FF3FFF77777770F00F000003999337F773777773777F30FFFF0FF0339
+        99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
+        93337FFFF7737777733300000033333333337777773333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BitBtnSaveClick
+    end
+    object BitBtnCancel: TBitBtn
+      Left = 607
+      Top = 3
+      Width = 75
+      Height = 24
+      Anchors = [akTop, akRight]
+      Caption = '&Cancel'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        3333333333FFFFF3333333333999993333333333F77777FFF333333999999999
+        3333333777333777FF3333993333339993333377FF3333377FF3399993333339
+        993337777FF3333377F3393999333333993337F777FF333337FF993399933333
+        399377F3777FF333377F993339993333399377F33777FF33377F993333999333
+        399377F333777FF3377F993333399933399377F3333777FF377F993333339993
+        399377FF3333777FF7733993333339993933373FF3333777F7F3399933333399
+        99333773FF3333777733339993333339933333773FFFFFF77333333999999999
+        3333333777333777333333333999993333333333377777333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = BitBtnCancelClick
+    end
+  end
+    object QueryDistrict: TOraQuery
+    SQL.Strings = (
+            'SELECT * from HS_DISTRICT'
+            'WHERE ZONEID=:ZONEID'
+            'Order by DistrictName')
+    Left = 244
+    Top = 31
+    ParamData = <
+            item
+              DataType = ftInteger
+              Name = 'ZONEID'
+              ParamType = ptUnknown
+            end>
+  end
+object DataSourceQueryDistrict: TDataSource
+    DataSet = QueryDistrict
+    Left = 284
+    Top = 47
+  end
+    object QueryVDC: TOraQuery
+    SQL.Strings = (
+            'SELECT * from HS_VDCMCPT'
+            'WHERE (Zoneid=:Zoneid) and (DistrictId=:Districtid)'
+            'Order by VDCName')
+    Left = 372
+    Top = 55
+    ParamData = <
+            item
+              DataType = ftInteger
+              Name = 'Zoneid'
+              ParamType = ptUnknown
+            end
+            item
+              DataType = ftInteger
+              Name = 'Districtid'
+              ParamType = ptUnknown
+            end>
+  end
+object DataSourceQueryVDC: TDataSource
+    DataSet = QueryVDC
+    Left = 416
+    Top = 64
+  end
+    object Query_Zone: TOraQuery
+    SQL.Strings = (
+            'Select * From HS_ZONE'
+            'Order by ZONENAME')
+    Left = 500
+    Top = 55
+  end
+object DS_Zone: TDataSource
+    DataSet = Query_Zone
+    Left = 528
+    Top = 64
+  end
+    object Query_Process: TOraQuery
+    SQL.Strings = (
+            'Select * From HS_ZONE'
+            'Order by ZONENAME')
+    Left = 500
+    Top = 135
+  end
+end

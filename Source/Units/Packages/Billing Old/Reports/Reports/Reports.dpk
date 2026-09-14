@@ -1,0 +1,49 @@
+package Reports;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  vclimg,
+  dbrtl,
+  vcldb,
+  bdertl,
+  QR5RunD2010,
+  Global,
+  dex;
+
+contains
+  Unit1 in 'Unit1.pas' {Form1},
+  UnitUserWiseCollection in 'UnitUserWiseCollection.pas' {FormUserWiseCollection},
+  UnitRepUserWiseCollection in 'UnitRepUserWiseCollection.pas' {FormRepUserWiseCollection},
+  UnitRepUserWiseDetail in 'UnitRepUserWiseDetail.pas' {FormRepUserWiseDetail},
+  UnitDeptWiseReport in 'UnitDeptWiseReport.pas' {FormDeptwiseCollection},
+  UnitRepDeptWiseCollection in 'UnitRepDeptWiseCollection.pas' {FormRepDeptWiseSum},
+  UnitRepDetailUserWise in 'UnitRepDetailUserWise.pas' {FormRepDetailUserWise},
+  UnitNoofTestDone in 'UnitNoofTestDone.pas' {FormNoofTestDone},
+  UnitRepNoofTestDone in 'UnitRepNoofTestDone.pas' {FormRepNoofTestDone};
+
+end.

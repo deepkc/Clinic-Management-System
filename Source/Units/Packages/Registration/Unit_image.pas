@@ -1,0 +1,592 @@
+unit Unit_image;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, StdCtrls, Buttons, jpeg, DB, ADODB, DBCtrls, DBTables,
+  ExtDlgs,Printers,delphitwain,twain,DelphiTwainUtils,dm,ora, MemDS, DBAccess,fxn,serverdate;
+
+type
+  TForm_Image = class(TForm)
+    Panel_Buttons: TPanel;
+    btn_Save: TBitBtn;
+    btn_Close: TBitBtn;
+    bitBtnPreview: TBitBtn;
+    Panel2: TPanel;
+    ADOQueryPhoto: TADOQuery;
+    Queryyear: TQuery;
+    DB: TDatabase;
+    Queryfaculty: TQuery;
+    Querydepartment: TQuery;
+    Queryclass: TQuery;
+    DataSourcefaculty: TDataSource;
+    DataSourcedepartment: TDataSource;
+    DataSourceclass: TDataSource;
+    OpenPictureDialog1: TOpenPictureDialog;
+    Queryprocess: TQuery;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
+    BitBtn4: TBitBtn;
+    BitBtn5: TBitBtn;
+    BitBtn6: TBitBtn;
+    BitBtn7: TBitBtn;
+    BitBtn8: TBitBtn;
+    BitBtn9: TBitBtn;
+    BitBtn10: TBitBtn;
+    BitBtn11: TBitBtn;
+    BitBtn12: TBitBtn;
+    BitBtn13: TBitBtn;
+    BitBtn14: TBitBtn;
+    BitBtn15: TBitBtn;
+    BitBtn16: TBitBtn;
+    BitBtn17: TBitBtn;
+    BitBtn18: TBitBtn;
+    BitBtn19: TBitBtn;
+    BitBtn20: TBitBtn;
+    BitBtn21: TBitBtn;
+    Timer1: TTimer;
+    timer2: TTimer;
+    Label1: TLabel;
+    Panel1: TPanel;
+    Edit_desc: TEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    BitBtn22: TBitBtn;
+    Label4: TLabel;
+    OraQuery_PicSave: TOraQuery;
+    Panel3: TPanel;
+    ScrollBox1: TScrollBox;
+    Photo: TImage;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Memo_IBD: TMemo;
+    Memo_Malingency: TMemo;
+    Memo_GasDisorder: TMemo;
+    Memo_MalAbsorption: TMemo;
+    Memo_GINOS: TMemo;
+    Memo_InfLiver: TMemo;
+    Memo_NeoLiver: TMemo;
+    Memo_PreviousHistory: TMemo;
+    Label12: TLabel;
+    procedure btn_SaveClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure DBLCBClassClick(Sender: TObject);
+    procedure btn_CloseClick(Sender: TObject);
+    Procedure ShowDoneMessage;
+    Procedure ShowAcquireMessage;
+    procedure Edit_descKeyPress(Sender: TObject; var Key: Char);
+    procedure bitBtnPreviewClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure TwainAcquireHandler(Sender: TObject; const Index: Integer;
+      Image: TBitmap; var Cancel: Boolean);
+     procedure ResizetoJPGLocal (Image:Timage);
+    procedure BitBtn6Click(Sender: TObject);
+    procedure Rotate90(Source: TGraphic; Target: TJpegImage);
+    procedure timer2Timer(Sender: TObject);
+    procedure BitBtn22Click(Sender: TObject);
+    procedure ScrollBar1Change(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure SavePatientImageHistory(patientTestId: integer;image1name,image2name : String; Image1,image2: TImage);
+  private
+    { Private declarations }
+  public
+  ps_Image,ps_ImagePath:string;
+  gi_yearid,pi_patientid:integer;
+  AClass: TPersistentClass;
+  gs_DatabaseName,gs_AliasName,gs_imagepath,
+  gs_DB_UserName,gs_DB_Password,gs_photodatabase:string;
+  count:integer;
+    { Public declarations }
+  end;
+
+var
+  Form_Image: TForm_Image;
+  MyBitmap: TBitmap;
+
+
+implementation
+uses unit_message, Unit_Master;
+
+{$R *.dfm}
+
+
+procedure TForm_Image.BitBtn1Click(Sender: TObject);
+Var
+     Twain_photo:TDelphiTwain;
+     SelectedSource:integer;
+begin
+     Try
+          if Twain_Photo<>nil then
+          Twain_Photo.Free;
+     except
+     end;
+     if count=1 then
+     begin
+          BitBtn2.Visible:=true;
+          count:=count+1;
+     end
+     else if count=2 then
+     begin
+          BitBtn3.Visible:=true;
+          count:=count+1;
+     end
+     else if count=3 then
+     begin
+          BitBtn4.Visible:=true;
+          count:=count+1;
+     end
+     else if count=4 then
+     begin
+          BitBtn5.Visible:=true;
+          count:=count+1;
+     end
+      else if count=5 then
+     begin
+          BitBtn7.Visible:=true;
+          count:=count+1;
+     end
+     else if count=6 then
+     begin
+          BitBtn8.Visible:=true;
+          count:=count+1;
+     end
+     else if count=7 then
+     begin
+          BitBtn9.Visible:=true;
+          count:=count+1;
+     end
+      else if count=8 then
+     begin
+          BitBtn10.Visible:=true;
+          count:=count+1;
+     end
+     else if count=9 then
+     begin
+          BitBtn11.Visible:=true;
+          count:=count+1;
+     end
+     else if count=10 then
+     begin
+          BitBtn12.Visible:=true;
+          count:=count+1;
+     end
+      else if count=11 then
+     begin
+          BitBtn13.Visible:=true;
+          count:=count+1;
+     end
+     else if count=12 then
+     begin
+          BitBtn14.Visible:=true;
+          count:=count+1;
+     end
+     else if count=13 then
+     begin
+          BitBtn15.Visible:=true;
+          count:=count+1;
+     end
+      else if count=14 then
+     begin
+          BitBtn16.Visible:=true;
+          count:=count+1;
+     end
+      else if count=15 then
+     begin
+          BitBtn17.Visible:=true;
+          count:=count+1;
+     end
+     else if count=16 then
+     begin
+          BitBtn18.Visible:=true;
+          count:=count+1;
+     end
+     else if count=17 then
+     begin
+          BitBtn19.Visible:=true;
+          count:=count+1;
+     end
+      else if count=18 then
+     begin
+          BitBtn20.Visible:=true;
+          count:=count+1;
+     end
+     else if count=19 then
+     begin
+          BitBtn21.Visible:=true;
+          count:=count+1;
+     end;
+     Twain_Photo:=TDelphiTwain.Create(nil);
+     with Twain_Photo do
+      begin
+           LibraryLoaded:=false;
+           SourceCount:=0;
+           SourceManagerLoaded:=false;
+           Tag:=0;
+           TransferMode:=ttmMemory;
+           Twain_Photo.OnTwainAcquire:=TwainAcquireHandler;
+      end;
+  {It is always recommended to load library dynamically, never forcing}
+  {final user to have Twain_Photo installed}
+  if Twain_Photo.LoadLibrary then
+  begin
+
+    {Load source manager}
+    Twain_Photo.SourceManagerLoaded := TRUE;
+    {Allow user to select source}
+    SelectedSource := Twain_Photo.SelectSource;
+    if SelectedSource <> -1 then
+    begin
+      {Load source, select transference method and enable (display interface)}
+      Twain_Photo.Source[SelectedSource].Loaded := TRUE;
+      Twain_Photo.Source[SelectedSource].TransferMode := ttmMemory;
+      Twain_Photo.Source[SelectedSource].Enabled := TRUE;
+    end; {if SelectedSource <> -1}
+  end
+  else
+    showmessage('Device is not installed.');
+    if Twain_Photo<>nil then
+    begin
+      ShowAcquireMessage;
+      btn_Save.Enabled:=true;
+      ShowDoneMessage;
+    end;
+    Twain_Photo.Free;
+end;
+
+procedure TForm_Image.BitBtn22Click(Sender: TObject);
+var    Ps_ImageName:string;
+begin
+     Try
+          if OpenPictureDialog1.Execute Then
+               Ps_ImageName := OpenPictureDialog1.FileName;
+          if Ps_ImageName <> '' Then
+          begin
+               photo.Picture.LoadFromFile(Ps_ImageName);
+               ResizetoJPGLocal(photo);
+               btn_Save.Enabled:=true;
+          end;
+     Except
+          MessageDlg(' Sorry unable to open the picture box. ', mtError, [mbOk], 0);
+     end;
+end;
+
+procedure TForm_Image.BitBtn6Click(Sender: TObject);
+var
+Jpeg: TJPEGImage;
+begin
+     Jpeg := TJPEGImage.Create;
+     Rotate90(photo.Picture.Graphic, Jpeg);
+     photo.Picture.Assign(Jpeg);
+     Jpeg.Free;
+end;
+
+procedure TForm_Image.bitBtnPreviewClick(Sender: TObject);
+var
+  ScaleX, ScaleY: Integer;
+  RR: TRect;
+begin
+  with Printer do
+  begin
+    BeginDoc;
+    // Mit BeginDoc wird ein Druckauftrag initiiert.
+    // The StartDoc function starts a print job.
+    try
+      ScaleX := GetDeviceCaps(Handle, logPixelsX) div PixelsPerInch;
+      ScaleY := GetDeviceCaps(Handle, logPixelsY) div PixelsPerInch;
+      // Informationen über die Auflösung
+      // Retrieves information about the Pixels per Inch of the Printer.
+      RR := Rect(0, 0, photo.picture.Width * scaleX, photo.Picture.Height * ScaleY);
+      Canvas.StretchDraw(RR, photo.Picture.Graphic);
+      // An die Auflösung anpassen
+      // Stretch to fit
+
+    finally
+      EndDoc;   //Methode EndDoc beendet den aktuellen Druckauftrag und schließt die
+      // Textdatei-Variable.
+      // Steht in finally - um auch bei Abbruch des Druckauftrages Papierausgabe
+      // sicherzustellen
+    end;
+  end;
+end;
+
+procedure TForm_Image.btn_CloseClick(Sender: TObject);
+begin
+      close;
+end;
+
+procedure TForm_Image.btn_SaveClick(Sender: TObject);
+var
+pi_patienthistoryid:integer;
+msBinImgStream: TMemoryStream;
+imgJpg: TJPEGImage;
+begin
+
+     if Photo.Picture.Graphic=nil then
+     begin
+          exit;
+     end;
+
+    with OraQuery_PicSave do
+        begin
+            close;
+            Session:=DM_Hospital.DB;
+            sql.Clear;
+            pi_patienthistoryid := GetMaxId('LB_PAHI_PatientHistoryImage', 'PAHI_PATIENTHISTORYID');
+            SQL.add('insert into LB_PAHI_PatientHistoryImage (PAHI_PATIENTHISTORYID,PAHI_PATIENTID,');
+            SQL.Add('PAHI_HISTORYDETAIL,PAHI_IBD,PAHI_MALINGENCY,PAHI_GASTRICDISORDER,PAHI_MALABSORTION,');
+            SQL.Add('PAHI_GINOS,PAHI_INFLAMLIVER,PAHI_NEOPLASTICLIVER,PAHI_HISTORYDATE,PAHI_USERID) values');
+            sql.Add(' (' + IntToStr(pi_patienthistoryid));
+            sql.Add(','+ IntToStr(gi_PatientID)+','+QuotedStr(Memo_PreviousHistory.Text));
+            sql.Add(','+ QuotedStr(Memo_IBD.Text)+','+QuotedStr(Memo_Malingency.Text));
+            sql.Add(','+ QuotedStr(Memo_GasDisorder.Text)+','+QuotedStr(Memo_MalAbsorption.Text));
+            sql.Add(','+ QuotedStr(Memo_GINOS.Text)+','+QuotedStr(Memo_InfLiver.Text));
+            sql.Add(','+ QuotedStr(Memo_NeoLiver.Text)+','+QuotedStr(serverdate.TodaysDate)+','+IntToStr(gi_UserID));
+            sql.Add(')');
+            ExecSQL;
+        end;
+
+     // save signature
+     msBinImgStream := TMemoryStream.Create;
+     // imgCustom := TImage.Create(self);
+     imgJpg := TJPEGImage.Create;
+     // imgJpg.Assign(Image1.Picture.Bitmap);
+     imgJpg.Assign(Photo.Picture.Graphic);
+     imgJpg.SaveToStream(msBinImgStream);
+     OraQuery_PicSave.Options. TemporaryLobUpdate:= True;
+
+        with OraQuery_PicSave do
+        begin
+            close;
+            Session:=DM_Hospital.DB;
+            sql.Clear;
+            SQL.add('update LB_PAHI_PatientHistoryImage set Pahi_HistoryImage=:pBlob where PAHI_PATIENTHISTORYID=' + IntToStr(pi_patienthistoryid));
+            Params.ParamByName('pBlob').ParamType:=ptInput;
+            Params.ParamByName('pBlob').LoadFromStream(msBinImgStream,ftOraBlob);
+            ExecSQL;
+            Photo.Picture := nil;
+        end;
+
+       ShowDoneMessage;
+end;
+
+procedure TForm_Image.DBLCBClassClick(Sender: TObject);
+var ms: TMemoryStream;
+     Jpg: TJPEGImage;
+begin
+     {photo.Picture := nil;
+     with ADOQueryPhoto do
+     begin
+          Close;
+          SQL.Clear;
+         ConnectionString :=
+        'Provider=SQLOLEDB.1;Persist Security Info=False;User ID='+gs_DB_UserName+';Password='+gs_DB_Password+';Initial Catalog='+gs_photodatabase+';Data Source='+gs_imagepath;
+          sql.Add('select * from rateimage where facultyid = ' + IntToStr(DBLCBFaculty.KeyValue));
+          sql.Add('And departmentid = ' + IntToStr(DBLCBProgram.KeyValue) + ' and classid = ' + IntToStr(DBLCBClass.KeyValue));
+          sql.add('and ayearid=' + IntToStr(gi_yearid));
+          Open;
+          if ADOQueryPhoto.RecordCount>0 then
+          begin
+            JPG := TJPEGImage.Create;
+            ms := TMemoryStream.Create;
+            try
+                   Edit_desc.Text:=FieldByName('imagedesc').asstring;
+                   TBlobField(FieldByName('ratephoto')).SaveToStream(ms);
+                   ms.Position := 0;
+                   if ms.Size > 0 then
+                   begin
+                        JPG.LoadFromStream(ms);
+                        photo.Picture.Assign(JPG);
+                   end;
+            finally
+                   JPG.Free;
+                   ms.Free;
+                   ADOQueryPhoto.Close;
+            end;
+          end
+          else
+          begin
+                Edit_desc.Text:='';
+          end;
+     end;
+      }
+end;
+
+procedure TForm_Image.Edit_descKeyPress(Sender: TObject; var Key: Char);
+begin
+       if key=#13 then
+          btn_Save.Enabled:=true;
+end;
+
+procedure TForm_Image.FormCreate(Sender: TObject);
+begin
+  {MyBitmap:=TBitmap.Create;
+  //MyBitmap.LoadFromFile('factory.bmp');
+  //Photo.Picture.Bitmap.Assign(MyBitmap);
+  ScrollBar1.Max:=MyBitmap.Width-1-Photo.Width;
+  ScrollBar2.Max:=MyBitmap.Height-1-Photo.Height; }
+end;
+
+procedure TForm_Image.FormShow(Sender: TObject);
+begin
+     btn_Save.enabled:=false;
+     Edit_desc.Text:='';
+     count:=1;
+      Label3.Caption:=inttostr(pi_patientid);
+end;
+
+procedure TForm_Image.ResizetoJPGLocal(Image: Timage);
+var
+     JpegImg: TJpegImage;
+     bmp:Tbitmap;
+begin
+     JpegImg := TJpegImage.Create;
+     bmp:=TBitmap.create;
+     try
+     // copy the Graphics to an intermediate bitmap of the required size
+          bmp.PixelFormat := pf32Bit;
+          bmp.Width := 768;
+          bmp.Height := 1024;
+          bmp.Canvas.StretchDraw(Rect(0, 0, bmp.Width, bmp.Height), Image.Picture.Graphic);
+
+          JpegImg.Assign(bmp);
+
+     // put back into the JPG and save it
+          Image.Picture.Assign(JpegImg);
+     finally
+          bmp.Free;
+          JpegImg.Free;
+     end;
+
+end;
+
+
+procedure TForm_Image.Rotate90(Source: TGraphic; Target: TJpegImage);
+var
+SourceBmp, TargetBmp: TBitmap;
+r, c: Integer;
+x, y: Integer;
+begin
+     SourceBmp := TBitmap.Create;
+     SourceBmp.Assign(Source);
+     TargetBmp := TBitmap.Create;
+     TargetBmp.Width := SourceBmp.Height;
+     TargetBmp.Height := SourceBmp.Width;
+     for r := 0 to SourceBmp.Height - 1 do
+     begin
+     for c := 0 to SourceBmp.Width - 1 do
+     begin
+          //x := (SourceBmp.Height-1) - r; // -90
+          //y := c; //-90
+          x := r; //90
+          y := (SourceBmp.Width-1) - c; //90
+          // look into Bitmap.ScanLine for faster pixel access
+          TargetBmp.Canvas.Pixels[x, y] := SourceBmp.Canvas.Pixels[c, r];
+     end;
+     end;
+     Target.Assign(TargetBmp);
+     SourceBmp.Free;
+     TargetBmp.Free;
+end;
+
+procedure TForm_Image.SavePatientImageHistory(patientTestId: integer; image1name,
+  image2name: String; Image1, image2: TImage);
+var
+     msBinImgStream,msBinImgStream2: TMemoryStream;
+     qryTQuery : TOraQuery;
+     imgJpg,imgjpg2: TJPEGImage;
+     sSql: String;
+begin
+     qryTQuery := TOraQuery.Create(nil);
+     qryTQuery.Options. TemporaryLobUpdate:= True;
+     if Image1.Picture.Graphic=nil then
+     exit;
+
+     msBinImgStream := TMemoryStream.Create;
+     imgJpg := TJPEGImage.Create;
+     imgJpg.Assign(Image1.Picture.Graphic);
+     imgJpg.SaveToStream(msBinImgStream);
+
+     msBinImgStream2 := TMemoryStream.Create;
+     imgJpg2 := TJPEGImage.Create;
+     imgJpg2.Assign(Image2.Picture.Graphic);
+     imgJpg2.SaveToStream(msBinImgStream2);
+
+
+     qryTQuery.Session:=DM_Hospital.DB;
+     qryTQuery.SQL.Clear;
+     qryTQuery.SQL.add('insert into LB_PAHI_PatientHistoryImage (PAHI_PATIENTHISTORYID,PAHI_PATIENTID,PAHI_HISTORYIMAGE,');
+     qryTQuery.SQL.Add('PAHI_HISTORYDETAIL,PAHI_HISTORYDESCRIPTION,PAHI_IBD,PAHI_MALINGENCY,PAHI_GASTRICDISORDER,PAHI_MALABSORTION,');
+     qryTQuery.SQL.Add('PAHI_GINOS,PAHI_INFLAMLIVER,PAHI_NEOPLASTICLIVER,PAHI_HISTORYDATE,PAHI_USERID) values (');
+     qryTQuery.SQL.Add(' pahi_historyimage=:pBlob');
+     qryTQuery.SQL.add(', suin_Image1Name='+quotedstr(image1name));
+     qryTQuery.SQL.add(', suin_Image2Name='+quotedstr(image2name));
+     qryTQuery.SQL.add(' where suin_patienttestid=' + IntToStr(patienttestid));
+     qryTQuery.Params.ParamByName('pBlob').ParamType:=ptInput;
+     qryTQuery.Params.ParamByName('pBlob').LoadFromStream(msBinImgStream,ftOraBlob);
+     qryTQuery.ExecSQL;
+     //Image1.Picture := nil;
+     qryTQuery.Free;
+
+end;
+
+
+procedure TForm_Image.ScrollBar1Change(Sender: TObject);
+     var
+  RectDest, RectSource: TRect;
+begin
+ { RectDest:=Rect(0, 0, Photo.Width, Photo.Height);
+  RectSource:=Rect(
+    ScrollBar1.Position,
+    ScrollBar2.Position,
+    Scrollbar1.Position+Photo.Width,
+    ScrollBar2.Position+Photo.Height);
+  Photo.Canvas.CopyRect(RectDest, MyBitmap.Canvas, RectSource); }
+end;
+
+
+procedure TForm_Image.ShowAcquireMessage;
+begin
+       AClass := GetClass('TFrm_acquireMessage');
+     if AClass <> nil then
+     with TComponentClass(AClass).Create(Application) as TForm do
+     begin
+          showmodal;
+     end;
+end;
+
+procedure TForm_Image.ShowDoneMessage;
+begin
+     AClass := GetClass('TFrm_Message');
+     if AClass <> nil then
+     with TComponentClass(AClass).Create(Application) as TForm do
+     begin
+          showmodal;
+     end;
+end;
+
+procedure TForm_Image.timer2Timer(Sender: TObject);
+begin
+  Timer1.Enabled:=False;
+end;
+
+procedure TForm_Image.TwainAcquireHandler(Sender: TObject; const Index: Integer;
+  Image: TBitmap; var Cancel: Boolean);
+begin
+
+     photo.Picture.Assign(Image);
+    //ps_Front:='IMG2-'+IntToStr(nStudentID)+'.JPG';
+    ResizetoJPGLocal(photo);
+    ps_Image:='IMAGEMAIN'+inttostr(count-1)+'.JPG';
+    ps_ImagePath:='e:\scannedimage';
+    photo.Picture.SaveToFile(ps_ImagePath+'\'+ps_Image);
+    Cancel := True;
+end;
+
+end.

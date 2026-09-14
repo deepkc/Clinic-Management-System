@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2011/11/09 17:25:40.753.dproj,C:\Users\vicky\Documents\RAD Studio\Projects\Package1.dproj=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Sample Collection\SampleCollection.dproj</Transaction>
+    <Transaction>2012/01/16 10:33:27.108.pas,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Sample Collection\Unit2.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Sample Collection\Unit_QrSticker.pas</Transaction>
+    <Transaction>2012/01/16 10:33:27.108.dfm,D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Sample Collection\Unit2.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Sample Collection\Unit_QrSticker.dfm</Transaction>
+    <Transaction>2014/03/27 16:39:57.423.pas,E:\Working Soyal\Dhulikhel_New\Dhulikhel\Source\Units\Packages\Verification\Unit_ServiceDetail.pas=</Transaction>
+    <Transaction>2014/03/27 16:39:57.423.dfm,E:\Working Soyal\Dhulikhel_New\Dhulikhel\Source\Units\Packages\Verification\Unit_ServiceDetail.dfm=</Transaction>
+    <Transaction>2014/05/11 17:27:26.889.pas,F:\MiDas Project\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Sample Collection\Unit3.pas=F:\MiDas Project\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Sample Collection\Unit_QrReportRemaining.pas</Transaction>
+    <Transaction>2014/05/11 17:27:26.889.dfm,F:\MiDas Project\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Sample Collection\Unit3.dfm=F:\MiDas Project\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Sample Collection\Unit_QrReportRemaining.dfm</Transaction>
+    <Transaction>2014/06/06 17:54:59.146.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/06 17:54:59.146.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/06 18:01:19.838.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/06 18:01:19.838.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/08 10:29:14.753.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/08 10:29:14.753.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 11:43:03.193.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/16 11:43:03.193.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 11:45:19.279.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/16 11:45:19.279.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 11:45:50.897.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/16 11:45:50.897.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 11:47:13.495.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/16 11:47:13.495.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 11:48:24.529.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/16 11:48:24.529.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 11:49:32.948.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/16 11:49:32.948.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 12:24:55.289.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/16 12:24:55.289.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 12:25:55.590.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/16 12:25:55.590.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 12:26:24.249.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/16 12:26:24.249.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 12:28:12.250.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/16 12:28:12.250.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 12:30:36.152.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.pas=</Transaction>
+    <Transaction>2014/06/16 12:30:36.152.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_Manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 12:32:53.422.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_manipal.pas=</Transaction>
+    <Transaction>2014/06/16 12:32:53.422.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_manipal.dfm=</Transaction>
+    <Transaction>2014/06/16 12:35:42.006.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Sample Collection\Unit_ImportFromExcel.pas=</Transaction>
+    <Transaction>2014/06/16 12:35:42.006.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Packages\Sample Collection\Unit_ImportFromExcel.dfm=</Transaction>
+    <Transaction>2014/06/16 12:41:55.920.pas,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_manipal.pas=</Transaction>
+    <Transaction>2014/06/16 12:41:55.920.dfm,E:\Working Soyal\MiDas Dr. Homs V 3.2 Central\Source\Units\Pathology\Unit_SampleCollectionFrame_manipal.dfm=</Transaction>
+    <Transaction>2016/06/17 11:58:46.441.pas,D:\working rahul\new table Concept\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Sample Collection\Unit3.pas=D:\working rahul\new table Concept\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Sample Collection\Unit_QrSampleCollectionreport.pas</Transaction>
+    <Transaction>2016/06/17 11:58:46.441.dfm,D:\working rahul\new table Concept\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Sample Collection\Unit3.dfm=D:\working rahul\new table Concept\Source New Table Concept\MiDas Dr. Homs V 3.2\Source\Units\Packages\Sample Collection\Unit_QrSampleCollectionreport.dfm</Transaction>
+    <Transaction>2017/06/05 15:33:21.535.pas,D:\working rabin\INTREPID\Source\Units\Packages\Sample Collection\Unit_Preview.pas=</Transaction>
+    <Transaction>2017/06/05 15:33:21.535.dfm,D:\working rabin\INTREPID\Source\Units\Packages\Sample Collection\Unit_Preview.dfm=</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="-1" SortType="1"/>
+</BorlandProject>

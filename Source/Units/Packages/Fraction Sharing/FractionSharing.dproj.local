@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2018/03/12 12:26:13.203.dproj,C:\Users\user\Documents\RAD Studio\Projects\Package1.dproj=F:\working chandra\LAB SOURCES\Delphi 10\A. Clinical Central Source(Aarogya,Biodiag etc)\Source\Units\Packages\Fraction Sharing\FractionSharing.dproj</Transaction>
+    <Transaction>2018/03/12 13:14:39.203.pas,F:\working chandra\LAB SOURCES\Delphi 10\A. Clinical Central Source(Aarogya,Biodiag etc)\Source\Units\Packages\Fraction Sharing\Unit_DoctorRoundVisit.pas=</Transaction>
+    <Transaction>2018/03/12 13:14:39.203.dfm,F:\working chandra\LAB SOURCES\Delphi 10\A. Clinical Central Source(Aarogya,Biodiag etc)\Source\Units\Packages\Fraction Sharing\Unit_DoctorRoundVisit.dfm=</Transaction>
+  </Transactions>
+</BorlandProject>

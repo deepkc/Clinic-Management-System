@@ -1,0 +1,249 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{90F75479-F537-4B74-9DC5-EE4C475CB2F0}</ProjectGuid>
+			<ProjectVersion>12.0</ProjectVersion>
+			<MainSource>MidasDrHomsV3_2.dpr</MainSource>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<BRCC_IncludePath>D:\MiDas Dr. Homs V 3.2 Central\LabIntegration\Utility\fbarcode;$(BRCC_IncludePath)</BRCC_IncludePath>
+			<UsePackages>true</UsePackages>
+			<DCC_DcpOutput>..\DCP\</DCC_DcpOutput>
+			<DCC_UsePackage>vcl;rtl;vclx;vclimg;vclactnband;dbrtl;vcldb;vcldbx;bdertl;vcltouch;xmlrtl;dsnap;dsnapcon;TeeUI;TeeDB;Tee;vclib;ibxpress;adortl;IndyCore;IndySystem;IndyProtocols;inet;intrawebdb_100_140;Intraweb_100_140;VclSmp;vclie;websnap;webdsnap;inetdb;inetdbbde;inetdbxpress;vclribbon;dbexpress;DbxCommonDriver;DataSnapIndy10ServerTransport;DataSnapProviderClient;DbxClientDriver;DataSnapServer;DBXInterBaseDriver;DBXMySQLDriver;dbxcds;DBXFirebirdDriver;DBXSybaseASEDriver;DBXSybaseASADriver;DBXOracleDriver;DBXMSSQLDriver;DBXInformixDriver;DBXDb2Driver;QR5RunD2010;dex;Global;SampleCollection;RegisterMonitor;SampleRegister;ValidTestCancel;RemainingTest;NameModify;MidasFunction;Finding;RegAccount;Test;Verification;DepartmentSetup;SampleSourceSetup;DoctorSetup;CommentSetup;FooterSetup;SensitiveMedicineSetup;SensitiveMedicineTestWiseSetup;DelphiTwainPackage;CommunitySetup;SchemeSetup;ClinicalPathology;CommunitySchemeSetup;TestPackageSetup;MachineIntegration;BloodBank;Registration;Billing;MenuPrevilage;PrivilegeSetup;CreditPayment;CorrectionAndModification;ClinicalHistology;Reports;TestNameSetup;FractionSharing;FractionSetup</DCC_UsePackage>
+			<DCC_DependencyCheckOutputName>..\Bin\MidasDrHomsV3_2.exe</DCC_DependencyCheckOutputName>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DCC_ExeOutput>..\Bin\</DCC_ExeOutput>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<DCC_Platform>x86</DCC_Platform>
+			<DCC_DcuOutput>..\Dcu\</DCC_DcuOutput>
+			<DCC_N>false</DCC_N>
+			<DCC_S>false</DCC_S>
+			<DCC_K>false</DCC_K>
+			<DCC_E>false</DCC_E>
+			<DCC_F>false</DCC_F>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_MapFile>3</DCC_MapFile>
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="MidasDrHomsV3_2.dpr">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="Units\Main\Unit_Main.pas">
+				<Form>Form_Main</Form>
+			</DCCReference>
+			<DCCReference Include="Units\Main\Unit_FramePanel.pas">
+				<Form>Frame_Panel</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Units\User\Unit_Previlage.pas">
+				<Form>Form_Previlege</Form>
+			</DCCReference>
+			<DCCReference Include="Units\Pathology\Unit_PathologyParent.pas">
+				<Form>Form_PathologyParent</Form>
+			</DCCReference>
+			<DCCReference Include="Units\User\Unit_Users.pas">
+				<Form>Form_Users</Form>
+			</DCCReference>
+			<DCCReference Include="Units\User\Unit_StaffDepartmentSetup.pas">
+				<Form>Form_StaffDepSetup</Form>
+			</DCCReference>
+			<DCCReference Include="Units\User\UnitUserAccessDep.pas">
+				<Form>FormUserAccessDep</Form>
+			</DCCReference>
+			<DCCReference Include="Units\Main\Unit_Regulation.pas">
+				<Form>Form_Regulation</Form>
+			</DCCReference>
+			<DCCReference Include="Units\User\Unit_MasterHospitalReport.pas">
+				<Form>Form_HospitalMasterSetup</Form>
+			</DCCReference>
+			<DCCReference Include="Units\User\Unit_MasterReportPrevilage.pas">
+				<Form>Form_MasterReportPrevilege</Form>
+			</DCCReference>
+			<DCCReference Include="Units\User\Unit_ReportPrevilage.pas">
+				<Form>Form_ReportPrevilege</Form>
+			</DCCReference>
+			<DCCReference Include="Units\Main\Unit_FrameParent.pas">
+				<Form>Frame_Parent</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Units\Main\Unit_MainFormPatientAdministration.pas">
+				<Form>Form_MainPatientAdministration</Form>
+			</DCCReference>
+			<DCCReference Include="Units\Main\Unit_PatientAdministration_GMenu.pas">
+				<Form>Frame_GMenuPatientAdministration</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Units\Main\Unit_HospitalRulesRegulation.pas">
+				<Form>Form_HospitalRulesRegulation</Form>
+			</DCCReference>
+			<DCCReference Include="Units\Main\Unit_MenuPrevilage.pas">
+				<Form>Form_MenuPrevilage</Form>
+			</DCCReference>
+			<DCCReference Include="Units\Main\UnitRegRefundReprint.pas">
+				<Form>FormRegRefundReprint</Form>
+			</DCCReference>
+			<DCCReference Include="Units\Main\Unit_MasterKeyLicense.pas">
+				<Form>Form_MasterKeyLicense</Form>
+			</DCCReference>
+			<DCCReference Include="Units\Main\Unit_SystemLicense.pas">
+				<Form>Form_SystemLicense</Form>
+			</DCCReference>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+						<Parameters Name="HostApplication">..\..\..\..\Bin\MidasDrHomsV3_2.exe</Parameters>
+					</Parameters>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">False</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1033</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName"/>
+						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename"/>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Source>
+						<Source Name="MainSource">MidasDrHomsV3_2.dpr</Source>
+					</Source>
+					<Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\7.0\Bpl\dex.bpl">dex</Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\7.0\Bpl\mailman.bpl">mailman</Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\user\Desktop\Dicom.VCL.v.3.8.D6-D2010.Src.Exirbox\Dicom.VCL.v.3.8.D6-D2010.Src.Exirbox\Delphi2010\BPL\DicomVCLD2010.bpl">File C:\Users\user\Desktop\Dicom.VCL.v.3.8.D6-D2010.Src.Exirbox\Dicom.VCL.v.3.8.D6-D2010.Src.Exirbox\Delphi2010\BPL\DicomVCLD2010.bpl not found</Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\7.0\Bpl\FractionSetup.bpl">File C:\Users\Public\Documents\RAD Studio\7.0\Bpl\FractionSetup.bpl not found</Excluded_Packages>
+					</Excluded_Packages>
+					<DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="Path">&apos;C:\Program Files (x86)\Embarcadero\RAD Studio\7.0\bin;C:\Users\Public\Documents\RAD Studio\7.0\Bpl;C:\oracle\product\10.2.0\db_1\bin;C:\PROGRA~2\Borland\Delphi5\Projects\Bpl;C:\PROGRA~2\Borland\vbroker\jre\Bin;C:\PROGRA~2\Borland\vbroker\Bin;C:\PROGRA~2\Borland\Delphi5\Bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Common Files\Adobe\AGL;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;C:\Program Files (x86)\Microsoft SQL Server\100\DTS\Binn\;C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\;C:\Program Files (x86)\Microsoft SQL Server\80\Tools\BINN;C:\Program Files (x86)\Microsoft SQL Server\90\Tools\binn\&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="__COMPAT_LAYER">&apos;ElevateCreateProcess&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="FMSoft">&apos;C:\Users\Public\Documents\FMSoft\Framework&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="new path">&apos;C:\Program Files (x86)\DelphiSWFSDK\Packages&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="PROCESSOR_IDENTIFIER">&apos;Intel64 Family 6 Model 23 Stepping 10, GenuineIntel&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="VS90COMNTOOLS">&apos;C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="Midas">&apos;E:\Working Vicky\Midas Dr.Homs V 3.0\Bin&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="{59D621E6-7894-4971-8CEF-B23BD9E33D42}_7492">&apos;&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="oracle_sid">&apos;robinhud&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="CLASSPATH">&apos;.;C:\Program Files (x86)\QuickTime\QTSystem\QTJava.zip&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="QTJAVA">&apos;C:\Program Files (x86)\QuickTime\QTSystem\QTJava.zip&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="APPDATA">&apos;C:\Users\Vicky\AppData\Roaming&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="asl.log">&apos;Destination=file&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="BDSPROJECTSDIR">&apos;C:\Users\Vicky\Documents\RAD Studio\Projects&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="BDSUSERDIR">&apos;C:\Users\Vicky\Documents\RAD Studio\7.0&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="COMPUTERNAME">&apos;ROBINHOOD&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="HOMEPATH">&apos;\Users\Vicky&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="LOCALAPPDATA">&apos;C:\Users\Vicky\AppData\Local&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="LOGONSERVER">&apos;\\ROBINHOOD&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="TEMP">&apos;C:\Users\Vicky\AppData\Local\Temp&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="TMP">&apos;C:\Users\Vicky\AppData\Local\Temp&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="USERDOMAIN_ROAMINGPROFILE">&apos;Robinhood&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="USERDOMAIN">&apos;Robinhood&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="USERNAME">&apos;Vicky&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="USERPROFILE">&apos;C:\Users\Vicky&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="VISUALSVN_SERVER">&apos;C:\Program Files\VisualSVN Server\&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="PROCESSOR_REVISION">&apos;170a&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="BCB">&apos;c:\program files (x86)\embarcadero\rad studio\7.0&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="OneDrive">&apos;C:\Users\TheGcool\OneDrive&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="PYTHON_HOME">&apos;C:\Users\TheGcool\AppData\Local\Programs\Python\Python36-32&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="PERL5LIB">&apos;C:\oracle\product\10.2.0\db_1\perl\5.8.3\lib\MSWin32-x86;C:\oracle\product\10.2.0\db_1\perl\5.8.3\lib;C:\oracle\product\10.2.0\db_1\perl\5.8.3\lib\MSWin32-x86;C:\oracle\product\10.2.0\db_1\perl\site\5.8.3;C:\oracle\product\10.2.0\db_1\perl\site\5.8.3\lib;C:\oracle\product\10.2.0\db_1\sysman\admin\scripts;C:\oracle\product\10.2.0\db_1\perl\lib\5.8.3\MSWin32-x86;C:\oracle\product\10.2.0\db_1\perl\lib\5.8.3;C:\oracle\product\10.2.0\db_1\perl\5.8.3\lib\MSWin32-x86-multi-thread;C:\oracle\product\10.2.0\db_1\perl\site\5.8.3;C:\oracle\product\10.2.0\db_1\perl\site\5.8.3\lib;C:\oracle\product\10.2.0\db_1\sysman\admin\scripts&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="FP_NO_HOST_CHECK">&apos;NO&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="NUMBER_OF_PROCESSORS">&apos;2&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="PSModulePath">&apos;C:\Windows\system32\WindowsPowerShell\v1.0\Modules\&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="SESSIONNAME">&apos;Console&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="windows_tracing_flags">&apos;3&apos;</DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="windows_tracing_logfile">&apos;C:\BVTBin\Tests\installpackage\csilogfile.log&apos;</DebugEnvironmentVariables>
+					</DebugEnvironmentVariables>
+					<DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="ALLUSERSPROFILE">&apos;C:\ProgramData&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="BDS">&apos;c:\program files (x86)\embarcadero\rad studio\7.0&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="BDSAppDataBaseDir">&apos;BDS&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="BDSCOMMONDIR">&apos;C:\Users\Public\Documents\RAD Studio\7.0&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="CG_BOOST_ROOT">&apos;C:\Program Files (x86)\Embarcadero\RAD Studio\7.0\include\boost_1_39&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="CommonProgramFiles(x86)">&apos;C:\Program Files (x86)\Common Files&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="CommonProgramFiles">&apos;C:\Program Files (x86)\Common Files&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="CommonProgramW6432">&apos;C:\Program Files\Common Files&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="ComSpec">&apos;C:\WINDOWS\system32\cmd.exe&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="crul">&apos;C:\Users\kiran\Downloads\curl-8.14.1_2-win64-mingw\bin\curl-8.14.1_2-win64-mingw.zip&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="DELPHI">&apos;c:\program files (x86)\embarcadero\rad studio\7.0&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="DriverData">&apos;C:\Windows\System32\Drivers\DriverData&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="FPS_BROWSER_APP_PROFILE_STRING">&apos;Internet Explorer&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="FPS_BROWSER_USER_PROFILE_STRING">&apos;Default&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="HOMEDRIVE">&apos;C:&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="OS">&apos;Windows_NT&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PATHEXT">&apos;.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PROCESSOR_ARCHITECTURE">&apos;x86&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PROCESSOR_ARCHITEW6432">&apos;AMD64&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PROCESSOR_LEVEL">&apos;6&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="ProgramData">&apos;C:\ProgramData&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="ProgramFiles(x86)">&apos;C:\Program Files (x86)&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="ProgramFiles">&apos;C:\Program Files (x86)&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="ProgramW6432">&apos;C:\Program Files&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PUBLIC">&apos;C:\Users\Public&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PyCharm Community Edition">&apos;C:\Program Files\JetBrains\PyCharm Community Edition 2024.3.1.1\bin;&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="SystemDrive">&apos;C:&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="SystemRoot">&apos;C:\WINDOWS&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="VBOX_MSI_INSTALL_PATH">&apos;C:\Program Files\Oracle\VirtualBox\&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="windir">&apos;C:\WINDOWS&apos;</DebugSysEnvironmentVariables>
+					</DebugSysEnvironmentVariables>
+				</Delphi.Personality>
+				<ModelSupport>False</ModelSupport>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

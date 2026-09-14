@@ -1,0 +1,152 @@
+unit Unit_SystemLicense;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, jpeg, ExtCtrls, Buttons, StdCtrls, OleCtrls, DateEditXControl_TLB,DB,DM,
+  MemDS, DBAccess, Ora,ServerDate,EncryptDecrypt,fxn;
+
+type
+  TForm_SystemLicense = class(TForm)
+    Panel1: TPanel;
+    Image4: TImage;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Image2: TImage;
+    Panel4: TPanel;
+    DateEditX_ValidateUpto: TDateEditX;
+    Label1: TLabel;
+    SB_Process: TSpeedButton;
+    Label_daysRemaining: TLabel;
+    OraQuery_Process: TOraQuery;
+    OraQuery_Noofdays: TOraQuery;
+    SpeedButton1: TSpeedButton;
+    procedure FormShow(Sender: TObject);
+    procedure SB_ProcessClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_SystemLicense: TForm_SystemLicense;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_SystemLicense.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if Key=VK_ESCAPE then
+     Close;
+end;
+
+procedure TForm_SystemLicense.FormShow(Sender: TObject);
+var ls_validateuptoview:string;
+begin
+     with OraQuery_Process do
+     begin
+          close;
+          session:=DM_hospital.db;
+          SQL.Clear;
+          sql.Add('select * from lb_syls_systemlicense');
+          open;
+
+     end;
+     if OraQuery_Process.RecordCount>0 then
+     begin
+          ls_validateuptoview:=(DecryptStr(OraQuery_Process.FieldByName('SYSTEMLICENSE').AsString,Gs_EncryptionKey));
+          DateEditX_ValidateUpto.text:=Copy(ls_validateuptoview,3,14);
+
+          with OraQuery_Noofdays do
+          begin
+               close;
+               session:=DM_Hospital.DB;
+               sql.Clear;
+               sql.Add('select to_date('''+DateEditX_ValidateUpto.text+''',''YYYY/MM/DD'')-trunc(sysdate) as Noofdays from dual');
+              // sql.savetofile('C:\abctt.txt');
+               open;
+          end;
+          Label_daysRemaining.Caption:= OraQuery_Noofdays.FieldByName('Noofdays').AsString+' Days Remaining';
+
+     end
+     else
+     begin
+           DateEditX_ValidateUpto.text:=ServerDate.TodaysDate;
+           Label_daysRemaining.Caption:= '0 Days Remaining';
+     end;
+     DateEditX_ValidateUpto.setfocus;
+end;
+
+procedure TForm_SystemLicense.SB_ProcessClick(Sender: TObject);
+var ls_validateupto,ls_TimeStamp,checkfxn:string;
+begin
+     ls_TimeStamp:=ServerDate.TodaysTime;
+     checkfxn:=Copy(ServerDate.TodaysDate,0,4);
+     ls_validateupto:= EncryptStr(Copy(ServerDate.TodaysDate,0,3)+DateEditX_ValidateUpto.text+ls_TimeStamp,Gs_EncryptionKey);
+
+     if DateEditX_ValidateUpto.text=ServerDate.TodaysDate then
+     begin
+          ShowMessage('Please Increase your Date !!!');
+          Exit;
+     end;
+
+
+     with OraQuery_Process do
+     begin
+          Close;
+          session:=DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add('select * from lb_syls_systemlicense');
+          open;
+     end;
+
+
+     if gi_UserID=1 then
+     begin
+          try
+               DM_Hospital.DB.StartTransaction;
+               if OraQuery_Process.RecordCount>0 then
+               begin
+                    with OraQuery_Process do
+                    begin
+                         Close;
+                         Session:=DM_Hospital.DB;
+                         sql.Clear;
+                         sql.Add('update lb_syls_systemlicense set SYSTEMLICENSE='+QuotedStr(ls_validateupto));
+                         ExecSQL;
+                    end;
+               end
+               else
+               begin
+                    with OraQuery_Process do
+                    begin
+                         Close;
+                         Session:=DM_Hospital.DB;
+                         sql.Clear;
+                         sql.Add('insert into lb_syls_systemlicense values ('+QuotedStr(ls_validateupto)+')');
+                       //  sql.savetofile('c:\abc.txt');
+                         ExecSQL;
+                    end;
+
+               end;
+               DM_Hospital.DB.commit;
+               ShowDoneMessage;
+               ShowMessage('System is Updated upto '+DateEditX_ValidateUpto.text);
+               Formshow(Sender);
+
+          except
+               ShowMessage('Something is wrong Please Contact your software vendor !!!');
+               exit;
+
+          end;
+     end;
+
+
+end;
+
+end.

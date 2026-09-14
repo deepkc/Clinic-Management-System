@@ -1,0 +1,178 @@
+unit unit_SaveEmailAddress;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Grids, DBGrids, ComCtrls, ExtCtrls, StdCtrls, Buttons, DB, DBTables,
+  MemDS, DBAccess, Ora;
+
+type
+  TForm_SaveEmailAddress = class(TForm)
+    Panel1: TPanel;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    tbsht1: TTabSheet;
+    Label1: TLabel;
+    BBtnBB_Save: TBitBtn;
+    BBtnBB_New: TBitBtn;
+    BBtnBB_Close: TBitBtn;
+    Edit_emailname: TEdit;
+    DbGrid2: TDBGrid;
+    OraQuery_emailname: TOraQuery;
+    OraQuery_save: TOraQuery;
+    datasource2: TDataSource;
+    procedure BBtnBB_SaveClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
+    procedure DbGrid2CellClick(Column: TColumn);
+    procedure BBtnBB_NewClick(Sender: TObject);
+    procedure DbGrid2DblClick(Sender: TObject);
+    procedure BBtnBB_CloseClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DbGrid2KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+  pb_new : Boolean;
+    { Public declarations }
+  end;
+
+var
+  Form_SaveEmailAddress: TForm_SaveEmailAddress;
+
+implementation
+  uses Fxn,unit_master,dm;
+
+{$R *.dfm}
+
+procedure TForm_SaveEmailAddress.BBtnBB_CloseClick(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex=0 then
+     begin
+          close;
+     end
+     else
+     begin
+          BBtnBB_Save.Enabled:=False;
+          BBtnBB_New.Enabled:=True;
+          Edit_emailname.Text:='';
+          PageControl1.ActivePageIndex:=0;
+     end;
+end;
+
+procedure TForm_SaveEmailAddress.BBtnBB_NewClick(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex:=1;
+     BBtnBB_Save.Enabled:=true;
+     BBtnBB_New.Enabled:=false;
+     pb_new:=True;
+end;
+
+procedure TForm_SaveEmailAddress.BBtnBB_SaveClick(Sender: TObject);
+var emailsn :Integer;
+begin
+     emailsn:=getmaxid('saveemailaddress','SN');
+
+
+     if pb_new=true then
+     begin
+          with oraquery_save do
+          begin
+               Close;
+               Session:=Dm_Hospital.Db;
+               sql.Clear;
+               SQL.Add('insert into saveemailaddress (SN,EMAIL) values');
+               sql.Add('('+IntToStr(emailsn)+','+QuotedStr(Edit_emailname.Text)+')');
+               ExecSql;
+          end;
+     end
+     else if pb_new=false then
+     begin
+          with OraQuery_save do
+          begin
+               Close;
+               Session:=dm_hospital.DB;
+               sql.Clear;
+               sql.Add('update saveemailaddress set email='+quotedstr(trim(Edit_emailname.text))+'where sn='+OraQuery_emailname.FieldByName('SN').AsString);
+               ExecSQL;
+          end;
+     end;
+     Edit_emailname.Text:='';
+     PageControl1.ActivePageIndex:=0;
+     BBtnBB_Save.Enabled:=false;
+     BBtnBB_New.Enabled:=True;
+     OraQuery_emailname.Close;
+     OraQuery_emailname.Open;
+end;
+
+procedure TForm_SaveEmailAddress.DbGrid2CellClick(Column: TColumn);
+begin
+     PageControl1.ActivePageIndex:=1;
+
+end;
+
+procedure TForm_SaveEmailAddress.DbGrid2DblClick(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex:=1;
+     BBtnBB_Save.Enabled:=True;
+     BBtnBB_New.Enabled:=false;
+     pb_new:=False;
+     Edit_emailname.Text:=OraQuery_emailname.FieldByName('email').AsString;
+end;
+
+procedure TForm_SaveEmailAddress.DbGrid2KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if Key=VK_DELETE then
+     begin
+          IF MessageDlg('Are you sure to Delete ?',mtconfirmation,[mbyes,mbno],0)=mryes then
+          begin
+             with OraQuery_save do
+             begin
+               Close;
+               Session:=dm_hospital.DB;
+               sql.Clear;
+               SQL.Add('delete from saveemailaddress where sn='+OraQuery_emailname.FieldByName('SN').AsString);
+               ExecSQL;
+             end;
+             OraQuery_emailname.Close;
+             OraQuery_emailname.Open;
+          End;
+     end;
+end;
+
+procedure TForm_SaveEmailAddress.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if Key=VK_ESCAPE then
+     begin
+     BBtnBB_CloseClick(Sender);
+     end;
+end;
+
+procedure TForm_SaveEmailAddress.FormShow(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex:=0;
+     BBtnBB_Save.Enabled:=false;
+     BBtnBB_New.Enabled:=true;
+     with oraquery_emailname do
+     begin
+          Close ;
+          Session:=Dm_Hospital.Db;
+          sql.Clear;
+          SQL.Add('select * from saveemailaddress');
+          Open;
+     end;
+end;
+
+procedure TForm_SaveEmailAddress.PageControl1Change(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex=0 then
+     pagecontrol1.ActivePageIndex:=1
+     else
+     PageControl1.ActivePageIndex:=0;
+end;
+
+end.

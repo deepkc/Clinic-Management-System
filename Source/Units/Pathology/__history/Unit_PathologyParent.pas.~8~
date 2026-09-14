@@ -1,0 +1,627 @@
+unit Unit_PathologyParent;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Dialogs, ExtCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Spin, OleCtrls, DateEditXControl_TLB,
+     Unit_SampleCollectionFrame, Unit_NameModifyFrame, Unit_ClinicalPathFinding,Unit_ClinicalPathFindingNew,
+     Unit_RegisterMonitorFrame, Unit_ValidTestCancelFrame, Unit_RemainingTestFrame,
+     Unit_SampleRegisterFrame, Unit_FindingFrame, Unit_QrInvestigativeResult,Unit_SemenAnalysis,
+     StdCtrls, Buttons, Grids, DBGrids, ComCtrls, DBCtrls, CheckLst;
+
+type
+     TForm_PathologyParent = class(TForm)
+          StatusBar1: TStatusBar;
+          Panel2: TPanel;
+          BB_Close: TBitBtn;
+          BB_Report: TBitBtn;
+          BB_NameModify: TBitBtn;
+          BB_Preview: TBitBtn;
+          BB_SampleCollection: TBitBtn;
+          BB_Findings: TBitBtn;
+          Panel_Parent: TPanel;
+          Panel_list: TPanel;
+          Label2: TLabel;
+          a: TDBGrid;
+          Edit_PatientID: TEdit;
+          Edit_Fname: TEdit;
+          Edit2: TEdit;
+          Edit4: TEdit;
+          Edit5: TEdit;
+          Edit6: TEdit;
+          Edit7: TEdit;
+          Edit8: TEdit;
+          Edit9: TEdit;
+          Edit_Search: TEdit;
+          GroupBox1: TGroupBox;
+          Label4: TLabel;
+          SpeedButton1: TSpeedButton;
+          Label5: TLabel;
+          SpeedButton2: TSpeedButton;
+          CheckBox1: TCheckBox;
+          DateEditX1: TDateEditX;
+          DateEditX2: TDateEditX;
+          GroupBox2: TGroupBox;
+          Label6: TLabel;
+          Label7: TLabel;
+          SpeedButton4: TSpeedButton;
+          SpinEdit1: TSpinEdit;
+          QueryBlank: TOraQuery;
+          DS_List: TDataSource;
+          QueryList: TOraQuery;
+          CheckBox2: TCheckBox;
+          RadioGroup1: TRadioGroup;
+          GroupBox3: TGroupBox;
+          CheckBox3: TCheckBox;
+          CheckBox4: TCheckBox;
+          CheckBox5: TCheckBox;
+          CheckBox6: TCheckBox;
+          CheckBox7: TCheckBox;
+          RadioGroup2: TRadioGroup;
+          SpeedButton5: TSpeedButton;
+          SpeedButton6: TSpeedButton;
+          SpeedButton7: TSpeedButton;
+          SpeedButton8: TSpeedButton;
+          Label8: TLabel;
+          DBLCB_Religion: TDBLookupComboBox;
+          CheckListBox1: TCheckListBox;
+          CheckBox8: TCheckBox;
+          BB_Print: TBitBtn;
+    Label1: TLabel;
+    SpeedButton3: TSpeedButton;
+    Dex_Today: TDateEditX;
+          procedure BB_SampleCollectionClick(Sender: TObject);
+          procedure BB_CloseClick(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure BB_FindingsClick(Sender: TObject);
+          procedure BB_NameModifyClick(Sender: TObject);
+          procedure SpeedButton5Click(Sender: TObject);
+          procedure SpeedButton6Click(Sender: TObject);
+          procedure SpeedButton7Click(Sender: TObject);
+          procedure SpeedButton8Click(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure BB_PreviewClick(Sender: TObject);
+          procedure BB_PrintClick(Sender: TObject);
+          procedure FormKeyPress(Sender: TObject; var Key: Char);
+          procedure FormShow(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
+     private
+          PackageModule: HModule;
+          AClass: TPersistentClass;
+          FrameCleared: Boolean;
+          { Private declarations }
+          procedure clearFrame;
+          procedure LoadFrame(Name: String);
+     public
+          pi_PatientId, pi_PatientTestId : Integer;
+
+          pb_IsFIndingEntryMode:Boolean;
+
+          { Public declarations }
+          Procedure Ontimer(Sender: TObject);
+     end;
+
+var
+     Form_PathologyParent: TForm_PathologyParent;
+     Frame_SampleCollection: Unit_SampleCollectionFrame.TFrame_SampleCollection;
+     Frame_Finding: Unit_FindingFrame.TFrame_Finding;
+     Frame_ClinicalPathFinding: Unit_ClinicalPathFinding.TFrame_ClinicalPathFinding;
+     Frame_ClinicalPathFindingNew: Unit_ClinicalPathFindingNew.TFrame_ClinicalPathFindingNew;
+     //Frame_ClinicalPathFindingNew: Unit_ClinicalPathFindingNew.TFrame_ClinicalPathFindingNew;
+
+implementation
+
+uses Fxn, ServerDate,  Unit_QrPathInvestigativeResult;
+{$R *.dfm}
+
+procedure TForm_PathologyParent.BB_CloseClick(Sender: TObject);
+begin
+     if FrameCleared then
+          Close
+     else
+          clearFrame;
+
+     if pb_IsFIndingEntryMode=True then
+     Begin
+          pb_IsFIndingEntryMode:=False;
+          Frame_SampleCollection.Edit_SearchCollectedList.SetFocus;
+     End;
+
+     {if gs_CalledFrom = 'SAMPLE COLLECTION' then
+          Frame_SampleCollection.Edit_SearchTBC.SetFocus;}
+end;
+
+procedure TForm_PathologyParent.BB_NameModifyClick(Sender: TObject);
+begin
+     LoadFrame('TFrame_NameModify');
+end;
+
+procedure TForm_PathologyParent.BB_PreviewClick(Sender: TObject);
+begin
+     // if Frame_SampleCollection.Cb_PrintSelected.Checked = true then
+     // gb_PrintSelected := true
+     // else
+     // gb_PrintSelected := false;
+     gi_PatientTestID := Frame_SampleCollection.Query_SampleCollected.FieldByName('PatientTestId').AsInteger;
+     gi_InPatientID:=Frame_SampleCollection.Query_SampleCollected.FieldByName('InPatientID').AsInteger;
+     ShowMessage(IntToStr(gi_InPatientID));
+     gs_TestDate := Frame_SampleCollection.Query_SampleCollected.FieldByName('TestDate').AsString;
+     gs_SampleNo := Frame_SampleCollection.Query_SampleCollected.FieldByName('SampleNo').AsString;
+     Gi_DepID := Frame_SampleCollection.Query_SampleCollected.FieldByName('DepID').AsInteger;
+     if Frame_SampleCollection.Cb_SingleDep.Checked = true then
+     begin
+          Frame_SampleCollection.Cb_SingleDep.Checked := false;
+          gb_SingleDep := true;
+     end;
+     (*Semen Analysis Report*)
+     if gi_TestNameId=682 then
+     begin
+          try
+               Form_SemenAnalysis := TForm_SemenAnalysis.Create(nil);
+               with Form_SemenAnalysis do
+               begin
+                    QuickRep1.Preview;
+               end;
+          finally
+               Form_SemenAnalysis.Free;
+          end;
+     end
+     else if Not IsClinicalDep(Gi_DepID) then
+     begin
+          try
+               Form_QrFinding := TForm_QrFinding.Create(nil);
+               with Form_QrFinding do
+               begin
+                    lbl_verifiedby.caption := Frame_SampleCollection.Query_SampleCollected.FieldByName('VerifiedBy').AsString;
+                    QrFinding.Prepare;
+                    lbl_totpage.caption := IntToStr(QrFinding.QRPrinter.PageCount);
+                    lbl_totpageh.caption := IntToStr(QrFinding.QRPrinter.PageCount);
+                    QrFinding.Preview;
+               end;
+          finally
+               Form_QrFinding.Free;
+               Frame_SampleCollection.Query_SampleCollected.Close;
+               Frame_SampleCollection.Query_SampleCollected.Open;
+          end;
+     end
+     else
+     begin
+          try
+               Form_QrPathFinding := TForm_QrPathFinding.Create(nil);
+               with Form_QrPathFinding do
+               begin
+                    lbl_verifiedby.caption := Frame_SampleCollection.Query_SampleCollected.FieldByName('VerifiedBy').AsString;
+                    QrFinding.Prepare;
+                    lbl_totpage.caption := IntToStr(QrFinding.QRPrinter.PageCount);
+                    lbl_totpageh.caption := IntToStr(QrFinding.QRPrinter.PageCount);
+                    QrFinding.Preview;
+               end;
+          finally
+               Form_QrPathFinding.Free;
+               Frame_SampleCollection.Query_SampleCollected.Close;
+               Frame_SampleCollection.Query_SampleCollected.Open;
+          end;
+     end;
+end;
+
+procedure TForm_PathologyParent.BB_PrintClick(Sender: TObject);
+begin
+     gi_PatientTestID := Frame_SampleCollection.Query_SampleCollected.FieldByName('PatientTestId').AsInteger;
+     gi_InPatientID:=Frame_SampleCollection.Query_SampleCollected.FieldByName('InPatientID').AsInteger;
+     try
+          Form_QrFinding := TForm_QrFinding.Create(nil);
+          with Form_QrFinding do
+          begin
+               Table_Findings.Close;
+               Table_Findings.Open;
+               lbl_verifiedby.caption := Frame_SampleCollection.Query_SampleCollected.FieldByName('UserName').AsString;
+               QrFinding.print;
+          end;
+     finally
+          Form_QrFinding.Free;
+          Frame_SampleCollection.Query_SampleCollected.Close;
+          Frame_SampleCollection.Query_SampleCollected.Open;
+     end;
+end;
+
+procedure TForm_PathologyParent.BB_SampleCollectionClick(Sender: TObject);
+begin
+     clearFrame;
+     Panel_Parent.BringToFront;
+     Frame_SampleCollection := TFrame_SampleCollection.Create(nil);
+     with Frame_SampleCollection do
+     begin
+          Parent := Panel_Parent;
+          Align := alClient;
+          show;
+          FrameCleared := false;
+          Timer.Ontimer := Form_PathologyParent.Ontimer;
+          (*if CB_LAbNo.Checked=False then
+          Frame_SampleCollection.Edit_SearchCollectedList.SetFocus
+          Else
+          Frame_SampleCollection.edt_GlobalSearch.SetFocus;*)
+     end;
+     { ***************************************** }
+     BB_SampleCollection.Enabled := false;
+end;
+
+procedure TForm_PathologyParent.BB_FindingsClick(Sender: TObject);
+var
+SelectedPatientTestId: integer;
+AllPatientTestID: string;
+begin
+     pb_IsFIndingEntryMode:=True;
+     gs_CalledFrom := 'FINDING';
+     gi_PathologyPatientID := Gi_PatientID;
+
+     Frame_SampleCollection.PageControl1.ActivePageIndex := 0;
+     Gi_PatientID := Frame_SampleCollection.Query_SampleCollected.FieldByName('PatientID').AsInteger;
+     pi_PatientId :=Gi_PatientID;
+     gi_InPatientID:=Frame_SampleCollection.Query_SampleCollected.FieldByName('InPatientID').AsInteger;
+     gi_TestNameId := Frame_SampleCollection.Query_SampleCollected.FieldByName('TestNameId').AsInteger;
+     gs_TestName := Frame_SampleCollection.Query_SampleCollected.FieldByName('TestName').AsString;
+     gs_SampleNo := Frame_SampleCollection.Query_SampleCollected.FieldByName('SampleNo').AsString;
+     gs_TestNameCode := Frame_SampleCollection.Query_SampleCollected.FieldByName('TestNameCode').AsString;
+     gi_PatientTestID := Frame_SampleCollection.Query_SampleCollected.FieldByName('PatientTestId').AsInteger;
+
+     if gi_compileValue = 14 then
+          gs_patientType:= copy(Frame_SampleCollection.Query_SampleCollected.FieldByName('PatientType').AsString,0,3);
+
+     pi_PatientTestId:= gi_PatientTestID;
+
+     gs_TestDate := Frame_SampleCollection.Query_SampleCollected.FieldByName('TestDate').AsString;
+     Gs_BillNo := Frame_SampleCollection.Query_SampleCollected.FieldByName('BillNo').AsString;
+     Gi_DepID := Frame_SampleCollection.Query_SampleCollected.FieldByName('DepID').AsInteger;
+     gs_SampleNo:=Frame_SampleCollection.Query_SampleCollected.FieldByName('sampleno').AsString;
+     clearFrame;
+     Panel_Parent.BringToFront;
+
+     {//Table_List.DisableControls;
+     SelectedPatientTestId := gi_PatientTestID;
+     Gs_SelectedPatientTestID := '';
+     AllPatientTestID:='';
+     with Frame_SampleCollection.Query_SampleCollected do
+     begin
+          Close;
+          Open;
+          while not Eof do
+          begin
+               if AllPatientTestID = '' then
+                         AllPatientTestID := FieldByName('PatientTestId').AsString
+                    else
+                         AllPatientTestID := AllPatientTestID + ',' + FieldByName('PatientTestId').AsString;
+               if FieldByName('State').AsBoolean = true then
+               begin
+                    if Gs_SelectedPatientTestID = '' then
+                         Gs_SelectedPatientTestID := FieldByName('PatientTestId').AsString
+                    else
+                         Gs_SelectedPatientTestID := Gs_SelectedPatientTestID + ',' + FieldByName('PatientTestId').AsString;
+               end;
+               Next;
+          end;
+          if Gs_SelectedPatientTestID='' then
+          Gs_SelectedPatientTestID:=AllPatientTestID;
+     end;
+     Frame_SampleCollection.Query_SampleCollected.EnableControls;
+     Frame_SampleCollection.Query_SampleCollected.Locate('PatientTestId', SelectedPatientTestId, []);}
+
+
+
+     if Not IsClinicalDep(Gi_DepID) then
+     begin
+          Frame_Finding := TFrame_Finding.Create(nil);
+          with Frame_Finding do
+          begin
+               Parent := Panel_Parent;
+               Align := alClient;
+               show;
+               FrameCleared := false;
+               DBGrid1.SelectedIndex := 2;
+               DBGrid1.SetFocus;
+          end;
+     end
+     else
+     begin
+          if gi_compileValue=11 then
+          begin
+              Try
+                   FreeAndNil(Frame_ClinicalPathFinding);
+              Except
+
+              End;
+              Frame_ClinicalPathFinding := TFrame_ClinicalPathFinding.Create(Nil);
+              with Frame_ClinicalPathFinding do
+              begin
+                   Parent := Panel_Parent;
+                   Align := alClient;
+                   show;
+                   FrameCleared := false;
+              end;
+
+          end
+          else
+          begin
+              Try
+                   FreeAndNil(Frame_ClinicalPathFindingNew);
+              Except
+
+              End;
+              Frame_ClinicalPathFindingNew := TFrame_ClinicalPathFindingNew.Create(Nil);
+              with Frame_ClinicalPathFindingNew do
+              begin
+                   Parent := Panel_Parent;
+                   Align := alClient;
+                   show;
+                   FrameCleared := false;
+              end;
+          end;
+     end;
+     { ***************************************** }
+     BB_Findings.Enabled := false;
+     BB_SampleCollection.Enabled := false;
+     BB_Print.Enabled := false;
+     BB_Preview.Enabled := false;
+end;
+
+procedure TForm_PathologyParent.clearFrame;
+Var
+     i: integer;
+     Sender: TObject;
+     Column :TColumn;
+begin
+     FrameCleared := false;
+     try
+          For i := 0 to Panel_Parent.ControlCount - 1 do
+          begin
+               if (Panel_Parent.Controls[i] is Tframe) then
+               begin
+                    if Tframe(Panel_Parent.Controls[i]).Name = 'Frame_Finding' then
+                    begin
+                         BB_Findings.Enabled := false;
+                         FreeAndNil(Frame_Finding);
+                         FrameCleared := true;
+                         BB_SampleCollectionClick(Sender);
+                         Frame_SampleCollection.Dex_CLFrom.Text := gs_from;
+                         Frame_SampleCollection.Dex_CLTo.Text := gs_To;
+
+                         Frame_SampleCollection.BB_CollectedListClick(Sender);
+                         //che
+                         Frame_SampleCollection.Edit_SearchCollectedList.Text := IntToStr(gi_PathologyPatientID);
+                         Frame_SampleCollection.Edit_SearchCollectedList.Text := '';
+                         Frame_SampleCollection.BB_Modify.Visible := false;
+                         BB_Print.Enabled := true;
+                         BB_Preview.Enabled := true;
+                         gs_CalledFrom := 'PATHOLOGY';
+
+
+                         Frame_SampleCollection.Query_samplecollectedright.Locate('PatientId',pi_PatientId,[]);
+                         Frame_SampleCollection.DBGrid3CellClick(Column);
+                         Frame_SampleCollection.Query_SampleCollected.Locate('PatientTestId',pi_PatientTestId,[]);
+
+                         exit;
+                    end;
+
+                    if gi_compileValue=11 then
+                    begin
+                        if Tframe(Panel_Parent.Controls[i]).Name = 'Frame_ClinicalPathFinding' then
+                        begin
+                            BB_Findings.Enabled := false;
+                            FreeAndNil(Frame_ClinicalPathFinding);
+                            FrameCleared := true;
+                            BB_SampleCollectionClick(Sender);
+                            Frame_SampleCollection.Dex_CLFrom.Text := gs_from;
+                            Frame_SampleCollection.Dex_CLTo.Text := gs_To;
+                            //Frame_SampleCollection.Edit_SearchCollectedList.Text := IntToStr(gi_PathologyPatientID);
+                            Frame_SampleCollection.BB_CollectedListClick(Sender);
+                            Frame_SampleCollection.BB_Modify.Visible := false;
+                            BB_Print.Enabled := true;
+                            BB_Preview.Enabled := true;
+                            gs_CalledFrom := 'PATHOLOGY';
+
+
+                            Frame_SampleCollection.Query_samplecollectedright.Locate('PatientId',pi_PatientId,[]);
+                            Frame_SampleCollection.DBGrid3CellClick(Column);
+                            Frame_SampleCollection.Query_SampleCollected.Locate('PatientTestId',pi_PatientTestId,[]);
+
+                            exit;
+                        end;
+                    end
+                    else
+                    begin
+                         if Tframe(Panel_Parent.Controls[i]).Name = 'Frame_ClinicalPathFindingNew' then
+                        begin
+                            BB_Findings.Enabled := false;
+                            FreeAndNil(Frame_ClinicalPathFindingNew);
+                            FrameCleared := true;
+                            BB_SampleCollectionClick(Sender);
+                            Frame_SampleCollection.Dex_CLFrom.Text := gs_from;
+                            Frame_SampleCollection.Dex_CLTo.Text := gs_To;
+                            //Frame_SampleCollection.Edit_SearchCollectedList.Text := IntToStr(gi_PathologyPatientID);
+                            Frame_SampleCollection.BB_CollectedListClick(Sender);
+                            Frame_SampleCollection.BB_Modify.Visible := false;
+                            BB_Print.Enabled := true;
+                            BB_Preview.Enabled := true;
+                            gs_CalledFrom := 'PATHOLOGY';
+
+
+                            Frame_SampleCollection.Query_samplecollectedright.Locate('PatientId',pi_PatientId,[]);
+                            Frame_SampleCollection.DBGrid3CellClick(Column);
+                            Frame_SampleCollection.Query_SampleCollected.Locate('PatientTestId',pi_PatientTestId,[]);
+
+                            exit;
+                        end;
+                    end;
+                    if (Tframe(Panel_Parent.Controls[i]).Name = 'Frame_SampleCollection') then
+                    begin
+                         with Frame_SampleCollection do
+                         begin
+                              // if gs_CalledFrom='PATHOLOGY' then
+                              // begin
+                              // Frame_SampleCollection.Free;
+                              // FrameCleared := true;
+                              // BB_SampleCollection.Enabled := true;
+                              // BB_Findings.Enabled := false;
+                              // Self.Close;
+                              // exit;
+                              // end;
+                              if (PageControl1.ActivePageIndex in [1, 2]) and (gs_CalledFrom <> 'PATHOLOGY') then
+                              begin
+                                   PageControl1.Pages[0].TabVisible := true;
+                                   //edit_searchtbc.setfocus;
+                                   CB_PreSampleNO.Checked := false;
+                                   PageControl1.Pages[1].TabVisible := false;
+                                   PageControl1.Pages[2].TabVisible := false;
+                                   Frame_SampleCollection.bb_RefreshTobecollClick(Sender);
+                              end
+                              else
+                              begin
+                                   FreeAndNil(Frame_SampleCollection);
+                                   FrameCleared := true;
+                                   BB_SampleCollection.Enabled := true;
+                                   BB_Findings.Enabled := false;
+                                   if (gs_CalledFrom = 'PATHOLOGY') or (gs_CalledFrom = 'SAMPLE COLLECTION') then
+                                        Form_PathologyParent.Close;
+                              end;
+                         end;
+                         exit;
+                    end;
+                    Tframe(Panel_Parent.Controls[i]).Free;
+                    FrameCleared := true;
+               end;
+          end;
+     except
+          self.Close;
+     end;
+end;
+
+procedure TForm_PathologyParent.FormCreate(Sender: TObject);
+begin
+     Dex_Today.SystemOfDate := gi_datesystem;
+     Dex_Today.Text := TodaysDate;
+
+     SpeedButton3.caption := gs_DateCaption;
+     FrameCleared := true;
+     self.caption := self.caption + ' User: ' + gs_UserName;
+end;
+
+procedure TForm_PathologyParent.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+   try
+     if Shift = [ssCtrl, ssShift] then
+     begin
+          with Frame_SampleCollection do
+          begin
+               if PageControl1.ActivePage.caption = 'To be Collected' then
+               begin
+                    Edit_SearchTBC.Clear;
+                    Edit_SearchTBC.SetFocus;
+               end
+               else if PageControl1.ActivePage.caption = 'Collected List' then
+               begin
+                    Edit_SearchCollectedList.Clear;
+                    Edit_SearchCollectedList.SetFocus;
+               end;
+          end;
+     end
+     else if Key = VK_ESCAPE then
+     begin
+          Key := 0;
+          BB_CloseClick(Sender);
+     end
+     else if (Key = VK_F1) AND (BB_SampleCollection.Visible = true) and (BB_SampleCollection.Enabled = true) then
+          BB_SampleCollectionClick(Sender)
+     else if (Key = VK_F1) AND (gs_CalledFrom = 'PATHOLOGY') then
+     Begin
+          Frame_SampleCollection.CB_LAbNo.Checked:=Not (Frame_SampleCollection.CB_LAbNo.Checked);
+          Frame_SampleCollection.Edit_SearchCollectedList.SetFocus;
+     End
+     else if (Key = VK_F2) AND (BB_Findings.Visible = true) and (BB_Findings.Enabled = true) then
+     begin
+          Key := 0;
+          BB_FindingsClick(Sender)
+     end
+     else if (Key = VK_F3) AND (BB_Print.Visible = true) and (BB_Print.Enabled = true) then
+          BB_PrintClick(Sender)
+     else if (Key = VK_F4) AND (BB_Preview.Visible = true) and (BB_Preview.Enabled = true) then
+          BB_PreviewClick(Sender)
+     else if (Key = VK_F12) and (Frame_SampleCollection <> nil) then
+          Frame_SampleCollection.BB_SaveClick(Sender);
+   except
+
+   end;
+end;
+
+procedure TForm_PathologyParent.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if (Key = #13) and (Frame_Finding = nil) and (Frame_ClinicalPathFinding = nil) then
+          keybd_event(9, 13, 0, 0);
+end;
+
+procedure TForm_PathologyParent.FormShow(Sender: TObject);
+begin
+     if gs_CalledFrom = 'PATHOLOGY' then
+     Frame_SampleCollection.Edit_SearchCollectedList.SetFocus;
+
+     if gs_CalledFrom = 'SAMPLE COLLECTION' then
+          Frame_SampleCollection.Edit_SearchTBC.SetFocus;
+end;
+
+procedure TForm_PathologyParent.LoadFrame(Name: String);
+begin
+     { ***************************************** }
+     clearFrame;
+     Panel_Parent.BringToFront;
+     AClass := GetClass(Name);
+     if AClass <> nil then
+          with TComponentClass(AClass).Create(Application) as TCustomFrame do
+          begin
+               Parent := Panel_Parent;
+               Align := alClient;
+               show;
+               FrameCleared := false;
+          end;
+     { ***************************************** }
+end;
+
+procedure TForm_PathologyParent.Ontimer(Sender: TObject);
+begin
+     BB_Findings.Enabled := true;
+     Frame_SampleCollection.Timer.Enabled := false;
+end;
+
+procedure TForm_PathologyParent.SpeedButton3Click(Sender: TObject);
+begin
+      if SpeedButton3.Caption = 'BS' then
+      begin
+        Dex_Today.SystemOfDate := 1;
+        SpeedButton3.Caption := 'AD';
+      end
+      else
+      begin
+        Dex_Today.SystemOfDate := 0;
+        SpeedButton3.Caption := 'BS';
+      end;
+end;
+
+procedure TForm_PathologyParent.SpeedButton5Click(Sender: TObject);
+begin
+     LoadFrame('TFrame_ValidTestCancel');
+end;
+
+procedure TForm_PathologyParent.SpeedButton6Click(Sender: TObject);
+begin
+     LoadFrame('TFrame_RegisterMonitor');
+end;
+
+procedure TForm_PathologyParent.SpeedButton7Click(Sender: TObject);
+begin
+     LoadFrame('TFrame_RemainingTest');
+end;
+
+procedure TForm_PathologyParent.SpeedButton8Click(Sender: TObject);
+begin
+     LoadFrame('TFrame_SampleRegister');
+end;
+
+end.

@@ -1,0 +1,3328 @@
+unit Unit_DefaultHistoSetup;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, MemDS, DBAccess, Ora, StdCtrls, TeCanvas, ComCtrls, ToolWin,
+  Grids, DBGrids,dm, Spin, DBCtrls, Buttons, ExtCtrls, DBTables;
+
+type
+  TForm_DefaultSetup = class(TForm)
+    Panel2: TPanel;
+    SpeedButton1: TSpeedButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    SpeedButton2: TSpeedButton;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label12: TLabel;
+    CheckBox_Active: TCheckBox;
+    DBLC_TestName: TDBLookupComboBox;
+    DBLC_ReportType: TDBLookupComboBox;
+    RichEdit_Title: TRichEdit;
+    CheckBox_Default: TCheckBox;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton5: TToolButton;
+    ToolButton7: TToolButton;
+    ToolButton12: TToolButton;
+    ToolButton9: TToolButton;
+    Tbtn_Font: TToolButton;
+    ToolButton16: TToolButton;
+    ToolButton8: TToolButton;
+    ToolButton10: TToolButton;
+    ToolButton11: TToolButton;
+    ComboBox2: TComboBox;
+    ComboBox1: TComboBox;
+    ButtonColor1: TButtonColor;
+    OraQuery_TestName: TOraQuery;
+    DataSource_TestName: TDataSource;
+    DataSource_ReportFormat: TDataSource;
+    OraQuery_ReportFormat: TOraQuery;
+    Panel_Pap: TPanel;
+    Label28: TLabel;
+    Label29: TLabel;
+    Label36: TLabel;
+    Label38: TLabel;
+    Label40: TLabel;
+    RichEdit_PapMDescription: TRichEdit;
+    RichEdit_PapComment: TRichEdit;
+    Edit_PapAdequacy: TEdit;
+    RichEdit_PAPClinicalFeatures: TRichEdit;
+    OraQuery_Blank: TOraQuery;
+    ColorDialog1: TColorDialog;
+    FontDialog1: TFontDialog;
+    Panel1: TPanel;
+    Btn_close: TBitBtn;
+    BB_New: TBitBtn;
+    btn_save: TBitBtn;
+    OraQuery_Listing: TOraQuery;
+    DataSource_Listing: TDataSource;
+    Panel_Fnac: TPanel;
+    Label17: TLabel;
+    Label23: TLabel;
+    Label19: TLabel;
+    Label43: TLabel;
+    RichEdit_FnacMicroscopic: TRichEdit;
+    RichEdit_FnacComment: TRichEdit;
+    RichEdit_FnacClinicalFeatures: TRichEdit;
+    OraQuery_FnacListing: TOraQuery;
+    Panel_Surgical: TPanel;
+    Label44: TLabel;
+    Label45: TLabel;
+    Label46: TLabel;
+    Label47: TLabel;
+    Label48: TLabel;
+    Label49: TLabel;
+    RichEdit_SpecimenReceived: TRichEdit;
+    RichEdit_SurgicalHistory: TRichEdit;
+    RichEdit_SurgicalGross: TRichEdit;
+    RichEdit_SurgicalMicroscopic: TRichEdit;
+    RichEdit_SurgicalDiagnosis: TRichEdit;
+    RichEdit_SurgicalComment: TRichEdit;
+    Label5: TLabel;
+    Edit_SurgicalBiopsy: TEdit;
+    OraQuery_SurgicalListing: TOraQuery;
+    Panel_Bonemarrow: TPanel;
+    Label53: TLabel;
+    Label54: TLabel;
+    Label55: TLabel;
+    Label56: TLabel;
+    Label57: TLabel;
+    Label58: TLabel;
+    Label59: TLabel;
+    Label60: TLabel;
+    Label61: TLabel;
+    Label62: TLabel;
+    Label70: TLabel;
+    Label72: TLabel;
+    Label73: TLabel;
+    Label74: TLabel;
+    Label76: TLabel;
+    Label77: TLabel;
+    RichEdit_PeripheralSmear: TRichEdit;
+    RichEdit_Hemogram: TRichEdit;
+    RichEdit_ClinicalDetails: TRichEdit;
+    Edit_Cellularity: TEdit;
+    RichEdit_Erythropoiesis: TRichEdit;
+    Edit_Histiocytes: TEdit;
+    Edit_Parasite: TEdit;
+    Edit_IronStore: TEdit;
+    Label6: TLabel;
+    Edit_BoneSiteOfAspiration: TEdit;
+    OraQuery_BoneListing: TOraQuery;
+    Label9: TLabel;
+    Edit_SiteOfAspiration: TEdit;
+    Label10: TLabel;
+    Edit_TypeofAspitate: TEdit;
+    Label13: TLabel;
+    RichEdit_Diagnosis: TRichEdit;
+    Edit_SpecialStain: TEdit;
+    Edit_Lymphopoiesis: TEdit;
+    Edit_PlasmaCells: TEdit;
+    Edit_Megakaryopoiesis: TEdit;
+    RichEdit_AbnormalCells: TRichEdit;
+    Edit_BoneMarrowComment: TEdit;
+    Label14: TLabel;
+    RichEdit_CivilianFeatures: TRichEdit;
+    Label15: TLabel;
+    Label16: TLabel;
+    Edit_Rbc: TEdit;
+    Edit_Wbc: TEdit;
+    Label18: TLabel;
+    Label20: TLabel;
+    Edit_Platelets: TEdit;
+    Edit_Hemoparasite: TEdit;
+    Label21: TLabel;
+    Label22: TLabel;
+    Edit_MERatio: TEdit;
+    Edit_Myeologram: TEdit;
+    RichEdit_Adequacy: TRichEdit;
+    Edit_Myeopoiesis: TEdit;
+    Label24: TLabel;
+    Label25: TLabel;
+    RichEdit_Diagonsis: TRichEdit;
+    Edit_Myelopoiesis: TEdit;
+    Label26: TLabel;
+    Label27: TLabel;
+    Edit_SpecimenType: TEdit;
+    RichEdit_PapCategorization: TRichEdit;
+    RichEdit_Results: TRichEdit;
+    Results: TLabel;
+    Panel_Fluid: TPanel;
+    Label4: TLabel;
+    RichEdit_FluidClinicalFeatures: TRichEdit;
+    Label30: TLabel;
+    Label31: TLabel;
+    Edit_SpecimenReceived: TEdit;
+    EditAmountOfFluid: TEdit;
+    Label32: TLabel;
+    RichEdit_GrossAppearance: TRichEdit;
+    RichEdit_MicroscopicDescription: TRichEdit;
+    Label33: TLabel;
+    Label34: TLabel;
+    RichEdit_FluidDiagnosis: TRichEdit;
+    RichEdit_FluidComment: TRichEdit;
+    Label35: TLabel;
+    Panel_FluidDC: TPanel;
+    Label37: TLabel;
+    Edit_Neutrophil: TEdit;
+    Label39: TLabel;
+    Edit_Lymphocyte: TEdit;
+    Edit_Eosinophil: TEdit;
+    Label41: TLabel;
+    Label42: TLabel;
+    Edit_PlasmaCell: TEdit;
+    Edit_MastCell: TEdit;
+    Label50: TLabel;
+    Label51: TLabel;
+    RichEdit_OtherFindings: TRichEdit;
+    OraQuery_FmagListing: TOraQuery;
+    OraQuery_fluidDc: TOraQuery;
+    Label52: TLabel;
+    Label63: TLabel;
+    DBLC_MsterFormat: TDBLookupComboBox;
+    OraQuery_master: TOraQuery;
+    OraDataSource_Master: TOraDataSource;
+    Label11: TLabel;
+    Label64: TLabel;
+    Edit_TypeSampleReceived: TEdit;
+    Edit_Macrophage: TEdit;
+    Edit_Stain: TEdit;
+    Label65: TLabel;
+    Label66: TLabel;
+    Edit_BonemarrowAspiration: TEdit;
+    Panel_USGFNAC: TPanel;
+    Label67: TLabel;
+    Label68: TLabel;
+    Label69: TLabel;
+    Label71: TLabel;
+    Label75: TLabel;
+    Label78: TLabel;
+    Label79: TLabel;
+    RichEdit_ClinicalFindings: TRichEdit;
+    RichEdit_Sample: TRichEdit;
+    RichEdit_Diag: TRichEdit;
+    RichEdit_Microscopic: TRichEdit;
+    RichEdit_Com: TRichEdit;
+    Edit_SOAspiration: TEdit;
+    Edit_TypeofAspiration: TEdit;
+    OraQuery_Vsgfnaclisting: TOraQuery;
+    Query_Blank: TOraQuery;
+    Label80: TLabel;
+    Label81: TLabel;
+    Label82: TLabel;
+    Label83: TLabel;
+    Label84: TLabel;
+    Label85: TLabel;
+    Label86: TLabel;
+    Label87: TLabel;
+    Label88: TLabel;
+    Label89: TLabel;
+    Label90: TLabel;
+    Label91: TLabel;
+    Label92: TLabel;
+    Label93: TLabel;
+    Label95: TLabel;
+    Label96: TLabel;
+    Label97: TLabel;
+    Label98: TLabel;
+    RichEdit_SurClinicalFindings: TRichEdit;
+    Memo: TMemo;
+    NestedTable1: TNestedTable;
+    cb_FNACPeer: TComboBox;
+    Label141: TLabel;
+    Label142: TLabel;
+    Label143: TLabel;
+    Edit_AirDried: TEdit;
+    Edit_AlcoholWet: TEdit;
+    Edit_AdequateCellular: TEdit;
+    ComboBox3: TComboBox;
+    Label94: TLabel;
+    Panel_PBS: TPanel;
+    Label99: TLabel;
+    Label100: TLabel;
+    Label101: TLabel;
+    Label103: TLabel;
+    Label104: TLabel;
+    Label105: TLabel;
+    Edit_WBCs: TEdit;
+    Edit_PlateletsPBS: TEdit;
+    Edit_ParasitePBS: TEdit;
+    Edit_ReticulocytesPBS: TEdit;
+    RichEdit_Others: TRichEdit;
+    Edit_RBCs: TEdit;
+    procedure ButtonColor1Click(SEnder: TObject);
+    procedure RichEdit_PAPClinicalFeaturesEnter(SEnder: TObject);
+    procedure RichEdit_TitleEnter(SEnder: TObject);
+    procedure Tbtn_FontClick(SEnder: TObject);
+    procedure ToolButton1Click(SEnder: TObject);
+    procedure ToolButton2Click(SEnder: TObject);
+    procedure ToolButton3Click(SEnder: TObject);
+    procedure ToolButton7Click(SEnder: TObject);
+    procedure ToolButton8Click(SEnder: TObject);
+    procedure ToolButton10Click(SEnder: TObject);
+    procedure ToolButton11Click(SEnder: TObject);
+    procedure ComboBox1Change(SEnder: TObject);
+    procedure BB_NewClick(SEnder: TObject);
+    procedure Edit_FindingTitleExit(SEnder: TObject);
+    procedure SpeedButton2Click(SEnder: TObject);
+    procedure SpeedButton1Click(SEnder: TObject);
+    procedure BitBtn1Click(SEnder: TObject);
+    procedure Btn_closeClick(SEnder: TObject);
+    procedure btn_saveClick(SEnder: TObject);
+    procedure DBLC_TestNameClick(SEnder: TObject);
+    procedure FormShow(SEnder: TObject);
+    procedure DBLC_ReportTypeClick(SEnder: TObject);
+    procedure RichEdit_TitleSelectionChange(SEnder: TObject);
+    procedure Panel_FnacClick(Sender: TObject);
+    procedure DBLC_MsterFormatClick(Sender: TObject);
+    procedure RichEdit_CivilianFeaturesEnter(Sender: TObject);
+    procedure RichEdit_AbnormalCellsEnter(Sender: TObject);
+    procedure RichEdit_DiagonsisEnter(Sender: TObject);
+    procedure RichEdit_AdequacyEnter(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure RichEdit_OtherFindingsEnter(Sender: TObject);
+    procedure RichEdit_FluidClinicalFeaturesEnter(Sender: TObject);
+    procedure RichEdit_MicroscopicDescriptionEnter(Sender: TObject);
+    procedure RichEdit_FluidDiagnosisEnter(Sender: TObject);
+    procedure RichEdit_FluidCommentChange(Sender: TObject);
+    procedure RichEdit_GrossAppearanceEnter(Sender: TObject);
+    procedure RichEdit_FluidCommentEnter(Sender: TObject);
+    procedure RichEdit_FnacClinicalFeaturesKeyPress(Sender: TObject;
+      var Key: Char);
+    procedure RichEdit_FnacClinicalFeaturesEnter(Sender: TObject);
+    procedure RichEdit_FnacDiagnosisEnter(Sender: TObject);
+    procedure RichEdit_DiagnosisEnter(Sender: TObject);
+    procedure RichEdit_FnacMicroscopicEnter(Sender: TObject);
+    procedure RichEdit_FnacCommentEnter(Sender: TObject);
+    procedure RichEdit_SurgicalHistoryEnter(Sender: TObject);
+    procedure RichEdit_SpecimenReceivedEnter(Sender: TObject);
+    procedure RichEdit_SurgicalGrossEnter(Sender: TObject);
+    procedure RichEdit_SurgicalMicroscopicEnter(Sender: TObject);
+    procedure RichEdit_SurgicalDiagnosisEnter(Sender: TObject);
+    procedure RichEdit_SurgicalCommentEnter(Sender: TObject);
+    procedure RichEdit_PapMDescriptionEnter(Sender: TObject);
+    procedure RichEdit_ResultsEnter(Sender: TObject);
+    procedure RichEdit_PapCategorizationEnter(Sender: TObject);
+    procedure RichEdit_PapCommentEnter(Sender: TObject);
+    procedure RichEdit_SurClinicalFindingsEnter(Sender: TObject);
+    procedure ComboBox2Change(Sender: TObject);
+    procedure Edit_SiteOfAspirationEnter(Sender: TObject);
+    procedure Edit_TypeofAspitateEnter(Sender: TObject);
+    procedure cb_FNACPeerEnter(Sender: TObject);
+    procedure RichEdit_ClinicalFindingsEnter(Sender: TObject);
+    procedure RichEdit_SampleEnter(Sender: TObject);
+    procedure RichEdit_MicroscopicEnter(Sender: TObject);
+    procedure RichEdit_DiagEnter(Sender: TObject);
+    procedure RichEdit_ComEnter(Sender: TObject);
+    Function ToFormat(Edit :TRichEdit):String;
+    procedure Edit_SOAspirationEnter(Sender: TObject);
+    procedure Edit_TypeofAspirationEnter(Sender: TObject);
+    procedure Edit_RbcEnter(Sender: TObject);
+    procedure Edit_WbcEnter(Sender: TObject);
+    procedure Edit_PlateletsEnter(Sender: TObject);
+    procedure Edit_HemoparasiteEnter(Sender: TObject);
+    procedure Edit_BonemarrowAspirationEnter(Sender: TObject);
+    procedure Edit_BoneSiteOfAspirationEnter(Sender: TObject);
+    procedure Edit_CellularityEnter(Sender: TObject);
+    procedure Edit_MERatioEnter(Sender: TObject);
+    procedure RichEdit_ErythropoiesisEnter(Sender: TObject);
+    procedure Edit_MegakaryopoiesisEnter(Sender: TObject);
+    procedure Edit_LymphopoiesisEnter(Sender: TObject);
+    procedure Edit_SpecialStainEnter(Sender: TObject);
+    procedure Edit_BoneMarrowCommentEnter(Sender: TObject);
+    procedure Edit_TypeSampleReceivedEnter(Sender: TObject);
+    procedure Edit_NeutrophilEnter(Sender: TObject);
+    procedure Edit_LymphocyteEnter(Sender: TObject);
+    procedure Edit_EosinophilEnter(Sender: TObject);
+    procedure Edit_MastCellEnter(Sender: TObject);
+    procedure Edit_PlasmaCellEnter(Sender: TObject);
+    procedure Edit_MacrophageEnter(Sender: TObject);
+    procedure Edit_SpecimenReceivedEnter(Sender: TObject);
+    procedure EditAmountOfFluidEnter(Sender: TObject);
+    procedure Edit_StainEnter(Sender: TObject);
+    procedure Edit_SpecimenTypeEnter(Sender: TObject);
+    procedure Edit_PapAdequacyEnter(Sender: TObject);
+    procedure DBLC_MsterFormatKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLC_TestNameKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLC_ReportTypeKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_RbcKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_WbcKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_PlateletsKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_HemoparasiteKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_BoneSiteOfAspirationKeyPress(Sender: TObject; var Key: Char);
+    procedure RichEdit_AdequacyKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_CellularityKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_MERatioKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_MyelopoiesisKeyPress(Sender: TObject; var Key: Char);
+    procedure RichEdit_ErythropoiesisKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_MegakaryopoiesisKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_LymphopoiesisKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_PlasmaCellsKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_SpecialStainKeyPress(Sender: TObject; var Key: Char);
+    procedure RichEdit_DiagonsisKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_BonemarrowAspirationKeyPress(Sender: TObject; var Key: Char);
+    procedure RichEdit_AbnormalCellsExit(Sender: TObject);
+    procedure Edit_SOAspirationKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_AirDriedKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_AlcoholWetKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_AdequateCellularKeyPress(Sender: TObject; var Key: Char);
+    procedure RichEdit_ClinicalFindingsExit(Sender: TObject);
+    procedure Edit_TypeofAspirationKeyPress(Sender: TObject; var Key: Char);
+    procedure RichEdit_MicroscopicExit(Sender: TObject);
+    procedure RichEdit_DiagExit(Sender: TObject);
+    procedure Edit_TypeSampleReceivedKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_NeutrophilKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_LymphocyteKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_EosinophilKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_MastCellKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_PlasmaCellKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_MacrophageKeyPress(Sender: TObject; var Key: Char);
+
+
+  private
+    { Private declarations }
+  public
+
+      PbIsNew:Boolean;
+      Pi_Length:LongInt;
+      Ps_RichName:String;
+      pi_panelid : Integer;
+
+      //Procedure LoadDatainGrid;
+    { Public declarations }
+  End;
+
+var
+  Form_DefaultSetup: TForm_DefaultSetup;
+
+implementation
+
+uses fxn,Unit_ClinicalReportType,Unit_ReportReplication,Unit_Master;
+
+{$R *.dfm}
+
+procedure TForm_DefaultSetup.BB_NewClick(SEnder: TObject);
+begin
+      PbIsNew:=TRUE;
+      RichEdit_Title.Lines.Clear;
+     // RichEdit_PapDiagnosis.Lines.Clear;
+      RichEdit_PapComment.Lines.Clear;
+      RichEdit_PAPClinicalFeatures.Lines.Clear;
+
+      Edit_PapAdequacy.Clear;
+     // Edit_PapReason.Clear;
+     // Edit_PapCategorization.Clear;
+     // Edit_PapSiteOfSampling.Clear;
+      DBLC_TestName.KeyValue:=Null;
+      DBLC_ReportType.KeyValue:=Null;
+
+      Edit_Rbc.clear;
+      Edit_Platelets.Clear;
+      Edit_Hemoparasite.Clear;
+      Edit_Wbc.Clear;
+      Edit_BoneSiteOfAspiration.Clear;
+      RichEdit_Adequacy.Lines.Clear;
+      Edit_Cellularity.Clear;
+      Edit_MERatio.Clear;
+      Edit_Myeopoiesis.Clear;
+      Edit_Myeologram.Clear;
+      Edit_Megakaryopoiesis.Clear;
+      Edit_Lymphopoiesis.Clear;
+      Edit_PlasmaCells.Clear;
+      RichEdit_AbnormalCells.Lines.Clear;
+      Edit_SpecialStain.Clear;
+      RichEdit_Diagonsis.Lines.Clear;
+      Edit_BoneMarrowComment.Clear;
+      RichEdit_CivilianFeatures.Lines.Clear;
+
+      Edit_SurgicalBiopsy.Clear;
+      RichEdit_SurgicalHistory.Lines.Clear;
+      RichEdit_SpecimenReceived.Lines.Clear;
+      RichEdit_SurgicalGross.Lines.Clear;
+      RichEdit_SurgicalMicroscopic.Lines.Clear;
+      RichEdit_SurgicalComment.Lines.Clear;
+      RichEdit_SurgicalDiagnosis.Lines.Clear;
+      RichEdit_SurClinicalFindings.Lines.Clear;
+End;
+
+procedure TForm_DefaultSetup.BitBtn1Click(SEnder: TObject);
+begin
+      Try
+          Form_Replicate:=TForm_Replicate.Create(Nil);
+          Form_Replicate.ShowModal;
+      Finally
+          Form_Replicate.Free;
+      End;
+End;
+
+procedure TForm_DefaultSetup.Btn_closeClick(SEnder: TObject);
+begin
+    Close;
+End;
+
+procedure TForm_DefaultSetup.btn_saveClick(SEnder: TObject);
+Var
+     PAPSETUPID,PAPFINDINGSID,PAPTESTNAMEID,PAPREPORTID:Integer;
+     ISACTIVE,ISDEFAULTFINDINGS,PAPREPORTTITLE,PAPSAMPLESITE,PAPADEQUACY,PAPREASON,PAPGENCATEGORY,PAPCLINICALFEATURES,PAPDIAGNOSIS,PAPCOMMENT:string;
+     FNACSETUPID,ATTEMPTS:Integer;
+     FNACCLINICALFEATURES,FNACDIAGNOSIS,FNACMICRODESCRIPTION,FNACCOMMENT,SASPIRATION,TASPIRATION,FDIAGNOSIS,FNACPEERREVIEW:String ;
+     SURGICALSETUPID:Integer;BIOPSYSITE,PROCEDUREPERFORMED,CLINICALHISTORY,GROSSDESCRIPTION,CLINICALFINDINGS,
+     MICROSCOPIC,DIASNOSIS,COMMENT,STAIN,SURGICALTITLE,FLUIDFORDCREPORTTITLE,FLUIDFORMALIGNANTREPORTTITLE:String;
+     BONESETUPID:Integer;
+     CELLULARITY,ADEQUACY,CLINICALDETAIL,HEMORAGE,PHERIPHERAL,SITEOFASPIRATION,MYEOPOIESIS,ERYTHROPOIESIS,LYMPHOPOIESIS,MEGAKARYOPOIESIS,PLASMACELL,
+     HISTIOCYTES,PARASITE,ABNORMALCELL,IRONSTORE,OTHERSTAIN,IMPRESSION,BONECOMMENT,CIVILIANFEATURES:String;
+     RBC,WBC,PLATELETS,HEMOPARASITE,MERATIO,MYEOLOGRAM,SPECIALSTAIN,BONEDIAGONSIS,BONEMARROWASPIRATION:String;
+     SPECIMEN,MISCROSCOPIC,PAPRESULTS:String;
+     FLUIDCLINICAL,FLUIDSPECIMEN,FLUIDAMOUNT, FLUIDGROSS,FLUIDDESCRIPTION,FLUIDDIAGNOSIS,FLUIDCOMMENT:String;
+     FLUIDSETUPID,DFLUIDSETUPID:Integer;
+     DFLUIDNEUTROPHIL,DFLUIDEOSINOPHIL,DFLUIDMASTCELL,DFLUIDPLASMACELL,DFLUIDLYMPHOCYTE,DFLUIDFINDINGS,DFLUIDSAMPLERECEIVED,DFLUIDMACROPHAGE,OTHERS:String;
+     USGFNACSETUPID:Integer;
+     USGFNACREPORTTITLE,USGFNACCLINICAL,USGFNACSITEASPIRATION,USGFNACSAMPLERECEIVED,USGFNACTYPEASPIRATION,USGFNACMICROSCOPIC,USGFNACDAIGNOSIS,USGFNACCOMMENTS
+     ,USFN_AIRDRIED,USFN_ALCOHOLWET,USFN_ADEQUATECELLULAR:String;
+     PBSSETUPID,PBSMASTERID,PBSREPORTID,PBSTESTNAMEID,MASTERTESTWISEID,MASTERID:Integer;
+     PBSISDEFAULTFINDINGS,PBSISACTIVE,PBSREPORTTITLE,PBSRBC,PBSWBC,PBSPLATELETS,PBSPARASITE,PBSRETICULOCYTES,PBSCOMMENT:string;
+
+
+Begin
+     if OraQuery_Blank.recordcount>0 then
+          begin
+               pbisnew:=False;
+          End;
+     if DBLC_REPORTTYPE.KEYVALUE=NULL then
+     Begin
+
+     End;
+
+     //PBS
+     PBSCOMMENT:=ToFormat(RichEdit_Others);
+     PBSRBC:=Edit_RBCs.Text;
+     PBSWBC:=Edit_WBCs.Text;
+     PBSPLATELETS:=Edit_PlateletsPBS.Text;
+     PBSPARASITE:=Edit_ParasitePBS.Text;
+     PBSRETICULOCYTES:=Edit_ReticulocytesPBS.Text;
+     PBSREPORTTITLE:=ToFormat(RichEdit_Title);
+
+     //PAP SWEAR
+     PAPREPORTTITLE:=ToFormat(RichEdit_Title);
+     PAPADEQUACY:=Edit_PapAdequacy.Text;
+     PAPGENCATEGORY:=ToFormat(RichEdit_PapCategorization);
+     PAPCLINICALFEATURES:=ToFormat(RichEdit_PAPClinicalFeatures);
+     PAPCOMMENT:=ToFormat(RichEdit_PapComment);
+     SPECIMEN:= Edit_SpecimenType.Text;
+     MISCROSCOPIC:=ToFormat(RichEdit_PapMDescription);
+     PAPRESULTS:=ToFormat(RichEdit_Results);
+     //FNAC
+     FNACCLINICALFEATURES:=ToFormat(RichEdit_FnacClinicalFeatures);
+     FNACDIAGNOSIS:='';//RichEdit_FnacDiagnosis.Text;
+     FNACMICRODESCRIPTION:=ToFormat(RichEdit_FnacMicroscopic);
+     FNACCOMMENT:=ToFormat(RichEdit_FnacComment);
+     FDIAGNOSIS:=ToFormat(RichEdit_Diagnosis);
+     //ATTEMPTS:=Edit_NoofAttempts.Text;
+     SASPIRATION:=Edit_SiteOfAspiration.Text;
+     TASPIRATION:=Edit_TypeofAspitate.Text;
+     FNACPEERREVIEW:=cb_FNACPeer.Text;
+     //PAPCOMMENT:=IntToStr(cb_FNACPeer.ItemIndex);
+
+     //surgical
+     STAIN:=Edit_Stain.Text;
+
+     Memo.Lines.Clear;
+     RichEdit_SurClinicalFindings.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     CLINICALFINDINGS:=Memo.Text;
+
+     Memo.Lines.Clear;
+     RichEdit_SurgicalMicroscopic.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     MICROSCOPIC:=Memo.Text;
+     //MICROSCOPIC:=RichEdit_SurgicalMicroscopic.Text;
+
+     Memo.Lines.Clear;
+     RichEdit_SurgicalComment.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     COMMENT:=Memo.Text;
+     //COMMENT:=RichEdit_SurgicalComment.Text;
+
+     Memo.Lines.Clear;
+     RichEdit_SurgicalHistory.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     CLINICALHISTORY:=Memo.Text;
+     //CLINICALHISTORY:=RichEdit_SurgicalHistory.Text;
+
+     Memo.Lines.Clear;
+     RichEdit_SurgicalGross.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     GROSSDESCRIPTION:=Memo.Text;
+     //GROSSDESCRIPTION:=RichEdit_SurgicalGross.Text;
+
+     Memo.Lines.Clear;
+     RichEdit_Title.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     SURGICALTITLE:=Memo.Text;
+
+     BIOPSYSITE:=Edit_SurgicalBiopsy.Text;
+     PROCEDUREPERFORMED:=RichEdit_SpecimenReceived.Text;
+     DIASNOSIS:=RichEdit_SurgicalDiagnosis.Text;
+     CELLULARITY:= Edit_Cellularity.Text;
+     ADEQUACY:=RichEdit_Adequacy.Text;
+     CLINICALDETAIL:=RichEdit_ClinicalDetails.Text;
+     HEMORAGE:=RichEdit_Hemogram.Text;
+     PHERIPHERAL:=RichEdit_PeripheralSmear.Text;
+     SITEOFASPIRATION:=Edit_BoneSiteOfAspiration.Text;
+     MYEOPOIESIS:=Edit_Myelopoiesis.Text;
+     ERYTHROPOIESIS:=RichEdit_Erythropoiesis.Text;
+     LYMPHOPOIESIS:=Edit_Lymphopoiesis.Text;
+     MEGAKARYOPOIESIS:=Edit_Megakaryopoiesis.Text;
+     PLASMACELL:=Edit_PlasmaCells.Text;
+     HISTIOCYTES:=Edit_Histiocytes.Text;
+     PARASITE:=Edit_Parasite.Text;
+     ABNORMALCELL:=RichEdit_AbnormalCells.Text;
+     IRONSTORE:=Edit_IronStore.Text;
+     OTHERSTAIN:=Edit_SpecialStain.Text;
+     //MYEOPOIESIS:=Edit_Myelopoiesis.Text;
+     BONECOMMENT:=Edit_BoneMarrowComment.Text;
+     CIVILIANFEATURES:=RichEdit_CivilianFeatures.Text;
+     RBC:=Edit_Rbc.Text;
+     WBC:=Edit_Wbc.Text;
+     PLATELETS:=Edit_Platelets.Text;
+     MERATIO:=Edit_MERatio.Text;
+     HEMOPARASITE:=Edit_Hemoparasite.Text;
+     MYEOLOGRAM:=Edit_Myeologram.Text;
+     SPECIALSTAIN:=Edit_SpecialStain.Text;
+     BONEDIAGONSIS:=RichEdit_Diagonsis.Text;
+     BONEMARROWASPIRATION:=Edit_BonemarrowAspiration.Text;
+
+    //FLUID MALIGNANT
+     FLUIDCLINICAL:=ToFormat(RichEdit_FluidClinicalFeatures);
+     FLUIDSPECIMEN:=Edit_SpecimenReceived.Text;
+     FLUIDAMOUNT:=EditAmountOfFluid.Text;
+     FLUIDGROSS:=ToFormat(RichEdit_GrossAppearance);
+     FLUIDDESCRIPTION:=ToFormat(RichEdit_MicroscopicDescription);
+     FLUIDDIAGNOSIS:=ToFormat(RichEdit_FluidDiagnosis);
+     FLUIDCOMMENT:=ToFormat(RichEdit_FluidComment);
+     FLUIDFORMALIGNANTREPORTTITLE:=ToFormat(RichEdit_Title);
+
+    //fLUID FOR DC
+     DFLUIDNEUTROPHIL:=Edit_Neutrophil.Text;
+     DFLUIDLYMPHOCYTE:=Edit_Lymphocyte.Text;
+     DFLUIDEOSINOPHIL:=Edit_Eosinophil.Text;
+     DFLUIDMASTCELL:=Edit_MastCell.Text;
+     DFLUIDPLASMACELL:=Edit_PlasmaCell.Text;
+     DFLUIDFINDINGS:=RichEdit_OtherFindings.Text;
+     DFLUIDSAMPLERECEIVED:=Edit_TypeSampleReceived.Text;
+     DFLUIDMACROPHAGE:=Edit_Macrophage.Text;
+     OTHERS:=  RichEdit_Others.Text;
+     FLUIDFORDCREPORTTITLE:=ToFormat(RichEdit_Title);
+
+
+     //VSGFNAC
+     USGFNACREPORTTITLE:=ToFormat(RichEdit_Title);
+     USGFNACCLINICAL:=ToFormat(RichEdit_ClinicalFindings);
+     USGFNACSITEASPIRATION:=Edit_SOAspiration.Text;
+     USGFNACSAMPLERECEIVED:=ToFormat(RichEdit_Sample);
+     USGFNACTYPEASPIRATION:=Edit_TypeofAspiration.Text;
+     USGFNACMICROSCOPIC:=ToFormat(RichEdit_Microscopic);
+     USGFNACDAIGNOSIS:=ToFormat(RichEdit_Diag);
+     USGFNACCOMMENTS:=ToFormat(RichEdit_Com);
+     USFN_AIRDRIED:=(Edit_AirDried.Text);
+     USFN_ALCOHOLWET:=(Edit_AlcoholWet.Text);
+     USFN_ADEQUATECELLULAR:=(Edit_AdequateCellular.Text);
+
+     if CheckBox_Active.Checked=True then
+     isActive:='Y'
+     Else
+     isActive:='N';
+     if CheckBox_Default.Checked=True then
+     ISDEFAULTFINDINGS:='Y'
+     ELSE
+     ISDEFAULTFINDINGS:='N';
+     PAPTESTNAMEID:=DBLC_TestName.KeyValue;
+     PAPREPORTID:=DBLC_ReportType.KeyValue;
+     //CheckBox_Default.Checked:=False;
+     //CheckBox_Active.Checked:=False;
+
+     if (DBLC_TestName.KeyValue<>Null) and (DBLC_ReportType.KeyValue<>Null) and (DBLC_MsterFormat.KeyValue<>null) then
+     Begin
+          Try
+               DM_Hospital.DB.StartTransaction;
+               if PbIsNew and (pi_panelid=3) then   //fluid
+               begin
+                    DFLUIDSETUPID:=GetmaxId('HC_CSFD_CLINICALSETUPFLUIDDC','CSFD_SETUPID');
+                    SaveFluidDC_Setup(DFLUIDSETUPID,DBLC_MsterFormat.KEYVALUE,dblc_testname.KEYVALUE,dblc_reporttype.KEYVALUE,ISACTIVE,ISDEFAULTFINDINGS,FLUIDFORDCREPORTTITLE,
+                    DFLUIDNEUTROPHIL,DFLUIDLYMPHOCYTE,DFLUIDEOSINOPHIL,DFLUIDPLASMACELL,DFLUIDMASTCELL,DFLUIDFINDINGS,DFLUIDSAMPLERECEIVED,DFLUIDMACROPHAGE,OTHERS);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CSFD_CLINICALSETUPFLUIDDC','CSFD_ISDEFAULTFINDINGS','CSFD_REPORTFORMATID');
+               end
+               Else if pi_panelid=3 then
+               Begin
+                    DFLUIDSETUPID:=DBLC_ReportType.KeyValue;
+                    UpdateFluidDC_Setup(DFLUIDSETUPID,DBLC_MsterFormat.KEYVALUE,dblc_testname.KEYVALUE,dblc_reporttype.KEYVALUE,ISACTIVE,ISDEFAULTFINDINGS,FLUIDFORDCREPORTTITLE,
+                    DFLUIDNEUTROPHIL,DFLUIDLYMPHOCYTE,DFLUIDEOSINOPHIL,DFLUIDPLASMACELL,DFLUIDMASTCELL,DFLUIDFINDINGS,DFLUIDSAMPLERECEIVED,DFLUIDMACROPHAGE,OTHERS);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CSFD_CLINICALSETUPFLUIDDC','CSFD_ISDEFAULTFINDINGS','CSFD_REPORTFORMATID');
+               End;
+
+               if PbIsNew and (pi_panelid=4) then     //malin
+               begin
+                    FLUIDSETUPID:=GetmaxId('HC_CSFM_CLINICALSETUPFLMALIGN','CSFM_SETUPID');
+                    SaveFluidMalignant_Setup(FLUIDSETUPID,DBLC_MsterFormat.KEYVALUE,dblc_testname.KEYVALUE,dblc_reporttype.KEYVALUE,ISACTIVE,ISDEFAULTFINDINGS,FLUIDFORMALIGNANTREPORTTITLE,
+                    FLUIDCLINICAL,FLUIDSPECIMEN,FLUIDAMOUNT,FLUIDGROSS,FLUIDDESCRIPTION,FLUIDDIAGNOSIS,FLUIDCOMMENT);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CSFM_CLINICALSETUPFLMALIGN','CSFM_ISDEFAULTFINDINGS','CSFM_REPORTFORMATID');
+               end
+               Else if pi_panelid=4 then
+               begin
+                    FLUIDSETUPID:=DBLC_ReportType.KeyValue;
+                    UpdateFluidMalignant_Setup(FLUIDSETUPID,DBLC_MsterFormat.KEYVALUE,dblc_testname.KEYVALUE,DBLC_REPORTTYPE.KEYVALUE,ISACTIVE,ISDEFAULTFINDINGS,FLUIDFORMALIGNANTREPORTTITLE,
+                    FLUIDCLINICAL,FLUIDSPECIMEN,FLUIDAMOUNT,FLUIDGROSS,FLUIDDESCRIPTION,FLUIDDIAGNOSIS,FLUIDCOMMENT);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CSFM_CLINICALSETUPFLMALIGN','CSFM_ISDEFAULTFINDINGS','CSFM_REPORTFORMATID');
+               end;
+               if PbIsNew and (pi_panelid=2) then   //pap
+               Begin
+                    PAPSETUPID := GetMaxId('HC_CLSP_CLINICALSETUPPAP', 'CLSP_SETUPID');
+                    SaveClinicalFinding_Pap(PAPSETUPID,DBLC_MsterFormat.KEYVALUE,dblc_testname.KEYVALUE,DBLC_REPORTTYPE.KEYVALUE,ISACTIVE,ISDEFAULTFINDINGS,PAPREPORTTITLE,
+                    PAPADEQUACY,PAPGENCATEGORY,PAPCLINICALFEATURES,PAPCOMMENT,SPECIMEN,MISCROSCOPIC,PAPRESULTS);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CLSP_CLINICALSETUPPAP','CLSP_ISDEFAULTFINDINGS','CLSP_REPORTFORMATID');
+               End
+               Else if pi_panelid=2 then
+               Begin
+                    PAPSETUPID:=DBLC_ReportType.KeyValue;
+                    UpdateClinicalFinding_Pap(PAPSETUPID,DBLC_MsterFormat.KEYVALUE,DBLC_TESTNAME.KEYVALUE,DBLC_REPORTTYPE.KEYVALUE,ISACTIVE,ISDEFAULTFINDINGS,PAPREPORTTITLE,
+                    PAPADEQUACY,PAPGENCATEGORY,PAPCLINICALFEATURES,PAPCOMMENT,SPECIMEN,MISCROSCOPIC,PAPRESULTS);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CLSP_CLINICALSETUPPAP','CLSP_ISDEFAULTFINDINGS','CLSP_REPORTFORMATID');
+               End;
+               if pbisnew and (pi_panelid=1) then //fnac
+               begin
+                    FNACSETUPID:=GetMaxId('HC_CLSF_CLINICALSETUPFNAC','CLSF_SETUPID');
+                    SaveClinicalFnac_Setup(FNACSETUPID,DBLC_MsterFormat.keyvalue,dblc_testname.keyvalue,dblc_reporttype.keyvalue,ISACTIVE,ISDEFAULTFINDINGS,PAPREPORTTITLE,
+                    FNACCLINICALFEATURES,FNACDIAGNOSIS,FNACMICRODESCRIPTION,FNACCOMMENT,SASPIRATION,TASPIRATION,FDIAGNOSIS,FNACPEERREVIEW);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CLSF_CLINICALSETUPFNAC','CLSF_ISDEFAULTFINDINGS','CLSF_REPORTFORMATID');
+               end
+               Else if pi_panelid=1 then
+               begin
+                    FNACSETUPID:=DBLC_ReportType.KeyValue;
+                    UpdateClinicalFnac_Setup(FNACSETUPID,DBLC_MsterFormat.keyvalue,dblc_testname.keyvalue,dblc_reporttype.keyvalue,ISACTIVE,ISDEFAULTFINDINGS,PAPREPORTTITLE,
+                    FNACCLINICALFEATURES,FNACDIAGNOSIS,FNACMICRODESCRIPTION,FNACCOMMENT,SASPIRATION,TASPIRATION,FDIAGNOSIS,FNACPEERREVIEW);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CLSF_CLINICALSETUPFNAC','CLSF_ISDEFAULTFINDINGS','CLSF_REPORTFORMATID');
+               end;
+               if pbisnew and (pi_panelid=5) then //surgical
+               begin
+                    SURGICALSETUPID:=GetMaxId('HC_CLSS_CLINICALSETUPSURGICAL','CLSS_SETUPID');
+                    SaveClinicalSurgical_Setup(SURGICALSETUPID,DBLC_MsterFormat.keyvalue,dblc_testname.keyvalue,dblc_reporttype.keyvalue,ISDEFAULTFINDINGS,ISACTIVE,SURGICALTITLE,
+                    BIOPSYSITE,PROCEDUREPERFORMED,CLINICALHISTORY,GROSSDESCRIPTION,MICROSCOPIC,DIASNOSIS,COMMENT,STAIN,CLINICALFINDINGS);
+                    if CheckBox_Default.Checked=True then
+                         updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CLSS_CLINICALSETUPSURGICAL','CLSS_ISDEFAULTFINDINGS','CLSS_REPORTFORMATID');
+               end
+               Else if pi_panelid=5 then
+               Begin
+                    SURGICALSETUPID:= DBLC_ReportType.KeyValue;
+                    UpdateClinicalSurgical_Setup(SURGICALSETUPID,DBLC_MsterFormat.keyvalue,PAPTESTNAMEID,DBLC_REPORTTYPE.KeyValue,ISDEFAULTFINDINGS,ISACTIVE,SURGICALTITLE,
+                    BIOPSYSITE,PROCEDUREPERFORMED,CLINICALHISTORY,GROSSDESCRIPTION,MICROSCOPIC,DIASNOSIS,COMMENT,STAIN,CLINICALFINDINGS);
+                    if CheckBox_Default.Checked=True then
+                         updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CLSS_CLINICALSETUPSURGICAL','CLSS_ISDEFAULTFINDINGS','CLSS_REPORTFORMATID');
+               End;
+               if pbisnew and (pi_panelid=6) then //bonemarrow
+               begin
+                    BONESETUPID:=GetMaxId('HC_CLSB_CLINICALSETUPBONEMARO','CLSB_SETUPID');
+                    SaveClinicalBoneMarrow_Setup(BONESETUPID,DBLC_MsterFormat.keyvalue,dblc_testname.KEYVALUE,dblc_reporttype.KEYVALUE,ISACTIVE,ISDEFAULTFINDINGS,PAPREPORTTITLE,
+                    CELLULARITY,ADEQUACY,SITEOFASPIRATION,MYEOPOIESIS,LYMPHOPOIESIS,MEGAKARYOPOIESIS,PLASMACELL,
+                    ABNORMALCELL,IRONSTORE,OTHERSTAIN,BONECOMMENT,RBC,WBC,PLATELETS,HEMOPARASITE,MERATIO,CIVILIANFEATURES,SPECIALSTAIN,BONEDIAGONSIS,BONEMARROWASPIRATION,ERYTHROPOIESIS);
+                    if CheckBox_Default.Checked=True then
+                         updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CLSB_CLINICALSETUPBONEMARO','CLSB_ISDEFAULTFINDINGS','CLSB_REPORTFORMATID');
+               end
+               Else if pi_panelid=6 then
+               Begin
+                    BONESETUPID:=DBLC_ReportType.KeyValue;
+                    UpdateClinicalBoneMarrow_Setup(BONESETUPID,DBLC_MsterFormat.keyvalue,DBLC_TESTNAME.KEYVALUE,DBLC_REPORTTYPE.KEYVALUE,ISACTIVE,ISDEFAULTFINDINGS,PAPREPORTTITLE,CELLULARITY,ADEQUACY,
+                    SITEOFASPIRATION,MYEOPOIESIS,LYMPHOPOIESIS,MEGAKARYOPOIESIS,PLASMACELL,
+                    ABNORMALCELL,IRONSTORE,OTHERSTAIN,BONECOMMENT,RBC,WBC,PLATELETS,HEMOPARASITE,MERATIO,CIVILIANFEATURES,SPECIALSTAIN,BONEDIAGONSIS,BONEMARROWASPIRATION,ERYTHROPOIESIS);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CLSB_CLINICALSETUPBONEMARO','CLSB_ISDEFAULTFINDINGS','CLSB_REPORTFORMATID');
+               End;
+               if pbisnew and (pi_panelid=7) then   //usgfnac
+               begin
+                    USGFNACSETUPID:=GetMaxId('HC_CUGF_CLINICALSETUPUSGFNAC','CUGF_SETUPID');
+                    SaveClinicalvsgfnac_Setup(USGFNACSETUPID,DBLC_MsterFormat.keyvalue,DBLC_TESTNAME.KEYVALUE,DBLC_REPORTTYPE.KEYVALUE,USFN_AIRDRIED,USFN_ALCOHOLWET,
+                    USFN_ADEQUATECELLULAR,ISACTIVE,ISDEFAULTFINDINGS,USGFNACREPORTTITLE,
+                    USGFNACCLINICAL,USGFNACSITEASPIRATION,USGFNACSAMPLERECEIVED,USGFNACTYPEASPIRATION,USGFNACMICROSCOPIC,USGFNACDAIGNOSIS,USGFNACCOMMENTS);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CUGF_CLINICALSETUPUSGFNAC','CUGF_ISDEFAULTFINDINGS','CUGF_REPORTFORMATID');
+               end
+               Else if pi_panelid=7 then
+               Begin
+                    USGFNACSETUPID:=DBLC_ReportType.KeyValue;
+                    UpdateClinicalvsgfnac_Setup(USGFNACSETUPID,DBLC_MsterFormat.keyvalue,DBLC_TESTNAME.KEYVALUE,DBLC_REPORTTYPE.KEYVALUE,USFN_AIRDRIED,USFN_ALCOHOLWET,
+                    USFN_ADEQUATECELLULAR,ISACTIVE,ISDEFAULTFINDINGS,USGFNACREPORTTITLE,
+                    USGFNACCLINICAL,USGFNACSITEASPIRATION,USGFNACSAMPLERECEIVED,USGFNACTYPEASPIRATION,USGFNACMICROSCOPIC,USGFNACDAIGNOSIS,USGFNACCOMMENTS);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CUGF_CLINICALSETUPUSGFNAC','CUGF_ISDEFAULTFINDINGS','CUGF_REPORTFORMATID');
+               End;
+
+               if PbIsNew and (pi_panelid=8) then //PBS
+               begin
+                    PBSSETUPID:=GetMaxId('HC_CSPB_CLINICALSETUPPBS','CSPB_SETUPID');
+                    SaveClinicalPBS_Setup(PBSSETUPID,DBLC_MsterFormat.keyvalue,DBLC_TESTNAME.KEYVALUE,DBLC_REPORTTYPE.KEYVALUE,
+                    PBSISDEFAULTFINDINGS,PBSISACTIVE,PBSREPORTTITLE,PBSRBC,PBSWBC,PBSPLATELETS,PBSPARASITE,PBSRETICULOCYTES,PBSCOMMENT,ISACTIVE,ISDEFAULTFINDINGS);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CSPB_CLINICALSETUPPBS','CSPB_ISDEFAULTFINDINGS','CSPB_REPORTFORMATID');
+
+               end
+               Else if pi_panelid=8 then
+               begin
+                    PBSSETUPID:=DBLC_ReportType.KeyValue;
+                    UpdateClinicalPBS_Setup(PBSSETUPID,DBLC_MsterFormat.keyvalue,DBLC_TESTNAME.KEYVALUE,DBLC_REPORTTYPE.KEYVALUE,
+                    PBSISDEFAULTFINDINGS,PBSISACTIVE,PBSREPORTTITLE,PBSRBC,PBSWBC,PBSPLATELETS,PBSPARASITE,PBSRETICULOCYTES,PBSCOMMENT,ISACTIVE,ISDEFAULTFINDINGS);
+                    if CheckBox_Default.Checked=True then
+                    updatedefaultfindings(dblc_reporttype.KEYVALUE,'HC_CSPB_CLINICALSETUPPBS','CSPB_ISDEFAULTFINDINGS','CSPB_REPORTFORMATID');
+
+               end;
+
+
+               DM_Hospital.DB.Commit;
+               ShowDoneMessage;
+               PbIsNew:=TRUE;
+          except
+               DM_Hospital.DB.Rollback;
+               MsgBox(1005, 0, '', '', '');
+          END;
+     End;
+End;
+
+procedure TForm_DefaultSetup.ButtonColor1Click(SEnder: TObject);
+begin
+     if Ps_RichName='Title' then
+     SetFontColor(ButtonColor1,RichEdit_Title)
+     else if Ps_RichName='Default' then
+     //SetFontColor(ButtonColor1,RichEdit_PapDiagnosis);
+     SetFontColor(ButtonColor1,RichEdit_PapComment)
+     //SetFontColor(ButtonColor1,RichEdit_PAPClinicalFeatures);
+      else if Ps_RichName='Surgical_MiscroscopicDescriptionS' then
+          SetFontColor(ButtonColor1,RichEdit_SurgicalMicroscopic)
+     else if Ps_RichName='Surgical_Comment' then
+          SetFontColor(ButtonColor1,RichEdit_SurgicalComment)
+     else if Ps_RichName='Surgical_ClinicalFeatures' then
+          SetFontColor(ButtonColor1,RichEdit_SurgicalHistory)
+     else if Ps_RichName='Surgical_ClinicalFindings' then
+           SetFontColor(ButtonColor1,RichEdit_SurClinicalFindings)
+     else if Ps_RichName='Surgical_GrossDescription' then
+          SetFontColor(ButtonColor1,RichEdit_SurgicalGross)
+
+      else if Ps_RichName='Fnac_ClinicalFeatures' then
+          SetFontColor(ButtonColor1,RichEdit_FnacClinicalFeatures)
+     else if Ps_RichName='Fnac_MiscroscopicDescription' then
+          SetFontColor(ButtonColor1,RichEdit_FnacMicroscopic)
+     else if Ps_RichName='Fnac_Diagnosis' then                                 //fnac
+          SetFontColor(ButtonColor1,RichEdit_Diagnosis)
+     else if Ps_RichName='Fnac_Comment' then
+          SetFontColor(ButtonColor1,RichEdit_FnacComment)
+     
+     else if Ps_RichName='Pap_Clinical' then
+          SetFontColor(ButtonColor1,RichEdit_PAPClinicalFeatures)
+     else if Ps_RichName='Pap_GeneralCategorization' then
+          SetFontColor(ButtonColor1,RichEdit_PapCategorization)
+     else if Ps_RichName='Pap_MiscroscopicDescription' then
+          SetFontColor(ButtonColor1,RichEdit_PapMDescription)
+     else if Ps_RichName='Pap_Results' then
+          SetFontColor(ButtonColor1,RichEdit_Results)  // pap
+     else if Ps_RichName='Pap_Comment' then
+          SetFontColor(ButtonColor1,RichEdit_PapComment)
+
+     else if Ps_RichName='Fluid_ClinicalFeatures' then
+          SetFontColor(ButtonColor1,RichEdit_FluidClinicalFeatures)
+     else if Ps_RichName='Fluid_MicroscopeDescription' then
+          SetFontColor(ButtonColor1,RichEdit_MicroscopicDescription)
+     else if Ps_RichName='Fluid_Diagnosis' then
+          SetFontColor(ButtonColor1,RichEdit_FluidDiagnosis)
+     else if Ps_RichName='Fluid_GrossAppearance' then
+          SetFontColor(ButtonColor1,RichEdit_GrossAppearance)
+     else if Ps_RichName='Fluid_Comment' then
+          SetFontColor(ButtonColor1,RichEdit_FluidComment)
+
+     else if Ps_RichName='USG_ClinicalFinding' then
+          SetFontColor(ButtonColor1,RichEdit_ClinicalFindings)
+     else if Ps_RichName='USG_SampleReceived' then
+          SetFontColor(ButtonColor1,RichEdit_Sample)
+     else if Ps_RichName='USG_MicroscopicDes' then
+          SetFontColor(ButtonColor1,RichEdit_Microscopic)
+     else if Ps_RichName='USG_Diagnosis' then                          //usg fnac
+          SetFontColor(ButtonColor1,RichEdit_Diag)
+     else if Ps_RichName='USG_Comment' then
+          SetFontColor(ButtonColor1,RichEdit_Com);
+
+
+
+End;
+
+procedure TForm_DefaultSetup.cb_FNACPeerEnter(Sender: TObject);
+begin
+     Ps_Richname:='Fnac_Peer';
+end;
+
+procedure TForm_DefaultSetup.ComboBox1Change(SEnder: TObject);
+begin
+     if Ps_RichName='Title' then
+     SetFontSize(ComboBox1,RichEdit_Title)
+     else if Ps_RichName='Default' then
+     //SetFontSize(ComboBox1,RichEdit_PapDiagnosis);
+     SetFontSize(ComboBox1,RichEdit_PapComment)
+     //SetFontSize(ComboBox1,RichEdit_PAPClinicalFeatures);
+     else if Ps_RichName='Surgical_MiscroscopicDescriptionS' then
+          SetFontSize(ComboBox1,RichEdit_SurgicalMicroscopic)
+     else if Ps_RichName='Surgical_Comment' then
+          SetFontSize(ComboBox1,RichEdit_SurgicalComment)
+     else if Ps_RichName='Surgical_ClinicalFeatures' then
+          SetFontSize(ComboBox1,RichEdit_SurgicalHistory)
+     else if Ps_RichName='Surgical_ClinicalFindings' then
+          SetFontSize(ComboBox1,RichEdit_SurClinicalFindings)
+     else if Ps_RichName='Surgical_GrossDescription' then
+          SetFontSize(ComboBox1,RichEdit_SurgicalGross)
+
+     else if Ps_RichName='Fnac_ClinicalFeatures' then
+          SetFontSize(ComboBox1,RichEdit_FnacClinicalFeatures)
+     else if Ps_RichName='Fnac_MiscroscopicDescription' then
+          SetFontSize(ComboBox1,RichEdit_FnacMicroscopic)
+     else if Ps_RichName='Fnac_Diagnosis' then                                 //fnac
+          SetFontSize(ComboBox1,RichEdit_Diagnosis)
+     else if Ps_RichName='Fnac_Comment' then
+          SetFontSize(ComboBox1,RichEdit_FnacComment)
+
+     else if Ps_RichName='Pap_Clinical' then
+          SetFontSize(ComboBox1,RichEdit_PAPClinicalFeatures)
+     else if Ps_RichName='Pap_GeneralCategorization' then
+          SetFontSize(ComboBox1,RichEdit_PapCategorization)
+     else if Ps_RichName='Pap_MiscroscopicDescription' then
+          SetFontSize(ComboBox1,RichEdit_PapMDescription)
+     else if Ps_RichName='Pap_Results' then
+          SetFontSize(ComboBox1,RichEdit_Results)  // pap
+     else if Ps_RichName='Pap_Comment' then
+          SetFontSize(ComboBox1,RichEdit_PapComment)
+
+          
+     else if Ps_RichName='Fluid_ClinicalFeatures' then
+          SetFontSize(ComboBox1,RichEdit_FluidClinicalFeatures)
+     else if Ps_RichName='Fluid_MicroscopeDescription' then
+          SetFontSize(ComboBox1,RichEdit_MicroscopicDescription)
+     else if Ps_RichName='Fluid_Diagnosis' then
+          SetFontSize(ComboBox1,RichEdit_FluidDiagnosis)
+     else if Ps_RichName='Fluid_GrossAppearance' then
+          SetFontSize(ComboBox1,RichEdit_GrossAppearance)
+     else if Ps_RichName='Fluid_Comment' then
+          SetFontSize(ComboBox1,RichEdit_FluidComment)
+
+     else if Ps_RichName='USG_ClinicalFinding' then
+          SetFontSize(ComboBox1,RichEdit_ClinicalFindings)
+     else if Ps_RichName='USG_SampleReceived' then
+          SetFontSize(ComboBox1,RichEdit_Sample)
+     else if Ps_RichName='USG_MicroscopicDes' then
+          SetFontSize(ComboBox1,RichEdit_Microscopic)
+     else if Ps_RichName='USG_Diagnosis' then                          //usg fnac
+          SetFontSize(ComboBox1,RichEdit_Diag)
+     else if Ps_RichName='USG_Comment' then
+          SetFontSize(ComboBox1,RichEdit_Com);
+
+
+
+
+End;
+
+procedure TForm_DefaultSetup.ComboBox2Change(Sender: TObject);
+begin
+      if Ps_RichName = 'Title' then
+          SetFontName(ComboBox2, RichEdit_Title)
+      else if Ps_RichName='Surgical_MiscroscopicDescriptionS' then
+          SetFontName(ComboBox2,RichEdit_SurgicalMicroscopic)
+     else if Ps_RichName='Surgical_Comment' then
+          SetFontName(ComboBox2,RichEdit_SurgicalComment)
+     else if Ps_RichName='Surgical_ClinicalFeatures' then
+          SetFontName(ComboBox2,RichEdit_SurgicalHistory)
+     else if Ps_RichName='Surgical_ClinicalFindings' then
+          SetFontName(ComboBox2,RichEdit_SurClinicalFindings)
+     else if Ps_RichName='Surgical_GrossDescription' then
+          SetFontName(ComboBox2,RichEdit_SurgicalGross);
+
+end;
+
+procedure TForm_DefaultSetup.DBLC_MsterFormatClick(Sender: TObject);
+var MASTERSETUPID:Integer;
+begin
+     if DBLC_MsterFormat.KeyValue=Null then
+     DBLC_MsterFormat.KeyValue:=-1
+     Else
+     Begin
+          With OraQuery_TestName do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               ParamByName('ID').AsString:=DBLC_MsterFormat.KeyValue;
+               Open;
+          End;
+     End;
+    { MASTERSETUPID:=OraQuery_master.Fieldbyname('MASE_MASTERSETUPID').asinteger;
+     if MASTERSETUPID=1 then
+     Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=True;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=False;
+          Panel_FluidDC.Visible:=false;
+          Panel_USGFNAC.Visible:=false;
+      End
+      Else if MASTERSETUPID=2 then
+      Begin
+          Panel_Pap.Visible:=True;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=false;
+          Panel_FluidDC.Visible:=false;
+          Panel_USGFNAC.Visible:=false;
+      End
+      Else if MASTERSETUPID=3 then
+      Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=false;
+          Panel_FluidDC.Visible:=true;
+          Panel_USGFNAC.Visible:=false;
+      End
+      Else if MASTERSETUPID=5 then
+      Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=true;
+          Panel_FluidDC.Visible:=false;
+          Panel_USGFNAC.Visible:=false;
+      End
+      Else if MASTERSETUPID=6 then
+      Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=true;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=false;
+          Panel_FluidDC.Visible:=false;
+          Panel_USGFNAC.Visible:=false;
+      End
+      Else if MASTERSETUPID=7 then
+      Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=true;
+          Panel_Fluid.Visible:=false;
+          Panel_FluidDC.Visible:=false;
+          Panel_USGFNAC.Visible:=false;
+      End
+      Else if MASTERSETUPID=8 then
+      Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=false;
+          Panel_FluidDC.Visible:=false;
+          Panel_USGFNAC.Visible:=True;
+      End;  }
+
+
+end;
+
+procedure TForm_DefaultSetup.DBLC_MsterFormatKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          DBLC_TestName.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.DBLC_ReportTypeClick(SEnder: TObject);
+begin
+     if DBLC_ReportType.KeyValue=null then
+     DBLC_ReportType.KeyValue:=-1;
+
+     if pi_panelid=2 then
+     begin
+          With OraQuery_blank do
+          begin
+               Close;
+               Sql.Clear;
+               Sql.ADD('Select * from HC_CLSP_CLINICALSETUPPAP');
+               Sql.Add('Where CLSP_MASTERTESTWISEID='+IntToStr(DBLC_TestName.KeyValue));
+               Sql.Add('and CLSP_ISDEFAULTFINDINGS=''Y''');
+               Open;
+          end;
+          {if  OraQuery_Blank.RecordCount >0 then
+               CheckBox_Default.Visible:=False
+          else }
+               CheckBox_Default.Visible:=True;
+
+          with oraQuery_blank do
+          begin
+               close;
+               //Session:=Dm_Hospital.Db;
+               sql.Clear;
+               SQL.Add('select * from HC_CLSP_CLINICALSETUPPAP');
+               SQL.Add('Where CLSP_MASTERTESTWISEID='+inttostr(DBLC_TestName.KeyValue));
+               SQL.Add('And CLSP_REPORTFORMATID='+IntToStr(DBLC_ReportType.KeyValue));
+               //sql.SaveToFile('D:\reporttitle.txt');
+               open;
+          End;
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSP_REPORTTITLE').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_Title.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSP_GENCATEGORY').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_PapCategorization.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSP_CLINICALFEATURES').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_PAPClinicalFeatures.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSP_MISCROSCOPIC').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_PapMDescription.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSP_COMMENT').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_PapComment.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSP_RESULTS').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_Results.Lines.LoadFromFile('tt.txt');
+
+
+
+          //RichEdit_Title.Text:=OraQuery_Blank.FieldByName('CLSP_REPORTTITLE').AsString;
+          Edit_PapAdequacy.Text:=OraQuery_Blank.FieldByName('CLSP_ADEQUACY').AsString;
+          Edit_SpecimenType.Text:=OraQuery_Blank.FieldByName('CLSP_SPECIMEN').AsString;
+          //Edit_PapAdequacy.Text:=OraQuery_Blank.FieldByName('CLSP_ADEQUACY').AsString;
+          //RichEdit_PapCategorization.Text:=OraQuery_Blank.FieldByName('CLSP_GENCATEGORY').AsString;
+          //RichEdit_PAPClinicalFeatures.Text:=OraQuery_Blank.FieldByName('CLSP_CLINICALFEATURES').AsString;
+          //RichEdit_PapMDescription.Text:=OraQuery_Blank.FieldByName('CLSP_MISCROSCOPIC').AsString;
+          //RichEdit_PapComment.Text:=OraQuery_Blank.FieldByName('CLSP_COMMENT').AsString;
+          //RichEdit_Results.Text:=OraQuery_Blank.FieldByName('CLSP_RESULTS').AsString;
+
+          if oraquery_blank.fieldbyname('CLSP_ISDEFAULTFINDINGS').AsString='Y' then
+               begin
+                    CheckBox_Default.Visible:=True;
+                    CheckBox_Default.Checked:=True;
+               end
+               else
+                    CheckBox_Default.Checked:=False;
+               if OraQuery_Blank.FieldByName('CLSP_ISACTIVE').AsString='Y' then
+                    CheckBox_Active.Checked:=True
+               else
+                    CheckBox_Active.Checked:=False;
+     End
+     else if pi_panelid=4 then
+     //else if DBLC_MsterFormat.KeyValue=5 then
+     begin
+          With OraQuery_blank do
+          begin
+               Close;
+               Sql.Clear;
+               Sql.ADD('Select * from HC_CSFM_CLINICALSETUPFLMALIGN');
+               Sql.Add('Where CSFM_MASTERTESTWISEID='+IntToStr(DBLC_TestName.KeyValue));
+               Sql.Add('and CSFM_ISDEFAULTFINDINGS=''Y''');
+               Open;
+          end;
+          {if  OraQuery_Blank.RecordCount >0 then
+               CheckBox_Default.Visible:=False
+          else }
+               CheckBox_Default.Visible:=True;
+
+          with OraQuery_Blank do
+          begin
+               Sql.Clear;
+               Sql.Add('Select * from HC_CSFM_CLINICALSETUPFLMALIGN');
+               sql.add('Where CSFM_MASTERTESTWISEID='+inttostr(dblc_testname.keyvalue));
+               sql.add('And CSFM_REPORTFORMATID='+inttostr(dblc_reporttype.keyvalue));
+               Open;
+          end;
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CSFM_REPORTTITLE').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_Title.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CSFM_CLINICALFEATURES').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_FluidClinicalFeatures.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CSFM_GROSSAPPEARANCE').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_GrossAppearance.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CSFM_MICROSCOPICDESCRIPTION').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_MicroscopicDescription.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CSFM_DIAGNOSIS').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_FluidDiagnosis.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CSFM_COMMENT').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_FluidComment.Lines.LoadFromFile('tt.txt');
+
+               //RichEdit_Title.Text:=oraQuery_blank.fieldbyname('CSFM_REPORTTITLE').asstring;
+               //RichEdit_FluidClinicalFeatures.Text:=oraQuery_blank.fieldbyname('CSFM_CLINICALFEATURES').asstring;
+               //RichEdit_GrossAppearance.Text:=oraQuery_blank.fieldbyname('CSFM_GROSSAPPEARANCE').asstring;
+               //RichEdit_MicroscopicDescription.Text:=oraQuery_blank.fieldbyname('CSFM_MICROSCOPICDESCRIPTION').asstring;
+               //RichEdit_FluidDiagnosis.Text:=oraQuery_blank.fieldbyname('CSFM_DIAGNOSIS').asstring;
+               //RichEdit_FluidComment.Text:=oraQuery_blank.fieldbyname('CSFM_COMMENT').asstring;
+
+               Edit_SpecimenReceived.Text:=oraQuery_blank.fieldbyname('CSFM_SPECIMENRECEIVED').asstring;
+               EditAmountOfFluid.Text:= oraQuery_blank.fieldbyname('CSFM_AMOUNTOFFLUID').asstring;
+
+               if oraquery_blank.fieldbyname('CSFM_ISDEFAULTFINDINGS').AsString='Y' then
+               begin
+                    CheckBox_Default.Visible:=True;
+                    CheckBox_Default.Checked:=True;
+               end
+               else
+                    CheckBox_Default.Checked:=False;
+               if OraQuery_Blank.FieldByName('CSFM_ISACTIVE').AsString='Y' then
+                    CheckBox_Active.Checked:=True
+               else
+                    CheckBox_Active.Checked:=False;
+     end
+     else if pi_panelid=3 then
+     begin
+          With OraQuery_blank do
+          begin
+               Close;
+               Sql.Clear;
+               Sql.ADD('Select * from HC_CSFD_CLINICALSETUPFLUIDDC');
+               Sql.Add('Where CSFD_MASTERTESTWISEID='+IntToStr(DBLC_TestName.KeyValue));
+               Sql.Add('and CSFD_ISDEFAULTFINDINGS=''Y''');
+               Open;
+          end;
+          {if  OraQuery_Blank.RecordCount >0 then
+               CheckBox_Default.Visible:=False
+          else}
+               CheckBox_Default.Visible:=True;
+
+
+
+          with OraQuery_Blank do
+          begin
+               Sql.Clear;
+               Sql.Add('Select * from HC_CSFD_CLINICALSETUPFLUIDDC');
+               sql.add('Where CSFD_MASTERTESTWISEID='+inttostr(dblc_testname.keyvalue));
+               sql.add('And CSFD_REPORTFORMATID='+inttostr(dblc_reporttype.keyvalue));
+               Open;
+          end;
+               Edit_TypeSampleReceived.Text:=oraQuery_blank.fieldbyname('CSFD_SAMPLERECEIVED').asstring;
+               Edit_Neutrophil.Text:=oraQuery_blank.fieldbyname('CSFD_NEUTROPHIL').asstring;
+               Edit_Lymphocyte.Text:=oraQuery_blank.fieldbyname('CSFD_LYMPHOCYTE').asstring;
+               Edit_Eosinophil.Text:=oraQuery_blank.fieldbyname('CSFD_EOSINOPHIL').asstring;
+               Edit_MastCell.Text:= oraQuery_blank.fieldbyname('CSFD_MASTCELL').asstring;
+               Edit_PlasmaCell.Text:=oraQuery_blank.fieldbyname('CSFD_PLASMACELL').asstring;
+               Edit_Macrophage.Text:=oraQuery_blank.fieldbyname('CSFD_MARCOPHAGE').asstring;
+               //RichEdit_Title.Text:=oraQuery_blank.fieldbyname('CSFD_REPORTTITLE').asstring;
+               RichEdit_OtherFindings.Text:=oraQuery_blank.fieldbyname('CSFD_OTHERFINDINGS').asstring;
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CSFD_REPORTTITLE').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_Title.Lines.LoadFromFile('tt.txt');
+
+               if oraquery_blank.fieldbyname('CSFD_ISDEFAULTFINDINGS').AsString='Y' then
+               begin
+                    CheckBox_Default.Visible:=True;
+                    CheckBox_Default.Checked:=True;
+               end
+               else
+                    CheckBox_Default.Checked:=False;
+               if OraQuery_Blank.FieldByName('CSFD_ISACTIVE').AsString='Y' then
+                    CheckBox_Active.Checked:=True
+               else
+                    CheckBox_Active.Checked:=False;
+
+     end
+     else if pi_panelid=1 then
+     begin
+          with oraQuery_blank do
+          begin
+              close;
+              sql.clear;
+              sql.add('Select * from HC_CLSF_CLINICALSETUPFNAC');
+              sql.add('Where CLSF_MASTERTESTWISEID='+inttostr(dblc_testname.keyvalue));
+              sql.Add('and CLSF_ISDEFAULTFINDINGS=''Y''');
+              //sql.savetofile('D:\fnactitle.txt');
+              open;
+          end;
+          {if  OraQuery_Blank.RecordCount >0 then
+               CheckBox_Default.Visible:=False
+          else }
+               CheckBox_Default.Visible:=True;
+
+
+          with oraQuery_blank do
+          begin
+              close;
+              sql.clear;
+              sql.add('Select * from HC_CLSF_CLINICALSETUPFNAC');
+              sql.add('Where CLSF_MASTERTESTWISEID='+inttostr(dblc_testname.keyvalue));
+              sql.add('And CLSF_REPORTFORMATID='+inttostr(dblc_reporttype.keyvalue));
+              //sql.savetofile('D:\fnactitle.txt');
+              open;
+            end;
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSF_REPORTTITLE').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_Title.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSF_CLINICALFEATURES').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_FnacClinicalFeatures.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSF_MICRODESCRIPTION').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_fnacmicroscopic.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSF_COMMENT').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_fnaccomment.Lines.LoadFromFile('tt.txt');
+
+               Memo.Lines.Clear;
+               Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSF_DIAGNOSIS').AsString;
+               memo.Lines.SaveToFile('tt.txt');
+               RichEdit_Diagnosis.Lines.LoadFromFile('tt.txt');
+
+               cb_FNACPeer.Text:=OraQuery_Blank.fieldbyname('CLSF_PeerReview').AsString;
+
+              //RichEdit_Title.Text:=oraQuery_blank.fieldbyname('CLSF_REPORTTITLE').asstring;
+              //RichEdit_FnacClinicalFeatures.Text:=oraQuery_blank.fieldbyname('CLSF_CLINICALFEATURES').asstring;
+              //RichEdit_fnacDiagnosis.Text:=oraQuery_blank.fieldbyname('CLSF_CLINICALPRESENTATION').asstring;
+              //RichEdit_fnacmicroscopic.Text:=oraQuery_blank.fieldbyname('CLSF_MICRODESCRIPTION').asstring;
+              //RichEdit_fnaccomment.Text:=oraQuery_blank.fieldbyname('CLSF_COMMENT').asstring;
+              //RichEdit_Diagnosis.Text:=oraQuery_blank.fieldbyname('CLSF_DIAGNOSIS').asstring;
+
+              Edit_SiteOfAspiration.Text:=oraQuery_blank.fieldbyname('CLSF_SITEOFASPIRATION').asstring;
+              Edit_TypeofAspitate.Text:=oraQuery_blank.fieldbyname('CLSF_TYPEOFASPIRATION').asstring;
+
+              if oraquery_blank.fieldbyname('CLSF_ISDEFAULTFINDINGS').AsString='Y' then
+              begin
+                    CheckBox_Default.Visible:=True;
+                    CheckBox_Default.Checked:=True;
+              end
+              else
+                    CheckBox_Default.Checked:=False;
+              if OraQuery_Blank.FieldByName('CLSF_ISACTIVE').AsString='Y' then
+                    CheckBox_Active.Checked:=True
+              else
+                    CheckBox_Active.Checked:=False;
+     end
+     Else if pi_panelid=5 {((DBLC_TestName.KeyValue=300) or (DBLC_TestName.KeyValue=302) or (DBLC_TestName.KeyValue=298)
+          or (DBLC_TestName.KeyValue=575) or (DBLC_TestName.KeyValue=848) or (DBLC_TestName.KeyValue=847) or (DBLC_TestName.KeyValue=304) or (DBLC_TestName.KeyValue=755))} then
+     Begin
+          With OraQuery_blank do
+          begin
+               Close;
+               Sql.Clear;
+               Sql.ADD('Select * from HC_CLSS_CLINICALSETUPSURGICAL');
+               Sql.Add('Where CLSS_MASTERTESTWISEID='+IntToStr(DBLC_TestName.KeyValue));
+               Sql.Add('and CLSS_ISDEFAULTFINDINGS=''Y''');
+               Open;
+          end;
+          {if  OraQuery_Blank.RecordCount >0 then
+               CheckBox_Default.Visible:=False
+          else}
+               CheckBox_Default.Visible:=True;
+
+
+          With oraQuery_blank do
+          begin
+              Close;
+              Sql.Clear;
+              Sql.Add('Select * from HC_CLSS_CLINICALSETUPSURGICAL');
+              Sql.Add('Where CLSS_MASTERTESTWISEID='+inttostr(dblc_testname.keyvalue));
+              Sql.Add('And CLSS_REPORTFORMATID='+inttostr(dblc_reporttype.keyvalue));
+              //Sql.savetofile('D:\surgicaltitle.txt');
+              Open;
+          end;
+         { RichEdit_Title.Text:=OraQuery_Blank.FieldByName('CLSS_REPORTTITLE').AsString;
+          Edit_SurgicalBiopsy.Text:= OraQuery_Blank.FieldByName('CLSS_BIOPSY').AsString;
+          RichEdit_SpecimenReceived.Text:=OraQuery_Blank.FieldByName('CLSS_SPECIMENRECEIVED').AsString;
+          RichEdit_SurgicalHistory.Text:=OraQuery_Blank.FieldByName('clss_clinicalhistory').AsString;
+          RichEdit_SurgicalGross.Text:=OraQuery_Blank.FieldByName('CLSS_GROSSDESCRIPTION').AsString;
+          RichEdit_SurgicalMicroscopic.Text:=OraQuery_Blank.FieldByName('CLSS_MICROSCOPIC').AsString;
+          RichEdit_SurgicalDiagnosis.Text:=OraQuery_Blank.FieldByName('CLSS_DIAGNOSIS').AsString;
+          RichEdit_SurgicalComment.Text:=OraQuery_Blank.FieldByName('CLSS_COMMENT').AsString;
+          RichEdit_SurClinicalFindings.Text:=OraQuery_Blank.FieldByName('CLSS_CLINICALFINDINGS').AsString; }
+          if oraquery_blank.fieldbyname('CLSS_ISDEFAULTFINDINGS').AsString='Y' then
+               begin
+                    CheckBox_Default.Visible:=True;
+                    CheckBox_Default.Checked:=True;
+               end
+          else
+               CheckBox_Default.Checked:=False;
+          if OraQuery_Blank.FieldByName('CLSS_ISACTIVE').AsString='Y' then
+               CheckBox_Active.Checked:=True
+          else
+               CheckBox_Active.Checked:=False;
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSS_CLINICALFEATURES').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_SurClinicalFindings.Lines.LoadFromFile('tt.txt');
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSS_REPORTTITLE').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_Title.Lines.LoadFromFile('tt.txt');
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSS_MICROSCOPIC').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_SurgicalMicroscopic.Lines.LoadFromFile('tt.txt');
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSS_COMMENT').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_SurgicalComment.Lines.LoadFromFile('tt.txt');
+          {
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('clss_clinicalhistory').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_SurgicalHistory.Lines.LoadFromFile('tt.txt');  }
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSS_DIAGNOSIS').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_SurgicalDiagnosis.Lines.LoadFromFile('tt.txt');
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSS_SPECIMENRECEIVED').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_SpecimenReceived.Lines.LoadFromFile('tt.txt');
+
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSS_GROSSDESCRIPTION').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_SurgicalGross.Lines.LoadFromFile('tt.txt');
+
+          Edit_Stain.Text:=oraQuery_blank.fieldbyname('CLSS_STAIN').asstring;
+     End
+     Else if pi_panelid=7 then
+     begin
+          With OraQuery_blank do
+          begin
+               Close;
+               Sql.Clear;
+               Sql.ADD('Select * from HC_CUGF_CLINICALSETUPUSGFNAC');
+               Sql.Add('Where CUGF_TESTNAMEID='+IntToStr(DBLC_TestName.KeyValue));
+               Sql.Add('and CUGF_ISDEFAULTFINDINGS=''Y''');
+               Open;
+          end;
+          {if  OraQuery_Blank.RecordCount >0 then
+               CheckBox_Default.Visible:=False
+          else }
+               CheckBox_Default.Visible:=True;
+
+
+          with OraQuery_blank do
+          begin
+               Close;
+               Sql.Clear;
+               Sql.Add('select * from HC_CUGF_CLINICALSETUPUSGFNAC');
+               Sql.Add('where CUGF_TESTNAMEID='+IntToStr(DBLC_TestName.KeyValue));
+               Sql.Add('And CUGF_REPORTFORMATID='+IntToStr(DBLC_ReportType.KeyValue));
+               //Sql.Savetofile('D:\om.txt');
+               Open;
+          end;
+
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CUGF_REPORTTITLE').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_Title.Lines.LoadFromFile('tt.txt');
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CUGF_CLINICALFINDINGD').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_ClinicalFindings.Lines.LoadFromFile('tt.txt');
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CUGF_SAMPLERECEIVED').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_Sample.Lines.LoadFromFile('tt.txt');
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CUGF_MICROSCOPIC').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_Microscopic.Lines.LoadFromFile('tt.txt');
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CUGF_DAIGNOSIS').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_Diag.Lines.LoadFromFile('tt.txt');
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CUGF_COMMENTS').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_Com.Lines.LoadFromFile('tt.txt');
+
+          Edit_SOAspiration.Text:= oraQuery_Blank.FieldByName('CUGF_SITEOFASPIRATION').AsString;
+          Edit_TypeofAspiration.Text:= OraQuery_Blank.FieldByName('CUGF_TYPEOFASPIRATION').AsString;
+          Edit_AirDried.Text:=OraQuery_Blank.FieldByName('CUGF_AIRDRIED').AsString;
+          Edit_AlcoholWet.Text:=OraQuery_Blank.FieldByName('CUGF_ALCOHOLWET').AsString;
+          Edit_AdequateCellular.Text:=OraQuery_Blank.FieldByName('CUGF_ADEQUATECELLULAR').AsString;
+          //RichEdit_Title.Text:=OraQuery_Blank.FieldByName('CUGF_REPORTTITLE').AsString;
+          //RichEdit_ClinicalFindings.Text:=OraQuery_Blank.FieldByName('CUGF_CLINICALFINDINGD').AsString;
+          //RichEdit_Sample.Text:=OraQuery_Blank.FieldByName('CUGF_SAMPLERECEIVED').AsString;
+          //RichEdit_Microscopic.Text:=OraQuery_Blank.FieldByName('CUGF_MICROSCOPIC').AsString;
+          //RichEdit_Diag.Text:=OraQuery_Blank.FieldByName('CUGF_DAIGNOSIS').AsString;
+          //RichEdit_Com.Text:=OraQuery_Blank.FieldByName('CUGF_COMMENTS').AsString;
+
+          if oraquery_blank.fieldbyname('CUGF_ISDEFAULTFINDINGS').AsString='Y' then
+               begin
+                    CheckBox_Default.Visible:=True;
+                    CheckBox_Default.Checked:=True;
+               end
+          else
+               CheckBox_Default.Checked:=False;
+          if OraQuery_Blank.FieldByName('CUGF_ISACTIVE').AsString='Y' then
+               CheckBox_Active.Checked:=True
+          else
+               CheckBox_Active.Checked:=False;
+     end
+     Else if pi_panelid=6 then
+     Begin
+          With OraQuery_blank do
+          begin
+               Close;
+               Sql.Clear;
+               Sql.ADD('Select * from HC_CLSB_CLINICALSETUPBONEMARO');
+               Sql.Add('Where CLSB_MASTERTESTWISEID='+IntToStr(DBLC_TestName.KeyValue));
+               Sql.Add('and CLSB_ISDEFAULTFINDINGS=''Y''');
+               Open;
+          end;
+          {if  OraQuery_Blank.RecordCount >0 then
+               CheckBox_Default.Visible:=False
+          else}
+               CheckBox_Default.Visible:=True;
+
+
+          With OraQuery_blank do
+          begin
+               Close;
+               Sql.Clear;
+               Sql.ADD('Select * from HC_CLSB_CLINICALSETUPBONEMARO');
+               Sql.Add('Where CLSB_MASTERTESTWISEID='+IntToStr(DBLC_TestName.KeyValue));
+               Sql.Add('and CLSB_REPORTFORMATID='+IntToStr(DBLC_ReportType.KeyValue));
+               //Sql.SaveToFile('d:\BoneReport.txt');
+               Open;
+          end;
+          //RichEdit_Title.Text:=OraQuery_Blank.FieldByName('CLSB_REPORTTITLE').AsString;
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CLSB_REPORTTITLE').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_Title.Lines.LoadFromFile('tt.txt');
+
+          Edit_Cellularity.Text:=OraQuery_Blank.FieldByName('CLSB_CELLULARITY').AsString;
+          Richedit_Adequacy.Text:=OraQuery_Blank.FieldByName('CLSB_ADEQUACY').AsString;
+          //RichEdit_ClinicalDetails.Text:=OraQuery_Blank.FieldByName('BONEMARROW_CLINICALDETAIL').AsString;
+          //RichEdit_Hemogram.Text:=OraQuery_Blank.FieldByName('BONEMARROW_HEMORAGE').AsString;
+          //RichEdit_PeripheralSmear.Text:=OraQuery_Blank.FieldByName('BONEMARROW_PHERIPHERAL').AsString;
+          Edit_BoneSiteOfAspiration.Text:=OraQuery_Blank.FieldByName('CLSB_SITEASPIRATION').AsString;
+          Edit_Myelopoiesis.Text:=OraQuery_Blank.FieldByName('CLSB_MYELOPOIESIS').AsString;
+          RichEdit_Erythropoiesis.Text:=OraQuery_Blank.FieldByName('CLSB_ERYTHROPOIESIS').AsString;
+          Edit_Lymphopoiesis.Text:=OraQuery_Blank.FieldByName('CLSB_LYMPHOPOIESIS').AsString;
+          Edit_Megakaryopoiesis.Text:=OraQuery_Blank.FieldByName('CLSB_MEGAKARYOPOIESIS').AsString;
+          Edit_PlasmaCells.Text:=OraQuery_Blank.FieldByName('CLSB_PLASMACELL').AsString;
+          //Edit_Histiocytes.Text:=OraQuery_Blank.FieldByName('BONEMARROW_HISTIOCYTES').AsString;
+          // Edit_Parasite.Text:=OraQuery_Blank.FieldByName('BONEMARROW_PARASITE').AsString;
+          RichEdit_AbnormalCells.Text:=OraQuery_Blank.FieldByName('CLSB_ABNORMALCELL').AsString;
+          //Edit_IronStore.Text:=OraQuery_Blank.FieldByName('BONEMARROW_IRONSTORE').AsString;
+          //Edit_SpecialStain.Text:=OraQuery_Blank.FieldByName('BONEMARROW_OTHERSTAIN').AsString;
+          // Edit_Impression.Text:=OraQuery_Blank.FieldByName('BONEMARROW_IMPRESSION').AsString;
+          Edit_BonemarrowComment.Text:=OraQuery_Blank.FieldByName('CLSB_COMMENT').AsString;
+          RichEdit_CivilianFeatures.Text:=OraQuery_Blank.FieldByName('CLSB_CIVILIANFEATURES').AsString;
+          Edit_Rbc.Text:=OraQuery_Blank.FieldByName('CLSB_RBC').AsString;
+          Edit_wbc.Text:=OraQuery_Blank.FieldByName('CLSB_WBC').AsString;
+          Edit_Platelets.Text:=OraQuery_Blank.FieldByName('CLSB_PLATELETS').AsString;
+          Edit_Hemoparasite.Text:=OraQuery_Blank.FieldByName('CLSB_HEMOPARASITE').AsString;
+          Edit_MERatio.Text:=OraQuery_Blank.FieldByName('CLSB_MERATIO').AsString;
+          RichEdit_Diagonsis.Text:=OraQuery_Blank.FieldByName('CLSB_DIAGONSIS').AsString;
+          Edit_SpecialStain.Text:=OraQuery_Blank.FieldByName('CLSB_SPECIALSTAIN').AsString;
+          Edit_Myeologram.Text:=OraQuery_Blank.FieldByName('CLSB_MYEOLOGRAM').AsString;
+          Edit_BonemarrowAspiration.text:=oraquery_blank.fieldbyname('CLSB_BONEMARROWASPIRATION').asstring;
+          if oraquery_blank.fieldbyname('CLSB_ISDEFAULTFINDINGS').AsString='Y' then
+               begin
+                    CheckBox_Default.Visible:=True;
+                    CheckBox_Default.Checked:=True;
+               end
+          else
+               CheckBox_Default.Checked:=False;
+          if OraQuery_Blank.FieldByName('CLSB_ISACTIVE').AsString='Y' then
+               CheckBox_Active.Checked:=True
+          else
+               CheckBox_Active.Checked:=False;
+
+     End
+     else
+     begin
+          With OraQuery_blank do
+          begin
+               Close;
+               Sql.Clear;
+               Sql.ADD('Select * from HC_CSPB_CLINICALSETUPPBS');
+               Sql.Add('Where CSPB_TESTNAMEID='+IntToStr(DBLC_TestName.KeyValue));
+               Sql.Add('and CSPB_ISDEFAULTFINDINGS=''Y''');
+               Open;
+          end;
+         { if  OraQuery_Blank.RecordCount >0 then
+               CheckBox_Default.Visible:=False
+          else}
+               CheckBox_Default.Visible:=True;
+
+          with OraQuery_blank do
+          begin
+               Close;
+               Sql.Clear;
+               Sql.ADD('Select * from HC_CSPB_CLINICALSETUPPBS');
+               Sql.Add('Where CSPB_TESTNAMEID='+IntToStr(DBLC_TestName.KeyValue));
+               Sql.Add('and CSPB_REPORTFORMATID='+IntToStr(DBLC_ReportType.KeyValue));
+               Open;
+          end;
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CSPB_REPORTTITLE').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_Title.Lines.LoadFromFile('tt.txt');
+
+          Memo.Lines.Clear;
+          Memo.Lines.Text:=OraQuery_Blank.fieldbyname('CSPB_COMMENT').AsString;
+          memo.Lines.SaveToFile('tt.txt');
+          RichEdit_Others.Lines.LoadFromFile('tt.txt');
+
+          Edit_RBCs.Text:=OraQuery_Blank.FieldByName('CSPB_RBC').AsString;
+          Edit_WBCs.Text:=OraQuery_Blank.FieldByName('CSPB_WBC').AsString;
+          Edit_PlateletsPBS.Text:=OraQuery_Blank.FieldByName('CSPB_PLATELETS').AsString;
+          Edit_ParasitePBS.Text:=OraQuery_Blank.FieldByName('CSPB_PARASITE').AsString;
+          Edit_ReticulocytesPBS.Text:=OraQuery_Blank.FieldByName('CSPB_RETICULOCYTES').AsString;
+
+           if oraquery_blank.fieldbyname('CSPB_ISDEFAULTFINDINGS').AsString='Y' then
+               begin
+                    CheckBox_Default.Visible:=True;
+                    CheckBox_Default.Checked:=True;
+               end
+          else
+               CheckBox_Default.Checked:=False;
+          if OraQuery_Blank.FieldByName('CSPB_ISACTIVE').AsString='Y' then
+               CheckBox_Active.Checked:=True
+          else
+               CheckBox_Active.Checked:=False;
+
+     end;
+End;
+
+procedure TForm_DefaultSetup.DBLC_ReportTypeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if Key=#13 then
+     begin
+          RichEdit_Title.SetFocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.DBLC_TestNameClick(SEnder: TObject);
+Var
+  TESTNAMEID:integer;
+  TESTNAMECODE:string;
+Begin
+     if DBLC_TestName.KeyValue=Null then
+     DBLC_TestName.KeyValue:=-1
+     Else
+     Begin
+          With OraQuery_ReportFormat do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+              // ParamByName('ID').AsString:=DBLC_TestName.KeyValue;
+              sql[1]:= ' where testnameid='+intToStr(DBLC_TestName.KeyValue);
+              Open;
+          End;
+     End;
+     with Query_Blank do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          SQL.Add('select TWMS_PANELID from hc_twms_testwisemastersetup ');
+          sql.Add('where TWMS_TESTNAMEID='+IntToStr(DBLC_TestName.KeyValue));
+          Open;
+     end;
+     pi_panelid:=Query_Blank.FieldByName('twms_panelid').AsInteger;
+     if pi_panelid=1 then
+     Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=True;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=False;
+          Panel_FluidDC.Visible:=false;
+          Panel_USGFNAC.Visible:=false;
+          Panel_PBS.Visible:=false;
+     End
+     Else if pi_panelid=2 then
+     Begin
+          Panel_Pap.Visible:=True;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=false;
+          Panel_FluidDC.Visible:=false;
+          Panel_USGFNAC.Visible:=false;
+          Panel_PBS.Visible:=false;
+     End
+     Else if pi_panelid=3 then
+     Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=false;
+          Panel_FluidDC.Visible:=true;
+          Panel_USGFNAC.Visible:=false;
+          Panel_PBS.Visible:=false;
+     End
+     Else if pi_panelid=4 then
+     Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=true;
+          Panel_FluidDC.Visible:=false;
+          Panel_USGFNAC.Visible:=false;
+          Panel_PBS.Visible:=false;
+     End
+     Else if pi_panelid=5 then
+     Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=true;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=false;
+          Panel_FluidDC.Visible:=false;
+          Panel_USGFNAC.Visible:=false;
+          Panel_PBS.Visible:=false;
+     End
+     Else if pi_panelid=6 then
+     Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=true;
+          Panel_Fluid.Visible:=false;
+          Panel_FluidDC.Visible:=false;
+          Panel_USGFNAC.Visible:=false;
+          Panel_PBS.Visible:=false;
+     End
+     Else if pi_panelid=7 then
+     Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=false;
+          Panel_FluidDC.Visible:=false;
+          Panel_PBS.Visible:=false;
+          Panel_USGFNAC.Visible:=True;
+     End
+     else if pi_panelid=8 then
+     begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=false;
+          Panel_FluidDC.Visible:=false;
+          Panel_USGFNAC.Visible:=false;
+          Panel_PBS.Visible:=True;
+     end;
+
+
+     //TESTNAMEID:=oraQuery_TestName.Fieldbyname('TESTNAMEID').asinteger;
+     { TESTNAMECODE:=oraQuery_TestName.Fieldbyname('TESTNAMECODE').asstring;
+      if TESTNAMECODE='PAPS' then
+      Begin
+        Panel_Pap.Visible:=True;
+        Panel_Fnac.Visible:=False;
+        Panel_Surgical.Visible:=False;
+        Panel_Bonemarrow.Visible:=False;
+        Panel_Fluid.Visible:=false;
+        Panel_FluidDC.Visible:=false;
+      End
+      Else if (TESTNAMECODE='FNAC')  or (TESTNAMECODE='UL16') or (TESTNAMECODE='UL17') then
+      Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=True;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=False;
+          Panel_FluidDC.Visible:=false;
+      End
+      Else if TESTNAMECODE='CY05' then
+      Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=true;
+          Panel_FluidDC.Visible:=false;
+      End
+      Else if TESTNAMECODE='BF77' then
+      Begin
+          Panel_Pap.Visible:=False;
+          Panel_Fnac.Visible:=False;
+          Panel_Surgical.Visible:=False;
+          Panel_Bonemarrow.Visible:=False;
+          Panel_Fluid.Visible:=false;
+          Panel_FluidDC.Visible:=true;
+      End
+      Else if ((TESTNAMECODE ='HS01') or (testnamecode='HS02')or (TESTNAMECODE ='HS03')or (TESTNAMECODE ='HS04')
+      or (TESTNAMECODE ='HS04') or (TESTNAMECODE ='HS05') or (TESTNAMECODE ='HS06') or (TESTNAMECODE ='HS07')or (TESTNAMECODE ='HS08')) then
+      Begin
+        Panel_Pap.Visible:=False;
+        Panel_Fnac.Visible:=False;
+        Panel_Surgical.Visible:=True;
+        Panel_Bonemarrow.Visible:=False;
+      End
+      Else
+      Begin
+        Panel_Pap.Visible:=False;
+        Panel_Fnac.Visible:=False;
+        Panel_Surgical.Visible:=False;
+        Panel_Bonemarrow.Visible:=True;
+      End;
+      RichEdit_Title.Lines.Clear;
+      //RichEdit_PapDiagnosis.Lines.Clear;
+      RichEdit_PapComment.Lines.Clear;
+      RichEdit_PAPClinicalFeatures.Lines.Clear;
+
+      Edit_PapAdequacy.Clear;
+      //Edit_PapReason.Clear;
+     // Edit_PapCategorization.Clear;
+     // Edit_PapSiteOfSampling.Clear;
+
+      Edit_Cellularity.Clear;  }
+
+End;
+
+procedure TForm_DefaultSetup.DBLC_TestNameKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          DBLC_ReportType.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.EditAmountOfFluidEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_AdequateCellularKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_TypeofAspiration.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_AirDriedKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_AlcoholWet.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_AlcoholWetKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_AdequateCellular.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_BonemarrowAspirationEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_BonemarrowAspirationKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_BoneSiteOfAspiration.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_BoneMarrowCommentEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_BoneSiteOfAspirationEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_BoneSiteOfAspirationKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          RichEdit_Adequacy.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_CellularityEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_CellularityKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_MERatio.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_EosinophilEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_EosinophilKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_MastCell.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_FindingTitleExit(SEnder: TObject);
+Begin
+     if PbIsNew then
+     // RichEdit_PapDiagnosis.Text:=RichEdit_PapDiagnosis.Text;
+     RichEdit_PAPClinicalFeatures.Text:=RichEdit_PAPClinicalFeatures.Text;
+     RichEdit_PapComment.Text:=RichEdit_PapComment.Text;
+     //Pi_Length:=length(RichEdit_Title.text);
+End;
+
+procedure TForm_DefaultSetup.Edit_HemoparasiteEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_HemoparasiteKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_BonemarrowAspiration.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_LymphocyteEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_LymphocyteKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_Eosinophil.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_LymphopoiesisEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_LymphopoiesisKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_PlasmaCells.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_MacrophageEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_MacrophageKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          RichEdit_OtherFindings.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_MastCellEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_MastCellKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_PlasmaCell.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_MegakaryopoiesisEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_MegakaryopoiesisKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_Lymphopoiesis.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_MERatioEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_MERatioKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_Myelopoiesis.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_MyelopoiesisKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          RichEdit_Erythropoiesis.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_NeutrophilEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_NeutrophilKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_Lymphocyte.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_PapAdequacyEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_PlasmaCellEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_PlasmaCellKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_Macrophage.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_PlasmaCellsKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          RichEdit_AbnormalCells.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_PlateletsEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_PlateletsKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_Hemoparasite.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_RbcEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_RbcKeyPress(Sender: TObject; var Key: Char);
+begin
+     if KEY=#13 then
+     BEGIN
+          Edit_Wbc.SETFOCUS;
+     END;
+end;
+
+procedure TForm_DefaultSetup.Edit_SiteOfAspirationEnter(Sender: TObject);
+begin
+          Ps_RichName:='Fnac_SiteOfAspiration';
+end;
+
+procedure TForm_DefaultSetup.Edit_SOAspirationEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_SOAspirationKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_AirDried.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_SpecialStainEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_SpecialStainKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          RichEdit_Diagonsis.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_SpecimenReceivedEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_SpecimenTypeEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_StainEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_TypeofAspirationEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_TypeofAspirationKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          RichEdit_Microscopic.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_TypeofAspitateEnter(Sender: TObject);
+begin
+          Ps_RichName:='Fnac_TypeOfAspiration';
+end;
+
+procedure TForm_DefaultSetup.Edit_TypeSampleReceivedEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_TypeSampleReceivedKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_Neutrophil.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.Edit_WbcEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.Edit_WbcKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_Platelets.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if key=VK_Escape then
+          Close;
+end;
+
+procedure TForm_DefaultSetup.FormShow(SEnder: TObject);
+Begin
+{     WITH oraQuery_TestName DO
+     Begin
+          Close;
+          Session:=Dm_Hospital.Db;
+          sql.Clear;
+          SQL.Add('Select * From TestName Where DepId in (Select DepId From '+gs_Hos_DB_UserName+'.Department Where ExtEnded_Report=''Y'')');
+          SQL.Add( 'ORDER by TestName');
+          //sql.SaveToFile('d:\qqqq.txt');
+          Open;
+     End; }
+     PbIsNew:=True;
+     OraQuery_ReportFormat.Close;
+     OraQuery_ReportFormat.Open;
+     with OraQuery_Listing do
+     begin
+          Close;
+          sql.Clear;
+          Session:=Dm_Hospital.Db;
+          sql.Add('select t.*,(select test from test where testid=t.CLSP_TESTNAMEID)test from HC_CLSP_CLINICALSETUPPAP t');
+          sql.Add('where 1=1');
+          sql.Add('Order by CLSP_FINDINGSID');
+          //sql.SaveToFile('d:\qqqq.txt');
+          Open;
+     end;
+     OraQuery_FnacListing.Close;
+     OraQuery_FnacListing.Open;
+     OraQuery_SurgicalListing.Close;
+     OraQuery_SurgicalListing.Open;
+     OraQuery_BoneListing.Close;
+     OraQuery_BoneListing.Open;
+     SetfontSizeValue(ComboBox1);
+     SetfontNameValue(ComboBox2);
+     OraQuery_FmagListing.Close;
+     OraQuery_FmagListing.Open;
+     OraQuery_Vsgfnaclisting.Close;
+     OraQuery_Vsgfnaclisting.Open;
+     OraQuery_fluidDc.Close;
+     OraQuery_fluidDc.Open;
+     OraQuery_master.Close;
+     OraQuery_master.Open;
+     OraQuery_TestName.Close;
+     OraQuery_TestName.Open;
+End;
+
+procedure TForm_DefaultSetup.Panel_FnacClick(Sender: TObject);
+begin
+
+end;
+
+{procedure TForm_DefaultSetup.LoadDatainGrid;
+Begin
+      if (DBLC_TestName.KeyValue>0) and (DBLC_ReportType.KeyValue>0) then
+      Begin
+          with oraQuery_Listing do
+          Begin
+               close;
+               Session:=Dm_Hospital.Db;;
+               sql[2]:='and testnameid='+Inttostr(DBLC_TestName.KeyValue)+' and reportformatid='+inttostr(DBLC_ReportType.KeyValue);
+               Open;
+          End;
+          //LoadDataInRichEdit(oraQuery_Listing,'Default_Finding_Rich',oraQuery_Listing.FieldByName('Reporttitle_Rich').AsString);
+     End;
+End;}
+
+procedure TForm_DefaultSetup.RichEdit_AbnormalCellsEnter(Sender: TObject);
+begin
+     Ps_Richname:='Bone_AbnormalCell';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_AbnormalCellsExit(Sender: TObject);
+begin
+     Edit_SpecialStain.setfocus;
+end;
+
+procedure TForm_DefaultSetup.RichEdit_AdequacyEnter(Sender: TObject);
+begin
+     Ps_Richname:='Bone_Adequacy';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_AdequacyKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_Cellularity.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.RichEdit_CivilianFeaturesEnter(Sender: TObject);
+begin
+     Ps_Richname:='Bone_ClinicalFeatures';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_ClinicalFindingsEnter(Sender: TObject);
+begin
+     Ps_RichName:='USG_ClinicalFinding';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_ClinicalFindingsExit(Sender: TObject);
+begin
+          Edit_SOAspiration.setfocus;
+end;
+
+procedure TForm_DefaultSetup.RichEdit_ComEnter(Sender: TObject);
+begin
+          Ps_RichName:='USG_Comment';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_DiagEnter(Sender: TObject);
+begin
+          Ps_RichName:='USG_Diagnosis';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_DiagExit(Sender: TObject);
+begin
+     RichEdit_Com.setfocus;
+end;
+
+procedure TForm_DefaultSetup.RichEdit_DiagnosisEnter(Sender: TObject);
+begin
+     Ps_RichName:='Fnac_Diagnosis';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_DiagonsisEnter(Sender: TObject);
+begin
+     Ps_Richname:='Bone_Diagnosis';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_DiagonsisKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_BoneMarrowComment.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.RichEdit_ErythropoiesisEnter(Sender: TObject);
+begin
+     Ps_RichName:='';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_ErythropoiesisKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_Megakaryopoiesis.setfocus;
+     end;
+end;
+
+procedure TForm_DefaultSetup.RichEdit_FluidClinicalFeaturesEnter(
+  Sender: TObject);
+begin
+     Ps_Richname:='Fluid_ClinicalFeatures';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_FluidCommentChange(Sender: TObject);
+begin
+   //  Ps_RichName:='Fluid_Comment';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_FluidCommentEnter(Sender: TObject);
+begin
+     Ps_RichName:='Fluid_Comment';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_FluidDiagnosisEnter(Sender: TObject);
+begin
+     Ps_RichName:='Fluid_Diagnosis';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_FnacClinicalFeaturesEnter(
+  Sender: TObject);
+begin
+     Ps_RichName:='Fnac_ClinicalFeatures';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_FnacClinicalFeaturesKeyPress(
+  Sender: TObject; var Key: Char);
+begin
+     //Ps_RichName:='Fnac_ClinicalFeatures';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_FnacCommentEnter(Sender: TObject);
+begin
+     Ps_Richname:='Fnac_Comment';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_FnacDiagnosisEnter(Sender: TObject);
+begin
+     Ps_RichName:='Fnac_ClinicalPresentation';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_FnacMicroscopicEnter(Sender: TObject);
+begin
+     Ps_RichName:='Fnac_MiscroscopicDescription';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_GrossAppearanceEnter(Sender: TObject);
+begin
+     Ps_RichName:='Fluid_GrossAppearance';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_MicroscopicDescriptionEnter(
+  Sender: TObject);
+begin
+     Ps_RichName:='Fluid_MicroscopeDescription';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_MicroscopicEnter(Sender: TObject);
+begin
+          Ps_RichName:='USG_MicroscopicDes';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_MicroscopicExit(Sender: TObject);
+begin
+     RichEdit_Diag.setfocus;
+end;
+
+procedure TForm_DefaultSetup.RichEdit_OtherFindingsEnter(Sender: TObject);
+begin
+     ps_Richname:='FluidDC';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_PapCategorizationEnter(Sender: TObject);
+begin
+     Ps_RichName:='Pap_GeneralCategorization';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_PAPClinicalFeaturesEnter(SEnder: TObject);
+Begin
+     Ps_RichName:='Pap_Clinical';
+End;
+
+procedure TForm_DefaultSetup.RichEdit_PapCommentEnter(Sender: TObject);
+begin
+     Ps_RichName:='Pap_Comment';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_PapMDescriptionEnter(Sender: TObject);
+begin
+     Ps_RichName:='Pap_MiscroscopicDescription';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_ResultsEnter(Sender: TObject);
+begin
+     Ps_RichName:='Pap_Results';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_SampleEnter(Sender: TObject);
+begin
+     Ps_RichName:='USG_SampleReceived';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_SpecimenReceivedEnter(Sender: TObject);
+begin
+     Ps_RichName:='Surgical_SpecimenReceived';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_SurClinicalFindingsEnter(Sender: TObject);
+begin
+     Ps_RichName:='Surgical_ClinicalFindings';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_SurgicalCommentEnter(Sender: TObject);
+begin
+     Ps_RichName:='Surgical_Comment';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_SurgicalDiagnosisEnter(Sender: TObject);
+begin
+     Ps_RichName:='Surgical_Diagnosis';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_SurgicalHistoryEnter(Sender: TObject);
+begin
+     Ps_RichName:='Surgical_ClinicalFeatures';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_SurgicalGrossEnter(Sender: TObject);
+begin
+     Ps_RichName:='Surgical_GrossDescription';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_SurgicalMicroscopicEnter(Sender: TObject);
+begin
+     Ps_Richname:='Surgical_MiscroscopicDescriptionS';
+end;
+
+procedure TForm_DefaultSetup.RichEdit_TitleEnter(SEnder: TObject);
+Begin
+     Ps_RichName:='Title';
+End;
+
+procedure TForm_DefaultSetup.RichEdit_TitleSelectionChange(SEnder: TObject);
+Begin
+     GetFontAttribute(ToolButton1,RichEdit_Title,[fsBold]);
+     GetFontAttribute(ToolButton2,RichEdit_Title,[fsItalic]);
+     GetFontAttribute(ToolButton3,RichEdit_Title,[fsUnderline]);
+     GetFontAttribute(ToolButton7,RichEdit_Title,[fsStrikeOut]);
+     GetFontSize(ComboBox1,RichEdit_Title);
+     GetFontColor(ButtonColor1,RichEdit_Title);
+     GetFontName(ComboBox2,RichEdit_Title);
+End;
+
+procedure TForm_DefaultSetup.SpeedButton1Click(SEnder: TObject);
+Begin
+     with OraQuery_Blank do
+     Begin
+          close;
+          Session:=Dm_Hospital.db;
+          SQL.Clear;
+          SQL.ADD('delete from clinical_TestSetupdetail where  clinical_TestSetupdetailId='+inttostr(OraQuery_Listing.FieldByName('clinical_TestSetupdetailId').AsInteger));
+          ExecSQL;
+     End;
+     ShowDoneMessage;
+     OraQuery_Listing.Close;
+     OraQuery_Listing.Open;
+END;
+
+procedure TForm_DefaultSetup.SpeedButton2Click(SEnder: TObject);
+Begin
+      Form_ReportType:=TForm_ReportType.Create(nil);
+      with Form_ReportType do
+      Begin
+          try
+               if self.dblc_testname.keyvalue>1 then
+               Form_ReportType.Pi_TestNameId:=self.dblc_testname.keyvalue;
+               ShowModal;
+          finally
+               Form_ReportType.Free;
+          End;
+      End;
+      OraQuery_ReportFormat.Close;
+      OraQuery_ReportFormat.Open;
+End;
+
+procedure TForm_DefaultSetup.Tbtn_FontClick(SEnder: TObject);
+Begin
+     if FontDialog1.Execute then
+     Begin
+          if Ps_RichName='Title' then
+          Begin
+               RichEdit_Title.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_Title.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_Title.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_Title.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Bone_ClinicalFeatures' then
+          Begin
+               RichEdit_CivilianFeatures.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_CivilianFeatures.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_CivilianFeatures.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_CivilianFeatures.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Bone_AbnormalCell' then
+          Begin
+               RichEdit_AbnormalCells.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_AbnormalCells.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_AbnormalCells.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_AbnormalCells.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Bone_Diagnosis' then
+          Begin
+               RichEdit_Diagonsis.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_Diagonsis.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_Diagonsis.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_Diagonsis.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Bone_Adequacy' then
+          Begin
+               RichEdit_Adequacy.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_Adequacy.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_Adequacy.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_Adequacy.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='FluidDC' then
+          Begin
+               RichEdit_OtherFindings.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_OtherFindings.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_OtherFindings.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_OtherFindings.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Fluid_ClinicalFeatures' then
+          Begin
+               RichEdit_FluidClinicalFeatures.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_FluidClinicalFeatures.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_FluidClinicalFeatures.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_FluidClinicalFeatures.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Fluid_MicroscopeDescription' then
+          Begin
+               RichEdit_MicroscopicDescription.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_MicroscopicDescription.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_MicroscopicDescription.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_MicroscopicDescription.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Fluid_Diagnosis' then
+          Begin
+               RichEdit_FluidDiagnosis.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_FluidDiagnosis.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_FluidDiagnosis.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_FluidDiagnosis.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Fluid_GrossAppearance' then
+          Begin
+               RichEdit_GrossAppearance.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_GrossAppearance.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_GrossAppearance.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_GrossAppearance.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Fluid_Comment' then
+          Begin
+               RichEdit_FluidComment.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_FluidComment.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_FluidComment.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_FluidComment.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Fnac_ClinicalFeatures' then
+          Begin
+               RichEdit_FnacClinicalFeatures.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_FnacClinicalFeatures.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_FnacClinicalFeatures.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_FnacClinicalFeatures.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Fnac_ClinicalPresentation' then
+          Begin
+               {
+               RichEdit_FnacDiagnosis.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_FnacDiagnosis.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_FnacDiagnosis.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_FnacDiagnosis.SelAttributes.Size:=FontDialog1.Font.Size;}
+          End
+          else if Ps_RichName='Fnac_Diagnosis' then
+          Begin
+               RichEdit_Diagnosis.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_Diagnosis.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_Diagnosis.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_Diagnosis.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Fnac_MiscroscopicDescription' then
+          Begin
+               RichEdit_FnacMicroscopic.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_FnacMicroscopic.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_FnacMicroscopic.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_FnacMicroscopic.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Fnac_Comment' then
+          Begin
+               RichEdit_FnacComment.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_FnacComment.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_FnacComment.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_FnacComment.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Surgical_ClinicalFeatures' then
+          Begin
+               RichEdit_SurgicalHistory.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_SurgicalHistory.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_SurgicalHistory.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_SurgicalHistory.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Surgical_SpecimenReceived' then
+          Begin
+               RichEdit_SpecimenReceived.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_SpecimenReceived.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_SpecimenReceived.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_SpecimenReceived.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Surgical_MiscroscopicDescriptionS' then
+          Begin
+               RichEdit_SurgicalMicroscopic.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_SurgicalMicroscopic.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_SurgicalMicroscopic.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_SurgicalMicroscopic.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Surgical_GrossDescription' then
+          Begin
+               RichEdit_SurgicalGross.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_SurgicalGross.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_SurgicalGross.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_SurgicalGross.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Surgical_Diagnosis' then
+          Begin
+               RichEdit_SurgicalDiagnosis.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_SurgicalDiagnosis.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_SurgicalDiagnosis.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_SurgicalDiagnosis.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Surgical_Comment' then
+          Begin
+               RichEdit_SurgicalComment.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_SurgicalComment.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_SurgicalComment.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_SurgicalComment.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Pap_Clinical' then
+          Begin
+               RichEdit_PAPClinicalFeatures.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_PAPClinicalFeatures.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_PAPClinicalFeatures.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_PAPClinicalFeatures.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Pap_MiscroscopicDescription' then
+          Begin
+               RichEdit_PapMDescription.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_PapMDescription.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_PapMDescription.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_PapMDescription.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Pap_Results' then
+          Begin
+               RichEdit_Results.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_Results.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_Results.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_Results.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Pap_GeneralCategorization' then
+          Begin
+               RichEdit_PapCategorization.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_PapCategorization.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_PapCategorization.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_PapCategorization.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Pap_Comment' then
+          Begin
+               RichEdit_PapComment.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_PapComment.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_PapComment.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_PapComment.SelAttributes.Size:=FontDialog1.Font.Size;
+          End
+          else if Ps_RichName='Surgical_ClinicalFindings' then
+          begin
+              RichEdit_SurClinicalFindings.SelAttributes.Style:=FontDialog1.Font.Style;
+              RichEdit_SurClinicalFindings.SelAttributes.Name:=FontDialog1.Font.Name;
+              RichEdit_SurClinicalFindings.SelAttributes.Color:=FontDialog1.Font.Color;
+              RichEdit_SurClinicalFindings.SelAttributes.Size:=FontDialog1.Font.Size;
+          end
+          else if Ps_RichName='USG_ClinicalFinding' then
+          begin
+               RichEdit_ClinicalFindings.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_ClinicalFindings.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_ClinicalFindings.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_ClinicalFindings.SelAttributes.Size:=FontDialog1.Font.Size;
+          end
+          else if Ps_RichName='USG_SampleReceived' then
+          begin
+               RichEdit_Sample.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_Sample.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_Sample.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_Sample.SelAttributes.Size:=FontDialog1.Font.Size;
+          end
+          else if Ps_RichName='USG_MicroscopicDes' then
+          begin
+               RichEdit_Microscopic.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_Microscopic.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_Microscopic.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_Microscopic.SelAttributes.Size:=FontDialog1.Font.Size;
+          end
+          else if Ps_RichName='USG_Diagnosis' then
+          begin
+               RichEdit_Diag.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_Diag.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_Diag.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_Diag.SelAttributes.Size:=FontDialog1.Font.Size;
+          end                          //usg fnac
+          else if Ps_RichName='USG_Comment' then
+          begin
+               RichEdit_Com.SelAttributes.Style:=FontDialog1.Font.Style;
+               RichEdit_Com.SelAttributes.Name:=FontDialog1.Font.Name;
+               RichEdit_Com.SelAttributes.Color:=FontDialog1.Font.Color;
+               RichEdit_Com.SelAttributes.Size:=FontDialog1.Font.Size;
+          end;
+     End;
+End;
+
+function TForm_DefaultSetup.ToFormat(Edit: TRichEdit): String;
+begin
+     Memo.Lines.Clear;
+     Edit.Lines.SaveToFile('tt.txt');
+     Memo.Lines.LoadFromFile('tt.txt');
+     Result:=Memo.Text;
+end;
+
+procedure TForm_DefaultSetup.ToolButton10Click(SEnder: TObject);
+Begin
+     if Ps_RichName = 'Title' then
+          RichAlign(RichEdit_Title, taCenter)
+     else if Ps_RichName = 'Default' then
+         // RichAlign(RichEdit_PapDiagnosis, taCenter);
+          RichAlign(RichEdit_PapComment, taCenter)
+          //RichAlign(RichEdit_PAPClinicalFeatures, taCenter);
+     else if Ps_RichName='Surgical_MiscroscopicDescriptionS' then
+          RichAlign(RichEdit_SurgicalMicroscopic,taCenter)
+     else if Ps_RichName='Surgical_Comment' then
+          RichAlign(RichEdit_SurgicalComment,taCenter)
+     else if Ps_RichName='Surgical_ClinicalFeatures' then
+          RichAlign(RichEdit_SurgicalHistory,taCenter)
+     else if Ps_RichName='Surgical_ClinicalFindings' then
+          RichAlign(RichEdit_SurClinicalFindings,taCenter)
+     else if Ps_RichName='Surgical_GrossDescription' then
+          RichAlign(RichEdit_SurgicalGross,taCenter)
+
+     else if Ps_RichName='Fnac_ClinicalFeatures' then
+          RichAlign(RichEdit_FnacClinicalFeatures,taCenter)
+     else if Ps_RichName='Fnac_MiscroscopicDescription' then
+          RichAlign(RichEdit_FnacMicroscopic,taCenter)
+     else if Ps_RichName='Fnac_Diagnosis' then                                 //fnac
+          RichAlign(RichEdit_Diagnosis,taCenter)
+     else if Ps_RichName='Fnac_Comment' then
+          RichAlign(RichEdit_FnacComment,taCenter)
+
+     else if Ps_RichName='Pap_Clinical' then
+          RichAlign(RichEdit_PAPClinicalFeatures,taCenter)
+     else if Ps_RichName='Pap_GeneralCategorization' then
+          RichAlign(RichEdit_PapCategorization,taCenter)
+     else if Ps_RichName='Pap_MiscroscopicDescription' then
+          RichAlign(RichEdit_PapMDescription,taCenter)
+     else if Ps_RichName='Pap_Results' then
+          RichAlign(RichEdit_Results,taCenter)  // pap
+     else if Ps_RichName='Pap_Comment' then
+          RichAlign(RichEdit_PapComment,taCenter)
+
+     else if Ps_RichName='Fluid_ClinicalFeatures' then
+          RichAlign(RichEdit_FluidClinicalFeatures,taCenter)
+     else if Ps_RichName='Fluid_MicroscopeDescription' then
+          RichAlign(RichEdit_MicroscopicDescription,taCenter)
+     else if Ps_RichName='Fluid_Diagnosis' then
+          RichAlign(RichEdit_FluidDiagnosis,taCenter)
+     else if Ps_RichName='Fluid_GrossAppearance' then
+          RichAlign(RichEdit_GrossAppearance,taCenter)
+     else if Ps_RichName='Fluid_Comment' then
+          RichAlign(RichEdit_FluidComment,taCenter)
+
+          else if Ps_RichName='USG_ClinicalFinding' then
+          RichAlign(RichEdit_ClinicalFindings,taCenter)
+     else if Ps_RichName='USG_SampleReceived' then
+          RichAlign(RichEdit_Sample,taCenter)
+     else if Ps_RichName='USG_MicroscopicDes' then
+          RichAlign(RichEdit_Microscopic,taCenter)
+     else if Ps_RichName='USG_Diagnosis' then                          //usg fnac
+          RichAlign(RichEdit_Diag,taCenter)
+     else if Ps_RichName='USG_Comment' then
+          RichAlign(RichEdit_Com,taCenter);
+
+End;
+
+procedure TForm_DefaultSetup.ToolButton11Click(SEnder: TObject);
+Begin
+      if Ps_RichName = 'Title' then
+          RichAlign(RichEdit_Title, taRightJustify)
+      else if Ps_RichName = 'Default' then
+          //RichAlign(RichEdit_PapDiagnosis, taRightJustify);
+          RichAlign(RichEdit_PapComment, taRightJustify)
+         // RichAlign(RichEdit_PAPClinicalFeatures, taRightJustify);
+      else if Ps_RichName='Surgical_MiscroscopicDescriptionS' then
+          RichAlign(RichEdit_SurgicalMicroscopic,taRightJustify)
+     else if Ps_RichName='Surgical_Comment' then
+          RichAlign(RichEdit_SurgicalComment,taRightJustify)
+     else if Ps_RichName='Surgical_ClinicalFeatures' then
+          RichAlign(RichEdit_SurgicalHistory,taRightJustify)
+     else if Ps_RichName='Surgical_ClinicalFindings' then
+          RichAlign(RichEdit_SurClinicalFindings,taRightJustify)
+     else if Ps_RichName='Surgical_GrossDescription' then
+          RichAlign(RichEdit_SurgicalGross,taRightJustify)
+
+     else if Ps_RichName='Fnac_ClinicalFeatures' then
+          RichAlign(RichEdit_FnacClinicalFeatures,taRightJustify)
+     else if Ps_RichName='Fnac_MiscroscopicDescription' then
+          RichAlign(RichEdit_FnacMicroscopic,taRightJustify)
+     else if Ps_RichName='Fnac_Diagnosis' then                                 //fnac
+          RichAlign(RichEdit_Diagnosis,taRightJustify)
+     else if Ps_RichName='Fnac_Comment' then
+          RichAlign(RichEdit_FnacComment,taRightJustify)
+
+     
+     else if Ps_RichName='Pap_Clinical' then
+          RichAlign(RichEdit_PAPClinicalFeatures,taRightJustify)
+     else if Ps_RichName='Pap_GeneralCategorization' then
+          RichAlign(RichEdit_PapCategorization,taRightJustify)
+     else if Ps_RichName='Pap_MiscroscopicDescription' then
+          RichAlign(RichEdit_PapMDescription,taRightJustify)
+     else if Ps_RichName='Pap_Results' then
+          RichAlign(RichEdit_Results,taRightJustify)  // pap
+     else if Ps_RichName='Pap_Comment' then
+          RichAlign(RichEdit_PapComment,taRightJustify)
+
+     
+     else if Ps_RichName='Fluid_ClinicalFeatures' then
+          RichAlign(RichEdit_FluidClinicalFeatures,taRightJustify)
+     else if Ps_RichName='Fluid_MicroscopeDescription' then
+          RichAlign(RichEdit_MicroscopicDescription,taRightJustify)
+     else if Ps_RichName='Fluid_Diagnosis' then
+          RichAlign(RichEdit_FluidDiagnosis,taRightJustify)
+     else if Ps_RichName='Fluid_GrossAppearance' then
+          RichAlign(RichEdit_GrossAppearance,taRightJustify)
+     else if Ps_RichName='Fluid_Comment' then
+          RichAlign(RichEdit_FluidComment,taRightJustify)
+
+     else if Ps_RichName='USG_ClinicalFinding' then
+          RichAlign(RichEdit_ClinicalFindings,taRightJustify)
+     else if Ps_RichName='USG_SampleReceived' then
+          RichAlign(RichEdit_Sample,taRightJustify)
+     else if Ps_RichName='USG_MicroscopicDes' then
+          RichAlign(RichEdit_Microscopic,taRightJustify)
+     else if Ps_RichName='USG_Diagnosis' then                          //usg fnac
+          RichAlign(RichEdit_Diag,taRightJustify)
+     else if Ps_RichName='USG_Comment' then
+          RichAlign(RichEdit_Com,taRightJustify);
+
+
+     
+     
+End;
+
+procedure TForm_DefaultSetup.ToolButton1Click(SEnder: TObject);
+Begin
+     //Ps_RichName:=ActiveControl.Name;
+     //Ps_RichName:=ActiveControl.ClassName;
+     //ActiveControl.ClassType;
+     //Ps_RichName.
+     //Ps_RichName.SelAttributes.Style := Ps_RichName.SelAttributes.Style + [fsBold]
+
+     //if Ps_RichName='TRichEdit' then
+         // Ps_RichName:='1';
+     //Ps_RichName.SelAttributes.Style :=Ps_RichName .SelAttributes.Style + [fsBold]
+     //Ps_RichName.Font.Style:=[fsBold];
+     //SetFontAttribute(ToolButton1,ActiveControl,[fsBold]);
+     if Ps_RichName='Title' then
+     SetFontAttribute(ToolButton1,RichEdit_Title,[fsBold])
+     else if Ps_RichName='Bone_ClinicalFeatures' then
+     SetFontAttribute(ToolButton1,RichEdit_CivilianFeatures,[fsBold])
+     else if Ps_RichName='Bone_AbnormalCell' then
+     SetFontAttribute(ToolButton1,RichEdit_AbnormalCells,[fsBold])
+     else if Ps_RichName='Bone_Diagnosis' then
+     SetFontAttribute(ToolButton1,RichEdit_Diagonsis,[fsBold])
+     else if Ps_RichName='Bone_Adequacy' then
+     SetFontAttribute(ToolButton1,RichEdit_Adequacy,[fsBold])
+
+     else if Ps_RichName='USG_ClinicalFinding' then
+          SetFontAttribute(ToolButton1,RichEdit_ClinicalFindings,[fsBold])
+     else if Ps_RichName='USG_SampleReceived' then
+          SetFontAttribute(ToolButton1,RichEdit_Sample,[fsBold])
+     else if Ps_RichName='USG_MicroscopicDes' then
+          SetFontAttribute(ToolButton1,RichEdit_Microscopic,[fsBold])
+     else if Ps_RichName='USG_Diagnosis' then                          //usg fnac
+          SetFontAttribute(ToolButton1,RichEdit_Diag,[fsBold])
+     else if Ps_RichName='USG_Comment' then
+          SetFontAttribute(ToolButton1,RichEdit_Com,[fsBold])       
+          
+     else if Ps_RichName='FluidDC' then
+          SetFontAttribute(ToolButton1,RichEdit_OtherFindings,[fsBold])
+     else if Ps_RichName='Fluid_ClinicalFeatures' then
+          SetFontAttribute(ToolButton1,RichEdit_FluidClinicalFeatures,[fsBold])
+     else if Ps_RichName='Fluid_MicroscopeDescription' then
+          SetFontAttribute(ToolButton1,RichEdit_MicroscopicDescription,[fsBold])
+     else if Ps_RichName='Fluid_Diagnosis' then
+          SetFontAttribute(ToolButton1,RichEdit_FluidDiagnosis,[fsBold])
+     else if Ps_RichName='Fluid_GrossAppearance' then
+          SetFontAttribute(ToolButton1,RichEdit_GrossAppearance,[fsBold])
+     else if Ps_RichName='Fluid_Comment' then
+          SetFontAttribute(ToolButton1,RichEdit_FluidComment,[fsBold])
+
+     else if Ps_RichName='Fnac_ClinicalFeatures' then
+          SetFontAttribute(ToolButton1,RichEdit_FnacClinicalFeatures,[fsBold])
+     else if Ps_RichName='Fnac_MiscroscopicDescription' then
+          SetFontAttribute(ToolButton1,RichEdit_FnacMicroscopic,[fsBold])
+     else if Ps_RichName='Fnac_Diagnosis' then                                 //fnac
+          SetFontAttribute(ToolButton1,RichEdit_Diagnosis,[fsBold])
+     else if Ps_RichName='Fnac_Comment' then
+          SetFontAttribute(ToolButton1,RichEdit_FnacComment,[fsBold])
+
+     else if Ps_RichName='Surgical_ClinicalFeatures' then
+          SetFontAttribute(ToolButton1,RichEdit_SurgicalHistory,[fsBold])
+     else if Ps_RichName='Surgical_SpecimenReceived' then
+          SetFontAttribute(ToolButton1,RichEdit_SpecimenReceived,[fsBold])
+     else if Ps_RichName='Surgical_MiscroscopicDescriptionS' then
+          SetFontAttribute(ToolButton1,RichEdit_SurgicalMicroscopic,[fsBold])
+     else if Ps_RichName='Surgical_GrossDescription' then
+          SetFontAttribute(ToolButton1,RichEdit_SurgicalGross,[fsBold])
+     else if Ps_RichName='Surgical_Diagnosis' then
+          SetFontAttribute(ToolButton1,RichEdit_SurgicalDiagnosis,[fsBold])
+     else if Ps_RichName='Surgical_Comment' then
+          SetFontAttribute(ToolButton1,RichEdit_SurgicalComment,[fsBold])
+     
+     else if Ps_RichName='Pap_Clinical' then
+          SetFontAttribute(ToolButton1,RichEdit_PAPClinicalFeatures,[fsBold])
+     else if Ps_RichName='Pap_GeneralCategorization' then
+          SetFontAttribute(ToolButton1,RichEdit_PapCategorization,[fsBold])
+     else if Ps_RichName='Pap_MiscroscopicDescription' then
+          SetFontAttribute(ToolButton1,RichEdit_PapMDescription,[fsBold])
+     else if Ps_RichName='Pap_Results' then
+          SetFontAttribute(ToolButton1,RichEdit_Results,[fsBold])  // pap
+     else if Ps_RichName='Pap_Comment' then
+          SetFontAttribute(ToolButton1,RichEdit_PapComment,[fsBold])
+     
+     else if Ps_RichName='Surgical_ClinicalFindings' then
+          SetFontAttribute(ToolButton1,RichEdit_SurClinicalFindings,[fsBold]);
+
+End;
+
+procedure TForm_DefaultSetup.ToolButton2Click(SEnder: TObject);
+Begin
+     if Ps_RichName='Title' then
+     SetFontAttribute(ToolButton2,RichEdit_Title,[fsItalic])
+     else if Ps_RichName='Bone_ClinicalFeatures' then
+     SetFontAttribute(ToolButton2,RichEdit_CivilianFeatures,[fsItalic])
+     else if Ps_RichName='Bone_AbnormalCell' then
+     SetFontAttribute(ToolButton2,RichEdit_AbnormalCells,[fsItalic])
+     else if Ps_RichName='Bone_Diagnosis' then
+     SetFontAttribute(ToolButton2,RichEdit_Diagonsis,[fsItalic])
+     else if Ps_RichName='Bone_Adequacy' then
+     SetFontAttribute(ToolButton2,RichEdit_Adequacy,[fsItalic])
+     else if Ps_RichName='FluidDC' then
+     SetFontAttribute(ToolButton2,RichEdit_OtherFindings,[fsItalic])
+     else if Ps_RichName='Fluid_ClinicalFeatures' then
+     SetFontAttribute(ToolButton2,RichEdit_FluidClinicalFeatures,[fsItalic])
+     else if Ps_RichName='Fluid_MicroscopeDescription' then
+     SetFontAttribute(ToolButton2,RichEdit_MicroscopicDescription,[fsItalic])
+     else if Ps_RichName='Fluid_Diagnosis' then
+     SetFontAttribute(ToolButton2,RichEdit_FluidDiagnosis,[fsItalic])
+     else if Ps_RichName='Fluid_GrossAppearance' then
+     SetFontAttribute(ToolButton2,RichEdit_GrossAppearance,[fsItalic])
+     else if Ps_RichName='Fluid_Comment' then
+     SetFontAttribute(ToolButton2,RichEdit_FluidComment,[fsItalic])
+
+     else if Ps_RichName='Fnac_ClinicalFeatures' then
+     SetFontAttribute(ToolButton2,RichEdit_FnacClinicalFeatures,[fsItalic])
+     else if Ps_RichName='Fnac_ClinicalPresentation' then
+     //SetFontAttribute(ToolButton2,RichEdit_FnacDiagnosis,[fsItalic])
+     else if Ps_RichName='Fnac_Diagnosis' then
+     SetFontAttribute(ToolButton2,RichEdit_Diagnosis,[fsItalic])     //fnac
+     else if Ps_RichName='Fnac_MiscroscopicDescription' then
+     SetFontAttribute(ToolButton2,RichEdit_FnacMicroscopic,[fsItalic])
+     else if Ps_RichName='Fnac_Comment' then
+     SetFontAttribute(ToolButton2,RichEdit_FnacComment,[fsItalic])
+
+     else if Ps_RichName='Surgical_ClinicalFeatures' then
+     SetFontAttribute(ToolButton2,RichEdit_SurgicalHistory,[fsItalic])
+     else if Ps_RichName='Surgical_SpecimenReceived' then
+     SetFontAttribute(ToolButton2,RichEdit_SpecimenReceived,[fsItalic])
+     else if Ps_RichName='Surgical_MiscroscopicDescriptionS' then
+     SetFontAttribute(ToolButton2,RichEdit_SurgicalMicroscopic,[fsItalic])
+     else if Ps_RichName='Surgical_GrossDescription' then
+     SetFontAttribute(ToolButton2,RichEdit_SurgicalGross,[fsItalic])
+     else if Ps_RichName='Surgical_Diagnosis' then
+     SetFontAttribute(ToolButton2,RichEdit_SurgicalDiagnosis,[fsItalic])
+     else if Ps_RichName='Surgical_Comment' then
+     SetFontAttribute(ToolButton2,RichEdit_SurgicalComment,[fsItalic])
+     else if Ps_RichName='Pap_Clinical' then
+     SetFontAttribute(ToolButton2,RichEdit_PAPClinicalFeatures,[fsItalic])
+     else if Ps_RichName='Pap_MiscroscopicDescription' then
+     SetFontAttribute(ToolButton2,RichEdit_PapMDescription,[fsItalic])
+     else if Ps_RichName='Pap_Results' then
+     SetFontAttribute(ToolButton2,RichEdit_Results,[fsItalic])
+     else if Ps_RichName='Pap_GeneralCategorization' then
+     SetFontAttribute(ToolButton2,RichEdit_PapCategorization,[fsItalic])
+     else if Ps_RichName='Pap_Comment' then
+     SetFontAttribute(ToolButton2,RichEdit_PapComment,[fsItalic])
+     else if Ps_RichName='Surgical_ClinicalFindings' then
+     SetFontAttribute(ToolButton2,RichEdit_SurClinicalFindings,[fsItalic])
+
+     else if Ps_RichName='USG_ClinicalFinding' then
+          SetFontAttribute(ToolButton2,RichEdit_ClinicalFindings,[fsItalic])
+     else if Ps_RichName='USG_SampleReceived' then
+          SetFontAttribute(ToolButton2,RichEdit_Sample,[fsItalic])
+     else if Ps_RichName='USG_MicroscopicDes' then
+          SetFontAttribute(ToolButton2,RichEdit_Microscopic,[fsItalic])
+     else if Ps_RichName='USG_Diagnosis' then                          //usg fnac
+          SetFontAttribute(ToolButton2,RichEdit_Diag,[fsItalic])
+     else if Ps_RichName='USG_Comment' then
+          SetFontAttribute(ToolButton2,RichEdit_Com,[fsItalic]);
+End;
+
+procedure TForm_DefaultSetup.ToolButton3Click(SEnder: TObject);
+Begin
+     if Ps_RichName='Title' then
+     SetFontAttribute(ToolButton3,RichEdit_Title,[fsUnderline])
+     else if Ps_RichName='Bone_ClinicalFeatures' then
+     SetFontAttribute(ToolButton3,RichEdit_CivilianFeatures,[fsUnderline])
+     else if Ps_RichName='Bone_AbnormalCell' then
+     SetFontAttribute(ToolButton3,RichEdit_AbnormalCells,[fsUnderline])
+     else if Ps_RichName='Bone_Diagnosis' then
+     SetFontAttribute(ToolButton3,RichEdit_Diagonsis,[fsUnderline])
+     else if Ps_RichName='Bone_Adequacy' then
+     SetFontAttribute(ToolButton3,RichEdit_Adequacy,[fsUnderline])
+     else if Ps_RichName='FluidDC' then
+     SetFontAttribute(ToolButton3,RichEdit_OtherFindings,[fsUnderline])
+     else if Ps_RichName='Fluid_ClinicalFeatures' then
+     SetFontAttribute(ToolButton3,RichEdit_FluidClinicalFeatures,[fsUnderline])
+     else if Ps_RichName='Fluid_MicroscopeDescription' then
+     SetFontAttribute(ToolButton3,RichEdit_MicroscopicDescription,[fsUnderline])
+     else if Ps_RichName='Fluid_Diagnosis' then
+     SetFontAttribute(ToolButton3,RichEdit_FluidDiagnosis,[fsUnderline])
+     else if Ps_RichName='Fluid_GrossAppearance' then
+     SetFontAttribute(ToolButton3,RichEdit_GrossAppearance,[fsUnderline])
+     else if Ps_RichName='Fluid_Comment' then
+     SetFontAttribute(ToolButton3,RichEdit_FluidComment,[fsUnderline])
+
+     else if Ps_RichName='Fnac_ClinicalFeatures' then
+     SetFontAttribute(ToolButton3,RichEdit_FnacClinicalFeatures,[fsUnderline])
+     else if Ps_RichName='Fnac_ClinicalPresentation' then
+     //SetFontAttribute(ToolButton3,RichEdit_FnacDiagnosis,[fsUnderline])
+     else if Ps_RichName='Fnac_Diagnosis' then
+     SetFontAttribute(ToolButton3,RichEdit_Diagnosis,[fsUnderline])
+     else if Ps_RichName='Fnac_MiscroscopicDescription' then
+     SetFontAttribute(ToolButton3,RichEdit_FnacMicroscopic,[fsUnderline])
+     else if Ps_RichName='Fnac_Comment' then
+     SetFontAttribute(ToolButton3,RichEdit_FnacComment,[fsUnderline])
+
+     else if Ps_RichName='Surgical_ClinicalFeatures' then
+     SetFontAttribute(ToolButton3,RichEdit_SurgicalHistory,[fsUnderline])
+     else if Ps_RichName='Surgical_SpecimenReceived' then
+     SetFontAttribute(ToolButton3,RichEdit_SpecimenReceived,[fsUnderline])
+     else if Ps_RichName='Surgical_MiscroscopicDescriptionS' then
+     SetFontAttribute(ToolButton3,RichEdit_SurgicalMicroscopic,[fsUnderline])
+     else if Ps_RichName='Surgical_GrossDescription' then
+     SetFontAttribute(ToolButton3,RichEdit_SurgicalGross,[fsUnderline])
+     else if Ps_RichName='Surgical_Diagnosis' then
+     SetFontAttribute(ToolButton3,RichEdit_SurgicalDiagnosis,[fsUnderline])
+     else if Ps_RichName='Surgical_Comment' then
+     SetFontAttribute(ToolButton3,RichEdit_SurgicalComment,[fsUnderline])
+     else if Ps_RichName='Pap_Clinical' then
+     SetFontAttribute(ToolButton3,RichEdit_PAPClinicalFeatures,[fsUnderline])
+     else if Ps_RichName='Pap_MiscroscopicDescription' then
+     SetFontAttribute(ToolButton3,RichEdit_PapMDescription,[fsUnderline])
+     else if Ps_RichName='Pap_Results' then
+     SetFontAttribute(ToolButton3,RichEdit_Results,[fsUnderline])
+     else if Ps_RichName='Pap_GeneralCategorization' then
+     SetFontAttribute(ToolButton3,RichEdit_PapCategorization,[fsUnderline])
+     else if Ps_RichName='Pap_Comment' then
+     SetFontAttribute(ToolButton3,RichEdit_PapComment,[fsUnderline])
+     else if Ps_RichName='Surgical_ClinicalFindings' then
+     SetFontAttribute(ToolButton3,RichEdit_SurClinicalFindings,[fsUnderline])
+
+     else if Ps_RichName='USG_ClinicalFinding' then
+          SetFontAttribute(ToolButton3,RichEdit_ClinicalFindings,[fsUnderline])
+     else if Ps_RichName='USG_SampleReceived' then
+          SetFontAttribute(ToolButton3,RichEdit_Sample,[fsUnderline])
+     else if Ps_RichName='USG_MicroscopicDes' then
+          SetFontAttribute(ToolButton3,RichEdit_Microscopic,[fsUnderline])
+     else if Ps_RichName='USG_Diagnosis' then                          //usg fnac
+          SetFontAttribute(ToolButton3,RichEdit_Diag,[fsUnderline])
+     else if Ps_RichName='USG_Comment' then
+          SetFontAttribute(ToolButton3,RichEdit_Com,[fsUnderline]);
+End;
+
+procedure TForm_DefaultSetup.ToolButton7Click(SEnder: TObject);
+Begin
+     if Ps_RichName='Title' then
+        SetFontAttribute(ToolButton7,RichEdit_Title,[fsStrikeOut])
+     else if Ps_RichName='Bone_ClinicalFeatures' then
+      SetFontAttribute(ToolButton7,RichEdit_CivilianFeatures,[fsStrikeOut])
+     else if Ps_RichName='Bone_AbnormalCell' then
+      SetFontAttribute(ToolButton7,RichEdit_AbnormalCells,[fsStrikeOut])
+     else if Ps_RichName='Bone_Diagnosis' then
+      SetFontAttribute(ToolButton7,RichEdit_Diagonsis,[fsStrikeOut])
+     else if Ps_RichName='Bone_Adequacy' then
+      SetFontAttribute(ToolButton7,RichEdit_Adequacy,[fsStrikeOut])
+     else if Ps_RichName='FluidDC' then
+      SetFontAttribute(ToolButton7,RichEdit_OtherFindings,[fsStrikeOut])
+     else if Ps_RichName='Fluid_ClinicalFeatures' then
+      SetFontAttribute(ToolButton7,RichEdit_FluidClinicalFeatures,[fsStrikeOut])
+     else if Ps_RichName='Fluid_MicroscopeDescription' then
+      SetFontAttribute(ToolButton7,RichEdit_MicroscopicDescription,[fsStrikeOut])
+     else if Ps_RichName='Fluid_Diagnosis' then
+      SetFontAttribute(ToolButton7,RichEdit_FluidDiagnosis,[fsStrikeOut])
+     else if Ps_RichName='Fluid_GrossAppearance' then
+      SetFontAttribute(ToolButton7,RichEdit_GrossAppearance,[fsStrikeOut])
+     else if Ps_RichName='Fluid_Comment' then
+      SetFontAttribute(ToolButton7,RichEdit_FluidComment,[fsStrikeOut])
+     else if Ps_RichName='Fnac_ClinicalFeatures' then
+      SetFontAttribute(ToolButton7,RichEdit_FnacClinicalFeatures,[fsStrikeOut])
+     else if Ps_RichName='Fnac_ClinicalPresentation' then
+     //SetFontAttribute(ToolButton7,RichEdit_FnacDiagnosis,[fsStrikeOut])
+     else if Ps_RichName='Fnac_Diagnosis' then
+     SetFontAttribute(ToolButton7,RichEdit_Diagnosis,[fsStrikeOut])
+     else if Ps_RichName='Fnac_MiscroscopicDescription' then
+     SetFontAttribute(ToolButton7,RichEdit_FnacMicroscopic,[fsStrikeOut])
+     else if Ps_RichName='Fnac_Comment' then
+     SetFontAttribute(ToolButton7,RichEdit_FnacComment,[fsStrikeOut])
+     else if Ps_RichName='Surgical_ClinicalFeatures' then
+     SetFontAttribute(ToolButton7,RichEdit_SurgicalHistory,[fsStrikeOut])
+     else if Ps_RichName='Surgical_SpecimenReceived' then
+     SetFontAttribute(ToolButton7,RichEdit_SpecimenReceived,[fsStrikeOut])
+     else if Ps_RichName='Surgical_MiscroscopicDescriptionS' then
+     SetFontAttribute(ToolButton7,RichEdit_SurgicalMicroscopic,[fsStrikeOut])
+     else if Ps_RichName='Surgical_GrossDescription' then
+     SetFontAttribute(ToolButton7,RichEdit_SurgicalGross,[fsStrikeOut])
+     else if Ps_RichName='Surgical_Diagnosis' then
+     SetFontAttribute(ToolButton7,RichEdit_SurgicalDiagnosis,[fsStrikeOut])
+     else if Ps_RichName='Surgical_Comment' then
+     SetFontAttribute(ToolButton7,RichEdit_SurgicalComment,[fsStrikeOut])
+     else if Ps_RichName='Pap_Clinical' then
+     SetFontAttribute(ToolButton7,RichEdit_PAPClinicalFeatures,[fsStrikeOut])
+     else if Ps_RichName='Pap_MiscroscopicDescription' then
+     SetFontAttribute(ToolButton7,RichEdit_PapMDescription,[fsStrikeOut])
+     else if Ps_RichName='Pap_Results' then
+     SetFontAttribute(ToolButton7,RichEdit_Results,[fsStrikeOut])
+     else if Ps_RichName='Pap_GeneralCategorization' then
+     SetFontAttribute(ToolButton7,RichEdit_PapCategorization,[fsStrikeOut])
+     else if Ps_RichName='Pap_Comment' then
+     SetFontAttribute(ToolButton7,RichEdit_PapComment,[fsStrikeOut])
+     else if Ps_RichName='Surgical_ClinicalFindings' then
+     SetFontAttribute(ToolButton7,RichEdit_SurClinicalFindings,[fsStrikeOut])
+
+     else if Ps_RichName='USG_ClinicalFinding' then
+          SetFontAttribute(ToolButton7,RichEdit_ClinicalFindings,[fsStrikeOut])
+     else if Ps_RichName='USG_SampleReceived' then
+          SetFontAttribute(ToolButton7,RichEdit_Sample,[fsStrikeOut])
+     else if Ps_RichName='USG_MicroscopicDes' then
+          SetFontAttribute(ToolButton7,RichEdit_Microscopic,[fsStrikeOut])
+     else if Ps_RichName='USG_Diagnosis' then                          //usg fnac
+          SetFontAttribute(ToolButton7,RichEdit_Diag,[fsStrikeOut])
+     else if Ps_RichName='USG_Comment' then
+          SetFontAttribute(ToolButton7,RichEdit_Com,[fsStrikeOut]);  
+End;
+
+procedure TForm_DefaultSetup.ToolButton8Click(SEnder: TObject);
+Begin
+     if Ps_RichName = 'Title' then
+          RichAlign(RichEdit_Title, taLeftJustify)
+     else if Ps_RichName = 'Pap_Clinical' then
+          //  RichAlign(RichEdit_PapDiagnosis, taLeftJustify);
+          RichAlign(RichEdit_PapComment, taLeftJustify)
+          //RichAlign(RichEdit_PAPClinicalFeatures, taLeftJustify);
+     else if Ps_RichName='Surgical_MiscroscopicDescriptionS' then
+          RichAlign(RichEdit_SurgicalMicroscopic,taLeftJustify)
+     else if Ps_RichName='Surgical_Comment' then
+          RichAlign(RichEdit_SurgicalComment,taLeftJustify)
+     else if Ps_RichName='Surgical_ClinicalFeatures' then
+          RichAlign(RichEdit_SurgicalHistory,taLeftJustify)
+     else if Ps_RichName='Surgical_ClinicalFindings' then
+          RichAlign(RichEdit_SurClinicalFindings,taLeftJustify)
+     else if Ps_RichName='Surgical_GrossDescription' then
+          RichAlign(RichEdit_SurgicalGross,taLeftJustify)
+
+     else if Ps_RichName='Fnac_ClinicalFeatures' then
+          RichAlign(RichEdit_FnacClinicalFeatures,taLeftJustify)
+     else if Ps_RichName='Fnac_MiscroscopicDescription' then
+          RichAlign(RichEdit_FnacMicroscopic,taLeftJustify)
+     else if Ps_RichName='Fnac_Diagnosis' then                                 //fnac
+          RichAlign(RichEdit_Diagnosis,taLeftJustify)
+     else if Ps_RichName='Fnac_Comment' then
+          RichAlign(RichEdit_FnacComment,taLeftJustify)
+
+     else if Ps_RichName='Pap_Clinical' then
+          RichAlign(RichEdit_PAPClinicalFeatures,taLeftJustify)
+     else if Ps_RichName='Pap_GeneralCategorization' then
+          RichAlign(RichEdit_PapCategorization,taLeftJustify)
+     else if Ps_RichName='Pap_MiscroscopicDescription' then
+          RichAlign(RichEdit_PapMDescription,taLeftJustify)
+     else if Ps_RichName='Pap_Results' then
+          RichAlign(RichEdit_Results,taLeftJustify)  // pap
+     else if Ps_RichName='Pap_Comment' then
+          RichAlign(RichEdit_PapComment,taLeftJustify)
+
+     else if Ps_RichName='Fluid_ClinicalFeatures' then
+          RichAlign(RichEdit_FluidClinicalFeatures,taLeftJustify)
+     else if Ps_RichName='Fluid_MicroscopeDescription' then
+          RichAlign(RichEdit_MicroscopicDescription,taLeftJustify)
+     else if Ps_RichName='Fluid_Diagnosis' then
+          RichAlign(RichEdit_FluidDiagnosis,taLeftJustify)
+     else if Ps_RichName='Fluid_GrossAppearance' then
+          RichAlign(RichEdit_GrossAppearance,taLeftJustify)
+     else if Ps_RichName='Fluid_Comment' then
+          RichAlign(RichEdit_FluidComment,taLeftJustify)
+
+     else if Ps_RichName='USG_ClinicalFinding' then
+          RichAlign(RichEdit_ClinicalFindings,taLeftJustify)
+     else if Ps_RichName='USG_SampleReceived' then
+          RichAlign(RichEdit_Sample,taLeftJustify)
+     else if Ps_RichName='USG_MicroscopicDes' then
+          RichAlign(RichEdit_Microscopic,taLeftJustify)
+     else if Ps_RichName='USG_Diagnosis' then                          //usg fnac
+          RichAlign(RichEdit_Diag,taLeftJustify)
+     else if Ps_RichName='USG_Comment' then
+          RichAlign(RichEdit_Com,taLeftJustify);
+
+     
+
+
+End;
+
+End.

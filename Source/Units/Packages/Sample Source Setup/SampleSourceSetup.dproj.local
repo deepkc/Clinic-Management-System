@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2011/12/28 12:49:15.330.pas,C:\Users\vicky\Documents\RAD Studio\Projects\Unit1.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Sample Source Setup\Unit_SampleSourceSetup.pas</Transaction>
+    <Transaction>2011/12/28 12:49:15.330.dfm,C:\Users\vicky\Documents\RAD Studio\Projects\Unit1.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Sample Source Setup\Unit_SampleSourceSetup.dfm</Transaction>
+    <Transaction>2011/12/28 12:49:24.658.dproj,C:\Users\vicky\Documents\RAD Studio\Projects\Package1.dproj=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Sample Source Setup\SampleSourceSetup.dproj</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="-1" SortType="1"/>
+</BorlandProject>

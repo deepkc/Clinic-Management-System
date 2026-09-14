@@ -1,0 +1,4226 @@
+unit Unit_ClinicalPathFindingReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, QuickRpt, QRCtrls, DB,DM,Fxn, MemDS, DBAccess, Ora, jpeg,
+  StdCtrls;
+
+type
+  TForm_Report = class(TForm)
+    QR_Pap: TQuickRep;
+    QRBand1: TQRBand;
+    lbl_ClientName: TQRLabel;
+    lbl_ClientAddress: TQRLabel;
+    QRBand2: TQRBand;
+    QRLabel82: TQRLabel;
+    QRSubDetail2: TQRSubDetail;
+    QRSubDetail4: TQRSubDetail;
+    QRSubDetail5: TQRSubDetail;
+    QRSubDetail6: TQRSubDetail;
+    QRSubDetail7: TQRSubDetail;
+    QRSubDetail8: TQRSubDetail;
+    QRLabel19: TQRLabel;
+    QR_FNAC: TQuickRep;
+    QRBand3: TQRBand;
+    QRLabel25: TQRLabel;
+    QRLabel26: TQRLabel;
+    QRLabel27: TQRLabel;
+    QRBand4: TQRBand;
+    QR_Bonemarrow: TQuickRep;
+    QRBand5: TQRBand;
+    QRLabel59: TQRLabel;
+    QRBand6: TQRBand;
+    OraQuery_Pap: TOraQuery;
+    OraQuery_FNAC: TOraQuery;
+    OraQuery_BoneMarrow: TOraQuery;
+    QRLabel2: TQRLabel;
+    QRLabel3: TQRLabel;
+    QRSubDetail18: TQRSubDetail;
+    QRLabel20: TQRLabel;
+    PrevSmearNo: TQRDBText;
+    QRSubDetail19: TQRSubDetail;
+    QRLabel21: TQRLabel;
+    PrevBiopsyNo: TQRDBText;
+    QRSubDetail20: TQRSubDetail;
+    QRLabel22: TQRLabel;
+    Resident: TQRDBText;
+    QRLabel55: TQRLabel;
+    QRDBText12: TQRDBText;
+    QRLabel53: TQRLabel;
+    QRDBText10: TQRDBText;
+    QRLabel96: TQRLabel;
+    QRDBText25: TQRDBText;
+    QRLabel101: TQRLabel;
+    QRDBText30: TQRDBText;
+    QRLabel102: TQRLabel;
+    QRDBText31: TQRDBText;
+    QRLabel90: TQRLabel;
+    QRDBText19: TQRDBText;
+    QRLabel89: TQRLabel;
+    QRDBText18: TQRDBText;
+    QRLabel91: TQRLabel;
+    QRDBText20: TQRDBText;
+    QRLabel92: TQRLabel;
+    QRDBText21: TQRDBText;
+    QRLabel103: TQRLabel;
+    QRDBText32: TQRDBText;
+    QRLabel106: TQRLabel;
+    QRDBText35: TQRDBText;
+    QRLabel105: TQRLabel;
+    QRDBText34: TQRDBText;
+    OraQuery_Surgical: TOraQuery;
+    QR_Surgical: TQuickRep;
+    QRBand7: TQRBand;
+    QRLabel44: TQRLabel;
+    QRLabel45: TQRLabel;
+    QRBand8: TQRBand;
+    QRLabel75: TQRLabel;
+    QRLabel76: TQRLabel;
+    QRLabel77: TQRLabel;
+    QRLabel79: TQRLabel;
+    QRLabel80: TQRLabel;
+    QRLabel81: TQRLabel;
+    QRLabel100: TQRLabel;
+    QRLabel104: TQRLabel;
+    QRLabel109: TQRLabel;
+    QRLabel110: TQRLabel;
+    QRLabel112: TQRLabel;
+    QRLabel113: TQRLabel;
+    QRLabel114: TQRLabel;
+    QRLabel115: TQRLabel;
+    QRLabel116: TQRLabel;
+    QRLabel117: TQRLabel;
+    QRLabel118: TQRLabel;
+    QRLabel120: TQRLabel;
+    QRLabel121: TQRLabel;
+    QRLabel122: TQRLabel;
+    QRLabel123: TQRLabel;
+    QRImage1: TQRImage;
+    QRImage2: TQRImage;
+    QRImage3: TQRImage;
+    QRImage4: TQRImage;
+    QRLabel83: TQRLabel;
+    QRDBText1: TQRDBText;
+    QRSubDetail3: TQRSubDetail;
+    QRSubDetail44: TQRSubDetail;
+    QRLabel86: TQRLabel;
+    QRDBText17: TQRDBText;
+    OraQuery_FluidMalignant: TOraQuery;
+    QR_FluidMalignant: TQuickRep;
+    QRBand9: TQRBand;
+    QRLabel87: TQRLabel;
+    QRLabel88: TQRLabel;
+    QRLabel125: TQRLabel;
+    QRImage5: TQRImage;
+    QRBand10: TQRBand;
+    QRLabel134: TQRLabel;
+    QRLabel135: TQRLabel;
+    QRLabel136: TQRLabel;
+    QRLabel137: TQRLabel;
+    QRLabel138: TQRLabel;
+    QRLabel139: TQRLabel;
+    QRLabel140: TQRLabel;
+    QRLabel141: TQRLabel;
+    QRSubDetail49: TQRSubDetail;
+    QRSubDetail50: TQRSubDetail;
+    QRSubDetail51: TQRSubDetail;
+    QRSubDetail52: TQRSubDetail;
+    QRSubDetail53: TQRSubDetail;
+    QRSubDetail54: TQRSubDetail;
+    QRSubDetail55: TQRSubDetail;
+    QRSubDetail56: TQRSubDetail;
+    OraQuery_FluidForDC: TOraQuery;
+    QR_FluidForDc: TQuickRep;
+    QRBand11: TQRBand;
+    QRLabel152: TQRLabel;
+    QRLabel153: TQRLabel;
+    QRLabel154: TQRLabel;
+    QRImage6: TQRImage;
+    QRBand12: TQRBand;
+    QRLabel163: TQRLabel;
+    QRLabel164: TQRLabel;
+    QRLabel165: TQRLabel;
+    QRLabel166: TQRLabel;
+    QRLabel167: TQRLabel;
+    QRLabel168: TQRLabel;
+    QRLabel169: TQRLabel;
+    QRLabel170: TQRLabel;
+    QRSubDetail59: TQRSubDetail;
+    QRSubDetail60: TQRSubDetail;
+    QRSubDetail62: TQRSubDetail;
+    QRSubDetail63: TQRSubDetail;
+    QRSubDetail64: TQRSubDetail;
+    QRSubDetail65: TQRSubDetail;
+    QRSubDetail66: TQRSubDetail;
+    QRSubDetail45: TQRSubDetail;
+    QRSubDetail46: TQRSubDetail;
+    QRSubDetail11: TQRSubDetail;
+    QRSubDetail12: TQRSubDetail;
+    QRSubDetail13: TQRSubDetail;
+    QRSubDetail14: TQRSubDetail;
+    QRSubDetail15: TQRSubDetail;
+    QRSubDetail16: TQRSubDetail;
+   // QRSubDetail21: TQRSubDetail;
+    QRSubDetail24:TQRSubDetail;
+    QRSubDetail26:TQRSubDetail;
+    QRSubDetail28:TQRSubDetail;
+    QRSubDetail29:TQRSubDetail;
+    QRSubDetail30:TQRSubDetail;
+    QRSubDetail31:TQRSubDetail;
+    QRSubDetail33:TQRSubDetail;
+    QRSubDetail34:TQRSubDetail;
+    QRSubDetail35:TQRSubDetail;
+    QRSubDetail36:TQRSubDetail;
+    QRSubDetail37:TQRSubDetail;
+    QRSubDetail38:TQRSubDetail;
+    QRSubDetail39:TQRSubDetail;
+    QRSubDetail40:TQRSubDetail;
+    QRSubDetail41:TQRSubDetail;
+    QRSubDetail42:TQRSubDetail;
+    QRSubDetail48MicroDes : TQRSubDetail;
+    QRSubDetail51SuinComment : TQRSubDetail;
+    QRSubDetail44SuinHistory : TQRSubDetail;
+    QRSubDetail45SuinClinical : TQRSubDetail;
+    QRSubDetail47SuinGross : TQRSubDetail;
+    QRDBText11: TQRDBText;
+    QRLabel54: TQRLabel;
+    QRLabel8: TQRLabel;
+    QRLabel24: TQRLabel;
+    Pathologist: TQRDBText;
+    QRLabel42: TQRLabel;
+    QRLabel33: TQRLabel;
+    QRDBText4: TQRDBText;
+    QRBand13: TQRBand;
+    QRLabel85: TQRLabel;
+    QRDBText16: TQRDBText;
+    QRLabel94: TQRLabel;
+    QRDBText29: TQRDBText;
+    QRBand14: TQRBand;
+    QRLabel93: TQRLabel;
+    QRDBText22: TQRDBText;
+    QRLabel171: TQRLabel;
+    QRLabel95: TQRLabel;
+    QRDBText24: TQRDBText;
+    QRLabel124: TQRLabel;
+    QRDBText70: TQRDBText;
+    QRLabel97: TQRLabel;
+    QRDBText26: TQRDBText;
+    QRLabel98: TQRLabel;
+    QRDBText27: TQRDBText;
+    QRLabel99: TQRLabel;
+    QRDBText28: TQRDBText;
+    QRLabel41: TQRLabel;
+    QRLabel180: TQRLabel;
+    QRDBText56: TQRDBText;
+    QRLabel111: TQRLabel;
+    QRBand15: TQRBand;
+    QRBand16: TQRBand;
+    QRBand17: TQRBand;
+    QRLabel178: TQRLabel;
+    QRLabel179: TQRLabel;
+    QRSubDetail1: TQRSubDetail;
+    QRDBText105: TQRDBText;
+    QRLabel177: TQRLabel;
+    QRLabel181: TQRLabel;
+    QRLabel176: TQRLabel;
+    QRDBText104: TQRDBText;
+    QRLabel175: TQRLabel;
+    QRDBText103: TQRDBText;
+    QRLabel174: TQRLabel;
+    QRDBText102: TQRDBText;
+    QRLabel173: TQRLabel;
+    QRDBText101: TQRDBText;
+    QRLabel172: TQRLabel;
+    QRDBText100: TQRDBText;
+    QRLabel182: TQRLabel;
+    QRDBText52: TQRDBText;
+    QRDBText75: TQRDBText;
+    QRDBText108: TQRDBText;
+    QR_VSGFNAC: TQuickRep;
+    QRBand19: TQRBand;
+    QRBand20: TQRBand;
+    QRLabel184: TQRLabel;
+    QRLabel185: TQRLabel;
+    QRLabel186: TQRLabel;
+    OraQuery_VSGFNAC: TOraQuery;
+    QRSubDetail9: TQRSubDetail;
+    QRSubDetail10: TQRSubDetail;
+    QRSubDetail21: TQRSubDetail;
+    QRSubDetail23: TQRSubDetail;
+    QRSubDetail25: TQRSubDetail;
+    QRSubDetail32: TQRSubDetail;
+    QRSubDetail43: TQRSubDetail;
+    QRBand21: TQRBand;
+    QRImage7: TQRImage;
+    QRRichText_Title: TQRRichText;
+    QRSubDetail48: TQRSubDetail;
+    Image1: TQRImage;
+    Image2: TQRImage;
+    qryTQuery: TOraQuery;
+    QRDBText62: TQRDBText;
+    QRDBText64: TQRDBText;
+    QRDBRichText4: TQRDBRichText;
+    QRDBRichText5: TQRDBRichText;
+    QRDBRichText6: TQRDBRichText;
+    QRRichText_FNACClinical: TQRRichText;
+    QRRichText_FNACSite: TQRRichText;
+    QRRichText_FNACType: TQRRichText;
+    QRRichText_PAPClinicalFeatures: TQRRichText;
+    QRRichText_PAPSpecimentType: TQRRichText;
+    QRRichText_PAPAdequacy: TQRRichText;
+    QRRichText_PAPGenCat: TQRRichText;
+    QRDBRichText_PAPMicroDescription: TQRDBRichText;
+    QRDBRichText_PAPResult: TQRDBRichText;
+    QRDBRichText_PAPComment: TQRDBRichText;
+    QRRichText_FNACTitle: TQRRichText;
+    QRRichText_PAPTitle: TQRRichText;
+    QRRichText_FluidDcTitle: TQRRichText;
+    QRRichText_BoneTitle: TQRRichText;
+    QRDBRichText_Comment: TQRDBRichText;
+    QRDBRichText_Diagnosis: TQRDBRichText;
+    QRDBRichText_MicroDes: TQRDBRichText;
+    QRDBRichText_SiteOfAspiration: TQRDBRichText;
+    QRDBRichText_ClinicalFinding: TQRDBRichText;
+    QRRichText_USGTitle: TQRRichText;
+    QRDBRichText_SurgicalComment: TQRDBRichText;
+    QRDBRichText_SurgicalDiagnosis: TQRDBRichText;
+    QRDBRichText_SurgicalMicroDes: TQRDBRichText;
+    QRDBRichText_SurgicalGrossDes: TQRDBRichText;
+    QRDBRichText1: TQRDBRichText;
+    QRDBRichText3: TQRDBRichText;
+    QRDBRichText7: TQRDBRichText;
+    QRDBRichText8: TQRDBRichText;
+    QRRichText_MaligantMiscroDes: TQRRichText;
+    QRRichText_MaligantGross: TQRRichText;
+    QRRichText_MalignantAmount: TQRRichText;
+    QRRichText_MaligantSpeciment: TQRRichText;
+    QRRichText_MaligantTitle: TQRRichText;
+    QRDBText2: TQRDBText;
+    QRDBText3: TQRDBText;
+    QRLabel10: TQRLabel;
+    Name: TQRDBText;
+    AgeGender: TQRDBText;
+    PapsmearNo: TQRDBText;
+    QRLabel142: TQRLabel;
+    QRDBText126: TQRDBText;
+    QRLabel1: TQRLabel;
+    QRLabel6: TQRLabel;
+    QRLabel17: TQRLabel;
+    QRLabel16: TQRLabel;
+    QRLabel5: TQRLabel;
+    SamplingDate: TQRDBText;
+    SampleSite: TQRDBText;
+    Reportdate: TQRDBText;
+    QRLabel23: TQRLabel;
+    ReferredBy: TQRDBText;
+    qrlbl3: TQRLabel;
+    HospitalNo: TQRDBText;
+    QRLabel46: TQRLabel;
+    QRLabel61: TQRLabel;
+    QRLabel60: TQRLabel;
+    QRLabel183: TQRLabel;
+    QRDBText53: TQRDBText;
+    QRDBText54: TQRDBText;
+    QrDBREFHOS: TQRDBText;
+    QRDBText59: TQRDBText;
+    QRLabel47: TQRLabel;
+    QRLabel62: TQRLabel;
+    QRLabel63: TQRLabel;
+    QRLabel65: TQRLabel;
+    qrlblx1: TQRLabel;
+    QRDBText55: TQRDBText;
+    QRDBText61: TQRDBText;
+    QRDBText57: TQRDBText;
+    QRDBText60: TQRDBText;
+    QRLabel126: TQRLabel;
+    QRLabel129: TQRLabel;
+    QRLabel132: TQRLabel;
+    QRLabel131: TQRLabel;
+    QRDBText72: TQRDBText;
+    QRDBText73: TQRDBText;
+    QRDBText78: TQRDBText;
+    QRDBText76: TQRDBText;
+    QRLabel127: TQRLabel;
+    QRLabel130: TQRLabel;
+    QRLabel133: TQRLabel;
+    QRLabel128: TQRLabel;
+    QRDBText74: TQRDBText;
+    QRDBText80: TQRDBText;
+    QRDBText79: TQRDBText;
+    QRDBText77: TQRDBText;
+    QRLabel155: TQRLabel;
+    QRLabel158: TQRLabel;
+    QRLabel161: TQRLabel;
+    QRLabel160: TQRLabel;
+    QRDBText91: TQRDBText;
+    QRDBText92: TQRDBText;
+    QRDBText97: TQRDBText;
+    QRDBText95: TQRDBText;
+    QRLabel156: TQRLabel;
+    QRLabel159: TQRLabel;
+    QRLabel162: TQRLabel;
+    QRLabel157: TQRLabel;
+    QRDBText93: TQRDBText;
+    QRDBText99: TQRDBText;
+    QRDBText98: TQRDBText;
+    QRDBText96: TQRDBText;
+    QRLabel34: TQRLabel;
+    QRLabel37: TQRLabel;
+    QRLabel40: TQRLabel;
+    QRLabel36: TQRLabel;
+    QRDBText45: TQRDBText;
+    QRDBText46: TQRDBText;
+    QRDBText51: TQRDBText;
+    QRDBText50: TQRDBText;
+    QRLabel35: TQRLabel;
+    QRLabel38: TQRLabel;
+    QRLabel39: TQRLabel;
+    QRDBText47: TQRDBText;
+    QRDBText48: TQRDBText;
+    QRDBText49: TQRDBText;
+    QRLabel4: TQRLabel;
+    QRLabel29: TQRLabel;
+    QRLabel32: TQRLabel;
+    QRLabel28: TQRLabel;
+    QRDBText33: TQRDBText;
+    QRDBText38: TQRDBText;
+    QRDBText43: TQRDBText;
+    QRDBText42: TQRDBText;
+    QRLabel7: TQRLabel;
+    QRLabel30: TQRLabel;
+    QRLabel31: TQRLabel;
+    QRDBText39: TQRDBText;
+    QRDBText40: TQRDBText;
+    QRDBText41: TQRDBText;
+    QRLabel187: TQRLabel;
+    QRLabel188: TQRLabel;
+    QRLabel189: TQRLabel;
+    QRLabel190: TQRLabel;
+    QRDBText119: TQRDBText;
+    QRDBText120: TQRDBText;
+    QRDBText121: TQRDBText;
+    QRDBText122: TQRDBText;
+    QRLabel191: TQRLabel;
+    QRDBText123: TQRDBText;
+    QRLabel192: TQRLabel;
+    QRDBText124: TQRDBText;
+    QRLabel193: TQRLabel;
+    QRDBText125: TQRDBText;
+    QRLabel194: TQRLabel;
+    QRLabel49: TQRLabel;
+    QRLabel48: TQRLabel;
+    QRLabel18: TQRLabel;
+    QRLabel50: TQRLabel;
+    QRLabel51: TQRLabel;
+    QRLabel52: TQRLabel;
+    QRLabel56: TQRLabel;
+    QRLabel143: TQRLabel;
+    QRLabel144: TQRLabel;
+    QRLabel145: TQRLabel;
+    QRLabel146: TQRLabel;
+    QRLabel147: TQRLabel;
+    QRLabel148: TQRLabel;
+    QRLabel149: TQRLabel;
+    QRLabel70: TQRLabel;
+    QRLabel72: TQRLabel;
+    QRLabel68: TQRLabel;
+    QRLabel67: TQRLabel;
+    QRLabel69: TQRLabel;
+    QRLabel78: TQRLabel;
+    QRLabel71: TQRLabel;
+    QRLabel84: TQRLabel;
+    QRLabel11: TQRLabel;
+    QRLabel15: TQRLabel;
+    QRLabel14: TQRLabel;
+    QRLabel12: TQRLabel;
+    QRLabel13: TQRLabel;
+    QRLabel9: TQRLabel;
+    QRLabel43: TQRLabel;
+    QRBand18: TQRBand;
+    Memo: TMemo;
+    QRDBRichText_TypOfAsp: TQRDBRichText;
+    QRLabel197: TQRLabel;
+    QRDBRichText_SampleReceived: TQRDBRichText;
+    QRLabel196: TQRLabel;
+    QRLabel203: TQRLabel;
+    QRLabel204: TQRLabel;
+    QRLabel205: TQRLabel;
+    QRDBText7: TQRDBText;
+    QRDBText8: TQRDBText;
+    QRDBText9: TQRDBText;
+    QRLabel198: TQRLabel;
+    QRLabel206: TQRLabel;
+    QRLabel200: TQRLabel;
+    QRLabel199: TQRLabel;
+    QRSubDetail57: TQRSubDetail;
+    QRLabel195: TQRLabel;
+    QRDBText13: TQRDBText;
+    QRLabel207: TQRLabel;
+    QRLabel208: TQRLabel;
+    QRLabel209: TQRLabel;
+    QRLabel210: TQRLabel;
+    QRLabel211: TQRLabel;
+    QRLabel212: TQRLabel;
+    QRLabel213: TQRLabel;
+    QRLabel214: TQRLabel;
+    QRLabel215: TQRLabel;
+    QRLabel216: TQRLabel;
+    QRLabel217: TQRLabel;
+    QRLabel218: TQRLabel;
+    QRLabel219: TQRLabel;
+    QRLabel220: TQRLabel;
+    QRLabel221: TQRLabel;
+    QRLabel222: TQRLabel;
+    QRLabel223: TQRLabel;
+    QRLabel224: TQRLabel;
+    OraQuery_PBS: TOraQuery;
+    OraQuery_PBSDoctor: TOraQuery;
+    QRLabel276: TQRLabel;
+    QRLabel281: TQRLabel;
+    QR_PBS: TQuickRep;
+    QRBand22: TQRBand;
+    QRLabel226: TQRLabel;
+    QRLabel228: TQRLabel;
+    QRLabel229: TQRLabel;
+    QRLabel230: TQRLabel;
+    QRLabel231: TQRLabel;
+    QRLabel232: TQRLabel;
+    QRLabel233: TQRLabel;
+    QRLabel234: TQRLabel;
+    QRLabel235: TQRLabel;
+    QRLabel236: TQRLabel;
+    QRDBText63: TQRDBText;
+    QRDBText65: TQRDBText;
+    QRDBText66: TQRDBText;
+    QRDBText67: TQRDBText;
+    QRLabel237: TQRLabel;
+    QRLabel239: TQRLabel;
+    QRDBText68: TQRDBText;
+    QRDBText71: TQRDBText;
+    QRBand23: TQRBand;
+    QRBand24: TQRBand;
+    QRLabel260: TQRLabel;
+    QRLabel261: TQRLabel;
+    QRLabel262: TQRLabel;
+    QRImage8: TQRImage;
+    QRRichText4: TQRRichText;
+    QRSubDetail587: TQRSubDetail;
+    QRLabel242: TQRLabel;
+    QRDBText85: TQRDBText;
+    QRSubDetail61: TQRSubDetail;
+    QRLabel243: TQRLabel;
+    QRDBText83: TQRDBText;
+    QRLabel244: TQRLabel;
+    QRDBText84: TQRDBText;
+    QRSubDetail67: TQRSubDetail;
+    QRLabel245: TQRLabel;
+    QRLabel246: TQRLabel;
+    QRDBText86: TQRDBText;
+    QRSubDetail68: TQRSubDetail;
+    QRLabel247: TQRLabel;
+    QRLabel248: TQRLabel;
+    QRDBText87: TQRDBText;
+    QRSubDetail70: TQRSubDetail;
+    QRLabel251: TQRLabel;
+    QRLabel252: TQRLabel;
+    QRDBText90: TQRDBText;
+    QRSubDetail71: TQRSubDetail;
+    QRLabel253: TQRLabel;
+    QRLabel254: TQRLabel;
+    QRRichText1: TQRRichText;
+    QRRichText2: TQRRichText;
+    QRLabel311: TQRLabel;
+    QRLabel312: TQRLabel;
+    QRDBText14: TQRDBText;
+    QRDBText15: TQRDBText;
+    QRLabel313: TQRLabel;
+    QRDBText36: TQRDBText;
+    QRLabel315: TQRLabel;
+    QRDBText6: TQRDBText;
+    QRImage33: TQRImage;
+    QRImage36: TQRImage;
+    QRShape29: TQRShape;
+    QRShape32: TQRShape;
+    QRLabel277: TQRLabel;
+    QRLabel278: TQRLabel;
+    QRLabel279: TQRLabel;
+    QRLabel280: TQRLabel;
+    QRLabel57: TQRLabel;
+    QRLabel66: TQRLabel;
+    QRImage13: TQRImage;
+    QRShape1: TQRShape;
+    QRLabel282: TQRLabel;
+    QRLabel283: TQRLabel;
+    QRLabel284: TQRLabel;
+    QRLabel285: TQRLabel;
+    QRImage14: TQRImage;
+    QRShape2: TQRShape;
+    QRLabel286: TQRLabel;
+    QRLabel287: TQRLabel;
+    QRLabel150: TQRLabel;
+    QRLabel151: TQRLabel;
+    QRImage15: TQRImage;
+    QRShape3: TQRShape;
+    QRLabel225: TQRLabel;
+    QRLabel288: TQRLabel;
+    QRLabel289: TQRLabel;
+    QRLabel290: TQRLabel;
+    QRImage16: TQRImage;
+    QRShape4: TQRShape;
+    QRLabel291: TQRLabel;
+    QRLabel292: TQRLabel;
+    QRLabel201: TQRLabel;
+    QRLabel202: TQRLabel;
+    QRImage17: TQRImage;
+    QRShape13: TQRShape;
+    QRLabel264: TQRLabel;
+    QRLabel265: TQRLabel;
+    QRLabel266: TQRLabel;
+    QRLabel267: TQRLabel;
+    QRImage18: TQRImage;
+    QRShape14: TQRShape;
+    QRLabel268: TQRLabel;
+    QRLabel269: TQRLabel;
+    QRLabel58: TQRLabel;
+    QRLabel119: TQRLabel;
+    QRImage9: TQRImage;
+    QRShape5: TQRShape;
+    QRLabel270: TQRLabel;
+    QRLabel271: TQRLabel;
+    QRLabel272: TQRLabel;
+    QRLabel273: TQRLabel;
+    QRImage10: TQRImage;
+    QRShape6: TQRShape;
+    QRLabel274: TQRLabel;
+    QRLabel275: TQRLabel;
+    QRLabel107: TQRLabel;
+    QRLabel108: TQRLabel;
+    QRImage11: TQRImage;
+    QRShape7: TQRShape;
+    QRLabel293: TQRLabel;
+    QRLabel294: TQRLabel;
+    QRLabel295: TQRLabel;
+    QRLabel296: TQRLabel;
+    QRImage12: TQRImage;
+    QRShape8: TQRShape;
+    QRLabel297: TQRLabel;
+    QRLabel298: TQRLabel;
+    QRLabel227: TQRLabel;
+    QRLabel238: TQRLabel;
+    QRImage19: TQRImage;
+    QRShape9: TQRShape;
+    QRLabel240: TQRLabel;
+    QRLabel241: TQRLabel;
+    QRLabel249: TQRLabel;
+    QRLabel250: TQRLabel;
+    QRImage20: TQRImage;
+    QRShape10: TQRShape;
+    QRLabel255: TQRLabel;
+    QRLabel256: TQRLabel;
+    QRLabel73: TQRLabel;
+    QRLabel74: TQRLabel;
+    QRImage21: TQRImage;
+    QRShape11: TQRShape;
+    QRLabel257: TQRLabel;
+    QRLabel258: TQRLabel;
+    QRLabel259: TQRLabel;
+    QRLabel263: TQRLabel;
+    QRImage22: TQRImage;
+    QRShape12: TQRShape;
+    QRLabel299: TQRLabel;
+    QRLabel302: TQRLabel;
+    QRLabel303: TQRLabel;
+    QRLabel64: TQRLabel;
+    QRLabel300: TQRLabel;
+    QRLabel301: TQRLabel;
+    QRLabel304: TQRLabel;
+    QRLabel305: TQRLabel;
+    QRLabel306: TQRLabel;
+    QRLabel307: TQRLabel;
+    QRLabel308: TQRLabel;
+    QRLabel309: TQRLabel;
+    QRLabel310: TQRLabel;
+    QRDBText5: TQRDBText;
+    QRLabel314: TQRLabel;
+    QRDBText23: TQRDBText;
+    QRDBText37: TQRDBText;
+    QRLabel316: TQRLabel;
+    QRLabel317: TQRLabel;
+    QRDBText44: TQRDBText;
+    OraQuery_FooterVerifiedBy: TOraQuery;
+    OraQuery_FINDINGPOSTBY: TOraQuery;
+
+    procedure lbl_ClientNamePrint(sender: TObject; var Value: string);
+    procedure lbl_ClientAddressPrint(sender: TObject; var Value: string);
+    procedure RepeatSmearPrint(sender: TObject; var Value: string);
+    procedure QRSubDetail2BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail4BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail5BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail6BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail7BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail8BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail18BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail19BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail20BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+  //  procedure QRSubDetail21BeforePrint(Sender: TQRCustomBand;
+   //   var PrintBand: Boolean);
+    procedure QRSubDetail11BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail12BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail13BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail14BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail15BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail16BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail24BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail26BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail27BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail28BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail29BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail30BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail31BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail33BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail35BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail36BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail37BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail38BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail39BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail40BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail41BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail52SuinResidentBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail34BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail3BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail44BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail45BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail46BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail47BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail49BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail50BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail52BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail53BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail54BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail55BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail59BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail60BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail62BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail63BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail64BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail65BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail17BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBand7BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    Procedure AddImage;
+    procedure QRSubDetail48BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRLabel43Print(sender: TObject; var Value: string);
+    procedure QRLabel44Print(sender: TObject; var Value: string);
+    procedure QRSubDetail1BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail66BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBand3BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    procedure QRBand1BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    procedure QRBand11BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBand5BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    procedure QRBand19BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail51BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBand9BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    procedure QRSubDetail71BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBand24BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail587BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail61BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail67BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail68BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail70BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBand23BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRLabel242Print(sender: TObject; var Value: string);
+    procedure QRBand21BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBand14BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBand17BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBand13BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBand16BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBand15BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBand18BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail9BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail10BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail21BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail23BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail25BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail32BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail43BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail48MicroDesBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail51SuinCommentBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail44SuinHistoryBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail45SuinClinicalBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail47SuinGrossBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail49SuinDiagnosisBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail50SuinCOmmentBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRSubDetail57BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRLabel184Print(sender: TObject; var Value: string);
+    procedure QRLabel185Print(sender: TObject; var Value: string);
+    procedure QRLabel186Print(sender: TObject; var Value: string);
+    procedure QRLabel25Print(sender: TObject; var Value: string);
+    procedure QRLabel26Print(sender: TObject; var Value: string);
+    procedure QRLabel27Print(sender: TObject; var Value: string);
+    procedure QRLabel152Print(sender: TObject; var Value: string);
+    procedure QRLabel154Print(sender: TObject; var Value: string);
+    procedure QRLabel59Print(sender: TObject; var Value: string);
+    procedure QRLabel3Print(sender: TObject; var Value: string);
+    procedure QRLabel260Print(sender: TObject; var Value: string);
+    procedure QRLabel261Print(sender: TObject; var Value: string);
+    procedure QRLabel262Print(sender: TObject; var Value: string);
+    procedure QRLabel82Print(sender: TObject; var Value: string);
+    procedure QRLabel45Print(sender: TObject; var Value: string);
+    procedure QRLabel87Print(sender: TObject; var Value: string);
+    procedure QRLabel125Print(sender: TObject; var Value: string);
+    procedure FormCreate(Sender: TObject);
+    procedure QRDBText58Print(sender: TObject; var Value: string);
+  private
+    { Private declarations }
+  public
+     useridleft,useridright, ps_deptype:string;
+    { Public declarations }
+  end;
+
+var
+  Form_Report: TForm_Report;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_Report.AddImage;
+Var
+     ms,Ms1: TMemoryStream;
+     JPG,Jpeg,jpeg1: TJPEGImage;
+begin
+     Image1.Picture.Graphic:=nil;
+     Image2.Picture.Graphic:=nil;
+     {
+     with qryTQuery do
+     begin
+          Close;
+          Sql.Clear;
+          Sql.Add('Select suin_image1,suin_image2 from LB_SUIN_SURGICALINVESTIGATION where SUIN_PATIENTTESTID='+inttostr(gi_patientTestId));
+          Open;
+
+          JPeg:=TJPEGImage.Create;
+          ms:=TMemoryStream.Create;
+
+          JPeg1:=TJPEGImage.Create;
+          ms1:=TMemoryStream.Create;
+          try
+               TBlobField(FieldByName('suin_image1')).SaveToStream(ms);
+               ms.Position := 0;
+               if ms.Size>0 then
+               begin
+                   JPeG.LoadFromStream(ms);
+                   Image1.Picture.Assign(JPeG);
+               end;
+
+               TBlobField(FieldByName('suin_image2')).SaveToStream(ms1);
+               ms1.Position := 0;
+               if ms1.Size>0 then
+               begin
+                   JPeG1.LoadFromStream(ms1);
+                   Image2.Picture.Assign(JPeG1);
+               end;
+          finally
+               JPeG.Free;
+               ms.Free;
+               JPeG1.Free;
+               ms1.Free;
+          end;
+     end;
+     }
+end;
+
+procedure TForm_Report.FormCreate(Sender: TObject);
+begin
+     ps_deptype := GetUserDepType(gi_UserID);
+end;
+
+procedure TForm_Report.lbl_ClientAddressPrint(sender: TObject;
+  var Value: string);
+begin
+     Value := gs_hospitaladdress;
+end;
+
+procedure TForm_Report.lbl_ClientNamePrint(sender: TObject; var Value: string);
+begin
+     Value := gs_hospitalname;
+end;
+
+procedure TForm_Report.QRSubDetail12BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FNAC.fieldbyname('FNIN_TYPEOFASPIRATION').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_FNACType.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText_FNACType.Lines.text = '' then
+     begin
+          QRLabel18.Enabled:=false;
+          QRRichText_FNACType.Enabled:=false;
+          QRSubDetail12.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRBand11BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FluidForDC.fieldbyname('FLDC_REPORTTITLE').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_FluidDcTitle.Lines.LoadFromFile('tt.txt');
+end;
+
+procedure TForm_Report.QRBand13BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+var OraQry:TOraQuery;
+var OraQry1:TOraQuery;
+var
+  ms, Ms1: TMemoryStream;
+  JPG, Jpeg1: TJPEGImage;
+
+begin
+      QRImage13.Enabled := true;
+     QRImage14.Enabled:=True;
+
+     QRImage13.Picture.Graphic:=nil;
+     QRImage14.Picture.Graphic:=nil;
+
+
+     if gs_ReportFooterRegulation='U' then  //Userwise
+    begin
+         if gi_compileValue in [14,21] then
+         begin
+              with OraQuery_FooterVerifiedBy do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct verifiedby from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify.txt');
+                  open;
+                 // lbl_DocName_RT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                  QRLabel285.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                 // lbl_Qualification_RT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                  QRLabel286.Caption := OraQuery_FooterVerifiedBy.FieldByName('designation').AsString;
+                 // lbl_Specialization_RT.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                  QRLabel287.Caption :='';
+                  if OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel287.Caption :='NMC No. '+ OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString;
+                       QRLabel285.Caption:= 'Dr. '+QRLabel285.Caption;
+                  end;
+
+                  if OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel287.Caption :='NHPC No. '+OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+
+              with OraQuery_FINDINGPOSTBY do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct FINDINGPOSTBY from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify1.txt');
+                  open;
+                 // lbl_DocName_LT.Caption:= OraQuery_CollectedBy.FieldByName('fullname').AsString;
+                  QRLabel66.Caption:= OraQuery_FINDINGPOSTBY.FieldByName('fullname').AsString;
+                //  lbl_Qualification_LT.Caption := OraQuery_CollectedBy.FieldByName('qualification').AsString;
+                  QRLabel282.Caption := OraQuery_FINDINGPOSTBY.FieldByName('designation').AsString;
+                //  lbl_Specialization_LT.Caption := OraQuery_CollectedBy.FieldByName('specialization').AsString;
+                  QRLabel283.Caption := '';
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel283.Caption :='NMC No. '+ OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString;
+                       QRLabel66.Caption:='Dr. '+QRLabel66.Caption;
+                  end;
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel283.Caption :='NHPC No. '+OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+              useridleft :=OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsString;
+              useridright:= OraQuery_FooterVerifiedBy.FieldByName('USERID').AsString;
+              QRLabel5.enabLed:=false;
+
+         end;
+
+          if OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsInteger=OraQuery_FooterVerifiedBy.FieldByName('USERID').AsInteger then
+         begin
+              QRShape1.Enabled:=false;
+              QRLabel66.Enabled:=False;
+              QRLabel282.Enabled:=false;
+              QRLabel283.Enabled:=False;
+              QRImage13.Enabled:=False;
+         end;
+
+          //
+          if gb_Signature then
+          begin
+                if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where USERID=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage13.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+                 with qryTQuery do
+                 begin
+                   Close;
+                   Sql.Clear;
+                   Sql.Add('Select signature from lab_usermain where USERID='+
+                       useridright);
+                   Open;
+
+                   JPG := TJPEGImage.Create;
+                   ms := TMemoryStream.Create;
+                   try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                     if ms.Size > 0 then
+                     begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureCT.Picture.Assign(JPG);
+                       QRImage14.Picture.Assign(JPG);
+                     end;
+                   finally
+                     JPG.Free;
+                     ms.Free;
+                   end;
+                 end;
+          end;
+
+    end
+    else if gs_ReportFooterRegulation='C' then
+    begin
+          QRLabel282.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel66.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel283.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel57.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Left');
+
+
+          if gi_compileValue in [1,14,21,22,23,24,25]  then
+          begin
+               useridleft := GetReportUseridLeft(gs_SampleNo,'Left');
+          end;
+          if (QRLabel66.Caption)='' then
+          QRShape1.Enabled:=False;
+
+          QRLabel286.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel285.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel287.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel284.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Right');
+          if Trim(QRLabel285.Caption)='' then
+               QRShape32.Enabled:=False;
+
+
+
+          if gi_compileValue in [1,14,21,22,23,24,25]  then
+          begin
+               useridright := GetReportUseridRight(gs_SampleNo, 'Right');
+          end;
+
+
+          if gb_Signature then
+          begin
+               if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where doctorid=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage13.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+               with qryTQuery do
+               begin
+               Close;
+               Sql.Clear;
+               Sql.Add('Select signature from lab_usermain where doctorid='+
+                  useridright);
+               Open;
+
+               JPG := TJPEGImage.Create;
+               ms := TMemoryStream.Create;
+               try
+                TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                  JPG.LoadFromStream(ms);
+                  //SignatureCT.Picture.Assign(JPG);
+                  QRImage14.Picture.Assign(JPG);
+                end;
+               finally
+                JPG.Free;
+                ms.Free;
+               end;
+               end;
+          end;
+
+
+    end;
+
+end;
+
+procedure TForm_Report.QRBand14BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+
+var OraQry:TOraQuery;
+var OraQry1:TOraQuery;
+var
+  ms, Ms1: TMemoryStream;
+  JPG, Jpeg1: TJPEGImage;
+
+begin
+     QRImage9.Enabled := true;
+     QRImage10.Enabled:=True;
+
+     QRImage9.Picture.Graphic:=nil;
+     QRImage10.Picture.Graphic:=nil;
+
+
+     if gs_ReportFooterRegulation='U' then  //Userwise
+    begin
+         if gi_compileValue in [14,21] then
+         begin
+              with OraQuery_FooterVerifiedBy do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct verifiedby from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify.txt');
+                  open;
+                 // lbl_DocName_RT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                  QRLabel273.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                 // lbl_Qualification_RT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                  QRLabel274.Caption := OraQuery_FooterVerifiedBy.FieldByName('designation').AsString;
+                 // lbl_Specialization_RT.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                  QRLabel275.Caption :='';
+                  if OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel275.Caption :='NMC No. '+ OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString;
+                       QRLabel273.Caption:= 'Dr. '+QRLabel273.Caption;
+                  end;
+
+                  if OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel275.Caption :='NHPC No. '+OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+
+              with OraQuery_FINDINGPOSTBY do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct FINDINGPOSTBY from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify1.txt');
+                  open;
+                 // lbl_DocName_LT.Caption:= OraQuery_CollectedBy.FieldByName('fullname').AsString;
+                  QRLabel119.Caption:= OraQuery_FINDINGPOSTBY.FieldByName('fullname').AsString;
+                //  lbl_Qualification_LT.Caption := OraQuery_CollectedBy.FieldByName('qualification').AsString;
+                  QRLabel270.Caption := OraQuery_FINDINGPOSTBY.FieldByName('designation').AsString;
+                //  lbl_Specialization_LT.Caption := OraQuery_CollectedBy.FieldByName('specialization').AsString;
+                  QRLabel271.Caption := '';
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel271.Caption :='NMC No. '+ OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString;
+                       QRLabel119.Caption:='Dr. '+QRLabel119.Caption;
+                  end;
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel271.Caption :='NHPC No. '+OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+              useridleft :=OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsString;
+              useridright:= OraQuery_FooterVerifiedBy.FieldByName('USERID').AsString;
+              QRLabel5.enabLed:=false;
+
+         end;
+
+          if OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsInteger=OraQuery_FooterVerifiedBy.FieldByName('USERID').AsInteger then
+         begin
+              QRShape5.Enabled:=false;
+              QRLabel119.Enabled:=False;
+              QRLabel270.Enabled:=false;
+              QRLabel271.Enabled:=False;
+              QRImage9.Enabled:=False;
+         end;
+
+          if gb_Signature then
+          begin
+                if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where USERID=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage9.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+                 with qryTQuery do
+                 begin
+                   Close;
+                   Sql.Clear;
+                   Sql.Add('Select signature from lab_usermain where USERID='+
+                       useridright);
+                   Open;
+
+                   JPG := TJPEGImage.Create;
+                   ms := TMemoryStream.Create;
+                   try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                     if ms.Size > 0 then
+                     begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureCT.Picture.Assign(JPG);
+                       QRImage10.Picture.Assign(JPG);
+                     end;
+                   finally
+                     JPG.Free;
+                     ms.Free;
+                   end;
+                 end;
+          end;
+
+    end
+    else //if gs_ReportFooterRegulation='U' then
+    begin
+
+          QRLabel270.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel119.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel271.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel58.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Left');
+
+          if gi_compileValue in [1,14,21,22,23,24,25]  then
+          begin
+               useridleft := GetReportUseridLeft(gs_SampleNo,'Left');
+          end;
+          if (QRLabel119.Caption)='' then
+          QRShape5.Enabled:=False;
+
+          QRLabel274.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel273.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel275.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel272.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Right');
+          if Trim(QRLabel273.Caption)='' then
+               QRShape6.Enabled:=False;
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridright := GetReportUseridRight(gs_SampleNo, 'Right');
+          end;
+
+          if gb_Signature then
+          begin
+               if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where doctorid=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage9.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+               with qryTQuery do
+               begin
+               Close;
+               Sql.Clear;
+               Sql.Add('Select signature from lab_usermain where doctorid='+
+                  useridright);
+               Open;
+
+               JPG := TJPEGImage.Create;
+               ms := TMemoryStream.Create;
+               try
+                TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                  JPG.LoadFromStream(ms);
+                  //SignatureCT.Picture.Assign(JPG);
+                  QRImage10.Picture.Assign(JPG);
+                end;
+               finally
+                JPG.Free;
+                ms.Free;
+               end;
+               end;
+          end;
+    end;
+
+end;
+
+
+procedure TForm_Report.QRBand15BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+var OraQry:TOraQuery;
+var OraQry1:TOraQuery;
+
+var
+  ms, Ms1: TMemoryStream;
+  JPG, Jpeg1: TJPEGImage;
+
+begin
+
+     QRImage11.Enabled := true;
+     QRImage12.Enabled:=True;
+
+     QRImage11.Picture.Graphic:=nil;
+     QRImage12.Picture.Graphic:=nil;
+
+
+     if gs_ReportFooterRegulation='U' then  //Userwise
+     begin
+
+          if gi_compileValue in [14,21] then
+         begin
+              with OraQuery_FooterVerifiedBy do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct verifiedby from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify.txt');
+                  open;
+                 // lbl_DocName_RT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                  QRLabel296.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                 // lbl_Qualification_RT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                  QRLabel297.Caption := OraQuery_FooterVerifiedBy.FieldByName('designation').AsString;
+                 // lbl_Specialization_RT.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                  QRLabel298.Caption :='';
+                  if OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel298.Caption :='NMC No. '+ OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString;
+                       QRLabel296.Caption:= 'Dr. '+QRLabel296.Caption;
+                  end;
+
+                  if OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel298.Caption :='NHPC No. '+OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+
+              with OraQuery_FINDINGPOSTBY do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct FINDINGPOSTBY from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify1.txt');
+                  open;
+                 // lbl_DocName_LT.Caption:= OraQuery_CollectedBy.FieldByName('fullname').AsString;
+                  QRLabel108.Caption:= OraQuery_FINDINGPOSTBY.FieldByName('fullname').AsString;
+                //  lbl_Qualification_LT.Caption := OraQuery_CollectedBy.FieldByName('qualification').AsString;
+                  QRLabel293.Caption := OraQuery_FINDINGPOSTBY.FieldByName('designation').AsString;
+                //  lbl_Specialization_LT.Caption := OraQuery_CollectedBy.FieldByName('specialization').AsString;
+                  QRLabel294.Caption := '';
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel294.Caption :='NMC No. '+ OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString;
+                       QRLabel108.Caption:='Dr. '+QRLabel108.Caption;
+                  end;
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel294.Caption :='NHPC No. '+OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+              useridleft :=OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsString;
+              useridright:= OraQuery_FooterVerifiedBy.FieldByName('USERID').AsString;
+              QRLabel5.enabLed:=false;
+
+         end;
+
+          if OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsInteger=OraQuery_FooterVerifiedBy.FieldByName('USERID').AsInteger then
+         begin
+              QRShape7.Enabled:=false;
+              QRLabel108.Enabled:=False;
+              QRLabel293.Enabled:=false;
+              QRLabel294.Enabled:=False;
+              QRImage11.Enabled:=False;
+         end;
+
+         // if gb_Signature then
+          begin
+                if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where USERID=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage9.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+                 with qryTQuery do
+                 begin
+                   Close;
+                   Sql.Clear;
+                   Sql.Add('Select signature from lab_usermain where USERID='+
+                       useridright);
+                   Open;
+
+                   JPG := TJPEGImage.Create;
+                   ms := TMemoryStream.Create;
+                   try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                     if ms.Size > 0 then
+                     begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureCT.Picture.Assign(JPG);
+                       QRImage10.Picture.Assign(JPG);
+                     end;
+                   finally
+                     JPG.Free;
+                     ms.Free;
+                   end;
+                 end;
+          end;
+     end
+     else if gs_ReportFooterRegulation='C' then
+     begin
+
+          QRLabel293.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel108.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel294.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel107.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Left');
+
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridleft := GetReportUseridLeft(gs_SampleNo,'Left');
+          end;
+          if (QRLabel108.Caption)='' then
+          QRShape7.Enabled:=False;
+
+          QRLabel297.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel296.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel298.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel295.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Right');
+          if Trim(QRLabel296.Caption)='' then
+               QRShape8.Enabled:=False;
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridright := GetReportUseridRight(gs_SampleNo, 'Right');
+          end;
+
+         // if gb_Signature then
+          begin
+               if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where doctorid=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage11.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+               with qryTQuery do
+               begin
+               Close;
+               Sql.Clear;
+               Sql.Add('Select signature from lab_usermain where doctorid='+
+                  useridright);
+               Open;
+
+               JPG := TJPEGImage.Create;
+               ms := TMemoryStream.Create;
+               try
+                TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                  JPG.LoadFromStream(ms);
+                  //SignatureCT.Picture.Assign(JPG);
+                  QRImage12.Picture.Assign(JPG);
+                end;
+               finally
+                JPG.Free;
+                ms.Free;
+               end;
+               end;
+          end;
+
+     end;
+end;
+
+procedure TForm_Report.QRBand16BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+var OraQry:TOraQuery;
+var OraQry1:TOraQuery;
+var
+  ms, Ms1: TMemoryStream;
+  JPG, Jpeg1: TJPEGImage;
+
+begin
+     QRImage15.Enabled := true;
+     QRImage16.Enabled:=True;
+
+     QRImage15.Picture.Graphic:=nil;
+     QRImage16.Picture.Graphic:=nil;
+
+      if gs_ReportFooterRegulation='U' then  //Userwise
+    begin
+         if gi_compileValue in [14,21] then
+         begin
+              with OraQuery_FooterVerifiedBy do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct verifiedby from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify.txt');
+                  open;
+                 // lbl_DocName_RT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                  QRLabel290.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                 // lbl_Qualification_RT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                  QRLabel299.Caption := OraQuery_FooterVerifiedBy.FieldByName('designation').AsString;
+                 // lbl_Specialization_RT.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                  QRLabel302.Caption :='';
+                  if OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel302.Caption :='NMC No. '+ OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString;
+                       QRLabel290.Caption:= 'Dr. '+QRLabel290.Caption;
+                  end;
+
+                  if OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel302.Caption :='NHPC No. '+OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+
+              with OraQuery_FINDINGPOSTBY do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct FINDINGPOSTBY from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify1.txt');
+                  open;
+                 // lbl_DocName_LT.Caption:= OraQuery_CollectedBy.FieldByName('fullname').AsString;
+                  QRLabel151.Caption:= OraQuery_FINDINGPOSTBY.FieldByName('fullname').AsString;
+                //  lbl_Qualification_LT.Caption := OraQuery_CollectedBy.FieldByName('qualification').AsString;
+                  QRLabel225.Caption := OraQuery_FINDINGPOSTBY.FieldByName('designation').AsString;
+                //  lbl_Specialization_LT.Caption := OraQuery_CollectedBy.FieldByName('specialization').AsString;
+                  QRLabel288.Caption := '';
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel288.Caption :='NMC No. '+ OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString;
+                       QRLabel151.Caption:='Dr. '+QRLabel151.Caption;
+                  end;
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel288.Caption :='NHPC No. '+OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+              useridleft :=OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsString;
+              useridright:= OraQuery_FooterVerifiedBy.FieldByName('USERID').AsString;
+             // QRLabel5.enabLed:=false;
+
+         end;
+
+          if OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsInteger=OraQuery_FooterVerifiedBy.FieldByName('USERID').AsInteger then
+         begin
+              QRShape3.Enabled:=false;
+              QRLabel151.Enabled:=False;
+              QRLabel225.Enabled:=false;
+              QRLabel288.Enabled:=False;
+              QRImage15.Enabled:=False;
+         end;
+
+          //
+          //if gb_Signature then
+          begin
+                if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where USERID=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage15.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+                 with qryTQuery do
+                 begin
+                   Close;
+                   Sql.Clear;
+                   Sql.Add('Select signature from lab_usermain where USERID='+
+                       useridright);
+                   Open;
+
+                   JPG := TJPEGImage.Create;
+                   ms := TMemoryStream.Create;
+                   try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                     if ms.Size > 0 then
+                     begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureCT.Picture.Assign(JPG);
+                       QRImage16.Picture.Assign(JPG);
+                     end;
+                   finally
+                     JPG.Free;
+                     ms.Free;
+                   end;
+                 end;
+          end;
+
+    end
+    else if gs_ReportFooterRegulation='C' then
+    begin
+
+
+
+          QRLabel225.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel151.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel288.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel150.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Left');
+
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridleft := GetReportUseridLeft(gs_SampleNo,'Left');
+          end;
+          if (QRLabel151.Caption)='' then
+          QRShape3.Enabled:=False;
+
+          QRLabel291.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel290.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel292.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel289.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Right');
+          if Trim(QRLabel290.Caption)='' then
+               QRShape4.Enabled:=False;
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridright := GetReportUseridRight(gs_SampleNo, 'Right');
+          end;
+
+          if gb_Signature then
+          begin
+               if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where doctorid=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage15.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+               with qryTQuery do
+               begin
+               Close;
+               Sql.Clear;
+               Sql.Add('Select signature from lab_usermain where doctorid='+
+                  useridright);
+               Open;
+
+               JPG := TJPEGImage.Create;
+               ms := TMemoryStream.Create;
+               try
+                TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                  JPG.LoadFromStream(ms);
+                  //SignatureCT.Picture.Assign(JPG);
+                  QRImage16.Picture.Assign(JPG);
+                end;
+               finally
+                JPG.Free;
+                ms.Free;
+               end;
+               end;
+          end;
+    end;
+
+end;
+
+procedure TForm_Report.QRBand17BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+
+var
+  ms, Ms1: TMemoryStream;
+  JPG, Jpeg1: TJPEGImage;
+
+begin
+
+     QRImage33.Enabled := true;
+     QRImage36.Enabled:=True;
+
+     QRImage33.Picture.Graphic:=nil;
+     QRImage36.Picture.Graphic:=nil;
+
+
+
+     if gs_ReportFooterRegulation='U' then  //Userwise
+    begin
+         if gi_compileValue in [14,21] then
+         begin
+              with OraQuery_FooterVerifiedBy do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct verifiedby from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify.txt');
+                  open;
+                 // lbl_DocName_RT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                  QRLabel281.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                 // lbl_Qualification_RT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                  QRLabel278.Caption := OraQuery_FooterVerifiedBy.FieldByName('designation').AsString;
+                 // lbl_Specialization_RT.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                  QRLabel280.Caption :='';
+                  if OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel280.Caption :='NMC No. '+ OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString;
+                       QRLabel281.Caption:= 'Dr. '+QRLabel281.Caption;
+                  end;
+
+                  if OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel280.Caption :='NHPC No. '+OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+
+              with OraQuery_FINDINGPOSTBY do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct FINDINGPOSTBY from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify1.txt');
+                  open;
+                 // lbl_DocName_LT.Caption:= OraQuery_CollectedBy.FieldByName('fullname').AsString;
+                  QRLabel276.Caption:= OraQuery_FINDINGPOSTBY.FieldByName('fullname').AsString;
+                //  lbl_Qualification_LT.Caption := OraQuery_CollectedBy.FieldByName('qualification').AsString;
+                  QRLabel277.Caption := OraQuery_FINDINGPOSTBY.FieldByName('designation').AsString;
+                //  lbl_Specialization_LT.Caption := OraQuery_CollectedBy.FieldByName('specialization').AsString;
+                  QRLabel279.Caption := '';
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel279.Caption :='NMC No. '+ OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString;
+                       QRLabel276.Caption:='Dr. '+QRLabel276.Caption;
+                  end;
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel279.Caption :='NHPC No. '+OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+              useridleft :=OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsString;
+              useridright:= OraQuery_FooterVerifiedBy.FieldByName('USERID').AsString;
+             // QRLabel5.enabLed:=false;
+
+         end;
+
+          if OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsInteger=OraQuery_FooterVerifiedBy.FieldByName('USERID').AsInteger then
+         begin
+              QRShape29.Enabled:=false;
+              QRLabel276.Enabled:=False;
+              QRLabel277.Enabled:=false;
+              QRLabel279.Enabled:=False;
+              QRImage33.Enabled:=False;
+         end;
+
+          //
+          //if gb_Signature then
+          begin
+                if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where USERID=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage33.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+                 with qryTQuery do
+                 begin
+                   Close;
+                   Sql.Clear;
+                   Sql.Add('Select signature from lab_usermain where USERID='+
+                       useridright);
+                   Open;
+
+                   JPG := TJPEGImage.Create;
+                   ms := TMemoryStream.Create;
+                   try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                     if ms.Size > 0 then
+                     begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureCT.Picture.Assign(JPG);
+                       QRImage36.Picture.Assign(JPG);
+                     end;
+                   finally
+                     JPG.Free;
+                     ms.Free;
+                   end;
+                 end;
+          end;
+
+    end
+    else if gs_ReportFooterRegulation='C' then
+    begin
+
+
+          QRLabel277.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel276.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel279.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel178.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Left');
+
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridleft := GetReportUseridLeft(gs_SampleNo,'Left');
+          end;
+          if (QRLabel276.Caption)='' then
+          QRShape29.Enabled:=False;
+
+          QRLabel278.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel281.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel280.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel179.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Right');
+          if Trim(QRLabel281.Caption)='' then
+               QRShape32.Enabled:=False;
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridright := GetReportUseridRight(gs_SampleNo, 'Right');
+          end;
+
+          //if gb_Signature then
+          begin
+               if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where doctorid=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage33.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+               with qryTQuery do
+               begin
+               Close;
+               Sql.Clear;
+               Sql.Add('Select signature from lab_usermain where doctorid='+
+                  useridright);
+               Open;
+
+               JPG := TJPEGImage.Create;
+               ms := TMemoryStream.Create;
+               try
+                TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                  JPG.LoadFromStream(ms);
+                  //SignatureCT.Picture.Assign(JPG);
+                  QRImage36.Picture.Assign(JPG);
+                end;
+               finally
+                JPG.Free;
+                ms.Free;
+               end;
+               end;
+          end;
+    end;
+
+end;
+
+
+procedure TForm_Report.QRBand18BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+ var OraQry:TOraQuery;
+  var OraQry1:TOraQuery;
+
+  var
+  ms, Ms1: TMemoryStream;
+  JPG, Jpeg1: TJPEGImage;
+begin
+     QRImage21.Enabled := true;
+     QRImage22.Enabled:=True;
+
+     QRImage21.Picture.Graphic:=nil;
+     QRImage22.Picture.Graphic:=nil;
+
+
+
+     if gs_ReportFooterRegulation='U' then  //Userwise
+    begin
+         if gi_compileValue in [14,21] then
+         begin
+              with OraQuery_FooterVerifiedBy do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct verifiedby from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify.txt');
+                  open;
+                 // lbl_DocName_RT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                  QRLabel263.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                 // lbl_Qualification_RT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                  QRLabel299.Caption := OraQuery_FooterVerifiedBy.FieldByName('designation').AsString;
+                 // lbl_Specialization_RT.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                  QRLabel302.Caption :='';
+                  if OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel302.Caption :='NMC No. '+ OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString;
+                       QRLabel263.Caption:= 'Dr. '+QRLabel263.Caption;
+                  end;
+
+                  if OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel302.Caption :='NHPC No. '+OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+
+              with OraQuery_FINDINGPOSTBY do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct FINDINGPOSTBY from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify1.txt');
+                  open;
+                 // lbl_DocName_LT.Caption:= OraQuery_CollectedBy.FieldByName('fullname').AsString;
+                  QRLabel74.Caption:= OraQuery_FINDINGPOSTBY.FieldByName('fullname').AsString;
+                //  lbl_Qualification_LT.Caption := OraQuery_CollectedBy.FieldByName('qualification').AsString;
+                  QRLabel257.Caption := OraQuery_FINDINGPOSTBY.FieldByName('designation').AsString;
+                //  lbl_Specialization_LT.Caption := OraQuery_CollectedBy.FieldByName('specialization').AsString;
+                  QRLabel258.Caption := '';
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel258.Caption :='NMC No. '+ OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString;
+                       QRLabel74.Caption:='Dr. '+QRLabel74.Caption;
+                  end;
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel258.Caption :='NHPC No. '+OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+              useridleft :=OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsString;
+              useridright:= OraQuery_FooterVerifiedBy.FieldByName('USERID').AsString;
+             // QRLabel5.enabLed:=false;
+
+         end;
+
+          if OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsInteger=OraQuery_FooterVerifiedBy.FieldByName('USERID').AsInteger then
+         begin
+              QRShape11.Enabled:=false;
+              QRLabel74.Enabled:=False;
+              QRLabel257.Enabled:=false;
+              QRLabel258.Enabled:=False;
+              QRImage21.Enabled:=False;
+         end;
+
+          //
+          //if gb_Signature then
+          begin
+                if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where USERID=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage21.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+                 with qryTQuery do
+                 begin
+                   Close;
+                   Sql.Clear;
+                   Sql.Add('Select signature from lab_usermain where USERID='+
+                       useridright);
+                   Open;
+
+                   JPG := TJPEGImage.Create;
+                   ms := TMemoryStream.Create;
+                   try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                     if ms.Size > 0 then
+                     begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureCT.Picture.Assign(JPG);
+                       QRImage22.Picture.Assign(JPG);
+                     end;
+                   finally
+                     JPG.Free;
+                     ms.Free;
+                   end;
+                 end;
+          end;
+
+    end
+    else if gs_ReportFooterRegulation='C' then
+    begin
+
+
+          QRLabel257.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel74.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel258.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel73.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Left');
+
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridleft := GetReportUseridLeft(gs_SampleNo,'Left');
+          end;
+          if (QRLabel74.Caption)='' then
+          QRShape11.Enabled:=False;
+
+          QRLabel299.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel263.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel302.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel259.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Right');
+          if Trim(QRLabel263.Caption)='' then
+               QRShape12.Enabled:=False;
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridright := GetReportUseridRight(gs_SampleNo, 'Right');
+          end;
+
+          if gb_Signature then
+          begin
+               if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where doctorid=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage21.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+               with qryTQuery do
+               begin
+               Close;
+               Sql.Clear;
+               Sql.Add('Select signature from lab_usermain where doctorid='+
+                  useridright);
+               Open;
+
+               JPG := TJPEGImage.Create;
+               ms := TMemoryStream.Create;
+               try
+                TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                  JPG.LoadFromStream(ms);
+                  //SignatureCT.Picture.Assign(JPG);
+                  QRImage22.Picture.Assign(JPG);
+                end;
+               finally
+                JPG.Free;
+                ms.Free;
+               end;
+               end;
+          end;
+    end;
+end;
+
+procedure TForm_Report.QRBand19BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_VSGFNAC.fieldbyname('USFN_REPORTTITLE').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_USGTitle.Lines.LoadFromFile('tt.txt');
+end;
+
+procedure TForm_Report.QRBand1BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Pap.fieldbyname('PAIN_REPORTTITLE').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_PAPTitle.Lines.LoadFromFile('tt.txt');
+end;
+
+procedure TForm_Report.QRBand21BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+  var OraQry:TOraQuery;
+  var OraQry1:TOraQuery;
+
+var
+  ms, Ms1: TMemoryStream;
+  JPG, Jpeg1: TJPEGImage;
+
+begin
+     QRImage17.Enabled := true;
+     QRImage18.Enabled:=True;
+
+     QRImage17.Picture.Graphic:=nil;
+     QRImage18.Picture.Graphic:=nil;
+
+
+      if gs_ReportFooterRegulation='U' then  //Userwise
+    begin
+         if gi_compileValue in [14,21] then
+         begin
+              with OraQuery_FooterVerifiedBy do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct verifiedby from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify.txt');
+                  open;
+                 // lbl_DocName_RT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                  QRLabel267.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                 // lbl_Qualification_RT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                  QRLabel268.Caption := OraQuery_FooterVerifiedBy.FieldByName('designation').AsString;
+                 // lbl_Specialization_RT.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                  QRLabel269.Caption :='';
+                  if OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel269.Caption :='NMC No. '+ OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString;
+                       QRLabel267.Caption:= 'Dr. '+QRLabel267.Caption;
+                  end;
+
+                  if OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel269.Caption :='NHPC No. '+OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+
+              with OraQuery_FINDINGPOSTBY do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct FINDINGPOSTBY from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify1.txt');
+                  open;
+                 // lbl_DocName_LT.Caption:= OraQuery_CollectedBy.FieldByName('fullname').AsString;
+                  QRLabel202.Caption:= OraQuery_FINDINGPOSTBY.FieldByName('fullname').AsString;
+                //  lbl_Qualification_LT.Caption := OraQuery_CollectedBy.FieldByName('qualification').AsString;
+                  QRLabel264.Caption := OraQuery_FINDINGPOSTBY.FieldByName('designation').AsString;
+                //  lbl_Specialization_LT.Caption := OraQuery_CollectedBy.FieldByName('specialization').AsString;
+                  QRLabel265.Caption := '';
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel265.Caption :='NMC No. '+ OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString;
+                       QRLabel202.Caption:='Dr. '+QRLabel202.Caption;
+                  end;
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel265.Caption :='NHPC No. '+OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+              useridleft :=OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsString;
+              useridright:= OraQuery_FooterVerifiedBy.FieldByName('USERID').AsString;
+             // QRLabel5.enabLed:=false;
+
+         end;
+
+          if OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsInteger=OraQuery_FooterVerifiedBy.FieldByName('USERID').AsInteger then
+         begin
+              QRShape13.Enabled:=false;
+              QRLabel202.Enabled:=False;
+              QRLabel264.Enabled:=false;
+              QRLabel265.Enabled:=False;
+              QRImage17.Enabled:=False;
+         end;
+
+          //
+          //if gb_Signature then
+          begin
+                if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where USERID=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage17.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+                 with qryTQuery do
+                 begin
+                   Close;
+                   Sql.Clear;
+                   Sql.Add('Select signature from lab_usermain where USERID='+
+                       useridright);
+                   Open;
+
+                   JPG := TJPEGImage.Create;
+                   ms := TMemoryStream.Create;
+                   try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                     if ms.Size > 0 then
+                     begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureCT.Picture.Assign(JPG);
+                       QRImage18.Picture.Assign(JPG);
+                     end;
+                   finally
+                     JPG.Free;
+                     ms.Free;
+                   end;
+                 end;
+          end;
+
+    end
+    else if gs_ReportFooterRegulation='C' then
+    begin
+
+          QRLabel264.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel202.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel265.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel201.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Left');
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridleft := GetReportUseridLeft(gs_SampleNo,'Left');
+          end;
+          if (QRLabel202.Caption)='' then
+          QRShape13.Enabled:=False;
+
+          QRLabel268.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel267.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel269.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel266.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Right');
+          if Trim(QRLabel267.Caption)='' then
+               QRShape14.Enabled:=False;
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridright := GetReportUseridRight(gs_SampleNo, 'Right');
+          end;
+
+          if gb_Signature then
+          begin
+               if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where doctorid=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage17.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+               with qryTQuery do
+               begin
+               Close;
+               Sql.Clear;
+               Sql.Add('Select signature from lab_usermain where doctorid='+
+                  useridright);
+               Open;
+
+               JPG := TJPEGImage.Create;
+               ms := TMemoryStream.Create;
+               try
+                TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                  JPG.LoadFromStream(ms);
+                  //SignatureCT.Picture.Assign(JPG);
+                  QRImage18.Picture.Assign(JPG);
+                end;
+               finally
+                JPG.Free;
+                ms.Free;
+               end;
+               end;
+          end;
+    end;
+end;
+
+procedure TForm_Report.QRBand23BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+  var OraQry:TOraQuery;
+  var
+  ms, Ms1: TMemoryStream;
+  JPG, Jpeg1: TJPEGImage;
+
+begin
+
+     QRImage19.Enabled := true;
+     QRImage20.Enabled:=True;
+
+     QRImage19.Picture.Graphic:=nil;
+     QRImage20.Picture.Graphic:=nil;
+
+
+     if gs_ReportFooterRegulation='U' then  //Userwise
+    begin
+         if gi_compileValue in [14,21] then
+         begin
+              with OraQuery_FooterVerifiedBy do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct verifiedby from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify.txt');
+                  open;
+                 // lbl_DocName_RT.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                  QRLabel250.Caption:= OraQuery_FooterVerifiedBy.FieldByName('fullname').AsString;
+                 // lbl_Qualification_RT.Caption := OraQuery_FooterVerifiedBy.FieldByName('qualification').AsString;
+                  QRLabel255.Caption := OraQuery_FooterVerifiedBy.FieldByName('designation').AsString;
+                 // lbl_Specialization_RT.Caption :=OraQuery_FooterVerifiedBy.FieldByName('specialization').AsString;
+                  QRLabel256.Caption :='';
+                  if OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel256.Caption :='NMC No. '+ OraQuery_FooterVerifiedBy.FieldByName('NMCNO').AsString;
+                       QRLabel250.Caption:= 'Dr. '+QRLabel250.Caption;
+                  end;
+
+                  if OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel256.Caption :='NHPC No. '+OraQuery_FooterVerifiedBy.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+
+              with OraQuery_FINDINGPOSTBY do
+              begin
+                  Close;
+                  SQL.Clear;
+                  Session:=Dm_Hospital.Db;
+                  sql.add ('select fullname,designation,signature,USERID,NMCNO,NHPCNO');
+                  sql.Add(' from lab_usermain l where username in ( ');
+                  sql.add ('Select distinct FINDINGPOSTBY from vw_sample_collected');
+                  sql.add ('Where PatientTestID in (' +Gs_SelectedPatientTestID+'))');
+                  //sql.savetofile('c:/footercheckverify1.txt');
+                  open;
+                 // lbl_DocName_LT.Caption:= OraQuery_CollectedBy.FieldByName('fullname').AsString;
+                  QRLabel238.Caption:= OraQuery_FINDINGPOSTBY.FieldByName('fullname').AsString;
+                //  lbl_Qualification_LT.Caption := OraQuery_CollectedBy.FieldByName('qualification').AsString;
+                  QRLabel240.Caption := OraQuery_FINDINGPOSTBY.FieldByName('designation').AsString;
+                //  lbl_Specialization_LT.Caption := OraQuery_CollectedBy.FieldByName('specialization').AsString;
+                  QRLabel241.Caption := '';
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString<>'' then
+                  begin
+                       QRLabel241.Caption :='NMC No. '+ OraQuery_FINDINGPOSTBY.FieldByName('NMCNO').AsString;
+                       QRLabel238.Caption:='Dr. '+QRLabel238.Caption;
+                  end;
+
+                  if OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString<>'' then
+                  begin
+                       QRLabel241.Caption :='NHPC No. '+OraQuery_FINDINGPOSTBY.FieldByName('NHPCNO').AsString;
+                  end;
+
+              end;
+              useridleft :=OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsString;
+              useridright:= OraQuery_FooterVerifiedBy.FieldByName('USERID').AsString;
+
+
+         end;
+
+          if OraQuery_FINDINGPOSTBY.FieldByName('USERID').AsInteger=OraQuery_FooterVerifiedBy.FieldByName('USERID').AsInteger then
+         begin
+              QRShape9.Enabled:=false;
+              QRLabel238.Enabled:=False;
+              QRLabel240.Enabled:=false;
+              QRLabel241.Enabled:=False;
+              QRImage19.Enabled:=False;
+         end;
+
+        //  if gb_Signature then
+          begin
+                if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where USERID=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage19.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+                 with qryTQuery do
+                 begin
+                   Close;
+                   Sql.Clear;
+                   Sql.Add('Select signature from lab_usermain where USERID='+
+                       useridright);
+                   Open;
+
+                   JPG := TJPEGImage.Create;
+                   ms := TMemoryStream.Create;
+                   try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                     if ms.Size > 0 then
+                     begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureCT.Picture.Assign(JPG);
+                       QRImage20.Picture.Assign(JPG);
+                     end;
+                   finally
+                     JPG.Free;
+                     ms.Free;
+                   end;
+                 end;
+          end;
+
+    end
+    else if gs_ReportFooterRegulation='C' then
+    begin
+
+          QRLabel240.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel238.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel241.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Left');
+          QRLabel227.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Left');
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridleft := GetReportUseridLeft(gs_SampleNo,'Left');
+          end;
+          if (QRLabel238.Caption)='' then
+          QRShape9.Enabled:=False;
+
+          QRLabel255.Caption := GetReportFooterQualification(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel250.Caption := GetReportFooterName(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel256.Caption := GetReportFooterSpecialization(gs_SampleNo,ps_deptype, 'Right');
+          QRLabel249.Caption:=GetReportFooterStatus(gs_SampleNo,ps_deptype, 'Right');
+          if Trim(QRLabel267.Caption)='' then
+               QRShape10.Enabled:=False;
+
+          if gi_compileValue in [1,14,21,22]  then
+          begin
+               useridright := GetReportUseridRight(gs_SampleNo, 'Right');
+          end;
+
+       //   if gb_Signature then
+          begin
+               if useridright = '' then
+               useridright := '0';
+
+              if useridleft = '' then
+              useridleft := '0';
+
+
+               with qryTQuery do
+               begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select signature from lab_usermain where doctorid=' + useridleft);
+                    Open;
+
+                    JPG := TJPEGImage.Create;
+                    ms := TMemoryStream.Create;
+               try
+                     TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                     ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                       JPG.LoadFromStream(ms);
+                       //SignatureLT.Picture.Assign(JPG);
+                       QRImage19.Picture.Assign(JPG);
+                end;
+               finally
+                     JPG.Free;
+                     ms.Free;
+               end;
+               end;
+
+               with qryTQuery do
+               begin
+               Close;
+               Sql.Clear;
+               Sql.Add('Select signature from lab_usermain where doctorid='+
+                  useridright);
+               Open;
+
+               JPG := TJPEGImage.Create;
+               ms := TMemoryStream.Create;
+               try
+                TBlobField(FieldByName('Signature')).SaveToStream(ms);
+                ms.Position := 0;
+                if ms.Size > 0 then
+                begin
+                  JPG.LoadFromStream(ms);
+                  //SignatureCT.Picture.Assign(JPG);
+                  QRImage20.Picture.Assign(JPG);
+                end;
+               finally
+                JPG.Free;
+                ms.Free;
+               end;
+               end;
+          end;
+    end;
+end;
+
+
+procedure TForm_Report.QRBand24BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_PBS.fieldbyname('PBIN_REPORTTITLE').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText4.Lines.LoadFromFile('tt.txt');
+end;
+
+procedure TForm_Report.QRBand3BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FNAC.fieldbyname('FNIN_REPORTTITLE').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_FNACTitle.Lines.LoadFromFile('tt.txt');
+end;
+
+procedure TForm_Report.QRBand5BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_BoneMarrow.fieldbyname('BOIN_REPORTTITLE').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_BoneTitle.Lines.LoadFromFile('tt.txt');
+end;
+
+procedure TForm_Report.QRBand7BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Surgical.fieldbyname('SUIN_REPORTTITLE').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_Title.Lines.LoadFromFile('tt.txt');
+end;
+
+procedure TForm_Report.QRBand9BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FluidMalignant.fieldbyname('FLMI_REPORTTITLE').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_MaligantTitle.Lines.LoadFromFile('tt.txt');
+
+end;
+
+procedure TForm_Report.QRDBText58Print(sender: TObject; var Value: string);
+begin
+     //GetRefHosDocFromFinding(gi_PatientTestID);
+end;
+
+procedure TForm_Report.QRLabel125Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalPhoneNumber;
+end;
+
+procedure TForm_Report.QRLabel152Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalName;
+end;
+
+procedure TForm_Report.QRLabel154Print(sender: TObject; var Value: string);
+begin
+     value:=Gs_PhoneNo;
+end;
+
+procedure TForm_Report.QRLabel184Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalName;
+end;
+
+procedure TForm_Report.QRLabel185Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalAddress;
+end;
+
+procedure TForm_Report.QRLabel186Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalPhoneNumber;
+end;
+
+procedure TForm_Report.QRLabel242Print(sender: TObject; var Value: string);
+begin
+      //ShowMessage(OraQuery_PBS.FieldByName('PBIN_RBC').AsString);
+end;
+
+procedure TForm_Report.QRLabel25Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalName;
+end;
+
+procedure TForm_Report.QRLabel260Print(sender: TObject; var Value: string);
+begin
+     value:=gs_hospitalname;
+end;
+
+procedure TForm_Report.QRLabel261Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalAddress;
+end;
+
+procedure TForm_Report.QRLabel262Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalPhoneNumber;
+end;
+
+procedure TForm_Report.QRLabel26Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalAddress;
+end;
+
+procedure TForm_Report.QRLabel27Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalPhoneNumber;
+end;
+
+procedure TForm_Report.QRLabel3Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalPhoneNumber;
+end;
+
+procedure TForm_Report.QRLabel43Print(sender: TObject; var Value: string);
+begin
+     Value :=gs_HospitalName;
+end;
+
+procedure TForm_Report.QRLabel44Print(sender: TObject; var Value: string);
+begin
+     Value :=gs_HospitalAddress;
+end;
+
+procedure TForm_Report.QRLabel45Print(sender: TObject; var Value: string);
+begin
+     Value:=gs_HospitalPhoneNumber;
+end;
+
+procedure TForm_Report.QRLabel59Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalName;
+end;
+
+procedure TForm_Report.QRLabel82Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalPhoneNumber;
+end;
+
+procedure TForm_Report.QRLabel87Print(sender: TObject; var Value: string);
+begin
+     value:=gs_HospitalName;
+end;
+
+procedure TForm_Report.QRSubDetail10BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_VSGFNAC.FieldByName('USFN_SITEASPIRATION').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text= '' then
+     begin
+          QRLabel199.Enabled:=false;
+          QRDBRichText_SiteOfAspiration.Enabled:=false;
+          QRSubDetail10.Height:=0;
+     end;
+     QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail11BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      Memo.Lines.Clear;
+      Memo.Lines.Text:= OraQuery_FNAC.fieldbyname('FNIN_CLINICALFEATURES').AsString;
+      memo.Lines.SaveToFile('tt.txt');
+      QRRichText_FNACClinical.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText_FNACClinical.Lines.text= '' then
+     begin
+          QRLabel49.Enabled:=false;
+          QRRichText_FNACClinical.Enabled:=false;
+          QRSubDetail11.Height := 0;
+     end;
+end;
+procedure TForm_Report.QRSubDetail13BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FNAC.FieldByName('FNIN_MicroDescription').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text = '' then
+     begin
+          QRLabel50.Enabled:=false;
+          QRDBRichText4.Enabled:=false;
+          QRSubDetail13.Height := 0;
+     end;
+     QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail14BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FNAC.FieldByName('FNIN_Diagnosis').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text= '' then
+     begin
+          QRLabel51.Enabled:=false;
+          QRDBRichText5.Enabled:=false;
+          QRSubDetail14.Height := 0;
+     end;
+     QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail15BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FNAC.FieldByName('FNIN_Comment').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text = '' then
+     begin
+          QRLabel52.Enabled:=false;
+          QRDBRichText6.Enabled:=false;
+          QRSubDetail15.Height := 0;
+     end;
+     QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail16BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_FNAC.FieldByName('FNIN_TissueType').asstring = '' then
+     begin
+          QRLabel53.Enabled:=false;
+          QRDBText10.Enabled:=false;
+          QRSubDetail16.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail17BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      if OraQuery_FNAC.FieldByName('FNIN_PeerReview').AsString='' then
+      begin
+          QRLabel56.Enabled:=false;
+          QRLabel8.Enabled:=False;
+          //QRSubDetail17.Height:=0;
+      end;
+
+      if OraQuery_FNAC.FieldByName('FNIN_PeerReview').AsString='Y' then
+          QRLabel8.caption:='YES'
+      else if OraQuery_FNAC.FieldByName('FNIN_PeerReview').AsString='N' then
+           qrlabel8.caption:='NO';
+end;
+
+procedure TForm_Report.QRSubDetail18BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_Pap.FieldByName('PAIN_PrevSmearNum').asinteger = 0 then
+     begin
+          QRLabel20.Enabled:=false;
+          PrevSmearNo.Enabled:=false;
+          QRSubDetail18.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail19BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_Pap.FieldByName('PAIN_PrevBiopsyNum').asinteger = 0 then
+     begin
+          QRLabel21.Enabled:=false;
+          PrevBiopsyNo.Enabled:=false;
+          QRSubDetail19.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail1BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FluidForDC.FieldByName('FLDC_OTHERFINDINGS').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text = '' then
+     begin
+          QRLabel177.Enabled:=false;
+          QRDBText105.Enabled:=false;
+          QRSubDetail1.Height := 0;
+     end;
+     QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail20BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_Pap.FieldByName('PAIN_ResidentID').asstring = '' then
+     begin
+          QRLabel22.Enabled:=false;
+          Resident.Enabled:=false;
+          QRSubDetail20.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail21BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_VSGFNAC.FieldByName('USFN_TYPEASPIRATION').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if  QRRichText2.Lines.Text='' then
+     begin
+          QRLabel197.Enabled:=false;
+          QRDBRichText_TypOfAsp.Enabled:=false;
+          QRSubDetail21.Height:=0;
+     end;
+     QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail23BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if  OraQuery_VSGFNAC.FieldByName('USFN_AIRDRIED').AsString='' then
+     begin
+          QRLabel203.Enabled:=false;
+          QRDBText7.Enabled:=false;
+     end;
+     if OraQuery_VSGFNAC.FieldByName('USFN_AIRDRIED').AsString='' then
+     begin
+          QRLabel204.Enabled:=false;
+          QRDBText8.Enabled:=false;
+     end;
+     if OraQuery_VSGFNAC.FieldByName('USFN_ADEQUATECELLULAR').AsString='' then
+     begin
+          QRLabel205.Enabled:=false;
+          QRDBText9.Enabled:=false;
+     end;
+
+     if (OraQuery_VSGFNAC.FieldByName('USFN_AIRDRIED').AsString='') AND (OraQuery_VSGFNAC.FieldByName('USFN_AIRDRIED').AsString='') and (OraQuery_VSGFNAC.FieldByName('USFN_ADEQUATECELLULAR').AsString='') then
+     begin
+          QRLabel196.Enabled:=false;
+          QRLabel203.Enabled:=false;
+          QRDBText7.Enabled:=false;
+          QRLabel204.Enabled:=false;
+          QRDBText8.Enabled:=false;
+          QRLabel205.Enabled:=false;
+          QRDBText9.Enabled:=false;
+          QRSubDetail23.Height:=0;
+
+     end;
+
+
+
+
+end;
+
+{procedure TForm_Report.QRSubDetail21BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_Pap.FieldByName('PAIN_PathologistID').asstring = '' then
+     begin
+          QRLabel24.Enabled:=false;
+          Pathologist.Enabled:=false;
+          QRSubDetail21.Height := 0;
+     end;
+end; }
+
+procedure TForm_Report.QRSubDetail24BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_BoneMarrow.FieldByName('BOIN_CELLULARITY').asstring = '' then
+      begin
+           QRLabel93.Enabled:=false;
+           QRDBText22.Enabled:=false;
+           QRSubDetail24.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail25BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_VSGFNAC.FieldByName('USFN_MICROSCOPIC').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text='' then
+     begin
+          QRLabel198.Enabled:=False;
+          QRDBRichText_MicroDes.Enabled:=false;
+          QRSubDetail25.height:=0;
+     end;
+     QRDBRichText_MicroDes.Font.Size:=12;
+     QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail26BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_BoneMarrow.FieldByName('BOIN_CIVILIANFEATURES').asstring = '' then
+      begin
+           QRLabel96.Enabled:=false;
+           QRDBText25.Enabled:=false;
+           QRSubDetail26.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail27BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      if OraQuery_BoneMarrow.FieldByName('BOIN_BONEMARROWASPIRATION').asstring = '' then
+      begin
+           QRLabel111.Enabled:=false;
+           QRDBText108.Enabled:=false;
+           //QRSubDetail27.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail28BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_BoneMarrow.FieldByName('BOIN_PLATELETS').asstring = '' then
+      begin
+           QRLabel97.Enabled:=false;
+           QRDBText26.Enabled:=false;
+           QRSubDetail28.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail29BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_BoneMarrow.FieldByName('BOIN_HEMOPARASITE').asstring = '' then
+      begin
+           QRLabel98.Enabled:=false;
+           QRDBText27.Enabled:=false;
+           QRSubDetail29.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail2BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Pap.fieldbyname('PAIN_CLINICALFEATURES').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_PAPClinicalFeatures.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText_PAPClinicalFeatures.Lines.text= '' then
+      begin
+           QRLabel9.Enabled:=false;
+           QRRichText_PAPClinicalFeatures.Enabled:=false;
+           QRSubDetail2.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail30BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_BoneMarrow.FieldByName('BOIN_ADEQUACY').asstring = '' then
+      begin
+           QRLabel99.Enabled:=false;
+           QRDBText28.Enabled:=false;
+           QRSubDetail30.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail31BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_BoneMarrow.FieldByName('BOIN_MERATIO').asstring = '' then
+      begin
+           QRLabel101.Enabled:=false;
+           QRDBText30.Enabled:=false;
+           QRSubDetail31.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail32BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_VSGFNAC.FieldByName('USFN_DAIGNOSIS').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text='' then
+     begin
+          QRLabel200.Enabled:=false;
+          QRDBRichText_Diagnosis.Enabled:=False;
+          QRSubDetail32.Height:=0;
+
+     end;
+     QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail33BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      if OraQuery_BoneMarrow.FieldByName('BOIN_MYEOPOIESIS').asstring = '' then
+      begin
+           QRLabel102.Enabled:=false;
+           QRDBText31.Enabled:=false;
+           QRSubDetail33.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail34BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      if OraQuery_BoneMarrow.FieldByName('BOIN_ERYTHROPOIESIS').asstring = '' then
+      begin
+           QRLabel83.Enabled:=false;
+           QRDBText19.Enabled:=false;
+           QRSubDetail34.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail35BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_BoneMarrow.FieldByName('BOIN_MEGAKARYOPOIESIS').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+      if QRRichText2.Lines.Text = '' then
+      begin
+           QRLabel90.Enabled:=false;
+           QRDBText19.Enabled:=false;
+           QRSubDetail35.Height := 0;
+      end;
+      QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail36BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_BoneMarrow.FieldByName('BOIN_LYMPHOPOIESIS').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text = '' then
+      begin
+           QRLabel89.Enabled:=false;
+           QRDBText18.Enabled:=false;
+           QRSubDetail36.Height := 0;
+      end;
+      QRRichText2.Lines.clear;
+end;
+
+procedure TForm_Report.QRSubDetail37BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_BoneMarrow.FieldByName('BOIN_PLASMACELLS').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text='' then
+      begin
+           QRLabel91.Enabled:=false;
+           QRDBText20.Enabled:=false;
+           QRSubDetail37.Height := 0;
+      end;
+      QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail38BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      if OraQuery_BoneMarrow.FieldByName('BOIN_ABNORMALCELLS').asstring = '' then
+      begin
+           QRLabel92.Enabled:=false;
+           QRDBText21.Enabled:=false;
+           QRSubDetail38.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail39BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_BoneMarrow.FieldByName('BOIN_SpecialStain').asstring = '' then
+      begin
+           QRLabel103.Enabled:=false;
+           QRDBText32.Enabled:=false;
+           QRSubDetail39.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail3BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Pap.FieldByName('PAIN_RESULTS').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text = '' then
+      begin
+           QRLabel11.Enabled:=false;
+           QRDBRichText_PAPResult.Enabled:=false;
+           QRSubDetail3.Height := 0;
+      end;
+      QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail40BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_BoneMarrow.FieldByName('BOIN_Diagnosis').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text = '' then
+      begin
+           QRLabel106.Enabled:=false;
+           QRDBText35.Enabled:=false;
+           QRSubDetail40.Height := 0;
+      end;
+      QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail41BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_BoneMarrow.FieldByName('BOIN_Comment').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+    if QRRichText2.Lines.Text = '' then
+      begin
+           QRLabel105.Enabled:=false;
+           QRDBText34.Enabled:=false;
+           QRSubDetail41.Height := 0;
+      end;
+      QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail43BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_VSGFNAC.FieldByName('USFN_COMMENTS').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text='' then
+     begin
+          QRLabel206.Enabled:=false;
+          QRDBRichText_Comment.Enabled:=false;
+          QRSubDetail43.Height:=0;
+     end;
+     QRRichText2.Lines.Clear;
+
+end;
+
+{procedure TForm_Report.QRSubDetail43BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_BoneMarrow.FieldByName('BOIN_ResidentID').asstring = '' then
+      begin
+           QRLabel108.Enabled:=false;
+           QRDBText37.Enabled:=false;
+           QRSubDetail43.Height := 0;
+      end;
+end;
+}
+
+procedure TForm_Report.QRSubDetail44BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Pap.FieldByName('PAIN_COMMENT').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text = '' then
+      begin
+           QRLabel84.Enabled:=false;
+           QRDBRichText_PAPComment.Enabled:=false;
+           QRSubDetail44.Height := 0;
+      end;
+      QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail44SuinHistoryBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+      Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Surgical.FieldByName('SUIN_GROSSDESCRIPTION').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text='' then
+     begin
+          QRLabel68.Enabled:=false;
+          QRDBRichText_SurgicalGrossDes.Enabled:=False;
+          QRSubDetail44SuinHistory.Height:=0;
+     end;
+     QRRichText2.Lines.Clear;
+
+
+
+end;
+
+procedure TForm_Report.QRSubDetail45BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FNAC.fieldbyname('FNIN_SAMPLESITE').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_FNACSite.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText_FNACSite.Lines.text = '' then
+      begin
+           QRLabel48.Enabled:=false;
+           QRRichText_FNACSite.Enabled:=false;
+           QRSubDetail45.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail45SuinClinicalBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+      Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Surgical.FieldByName('SUIN_MICRODESCRIPTION').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text='' then
+     begin
+          QRLabel67.Enabled:=false;
+          QRDBRichText_SurgicalMicroDes.Enabled:=False;
+          QRSubDetail45SuinClinical.Height:=0;
+     end;
+     QRRichText2.Lines.Clear;
+
+
+
+end;
+
+procedure TForm_Report.QRSubDetail46BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      if OraQuery_FNAC.FieldByName('FNIN_CLINICALFEATURES').asstring = '' then
+      begin
+           QRLabel85.Enabled:=false;
+           QRDBText16.Enabled:=false;
+           QRSubDetail46.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail47BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_Surgical.FieldByName('SUIN_BIOPSY').AsString='' then
+     begin
+          QRLabel86.Enabled:=False;
+          QRDBText17.Enabled:=false;
+         // QRSubDetail47.Height:=0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail47SuinGrossBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_Surgical.FieldByName('SUIN_STAIN').AsString='' then
+     begin
+          QRLabel69.Enabled:=False;
+          QRDBText3.Enabled:=false;
+          QRSubDetail47SuinGross.Height:=0;
+     end;
+
+end;
+
+procedure TForm_Report.QRSubDetail48BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     AddImage;
+end;
+
+procedure TForm_Report.QRSubDetail48MicroDesBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Surgical.FieldByName('SUIN_CLINICALFINDINGS').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.lines.Text='' then
+     begin
+          QRLabel70.Enabled:=false;
+          QRDBRichText1.Enabled:=False;
+          QRSubDetail48MicroDes.Height:=0;
+     end;
+     QRRichText2.Lines.Clear;
+
+
+
+
+end;
+
+procedure TForm_Report.QRSubDetail49BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FluidMalignant.FieldByName('FLMI_CLINICALFEATURES').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text = '' then
+      begin
+           QRLabel43.Enabled:=false;
+           QRDBRichText3.Enabled:=false;
+           QRSubDetail49.Height := 0;
+      end;
+      QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail49SuinDiagnosisBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+      Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Surgical.FieldByName('SUIN_DIAGNOSIS').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text='' then
+     begin
+          QRLabel78.Enabled:=false;
+          QRDBRichText_SurgicalDiagnosis.Enabled:=false;
+          //QRSubDetail49SuinDiagnosis.Height:=0;
+     end;
+     QRRichText2.Lines.Clear;
+
+
+
+end;
+
+procedure TForm_Report.QRSubDetail4BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Pap.fieldbyname('PAIN_SPECIMEN').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_PAPSpecimentType.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText_PAPSpecimentType.Lines.text = '' then
+      begin
+           QRLabel12.Enabled:=false;
+           //Adequacy.Enabled:=false;
+           QRSubDetail4.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail50BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FluidMalignant.fieldbyname('FLMI_SPECIMEN').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_MaligantSpeciment.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText_MaligantSpeciment.Lines.Text = '' then
+      begin
+           QRLabel44.Enabled:=false;
+           QRRichText_MaligantSpeciment.Enabled:=false;
+           QRSubDetail50.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail50SuinCOmmentBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+      Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Surgical.FieldByName('SUIN_COMMENT').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text='' then
+     begin
+          QRLabel71.Enabled:=false;
+          QRDBRichText_SurgicalComment.Enabled:=false;
+          //QRSubDetail50SuinCOmment.height:=0;
+
+     end;
+     QRRichText2.Lines.Clear;
+
+
+
+end;
+
+procedure TForm_Report.QRSubDetail51BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FluidMalignant.fieldbyname('FLMI_AMOUNTOFFLUID').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_MalignantAmount.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText_MalignantAmount.Lines.Text='' then
+     begin
+          QRLabel145.Enabled:=false;
+          QRRichText_MalignantAmount.Enabled:=false;
+          QRSubDetail51.Height:=0;
+     end;
+
+
+end;
+
+procedure TForm_Report.QRSubDetail51SuinCommentBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+     if OraQuery_Surgical.FieldByName('SUIN_SPECIMEN').AsString='' then
+     begin
+          QRLabel72.Enabled:=False;
+          QRDBText2.Enabled:=false;
+          QRSubDetail51SuinComment.height:=0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail52BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FluidMalignant.fieldbyname('FLMI_APPERANCE').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_MaligantGross.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText_MaligantGross.Lines.text = '' then
+      begin
+           QRLabel46.Enabled:=false;
+           //QRDBText84.Enabled:=false;
+           QRSubDetail52.Height := 0;
+      end;
+end;
+
+procedure TForm_Report.QRSubDetail52SuinResidentBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+     if OraQuery_Surgical.FieldByName('SUIN_RESIDENTID').AsString='' then
+     begin
+
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail53BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FluidMalignant.fieldbyname('FLMI_DESCRIPTION').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_MaligantMiscroDes.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText_MaligantMiscroDes.Lines.text = '' then
+     begin
+          QRLabel47.Enabled:=false;
+          //QRDBText85.Enabled:=false;
+          QRSubDetail53.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail54BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FluidMalignant.FieldByName('FLMI_DIAGNOSIS').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+
+     if QRRichText2.Lines.text = '' then
+     begin
+          QRLabel148.Enabled:=false;
+          QRDBRichText8.Enabled:=false;
+          QRSubDetail54.Height := 0;
+     end;
+     QRRichText2.Lines.clear;
+end;
+
+procedure TForm_Report.QRSubDetail55BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_FluidMalignant.FieldByName('FLMI_COMMENT').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text = '' then
+     begin
+          QRLabel149.Enabled:=false;
+          QRDBRichText7.Enabled:=false;
+          QRSubDetail55.Height := 0;
+     end;
+     QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.QRSubDetail57BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_Surgical.FieldByName('SUIN_PEERREVIEW').AsString='' then
+     begin
+          QRLabel195.Enabled:=false;
+          QRDBText13.Enabled:=False;
+          QRSubDetail57.Height:=0;
+     end;
+
+end;
+
+procedure TForm_Report.QRSubDetail587BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_PBS.FieldByName('PBIN_RBC').asstring = '' then
+     begin
+          QRLabel242.Enabled:=false;
+          QRDBText85.Enabled:=false;
+          //QRDBText100.Enabled:=false;
+          QRSubDetail587.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail59BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_FluidForDC.FieldByName('FLDC_SAMPLERECEIVED').asstring = '' then
+     begin
+          QRLabel182.Enabled:=false;
+          QRDBText52.Enabled:=false;
+          QRSubDetail59.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail5BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Pap.fieldbyname('PAIN_ADEQUACY').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_PAPAdequacy.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText_PAPAdequacy.Lines.text = '' then
+     begin
+          QRLabel13.Enabled:=false;
+          QRRichText_PAPAdequacy.Enabled:=false;
+          QRSubDetail5.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail60BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_FluidForDC.FieldByName('FLDC_NEUTROPHIL').asstring = '' then
+     begin
+          QRLabel172.Enabled:=false;
+          QRDBText100.Enabled:=false;
+          QRSubDetail60.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail61BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_PBS.FieldByName('PBIN_WBC').asstring = '' then
+     begin
+          QRDBText84.Enabled:=false;
+          QRLabel244.Enabled:=false;
+          QRSubDetail61.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail62BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_FluidForDC.FieldByName('FLDC_LYMPHOCYTE').asstring = '' then
+     begin
+          QRLabel173.Enabled:=false;
+          QRDBText101.Enabled:=false;
+          QRSubDetail62.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail63BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_FluidForDC.FieldByName('FLDC_EOSINOPHIL').asstring = '' then
+     begin
+
+          QRLabel174.Enabled:=false;
+          QRDBText102.Enabled:=false;
+          QRSubDetail63.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail64BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_FluidForDC.FieldByName('FLDC_MASTCELL').asstring = '' then
+     begin
+          QRLabel175.Enabled:=false;
+          QRDBText103.Enabled:=false;
+          QRSubDetail64.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail65BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_FluidForDC.FieldByName('FLDC_PLASMACELL').asstring = '' then
+     begin
+          QRLabel176.Enabled:=false;
+          QRDBText104.Enabled:=false;
+          QRSubDetail65.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail66BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_FluidForDC.FieldByName('FLDC_MACROPHAGE').asstring = '' then
+     begin
+          QRLabel181.Enabled:=false;
+          QRDBText75.Enabled:=false;
+          QRSubDetail66.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail67BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_PBS.FieldByName('PBIN_PLATELETS').asstring = '' then
+     begin
+          QRDBText86.Enabled:=false;
+          QRLabel246.Enabled:=false;
+          QRSubDetail67.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail68BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_PBS.FieldByName('PBIN_PARASITE').asstring = '' then
+     begin
+          QRDBText87.Enabled:=false;
+          QRLabel248.Enabled:=false;
+          QRSubDetail68.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail6BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Pap.fieldbyname('PAIN_GENCATEGORIZATION').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText_PAPGenCat.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText_PAPGenCat.Lines.text = '' then
+     begin
+          QRLabel14.Enabled:=false;
+          QRRichText_PAPGenCat.Enabled:=false;
+          QRSubDetail6.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail70BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_PBS.FieldByName('PBIN_RETICULOCYTES').asstring = '' then
+     begin
+          QRDBText90.Enabled:=false;
+          QRLabel252.Enabled:=false;
+          QRSubDetail70.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail71BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_PBS.fieldbyname('PBIN_COMMENT').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText1.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText1.Lines.Text = '' then
+     begin
+          QRLabel254.Enabled:=false;
+          QRRichText1.Enabled:=false;
+          QRSubDetail71.Height := 0;
+     end;
+end;
+
+procedure TForm_Report.QRSubDetail7BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_Pap.FieldByName('PAIN_MISCROSCOPIC').asstring;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.text = '' then
+     begin
+          QRLabel15.Enabled:=false;
+          QRDBRichText_PAPMicroDescription.Enabled:=false;
+          QRSubDetail7.Height := 0;
+     end;
+     QRRichText2.Lines.clear;
+end;
+
+procedure TForm_Report.QRSubDetail8BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     if OraQuery_Pap.fieldbyname('PAIN_REPEATSMEAR').asstring='Y' then
+          qrlabel42.Caption:='YES'
+     else if OraQuery_Pap.fieldbyname('PAIN_REPEATSMEAR').asstring='N' then
+          qrlabel42.Caption:='NO';
+
+end;
+
+procedure TForm_Report.QRSubDetail9BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+
+     Memo.Lines.Clear;
+     Memo.Lines.Text:= OraQuery_VSGFNAC.FieldByName('USFN_CLINICALFINDINGS').AsString;
+     memo.Lines.SaveToFile('tt.txt');
+     QRRichText2.Lines.LoadFromFile('tt.txt');
+
+     if QRRichText2.Lines.Text= '' then
+     begin
+          QRLabel194.Enabled:=false;
+          QRDBRichText_ClinicalFinding.Enabled:=false;
+          QRSubDetail9.Height:=0;
+     end;
+     QRRichText2.Lines.Clear;
+end;
+
+procedure TForm_Report.RepeatSmearPrint(sender: TObject; var Value: string);
+begin
+     with OraQuery_Pap do
+     begin
+          close;
+          Session:=Dm_Hospital.Db;
+          open;
+
+     end;
+end;
+
+end.

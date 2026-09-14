@@ -1,0 +1,633 @@
+object Form_FractionLocking: TForm_FractionLocking
+  Left = 0
+  Top = 0
+  Caption = 'Form_FractionLocking'
+  ClientHeight = 494
+  ClientWidth = 1027
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1027
+    Height = 75
+    Align = alTop
+    TabOrder = 0
+    ExplicitWidth = 933
+    object Shape3: TShape
+      Left = 1
+      Top = 5
+      Width = 148
+      Height = 52
+      Brush.Color = clBtnFace
+      Shape = stRoundRect
+    end
+    object Label6: TLabel
+      Left = 6
+      Top = 12
+      Width = 31
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'From :'
+    end
+    object Label7: TLabel
+      Left = 18
+      Top = 35
+      Width = 19
+      Height = 13
+      Caption = 'To :'
+    end
+    object Label1: TLabel
+      Left = 153
+      Top = 5
+      Width = 32
+      Height = 13
+      Caption = 'Doctor'
+    end
+    object GroupBox1: TGroupBox
+      Left = 847
+      Top = 1
+      Width = 81
+      Height = 73
+      Align = alRight
+      Enabled = False
+      TabOrder = 0
+      ExplicitLeft = 753
+      object RB_IPBill: TRadioButton
+        Left = 8
+        Top = 4
+        Width = 29
+        Height = 17
+        Caption = '&IP'
+        TabOrder = 0
+      end
+      object RB_OPBill: TRadioButton
+        Left = 8
+        Top = 27
+        Width = 32
+        Height = 17
+        Caption = '&OP'
+        TabOrder = 1
+      end
+      object RB_Both: TRadioButton
+        Left = 8
+        Top = 51
+        Width = 43
+        Height = 17
+        Caption = '&Both'
+        Checked = True
+        TabOrder = 2
+        TabStop = True
+      end
+    end
+    object DEX_From: TDateEditX
+      Left = 37
+      Top = 8
+      Width = 93
+      Height = 21
+      TabOrder = 1
+      ControlData = {
+        545046300A5444617465456469745200044C656674022503546F700208057769
+        647468025D0B4461746541442E5965617203D6070C4461746541442E4D6F6E74
+        6802010A4461746541442E44617902180B4461746556532E59656172030E080C
+        4461746556532E4D6F6E7468020A0A4461746556532E446179020B0000}
+    end
+    object DEX_To: TDateEditX
+      Left = 37
+      Top = 31
+      Width = 93
+      Height = 21
+      TabOrder = 2
+      ControlData = {
+        545046300A5444617465456469745200044C656674022503546F70021F057769
+        647468025D0B4461746541442E5965617203D6070C4461746541442E4D6F6E74
+        6802010A4461746541442E44617902180B4461746556532E59656172030E080C
+        4461746556532E4D6F6E7468020A0A4461746556532E446179020B0000}
+    end
+    object BitBtn_To: TBitBtn
+      Left = 104
+      Top = 33
+      Width = 24
+      Height = 18
+      Caption = 'BS'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 3
+    end
+    object BitBtn_From: TBitBtn
+      Left = 104
+      Top = 9
+      Width = 24
+      Height = 18
+      Caption = 'BS'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 4
+      OnClick = BitBtn_FromClick
+    end
+    object DBLCB_Doctor: TDBLookupComboBox
+      Left = 187
+      Top = 4
+      Width = 214
+      Height = 21
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      KeyField = 'DOCID'
+      ListField = 'DOCNAME'
+      ListSource = DS_Doctor
+      NullValueKey = 46
+      ParentFont = False
+      TabOrder = 5
+    end
+    object CB_All: TCheckBox
+      Left = 15
+      Top = 58
+      Width = 36
+      Height = 17
+      Caption = 'All'
+      TabOrder = 6
+    end
+    object BitBtnLock: TBitBtn
+      Left = 187
+      Top = 26
+      Width = 113
+      Height = 26
+      Caption = '&Fraction Lock'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333000003
+        333333333F777773FF333333008888800333333377333F3773F3333077870787
+        7033333733337F33373F3308888707888803337F33337F33337F330777880887
+        7703337F33337FF3337F3308888000888803337F333777F3337F330777700077
+        7703337F33377733337F33088888888888033373FFFFFFFFFF73333000000000
+        00333337777777777733333308033308033333337F7F337F7F33333308033308
+        033333337F7F337F7F33333308033308033333337F73FF737F33333377800087
+        7333333373F77733733333333088888033333333373FFFF73333333333000003
+        3333333333777773333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 7
+      OnClick = BitBtnLockClick
+    end
+    object GroupBox2: TGroupBox
+      Left = 928
+      Top = 1
+      Width = 98
+      Height = 73
+      Align = alRight
+      TabOrder = 8
+      ExplicitLeft = 834
+      object RB_External: TRadioButton
+        Left = 8
+        Top = 10
+        Width = 73
+        Height = 17
+        Caption = 'External'
+        Checked = True
+        TabOrder = 0
+        TabStop = True
+        OnClick = RB_ExternalClick
+      end
+      object RB_Internal: TRadioButton
+        Left = 8
+        Top = 43
+        Width = 65
+        Height = 17
+        Caption = 'Internal'
+        TabOrder = 1
+        OnClick = RB_InternalClick
+      end
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 75
+    Width = 1027
+    Height = 41
+    Align = alTop
+    TabOrder = 1
+    ExplicitWidth = 933
+    object ProgressBar1: TProgressBar
+      Left = -1
+      Top = 10
+      Width = 933
+      Height = 17
+      TabOrder = 0
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 116
+    Width = 577
+    Height = 378
+    Align = alLeft
+    TabOrder = 2
+    object DBGrid1: TDBGrid
+      Left = 1
+      Top = 1
+      Width = 575
+      Height = 376
+      Align = alClient
+      DataSource = DS_LockUnLockStatus
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'FROMDATE'
+          Title.Alignment = taCenter
+          Title.Caption = 'From Date'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'TODATE'
+          Title.Alignment = taCenter
+          Title.Caption = 'To Date'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'REMARKS'
+          Title.Alignment = taCenter
+          Title.Caption = 'Remarks'
+          Width = 55
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'DOCNAME'
+          Title.Alignment = taCenter
+          Title.Caption = 'Doc. Name'
+          Width = 65
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'LOCKDATE'
+          Title.Alignment = taCenter
+          Title.Caption = 'Locked Date'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'LOCKTIME'
+          Title.Alignment = taCenter
+          Title.Caption = 'Locked Time'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'UNLOCKDATE'
+          Title.Alignment = taCenter
+          Title.Caption = 'Unlock Date'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'UNLOCKTIME'
+          Title.Alignment = taCenter
+          Title.Caption = 'Unlock Time'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'USERNAME'
+          Title.Alignment = taCenter
+          Title.Caption = 'User Name'
+          Width = 98
+          Visible = True
+        end>
+    end
+  end
+  object Panel4: TPanel
+    Left = 577
+    Top = 116
+    Width = 450
+    Height = 378
+    Align = alClient
+    TabOrder = 3
+    ExplicitWidth = 451
+    object Label2: TLabel
+      Left = 2
+      Top = 2
+      Width = 137
+      Height = 13
+      Caption = 'Hosp. No / Inpt. No./ Bill No.'
+    end
+    object SPB_ShowFractionLockStatus: TSpeedButton
+      Left = 235
+      Top = 1
+      Width = 215
+      Height = 29
+      Caption = 'Show Locked && Unlocked Bills'
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333300000000
+        0000333377777777777733330FFFFFFFFFF033337F3FFF3F3FF733330F000F0F
+        00F033337F777373773733330FFFFFFFFFF033337F3FF3FF3FF733330F00F00F
+        00F033337F773773773733330FFFFFFFFFF033337FF3333FF3F7333300FFFF00
+        F0F03333773FF377F7373330FB00F0F0FFF0333733773737F3F7330FB0BF0FB0
+        F0F0337337337337373730FBFBF0FB0FFFF037F333373373333730BFBF0FB0FF
+        FFF037F3337337333FF700FBFBFB0FFF000077F333337FF37777E0BFBFB000FF
+        0FF077FF3337773F7F37EE0BFB0BFB0F0F03777FF3733F737F73EEE0BFBF00FF
+        00337777FFFF77FF7733EEEE0000000003337777777777777333}
+      NumGlyphs = 2
+      OnClick = SPB_ShowFractionLockStatusClick
+    end
+    object Label3: TLabel
+      Left = 4
+      Top = 45
+      Width = 34
+      Height = 13
+      Caption = 'Name :'
+    end
+    object Label_Name: TLabel
+      Left = 43
+      Top = 45
+      Width = 87
+      Height = 13
+      Caption = '.............................'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object DBGrid2: TDBGrid
+      Left = 5
+      Top = 64
+      Width = 443
+      Height = 311
+      DataSource = DS_ShowBillList
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'BIDE_BILLDATE'
+          Title.Alignment = taCenter
+          Title.Caption = 'Bill Date'
+          Width = 91
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'BIDE_BILLNO'
+          Title.Alignment = taCenter
+          Title.Caption = 'Bill No'
+          Width = 124
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'BIDE_PATIENTID'
+          Title.Alignment = taCenter
+          Title.Caption = 'Hosp. No'
+          Width = 73
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'BIDE_INPATIENTID'
+          Title.Alignment = taCenter
+          Title.Caption = 'Inpt. No'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'IsLocked'
+          Title.Alignment = taCenter
+          Visible = True
+        end>
+    end
+    object Edit_Billno: TEdit
+      Left = 2
+      Top = 19
+      Width = 152
+      Height = 21
+      TabOrder = 1
+    end
+    object BitBtnUnlock: TBitBtn
+      Left = 235
+      Top = 32
+      Width = 215
+      Height = 26
+      Caption = '&Fraction Unlock'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333000003
+        333333333F777773FF333333008888800333333377333F3773F3333077870787
+        7033333733337F33373F3308888707888803337F33337F33337F330777880887
+        7703337F33337FF3337F3308888000888803337F333777F3337F330777700077
+        7703337F33377733337FB3088888888888033373FFFFFFFFFF733B3000000000
+        0033333777777777773333BBBB3333080333333333F3337F7F33BBBB707BB308
+        03333333373F337F7F3333BB08033308033333337F7F337F7F333B3B08033308
+        033333337F73FF737F33B33B778000877333333373F777337333333B30888880
+        33333333373FFFF73333333B3300000333333333337777733333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = BitBtnUnlockClick
+    end
+  end
+  object QueryList: TQuery
+    SQL.Strings = (
+      
+        'Select Frde_FractionDetailId FractionDetailId,Frde_PatientId Pat' +
+        'ientId,Frde_InpatientId InpatientId, Frde_BillDate BillDate,Frde' +
+        '_BillNo BillNo,'
+      'Case When Frde_TestNameCode='#39'REG'#39' '
+      
+        'Then '#39'Opd Regstration'#39'  when Frde_TestNameCode='#39'IPCON'#39' then   '#39'D' +
+        'octor Round Charge'#39' '
+      
+        'Else (Select Tena_TestName From Hs_Tena_Testname where Tena_Test' +
+        'NameCode=Fd.Frde_TestNameCode) End TestName,'
+      
+        '(Select Pama_PatientName From Hs_Pama_PatientMain Where Pama_Pat' +
+        'ientID=FD.FRDE_PATIENTID)PatientName,Frde_BillType BillType,'
+      
+        'Frde_IsFractionLocked IsFractionLocked,((Frde_FractionAmount*Frd' +
+        'e_Qty)-(Frde_FractionAmount*Frde_Qty*Frde_DisPer/100)) as DocFrc' +
+        'tNet,'
+      
+        'Frde_DocId DocId,(Select Doct_DocName From Hs_Doct_Doctor Where ' +
+        'Doct_DocId=FD.FRDE_DOCID)DocName ,'#39'N'#39' as isRefund'
+      'From Hs_Frde_FractionDetail FD'
+      
+        'WHERE FRDE_TESTNAMECODE not In('#39'REG'#39','#39'IPCON'#39') and Frde_Fractiond' +
+        'etailId Not In(Select FRRD_FRACTIONDETAILID From Hs_Frrd_Fractio' +
+        'nRefundDetail)'
+      'and 1=1'
+      'and 1=1'
+      'and 1=1'
+      'and 1=1'
+      'Union'
+      
+        'Select Frde_FractionDetailId FractionDetailId,Frde_PatientId Pat' +
+        'ientId,Frde_InpatientId InpatientId, Frde_BillDate BillDate,Frde' +
+        '_BillNo BillNo,'
+      'Case When Frde_TestNameCode='#39'REG'#39' '
+      
+        'Then '#39'Opd Regstration'#39'  when Frde_TestNameCode='#39'IPCON'#39' then   '#39'D' +
+        'octor Round Charge'#39' '
+      
+        'Else (Select Tena_TestName From Hs_Tena_Testname where Tena_Test' +
+        'NameCode=Fd.Frde_TestNameCode) End TestName,'
+      
+        '(Select Pama_PatientName From Hs_Pama_PatientMain Where Pama_Pat' +
+        'ientID=FD.FRDE_PATIENTID)PatientName,Frde_BillType BillType,'
+      
+        'Frde_IsFractionLocked IsFractionLocked,((Frde_FractionAmount*Frd' +
+        'e_Qty)-(Frde_FractionAmount*Frde_Qty*Frde_DisPer/100)) as DocFrc' +
+        'tNet,'
+      
+        'Frde_DocId DocId,(Select Doct_DocName From Hs_Doct_Doctor Where ' +
+        'Doct_DocId=FD.FRDE_DOCID)DocName,'#39'Y'#39' as ISREFUND'
+      'From Hs_Frde_FractionDetail FD'
+      
+        'WHERE FRDE_TESTNAMECODE not In('#39'REG'#39','#39'IPCON'#39') and Frde_Fractiond' +
+        'etailId  In(Select FRRD_FRACTIONDETAILID From Hs_Frrd_FractionRe' +
+        'fundDetail)'
+      'and 1=1'
+      'and 1=1'
+      'and 1=1'
+      'and 1=1')
+    Left = 424
+    Top = 280
+  end
+  object DS_List: TDataSource
+    Left = 448
+    Top = 288
+  end
+  object Query_OriginalData: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      'Select * '
+      'From Hs_Frde_FractionDetail FD'
+      
+        'WHERE FRDE_TESTNAMECODE not In('#39'REG'#39','#39'IPCON'#39') and Frde_Fractiond' +
+        'etailId Not In(Select FRRD_FRACTIONREFUNDDETAILID From Hs_Frrd_F' +
+        'ractionRefundDetail)'
+      'and 1=1'
+      'and 1=1'
+      'and 1=1')
+    Left = 352
+    Top = 216
+  end
+  object Query_Process: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'Select DOCT_DocId DocId,DOCT_DocCode as DocCode,Trim(DOCT_DocNam' +
+        'e) DocName,DOCT_DepCode as DepCode,DOCT_ISQUEUENOGENINREG ISQUEU' +
+        'ENOGENINREG,DOCT_DOCSHAREGROUP'
+      'From HS_DOCT_Doctor'
+      'where 1=1 '
+      'Order by DOCT_DocName')
+    Left = 213
+    Top = 248
+  end
+  object Query_Doctor: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'Select DOCT_DocId DocId,DOCT_DocCode as DocCode,Trim(DOCT_DocNam' +
+        'e) DocName,DOCT_DepCode as DepCode,DOCT_ISQUEUENOGENINREG ISQUEU' +
+        'ENOGENINREG,DOCT_DOCSHAREGROUP'
+      'From HS_DOCT_Doctor'
+      'where 1=1 '
+      'Order by DOCT_DocName')
+    Left = 533
+    Top = 248
+  end
+  object DS_Doctor: TDataSource
+    DataSet = Query_Doctor
+    Left = 544
+    Top = 248
+  end
+  object Query_SubProcess: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'Select DOCT_DocId DocId,DOCT_DocCode as DocCode,Trim(DOCT_DocNam' +
+        'e) DocName,DOCT_DepCode as DepCode,DOCT_ISQUEUENOGENINREG ISQUEU' +
+        'ENOGENINREG,DOCT_DOCSHAREGROUP'
+      'From HS_DOCT_Doctor'
+      'where 1=1 '
+      'Order by DOCT_DocName')
+    Left = 285
+    Top = 304
+  end
+  object Query_LockUnLockStatus: TQuery
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'Select LOG_DateFrom FromDate,Log_DateTo ToDate,LOG_Remarks Remar' +
+        'ks,(Select Doct_DocName From HS_DOCT_Doctor where DOCT_DocId=LOG' +
+        '_DOCID) as DocName,'
+      
+        'Log_LockDate LockDate,LOG_LockTime LockTime,Log_UnlockDate UnLoc' +
+        'kDate,LOG_UnLockTime UnLockTime,'
+      
+        '(Select USMA_UserName From HS_USMA_UserMain where USMA_UserId=Lo' +
+        'g_UserId) as UserName '
+      'From HS_LOG_FRACTIONLOCKUNLOCK'
+      'Order by LOG_LockDate Desc,LOG_LockTime Desc ')
+    Left = 56
+    Top = 192
+  end
+  object DS_LockUnLockStatus: TDataSource
+    DataSet = Query_LockUnLockStatus
+    Left = 64
+    Top = 208
+  end
+  object Query_ShowBillList: TQuery
+    Active = True
+    DatabaseName = 'Hospital'
+    SQL.Strings = (
+      
+        'Select Distinct BIDE_BillDate,BIDE_BillNo,BIDE_PatientId,BIDE_In' +
+        'patientID '
+      'From HS_BIDE_BillDetail '
+      'where BIDE_PatientId=73001234'
+      'Order by BIDE_BillDate Desc   ')
+    Left = 624
+    Top = 312
+  end
+  object DS_ShowBillList: TDataSource
+    DataSet = Query_ShowBillList
+    Left = 664
+    Top = 320
+  end
+end

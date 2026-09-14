@@ -1,0 +1,320 @@
+unit Unit_DisAdjDeposit;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Unit_Master_hos, ServerDate, Fxn_hos ,DM, Grids,
+  DBGrids,Unit_QrDepositSlip_Manipal;
+
+type
+  TForm_DischargeAdjDeposit = class(TForm)
+    Label1: TLabel;
+    Label_DepositStatus: TLabel;
+    Label_Amount: TLabel;
+    Label4: TLabel;
+    BB_Save: TBitBtn;
+    BB_Close: TBitBtn;
+    Query_Process: TOraQuery;
+    SBP_Print: TSpeedButton;
+    DBGrid1: TDBGrid;
+    DS_FinalPayRefund: TDataSource;
+    Query_FinalPayRefund: TOraQuery;
+    lbl_PatientName: TLabel;
+    Label9: TLabel;
+    Label12: TLabel;
+    Lbl_CurrentAgeGender: TLabel;
+    Lbl_MemberNoCap: TLabel;
+    Lbl_InpatientNo: TLabel;
+    Label13: TLabel;
+    Lbl_Phoneno: TLabel;
+    Label15: TLabel;
+    Lbl_address: TLabel;
+    Lbl_Bg: TLabel;
+    Label17: TLabel;
+    Label10: TLabel;
+    lbl_Scheme: TLabel;
+    CB_Preview: TCheckBox;
+    BitBtn_PaidAmtReturn: TBitBtn;
+    procedure BB_CloseClick(Sender: TObject);
+    procedure BB_SaveClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
+    procedure SBP_PrintClick(Sender: TObject);
+    procedure BitBtn_PaidAmtReturnClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+
+     ps_DepositStatus, Ps_TodaysDate, Ps_TodaysTime: String;
+
+     pf_Amount:Double;
+
+     pi_DisInDepositID: Integer;
+
+     pb_IsReprint : Boolean;
+
+     Procedure DisplayBasicInfo;
+     Procedure PrintBill;
+
+  end;
+
+var
+  Form_DischargeAdjDeposit: TForm_DischargeAdjDeposit;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_DischargeAdjDeposit.BB_CloseClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_DischargeAdjDeposit.BB_SaveClick(Sender: TObject);
+Var DrAmount,CrAmount: Double;
+    DepositType : String;
+begin
+     if (IsInpatient(gi_PatientID)=False) and (gs_billtype<>'ERBILL') then
+     Begin
+          MessageDlg('Sorry This Patient has Already been Discharged.', mtWarning,[mbOK],0);
+          Exit;
+     End;
+
+
+     if pf_Amount=0 then
+     begin
+          MessageDlg('Sorry There is No Any Deposit to be Take or Exceess of Deposit.', mtWarning,[mbOK],0);
+          Exit;
+     end;
+
+     if ps_DepositStatus='DEPOSIT' then
+     Begin
+          DrAmount:=pf_Amount;
+          CrAmount:=0;
+          DepositType:='DEPOSIT';
+     End
+     Else
+     Begin
+          DrAmount:=0;
+          CrAmount:=pf_Amount;
+          DepositType:='DEPOSIT REFUND';
+     End;
+
+     Ps_TodaysDate:=TodaysDate;
+     Ps_TodaysTime:=TodaysTime;
+
+     {SaveDeposit(DEPOSITHEADID,INPATIENTID,PATIENTID,BANKID,DEPOSITBY : Integer ;DRAMOUNT,CRAMOUNT :Double;
+                 DEPOSITTYPE,REFERENCETYPE,REFERENCENO,CHEQUENO,REMARKS,DEPOSITDATE,DEPOSITTIME :string); Stdcall;}
+
+     Try
+          DM_Hospital.DB.StartTransaction;
+          Try
+               SaveDeposit(0, gi_InPatientID, gi_PatientId, 0, gi_UserID,pi_DisInDepositID, DrAmount,CrAmount,
+                         'FINALDISADJ' , 'ADJ. IN DISCHARGE', '', '', '', Ps_TodaysDate, Ps_TodaysTime,'N',GetPatientCagetory(gi_patientid),'N','DISBILL','Y','N');
+          except
+               SaveDeposit(0, gi_InPatientID, gi_PatientId, 0, gi_UserID,pi_DisInDepositID, DrAmount,CrAmount,
+                         'FINALDISADJ' , 'ADJ. IN DISCHARGE', '', '', '', Ps_TodaysDate, Ps_TodaysTime,'N',GetPatientCagetory(gi_patientid),'N','DISBILL','Y','N');
+          End;
+          DM_Hospital.DB.Commit;
+          ShowDoneMessage;
+     except
+          DM_Hospital.DB.Rollback;
+
+          MessageDlg('Failure to post final depost or refund for final billing.',mtWarning,[mbOK],0);
+          Exit;
+
+     End;
+
+     pb_IsReprint:=False;
+     if ps_DepositStatus<>'DEPOSIT' then
+     begin
+          if MessageDlg('Do you want to print ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+          PrintBill;
+     end;
+
+     pf_Amount:=0;
+     Close;
+end;
+
+procedure TForm_DischargeAdjDeposit.BitBtn_PaidAmtReturnClick(Sender: TObject);
+Var DrAmount,CrAmount: Double;
+    DepositType : String;
+    li_RefDepositID : Integer;
+begin
+     if (IsInpatient(gi_PatientID)=False) and (gs_billtype<>'ERBILL') then
+     Begin
+          MessageDlg('Sorry This Patient has Already been Discharged.', mtWarning,[mbOK],0);
+          Exit;
+     End;
+
+
+     if Query_FinalPayRefund.FieldByName('DEPO_CRAMOUNT').AsFloat > 0 then
+     begin
+          MessageDlg('Sorry ! This is Refund Deposit Transaction. So Please Choose Paid Deposit Transaction.', mtWarning,[mbOK],0);
+          Exit;
+     end;
+
+     DrAmount:=0;
+     CrAmount:=Query_FinalPayRefund.FieldByName('DEPO_DRAMOUNT').AsFloat;
+     li_RefDepositID:=Query_FinalPayRefund.FieldByName('DEPO_DEPOSITID').AsInteger;
+
+     With Query_Process do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add(' Select * From HS_DEPO_Deposit where DEPO_RefDepositID='+IntToStr(Query_FinalPayRefund.FieldByName('DEPO_DEPOSITID').AsInteger));
+          Open;
+     end;
+
+     if Query_Process.FieldByName('DEPO_RefDepositID').AsInteger > 0 then
+     begin
+          MessageDlg('Sorry ! You Are Trying To Refund This Deposit Again Which Is Already Refunded.', mtWarning,[mbOK],0);
+          Exit;
+     end;
+
+     //DepositType:='DEPOSIT REFUND';
+
+     Ps_TodaysDate:=TodaysDate;
+     Ps_TodaysTime:=TodaysTime;
+
+     {SaveDeposit(DEPOSITHEADID,INPATIENTID,PATIENTID,BANKID,DEPOSITBY : Integer ;DRAMOUNT,CRAMOUNT :Double;
+                 DEPOSITTYPE,REFERENCETYPE,REFERENCENO,CHEQUENO,REMARKS,DEPOSITDATE,DEPOSITTIME :string); Stdcall;}
+
+     Try
+          DM_Hospital.DB.StartTransaction;
+          Try
+               SaveDeposit(0, gi_InPatientID, gi_PatientId, 0, gi_UserID,pi_DisInDepositID, DrAmount,CrAmount,
+                         'FINALDISADJ' , 'ADJ. IN DISCHARGE', '', '', '', Ps_TodaysDate, Ps_TodaysTime,'N',GetPatientCagetory(gi_patientid),'N','DISBILL','Y');
+          except
+               SaveDeposit(0, gi_InPatientID, gi_PatientId, 0, gi_UserID,pi_DisInDepositID, DrAmount,CrAmount,
+                         'FINALDISADJ' , 'ADJ. IN DISCHARGE', '', '', '', Ps_TodaysDate, Ps_TodaysTime,'N',GetPatientCagetory(gi_patientid),'N','DISBILL','Y');
+          End;
+
+          With Query_Process do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add(' Update HS_DEPO_DEPOSIT Set DEPO_RefDepositID='+IntToStr(li_RefDepositID)+' where Depo_DepositNo='+#39+Gs_BillNo+#39);
+               ExecSQL;
+          end;
+          DM_Hospital.DB.Commit;
+          ShowDoneMessage;
+     except
+          DM_Hospital.DB.Rollback;
+
+          MessageDlg('Failure to post final depost or refund for final billing.',mtWarning,[mbOK],0);
+          Exit;
+
+     End;
+
+     pb_IsReprint:=False;
+     if ps_DepositStatus<>'DEPOSIT' then
+     begin
+          if MessageDlg('Do you want to print ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+          PrintBill;
+     end;
+
+     pf_Amount:=0;
+     Close;
+end;
+
+procedure TForm_DischargeAdjDeposit.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if key=VK_F12 then BB_SaveClick(Sender);
+     if Key=27 then Close;
+end;
+
+procedure TForm_DischargeAdjDeposit.FormShow(Sender: TObject);
+begin
+     With Query_FinalPayRefund do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add(' SELECT DEPO_DEPOSITID,DEPO_DEPOSITNO,DEPO_DRAMOUNT,DEPO_CRAMOUNT,DEPO_DEPOSITTYPE,DEPO_REFERENCETYPE,DEPO_DepositDate,');
+          SQL.Add(' (Select USMA_UserName From HS_USMA_UserMain where USMA_UserId=DEPO_DepositBy) as UserName');
+          SQL.Add(' From HS_DEPO_Deposit where DEPO_DEPOSITTYPE In (''FINALDISADJ'',''FINALDISBILL'')');// DEPO_ATDISTIMEADJ=''Y''');
+          SQL.Add(' and DEPO_InpatientId=' +IntToStr(gi_InPatientID));
+          Open;
+     End;
+
+     With query_process do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add(' Select Inre_InpatientId InpatientId,Inre_PatientId PatientId,Inre_DISINDEPOSITTRANSID DISINDEPOSITTRANSID,Inre_SchemeId SchemeId,');
+          SQL.Add('(Select SCHE_Scheme From HS_SCHE_Scheme where ');
+          SQL.Add(' SCHE_SchemeId=IPR.Inre_SchemeId) Scheme From Hs_Inre_InpatientReg IPR where Inre_InPatientId='+IntToStr(gi_InPatientID));
+          Open;
+     end;
+
+     gi_PatientId:=query_process.FieldByName('PatientId').AsInteger;
+     lbl_Scheme.Caption:=query_process.FieldByName('Scheme').AsString;
+     LoadPatientData(gi_PatientID);
+     DisplayBasicInfo;
+end;
+
+
+procedure TForm_DischargeAdjDeposit.SBP_PrintClick(Sender: TObject);
+begin
+     if Query_FinalPayRefund.RecordCount =0 then
+     begin
+          MessageDlg('No Record to Print.',mtWarning,[mbok],0);
+          Exit;
+     end;
+     if MessageDlg('Do you want to print ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+     Begin
+          pb_IsReprint:=True;
+          Gs_BillNo:=Query_FinalPayRefund.FieldByName('DEPO_DepositNo').AsString;
+          PrintBill;
+     End;
+end;
+
+Procedure TForm_DischargeAdjDeposit.DisplayBasicInfo;
+begin
+     lbl_Patientname.Caption:=Gs_PatientName;
+     Lbl_address.Caption:=Gs_Address;
+     Lbl_CurrentAgeGender.Caption:=Gs_CurrentAgeGender;
+     if Trim(Gs_PhoneNo)<>'' then
+     Lbl_Phoneno.Caption:=Gs_PhoneNo
+     Else
+     Lbl_Phoneno.Caption:='N/A';
+     if Trim(Gs_BloodGroup)<>'' then
+     Lbl_Bg.Caption:=Gs_BloodGroup
+     Else
+     Lbl_Bg.Caption:='N/A';
+end;
+
+
+procedure TForm_DischargeAdjDeposit.PrintBill;
+Var
+     i: Integer;
+begin
+     try
+          Form_QrDepositSlip_Manipal := TForm_QrDepositSlip_Manipal.Create(nil);
+          if pb_IsReprint then
+               Form_QrDepositSlip_Manipal.lbl_reprint.Enabled := true;
+          with Form_QrDepositSlip_Manipal do
+          begin
+               QrDepositSlip.Prepare;
+               //lbl_totpage.Caption := IntToStr(QrDepositSlip.QRPrinter.PageCount);
+               if CB_Preview.Checked=False then
+               QrDepositSlip.Print
+               Else
+               QrDepositSlip.PreviewModal;
+          end;
+     finally
+          pb_IsReprint := false;
+          Form_QrDepositSlip_Manipal.Free;
+     end;
+end;
+
+
+end.
+
+

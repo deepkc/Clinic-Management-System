@@ -1,0 +1,38 @@
+program MidasDrHomsV3_2;
+
+uses
+  Forms,
+  Fxn,
+  Unit_Main in 'Units\Main\Unit_Main.pas' {Form_Main},
+  Unit_FramePanel in 'Units\Main\Unit_FramePanel.pas' {Frame_Panel: TFrame},
+  Unit_Previlage in 'Units\User\Unit_Previlage.pas' {Form_Previlege},
+  Unit_PathologyParent in 'Units\Pathology\Unit_PathologyParent.pas' {Form_PathologyParent},
+  Unit_Users in 'Units\User\Unit_Users.pas' {Form_Users},
+  Unit_StaffDepartmentSetup in 'Units\User\Unit_StaffDepartmentSetup.pas' {Form_StaffDepSetup},
+  UnitUserAccessDep in 'Units\User\UnitUserAccessDep.pas' {FormUserAccessDep},
+  Unit_Regulation in 'Units\Main\Unit_Regulation.pas' {Form_Regulation},
+  Unit_MasterHospitalReport in 'Units\User\Unit_MasterHospitalReport.pas' {Form_HospitalMasterSetup},
+  Unit_MasterReportPrevilage in 'Units\User\Unit_MasterReportPrevilage.pas' {Form_MasterReportPrevilege},
+  Unit_ReportPrevilage in 'Units\User\Unit_ReportPrevilage.pas' {Form_ReportPrevilege},
+  Unit_FrameParent in 'Units\Main\Unit_FrameParent.pas' {Frame_Parent: TFrame},
+  Unit_MainFormPatientAdministration in 'Units\Main\Unit_MainFormPatientAdministration.pas' {Form_MainPatientAdministration},
+  Unit_PatientAdministration_GMenu in 'Units\Main\Unit_PatientAdministration_GMenu.pas' {Frame_GMenuPatientAdministration: TFrame},
+  Unit_HospitalRulesRegulation in 'Units\Main\Unit_HospitalRulesRegulation.pas' {Form_HospitalRulesRegulation},
+  Unit_MenuPrevilage in 'Units\Main\Unit_MenuPrevilage.pas' {Form_MenuPrevilage},
+  UnitRegRefundReprint in 'Units\Main\UnitRegRefundReprint.pas' {FormRegRefundReprint},
+  Unit_MasterKeyLicense in 'Units\Main\Unit_MasterKeyLicense.pas' {Form_MasterKeyLicense};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.Title := 'Midas Dr.Homs V3.2';
+  Startup;
+  Application.CreateForm(TForm_Main, Form_Main);
+  Application.CreateForm(TFormUserAccessDep, FormUserAccessDep);
+  Application.CreateForm(TForm_Regulation, Form_Regulation);
+  Application.CreateForm(TForm_HospitalRulesRegulation, Form_HospitalRulesRegulation);
+  Application.CreateForm(TForm_MasterKeyLicense, Form_MasterKeyLicense);
+  Application.Run;
+end.

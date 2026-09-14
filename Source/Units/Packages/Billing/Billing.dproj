@@ -1,0 +1,228 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{8E61D345-A710-4E77-8299-51390BD122F8}</ProjectGuid>
+			<MainSource>Billing.dpk</MainSource>
+			<ProjectVersion>12.0</ProjectVersion>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_DcuOutput>..\..\..\..\dcu\</DCC_DcuOutput>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DesignOnlyPackage>false</DesignOnlyPackage>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DependencyCheckOutputName>..\..\..\..\bin\Billing.bpl</DCC_DependencyCheckOutputName>
+			<DCC_BplOutput>..\..\..\..\bin\</DCC_BplOutput>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<DCC_Platform>x86</DCC_Platform>
+			<GenPackage>true</GenPackage>
+			<DCC_S>false</DCC_S>
+			<DCC_DcpOutput>..\..\..\..\dcp\</DCC_DcpOutput>
+			<GenDll>true</GenDll>
+			<DCC_N>false</DCC_N>
+			<DCC_E>false</DCC_E>
+			<DCC_F>false</DCC_F>
+			<DCC_K>false</DCC_K>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="Billing.dpk">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="rtl.dcp"/>
+			<DCCReference Include="vcl.dcp"/>
+			<DCCReference Include="dbrtl.dcp"/>
+			<DCCReference Include="vcldb.dcp"/>
+			<DCCReference Include="bdertl.dcp"/>
+			<DCCReference Include="VclSmp.dcp"/>
+			<DCCReference Include="MidasFunction.dcp"/>
+			<DCCReference Include="SMCmpntD2010.dcp"/>
+			<DCCReference Include="vcldbx.dcp"/>
+			<DCCReference Include="BarcodeD10.dcp"/>
+			<DCCReference Include="Global.dcp"/>
+			<DCCReference Include="QR5RunD2010.dcp"/>
+			<DCCReference Include="acnt2010_R.dcp"/>
+			<DCCReference Include="MidasFxnFraction.dcp"/>
+			<DCCReference Include="CustomPrint.dcp"/>
+			<DCCReference Include="Unit_BillingParent.pas">
+				<Form>Form_BillingParent</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrBill_Manipal.pas">
+				<Form>Form_QRBill_Manipal</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_TestList.pas">
+				<Form>Form_Departmentlist</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_BillDetail.pas">
+				<Form>Form_BillDetail</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDepositSlip_Manipal.pas">
+				<Form>Form_QrDepositSlip_Manipal</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_PharmacyDisPer.pas">
+				<Form>Form_SetPharmacyDisPer</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrBill.pas">
+				<Form>Form_QRBill</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_otherpatient.pas">
+				<Form>Form_otherPatient</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_Billing.pas">
+				<Form>Form_Billing</Form>
+			</DCCReference>
+			<DCCReference Include="Print\Unit_Preview.pas">
+				<Form>FormRoboPreview</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_Deposits.pas">
+				<Form>Form_Deposits</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_BillDetail_2nd.pas">
+				<Form>Form_BillDetail_2ND</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_CreditMessage.pas">
+				<Form>FormCreditMessage</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_DisAdjDeposit.pas">
+				<Form>Form_DischargeAdjDeposit</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_DischargeInDeposit.pas">
+				<Form>Form_DischargeInDeposit</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_DoctorRoundVisit.pas">
+				<Form>Form_DoctorRoundVisit</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_IndoorPatientCategoryChange.pas">
+				<Form>Form_IndoorPatientCategoryChange</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRDischargeClearence.pas">
+				<Form>Form_QrDischargeClearence</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_DrInvolveInOperation.pas">
+				<Form>Form_DrInvolveInOperation</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_ViewLabReport.pas">
+				<Form>Form_ViewLabReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_StaffMemberSearch.pas">
+				<Form>Form_StaffMemberSearch</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_CancelTestList.pas">
+				<Form>Form_CancelTestList</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_FractionLocking.pas">
+				<Form>Form_FractionLocking</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_BringPendingBill.pas">
+				<Form>Form_BringonPendingBill</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_DischargeBilling.pas">
+				<Form>Form_DischargeBilling</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRDischargeBill.pas">
+				<Form>Form_QRDischargeBill</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRDischargeBill_Manipal.pas">
+				<Form>Form_QRDischargeBill_Manipal</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_SelectDoctor.pas">
+				<Form>Form_SelectDoctor</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_BillListFrame.pas">
+				<Form>Frame_BillList</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDeptwiseBillPrint.pas">
+				<Form>Form_QrDepWiseBill</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrBill_PPL.pas">
+				<Form>Form_QRBill_PPL</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrBill_GMC.pas">
+				<Form>Form_QRBill_GMC</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrBill_nozomi.pas">
+				<Form>Form_QRBill_nozomi</Form>
+			</DCCReference>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>Package</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Source>
+						<Source Name="MainSource">Billing.dpk</Source>
+					</Source>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+						<Parameters Name="HostApplication">..\..\..\..\Bin\MidasDrHomsV3_2.exe</Parameters>
+					</Parameters>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1033</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName"/>
+						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename"/>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Excluded_Packages/>
+				</Delphi.Personality>
+				<ModelSupport>False</ModelSupport>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

@@ -1,0 +1,244 @@
+unit UnitDeptTestWiseReport;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+     DBCtrls, OleCtrls, DateEditXControl_TLB, StdCtrls, serverdate, Buttons,
+     ExtCtrls,
+     Db, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, ComCtrls, Variants;
+
+type
+     TFormDeptTestWiseReport = class(TForm)
+          Panel1: TPanel;
+          Panel2: TPanel;
+          Bevel1: TBevel;
+          BitBtnPreview: TBitBtn;
+          BitBtnExcel: TBitBtn;
+          BitBtnCancel: TBitBtn;
+          Label1: TLabel;
+          Label2: TLabel;
+          Label_Identification: TLabel;
+          CMBDepartment: TDBLookupComboBox;
+          StatusBar1: TStatusBar;
+          Query_SubProcess: TOraQuery;
+          Query_Process: TOraQuery;
+          Label3: TLabel;
+          DBLCBTestName: TDBLookupComboBox;
+          Query_Department: TOraQuery;
+          DataSource_Department: TDataSource;
+          Query_TestName: TOraQuery;
+          DataSource_TestName: TDataSource;
+          GroupBox1: TGroupBox;
+          RB_DepartmentWise: TRadioButton;
+          RB_TestWise: TRadioButton;
+          CheckBox_WithQty: TCheckBox;
+          Table_TestWiseDeptWise: TOraTable;
+          Query_Master: TOraQuery;
+          DS_Master: TDataSource;
+          Query_Detail: TOraQuery;
+          Query_Void: TOraQuery;
+          DateEditX_FromDate: TDateEditX;
+          DateEditX_ToDate: TDateEditX;
+          BtnFrom: TSpeedButton;
+          BtnTo: TSpeedButton;
+    qry_refdetail: TOraQuery;
+          procedure BitBtnCancelClick(Sender: TObject);
+          procedure BitBtnExcelClick(Sender: TObject);
+          procedure BitBtnPreviewClick(Sender: TObject);
+          procedure FormShow(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure FormDestroy(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word;
+               Shift: TShiftState);
+          procedure CMBDepartmentKeyDown(Sender: TObject; var Key: Word;
+               Shift: TShiftState);
+          procedure DBLCBTestNameKeyDown(Sender: TObject; var Key: Word;
+               Shift: TShiftState);
+          procedure CMBDepartmentClick(Sender: TObject);
+          procedure BtnFromClick(Sender: TObject);
+    procedure BtnToClick(Sender: TObject);
+     private
+          { Private declarations }
+     public
+          b_SendToExcel: Boolean;
+          gs_SecManageDate: String;
+          { Public declarations }
+     end;
+
+var
+     FormDeptTestWiseReport: TFormDeptTestWiseReport;
+
+implementation
+
+uses Fxn,UnitSendToExcel,dm;
+{$R *.DFM}
+
+procedure TFormDeptTestWiseReport.BitBtnCancelClick(Sender: TObject);
+begin
+     close;
+end;
+
+procedure TFormDeptTestWiseReport.BitBtnPreviewClick(Sender: TObject);
+begin
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     gs_From := DateEditX_FromDate.text;
+     gs_to := DateEditX_ToDate.text;
+     DateEditX_FromDate.SystemOfDate := 0;
+     DateEditX_ToDate.SystemOfDate := 0;
+     with Query_Master Do
+     Begin
+          Close;
+          Session:=dm_Hospital.db;
+          sql.Clear;
+          sql.Add('Select Distinct BD.BIDE_DEPID,(Select DEPT_Depname from HS_DEPT_department where DEPT_depid=bd.BIDE_depid) department From HS_BIDE_BillDetail BD');
+          sql.Add('Where BD.BIDE_BillDate>='+Quotedstr(gs_From)+' and BD.BIDE_BillDate<='+Quotedstr(gs_to));
+          if CMBDepartment.KeyValue<>NUll then
+          sql.add (' and bd.BIDE_depid='+inttostr(CMBDepartment.KeyValue));
+          sql.Add('and (BD.BIDE_BillType=''B'')');
+          Open;
+     End;
+     With Query_Detail do
+     Begin
+          Close;
+          Session:=dm_Hospital.db;
+          Sql.Clear;
+          sql.add('Select BIDE_billno,BIDE_billdate,(Select BSDATE from NEPALIEQUIVALENTENGLISHDATE where ADDATE=BD.BIDE_billdate)nepalibilldate,');
+          sql.add('BIDE_patientid as labno,(select PAMA_Fname||'' ''||PAMA_Lname from HS_PAMA_Patientmain where PAMA_Patientid=BD.BIDE_patientid)patientname,');
+          sql.add('BIDE_Servicetype,(Select DEPT_depname from HS_DEPT_department where DEPT_depid=BD.BIDE_DEPID)Category,BIDE_disper,BIDE_amount as rate,');
+          sql.add('sum(BIDE_amount*BIDE_qty-BIDE_amount*BIDE_qty*BIDE_DISPER/100)amount,');
+          sql.Add('sum((BIDE_amount*BIDE_qty-BIDE_amount*BIDE_qty*BIDE_DISPER/100)*0.05)tax,');
+          sql.Add('sum((BIDE_amount*BIDE_qty-BIDE_amount*BIDE_qty*BIDE_DISPER/100)+((BIDE_amount*BIDE_qty-BIDE_amount*BIDE_qty*BIDE_DISPER/100)*0.05)) GrandTotal,');
+          sql.add('BIDE_paytype,(select DOCT_DOCNAME from HS_DOCT_doctor where DOCT_doccode=BD.BIDE_REFDOCCODE)ReferBy,');
+          sql.add('(select username from LAB_USERMAIN where userid=BD.BIDE_BILLBY)ISSUEDBY,');
+          sql.Add('(select username from LAB_USERMAIN where userid=(Select VERIFIEDBY from patienttest where billno=BD.BIDE_billno and rownum=1))||'', ''||');
+          sql.Add('(Select DOCT_DOCNAME from HS_DOCT_doctor where DOCT_docid=(Select VEDO_docid from HS_VEDO_VerificationDoctor where VEDO_sampleno=(Select Distinct sampleno from samplecollection where billno=BD.BIDE_billno)))verifiedby from HS_BIDE_billdetail BD');
+          sql.add('where BIDE_BillDate>='+Quotedstr(gs_From)+' and BIDE_BillDate<='+Quotedstr(gs_to));
+          //sql.add('and cancelstatus=''N''');
+          sql.Add('and BIDE_depid=:depid');
+          sql.add('Group by BIDE_billno,BIDE_billdate,BIDE_patientid,BIDE_Servicetype,BIDE_depid,BIDE_disper,BIDE_amount,BIDE_paytype,BIDE_REFDOCCODE,BIDE_BILLBY');
+          //Sql.SaveToFile('C:\test.txt');
+          Open;
+     End;
+
+     With qry_refdetail do
+     begin
+          Close;
+          Session:=dm_Hospital.db;
+          Sql.Clear;
+          sql.add('Select REDE_Refundbillno,REDE_RefundDate,(Select BSDATE from NEPALIEQUIVALENTENGLISHDATE where ADDATE=RD.REDE_RefundDate)nepalirefunddate,');
+          sql.add('REDE_patientid as labno,(select PAMA_fname||'' ''||PAMA_Lname from HS_PAMA_patientmain where PAMA_patientid=RD.REDE_Patientid)patientname,');
+          sql.add('REDE_Servicetype,(Select DEPT_depname from HS_DEPT_department where DEPT_depid=RD.REDE_depid)Category,REDE_disper,REDE_amount as rate,');
+          sql.add('sum(REDE_amount*REDE_qty-REDE_amount*REDE_qty*REDE_DISPER/100)amount,');
+          sql.Add('sum((REDE_amount*REDE_qty-REDE_amount*REDE_qty*REDE_DISPER/100)*0.05)tax,');
+          sql.Add('sum((REDE_amount*REDE_qty-REDE_amount*REDE_qty*REDE_DISPER/100)+((REDE_amount*REDE_qty-REDE_amount*REDE_qty*REDE_DISPER/100)*0.05)) GrandTotal,');
+          sql.add('REDE_paytype,(select DOCT_DOCNAME from HS_DOCT_doctor where DOCT_doccode=RD.REDE_REFDOCCODE)ReferBy,');
+          sql.add('(select username from LAB_USERMAIN where userid=RD.REDE_REFUNDBY)REFUNDBY');
+          sql.Add('from HS_REDE_RefundDetail RD');
+          sql.add('where REDE_RefundDate>='+Quotedstr(gs_From)+' and REDE_RefundDate<='+Quotedstr(gs_to));
+          //sql.add('and cancelstatus=''N''');
+          sql.Add('and REDE_depid=:depid');
+          sql.add('Group by REDE_Refundbillno,REDE_RefundDate,REDE_patientid,REDE_Servicetype,REDE_depid,REDE_disper,REDE_amount,REDE_paytype,REDE_REFDOCCODE,REDE_REFUNDBY');
+//          Sql.SaveToFile('C:\test.txt');
+          Open;
+     end;
+//     SendToExcelMasterDetail(Query_Master,Query_Detail,'Departmentwise/Testwise Report',Serverdate.TodaysDate,
+//               '', gs_HospitalName, gs_HospitalAddress,'',6);
+     SendToExcelMasterMultiDetail(Query_Master,Query_Detail,qry_refdetail,'Departmentwise/Testwise Report',Serverdate.TodaysDate,
+               '', gs_HospitalName, gs_HospitalAddress,'',6);
+
+End;
+
+procedure TFormDeptTestWiseReport.BitBtnExcelClick(Sender: TObject);
+Var
+     ls_ReportTitle: String;
+begin
+     if MessageDlg('Are you sure to send in Excel ?', mtconfirmation,
+          [mbyes, mbno], 0) = mryes then
+     Begin
+          b_SendToExcel := True;
+          BitBtnPreviewClick(Sender);
+     End;
+End;
+
+procedure TFormDeptTestWiseReport.FormShow(Sender: TObject);
+begin
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     DateEditX_FromDate.text := serverdate.TodaysDate;
+     DateEditX_ToDate.text := serverdate.TodaysDate;
+     DateEditX_FromDate.SystemOfDate := 0;
+     DateEditX_ToDate.SystemOfDate := 0;
+     Query_Department.Open;
+     Query_TestName.Open;
+     b_SendToExcel := False;
+     CMBDepartment.SetFocus;
+end;
+
+procedure TFormDeptTestWiseReport.BtnFromClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX_FromDate, BtnFrom);
+end;
+
+procedure TFormDeptTestWiseReport.BtnToClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX_ToDate, BtnTo);
+end;
+
+procedure TFormDeptTestWiseReport.FormCreate(Sender: TObject);
+begin
+     //
+end;
+
+procedure TFormDeptTestWiseReport.FormDestroy(Sender: TObject);
+begin
+     //
+end;
+
+procedure TFormDeptTestWiseReport.FormKeyDown(Sender: TObject; var Key: Word;
+     Shift: TShiftState);
+begin
+     IF Key = 27 Then
+          close;
+     IF Key = VK_F1 Then
+          BitBtnPreviewClick(Sender);
+     IF Key = VK_F2 Then
+          BitBtnExcelClick(Sender);
+     IF Key = 13 Then
+          keybd_event(9, 13, 0, 0);
+end;
+
+procedure TFormDeptTestWiseReport.CMBDepartmentKeyDown
+  (Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Delete Then
+     Begin
+          With Query_TestName Do
+          Begin
+               close;
+               Sql[1] := ' Where 39=39 ';
+               Open;
+          End;
+          CMBDepartment.KeyValue := NULL;
+     End;
+end;
+
+procedure TFormDeptTestWiseReport.DBLCBTestNameKeyDown
+  (Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     IF Key = VK_Delete Then
+          DBLCBTestName.KeyValue := NULL;
+end;
+
+procedure TFormDeptTestWiseReport.CMBDepartmentClick(Sender: TObject);
+begin
+     With Query_TestName Do
+     Begin
+          close;
+          Sql[1] := ' Where TENA_DepID=' + VarToStr(CMBDepartment.KeyValue);
+          Open;
+     End;
+end;
+
+end.

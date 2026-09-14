@@ -1,0 +1,1621 @@
+unit Unit_OPDVisit;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, DM,
+     Dialogs, StdCtrls, Buttons, DBCtrls, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Fxn, Unit_Master_Hos, ServerDate,
+      DateEditXControl_TLB, ExtCtrls;
+
+type
+     TFrame_OPDVisit = class(TFrame)
+          GroupBox1: TGroupBox;
+          LabelDep: TLabel;
+          Label25: TLabel;
+          LabelDutyDoc: TLabel;
+          DBLCB_Doctor: TDBLookupComboBox;
+          DBLCB_Department: TDBLookupComboBox;
+          DBLookupComboBox_Unit: TDBLookupComboBox;
+          DBLCB_DutyDoctor: TDBLookupComboBox;
+          GroupBox14: TGroupBox;
+          Label58: TLabel;
+          Label59: TLabel;
+          Label14: TLabel;
+          Label53: TLabel;
+          Label98: TLabel;
+          Label99: TLabel;
+          LabelExRate: TLabel;
+          Label_DollarRs: TLabel;
+          EditRegPayment: TEdit;
+          EditRegDis: TEdit;
+          CB_PayType: TComboBox;
+          Edit_ExchangeRate: TEdit;
+          Label3: TLabel;
+          Label1: TLabel;
+          GroupBox16: TGroupBox;
+          Label97: TLabel;
+          SpeedButton3: TSpeedButton;
+          Label100: TLabel;
+          SpeedButton2: TSpeedButton;
+          CmbRefTo: TComboBox;
+          DBLCB_Scheme: TDBLookupComboBox;
+          CmbRefferedBy: TDBLookupComboBox;
+          Query_Department: TOraQuery;
+          DS_Department: TDataSource;
+          Query_Doctor: TOraQuery;
+          DS_Doctor: TDataSource;
+          Label6: TLabel;
+          CB_PatientFrom: TComboBox;
+          Query_RefByDocHos: TOraQuery;
+          DS_RefByDocHos: TDataSource;
+          Query_Scheme: TOraQuery;
+          DS_Scheme: TDataSource;
+          Query_Community: TOraQuery;
+          DS_Community: TDataSource;
+          Query_DutyDoctor: TOraQuery;
+          DS_DutyDoctor: TDataSource;
+          Query_Process: TOraQuery;
+          Label20: TLabel;
+          Label2: TLabel;
+          Cb_AddDeposit: TCheckBox;
+          Label5: TLabel;
+          lbl_depositbalance: TLabel;
+          lbl_ReturnAmt: TLabel;
+    CB_IsAdjustFromDeposit: TCheckBox;
+    Query_TimewiseDepPrice: TOraQuery;
+    Edit_Time: TEdit;
+    CB_TimeChange: TCheckBox;
+    DBLCB_PatientType: TDBLookupComboBox;
+    Query_PatientType: TOraQuery;
+    DS_PatientType: TDataSource;
+    Query_OPDVisitCharge: TOraQuery;
+    CB_ForceFollowup: TCheckBox;
+    Label7: TLabel;
+    Label_QueueNo: TLabel;
+    Label_MaxQuota: TLabel;
+    lbl_QuueNoCap: TLabel;
+    Timer3: TTimer;
+    Query_BlueBookCharge: TOraQuery;
+    CB_MultiDepartment: TCheckBox;
+    Label4: TLabel;
+    Query_OPDCardCharge: TOraQuery;
+    CB_BlueBookChrg: TCheckBox;
+    CB_CardCharge: TCheckBox;
+    CB_Preview: TCheckBox;
+    Edit_ECHSNO: TEdit;
+    Label36: TLabel;
+    SpeedButton1: TSpeedButton;
+    Label_MedicareNo: TLabel;
+    Label_RegCharge: TLabel;
+    CB_ChargeFree: TCheckBox;
+    DBLCB_REFBYTYPE: TDBLookupComboBox;
+    Label8: TLabel;
+    DS_REFBYTYPE: TDataSource;
+    QryRefByType: TOraQuery;
+    Panel_Hospital: TPanel;
+    Panel_Other: TPanel;
+    Label9: TLabel;
+    Label10: TLabel;
+    Edit_IpNo: TEdit;
+    Edit_CrNo: TEdit;
+    Label11: TLabel;
+    DBLCB_REFDEPNAME: TDBLookupComboBox;
+    Label12: TLabel;
+    DBLCB_REFDOCNAME: TDBLookupComboBox;
+    DS_REFDEP: TDataSource;
+    Query_RefDep: TOraQuery;
+    DS_RefDoc: TDataSource;
+    Query_RefDoc: TOraQuery;
+    dblcb_hosname: TDBLookupComboBox;
+    Label13: TLabel;
+    DS_HosName: TDataSource;
+    Query_HosName: TOraQuery;
+    Label15: TLabel;
+    Edit_Other: TEdit;
+    CHKB_TakeCharge: TCheckBox;
+    Label16: TLabel;
+    Edit_Diagnosis: TEdit;
+    CB_IsReferal: TCheckBox;
+          procedure CB_PatientFromChange(Sender: TObject);
+          procedure DBLCB_DepartmentClick(Sender: TObject);
+          procedure SpeedButton3Click(Sender: TObject);
+          procedure SpeedButton14Click(Sender: TObject);
+          procedure SpeedButton2Click(Sender: TObject);
+          procedure CMB_PtTypeKeyPress(Sender: TObject; var Key: Char);
+          procedure DBLCB_DepartmentKeyPress(Sender: TObject; var Key: Char);
+          procedure DBLookupComboBox_UnitKeyPress(Sender: TObject; var Key: Char);
+          procedure DBLCB_DoctorKeyPress(Sender: TObject; var Key: Char);
+          procedure DBLCB_DutyDoctorKeyPress(Sender: TObject; var Key: Char);
+          procedure CB_PatientFromKeyPress(Sender: TObject; var Key: Char);
+          procedure DBLCB_SchemeKeyPress(Sender: TObject; var Key: Char);
+          procedure Edit_ExchangeRateKeyPress(Sender: TObject; var Key: Char);
+          procedure EditRegDisKeyPress(Sender: TObject; var Key: Char);
+          procedure EditRegPaymentKeyPress(Sender: TObject; var Key: Char);
+          procedure EditRegPaymentChange(Sender: TObject);
+          procedure CB_CardChargeClick(Sender: TObject);
+    procedure CB_ForceFollowupClick(Sender: TObject);
+    procedure DBLCB_DoctorClick(Sender: TObject);
+    procedure RegReVisitPriceDetermination;
+    procedure Edit_TimeExit(Sender: TObject);
+    procedure CB_TimeChangeClick(Sender: TObject);
+    procedure DBLCB_SchemeClick(Sender: TObject);
+    procedure CB_PayTypeKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_DepartmentExit(Sender: TObject);
+    procedure CmbRefferedByKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_BlueBookChrgClick(Sender: TObject);
+    procedure EditRegDisExit(Sender: TObject);
+    procedure Edit_ECHSNOKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_PatientTypeClick(Sender: TObject);
+    procedure DBLCB_PatientTypeKeyPress(Sender: TObject; var Key: Char);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure CB_ChargeFreeClick(Sender: TObject);
+    procedure DBLCB_REFDOCNAMEKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_REFDEPNAMEKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_REFBYTYPEClick(Sender: TObject);
+    procedure CB_IsReferalClick(Sender: TObject);
+    procedure CHKB_TakeChargeClick(Sender: TObject);
+     private
+          { Private declarations }
+     public
+          pf_DocVisitCharge, pf_DocVisitTax, pf_RegOPDCardcharge, Pf_RegOPDCardTax, Pf_RegOPDCardDiscount, pf_GrandTotal,
+          pf_GTotalAfterDiscount, pf_DisPer, pf_DiscountTotal, pf_ExchangeRate: Double;
+
+          pf_BlueBookCharge, pf_BlueBookTax , pf_BlueBookDiscount : Double;
+
+          pf_InterDocVisitCharge,pf_InterDocVisitTax : Double;
+
+          pi_NoOfGapDays, pi_FreeFollowupDays, pi_InterFollowupDays: Double;
+
+          pi_DEPID, pi_SUBDEPID, pi_DOCID, pi_DUTYDOCID, pi_RefDepId, pi_RefById, pi_REFHOSID, pi_APPID: Integer;
+          pi_VISITCOUNT: Integer;
+          ps_TodaysDate, ps_TodaysTime, ps_APPOINTMENTTIME : string;
+          ps_PATIENTFROM, ps_VISITSTATUS, ps_PATIENTTYPE, ps_BILLINGSTATUS, ps_VISITTYPE, ps_CHECKUPSTATUS, ps_REMARKS: String;
+          ps_IsRegisteredFromFrontDesk : String;
+          pb_IsDoctorWiseOPDCharge : Boolean;
+          pb_IsWithRegCardCharge : Boolean;
+          pf_DepositBalance : Double;
+
+          //pi_DEPID, ps_SUBDEP,ps_REFDEPCODE, ps_DOCCODE, ps_RefDocCode: string;
+
+          pi_RefDocID : Integer;
+
+          ps_PayType, ps_INITIAL: String;
+
+
+          pi_SCHEMEID, pi_COMMUNITYID : Integer;
+
+          Procedure RefreshOPDVisit;
+          Procedure ClearAllOldInfo;
+          Function OPDVisitAccountValidation: Boolean;
+          Function IsDoctorWiseRegPrice(DocId,DepId : Integer; VisitTime : String):Boolean;
+          Function FormatTime(Str: String): String;
+
+          Constructor Create(AOwner: TComponent); Override;
+          procedure GetOPDVisitCharge;
+          procedure GetDoctorRoutineWise;
+          procedure FewaCityCondition;
+          { Public declarations }
+     end;
+
+implementation
+
+uses Unit_NewPatient;
+
+{$R *.dfm}
+{ TFrame_OPDVisit }
+
+procedure TFrame_OPDVisit.CB_BlueBookChrgClick(Sender: TObject);
+Var DEX_DOB, DEX_CurrDate : TDateEditX;
+begin
+     IF CB_BlueBookChrg.Checked=True Then
+     Begin
+          if (gs_RegistrationType='FOLLOWUP') and (gi_PatientID <= 0) then
+          begin
+               MessageDlg('Please Choose the Patient Below 2 Yrs for Blue Book Card.',mtWarning,[mbok],0);
+               Exit;
+          end;
+
+          if (gs_RegistrationType='NEW') then
+          begin
+               Exit;
+          end;
+
+          DEX_DOB :=TDateEditX.Create(Nil);
+          DEX_DOB.SystemOfDate:=gi_datesystem;
+
+          DEX_CurrDate :=TDateEditX.Create(Nil);
+          DEX_CurrDate.SystemOfDate:=gi_datesystem;
+
+          With Query_Process do
+          Begin
+               Close;
+               sql.Clear;
+               sql.add(' Select PAMA_DOBAD DOBAD,PAMA_DOBVS DOBBS From HS_PAMA_PatientMain where PAMA_PatientId='+IntToStr(gi_PatientID));
+               Open;
+          End;
+
+          if gi_datesystem=1 then
+          DEX_DOB.Text:=Query_Process.FieldByName('DOBAD').AsString
+          else
+          DEX_DOB.Text:=Query_Process.FieldByName('DOBBS').AsString;
+
+
+          IF (DEX_CurrDate.VSDateAsDays - DEX_DOB.VSDateAsDays) > 732 Then // For Blue Book Should be less than 2 yrs
+          Begin
+               MessageDlg('This patient is greater than age 2 Yrs. So no provision of blue book card.',mtWarning,[mbok],0);
+               CB_BlueBookChrg.Checked:=False;
+               DEX_CurrDate.Free;
+               DEX_DOB.Free;
+               Exit;
+          End;
+          DEX_CurrDate.Free;
+          DEX_DOB.Free;
+     End;
+     DBLCB_DepartmentClick(Sender);
+end;
+
+Procedure TFrame_OPDVisit.ClearAllOldInfo;
+begin
+     IF gs_CalledFrom='SpecialOPDRegistration' then
+     DBLCB_PatientType.KeyValue:='SPC'
+     Else
+     DBLCB_PatientType.KeyValue:='GEN';
+
+     DBLCB_Department.KeyValue:=NULL;
+     DBLCB_Doctor.KeyValue:=NULL;
+     CB_PatientFrom.Text:='';
+     CmbRefferedBy.KeyValue:=-1;
+     DBLCB_Scheme.KeyValue:=-1;
+     CB_BlueBookChrg.Checked:=False;
+
+     CB_CardCharge.Checked:=False;
+
+     CB_ChargeFree.Checked:=False;
+     CB_Preview.Checked:=False;
+     EditRegDis.Text:='0';
+     EditRegDis.Color:=clMenu;
+     EditRegDis.ReadOnly:=True;
+
+     Label_RegCharge.Caption:='0.00';
+     Edit_ExchangeRate.Text:='';
+     CB_PayType.ItemIndex:=0;
+     EditRegPayment.Text:='';
+     lbl_ReturnAmt.Caption:='0.00';
+     DBLCB_REFBYTYPE.KeyValue:=Null;
+     DBLCB_REFBYTYPEClick(Self);
+end;
+
+procedure TFrame_OPDVisit.CB_CardChargeClick(Sender: TObject);
+begin
+     DBLCB_DepartmentClick(Sender);
+end;
+
+procedure TFrame_OPDVisit.CB_ChargeFreeClick(Sender: TObject);
+begin
+     DBLCB_DepartmentClick(Sender);
+end;
+
+procedure TFrame_OPDVisit.CB_ForceFollowupClick(Sender: TObject);
+begin
+     DBLCB_DepartmentClick(Sender);
+end;
+
+procedure TFrame_OPDVisit.CB_IsReferalClick(Sender: TObject);
+begin
+     DBLCB_DepartmentClick(Sender);
+end;
+
+procedure TFrame_OPDVisit.CB_PatientFromChange(Sender: TObject);
+begin
+     if CB_PatientFrom.Text = 'OPD' then
+     begin
+          With Query_RefByDocHos do
+          begin
+               close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               (*sql.Add(' Select DOCT_DocId DocId,DOCT_DocCode DocCode,DOCT_DocName DocName,DOCT_DepCode DepCode');
+               sql.Add(' From DOCT_Doctor');
+               sql.Add(' Where DOCT_IsActive=''Y''');
+               sql.Add(' Order by DOCT_DocName');*)
+               sql.Add(' Select DEPT_DEPID DepId,DEPT_DEPCODE DEPCODE,DEPT_DEPNAME DEPNAME');
+               sql.Add(' FROM HS_DEPT_DEPARTMENT');
+               sql.Add(' WHERE DEPT_DEPTYPE=''C''');
+               sql.Add(' Order by DEPT_DEPNAME');
+               Open;
+          end;
+     end
+     else if CB_PatientFrom.Text = 'REFERRAL' then
+     begin
+          With Query_RefByDocHos do
+          begin
+               close;
+               Session := DM_Hospital.DB;
+               sql.Clear;
+               sql.Add(' Select REHO_REFHOSID as DEPID,'''' DEPCODE,REHO_HOSPITALNAME as DEPNAME From HS_REHO_ReferringHospital Order by REHO_HOSPITALNAME');
+               Open;
+          end;
+     end;
+end;
+
+procedure TFrame_OPDVisit.FewaCityCondition;
+begin
+     IF DBLCB_Department.KeyValue=1 Then //1 - EMERGENCY
+     begin
+          CB_MultiDepartment.Visible:=True;
+     end
+     Else
+     begin
+          CB_MultiDepartment.Checked:=False;
+          CB_MultiDepartment.Visible:=False;
+     end;
+end;
+
+procedure TFrame_OPDVisit.GetOPDVisitCharge;
+Var lf_NewGTotal : Double;
+begin
+     ps_TodaysDate:=TodaysDate;
+     if (Trim(DBLCB_PatientType.Text)<>'') and (Trim(DBLCB_Department.Text)<>'') then
+     begin
+
+          gs_PatientTypeCode:=DBLCB_PatientType.KeyValue;
+          pi_DEPID:=DBLCB_Department.KeyValue;
+          //pi_DEPID:=Query_Department.FieldByName('DepId').AsInteger;
+
+          if gs_IsDocCompForRegFollowup='Y' then // Reg. Billing In Doctor Name (Private Hospital)
+          Begin
+               pb_IsDoctorWiseOPDCharge:=False;
+               if Trim(DBLCB_Doctor.Text)<>'' then
+               begin
+                    pi_DOCID:=DBLCB_Doctor.KeyValue;
+                    pb_IsDoctorWiseOPDCharge:=IsDoctorWiseOPDCharge(pi_DOCID, gs_PatientTypeCode);
+                    if Query_Doctor.FieldByName('ISQUEUENOGENINREG').AsString='Y' then
+                    Begin
+                         gb_IsDoctorWiseQueue:=True;
+                         lbl_QuueNoCap.Caption:='Doctor Wise Queue No :';
+                         Label_QueueNo.Caption:=IntToStr(GetRegQueueNoDocWise(ps_TodaysDate,'',pi_DOCID,pi_DEPID));
+                    End
+                    else
+                    Begin
+                         gb_IsDoctorWiseQueue:=False;
+                         lbl_QuueNoCap.Caption:='Department Wise Queue No :';
+                         Label_QueueNo.Caption:=IntToStr(GetRegQueueNoDepWise(ps_TodaysDate,'',pi_DEPID));
+                    end;
+               end;
+
+               GetDoctorRoutineWise;
+          End
+          else // Reg. Billing On the Department Basis (Medical College & Government Hospital )
+          begin
+               Query_Doctor.Close;
+               //ps_DOCCODE:='HOS01';
+               pi_DOCID:=0;//'HOS01';
+               pb_IsDoctorWiseOPDCharge:=False;
+          end;
+
+
+          if pb_IsDoctorWiseOPDCharge=False then  (* It Takes Reg + Visit Charge Which is Setup Department Wise *)
+          Begin
+               with Query_OPDVisitCharge do
+               begin
+                    Close;
+                    SQL.Clear;
+                    SQL.Add(' Select * From VW_HS_SETUP_DEPTWISECHARGE Where PATIENTTYPECODE='+#39+gs_PatientTypeCode+#39);
+                    SQL.Add(' and DEPID='+IntToStr(pi_DEPID));
+                    Open;
+               end;
+          End
+          else  (* Some Times Doctor Have Sepcific Charge which is not match as general Department Doctor, If it is Setup then It Takes from here*)
+          begin
+               with Query_OPDVisitCharge do
+               begin
+                    Close;
+                    SQL.Clear;
+                    SQL.Add(' Select * From VW_HS_SETUP_DOCWISECHARGE Where PATIENTTYPECODE='+#39+gs_PatientTypeCode+#39);
+                    SQL.Add(' and DOCID='+IntToStr(pi_DOCID));
+                    Open;
+               end;
+          end;
+
+          if UpperCase(gs_RegistrationType) = 'NEW' then
+          Begin
+               if CB_IsReferal.Checked then
+               Begin
+                    pf_DocVisitCharge:=Query_OPDVisitCharge.FieldByName('REFERFOLLOWUPCHARGE').AsFloat;
+                    pf_DocVisitTax:=Query_OPDVisitCharge.FieldByName('REFERFOLLOWUPTAX').AsFloat;
+               End
+               Else
+               Begin
+                    pf_DocVisitCharge:=Query_OPDVisitCharge.FieldByName('NewVisitCharge').AsFloat;
+                    pf_DocVisitTax:=Query_OPDVisitCharge.FieldByName('NewVisitTax').AsFloat;
+               End;
+          End
+          else
+          begin
+               if CB_IsReferal.Checked then
+               Begin
+                    pf_DocVisitCharge:=Query_OPDVisitCharge.FieldByName('REFERFOLLOWUPCHARGE').AsFloat;
+                    pf_DocVisitTax:=Query_OPDVisitCharge.FieldByName('REFERFOLLOWUPTAX').AsFloat;
+               End
+               Else
+               Begin
+                    pf_DocVisitCharge:=Query_OPDVisitCharge.FieldByName('FollowUpCharge').AsFloat;
+                    pf_DocVisitTax:=Query_OPDVisitCharge.FieldByName('FollowUpTax').AsFloat;
+               End;
+
+              { pf_InterDocVisitCharge:=Query_OPDVisitCharge.FieldByName('InterFollowUpCharge').AsFloat;
+               pf_InterDocVisitTax:=Query_OPDVisitCharge.FieldByName('InterFollowUpTax').AsFloat;  }
+          end;
+
+          pf_DiscountTotal:=0;
+          pf_RegOPDCardcharge:=0;
+          Pf_RegOPDCardTax:=0;
+          Pf_RegOPDCardDiscount:=0;
+
+          pb_IsWithRegCardCharge:=False;
+
+          pi_FreeFollowupDays:=Query_OPDVisitCharge.FieldByName('FREEFOLLOWUPDAYS').AsInteger;
+          pi_InterFollowupDays:=Query_OPDVisitCharge.FieldByName('INTERFOLLOWUPDAYS').AsInteger;
+
+          if gi_PatientID >0 then
+          Begin
+               if gs_IsDocCompForRegFollowup='Y' then
+               pi_NoOfGapDays:=GetNumberOfVisitDaysDocWise(gi_PatientID,pi_DOCID)
+               Else
+               //pi_NoOfGapDays:=GetNumberOfVisitDays(gi_PatientID,DBLCB_Department.KeyValue);
+               Begin
+                    //if DBLCB_Department.KeyValue='EME01' then
+                    //pi_NoOfGapDays:=100
+                    //Else
+                    pi_NoOfGapDays:=GetNumberOfVisitDaysAnyDepatment(gi_PatientID,pi_DEPID);
+               End;
+          End
+          Else
+          pi_NoOfGapDays:=100;
+
+          Label4.Caption:=FloatToStr(pi_NoOfGapDays);
+
+          if CB_ForceFollowup.Checked=True then
+          pi_NoOfGapDays:=100;
+
+          ps_BillingStatus:='B';
+
+          gb_IsBlinkingContinue:=False;
+          if (pi_NoOfGapDays<=pi_FreeFollowupDays) then
+          begin
+               if (pi_InterFollowupDays > 0) and (pi_InterFollowupDays > pi_NoOfGapDays)  then
+               Begin
+                    //lbl_followupfree.Caption:='ITERMEDIATE FOLLOW UP';
+                    pf_DocVisitCharge:=pf_InterDocVisitCharge;
+                    pf_DocVisitTax:=pf_InterDocVisitTax;
+               end
+               else
+               Begin
+                    //free
+                    //lbl_followupfree.Caption:='FOLLOW UP - FREE';
+                    gs_FollowUpStatus:='';
+                    IF (gs_BlinkingCaption<>'Today’s new patient') and (gs_BlinkingCaption<>'Today’s follow up') Then
+                    Begin
+                         if (gi_NoOfVisit=1) and (gs_LastVisitDate = ps_TodaysDate) then
+                         Begin
+                              gs_BlinkingCaption:='Today’s new patient';
+                              gs_FollowUpStatus:='NEWPATIENT';
+                         End
+                         Else if (gi_NoOfVisit > 1) and (gs_LastVisitDate = ps_TodaysDate) Then
+                         Begin
+                              gs_BlinkingCaption:='Today’s follow up';
+                              gs_FollowUpStatus:='FOLLOWUPPATIENT';
+                         End
+                         else
+                         Begin
+                              gs_BlinkingCaption:='FOLLOW UP - FREE';
+                              gs_FollowUpStatus:='FREEFOLLOWUP';
+                         End;
+                    End;
+
+                    IF ((gs_BlinkingCaption='Today’s follow up') or (gs_BlinkingCaption='Today’s new patient')) and (gs_FollowUpStatus='') Then
+                    Begin
+                         if gs_BlinkingCaption='Today’s follow up' then
+                         gs_FollowUpStatus:='FOLLOWUPPATIENT'
+                         Else
+                         gs_FollowUpStatus:='NEWPATIENT';
+                    End;
+
+                    gb_IsBlinkingContinue:=True;
+                    pf_DocVisitCharge:=0;
+                    pf_DocVisitTax:=0;
+               End;
+
+               pf_RegOPDCardcharge:=0;
+               Pf_RegOPDCardTax:=0;
+               ps_BillingStatus:='N';
+               //lbl_followupfree.Visible:=True;
+          end
+          Else
+          Begin
+               if gs_RegistrationType = 'FOLLOWUP' then
+               gs_FollowUpStatus := 'TAKECHARGE';
+          End;
+
+          pf_ExchangeRate:=0;
+          pf_GrandTotal := pf_DocVisitCharge + pf_DocVisitTax;
+
+          if CB_CardCharge.Checked=True then
+          Begin
+               (*Label_RegCharge.Caption:=FormatFloat('0.00',(lf_NewGTotal+Query_OPDCardCharge.FieldByName('TestPrice').AsFloat+Query_OPDCardCharge.FieldByName('VatAmt').AsFloat));
+               pf_RegOPDCardcharge:=Query_OPDCardCharge.FieldByName('TestPrice').AsFloat;
+               Pf_RegOPDCardTax:=Query_OPDCardCharge.FieldByName('VatAmt').AsFloat;
+               Pf_RegOPDCardDiscount:=0;*)
+
+               Label_RegCharge.Caption:=FormatFloat('0.00',(lf_NewGTotal+Query_OPDVisitCharge.FieldByName('RegOPDCardCharge').AsFloat+Query_OPDVisitCharge.FieldByName('RegOPDCardTax').AsFloat));
+               pf_RegOPDCardcharge:=Query_OPDVisitCharge.FieldByName('RegOPDCardCharge').AsFloat;
+               Pf_RegOPDCardTax:=Query_OPDVisitCharge.FieldByName('RegOPDCardTax').AsFloat;
+               Pf_RegOPDCardDiscount:=0;
+          End
+          else
+          begin
+               pf_RegOPDCardcharge:=0;
+               Pf_RegOPDCardTax:=0;
+               Pf_RegOPDCardDiscount:=0;
+          end;
+
+          if CB_BlueBookChrg.Checked=True then
+          Begin
+               Label_RegCharge.Caption:=FormatFloat('0.00',(pf_GrandTotal+Query_BlueBookCharge.FieldByName('TestPrice').AsFloat+Query_BlueBookCharge.FieldByName('VatAmt').AsFloat));
+               pf_BlueBookCharge:=Query_BlueBookCharge.FieldByName('TestPrice').AsFloat;
+               pf_BlueBookTax:=Query_BlueBookCharge.FieldByName('VatAmt').AsFloat;
+               pf_BlueBookDiscount :=0;
+          End
+          else
+          begin
+               pf_BlueBookCharge:=0;
+               pf_BlueBookTax:=0;
+               pf_BlueBookDiscount :=0;
+          end;
+
+          //lf_NewGTotal:=pf_GrandTotal+pf_BlueBookCharge+pf_BlueBookTax;
+
+          pf_GTotalAfterDiscount := pf_DocVisitCharge + pf_BlueBookCharge + pf_RegOPDCardcharge + pf_DocVisitTax +  pf_BlueBookTax +  Pf_RegOPDCardTax
+                                         - (pf_DiscountTotal+ Pf_RegOPDCardDiscount);
+
+          Label_RegCharge.Caption := FormatFloat('0.00',pf_GTotalAfterDiscount);
+
+          pi_COMMUNITYID:=0;
+          pi_SCHEMEID:=0;
+          pf_DisPer:=0;
+
+          IF Trim(EditRegDis.Text)='' Then EditRegDis.Text:='0';
+          if Trim(DBLCB_Scheme.Text)<>'' then
+          begin
+               if StrToFloat(Trim(EditRegDis.Text)) <=0 then
+               EditRegDis.Text:=Query_Scheme.FieldByName('RegDisPer').AsString;
+               pf_DisPer := StrToFloat(EditRegDis.Text);
+
+               pf_DocVisitTax:= pf_DocVisitTax - pf_DocVisitTax * pf_DisPer / 100;
+               pf_DiscountTotal:=pf_DocVisitCharge * pf_DisPer / 100;
+
+               if CB_ChargeFree.Checked=False then
+               pf_GTotalAfterDiscount := pf_DocVisitCharge + pf_BlueBookCharge + pf_RegOPDCardcharge + pf_DocVisitTax +  Pf_BlueBookTax+  Pf_RegOPDCardTax
+                                         - (pf_DiscountTotal+ Pf_RegOPDCardDiscount+pf_BlueBookDiscount)
+               Else
+               pf_GTotalAfterDiscount := pf_BlueBookCharge + pf_RegOPDCardcharge + Pf_BlueBookTax+  Pf_RegOPDCardTax
+                                         - (pf_DiscountTotal+ Pf_RegOPDCardDiscount+pf_BlueBookDiscount);
+
+               Label_RegCharge.Caption := FormatFloat('0.00',pf_GTotalAfterDiscount);
+               EditRegPayment.Clear;
+               //EditRegPayment.SetFocus;
+
+               pi_SCHEMEID:=DBLCB_Scheme.KeyValue;
+               pi_COMMUNITYID:=Query_Scheme.FieldByName('CommunityId').AsInteger;
+          end
+          Else
+          Begin
+               (*if StrToFloat(Trim(EditRegDis.Text)) <=0 then
+               EditRegDis.Text:=Query_Scheme.FieldByName('RegDisPer').AsString;
+               pf_DisPer := StrToFloat(EditRegDis.Text);
+
+               pf_DocVisitTax:= pf_DocVisitTax - pf_DocVisitTax * pf_DisPer / 100;
+               pf_DiscountTotal:=pf_DocVisitCharge * pf_DisPer / 100;*)
+
+               if CB_ChargeFree.Checked=False then
+               pf_GTotalAfterDiscount := pf_DocVisitCharge + pf_BlueBookCharge + pf_RegOPDCardcharge + pf_DocVisitTax +  Pf_BlueBookTax+  Pf_RegOPDCardTax
+                                         - (pf_DiscountTotal+ Pf_RegOPDCardDiscount+pf_BlueBookDiscount)
+               Else
+               pf_GTotalAfterDiscount := pf_BlueBookCharge + pf_RegOPDCardcharge + Pf_BlueBookTax+  Pf_RegOPDCardTax
+                                         - (pf_DiscountTotal+ Pf_RegOPDCardDiscount+pf_BlueBookDiscount);
+               Label_RegCharge.Caption :=FormatFloat('0.00',pf_GTotalAfterDiscount);
+               EditRegPayment.Clear;
+          End;
+
+          //if CB_ChargeFree.Checked=True then
+          //Label_RegCharge.Caption:='0.00';
+
+
+          if (pf_GTotalAfterDiscount > 0) and (gb_IsBlinkingContinue=False) then
+          begin
+               gb_IsBlinkingContinue:=True;
+               gs_BlinkingCaption:='Rs. '+FormatFloat('0.00',pf_GTotalAfterDiscount);
+          end
+          Else
+          Label_RegCharge.Caption:='0.00';
+
+          ps_PayType:=CB_PayType.Text;
+          pf_DepositBalance:=StrToFloat(lbl_depositbalance.Caption);
+          if Trim(CmbRefferedBy.Text)<>'' then
+          pi_RefDocID:=CmbRefferedBy.KeyValue
+          else
+          pi_RefDocID:=0;
+     end;
+end;
+
+
+procedure TFrame_OPDVisit.GetDoctorRoutineWise;
+Var
+    DayOfWeek:Byte;
+    Dex_Today :TDateEditX;
+Begin
+     Dex_Today:=TDateEditX.Create(Nil);
+     Dex_Today.SystemOfDate:=gi_DateSystem;
+     Dex_Today.Text:=TodaysDate;
+     DayOfWeek:=Dex_Today.DayOfWeek;
+     with Query_Doctor do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select DOCT_DOCID DOCID, DOCT_DOCID as DocID,DOCT_DOCNAME DOCName,DOCT_DEPID DEPID,DOCT_ISQUEUENOGENINREG ISQUEUENOGENINREG');
+          sql.add(' ,Case When (Select DSBD_DOCSHAREBREAKDOWNID From HS_DSBD_DOCSHAREBREAKDOWN where DSBD_SERVICETYPE=''OPD''');
+          sql.add(' and DSBD_DOCID=DORO_DOCID) > 0 Then ''Y'' Else ''N'' End as MutualDocForShare,DOCT_DOCSHAREGROUP DOCSHAREGROUP');
+          sql.add(' From HS_DOCT_DOCTOR DOCT,HS_DORO_DoctorRoutine DORO');
+          sql.add(' Where DOCT_ISACTIVE=''Y'' and DOCT.DOCT_DOCID=DORO.DORO_DOCID And ');
+
+          IF Trim(DBLCB_Department.Text)<>'' Then
+          sql.add(' DORO_DepID='+IntToStr(DBLCB_Department.KeyValue)+' and ');
+
+          IF Trim(DBLookupComboBox_Unit.Text)<>'' Then
+          sql.add(' DORO_Unit='+#39+DBLookupComboBox_Unit.Text+#39+' and ');
+
+          If DayOfWeek=1 then
+            Sql.Add(' DORO_ISSUNDAYCHECKUP=''Y'' And ')
+          Else If DayOfWeek=2 then
+            Sql.Add(' DORO_ISMONDAYCHECKUP=''Y'' And ')
+          Else If DayOfWeek=3 then
+            Sql.Add(' DORO_ISTUESDAYCHECKUP=''Y'' And ')
+          Else If DayOfWeek=4 then
+            Sql.Add(' DORO_ISWEDNESDAYCHECKUP=''Y'' And ')
+          Else If DayOfWeek=5 then
+            Sql.Add(' DORO_ISTHURSDAYCHECKUP=''Y'' And ')
+          Else If DayOfWeek=6 then
+            Sql.Add(' DORO_ISFRIDAYCHECKUP=''Y'' And ')
+          Else
+            Sql.Add(' DORO_ISSATURDAYCHECKUP=''Y'' And ');
+          sql.add(' (0=0) Order By DOCT_DOCORDER,DOCT_DOCNAME');
+          Open;
+          //DBLCB_Doctor.KeyValue:=FieldbyName('DocCode') .AsString;
+          //ps_DOCCODE:=FieldbyName('DocCode') .AsString;
+     End;
+End;
+
+procedure TFrame_OPDVisit.DBLCB_DepartmentClick(Sender: TObject);
+Var
+     ls_DisType : String;
+begin
+     if (DBLCB_PatientType.KeyValue='ECG') or (DBLCB_PatientType.KeyValue='ECP') or (DBLCB_PatientType.KeyValue='ECS') then
+     Begin
+          DBLCB_Scheme.KeyValue:=91;
+          DBLCB_Scheme.Enabled:=False;
+          CB_PayType.ItemIndex:=1;
+          //Frame_NewPatient.LE_ECHSNO.SetFocus;
+     End
+     Else
+     Begin
+          if Trim(gs_MemberNo)='' then
+          Begin
+               DBLCB_Scheme.KeyValue:=-1;
+               DBLCB_Scheme.Enabled:=True;
+               CB_PayType.ItemIndex:=0;
+          End;
+     End;
+
+     //IF (gs_RegistrationType='FOLLOWUP') and (DBLCB_Department.KeyValue='EME01') and (Trim(gs_MemberNo)<>'') then
+     IF (gs_RegistrationType='FOLLOWUP') and (Query_Department.FieldByName('DepId').AsInteger=1) and (Trim(gs_MemberNo)<>'') then // 1 - EMERGENCY
+     begin
+          Query_DutyDoctor.Close;
+          Query_DutyDoctor.Open;
+          DBLCB_DutyDoctor.Visible:=True;
+          LabelDutyDoc.Visible:=True;
+          gb_IsBlinkingContinue:=False;
+     end
+     else
+     Begin
+          Query_DutyDoctor.Close;
+          DBLCB_DutyDoctor.Visible:=False;
+          LabelDutyDoc.Visible:=False;
+          gb_IsBlinkingContinue:=True;
+     End;
+
+     GetOPDVisitCharge;
+     //DBLCB_Department.SetFocus;
+     //Exit;
+
+
+     {pf_DocVisitCharge := 0;
+     pf_DocVisitTax := 0;
+     pf_RegOPDCardcharge := 0;
+     Pf_RegOPDCardTax := 0; }
+
+
+     //RegReVisitPriceDetermination;
+
+
+     //lbl_followupfree.Caption:='';
+     //pi_FreeFollowupDays := Query_Department.FieldByName('FreeFollowupDays').AsInteger;
+
+     if Trim(DBLCB_Department.Text)<>'' then
+     begin
+          if gs_IsDocCompForRegFollowup='Y' then
+          Begin
+               if DBLCB_Doctor.Text<>'' then
+               pi_NoOfGapDays:=GetNumberOfVisitDaysDocWise(gi_PatientID,DBLCB_Doctor.KeyValue)
+               Else
+               pi_NoOfGapDays:=GetNumberOfVisitDays(gi_PatientID,DBLCB_Department.KeyValue);
+          End
+          Else
+          pi_NoOfGapDays:=GetNumberOfVisitDays(gi_PatientID,DBLCB_Department.KeyValue);
+          //ls_DisType:=IsPatientFollowUpAfterDischarge(gi_PatientID,DBLCB_Doctor.KeyValue,DBLCB_Department.KeyValue);
+          ls_DisType:='';
+
+          if CB_ForceFollowup.Checked=True then
+          pi_NoOfGapDays:=100;
+
+          if (pi_NoOfGapDays<=pi_FreeFollowupDays) and (ls_DisType<>'SURG') then
+          begin
+               //free
+               //lbl_followupfree.Caption:='FOLLOW UP - FREE';
+               pf_DocVisitCharge:=0;
+               pf_DocVisitTax:=0;
+
+               pf_RegOPDCardcharge:=0;
+               Pf_RegOPDCardTax:=0;
+               ps_BillingStatus:='N';
+               pf_GrandTotal := pf_DocVisitCharge + pf_DocVisitTax + pf_RegOPDCardcharge + Pf_RegOPDCardTax;
+               Label_RegCharge.Caption := FloatToStr(pf_GrandTotal);
+          end
+          Else if (ls_DisType='SURG') and (gi_NoofDaysAfterDischarge <= 27) then // 4 - Weeks
+          Begin
+               //free
+               //lbl_followupfree.Caption:='SURGICAL CASE - WITHIN 4 WEEKS.';
+               pf_DocVisitCharge:=0;
+               pf_DocVisitTax:=0;
+               pf_RegOPDCardcharge:=0;
+               Pf_RegOPDCardTax:=0;
+               ps_BillingStatus:='N';
+               pf_GrandTotal := pf_DocVisitCharge + pf_DocVisitTax + pf_RegOPDCardcharge + Pf_RegOPDCardTax;
+               Label_RegCharge.Caption := FloatToStr(pf_GrandTotal);
+          End;
+     end;
+
+     with Query_Doctor do
+     begin
+          close;
+         { if (DBLCB_Department.KeyValue=2) then // 2 -EMR Day, 93 - EMR Night
+          Begin
+               sql[2] := ' where DActive=''Y''';
+          End
+          Else
+          IF DBLCB_Department.KeyValue<>NULL then
+          Begin
+               if gs_PatientTypeCode<>'GEN' then
+               sql[2] := 'where DActive=''Y'' and (depid in (select parentdepid from department where depid=' + IntToStr(DBLCB_Department.KeyValue)
+                    +' and parentdepid>0)  or depid='+ IntToStr(DBLCB_Department.KeyValue)+')'
+               Else
+               sql[2] := 'where DActive=''Y'' and (depid in (select parentdepid from department where depid=' + IntToStr(DBLCB_Department.KeyValue)
+                    +' and parentdepid>0)  or depid='+ IntToStr(DBLCB_Department.KeyValue)+') and IsConsultationInGenOPD=''Y''';
+
+          End;       }
+          sql.SaveToFile('C:\Doctor.Txt');
+          Open;
+     end;
+end;
+
+
+procedure TFrame_OPDVisit.DBLCB_DepartmentExit(Sender: TObject);
+begin
+     GetOPDVisitCharge;
+end;
+
+procedure TFrame_OPDVisit.RegReVisitPriceDetermination;
+Var li_DocId,li_DepId : Integer;
+Begin
+     if Trim(DBLCB_Doctor.Text)<>'' then
+     li_DocId:=DBLCB_Doctor.KeyValue
+     Else
+     li_DocId:=0;
+
+     if Trim(DBLCB_Department.Text)<>'' then
+     li_DepId:=DBLCB_Department.KeyValue
+     Else
+     li_DepId:=0;
+
+
+     if (IsDoctorWiseRegPrice(li_DocId,li_DepId,Edit_Time.Text)=False)
+     or (li_DocId = 0) or (gs_IsTimeWiseDoctorCharge='N') then
+     Begin
+          if UpperCase(gs_RegistrationType) = 'NEW' then
+          Begin
+               if gs_PatientTypeCode='PRM' then //
+               Begin
+                    pf_DocVisitCharge := Query_Department.FieldByName('NewRegCharge').AsFloat;
+                    pf_DocVisitTax := Query_Department.FieldByName('NewRegSvrTax').AsFloat;
+               End
+               Else if gs_PatientTypeCode='GEN' then
+               Begin
+                    pf_DocVisitCharge := Query_Department.FieldByName('NewRegChargeGEN').AsFloat;
+                    pf_DocVisitTax := Query_Department.FieldByName('NewRegSvrTaxGEN').AsFloat;
+               End
+               Else if gs_PatientTypeCode='PVT' then
+               Begin
+                    pf_DocVisitCharge := Query_Department.FieldByName('NewRegChargePVT').AsFloat;
+                    pf_DocVisitTax := Query_Department.FieldByName('NewRegSvrTaxPVT').AsFloat;
+               End
+               Else if gs_PatientTypeCode='FRG' then
+               Begin
+                    pf_DocVisitCharge := Query_Department.FieldByName('NewRegChargeFRG').AsFloat;
+                    pf_DocVisitTax := Query_Department.FieldByName('NewRegSvrTaxFRG').AsFloat;
+               End
+               Else
+               Begin
+                    pf_DocVisitCharge := Query_Department.FieldByName('NewRegCharge').AsFloat;
+                    pf_DocVisitTax := Query_Department.FieldByName('NewRegSvrTax').AsFloat;
+               End;
+
+               pf_RegOPDCardcharge := Query_Department.FieldByName('RegistrationCharge').AsFloat;
+               Pf_RegOPDCardTax := Query_Department.FieldByName('RegistrationChargeSvrTax').AsFloat;
+          End
+          Else
+          Begin
+               if gs_PatientTypeCode='PRM' then
+               Begin
+                    pf_DocVisitCharge := Query_Department.FieldByName('FollowupCharge').AsFloat;
+                    pf_DocVisitTax := Query_Department.FieldByName('FollowupSvrTax').AsFloat;
+               End
+               Else if gs_PatientTypeCode='GEN' then
+               Begin
+                    pf_DocVisitCharge := Query_Department.FieldByName('FollowupChargeGEN').AsFloat;
+                    pf_DocVisitTax := Query_Department.FieldByName('FollowupSvrTaxGEN').AsFloat;
+               End
+               Else if gs_PatientTypeCode='PVT' then
+               Begin
+                    pf_DocVisitCharge := Query_Department.FieldByName('FollowupChargePVT').AsFloat;
+                    pf_DocVisitTax := Query_Department.FieldByName('FollowupSvrTaxPVT').AsFloat;
+               End
+               Else if gs_PatientTypeCode='FRG' then
+               Begin
+                    pf_DocVisitCharge := Query_Department.FieldByName('FollowupChargeFRG').AsFloat;
+                    pf_DocVisitTax := Query_Department.FieldByName('FollowupSvrTaxFRG').AsFloat;
+               End
+               Else
+               Begin
+                    pf_DocVisitCharge := Query_Department.FieldByName('FollowupCharge').AsFloat;
+                    pf_DocVisitTax := Query_Department.FieldByName('FollowupSvrTax').AsFloat;
+               End;
+
+               if (CB_CardCharge.Checked=True) then
+               begin
+                    pf_RegOPDCardcharge := Query_Department.FieldByName('RegistrationCharge').AsFloat;
+                    Pf_RegOPDCardTax := Query_Department.FieldByName('RegistrationChargeSvrTax').AsFloat;
+               end;
+          End;
+     End
+     Else
+     Begin
+          if UpperCase(gs_RegistrationType) = 'NEW' then
+          Begin
+               pf_RegOPDCardcharge := Query_Department.FieldByName('RegistrationCharge').AsFloat;
+               Pf_RegOPDCardTax := Query_Department.FieldByName('RegistrationChargeSvrTax').AsFloat;
+          End
+          Else
+          Begin
+               if (CB_CardCharge.Checked=True) then
+               begin
+                    pf_RegOPDCardcharge := Query_Department.FieldByName('RegistrationCharge').AsFloat;
+                    Pf_RegOPDCardTax := Query_Department.FieldByName('RegistrationChargeSvrTax').AsFloat;
+               end;
+          End;
+          pf_DocVisitCharge := Query_TimewiseDepPrice.FieldByName('VisitCharge').AsFloat;
+          pf_DocVisitTax := Query_TimewiseDepPrice.FieldByName('VisitSvrTax').AsFloat;
+
+     End;
+End;
+
+
+Function TFrame_OPDVisit.IsDoctorWiseRegPrice(DocId,DepId : Integer; VisitTime : String):Boolean;
+Var ls_PatientType : String;
+Begin
+     if DocId=0 then
+     Begin
+          Result:=False;
+          Exit;
+     End;
+
+     if gs_PatientTypeCode='PRM' then
+     ls_PatientType:='PRIME'
+     Else if gs_PatientTypeCode='GEN' then
+     ls_PatientType:='GENERAL'
+     Else if gs_PatientTypeCode='PVT' then
+     ls_PatientType:='PRIVATE'
+     Else if gs_PatientTypeCode='FRG' then
+     ls_PatientType:='FOREIGNER'
+     Else
+     ls_PatientType:='GENERAL';
+
+     With Query_TimewiseDepPrice do
+     Begin
+          Close;
+          Session := DM_Hospital.DB;
+          sql.Clear;
+          if gs_RegistrationType='NEW' then
+          sql.Add(' Select TimewiseDepPriceID,NewRegCharge as VisitCharge,NewRegSvrTax as VisitSvrTax')
+          Else
+          sql.Add(' Select TimewiseDepPriceID,FollowUpCharge as VisitCharge,FollowUpSvrTax as VisitSvrTax');
+          sql.Add(' From TimewiseDepPrice where DocId='+IntToStr(DocId)+' and DepId='+IntToStr(DepId));
+          sql.Add(' and PatientType='+#39+ls_PatientType+#39+' and FromTime<='+#39+VisitTime+#39+' and ToTime>='+#39+VisitTime+#39);
+          Open;
+     End;
+
+     if Query_TimewiseDepPrice.FieldByName('TimewiseDepPriceID').AsInteger > 0 then
+     Result:=True
+     Else
+     Result:=False;
+End;
+
+
+procedure TFrame_OPDVisit.DBLCB_DepartmentKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+     Begin
+          if Trim(DBLCB_Department.Text)<>'' then
+          Begin
+               if gs_IsDocCompForRegFollowup='Y' then
+               //DBLookupComboBox_Unit.SetFocus
+               DBLCB_Doctor.SetFocus
+               else
+               Begin
+                    if (gs_IsDutyDocCompForEMRVISIT='Y') and (Query_Department.FieldByName('DepType').AsString='E') then // E- Emergency
+                    DBLCB_DutyDoctor.SetFocus
+                    Else
+                    CB_PatientFrom.SetFocus;
+               End;
+
+               if (DBLCB_PatientType.KeyValue='ECG') or (DBLCB_PatientType.KeyValue='ECP') or (DBLCB_PatientType.KeyValue='ECS') then
+               Edit_ECHSNO.SetFocus
+               Else
+               Begin
+                    if (DBLCB_Department.KeyValue=1) and (Trim(gs_MemberNo)<>'') then //1- 'EME01'
+                    DBLCB_DutyDoctor.SetFocus
+                    Else
+                    DBLCB_Doctor.SetFocus;
+                    //DBLCB_Scheme.SetFocus;
+               End;
+          End
+          else
+          DBLCB_Department.SetFocus;
+     End;
+end;
+
+procedure TFrame_OPDVisit.DBLCB_DoctorClick(Sender: TObject);
+begin
+     if Trim(DBLCB_Doctor.Text)<>'' then
+     GetOPDVisitCharge;
+end;
+
+procedure TFrame_OPDVisit.DBLCB_DoctorKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+     Begin
+          if DBLCB_DutyDoctor.Visible = true then
+               DBLCB_DutyDoctor.SetFocus
+          Else
+               CB_PatientFrom.SetFocus;
+     End;
+end;
+
+procedure TFrame_OPDVisit.DBLCB_DutyDoctorKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+          DBLCB_Scheme.SetFocus;
+
+     if key=#8 then
+     DBLCB_DutyDoctor.KeyValue:=-1;
+
+
+end;
+
+procedure TFrame_OPDVisit.DBLCB_PatientTypeClick(Sender: TObject);
+begin
+     if Trim(DBLCB_Department.Text)<>'' then
+     Begin
+          if gs_CalledFrom<>'EmergencyRegistration' then
+          DBLCB_DepartmentClick(Sender)
+          Else
+          EditRegPayment.SetFocus;
+     End;
+end;
+
+procedure TFrame_OPDVisit.DBLCB_PatientTypeKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     DBLCB_Department.SetFocus;
+end;
+
+procedure TFrame_OPDVisit.DBLCB_REFBYTYPEClick(Sender: TObject);
+begin
+     if DBLCB_REFBYTYPE.KeyValue=3 then
+     begin
+          dblcb_hosname.Visible:=True;
+          Label13.Visible:=True;
+     end
+     else
+     begin
+          dblcb_hosname.Visible:=False;
+          Label13.Visible:=False;
+     end;
+
+     if DBLCB_REFBYTYPE.KeyValue<=3 then
+     begin
+          Panel_Hospital.Visible:=True;
+          Panel_Other.Visible:=False;
+     end
+     else
+     begin
+          Panel_Hospital.Visible:=False;
+          //Panel_Other.Visible:=True;
+     end;
+     dblcb_hosname.KeyValue:=null;
+     DBLCB_REFDEPNAME.KeyValue:=null;
+     DBLCB_REFDOCNAME.KeyValue:=null;
+     Edit_IpNo.Clear;
+     Edit_CrNo.Clear;
+     Edit_Other.Clear;
+end;
+
+procedure TFrame_OPDVisit.DBLCB_REFDEPNAMEKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+    if Key=vk_delete then
+     DBLCB_REFDOCNAME.KeyValue:=-1;
+end;
+
+procedure TFrame_OPDVisit.DBLCB_REFDOCNAMEKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     if Key=vk_delete then
+     DBLCB_REFDEPNAME.KeyValue:=-1;
+end;
+
+procedure TFrame_OPDVisit.DBLCB_SchemeClick(Sender: TObject);
+begin
+     if Trim(DBLCB_Scheme.Text)<>'' then
+     Begin
+          EditRegDis.Text:=FloatToStr(Query_Scheme.FieldByName('REGDISPER').AsFloat);
+          EditRegDis.ReadOnly:=False;
+          EditRegDis.Color:=clWhite;
+          if Query_Scheme.FieldByName('ISREGCRFACILITY').AsString='Y' then
+          Begin
+               CB_PayType.Enabled:=True;
+               CB_PayType.Color:=clWhite;
+          End
+          else
+          begin
+               CB_PayType.Enabled:=False;
+               CB_PayType.Color:=clSilver;
+          end;
+
+          if Query_Scheme.FieldByName('SchemeId').AsInteger=29 then // 29 - Phulbari Concession
+          Label36.Caption:='Member No :'
+          Else if Query_Scheme.FieldByName('SchemeId').AsInteger=91 then // 91 - ECHS No.
+          Label36.Caption:='ECHS No :';
+          GetOPDVisitCharge;
+          DBLCB_Scheme.SetFocus;
+     End;
+end;
+
+procedure TFrame_OPDVisit.DBLCB_SchemeKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+     Begin
+
+         if Trim(DBLCB_Scheme.Text)<>'' then
+         EditRegDis.SetFocus
+         Else
+         EditRegPayment.SetFocus;
+
+
+     End;
+
+     if key=#8 then
+     Begin
+          DBLCB_Scheme.KeyValue:=NULL;
+          EditRegDis.Text:='0';
+          EditRegDis.ReadOnly:=True;
+          EditRegDis.Color:=clSilver;
+          CB_PayType.Enabled:=False;
+          CB_PayType.Color:=clMenu;
+          CB_PayType.ItemIndex:=0;
+          CB_PayType.Enabled:=False;
+          CB_PayType.Color:=clSilver;
+          GetOPDVisitCharge;
+     End;
+end;
+
+procedure TFrame_OPDVisit.DBLookupComboBox_UnitKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+          DBLCB_Doctor.SetFocus;
+end;
+
+procedure TFrame_OPDVisit.EditRegDisExit(Sender: TObject);
+begin
+     if Trim(EditRegDis.Text)='' then EditRegDis.Text:='0';
+     if StrToFloat(EditRegDis.Text) > 0 then
+     Begin
+          IF StrToFloat(EditRegDis.Text) > 100 Then
+          Begin
+               MessageDlg('Discount % Shouldn''t Exceed 100', mtWarning,[mbOK],0);
+               EditRegDis.SetFocus;
+               Exit;
+          End;
+          GetOPDVisitCharge;
+     End;
+end;
+
+procedure TFrame_OPDVisit.EditRegDisKeyPress(Sender: TObject; var Key: Char);
+Var
+     lf_Charge: Double;
+begin
+     if Key = #13 then
+     begin
+          GetOPDVisitCharge;
+          EditRegPayment.SetFocus;
+     end;
+end;
+
+procedure TFrame_OPDVisit.EditRegPaymentChange(Sender: TObject);
+Var
+     Charge, payment, ReturnAmount: Double;
+begin
+     if EditRegPayment.Text <> '' then
+     begin
+          Charge := StrToFloat(Label_RegCharge.Caption);
+          payment := StrToFloat(EditRegPayment.Text);
+          ReturnAmount := payment - Charge;
+          lbl_ReturnAmt.Caption := FormatFloat('#0,0.00', ReturnAmount);
+     end;
+end;
+
+procedure TFrame_OPDVisit.EditRegPaymentKeyPress(Sender: TObject; var Key: Char);
+begin
+     (*if Key = #13 then
+     Begin
+          CB_PayType.SetFocus;
+     End;*)
+end;
+
+procedure TFrame_OPDVisit.Edit_ECHSNOKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+     Begin
+         if gi_HospitalId=562 then // 562 - Manipal
+         Begin
+              if (DBLCB_PatientType.KeyValue='ECG') or (DBLCB_PatientType.KeyValue='ECP') or (DBLCB_PatientType.KeyValue='ECS') Then
+              EditRegPayment.SetFocus
+              else IF DBLCB_Scheme.KeyValue=29 Then   // 29 - Phulbari
+              EditRegDis.SetFocus
+              else
+              EditRegPayment.SetFocus;
+         end
+         else
+         Begin
+              if Trim(DBLCB_Scheme.Text)<>'' then
+              EditRegDis.SetFocus
+              Else
+              EditRegPayment.SetFocus;
+         End;
+
+     End;
+end;
+
+procedure TFrame_OPDVisit.Edit_ExchangeRateKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+          EditRegDis.SetFocus;
+end;
+
+procedure TFrame_OPDVisit.Edit_TimeExit(Sender: TObject);
+begin
+     Edit_Time.Text:=FormatTime(Edit_Time.Text);
+end;
+
+procedure TFrame_OPDVisit.CB_PatientFromKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+          CmbRefferedBy.SetFocus;
+end;
+
+procedure TFrame_OPDVisit.CB_PayTypeKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key=#13 then
+     EditRegPayment.SetFocus;
+end;
+
+procedure TFrame_OPDVisit.CB_TimeChangeClick(Sender: TObject);
+begin
+     if CB_TimeChange.Checked=True then
+     Begin
+          Edit_Time.ReadOnly:=False;
+          Edit_Time.Enabled:=True;
+          Edit_Time.Color:=clWhite;
+     End
+     Else
+     Begin
+          Edit_Time.ReadOnly:=True;
+          Edit_Time.Enabled:=False;
+          Edit_Time.Color:=clScrollBar;
+     End;
+end;
+
+procedure TFrame_OPDVisit.CHKB_TakeChargeClick(Sender: TObject);
+begin
+     DBLCB_DepartmentClick(Sender);
+end;
+
+procedure TFrame_OPDVisit.CmbRefferedByKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     DBLCB_Scheme.SetFocus;
+end;
+
+procedure TFrame_OPDVisit.CMB_PtTypeKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+          DBLCB_Department.SetFocus;
+end;
+
+constructor TFrame_OPDVisit.Create(AOwner: TComponent);
+begin
+     inherited;
+     //lbl_followupfree.Caption:='';
+     if gs_RegistrationType<>'FOLLOWUP' then
+     gs_PatientTypeCode:='GEN';
+     RefreshOPDVisit;
+end;
+
+function TFrame_OPDVisit.OPDVisitAccountValidation: Boolean;
+begin
+     if DBLCB_Department.KeyValue = NULL then
+     Begin
+          MessageDlg('You Must Have To Choose Visit Department.', mtWarning, [mbok], 0);
+          DBLCB_Department.SetFocus;
+          Result := false;
+          exit;
+     End;
+
+     if DBLCB_Doctor.KeyValue = NULL then
+     Begin
+          MessageDlg('You Must Have To Choose Visit Doctor.', mtWarning, [mbok], 0);
+          DBLCB_Doctor.SetFocus;
+          Result := false;
+          exit;
+     End;
+
+     pi_DEPID := DBLCB_Department.KeyValue;
+     pi_SUBDEPID := 0;
+
+     if DBLCB_Doctor.KeyValue <> NULL then
+     pi_DOCID := DBLCB_Doctor.KeyValue
+     Else
+     pi_DOCID := 0;
+
+     if DBLCB_DutyDoctor.KeyValue <> NULL then
+     pi_DUTYDOCID := DBLCB_DutyDoctor.KeyValue
+     Else
+     pi_DUTYDOCID := 0;
+
+     ps_PATIENTFROM:=CB_PatientFrom.Text;
+     IF CB_PatientFrom.Text='OPD' then
+     Begin
+          IF Trim(CmbRefferedBy.Text)<>'' Then
+          pi_RefDepId:=Query_RefByDocHos.FieldByName('DepID').AsInteger
+          else
+          pi_RefDepId:=0;
+          pi_REFHOSID:=0;
+     end
+     else
+     Begin
+          IF Trim(CmbRefferedBy.Text)<>'' Then
+          pi_REFHOSID := CmbRefferedBy.KeyValue
+          else
+          pi_REFHOSID := 0;
+          pi_RefDepId:=0;
+     end;
+
+     if Trim(DBLCB_Scheme.Text)<>'' then
+     Begin
+          pi_SCHEMEID := DBLCB_Scheme.KeyValue;
+          pi_COMMUNITYID := Query_Scheme.FieldByName('CommunityId').AsInteger;
+     End
+     Else
+     Begin
+          pi_SCHEMEID := 0;
+          pi_COMMUNITYID := 0;
+     End;
+
+     ps_APPOINTMENTTIME := '';
+
+     if gs_RegistrationType = 'NEW' Then
+     Begin
+          ps_VISITTYPE := 'REG';
+          ps_VISITSTATUS := 'N';
+     End
+     Else
+     Begin
+          ps_VISITTYPE := 'RE-VISIT';
+          ps_VISITSTATUS := 'V';
+     End;
+
+     ps_PATIENTTYPE := '';
+     ps_BILLINGSTATUS := '';
+     ps_VISITTYPE := '';
+     ps_CHECKUPSTATUS := '';
+     ps_REMARKS := '';
+
+     if CB_PayType.ItemIndex in [0] then
+     Begin
+          ps_INITIAL := 'CS';
+          ps_PayType := 'CASH';
+     End
+     else
+     Begin
+          ps_INITIAL := 'CR';
+          ps_PayType := 'CREDIT';
+     End;
+     Result := true;
+end;
+
+procedure TFrame_OPDVisit.RefreshOPDVisit;
+var Sender :Tobject;
+begin
+     if gi_DepartmentId > 0 then
+     begin
+          Query_Department.Close;
+          Query_Department.Open;
+          DBLCB_Department.KeyValue := gi_DepartmentId;
+          DBLCB_DepartmentClick(self);
+     end
+     else
+     begin
+          Query_Department.close;
+          //Query_Department.sql[2] := 'and 1=1';
+          Query_Department.Open;
+     end;
+
+     if gi_DoctorId > 0 then
+     begin
+//          Query_Doctor.close;
+//          Query_Doctor.sql[1] := 'where Docid=' + IntToStr(gi_DoctorId);
+//          Query_Doctor.Open;
+          DBLCB_Doctor.KeyValue := gi_DoctorId;
+     end
+     else
+     begin
+          Query_Doctor.close;
+          //Query_Doctor.sql[1] := 'where 1=1';
+          Query_Doctor.Open;
+     end;
+
+     Query_RefByDocHos.close;
+     Query_RefByDocHos.Open;
+
+     Query_Community.close;
+     Query_Community.Open;
+
+     Query_Scheme.close;
+     Query_Scheme.Open;
+
+     Query_PatientType.Close;
+     Query_PatientType.Open;
+
+     Query_BlueBookCharge.Close;
+     Query_BlueBookCharge.Open;
+
+     Query_OPDCardCharge.Close;
+     Query_OPDCardCharge.Open;
+
+     QryRefByType.Close;
+     QryRefByType.Open;
+
+     Query_RefDep.Close;
+     Query_RefDep.Open;
+
+     Query_RefDoc.Close;
+     Query_RefDoc.Open;
+
+     Query_HosName.Close;
+     Query_HosName.Open;
+
+
+     (*if gs_ISOPDBOOKCHARGE='Y' then
+     CB_CardCharge.Checked:=True
+     else
+     CB_CardCharge.Checked:=False;*)
+
+     if gs_RegistrationType='FOLLOWUP' then
+     Begin
+          if gs_HospitalNameForCode='BNB' then
+          CB_CardCharge.Checked:=True
+          Else
+          CB_CardCharge.Checked:=False;
+          //CB_ForceFollowup.Visible:=True;
+          CB_ForceFollowup.Checked:=False;
+          if gs_CalledFrom='SpecialOPDRegistration' then
+          Begin
+               gs_PatientTypeCode:='SPC';
+               //DBLCB_PatientType.Enabled:=False;
+          End
+          Else if gs_CalledFrom='EmergencyRegistration' then
+          begin
+               gs_PatientTypeCode:='GEN';
+          end
+          else if gs_PatientTypeCode='' then
+          gs_PatientTypeCode:='GEN';
+
+          DBLCB_PatientType.KeyValue:=gs_PatientTypeCode;
+          DBLCB_PatientTypeClick(Self);
+          CB_IsReferal.Visible:=True;
+
+     End
+     Else
+     Begin
+          CB_ForceFollowup.Visible:=False;
+          CB_ForceFollowup.Checked:=False;
+
+          if gs_RegistrationType='NEW' then
+          CB_CardCharge.Checked:=True;
+
+          if gs_CalledFrom='SpecialOPDRegistration' then
+          Begin
+               DBLCB_PatientType.KeyValue:=Query_PatientType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+               gs_PatientTypeCode:=Query_PatientType.FieldByName('PATY_PATIENTTYPECODE').AsString;
+          End
+          Else
+          Begin
+               DBLCB_PatientType.KeyValue:='GEN';
+               gs_PatientTypeCode:='GEN';
+          End;
+          DBLCB_PatientTypeClick(Self);
+          CB_IsReferal.Visible:=False;
+     End;
+
+     if gs_CalledFrom='RegisteredFromFrontDesk' then
+     Begin
+          GroupBox14.Enabled:=False;
+          GroupBox14.Visible:=False;
+
+          GroupBox16.Enabled:=False;
+          GroupBox16.Visible:=False;
+
+          ps_IsRegisteredFromFrontDesk:='Y';
+     End
+     Else if gs_CalledFrom='SpecialOPDRegistration' then
+     Begin
+          DBLCB_PatientType.KeyValue:='SPC';
+          //DBLCB_PatientType.Enabled:=False;
+     End
+     Else
+     Begin
+          GroupBox14.Enabled:=True;
+          GroupBox14.Visible:=True;
+
+          GroupBox16.Enabled:=True;
+          GroupBox16.Visible:=True;
+          ps_IsRegisteredFromFrontDesk:='N';
+     End;
+
+     if gs_CalledFrom='EmergencyRegistration' then
+     begin
+          DBLCB_Department.KeyValue:=85;//emergency dep
+          DBLCB_Department.Enabled := False;
+          CB_ChargeFree.Checked := True;
+          CB_ChargeFree.Enabled := False;
+          DBLCB_Doctor.KeyValue :=108;
+          DBLCB_Doctor.Enabled := False;
+          DBLCB_DepartmentClick(Sender);
+     end;
+
+end;
+
+procedure TFrame_OPDVisit.SpeedButton14Click(Sender: TObject);
+begin
+     {FormCommunity := TFormCommunity.Create(nil);
+     try
+          FormCommunity.ShowModal;
+     finally
+          FormCommunity.Free;
+          Query_Community.close;
+          Query_Community.Open;
+     end; }
+end;
+
+procedure TFrame_OPDVisit.SpeedButton1Click(Sender: TObject);
+begin
+     {Form_DoctorSetup := TForm_DoctorSetup.Create(nil);
+     try
+          Form_DoctorSetup.ShowModal;
+     finally
+          Form_DoctorSetup.Free;
+          Query_DutyDoctor.close;
+          Query_DutyDoctor.Open;
+     end; }
+end;
+
+procedure TFrame_OPDVisit.SpeedButton2Click(Sender: TObject);
+begin
+     {Form_Scheme := TForm_Scheme.Create(nil);
+     try
+          Form_Scheme.ShowModal;
+     finally
+          Form_Scheme.Free;
+          Query_Scheme.close;
+          Query_Scheme.Open;
+     end;  }
+end;
+
+procedure TFrame_OPDVisit.SpeedButton3Click(Sender: TObject);
+begin
+     if CB_PatientFrom.Text = 'OPD' then
+     Begin
+         {Form_DoctorSetup := TForm_DoctorSetup.Create(nil);
+         try
+              With Form_DoctorSetup do
+              Begin
+                   ShowModal;
+                   BB_NewClick(Sender);
+              End;
+         finally
+              Form_DoctorSetup.Free;
+              Query_RefByDocHos.close;
+              Query_RefByDocHos.Open;
+         end;     }
+     End
+     Else if CB_PatientFrom.Text = 'REFERRAL' then
+     Begin
+          {Form_ReferalOrg:=TForm_ReferalOrg.create(nil);
+          Try
+               With Form_ReferalOrg do
+               Begin
+                   ShowModal;
+                   //BB_NewClick(Sender);
+              End;
+         finally
+              Form_ReferalOrg.Free;
+              Query_RefByDocHos.close;
+              Query_RefByDocHos.Open;
+         End; }
+     End;
+
+end;
+
+function TFrame_OPDVisit.FormatTime(Str: String): String;
+Var
+     MyStr: String;
+begin
+     Str := StringReplace(Str, ':', '', [rfReplaceAll]);
+     MyStr := Copy(Str, 1, 2) + ':' + Copy(Str, 3, 2);
+     if IsValidTime(MyStr) then
+          Result := MyStr
+     else
+          Result := '';
+end;
+
+end.

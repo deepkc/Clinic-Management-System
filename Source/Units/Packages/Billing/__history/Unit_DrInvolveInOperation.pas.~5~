@@ -1,0 +1,406 @@
+unit Unit_DrInvolveInOperation;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls,DM, Buttons, ExtCtrls, ComCtrls, Grids, DBGrids, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Db,Fxn,
+  DBCtrls;
+
+type
+  TForm_DrInvolveInOperation = class(TForm)
+    Panel1: TPanel;
+    Btn_Cancle: TBitBtn;
+    StatusBar1: TStatusBar;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Panel2: TPanel;
+    Table_Operation: TOraTable;
+    DS_GetFractionPosition: TDataSource;
+    DBGrid_DocInvolved: TDBGrid;
+    Label_PtName: TLabel;
+    Label_Pthosno: TLabel;
+    Label_PtInpatientNo: TLabel;
+    Label_TestName: TLabel;
+    Query_TempProcess: TOraQuery;
+    CB_DFixedComm: TCheckBox;
+    CB_DCommessionAmt: TCheckBox;
+    Query_Process: TOraQuery;
+    BtnSave: TBitBtn;
+    SpeedButton1: TSpeedButton;
+    DBLCB_MergerFrom: TDBLookupComboBox;
+    DBLCB_MergerTo: TDBLookupComboBox;
+    Label5: TLabel;
+    Label6: TLabel;
+    DS_PositionFrom: TDataSource;
+    DS_PositionTo: TDataSource;
+    Query_GetFractionPosition: TQuery;
+    Query_PositionFrom: TQuery;
+    Query_PoitionTo: TQuery;
+    procedure Btn_CancleClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure DBGrid_DocInvolvedKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBGrid_DocInvolvedKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure CB_DFixedCommClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CB_DCommessionAmtClick(Sender: TObject);
+    procedure DBGrid_DocInvolvedDrawColumnCell(Sender: TObject;
+      const Rect: TRect; DataCol: Integer; Column: TColumn;
+      State: TGridDrawState);
+    procedure SpeedButton1Click(Sender: TObject);
+  private
+    { Private declarations }
+
+  public
+    { Public declarations }
+    Is_New,Is_OT,Is_XnCtScan,b_IsTestWise:Boolean;
+    TestNameCode:String;
+    BillDetailId,pi_TestNameId,pi_PositionWiseCommId,pi_InpatientId:Integer;
+    Called_From,ps_PatientTypeCode:String;
+    pf_TotNetAmt,pf_UnitTestCost,pf_StdTestPrice:Double;
+  end;
+
+var
+  Form_DrInvolveInOperation: TForm_DrInvolveInOperation;
+
+implementation
+
+uses Unit_SelectDoctor;
+
+
+{$R *.DFM}
+
+procedure TForm_DrInvolveInOperation.Btn_CancleClick(Sender: TObject);
+begin
+     Close;
+end;
+
+procedure TForm_DrInvolveInOperation.FormShow(Sender: TObject);
+begin
+     With Query_GetFractionPosition do
+     begin
+          Close;
+          DatabaseName:=gs_TempPath;
+          SQL[2]:=' and TestNameCode='+#39+TestNameCode+#39;
+          Open;
+     end;
+
+     With Query_PositionFrom do
+     begin
+          Close;
+          DatabaseName:=gs_TempPath;
+          SQL[1]:=' Where TestNameCode='+#39+TestNameCode+#39;
+          Open;
+     end;
+
+     With Query_PoitionTo do
+     begin
+          Close;
+          DatabaseName:=gs_TempPath;
+          SQL[1]:=' Where TestNameCode='+#39+TestNameCode+#39;
+          Open;
+     end;
+
+     With Query_Process Do
+     Begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.add(' Select TestPrice,DepId,TestNameCode,TestName From VW_HS_SETUP_TESTNAMEPRICE where TestNameCode='+#39+TestNameCode+#39);
+          sql.add(' and PatientTypeCode='+#39+ps_PatientTypeCode+#39);
+          Open;
+     End;
+     pf_StdTestPrice:=Query_Process.FieldByName('TestPrice').AsFloat;
+
+     Label_PtName.Caption:=Gs_PatientName;
+     Label_Pthosno.Caption:=Gs_PatientIdCaption;
+     Label_PtInpatientNo.Caption:=IntToStr(pi_InpatientId);
+     Label_TestName.Caption:=Query_Process.FieldByName('TestName').AsString;
+
+     DBGrid_DocInvolved.SetFocus;
+
+end;
+
+procedure TForm_DrInvolveInOperation.SpeedButton1Click(Sender: TObject);
+begin
+     if Trim(DBLCB_MergerFrom.Text)='' then
+     begin
+          MessageDlg('Please Select Merge From Position',mtWarning,[mbOK],0);
+          DBLCB_MergerFrom.SetFocus;
+          Exit;
+     end;
+
+     if Trim(DBLCB_MergerTo.Text)='' then
+     begin
+          MessageDlg('Please Select Merge To Position',mtWarning,[mbOK],0);
+          DBLCB_MergerTo.SetFocus;
+          Exit;
+     end;
+
+     if Trim(DBLCB_MergerFrom.Text)=Trim(DBLCB_MergerTo.Text) then
+     begin
+          MessageDlg('Merge From and Merger to shouldn''t be same.',mtWarning,[mbOK],0);
+          DBLCB_MergerTo.SetFocus;
+          Exit;
+     end;
+
+
+     With Query_TempProcess do
+     begin
+          Close;
+          DatabaseName:=gs_temppath;
+          SQL.Clear;
+          SQL.Add(' Update ServiceWiseFraction.db set MergePercent='+FloatToStr(Query_PositionFrom.FieldByName('FractionRate').AsFloat));
+          SQL.Add(' ,MergeAmount='+FloatToStr(Query_PositionFrom.FieldByName('FractionAmount').AsFloat));
+          SQL.Add(' ,FractionRate=FractionRate+'+FloatToStr(Query_PositionFrom.FieldByName('FractionRate').AsFloat));
+          SQL.Add(' ,FractionAmount=FractionAmount+'+FloatToStr(Query_PositionFrom.FieldByName('FractionAmount').AsFloat));
+          SQL.Add(' Where TestNameCode='+#39+TestNameCode+#39);
+          SQL.Add(' and PositionWiseFractionId='+IntToStr(DBLCB_MergerTo.KeyValue));
+          ExecSQL;
+
+          Close;
+          SQL.Clear;
+          SQL.Add(' Delete From ServiceWiseFraction.db  Where TestNameCode='+#39+TestNameCode+#39);
+          SQL.Add(' and PositionWiseFractionId='+IntToStr(DBLCB_MergerFrom.KeyValue));
+          ExecSQL;
+     end;
+     ShowDoneMessage;
+
+     With Query_GetFractionPosition do
+     begin
+          Close;
+          DatabaseName:=gs_TempPath;
+          SQL[2]:=' and TestNameCode='+#39+TestNameCode+#39;
+          Open;
+     end;
+end;
+
+Procedure TForm_DrInvolveInOperation.DBGrid_DocInvolvedKeyDown(
+  Sender: TObject; var Key: Word; Shift: TShiftState);
+Begin
+     IF Key=VK_DELETE Then
+     Begin
+          IF Query_GetFractionPosition.FieldByName('IsFixedPersonForComm').AsString='Y' Then
+          Begin
+               MessageDlg(' You Cannont Delete Fixed Commession Allocate Person.',mtWarning,[mbok],0);
+               Exit;
+          End;
+
+          IF MessageDlg('Are you sure to Delete ?',mtConfirmation,[MbYes,MbNo],0)<>MrYes Then Exit;
+          Begin
+               Table_Operation.First;
+               IF Table_Operation.Locate('Sno',Query_GetFractionPosition.FieldByName('Sno').AsString,[]) Then
+               Begin
+                    Table_Operation.Edit;
+                    Table_Operation.Delete;
+               End;
+          End;
+          Query_GetFractionPosition.Close;
+          Query_GetFractionPosition.Open;
+     End;
+End;
+
+Procedure TForm_DrInvolveInOperation.DBGrid_DocInvolvedKeyPress(
+  Sender: TObject; var Key: Char);
+Begin
+     IF Key=#13 Then
+     Begin
+          //Show the Popup form of Doctor List
+          IF Query_GetFractionPosition.FieldByName('IsFixedPersonForFraction').AsString='Y' Then
+          Begin
+               MessageDlg('Sorry ! You Cannot Modify The Fixed Doctor Or Person Setup.',mtWarning,[mbok],0);
+               Exit;
+          End;
+          (*Else IF Query_GetFractionPosition.FieldByName('IsFrctPostAtReportingTime').AsString='Y' Then
+          Begin
+               MessageDlg('Sorry ! You Cannot Modify The Doctor.',mtWarning,[mbYes],0);
+               MessageDlg('Sorry ! You Cannot Modify The Doctor.',mtWarning,[mbYes],0);
+               Exit;
+          End;*)
+
+          key:=#0;
+          IF (DBGrid_DocInvolved.SelectedIndex=0) or (DBGrid_DocInvolved.SelectedIndex=1) or (DBGrid_DocInvolved.SelectedIndex=4) Then // Histo Dept - Pap Smer Test Sp. Case
+          Begin
+               Try
+                  Form_SelectDoctor:=TForm_SelectDoctor.Create(Application);
+                  With Form_SelectDoctor Do
+                  Begin
+                       ps_AccessFrom:='Billing_DocSelection';
+                       pi_TestNameId:=Self.pi_TestNameId;
+                       pi_PositionWiseCommId:=Query_GetFractionPosition.FieldByName('PositionWiseFractionId').AsInteger;
+//                       pi_PositionId:=Query_GetFractionPosition.FieldByName('PositionId').AsInteger;
+
+                       pi_Sno:=Query_GetFractionPosition.FieldByName('Sno').AsInteger;
+                       pf_UnitTestCost:=Self.pf_TotNetAmt;
+                       pf_StdTestPrice:=Self.pf_StdTestPrice;
+                       ShowModal;
+                  End;
+               Finally
+                   Form_SelectDoctor.Free;
+               End;
+
+               With Query_GetFractionPosition do
+               begin
+                    Close;
+                    DatabaseName:=gs_TempPath;
+                    SQL[2]:=' and TestNameCode='+#39+TestNameCode+#39;
+                    Open;
+               end;
+          End
+          Else
+          Begin
+               //Show the Popup form of Doctor List
+               IF Query_GetFractionPosition.FieldByName('IsFixedPersonForComm').AsString='Y' Then
+               Begin
+                    MessageDlg('Sorry ! You Cannot Modify The Fixed Doctor Or Person Setup.',mtWarning,[mbok],0);
+                    Exit;
+               End
+               Else IF Query_GetFractionPosition.FieldByName('IsFrctPostAtReportingTime').AsString='Y' Then
+               Begin
+                    MessageDlg('Sorry ! You Cannot Modify The Fixed Doctor Or Person Setup.',mtWarning,[mbok],0);
+                    Exit;
+               End;
+
+               (*Try
+                  Form_SelectMember:=TForm_SelectMember.Create(Application);
+                  With Form_SelectMember Do
+                  Begin
+                       CalledFrm:='DrOperationInvolve';
+                       pf_TotNetAmt:=Self.pf_TotNetAmt;
+
+                       IF b_IsTestWise Then
+                       Is_Frm_TestWiseComm:=True
+                       Else
+                       Is_Frm_TestWiseComm:=False;
+
+                       IF Is_OT Then
+                       Is_Frm_Department:=True
+                       Else
+                       Is_Frm_Department:=False;
+
+                       IF Is_XnCtScan Then
+                       Is_Frm_DrType:=True
+                       Else
+                       Is_Frm_DrType:=False;
+
+                       pi_TestNameId:=Self.pi_TestNameId;
+                       ShowModal;
+                  End;
+               Finally
+                  Form_SelectMember.Free;
+               End;   *)
+
+               With Table_Operation Do
+               Begin
+                    Edit;
+                    FieldbyName('TestNameCode') .AsString:=TestNameCode;
+                    FieldbyName('BillDetailID') .AsInteger:=BillDetailId;
+                    Post;
+                    Close;
+                    Open;
+                    Last;
+
+                    With Query_TempProcess do
+                    Begin
+                         Close;
+                         DatabaseName:=gs_TempPath;
+                         sql.Clear;
+                         sql.add(' Select * From ServiceWiseFraction.db where ');
+
+                         IF Called_From='OPBilling' Then
+                         sql.add(' TestNameCode='+#39+TestNameCode+#39);
+
+                         (*Else IF Called_From='DischargeBiling' Then
+                         sql.add(' BillDetailID='+IntToStr(BillDetailId));*)
+
+                         sql.add(' And DocId='+Table_Operation.FieldbyName('DocId') .AsString);
+                         Open;
+                    End;
+
+                    IF Called_From='OPBiling' Then
+                    Filter:='TestNameCode='+#39+TestNameCode+#39
+                    Else IF Called_From='DischargeBiling' Then
+                    Filter:='BillDetailID='+ IntToStr(BillDetailId);
+                    Filtered:=True;
+
+
+                    IF (Query_TempProcess.RecordCount >1)  Then
+                    Begin
+                        MessageDlg(' Duplicate Doctor with the Same Test Name !',mtWarning,[mbok],0);
+                        Table_Operation.Delete;
+                        DBGrid_DocInvolved.SelectedIndex:=0;
+                    End;
+
+                    Query_GetFractionPosition.Close;
+                    Query_GetFractionPosition.ParamByName('TestNameCode').AsString:=TestNameCode;
+                    Query_GetFractionPosition.Open;
+                    Query_GetFractionPosition.Last;
+               End;
+          End;
+     End;
+End;
+
+procedure TForm_DrInvolveInOperation.FormKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     If Key=#13 then
+     keybd_event(13,9,0,0);
+end;
+
+procedure TForm_DrInvolveInOperation.CB_DFixedCommClick(Sender: TObject);
+begin
+     With Query_GetFractionPosition do
+     Begin
+          Close;
+          IF CB_DFixedComm.Checked=True Then
+          sql[1]:=' where (0=0)'
+          Else
+          sql[1]:=' Where IsFixedPersonForFraction=''N''';
+          Open;
+     End;
+end;
+
+procedure TForm_DrInvolveInOperation.FormKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     IF key=VK_F1 Then CB_DFixedComm.Checked:=Not(CB_DFixedComm.Checked);
+     IF key=VK_F2 Then CB_DCommessionAmt.Checked:=Not(CB_DCommessionAmt.Checked);
+end;
+
+procedure TForm_DrInvolveInOperation.CB_DCommessionAmtClick(
+  Sender: TObject);
+begin
+     IF CB_DCommessionAmt.Checked=True Then
+     Begin
+          DBGrid_DocInvolved.Columns[2].Visible:=True;
+          DBGrid_DocInvolved.Columns[3].Visible:=True;
+          //DBGrid_DocInvolved.Columns[4].Visible:=True;
+     End
+     Else
+     Begin
+          DBGrid_DocInvolved.Columns[2].Visible:=False;
+          DBGrid_DocInvolved.Columns[3].Visible:=False;
+          //DBGrid_DocInvolved.Columns[4].Visible:=False;
+     End;
+end;
+
+procedure TForm_DrInvolveInOperation.DBGrid_DocInvolvedDrawColumnCell(
+  Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+     IF Query_GetFractionPosition.FieldByName('ISCOMPFORFRACTION').AsString='Y' Then
+     Begin
+          DBGrid_DocInvolved.Canvas.Font.Color:=clRed;
+          DBGrid_DocInvolved.DefaultDrawDataCell(rect,Column.Field,State);
+     End ;
+end;
+
+
+
+END.

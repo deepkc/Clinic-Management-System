@@ -1,0 +1,460 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{6988EF8E-A933-4C03-BA3E-8ACDCB44CE7B}</ProjectGuid>
+			<MainSource>Reports.dpk</MainSource>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<ProjectVersion>12.0</ProjectVersion>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+			<DCC_DcuOutput>..\..\..\..\Dcu\</DCC_DcuOutput>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DesignOnlyPackage>false</DesignOnlyPackage>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DependencyCheckOutputName>..\..\..\..\bin\Reports.bpl</DCC_DependencyCheckOutputName>
+			<DCC_BplOutput>..\..\..\..\bin\</DCC_BplOutput>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<DCC_Platform>x86</DCC_Platform>
+			<GenPackage>true</GenPackage>
+			<DCC_S>false</DCC_S>
+			<DCC_DcpOutput>..\..\..\..\Dcp\</DCC_DcpOutput>
+			<GenDll>true</GenDll>
+			<DCC_N>false</DCC_N>
+			<DCC_E>false</DCC_E>
+			<DCC_F>false</DCC_F>
+			<DCC_K>false</DCC_K>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_MapFile>3</DCC_MapFile>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="Reports.dpk">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="rtl.dcp"/>
+			<DCCReference Include="vcl.dcp"/>
+			<DCCReference Include="vclimg.dcp"/>
+			<DCCReference Include="dbrtl.dcp"/>
+			<DCCReference Include="vcldb.dcp"/>
+			<DCCReference Include="bdertl.dcp"/>
+			<DCCReference Include="Global.dcp"/>
+			<DCCReference Include="dex.dcp"/>
+			<DCCReference Include="BarcodeD10.dcp"/>
+			<DCCReference Include="TeeDB.dcp"/>
+			<DCCReference Include="MidasFunction.dcp"/>
+			<DCCReference Include="VclSmp.dcp"/>
+			<DCCReference Include="SMCmpntD2010.dcp"/>
+			<DCCReference Include="Unit1.pas">
+				<Form>Form1</Form>
+			</DCCReference>
+			<DCCReference Include="UnitUserWiseCollection.pas">
+				<Form>FormUserWiseCollection</Form>
+			</DCCReference>
+			<DCCReference Include="UnitRepUserWiseCollection.pas">
+				<Form>FormRepUserWiseCollection</Form>
+			</DCCReference>
+			<DCCReference Include="UnitRepUserWiseDetail.pas">
+				<Form>FormRepUserWiseDetail</Form>
+			</DCCReference>
+			<DCCReference Include="UnitDeptWiseReport.pas">
+				<Form>FormDeptwiseCollection</Form>
+			</DCCReference>
+			<DCCReference Include="UnitRepDeptWiseCollection.pas">
+				<Form>FormRepDeptWiseSum</Form>
+			</DCCReference>
+			<DCCReference Include="UnitRepDetailUserWise.pas">
+				<Form>FormRepDetailUserWise</Form>
+			</DCCReference>
+			<DCCReference Include="UnitNoofTestDone.pas">
+				<Form>FormNoofTestDone</Form>
+			</DCCReference>
+			<DCCReference Include="UnitRepNoofTestDone.pas">
+				<Form>FormRepNoofTestDone</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrPatientTestList.pas">
+				<Form>Form_QrPatientTesList</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrWorkList.pas">
+				<Form>Form_QrWorkList</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_Medicare_GovtSvrTaxReport.pas">
+				<Form>Form_Medicare_GovtSvrTaxReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_Medicare_GovtSvrTaxReportSummary.pas">
+				<Form>Form_Medicare_GovtSvrTaxReportSummary</Form>
+			</DCCReference>
+			<DCCReference Include="UnitSalesBook.pas">
+				<Form>Form_SalesBook</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_TaxReport.pas">
+				<Form>Form_TaxReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrTaxReport.pas">
+				<Form>Form_QrTaxReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrReffWiseRevenueDetail.pas">
+				<Form>Form_QRReffWiseRevenueDetail</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_ReffWiseRevenue.pas">
+				<Form>Form_ReffWiseRevenue</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrReffWiseRevenueSummary.pas">
+				<Form>Form_QrReffWiseRevenueSummary</Form>
+			</DCCReference>
+			<DCCReference Include="Collection Center Report\Unit_QrCollectionCenterDetail.pas">
+				<Form>Form_QRCollectionCenterDetail</Form>
+			</DCCReference>
+			<DCCReference Include="Collection Center Report\Unit_QrCollectionCenterSummary.pas">
+				<Form>Form_QrCollectionCenterSummary</Form>
+			</DCCReference>
+			<DCCReference Include="Collection Center Report\Unit_CollectionCenterReport.pas">
+				<Form>Form_CollectionCenterReport</Form>
+			</DCCReference>
+			<DCCReference Include="Scheme Wise Revenue\Unit_QrSchemeWiseRevenueDetail.pas">
+				<Form>Form_QRSchemeWiseRevenueDetail</Form>
+			</DCCReference>
+			<DCCReference Include="Scheme Wise Revenue\Unit_QrSchemeWiseRevenueSummary.pas">
+				<Form>Form_QrSchemeWiseRevenueSummary</Form>
+			</DCCReference>
+			<DCCReference Include="Scheme Wise Revenue\Unit_SchemeWiseRevenue.pas">
+				<Form>Form_SchemeWiseRevenue</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrSampleWiseRep.pas">
+				<Form>Form_SampleWise</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_SampleWise.pas">
+				<Form>Form_SampleWiseReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_Testsetupdetail.pas">
+				<Form>Form_testdetail</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_PatientTestDetail.pas">
+				<Form>Form_PatienttestDetail</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_AllPatientTest.pas">
+				<Form>Form_AllPatientTest</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrPatientFindingDetail.pas">
+				<Form>Form_PatientFindingDetail</Form>
+			</DCCReference>
+			<DCCReference Include="Qr_WorkList.pas">
+				<Form>Form_QrreportWorkList</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_WorkList.pas">
+				<Form>Form_WorkList</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_Doctorwisepatientcase.pas">
+				<Form>Form_DoctorwisePatientcase</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRDoctorWisePatientSummary.pas">
+				<Form>Form_QrDoctorWisePatientSummary</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrDoctorwiseCaseDetail.pas">
+				<Form>Form_QrDoctorwisePatientDetail</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_ReportTree.pas">
+				<Form>Form_ReportTree</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_PendingSampleCollectionReport.pas">
+				<Form>Form_PendingSampleCollectionReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_qrPendingSampleCollectionReport.pas">
+				<Form>Form_qrPendingSampleCollectionReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_qrSampleCollectedReport.pas">
+				<Form>Form_qrSampleCollectedReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_SampleCollectedReport.pas">
+				<Form>Form_SampleCollectedReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_FindingCompletedReport.pas">
+				<Form>Form_FindingCompletedReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_qrFindingCompletedReport.pas">
+				<Form>Form_qrFindingCompletedReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_qrVerifiedSampleReport.pas">
+				<Form>Form_qrVerifiedSampleReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_VerifiedSampleReport.pas">
+				<Form>Form_VerifiedSampleReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_MicrobiologySensitivityReport.pas">
+				<Form>Form_MicrobiologySensitivityResult</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_PatienttestHistory.pas">
+				<Form>Form_PatienttestHistory</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_qrReportToBeDispatched.pas">
+				<Form>Form_qrReportToBeDispatched</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_ReportToBeDispatched.pas">
+				<Form>Form_ReportToBeDispatched</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_qrReportPrinted.pas">
+				<Form>Form_qrReportPrinted</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_ReportPrinted.pas">
+				<Form>Form_ReportPrinted</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_PendingForReultEntry.pas">
+				<Form>Form_PendingForResultEntry</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_qrPendingForResultEntry.pas">
+				<Form>Form_qrPendingForResultEntry</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_PendingForAuthentication.pas">
+				<Form>Form_PendingForAuthentication</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_qrPendingForAuthentication.pas">
+				<Form>Form_qrPendingForAuthentication</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_UserWiseCollection.pas">
+				<Form>Form_UserWiseCollection</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRUserWiseColnDetail.pas">
+				<Form>Form_QRUserWiseCollnDetail</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRRegBillwiseUserColn.pas">
+				<Form>Form_QRRegBillwiseUserColn</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRUserWiseColnSummaryManipal.pas">
+				<Form>Form_QRUserWiseColnSummaryManipal</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRUserWiseColnDetail_Manipal.pas">
+				<Form>Form_QRUserWiseCollnDetail_Manipal</Form>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\Unit_DepartmentWiseSummary.pas">
+				<Form>Form_DepartmentWiseSummary</Form>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\UnitReportBillDepWiseSumary.pas">
+				<Form>FormReportBillDepWiseSumary</Form>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\UnitReportBillDepWiseSumaryIP.pas">
+				<Form>FormReportBillDepWiseSumaryIP</Form>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\UnitReportBillDepWiseSumaryIPLandscape.pas">
+				<Form>FormReportBillDepWiseSumaryIPLandScape</Form>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\UnitReportBillDepWiseSumaryIPOP.pas">
+				<Form>FormReportBillDepWiseSumaryIPOP</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\Unit_QRBillDepWiseRevDID.pas">
+				<Form>FormQRBillDepWiseRevDID</Form>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\Unit_QRDayWiseRevenueReport.pas">
+				<Form>Form_QRDayWiseRevenueReport</Form>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\Unit_QRDepWiseSumaryLandScape.pas">
+				<Form>Form_QRDepWiseSumaryLandScape</Form>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\Unit_ReportDepWiseSumaryIPBoth.pas">
+				<Form>Form_ReportDepWiseSumaryIPBOTH</Form>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\Unit_DeptTestWiseReport.pas">
+				<Form>Form_DeptTestWiseReport</Form>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\Unit_QRReportBillDepWise.pas">
+				<Form>Form_QRReportBillDepWise</Form>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\Unit_QRReportDepWiseQty.pas">
+				<Form>Form_QRReportDepWiseQty</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\Unit_QRTestBillWise.pas">
+				<Form>Form_QRTestBillWise</Form>
+			</DCCReference>
+			<DCCReference Include="RevenuAnalysis\Unit_QRCreditReport.pas">
+				<Form>Form_QRCreditReport</Form>
+			</DCCReference>
+			<DCCReference Include="UnitDeptTestWiseReport.pas">
+				<Form>FormDeptTestWiseReport</Form>
+			</DCCReference>
+			<DCCReference Include="UnitRefundBillReport.pas">
+				<Form>FormRefundBillReport</Form>
+			</DCCReference>
+			<DCCReference Include="Reports Fraction\Unit_QRDFDoctorPartDetail.pas">
+				<Form>Form_QRDFDoctorPartDetail</Form>
+			</DCCReference>
+			<DCCReference Include="Reports Fraction\Unit_QRDFDoctorPartSummary.pas">
+				<Form>Form_QRDFDoctorPartSummary</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_CreditPaymentDetail.pas">
+				<Form>Form_CreditPaymentDetail</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_CreditDiscount.pas">
+				<Form>Form_CreditDiscount</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_departmentWiseCollectionReport.pas">
+				<Form>Form_DepartmentWiseCollectionReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrPaymentDues.pas">
+				<Form>Form_RepPAymentDues</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_RepAdjustedDeposit.pas">
+				<Form>Form_RepAdjustedDeposit</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_RepDepositCollection.pas">
+				<Form>Form_RepDepositCollection</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_RepDepositTotalCollection.pas">
+				<Form>Form_RepDepositTotalCollection</Form>
+			</DCCReference>
+			<DCCReference Include="UnitReportCreditNew.pas">
+				<Form>FormReportCreditNew</Form>
+			</DCCReference>
+			<DCCReference Include="UnitReportCreditReceivable.pas">
+				<Form>FormReportCreditReceivable</Form>
+			</DCCReference>
+			<DCCReference Include="Reports Fraction\Unit_DocWiseFraction.pas">
+				<Form>Form_DocWiseFraction</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_CashCreditSalesReport.pas">
+				<Form>Form_CashCreditSalesReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRCashCreditSales.pas">
+				<Form>Form_QRCashCreditSales</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_ReceiptDetailReport.pas">
+				<Form>Form_ReceiptDetailReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrCreditDiscountReport.pas">
+				<Form>Form_QrCreditDiscount</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRCreditReceiptDetReport.pas">
+				<Form>Form_QRCreditReceiptDetailReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_DepositCollection.pas">
+				<Form>Form_DepositCollection</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_CreditBill.pas">
+				<Form>Form_CreditBill</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_MaterializedView.pas">
+				<Form>Form_MaterializedView</Form>
+			</DCCReference>
+			<DCCReference Include="UnitReportBillCancel.pas">
+				<Form>FormReportBillCancel</Form>
+			</DCCReference>
+			<DCCReference Include="UnitRepNoofTestDoneDetail.pas">
+				<Form>FormRepNoofTestDoneDetail</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRServiceCreditSales.pas">
+				<Form>Form_QRServiceCreditSales</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_ServiceCreditSalesReport.pas">
+				<Form>Form_ServiceCreditSalesReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_RefundSalesTestwiseReport.pas">
+				<Form>Form_RefundSalesTestwiseReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_CashServiceSalesReport.pas">
+				<Form>Form_CashServiceSalesReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QrNoOfTestCountDetail.pas">
+				<Form>Form_QrTestWiseDetail</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRCashCreditSalesTest.pas">
+				<Form>Form_QRCashCreditSalesTest</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRServiceCreditSalesTest.pas">
+				<Form>Form_QRServiceCreditSalesTest</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_PtTestReport.pas">
+				<Form>Form_PtTestReport</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_PatientSearchForPt.pas">
+				<Form>Form_PatientSearchForPT</Form>
+			</DCCReference>
+			<DCCReference Include="Unit_QRCashCreditSalesTestBioDiag.pas">
+				<Form>Form_QRCashCreditSalesTestBioDiag</Form>
+			</DCCReference>
+			<DCCReference Include="unit_TBExaminationReport.pas">
+				<Form>Form_TBExaminationReport</Form>
+			</DCCReference>
+			<DCCReference Include="unitMedExamEntryReport.pas">
+				<Form>FormReportMedicalExamination</Form>
+			</DCCReference>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>Package</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Source>
+						<Source Name="MainSource">Reports.dpk</Source>
+					</Source>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+						<Parameters Name="HostApplication">..\..\..\..\Bin\MidasDrHomsV3_2.exe</Parameters>
+					</Parameters>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1033</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName"/>
+						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename"/>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\7.0\Bpl\EhLib140.bpl">EhLib 9.1</Excluded_Packages>
+					</Excluded_Packages>
+				</Delphi.Personality>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

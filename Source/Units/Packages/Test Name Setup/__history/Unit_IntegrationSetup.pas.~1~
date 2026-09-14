@@ -1,0 +1,396 @@
+unit Unit_IntegrationSetup;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ComCtrls, Grids, DBGrids, SMDBGrid, ExtCtrls, StdCtrls, DBCtrls, DB,Fxn,dm,
+  DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Buttons;
+
+type
+  TForm_InregrationSetup = class(TForm)
+    Panel1: TPanel;
+    DBGrid1: TSMDBGrid;
+    TreeView1: TTreeView;
+    Label1: TLabel;
+    Query_DepName: TOraQuery;
+    DS_DepName: TDataSource;
+    DBLCB_Dep: TDBLookupComboBox;
+    Query_list: TOraQuery;
+    Ds_List: TDataSource;
+    qry_stateofaccount: TOraQuery;
+    Label_AccHeadName: TLabel;
+    Label17: TLabel;
+    Label_AccHeadId: TLabel;
+    QueryAccTree: TOraQuery;
+    RBtn_Code: TRadioButton;
+    GroupBox2: TGroupBox;
+    RB_Service: TRadioButton;
+    RB_serviceipd: TRadioButton;
+    SPB_SetAccHead: TSpeedButton;
+    Query_Save: TOraQuery;
+    GroupBox1: TGroupBox;
+    Rb_Integrated: TRadioButton;
+    Rb_nonIntegrated: TRadioButton;
+    procedure DBLCB_DepClick(Sender: TObject);
+    procedure TreeView1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure SPB_SetAccHeadClick(Sender: TObject);
+    procedure RB_serviceipdClick(Sender: TObject);
+    procedure RB_ServiceClick(Sender: TObject);
+    procedure Rb_nonIntegratedClick(Sender: TObject);
+    procedure Rb_IntegratedClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    pi_AccountHeadId:Integer;
+    Procedure ShowAccHead;
+    procedure AddMyGrandChilds(MyId: Integer; MyNode: TTreeNode);
+  end;
+
+var
+  Form_InregrationSetup: TForm_InregrationSetup;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_InregrationSetup.AddMyGrandChilds(MyId: Integer;
+  MyNode: TTreeNode);
+var
+     QueryChilds: TOraQuery;
+     ChildNode: TTreeNode;
+     ls_childNode: String;
+     li_childId: Integer;
+begin
+     QueryChilds := TOraQuery.Create(nil);
+
+     if not MyNode.HasChildren then
+     begin
+          with QueryChilds do
+          begin
+               Close;
+               DatabaseName := gs_DatabaseName;
+               sql.Clear;
+               sql.Add(' SELECT * FROM bnb_acc.AccTree WHERE ParentID = ' +IntToStr(MyId));
+               if RBtn_Code.Checked then
+                    sql.Add(' ORDER BY LF ');
+               Open;
+
+               First;
+               while not EOF do
+               begin
+                    if FieldByName('LF').AsString <> '' then
+                         ls_childNode := FieldByName('ID').AsString + ' - ' + FieldByName('LF').AsString + ' 0 ' + FieldByName('Name').AsString
+                    else
+                         ls_childNode := FieldByName('ID').AsString + ' - ' + FieldByName('Name').AsString;
+                    TreeView1.Items.AddChild(MyNode, ls_childNode);
+                    Next;
+               end;
+          end; // QueryChilds
+     end; // if no childs
+
+     ChildNode := MyNode.getFirstChild;
+     while ChildNode <> nil do
+     begin
+          if not ChildNode.HasChildren then
+          begin
+               with QueryChilds do
+               begin
+                    li_childId := StrToInt
+                      (Copy(ChildNode.Text, 1, pos(' - ', ChildNode.Text) - 1));
+                    Close;
+                    DatabaseName := gs_DatabaseName;
+                    sql.Clear;
+                    sql.Add(' SELECT * FROM bnb_acc.AccTree WHERE ParentID = '+ IntToStr(li_childId));
+                    if RBtn_Code.Checked then
+                         sql.Add(' ORDER BY LF ');
+                    Open;
+
+                    First;
+                    while not EOF do
+                    begin
+                         if FieldByName('LF').AsString <> '' then
+                              ls_childNode := FieldByName('ID').AsString + ' - ' + FieldByName('LF').AsString + ' 0 ' + FieldByName('Name').AsString
+                         else
+                              ls_childNode := FieldByName('ID').AsString + ' - ' + FieldByName('Name').AsString;
+                         TreeView1.Items.AddChild(ChildNode, ls_childNode);
+
+                         Next;
+                    end;
+               end;
+          end;
+
+          ChildNode := MyNode.GetNextChild(ChildNode);
+     end;
+     QueryChilds.destroy;
+end;
+
+procedure TForm_InregrationSetup.DBLCB_DepClick(Sender: TObject);
+begin
+     if Trim(DBLCB_Dep.Text)<>'' then
+     Begin
+          with Query_list do
+          begin
+               Close;
+               DatabaseName := gs_DatabaseName;
+               SQL[1] := 'Where Depid=' + IntToStr(DBLCB_Dep.KeyValue);
+              { if Rb_Integrated.Checked then
+               sql[2]:='and (nvl(ACCHEADOP,0)>0 and  nvl(ACCHEADIP,0)>0)'
+               else if Rb_nonIntegrated.Checked then
+               sql[2]:='and (nvl(ACCHEADOP,0)=0 or  nvl(ACCHEADIP,0)=0)';  }
+               if Rb_Integrated.Checked then
+               sql[2]:='and nvl(ACCHEADID,0)>0'
+               else if Rb_nonIntegrated.Checked then
+               sql[2]:='and nvl(ACCHEADID,0)=0';
+               Open;
+          end;
+     End;
+     TreeView1.Items.Clear;
+     ShowAccHead;
+end;
+
+procedure TForm_InregrationSetup.FormShow(Sender: TObject);
+begin
+     Query_DepName.Close;
+     Query_DepName.DatabaseName:=gs_DatabaseName;
+     Query_DepName.Open;
+end;
+
+procedure TForm_InregrationSetup.Rb_IntegratedClick(Sender: TObject);
+begin
+     if DBLCB_Dep.KeyValue=NULL then
+     Begin
+          MessageDlg('Please Select Department to set Account Head!', mtWarning, [mbok], 0);
+          Exit;
+     End;
+     with Query_list do
+     begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          SQL[1] := 'Where Depid=' + IntToStr(DBLCB_Dep.KeyValue);
+          {if Rb_Integrated.Checked then
+          sql[2]:='and (nvl(ACCHEADOP,0)>0 and  nvl(ACCHEADIP,0)>0)'
+          else if Rb_nonIntegrated.Checked then
+          sql[2]:='and (nvl(ACCHEADOP,0)=0 or  nvl(ACCHEADIP,0)=0)'; }
+          if Rb_Integrated.Checked then
+          sql[2]:='and nvl(ACCHEADID,0)>0'
+          else if Rb_nonIntegrated.Checked then
+          sql[2]:='and nvl(ACCHEADID,0)=0';
+          Open;
+     end;
+end;
+
+procedure TForm_InregrationSetup.Rb_nonIntegratedClick(Sender: TObject);
+begin
+     //if Rb_nonIntegrated.checked then
+     if DBLCB_Dep.KeyValue=NULL then
+     Begin
+          MessageDlg('Please Select Department to set Account Head!', mtWarning, [mbok], 0);
+          Exit;
+     End;
+     with Query_list do
+     begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          SQL[1] := 'Where Depid=' + IntToStr(DBLCB_Dep.KeyValue);
+         { if Rb_Integrated.Checked then
+          sql[2]:='and (nvl(ACCHEADOP,0)>0 and  nvl(ACCHEADIP,0)>0)'
+          else if Rb_nonIntegrated.Checked then
+          sql[2]:='and (nvl(ACCHEADOP,0)=0 or  nvl(ACCHEADIP,0)=0)'; }
+           if Rb_Integrated.Checked then
+          sql[2]:='and nvl(ACCHEADID,0)>0'
+          else if Rb_nonIntegrated.Checked then
+          sql[2]:='and nvl(ACCHEADID,0)=0';
+          Open;
+     end;
+end;
+
+procedure TForm_InregrationSetup.RB_ServiceClick(Sender: TObject);
+begin
+     TreeView1.Items.Clear;
+     showacchead;
+end;
+
+procedure TForm_InregrationSetup.RB_serviceipdClick(Sender: TObject);
+begin
+     TreeView1.Items.Clear;
+     showacchead;
+end;
+
+procedure TForm_InregrationSetup.ShowAccHead;
+var
+     Rootnode: TTreeNode;
+begin
+     //Save1.Enabled := False;
+     // BitBtnDelete.enabled:=true;
+     Rootnode := nil;
+
+     //if TreeView1.Items.Count < 1 then
+     //begin
+          with QueryAccTree do
+          begin
+               Close;
+               sql.Clear;
+               sql.Add(' SELECT ID, Name, LF, State ');
+               sql.Add(' FROM bnb_acc.AccTree ');
+               {if RB_Service.Checked then
+                    sql.Add(' WHERE parentid=6 and id=37 ')
+               Else if RB_serviceipd.Checked then
+                    sql.Add(' WHERE parentid=6 and id=36 ');}
+               Sql.Add('Where Parentid=2 and id=6');
+               Open;
+
+               TreeView1.Items.Add(Rootnode, QueryAccTree.FieldByName('ID').AsString+'- ' + QueryAccTree.FieldByName('Name').AsString);
+          end;
+     //end;
+     TreeView1.ShowButtons := True;
+
+     // AddMyChilds(1, TreeView1.TopItem);
+     {if RB_Service.Checked then
+          AddMyGrandChilds(37, TreeView1.TopItem)
+     Else if RB_serviceipd.Checked then
+          AddMyGrandChilds(36, TreeView1.TopItem); }
+     AddMyGrandChilds(6, TreeView1.TopItem);
+end;
+
+procedure TForm_InregrationSetup.SPB_SetAccHeadClick(Sender: TObject);
+Var
+     i,li_accheadop,li_accheadip: Integer;
+
+begin
+     if DBLCB_Dep.KeyValue=NULL then
+     Begin
+          MessageDlg('Please Select Department to set Account Head!', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     if (DBGrid1.SelectedRows.Count = 0) then
+     Begin
+          MessageDlg('Please Select The Test Name to set Account Head!', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     if strtoint(Label_AccHeadId.Caption)=0 then
+     Begin
+          MessageDlg('Cannot Set Account Head ID as 0. Please Select Account Head !', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     IF MessageDlg('Are You Sure To Set Account Head For These Items????', mtConfirmation, [mbYes, mbNo], 0) = mrNo Then
+     Exit;
+
+     if (DBGrid1.SelectedRows.Count > 0) then
+     Begin
+          with DBGrid1.DataSource.DataSet do
+          begin
+               Try
+                    DM_Hospital.DB.StartTransaction;
+                    for i := 0 to DBGrid1.SelectedRows.Count - 1 do
+                    begin
+                         GotoBookmark(pointer(DBGrid1.SelectedRows.Items[i]));
+                         With Query_Save do
+                         Begin
+                              close;
+                              databasename:=gs_databasename;
+                              sql.Clear;
+                              sql.Add('Update hs_tena_testname set');
+                              sql.add('tena_accheadid='+Label_AccHeadId.Caption);
+                              sql.Add('where tena_testnamecode='+quotedstr(DBGrid1.DataSource.DataSet.FieldByName('testnamecode').AsString));
+                              //sql.SaveToFile('C:\Check.txt');
+                              ExecSql;
+
+                              Close;
+                              databasename:=gs_databasename;
+                              sql.Clear;
+                              Sql.Add('Update hs_bide_billdetail set BIDE_ACCHEADID='+Label_AccHeadId.Caption);
+                              Sql.Add('Where bide_service='+quotedstr(DBGrid1.DataSource.DataSet.FieldByName('testnamecode').AsString));
+                              Sql.Add('and nvl(BIDE_ACCHEADID,0)=0');
+                              ExecSql;
+
+                              Close;
+                              databasename:=gs_databasename;
+                              sql.Clear;
+                              Sql.Add('Update hs_Rede_Refunddetail set REDE_ACCHEADID='+Label_AccHeadId.Caption);
+                              Sql.Add('Where Rede_service='+quotedstr(DBGrid1.DataSource.DataSet.FieldByName('testnamecode').AsString));
+                              Sql.Add('and nvl(REDE_ACCHEADID,0)=0');
+                              ExecSql;
+                         End;
+                    End;
+                    DM_Hospital.DB.Commit;
+                    ShowDoneMessage;
+               Except
+                    DM_Hospital.DB.Rollback;
+               end;
+          end;
+     End;
+     with Query_list do
+     begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          SQL[1] := 'Where Depid=' + IntToStr(DBLCB_Dep.KeyValue);
+          Open;
+     end;
+     ShowAccHead;
+end;
+
+procedure TForm_InregrationSetup.TreeView1Click(Sender: TObject);
+var
+     SelNode: TTreeNode;
+     NodeText, lf, ls_childNode: String;
+     IID: Integer;
+begin
+     {if RB_Service.Checked then
+          IID:=37
+     Else if RB_serviceipd.Checked then
+          IID:=36; }
+     IID:=6;
+
+     if TreeView1.ReadOnly = False then
+          Exit;
+     SelNode := TreeView1.Selected;
+     Label_AccHeadName.Caption := TreeView1.Selected.Text;
+     NodeText := Copy(SelNode.Text, 1, pos(' - ', SelNode.Text) - 1);
+     if NodeText <> '' then
+     begin
+          IID := StrToInt(NodeText);
+          Label_AccHeadId.Caption := IntToStr(IID);
+          pi_AccountHeadId := IID;
+          // IID:= StrToInt(NodeText);
+          qry_stateofaccount.Close;
+          qry_stateofaccount.ParamByName('id').AsInteger := IID;
+          qry_stateofaccount.Open;
+     end;
+
+     if not SelNode.HasChildren then
+     begin
+          with QueryAccTree do
+          begin
+               Close;
+               sql.Clear;
+               sql.Add(' SELECT ID, Name, LF, State ');
+               sql.Add(' FROM bnb_acc.AccTree ');
+               sql.Add(' WHERE ParentID = ' + IntToStr(IID));
+                if RBtn_Code.Checked then
+                 sql.add(' ORDER BY LF ');
+               //sql.Add(' ORDER BY Name ');
+               Open;
+          end;
+
+          with QueryAccTree do
+          begin
+               while not EOF do
+               begin
+                    if FieldByName('LF').AsString <> '' then
+                         ls_childNode := FieldByName('ID').AsString + ' - ' + FieldByName('LF').AsString + ' 0 ' + FieldByName('Name').AsString
+                    else
+                         ls_childNode := FieldByName('ID').AsString + ' - ' + FieldByName('Name').AsString;
+                    TreeView1.Items.AddChild(SelNode, ls_childNode);
+                    Next;
+               end;
+          end;
+     end;
+end;
+
+end.

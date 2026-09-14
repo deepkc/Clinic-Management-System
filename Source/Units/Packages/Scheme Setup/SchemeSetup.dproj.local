@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2017/09/06 15:50:32.455.pas,E:\working_chandra\LAB SOURCES\Central Source Clinical LAB (INTREPID,AAROGYA,NOVUS)\Source\Units\Packages\Scheme Setup\Unit_PatientVisitDetail.pas=E:\working_chandra\LAB SOURCES\Central Source Clinical LAB (INTREPID,AAROGYA,NOVUS)\Source\Units\Packages\Scheme Setup\Unit_PatientSchemeRectification.pas</Transaction>
+    <Transaction>2017/09/06 15:50:32.455.dfm,E:\working_chandra\LAB SOURCES\Central Source Clinical LAB (INTREPID,AAROGYA,NOVUS)\Source\Units\Packages\Scheme Setup\Unit_PatientVisitDetail.dfm=E:\working_chandra\LAB SOURCES\Central Source Clinical LAB (INTREPID,AAROGYA,NOVUS)\Source\Units\Packages\Scheme Setup\Unit_PatientSchemeRectification.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

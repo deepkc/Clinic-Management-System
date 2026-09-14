@@ -1,0 +1,1200 @@
+unit Unit_CreditPayment;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, OleCtrls, DateEditXControl_TLB, Buttons, Grids, DBGrids,
+  DbGridExportToExcel,
+  ExtCtrls, DBTables, DB, Fxn, ServerDate, DM,
+  Unit_Master, Spin, CheckLst, DBCtrls, ComCtrls, SMDBGrid, UnitSendToExcel,
+  Menus, MemDS, DBAccess, Ora;
+
+type
+  TFrame_CreditPayment = class(TFrame)
+    Panel1: TPanel;
+    Query_AccountHead: TQuery;
+    DS_AccountHead: TDataSource;
+    Query_GetVNo: TQuery;
+    DS_VNO: TDataSource;
+    DataSource_Community: TDataSource;
+    DataSource_Scheme: TDataSource;
+    Query_ReceiptDetail1: TQuery;
+    DS_ReceiptDetail: TDataSource;
+    QryCreditBill: TQuery;
+    DSCreditBill: TDataSource;
+    DataSource_DepositType: TDataSource;
+    QryReceiptPrint: TQuery;
+    Query_DepositType: TQuery;
+    PageControlCredit: TPageControl;
+    TSCreditBill: TTabSheet;
+    GroupBox1: TGroupBox;
+    Panel2: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Shape1: TShape;
+    LabelScheme1: TLabel;
+    Label_Community: TLabel;
+    EditPatientID: TEdit;
+    CBExtended: TCheckBox;
+    CBPreview: TCheckBox;
+    GroupBox3: TGroupBox;
+    RB_AllCredit: TRadioButton;
+    RB_NonPaid: TRadioButton;
+    RB_Paid: TRadioButton;
+    CmbScheme: TDBLookupComboBox;
+    CmbCommunity: TDBLookupComboBox;
+    TSCreditPayment: TTabSheet;
+    Shape2: TShape;
+    Panel_Cash: TPanel;
+    Label19: TLabel;
+    Label10: TLabel;
+    Label6: TLabel;
+    Edit_ReceiptAmount: TEdit;
+    DBLookupComboBox_DepositType: TDBLookupComboBox;
+    EditDepositRemark: TEdit;
+    CB_PartialPayment: TCheckBox;
+    GroupBox4: TGroupBox;
+    Label7: TLabel;
+    lblPatientID: TLabel;
+    Label12: TLabel;
+    lblName: TLabel;
+    Label15: TLabel;
+    lblAddress: TLabel;
+    Label17: TLabel;
+    lblAgeSex: TLabel;
+    Label20: TLabel;
+    Label21: TLabel;
+    lblBillNo: TLabel;
+    lblBillDate: TLabel;
+    Label24: TLabel;
+    lblBillAmount: TLabel;
+    Label3: TLabel;
+    LabelScheme: TLabel;
+    Label8: TLabel;
+    lblDueAmount: TLabel;
+    CB_AccAdj: TCheckBox;
+    Panel_AccAdjustment: TPanel;
+    Label13: TLabel;
+    SpeedButton13: TSpeedButton;
+    Label14: TLabel;
+    Label16: TLabel;
+    Label18: TLabel;
+    Label22: TLabel;
+    Label_BillAmt: TLabel;
+    Edit_AccAdjAmt: TEdit;
+    DBLCB_AccHead: TDBLookupComboBox;
+    CB_Search: TCheckBox;
+    Edit_AccountHead: TEdit;
+    DBGrid_AccHead: TDBGrid;
+    Edit_VoucherNo: TEdit;
+    DBGrid_VNO: TDBGrid;
+    ChkListBox_CrBill: TCheckListBox;
+    CB_MultipleBill: TCheckBox;
+    DBGrid1: TSMDBGrid;
+    BB_FinalBill: TBitBtn;
+    Table_CreditPaymentList: TTable;
+    Label23: TLabel;
+    Edit_BillNo: TEdit;
+    Label25: TLabel;
+    CMB_PayType: TComboBox;
+    Label26: TLabel;
+    Edit_ChequeNo: TEdit;
+    BB_RePrintBill: TBitBtn;
+    SpeedButton2: TSpeedButton;
+    DBGrid2: TDBGrid;
+    Label27: TLabel;
+    Label_RemainingPayment: TLabel;
+    Label28: TLabel;
+    dblcb_acc: TDBLookupComboBox;
+    DS_Acc: TDataSource;
+    Query_Acc: TQuery;
+    QueryAccTree: TQuery;
+    qry_stateofaccount: TQuery;
+    UpdateSQL2: TUpdateSQL;
+    PopupMenu1: TPopupMenu;
+    Add1: TMenuItem;
+    Categorize1: TMenuItem;
+    AddToGroup1: TMenuItem;
+    MISSetup: TMenuItem;
+    CashFlowSetup: TMenuItem;
+    mnuCut: TMenuItem;
+    Paste1: TMenuItem;
+    Save1: TMenuItem;
+    Modify1: TMenuItem;
+    Delete1: TMenuItem;
+    UnDo1: TMenuItem;
+    Verigy1: TMenuItem;
+    Update1: TMenuItem;
+    Active1: TMenuItem;
+    N1: TMenuItem;
+    Cancel1: TMenuItem;
+    qry_updatestate: TQuery;
+    Label30: TLabel;
+    Label_AccHeadName: TLabel;
+    Label_AccHeadId: TLabel;
+    SPB_SetAccHead: TSpeedButton;
+    TreeView1: TTreeView;
+    RBtn_Code: TRadioButton;
+    lbl3: TLabel;
+    GroupBox2: TGroupBox;
+    CB_Search1: TCheckBox;
+    DateEditX_From: TDateEditX;
+    btn_From: TButton;
+    btn_To: TButton;
+    DateEditX_To: TDateEditX;
+    GroupBox5: TGroupBox;
+    Edit_Day: TEdit;
+    ud1: TUpDown;
+    BB_Refresh: TBitBtn;
+    DEX_Today: TDateEditX;
+    btn_Today: TButton;
+    lbl2: TLabel;
+    lbl1: TLabel;
+    Shape3: TShape;
+    BB_ReceiptRefund: TBitBtn;
+    Label9: TLabel;
+    Edit_CareOf: TEdit;
+    QryBillDetail: TOraQuery;
+    Query_Process: TOraQuery;
+    QryPatientInfo: TOraQuery;
+    Query_Scheme: TOraQuery;
+    Query_ReceiptDetail: TOraQuery;
+    Query_Community: TOraQuery;
+    procedure BB_RefreshClick(Sender: TObject);
+    procedure BB_FinalBillClick(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure CMB_PayTypeChange(Sender: TObject);
+    procedure BB_RePrintBillClick(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure CB_PartialPaymentClick(Sender: TObject);
+    procedure CmbCommunityClick(Sender: TObject);
+    procedure CmbCommunityKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+
+    procedure TreeView1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure TreeView1Click(Sender: TObject);
+    Procedure ShowAccHead;
+    procedure AddMyGrandChilds(MyId: Integer; MyNode: TTreeNode);
+    procedure Active1Click(Sender: TObject);
+    procedure SPB_SetAccHeadClick(Sender: TObject);
+    procedure dblcb_accKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EditPatientIDEnter(Sender: TObject);
+    procedure EditPatientIDKeyPress(Sender: TObject; var Key: Char);
+    procedure BB_ReceiptRefundClick(Sender: TObject);
+
+  private
+    { Private declarations }
+    User: String;
+    pi_PatientID: Integer;
+  public
+    { Public declarations }
+
+    pf_TotalCreditAmt, pf_DueAmount: Double;
+
+    ps_TodaysDate, ps_TodaysTime,ps_MyBillNo: String;
+
+    pi_SchemeId, pi_CommunityId, pi_AccountHeadId, IDofCutNode_m: Integer;
+
+    pb_IsReprint: Boolean;
+
+    pb_IsCreditPaid,pb_IsRefund: Boolean;
+
+    Procedure GetCredtiBill;
+    Procedure CreateTableCreditPaymentList;
+
+    Procedure SaveCreditPayment;
+
+    Procedure PrintReceipt;
+
+    procedure ReceiptDetail;
+    procedure PaymentDetail;
+    procedure GetPatientInfo(PatientID: Integer);
+
+    constructor Create(AOwner: Tcomponent); Override;
+    destructor Destroy; Override;
+  end;
+
+implementation
+
+uses Unit_QrReceipt;
+{$R *.dfm}
+
+procedure TFrame_CreditPayment.CreateTableCreditPaymentList;
+Begin
+     Table_CreditPaymentList.Close;
+     IF FileExists(gs_temppath + '\CreditPaymentList.db') Then
+     DeleteFile(gs_temppath + '\CreditPaymentList.db');
+     with Table_CreditPaymentList do
+     Begin
+          Close;
+          DatabaseName := gs_temppath;
+          Exclusive := False;
+          Tablename := 'CreditPaymentList.db';
+          tableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('BillNo', ftString, 17);
+          FieldDefs.Add('CreditAmount', ftFloat);
+          FieldDefs.Add('SchemeId', ftInteger);
+          CreateTable;
+     End;
+End;
+
+procedure TFrame_CreditPayment.BB_FinalBillClick(Sender: TObject);
+Var
+  i: Integer;
+begin
+     Table_CreditPaymentList.Close;
+     Table_CreditPaymentList.DatabaseName := gs_temppath;
+     Table_CreditPaymentList.EmptyTable;
+     Table_CreditPaymentList.Open;
+     pf_TotalCreditAmt := 0;
+     Edit_BillNo.Text := '';
+
+     if Trim(CmbCommunity.Text) = '' then
+     Begin
+          MessageDlg('Must Have to Select Community .', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     if Trim(CmbScheme.Text) = '' then
+     Begin
+          MessageDlg('Must Have to Select Scheme .', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     if DBGrid1.SelectedRows.Count > 10 then
+     Begin
+          MessageDlg('Sorry You Cannot Clear More Than 10 Bills in One Payment Receipt.',mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+  if (DBGrid1.SelectedRows.Count > 0) then
+  begin
+    with DBGrid1.DataSource.DataSet do
+    begin
+      for i := 0 to DBGrid1.SelectedRows.Count - 1 do
+      begin
+        GotoBookmark(pointer(DBGrid1.SelectedRows.Items[i]));
+        pf_TotalCreditAmt := pf_TotalCreditAmt + FieldByName('BalanceAmt').AsFloat;
+        if Trim(Edit_BillNo.Text) <> '' then
+          Edit_BillNo.Text := Edit_BillNo.Text + ',' + FieldByName('BillNo').AsString
+        Else
+          Edit_BillNo.Text := FieldByName('BillNo').AsString;
+        Table_CreditPaymentList.Append;
+        Table_CreditPaymentList.FieldByName('BillNo').AsString := FieldByName('BillNo').AsString;
+        Table_CreditPaymentList.FieldByName('CREDITAMOUNT').AsFloat :=FieldByName('BalanceAmt').AsFloat;
+        Table_CreditPaymentList.FieldByName('SchemeId').AsInteger := FieldByName('SchemeId').AsInteger;
+        Table_CreditPaymentList.Post;
+      end;
+    end;
+    pi_PatientID := DBGrid1.DataSource.DataSet.FieldByName('Patientid').AsInteger;
+    GetPatientInfo(pi_PatientID);
+    LoadPatientData(pi_PatientID);
+
+    lblBillNo.Caption := DBGrid1.DataSource.DataSet.FieldByName('BillNo').AsString;
+    lblBillDate.Caption := DBGrid1.DataSource.DataSet.FieldByName('BillDate').AsString;
+    lblBillAmount.Caption := DBGrid1.DataSource.DataSet.FieldByName('CREDITAMOUNT').AsString;
+    lblDueAmount.Caption := DBGrid1.DataSource.DataSet.FieldByName('BalanceAmt').AsString;
+    pf_DueAmount := DBGrid1.DataSource.DataSet.FieldByName('BalanceAmt').AsFloat;
+  end;
+
+  PageControlCredit.ActivePageIndex := 1;
+  TSCreditBill.TabVisible := False;
+  TSCreditPayment.TabVisible := True;
+  CMB_PayType.ItemIndex := 0;
+  gs_IsCreditPaymentActive := 'Y';
+  Edit_ReceiptAmount.Text := FloatToStr(pf_TotalCreditAmt);
+end;
+
+procedure TFrame_CreditPayment.BB_ReceiptRefundClick(Sender: TObject);
+begin
+     if Query_ReceiptDetail.fieldbyname('RECEIPTNO').AsString='' then
+     begin
+          ShowMessage('Please choose Receipt to Refund !!!');
+          Exit;
+     end;
+
+     if (Query_ReceiptDetail.fieldbyname('PATIENTID').AsInteger<>QryCreditBill.fieldbyname('Patientid').AsInteger) then
+     Begin
+          ShowMessage('This receipt is not related to '+QryCreditBill.fieldbyname('PATIENTID').asstring);
+          Exit;
+     End;
+
+     If (copy(Query_ReceiptDetail.fieldbyname('RECEIPTNO').AsString,1,2)='CP') and (Query_ReceiptDetail.FieldByName('IsRefund').AsString<>'Y') then
+     Begin
+          IF MessageDlg('Are you sure to refund the receipt ?',mtConfirmation,[mbYes,mbNo],0)<>mrYes Then
+          Exit;
+          Try
+               DM_Hospital.DB.StartTransaction;
+
+               ps_MyBillNo:=GetNextBillNo1('RCP', 'HS_CRPD_CreditPaymentDetail','CRPD_ReceiptNo');
+
+
+              SaveCreditPaymentrefund(Query_ReceiptDetail.fieldbyname('Masterid').AsInteger,QryCreditBill.fieldbyname('Patientid').AsInteger,
+                                        gi_UserId,QryCreditBill.fieldbyname('Schemeid').asinteger,Query_ReceiptDetail.fieldbyname('AMOUNT').AsFloat,ps_MyBillNo,Query_ReceiptDetail.fieldbyname('CRBILLNO').AsString,
+                                        Query_ReceiptDetail.fieldbyname('RECEIPTNO').AsString,Serverdate.TodaysDate,Serverdate.todaystime,
+                                        Query_ReceiptDetail.fieldbyname('ISPARTIALPAYMENT').AsString,
+                                        Query_ReceiptDetail.fieldbyname('RECEIPTDISCOUNT').AsFloat);
+
+               With Query_Process Do
+               Begin
+                    Close;
+                    sql.clear;
+                    sql.add(' Update HS_CRPD_CreditPaymentDetail Set crpd_Isrefund=''Y'' where CRPD_ReceiptNo='+Quotedstr(Query_ReceiptDetail.fieldbyname('RECEIPTNO').AsString));
+                    sql.add(' and crpd_PatientID='+IntToStr(QryCreditBill.fieldbyname('PATIENTID').asinteger));
+                    Execsql;
+
+                    Close;
+                    sql.Clear;
+                    sql.add(' Update Hs_Bide_BillDetail Set Bide_IsCrPaid=''N'' where bide_BillNo='+Quotedstr(Query_ReceiptDetail.fieldbyname('CRBILLNO').AsString));
+                    sql.add(' and Bide_PatientID='+IntToStr(QryCreditBill.fieldbyname('PATIENTID').asinteger));
+                    ExecSQL;
+               End;
+
+               DM_Hospital.DB.Commit;
+               pb_IsRefund := True;
+               ShowDoneMessage;
+          Except
+               DM_Hospital.DB.Rollback;
+               MessageDlg('Failure To Save Data !', mtWarning, [mbOk],0);
+               Exit;
+          End;
+          If messageDlg('Do you want to print ?', mtconfirmation, [mbyes,mbno], 0)=mryes then
+          Begin
+               Try
+                    BB_RePrintBillClick(Sender);
+                    pb_IsRefund:= False;
+                    //BBtnSave.Enabled:=False;
+               Except
+                    MessageDlg('Data Successfully Saved. Plz Re-Try For Printing.', mtWarning, [mbOk],0);
+               End;
+          End;
+          //PaymentDetail;
+     End
+     Else
+     Begin
+          if Query_ReceiptDetail.FieldByName('IsRefund').AsString='Y' then
+          Begin
+               MessageDlg('This Receipt Has Already been Refunded.',mtWarning,[mbOk],0);
+               Exit;
+          End;
+     End;
+end;
+
+procedure TFrame_CreditPayment.BB_RefreshClick(Sender: TObject);
+begin
+     GetCredtiBill;
+     ReceiptDetail;
+end;
+
+procedure TFrame_CreditPayment.BB_RePrintBillClick(Sender: TObject);
+begin
+     if Trim(Query_ReceiptDetail.FieldByName('ReceiptNo').AsString) = '' then
+     Begin
+          MessageDlg('No Receipt To Print.', mtWarning, [mbok], 0);
+          Exit;
+     End;
+
+     if Trim(Query_ReceiptDetail.FieldByName('ReceiptNo').AsString)= 'ACC. ADJ.' then
+     Begin
+          MessageDlg('This is Account Adjustment. No Receipt has Generated for to Print.',mtWarning, [mbok], 0);
+          Exit;
+     End;
+     if pb_IsRefund=True then
+          Gs_BillNo := ps_MyBillNo
+     else
+          Gs_BillNo := Query_ReceiptDetail.FieldByName('ReceiptNo').AsString;
+     pb_IsReprint := True;
+     PrintReceipt;
+end;
+
+procedure TFrame_CreditPayment.CB_PartialPaymentClick(Sender: TObject);
+begin
+  if CB_PartialPayment.Checked = True then
+  Begin
+    Edit_ReceiptAmount.Enabled := True;
+    Edit_ReceiptAmount.ReadOnly := False;
+    Edit_ReceiptAmount.Color := clWhite;
+    Label_RemainingPayment.Caption := FloatToStr(pf_TotalCreditAmt);
+    Label_RemainingPayment.Visible := True;
+    Label27.Visible := True;
+  End
+  Else
+  Begin
+    Edit_ReceiptAmount.Enabled := False;
+    Edit_ReceiptAmount.ReadOnly := True;
+    Edit_ReceiptAmount.Color := $00CDCDCD;
+    Label_RemainingPayment.Visible := False;
+    Label27.Visible := False;
+  End;
+end;
+
+procedure TFrame_CreditPayment.CmbCommunityClick(Sender: TObject);
+begin
+  with Query_Scheme do
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add(' select  *  from HS_SCHE_Scheme');
+    if Trim(CmbCommunity.Text) <> '' then
+      SQL.Add(' where SCHE_CommunityId=' + IntToStr(CmbCommunity.KeyValue));
+    SQL.Add(' order by SCHE_Scheme');
+    Open;
+  end;
+end;
+
+procedure TFrame_CreditPayment.CmbCommunityKeyDown
+  (Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = VK_DELETE then
+  begin
+    with Query_Scheme do
+    begin
+      Close;
+      SQL.Clear;
+      SQL.Add(' select  *  from SCHE_Scheme');
+      SQL.Add(' order by SCHE_Scheme');
+      Open;
+    end;
+    CmbCommunity.KeyValue := null;
+  end;
+end;
+
+procedure TFrame_CreditPayment.CMB_PayTypeChange(Sender: TObject);
+begin
+  if CMB_PayType.ItemIndex = 0 then
+  Begin
+    Edit_ChequeNo.Text := '';
+    Edit_ChequeNo.Enabled := False;
+    Label26.Enabled := False;
+    Edit_ChequeNo.Color := $00CDCDCD;
+    dblcb_acc.KeyValue := null;
+    dblcb_acc.Enabled := False;
+    Label28.Enabled := False;
+
+    Label30.Enabled := False;
+    Label_AccHeadName.Enabled := False;
+    TreeView1.Enabled := False;
+  End
+  Else if CMB_PayType.ItemIndex = 1 then
+  Begin
+    Edit_ChequeNo.Enabled := True;
+    Label26.Enabled := True;
+    Edit_ChequeNo.Color := clWhite;
+    dblcb_acc.KeyValue := null;
+    dblcb_acc.Enabled := False;
+    Label28.Enabled := False;
+
+    Label30.Enabled := False;
+    Label_AccHeadName.Enabled := False;
+    TreeView1.Enabled := False;
+  End
+  else
+  begin
+    (* Edit_ChequeNo.Text := '';
+      Edit_ChequeNo.Enabled := False;
+      Label26.Enabled := False;
+      Edit_ChequeNo.Color := $00CDCDCD;
+      dblcb_acc.Enabled:=TRUE;
+      //dblcb_acc.Enabled:=False;
+      Label28.Enabled:=True; *)
+    Label30.Enabled := True;
+    Label_AccHeadName.Enabled := True;
+    TreeView1.Enabled := True;
+    ShowAccHead;
+  end;
+
+end;
+
+constructor TFrame_CreditPayment.Create(AOwner: Tcomponent);
+begin
+  inherited;
+
+  Query_Community.Close;
+  Query_Community.Open;
+  EditPatientID.Text := IntToStr(gi_PatientID);
+
+  with Query_Scheme do
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add(' select sche_schemeid ,sche_scheme from hs_sche_scheme ');
+    SQL.Add(' order by sche_scheme');
+    Open;
+  end;
+
+  {
+    Query_Acc.Close;
+    Query_Acc.DatabaseName:=gs_DatabaseName;
+    Query_Acc.Open; }
+
+  DateEditX_From.SystemOfDate := gi_datesystem;
+  DateEditX_From.Text := TodaysDate;
+  ChangeCaption(Btn_From);
+
+  DateEditX_To.SystemOfDate := gi_datesystem;
+  DateEditX_To.Text := DateEditX_From.Text;
+  ChangeCaption(Btn_To);
+
+  DEX_Today.SystemOfDate := gi_datesystem;
+  DEX_Today.Text := DateEditX_From.Text;
+  ChangeCaption(Btn_Today);
+
+  TSCreditPayment.TabVisible := False;
+  CreateTableCreditPaymentList;
+
+  dblcb_acc.Enabled := False;
+  Label28.Enabled := False;
+
+  Form_QrReceipt := TForm_QrReceipt.Create(nil);
+end;
+
+procedure TFrame_CreditPayment.DBGrid1CellClick(Column: TColumn);
+begin
+  ReceiptDetail;
+end;
+
+procedure TFrame_CreditPayment.ReceiptDetail;
+Begin
+  With Query_ReceiptDetail do
+  Begin
+    Close;
+    DatabaseName := gs_DataBaseName;
+    SQL.Clear;
+    SQL.Add(' Select CRPD_CREDITPAYMENTMASTERID Masterid,CPD.CRPD_CrBillNo CRBILLNO,CPD.CRPD_ReceiptNo RECEIPTNO,');
+    sql.Add(' CRPD_PATIENTID Patientid, CPD.CRPD_DataPostDate as ReceiptDate,CPD.CRPD_DataPostTime as ReceiptTime,');
+    SQL.Add(' CPD.CRPD_Amount Amount,USMA_USERNAME username,CRPD_DATAPOSTBY RECEIVEDBY,CRPD_ISPARTIALPAYMENT ISPARTIALPAYMENT,CRPD_ISREFUND ISREFUND,CRPD_RECEIPTDISCOUNT RECEIPTDISCOUNT From HS_CRPD_CreditPaymentDetail CPD,HS_USMA_UserMain UM where');
+    SQL.Add(' CPD.CRPD_DATAPOSTBY=USMA_USERID and CPD.CRPD_CrBillNo=' + #39 +
+        QryCreditBill.FieldByName('BillNo').AsString + #39);
+    SQL.Add(' Order by CPD.CRPD_ReceiptNo Desc');
+    //SQL.SaveToFile('C:/creditreceipt.txt');
+    Open;
+    First;
+  End;
+End;
+
+procedure TFrame_CreditPayment.dblcb_accKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_DELETE then
+    dblcb_acc.KeyValue := '';
+
+end;
+
+destructor TFrame_CreditPayment.Destroy;
+begin
+  Form_QrReceipt.Free;
+  inherited;
+end;
+
+procedure TFrame_CreditPayment.EditPatientIDEnter(Sender: TObject);
+begin
+     BB_RefreshClick(Sender);
+end;
+
+procedure TFrame_CreditPayment.EditPatientIDKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if Key = #13 then
+     begin
+          BB_RefreshClick(Sender);
+     end;
+end;
+
+procedure TFrame_CreditPayment.GetCredtiBill;
+var
+  b_IsNumber: Boolean;
+  li_PatientId: Integer;
+begin
+     If Trim(Edit_Day.Text) = '' Then
+     Edit_Day.Text := '0';
+
+     IF (CBExtended.Checked = True) and (Trim(EditPatientID.Text) = '') Then
+     Begin
+          MessageDlg('You Must Have To Put Either Hospital No or BIll No for This Extended Serach.', mtInformation, [mbok], 0);
+          EditPatientID.SetFocus;
+          Exit;
+     End;
+
+     IF Trim(EditPatientID.Text) <> '' Then
+     Begin
+          Try
+               li_PatientId := StrToInt(EditPatientID.Text);
+               b_IsNumber := True;
+          Except
+               b_IsNumber := False;
+          End;
+     End;
+
+     QryCreditBill.Filtered := False;
+
+     With QryCreditBill Do
+     Begin
+          Close;
+          SQL.Clear;
+          SQL.Add(' Select R.*,CreditAmount-DepositBalance-NVL(PaidAmount,0)-NVL(ReceiptRefund,0)-NVL(billRefund,0) as BalanceAmt From (');
+          SQL.Add(' Select BIDE_PatientId as PatientId,BIDE_BillNo as BillNo,BIDE_BillDate as BillDate,');
+          SQL.Add('(Select PAMA_PatientName From HS_PAMA_PatientMain where PAMA_PatientId=BIDE_PatientId) as PatientName');
+          SQL.Add(' ,BIDE_CRSCHEMEID Schemeid,(Select SCHE_Scheme From HS_SCHE_Scheme where sche_SchemeId=BIDE_CRSCHEMEID) as Scheme');
+          SQL.Add(' ,Round(Sum((BIDE_Amount-BIDE_Amount*BIDE_DisPer/100)*BIDE_Qty+BIDE_VatAmt),2) CreditAmount');
+          SQL.Add(' ,NVL((Select INRE_DepositBalance From HS_INRE_InpatientReg where INRE_DISBILLNO=BIDE_BillNo),0) DepositBalance');
+          SQL.Add(' ,(Select Round(Sum((REDE_Amount-REDE_Amount*REDE_DisPer/100)*REDE_Qty+REDE_VatAmt),2) From HS_REDE_RefundDetail where');
+          SQL.Add(' REDE_BillDetailId In (Select BIDE_BillDetailId From HS_BIDE_BillDetail where BIDE_BillNo=BD.BIDE_BillNo)) as billRefund');
+          SQL.Add(' ,(Select NVL(Sum(CRPD_Amount),0) From HS_CRPD_CreditPaymentDetail where CRPD_CrBillNo=BIDE_BillNo AND CRPD_PAYTYPE=''CASH'' AND CRPD_ISREFUND=''N'') as PaidAmount');
+          SQL.Add(',(Select NVL(Sum(Crpd_Amount),0) From HS_CRPD_CreditPaymentDetail where Crpd_CRBillNo=BD.Bide_BillNo and crpd_paytype=''REFUND'' and Crpd_isrefund=''Y'') as ReceiptRefund');
+          // sql.add('(select name from grande_acc.acctree where Id= (select nvl(refaccheadid,0)');
+          // sql.add('from CreditPaymentmaster where CreditPaymentmasterId in(Select CreditPaymentmasterId From CreditPaymentDetail where CrBillNo=BIDE_BillNo) and rownum=1))refacchead');
+          // sql.add(' ,(Select Distinct ReceiptNo From CreditPaymentDetail where CrBillNo=BD.BillNo) as ReceiptNo');
+          SQL.Add(' From HS_Bide_BillDetail BD');
+          SQL.Add(' where BIDE_PayType=''CREDIT''');
+          IF CBExtended.Checked = False Then
+          Begin
+               IF CB_Search.Checked = True Then
+                    SQL.Add(' and BIDE_BillDate >= ' + #39 + DateEditX_From.Text + #39 + ' And BIDE_BillDate<=' + Chr(39) + DateEditX_To.Text + Chr(39))
+               Else
+                    {SQL.Add(' and BIDE_BillDate>=' + #39 + GetFromDateBySubNoOfDays
+                    ( DEX_Today, StrToInt(Edit_Day.Text))
+                    + #39 + ' And BIDE_BillDate<=' + Chr(39) + DEX_Today.Text + Chr(39)
+                    ); }
+
+               IF (RB_Paid.Checked = True) Then
+                    SQL.Add(' and BIDE_IsCrPaid=''Y''')
+               Else IF RB_NonPaid.Checked = True Then
+                    SQL.Add(' and BIDE_IsCrPaid<>''Y''');
+          End;
+
+          If (Trim(EditPatientID.Text) <> '') and (b_IsNumber = True) Then
+               SQL.Add(' And BIDE_PatientID=' + EditPatientID.Text)
+          Else If (Trim(EditPatientID.Text) <> '') and (b_IsNumber = False) Then
+               SQL.Add(' And BIDE_BillNo=' + #39 + EditPatientID.Text + #39);
+
+          //sSQL.Add('and bide_billdetailid not in (Select rede_billdetailid from Hs_Rede_Refunddetail)');
+
+          IF CmbScheme.KeyValue <> null Then
+          Begin
+               SQL.Add(' and BIDE_CRSCHEMEID=' + IntToStr(CmbScheme.KeyValue));
+               IF CB_Search.Checked = True Then
+                    SQL.Add(' And BIDE_BillDate >=' + #39 + DateEditX_From.Text + #39 +' and BIDE_BillDate<=' + Chr(39) + DateEditX_To.Text + Chr(39))
+               Else
+                    {SQL.Add(' And BIDE_BillDate >=' + #39 + GetFromDateBySubNoOfDays
+                         (DEX_Today, StrToInt(Edit_Day.Text))
+                         + #39 + ' And BIDE_BillDate<=' + Chr(39) + DEX_Today.Text + Chr(39)
+                     );   }
+          End;
+          SQL.Add(' Group by BIDE_PatientId,BIDE_BillNo,BIDE_BillDate,BIDE_CRSCHEMEID');
+          SQL.Add(' ) R Order by BillNo Desc ');
+          //SQL.saveToFile('C:\CreditClearance.Txt');
+          Open;
+     End;
+
+     //PaymentDetail;
+     EditPatientID.SetFocus;
+end;
+
+procedure TFrame_CreditPayment.GetPatientInfo(PatientID: Integer);
+begin
+  With QryPatientInfo Do
+  Begin
+    Close;
+    SQL[2] := 'Where pama_PatientID=' + IntToStr(PatientID);
+    Open;
+  End;
+  lblName.Caption := QryPatientInfo.FieldByName('Name').AsString;
+  lblPatientID.Caption := QryPatientInfo.FieldByName('PatientID').AsString;
+  lblAddress.Caption := QryPatientInfo.FieldByName('address').AsString;
+  lblAgeSex.Caption := QryPatientInfo.FieldByName('AgeSex').AsString;
+
+  With Query_Process do
+  Begin
+    Close;
+    SQL.Clear;
+    SQL.Add(' Select sche_Scheme From HS_Sche_Scheme where sche_SchemeId In (Select Distinct BIDE_CRSCHEMEID From hs_bide_BillDetail ');
+    SQL.Add(' where bide_BillNo=' + #39 + QryCreditBill.FieldByName('BillNo').AsString + #39 + ' and BIDE_CRSCHEMEID > 0)');
+    Open;
+    LabelScheme.Caption := Query_Process.FieldByName('sche_Scheme').AsString;
+
+    Close;
+    SQL.Clear;
+    SQL.Add('Select * From HS_DEHE_DEPOSITHEAD where Upper(DEHE_DEPOSITHEAD)=''CREDIT PAYMENT''');
+    Open;
+    IF RecordCount > 0 Then
+    Begin
+      DBLookupComboBox_DepositType.Enabled := False;
+      DBLookupComboBox_DepositType.Color := $00CDCDCD;
+      DBLookupComboBox_DepositType.KeyValue := Query_Process.FieldByName('DEHE_DEPOSITHEADID').AsInteger;
+    End
+    Else
+    Begin
+      DBLookupComboBox_DepositType.Enabled := True;
+      DBLookupComboBox_DepositType.Color := clWhite;
+    End;
+  End;
+end;
+
+Procedure TFrame_CreditPayment.SaveCreditPayment;
+Var
+  ls_PayType, ls_ChequeNo, ls_Remarks, ls_CRBILLNODETAIL, LS_BILLNO,ISPARTIALPAYMENT,Ls_CareOf: String;
+  lf_ReceiptAmount: Double;
+  li_AccHeadId: Integer;
+Begin
+  if TSCreditPayment.TabVisible = False then
+  Begin
+    MessageDlg('Please First Select Credit Bill & Click on Credit Payment Button.',mtWarning, [mbok], 0);
+    Exit;
+  End;
+
+  if (Trim(Edit_ReceiptAmount.Text) = '') or (Edit_ReceiptAmount.Text = '0')then
+  Begin
+    MessageDlg('Please Check Receipt Amount Properly.', mtWarning, [mbok], 0);
+    Edit_ReceiptAmount.SetFocus;
+    Exit;
+  End;
+
+  if (CB_PartialPayment.Checked = True) and (Length(Trim(Edit_BillNo.Text)) > 16) then
+  Begin
+    MessageDlg('For Partial Payment You Must Have to Choose Single Bill Only.' + Char(10) +
+               'Right Now You Are Choosing Multiple Bill for Payment.',mtWarning, [mbok], 0);
+    Edit_BillNo.SetFocus;
+    Exit;
+  End;
+
+  lf_ReceiptAmount := StrToFloat(Edit_ReceiptAmount.Text);
+  if (lf_ReceiptAmount > pf_TotalCreditAmt) and (CB_PartialPayment.Checked = True) then
+  Begin
+    MessageDlg(' Receipt Amount is Greater than Remaining Payment.', mtWarning,[mbok], 0);
+    Exit;
+  End;
+
+  if (CMB_PayType.ItemIndex = 2) and (dblcb_acc.KeyValue = null) then
+  Begin
+    MessageDlg(' Please Choose Account Head.', mtWarning, [mbok], 0);
+    Exit;
+  End;
+     if CB_PartialPayment.Checked = True then
+          IsPartialPayment:='Y'
+     else
+          IsPartialPayment:='N';
+
+  if (pf_TotalCreditAmt > lf_ReceiptAmount) and (CB_PartialPayment.Checked = True) then
+    pb_IsCreditPaid := False
+  Else
+    pb_IsCreditPaid := True;
+
+  if (lf_ReceiptAmount <= 0) AND (CMB_PayType.ItemIndex <> 2) then
+  Begin
+    MessageDlg(' Sorry No Payment Left for Credit Payment.', mtWarning, [mbok],0);
+    Exit;
+  End;
+
+  IF MessageDlg('Are You Sure To Make Receipt for Credit Payment ?',
+    mtConfirmation, [mbYes, mbNo], 0) = mrYes Then
+  Begin
+    ps_TodaysDate := TodaysDate;
+    ps_TodaysTime := TodaysTime;
+
+    pi_SchemeId := CmbScheme.KeyValue;
+    pi_CommunityId := CmbCommunity.KeyValue;
+
+    ls_ChequeNo := Edit_ChequeNo.Text;
+    ls_Remarks := EditDepositRemark.Text;
+    Ls_CareOf:=Edit_CareOf.Text;
+    LS_BILLNO := Gs_BillNo;
+
+    ls_CRBILLNODETAIL := Edit_BillNo.Text;
+    IF CMB_PayType.ItemIndex = 0 Then
+      ls_PayType := 'CASH'
+    Else
+      ls_PayType := 'CHEQUE';
+
+    IF CMB_PayType.ItemIndex = 2 then
+    begin
+      ls_PayType := 'ACC ADJ';
+      // ls_CRBILLNODETAIL:='ACC ADJ';
+      // Gs_BillNo:= 'ACC ADJ';
+      LS_BILLNO := 'ACC ADJ';
+      lf_ReceiptAmount := 0;
+      li_AccHeadId := dblcb_acc.KeyValue;
+    end
+    else
+      li_AccHeadId := 0;
+
+    DM_Hospital.DB.StartTransaction;
+    Try
+      Try
+        SaveCreditPaymentMaster(ps_TodaysDate, ps_TodaysTime, ls_PayType,
+          ls_ChequeNo, ls_CRBILLNODETAIL, ls_Remarks, '',Ls_CareOf, gi_UserID,
+          pi_SchemeId, li_AccHeadId, lf_ReceiptAmount);
+      Except
+        SaveCreditPaymentMaster(ps_TodaysDate, ps_TodaysTime, ls_PayType,
+          ls_ChequeNo, ls_CRBILLNODETAIL, ls_Remarks, '',Ls_CareOf, gi_UserID,
+          pi_SchemeId, li_AccHeadId, lf_ReceiptAmount);
+      End;
+
+      if CMB_PayType.ItemIndex <> 2 then
+        LS_BILLNO := Gs_BillNo;
+
+      Table_CreditPaymentList.First;
+      While Not Table_CreditPaymentList.Eof Do
+      Begin
+        if pb_IsCreditPaid = True then
+        Begin
+          With Query_Process do
+          Begin
+            Close;
+            SQL.Clear;
+            SQL.Add(' Update hs_bide_BillDetail Set bide_IsCrPaid=''Y'' where bide_BillNo=' +#39 + Table_CreditPaymentList.FieldByName('BillNo').AsString + #39);
+            ExecSQL;
+          End;
+        End;
+
+        Try
+          SaveCreditPaymentDetail(Table_CreditPaymentList.FieldByName('BillNo').AsString, LS_BILLNO, ps_TodaysDate, ps_TodaysTime,ISPARTIALPAYMENT, gi_UserID,
+            Table_CreditPaymentList.FieldByName('SchemeId').AsInteger,pi_patientid,lf_ReceiptAmount);
+        Except
+          SaveCreditPaymentDetail(Table_CreditPaymentList.FieldByName('BillNo').AsString, LS_BILLNO, ps_TodaysDate, ps_TodaysTime,ISPARTIALPAYMENT, gi_UserID,
+            Table_CreditPaymentList.FieldByName('SchemeId').AsInteger,pi_patientid,lf_ReceiptAmount);
+        End;
+
+        Table_CreditPaymentList.Next;
+      End;
+      DM_Hospital.DB.Commit;
+      ShowDoneMessage;
+    Except
+      DM_Hospital.DB.RollBack;
+    End;
+    pb_IsReprint := False;
+    if CMB_PayType.ItemIndex <> 2 then
+      PrintReceipt;
+
+    PageControlCredit.ActivePageIndex := 0;
+  End;
+  QryCreditBill.Close;
+  QryCreditBill.Open;
+  Query_ReceiptDetail.Close;
+  Query_ReceiptDetail.Open;
+End;
+
+procedure TFrame_CreditPayment.SpeedButton2Click(Sender: TObject);
+Var
+  ls_ReportTitle, ls_DateRange: String;
+begin
+  if RB_AllCredit.Checked = True then
+    ls_ReportTitle := 'All Credit (Paid + Non Paid)'
+  Else if RB_NonPaid.Checked = True then
+    ls_ReportTitle := 'All Non Paid Credit'
+  Else if RB_Paid.Checked = True then
+    ls_ReportTitle := 'All Paid Credit';
+
+  if CB_Search.Checked then
+    ls_DateRange := DateEditX_From.Text + ' - ' + DateEditX_To.Text
+  Else
+    ls_DateRange := GetFromDateBySubNoOfDays(DEX_Today, StrToInt(Edit_Day.Text))
+      + '-' + DEX_Today.Text;
+
+  // if MsgBox(1010, 1, '', '', '') then
+  begin
+    SendtoExcels(QryCreditBill, nil, ls_ReportTitle, ls_DateRange, '',
+      gs_HospitalName, gs_HospitalAddress, 6);
+    // ExportDBGrid_Frame(Nil, DBGrid1, true, ls_ReportTitle, ls_DateRange);
+  End;
+end;
+
+procedure TFrame_CreditPayment.PaymentDetail;
+begin
+
+end;
+
+Procedure TFrame_CreditPayment.PrintReceipt;
+Var
+  i,li_noofprint: Integer;
+  Qry:TQuery;
+begin
+     Qry := TQuery.Create(nil);
+     with Form_QrReceipt do
+     begin
+          {if pb_IsReprint then
+          begin
+
+          with qry do
+          begin
+               close;
+               DatabaseName := gs_DatabaseName;
+               sql.Clear;
+               sql.Add('SELECT MAX(CRPM_NOOFPRINT)+1 AS NOOFPRINT FROM HS_CRPM_CREDITPAYMENTMASTER WHERE CRPM_RECEIPTNO='+#39+gs_billno + #39);
+               Open;
+               li_noofprint := FieldByName('NOOFPRINT').AsInteger;
+               lbl_headName.Caption := 'COPY OF ORIGINAL (Print No.'+IntToStr(li_noofprint)+')';
+          end;
+          end;}
+
+          ps_ReceiptNo := Gs_BillNo;
+
+          With Query_TotalPatient do
+          Begin
+               Close;
+               SQL[2] := 'where CRPD_ReceiptNo=' + #39 + Gs_BillNo + #39;
+               Open;
+          End;
+
+          if Query_TotalPatient.FieldByName('TotalNumber').AsInteger = 1 then
+          Begin
+               lbl_Name.Caption := QryCreditBill.FieldByName('PATIENTNAME').AsString;
+               Lbl_HosNo.Caption := IntToStr(QryCreditBill.FieldByName('PATIENTID')
+               .AsInteger);
+
+               lbl_Name.Enabled := True;
+               QRLabel3.Enabled := True;
+               QRLabel18.Enabled := True;
+
+               Lbl_HosNo.Enabled := True;
+               QRLabel12.Enabled := True;
+               QRLabel19.Enabled := True;
+
+          End
+          Else
+          Begin
+               lbl_Name.Enabled := False;
+               QRLabel3.Enabled := False;
+               QRLabel18.Enabled := False;
+
+               Lbl_HosNo.Enabled := False;
+               QRLabel12.Enabled := False;
+               QRLabel19.Enabled := False;
+          End;
+
+          GetReceiptDetail;
+          Qr_Receipt.Prepare;
+          Qr_Receipt.PreviewModal;
+          pb_IsReprint := False;
+     end;
+End;
+
+procedure TFrame_CreditPayment.TreeView1Click(Sender: TObject);
+var
+  SelNode: TTreeNode;
+  NodeText, lf, ls_childNode: String;
+  IID: Integer;
+begin
+  IID := 0;
+  if TreeView1.ReadOnly = False then
+    Exit;
+  SelNode := TreeView1.Selected;
+  Label_AccHeadName.Caption := TreeView1.Selected.Text;
+  NodeText := Copy(SelNode.Text, 1, pos(' - ', SelNode.Text) - 1);
+  if NodeText <> '' then
+  begin
+    IID := StrToInt(NodeText);
+    Label_AccHeadId.Caption := IntToStr(IID);
+    pi_AccountHeadId := IID;
+    // IID:= StrToInt(NodeText);
+    qry_stateofaccount.Close;
+    qry_stateofaccount.ParamByName('id').AsInteger := IID;
+    qry_stateofaccount.Open;
+    if qry_stateofaccount.FieldByName('state').AsString = '1' then
+      Active1.Checked := True
+    else
+      Active1.Checked := False;
+
+  end;
+  // removed coz time consuming
+  // AddMyGrandChilds(IID, SelNode);
+
+  if not SelNode.HasChildren then
+  begin
+    with QueryAccTree do
+    begin
+      Close;
+      SQL.Clear;
+      SQL.Add(' SELECT ID, Name, LF, State ');
+      SQL.Add(' FROM Grande_Acc.AccTree ');
+      SQL.Add(' WHERE ParentID = ' + IntToStr(IID));
+      { if RBtn_Code.Checked then
+        sql.add(' ORDER BY LF '); }
+      { else if RBtn_AccountHead.Checked then }
+      SQL.Add(' ORDER BY Name ');
+      Open;
+    end;
+
+    with QueryAccTree do
+    begin
+      while not Eof do
+      begin
+        if FieldByName('LF').AsString <> '' then
+          ls_childNode := FieldByName('ID').AsString + ' - ' + FieldByName('LF')
+            .AsString + ' 0 ' + FieldByName('Name').AsString
+        else
+          ls_childNode := FieldByName('ID').AsString + ' - ' + FieldByName
+            ('Name').AsString;
+
+        TreeView1.Items.AddChild(SelNode, ls_childNode);
+
+        Next;
+      end;
+    end;
+  end;
+end;
+
+procedure TFrame_CreditPayment.TreeView1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = 13 then
+    TreeView1Click(Sender);
+end;
+
+Procedure TFrame_CreditPayment.ShowAccHead;
+var
+  Rootnode: TTreeNode;
+begin
+  /// BitBtnAdd.enabled:=true;
+  // BitBtnModify.enabled:=true;
+  // BitBtnSave.enabled:=false;
+  Save1.Enabled := False;
+  // BitBtnDelete.enabled:=true;
+  Rootnode := nil;
+
+  if TreeView1.Items.Count < 1 then
+  begin
+    with QueryAccTree do
+    begin
+      Close;
+      SQL.Clear;
+      SQL.Add(' SELECT ID, Name, LF, State ');
+      SQL.Add(' FROM Grande_Acc.AccTree ');
+      SQL.Add(' WHERE ParentID = 0 ');
+      Open;
+
+      TreeView1.Items.Add(Rootnode, '1 - ' + QueryAccTree.FieldByName('Name')
+          .AsString);
+    end;
+  end;
+  TreeView1.ShowButtons := True;
+
+  // AddMyChilds(1, TreeView1.TopItem);
+  AddMyGrandChilds(1, TreeView1.TopItem);
+End;
+
+procedure TFrame_CreditPayment.SPB_SetAccHeadClick(Sender: TObject);
+begin
+  dblcb_acc.KeyValue := pi_AccountHeadId;
+end;
+
+procedure TFrame_CreditPayment.AddMyGrandChilds
+  (MyId: Integer; MyNode: TTreeNode);
+var
+  QueryChilds: TQuery;
+  ChildNode: TTreeNode;
+  ls_childNode: String;
+  li_childId: Integer;
+begin
+  QueryChilds := TQuery.Create(nil);
+
+  if not MyNode.HasChildren then
+  begin
+    with QueryChilds do
+    begin
+      Close;
+      DatabaseName := gs_DataBaseName;
+      SQL.Clear;
+      SQL.Add(' SELECT * FROM Grande_Acc.AccTree WHERE ParentID = ' + IntToStr
+          (MyId));
+      if RBtn_Code.Checked then
+        SQL.Add(' ORDER BY LF ');
+      { else if RBtn_AccountHead.Checked then
+        sql.add(' ORDER BY Name '); }
+      Open;
+
+      First;
+      while not Eof do
+      begin
+        if FieldByName('LF').AsString <> '' then
+          ls_childNode := FieldByName('ID').AsString + ' - ' + FieldByName('LF')
+            .AsString + ' 0 ' + FieldByName('Name').AsString
+        else
+          ls_childNode := FieldByName('ID').AsString + ' - ' + FieldByName
+            ('Name').AsString;
+
+        TreeView1.Items.AddChild(MyNode, ls_childNode);
+
+        Next;
+      end;
+    end; // QueryChilds
+  end; // if no childs
+
+  ChildNode := MyNode.getFirstChild;
+  while ChildNode <> nil do
+  begin
+    if not ChildNode.HasChildren then
+    begin
+      with QueryChilds do
+      begin
+        li_childId := StrToInt
+          (Copy(ChildNode.Text, 1, pos(' - ', ChildNode.Text) - 1));
+
+        Close;
+        DatabaseName := gs_DataBaseName;
+        SQL.Clear;
+        SQL.Add(' SELECT * FROM Grande_Acc.AccTree WHERE ParentID = ' + IntToStr
+            (li_childId));
+        if RBtn_Code.Checked then
+          SQL.Add(' ORDER BY LF ');
+        { else if RBtn_AccountHead.Checked then
+          sql.add(' ORDER BY Name '); }
+        Open;
+
+        First;
+        while not Eof do
+        begin
+          if FieldByName('LF').AsString <> '' then
+            ls_childNode := FieldByName('ID').AsString + ' - ' + FieldByName
+              ('LF').AsString + ' 0 ' + FieldByName('Name').AsString
+          else
+            ls_childNode := FieldByName('ID').AsString + ' - ' + FieldByName
+              ('Name').AsString;
+
+          TreeView1.Items.AddChild(ChildNode, ls_childNode);
+
+          Next;
+        end;
+      end; // QueryChilds
+    end; // if no children
+
+    ChildNode := MyNode.GetNextChild(ChildNode);
+  end; // while
+
+  QueryChilds.Destroy;
+end;
+
+{ check the state of a account head whether active of passive. }
+procedure TFrame_CreditPayment.Active1Click(Sender: TObject);
+var
+  SelNode: TTreeNode;
+  state, NodeID: string;
+begin
+  // hold the selected node temporarily
+  Active1.Checked := not Active1.Checked;
+  if Active1.Checked then
+    state := '1'
+  else
+    state := '0';
+  SelNode := TreeView1.Selected;
+  NodeID := Copy(SelNode.Text, 1, pos(' - ', SelNode.Text) - 1);
+  IDofCutNode_m := StrToInt(NodeID);
+  qry_updatestate.Close;
+  qry_updatestate.CachedUpdates := True;
+  with UpdateSQL2 do
+  begin
+    SetParams(ukModify);
+    Query[ukModify].ParamByName('State').AsString := state;
+    Query[ukModify].ParamByName('Old_ID').AsInteger := IDofCutNode_m;
+    Query[ukModify].Prepare;
+    Query[ukModify].ExecSQL;
+  end;
+
+end;
+
+end.

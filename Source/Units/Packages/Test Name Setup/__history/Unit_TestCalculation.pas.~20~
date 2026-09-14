@@ -1,0 +1,326 @@
+unit Unit_TestCalculation;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, MemDS, DBAccess, Ora, DBCtrls, StdCtrls, Buttons, ExtCtrls,DM,Fxn,
+  Grids, DBGrids, ComCtrls;
+
+type
+  TForm_TestCalculation = class(TForm)
+    Panel1: TPanel;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
+    OraQuery_Calccode: TOraQuery;
+    DS_Calcode: TDataSource;
+    OraQuery_Testname: TOraQuery;
+    DS_Testname: TDataSource;
+    DS_Test: TDataSource;
+    OraQuery_Test: TOraQuery;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    View: TTabSheet;
+    Panel2: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Edit_TestCode: TEdit;
+    DBLCB_TestName: TDBLookupComboBox;
+    DBLCB_CalcCode: TDBLookupComboBox;
+    DBLCB_Test: TDBLookupComboBox;
+    DBGrid1: TDBGrid;
+    OraQuery_DbGrid: TOraQuery;
+    DS_DbGrid: TDataSource;
+    procedure FormShow(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure DBLCB_TestNameKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_TestKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_CalcCodeKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_TestNameKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_CalcCodeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_TestKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCB_TestNameClick(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure Edit_TestCodeKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+  var Pb_CheckOP:boolean;
+    { Public declarations }
+  end;
+
+var
+  Form_TestCalculation: TForm_TestCalculation;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_TestCalculation.BitBtn1Click(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex=1 then
+     begin
+          PageControl1.ActivePageIndex:=0;
+          Bitbtn2.enabled:=false;
+          Bitbtn3.enabled:=True;
+
+     end
+     else
+     close;
+
+end;
+
+procedure TForm_TestCalculation.FormShow(Sender: TObject);
+begin
+     BitBtn2.enabled:=false;
+     OraQuery_Calccode.Close;
+     OraQuery_Calccode.Session:=DM_Hospital.DB;
+     OraQuery_Calccode.Open;
+
+     OraQuery_Test.Close;
+     OraQuery_Test.Session:=DM_Hospital.DB;
+     OraQuery_Test.Open;
+
+
+     OraQuery_Testname.Close;
+     OraQuery_Testname.Session:=DM_Hospital.DB;
+     OraQuery_Testname.Open;
+     PageControl1.ActivePageIndex:=0;
+
+     OraQuery_DbGrid.Close;
+     OraQuery_DbGrid.Session:=DM_Hospital.DB;
+     OraQuery_DbGrid.Open;
+end;
+
+procedure TForm_TestCalculation.PageControl1Change(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex=0 then
+     begin
+          PageControl1.ActivePageIndex:=1;
+     end
+     else
+     PageControl1.ActivePageIndex:=0;
+end;
+
+procedure TForm_TestCalculation.BitBtn2Click(Sender: TObject);
+var Oraquery1:TOraQuery;
+var Oraquery2:TOraQuery;
+var Idmax:Integer;
+begin
+     if DBLCB_TestName.KeyValue=null then
+     begin
+          ShowMessage('Please Select TestName');
+          DBLCB_TestName.SetFocus;
+          exit;
+     end;
+     if DBLCB_CalcCode.KeyValue=null then
+     begin
+          ShowMessage('Please select Calculation Code');
+          DBLCB_CalcCode.SetFocus;
+          exit;
+     end;
+     if DBLCB_Test.KeyValue=null then
+     begin
+          ShowMessage('Please Select Test');
+          DBLCB_Test.SetFocus;
+          exit;
+     end;
+     if Trim(Edit_TestCode.text)='' then
+     begin
+          ShowMessage('Please Enter Test Code of Max 5 Character');
+          Edit_TestCode.SetFocus;
+          exit;
+     end;
+
+     if Pb_CheckOP=True then
+     begin
+          try
+               Oraquery1:=TOraQuery.Create(nil);
+               Idmax:=GetMaxId('lb_catn_calculationtestname','catn_CALCULATIONTESTID');
+               with Oraquery1 do
+               begin
+                    Close;
+                    Session:=DM_Hospital.DB;
+                    sql.Clear;
+                    sql.Add('insert into lb_catn_calculationtestname values (');
+                    sql.Add(IntToStr(Idmax)+','+QuotedStr(Trim(DBLCB_CalcCode.Text))+','+intTOStr(DBLCB_TestName.KeyValue)+','+intToStr(DBLCB_Test.KeyValue));
+                    SQL.Add(','+QuotedStr(Trim(Edit_TestCode.Text)));
+                    sql.Add(')');
+                    //sql.SaveToFile('C:\abc43.txt');
+                    ExecSQL;
+               end;
+          except
+               ShowMessage('The Data You have Entered is already Saved Or Could Not Saved');
+               exit;
+          end;
+     end
+     else
+     begin
+          Oraquery1:=TOraQuery.Create(nil);
+          with Oraquery1 do
+          begin
+               close;
+               Session:=DM_Hospital.DB;
+               sql.Clear;
+               sql.Add('update lb_catn_calculationtestname set ');
+               sql.Add(' CATN_SOURCETESTCODE='+QuotedStr(DBLCB_CalcCode.text)+',CATN_TESTID='+IntToStr(DBLCB_Test.keyvalue));
+               sql.Add(' where CATN_TESTNAMEID='+intTOStr(DBLCB_TestName.keyvalue)+' and CATN_SOURCETESTCODE='+QuotedStr(DBLCB_CalcCode.text));
+              // SQL.SaveToFile('C:\ab2.txt');
+               ExecSQL;
+          end;
+     end;
+
+     DBLCB_TestName.KeyValue:=null;
+     DBLCB_CalcCode.KeyValue:=null;
+     DBLCB_Test.KeyValue:=null;
+     Edit_TestCode.Text:='';
+     PageControl1.ActivePageIndex:=0;
+     OraQuery_DbGrid.Close;
+     OraQuery_DbGrid.Session:=DM_Hospital.DB;
+     OraQuery_DbGrid.Open;
+     BitBtn3.Enabled:=True;
+     BitBtn2.Enabled:=false;
+     Oraquery1.Free;
+     Oraquery2.Free;
+
+end;
+
+procedure TForm_TestCalculation.BitBtn3Click(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex:=1;
+     BitBtn3.Enabled:=false;
+     BitBtn2.Enabled:=True;
+     DBLCB_TestName.KeyValue:=null;
+     DBLCB_CalcCode.KeyValue:=null;
+     DBLCB_Test.KeyValue:=null;
+     Edit_TestCode.Text:='';
+     Pb_CheckOP:=True;
+     DBLCB_TestName.SetFocus;
+
+end;
+
+procedure TForm_TestCalculation.DBGrid1DblClick(Sender: TObject);
+begin
+
+     if OraQuery_DbGrid.RecordCount>0 then
+     begin
+          DBLCB_TestName.KeyValue:=OraQuery_DbGrid.FieldByName('catn_TESTNAMEID').AsInteger;
+          DBLCB_CalcCode.keyvalue:=OraQuery_DbGrid.FieldByName('SOURCETESTCODE').asString;
+          DBLCB_Test.KeyValue:=OraQuery_DbGrid.FieldByName('catn_TESTID').AsInteger;
+          Edit_TestCode.Text:=OraQuery_DbGrid.FieldByName('catn_TESTCODE').AsString;
+          PageControl1.ActivePageIndex:=1;
+          BitBtn2.enabled:=True;
+          BitBtn3.enabled:=false;
+          Pb_CheckOP:=false;
+     end;
+end;
+
+
+procedure TForm_TestCalculation.DBLCB_CalcCodeKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     if Key=VK_DELETE then
+     begin
+       DBLCB_TestName.KeyValue:=null;
+     end;
+end;
+
+procedure TForm_TestCalculation.DBLCB_CalcCodeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if Key=#13 then
+     begin
+          DBLCB_Test.SetFocus;
+     end;
+end;
+
+procedure TForm_TestCalculation.DBLCB_TestKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     if Key=VK_DELETE then
+     begin
+       DBLCB_TestName.KeyValue:=null;
+     end;
+end;
+
+procedure TForm_TestCalculation.DBLCB_TestKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          Edit_TestCode.SetFocus;
+     end;
+
+end;
+
+procedure TForm_TestCalculation.DBLCB_TestNameClick(Sender: TObject);
+begin
+     with OraQuery_Test do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          SQL.Add('select Testid,Test from test where testnameid='+inTToStr(DBLCB_TestName.KeyValue));
+          open;
+     end;
+
+     with OraQuery_Calccode do
+     begin
+          close;
+          session:=DM_Hospital.db;
+          sql.clear;
+          sql.add('select CANA_CALCULATIONID as CALCULATIONID,CANA_SOURCETESTCODE as SOURCETESTCODE from lb_cana_calculationname where CANA_TESTNAMEID='+inTToStr(DBLCB_TestName.KeyValue));
+          open;
+          DBLCB_CalcCode.KeyValue:=FieldByName('CALCULATIONID').AsInteger;
+     end;
+
+end;
+
+procedure TForm_TestCalculation.DBLCB_TestNameKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     if Key=VK_DELETE then
+     begin
+       DBLCB_TestName.KeyValue:=null;
+     end;
+end;
+
+procedure TForm_TestCalculation.DBLCB_TestNameKeyPress(Sender: TObject;
+  var Key: Char);
+//var OraQuery1:TOraQuery;
+begin
+     if key=#13 then
+     begin
+          DBLCB_CalcCode.SetFocus;
+          //OraQuery1.free;
+     end;
+end;
+
+procedure TForm_TestCalculation.Edit_TestCodeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if key=#13 then
+     begin
+          BitBtn2.setfocus;
+     end;
+end;
+
+procedure TForm_TestCalculation.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#27 then
+     begin
+          close;
+     end;
+end;
+
+end.

@@ -1,0 +1,3832 @@
+unit Unit_Verification;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,Unit_QrPatanHistoPathInvestigativeResult,Unit_QrFindingPatanLabReport,Unit_QrDeptWisePATANLABA4MicrobiologyReport,
+     Dialogs, StdCtrls, Spin, OleCtrls, DateEditXControl_TLB, CheckLst, Buttons, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Grids, DBGrids, ComCtrls,
+     fxn, serverdate, dm, Unit_master, Unit_QrInvestigativeResult, Unit_FindingFrame, Unit_QrPathInvestigativeResult,Unit_QrNeuroBrtHistoPathInvestigativeResult,Unit_QrDeptWiseEraMicrobiologyReport,Unit_QrDeptWiseEraReport,
+     Unit_ClinicalPathFinding,Unit_ClinicalPathFindingNew,Unit_SemenAnalysis,Unit_Dhulikhel_QrInvestigativeResult,Unit_QrDeptWiseNepalCancerReport,Unit_QrDeptWiseVigourMicrobiologyReport,Unit_QrDeptWiseVigourReport,
+     ExtCtrls, QRPrntr, CheckBoxGrid,Unit_TestCancel, pngimage, CustomizeDlg,Unit_QrDeptWiseShankarapurReport,Unit_QrDeptWiseShankarapurMicrobiologyReport,Unit_QrDeptWiseA4Reportkpl,Unit_ClinicalPathFindingCentralNew,QRPDFFilt,UnitEmailnMessage,
+     Unit_QrDeptWiseA4ReportNOZOMIkpl,Unit_QrDeptWiseNOZOMIMicrobiologyReport,Unit_QrDeptWiseA4Report_hetaudaref,Unit_QrDeptWiseNOZOMIMicrobiologyReport_hetaudaref,Unit_QrDeptWiseA4ReportKPLkpl,Unit_QrDeptWiseKPLMicrobiologyReport;
+type
+     TForm_Verification = class(TForm)
+          Panel2: TPanel;
+          BB_Close: TBitBtn;
+          PageControl1: TPageControl;
+          TabSheet1: TTabSheet;
+          Panel_Head: TPanel;
+          GB_PatientSearch: TGroupBox;
+          Label26: TLabel;
+          Edit_SearchCollectedList: TEdit;
+          CLB_Department: TCheckListBox;
+          GB_Searchbydate: TGroupBox;
+          Label11: TLabel;
+          SPB_From: TSpeedButton;
+          Label13: TLabel;
+          SPB_To: TSpeedButton;
+          CB_Date: TCheckBox;
+          Dex_CLFrom: TDateEditX;
+          Dex_CLTo: TDateEditX;
+          GroupBox6: TGroupBox;
+          Label31: TLabel;
+          Label32: TLabel;
+          Se_CLDays: TSpinEdit;
+          Cb_Mode: TComboBox;
+          Label1: TLabel;
+          Query_SampleCollected: TOraQuery;
+          DS_SampleCollected: TDataSource;
+          Bevel1: TBevel;
+          Panel_Parent: TPanel;
+          DBGrid1: TDBGrid;
+          DS_samplecollectedright: TDataSource;
+          Timer1: TTimer;
+          CheckBoxGrid1: TCheckBoxGrid;
+          Ds_List: TDataSource;
+          BB_Refresh: TBitBtn;
+          Query_ListOfSampleNo: TOraQuery;
+          Panel_Preview: TPanel;
+          QRPreview1: TQRPreview;
+          Panel3: TPanel;
+          BitBtn1: TBitBtn;
+          BitBtn2: TBitBtn;
+          BB_FullScreen: TBitBtn;
+          Label2: TLabel;
+          lbl_SampleNo: TLabel;
+          BB_Hide: TBitBtn;
+          SpeedButton12: TSpeedButton;
+          Rb_Verified: TRadioButton;
+          Rb_NonVerified: TRadioButton;
+          Rb_All: TRadioButton;
+          GB_Option: TGroupBox;
+          Cb_Halfpage: TCheckBox;
+          Cb_HideIndication: TCheckBox;
+          Cb_SampleSource: TCheckBox;
+          Cb_HideRange: TCheckBox;
+
+    Cb_hideall: TCheckBox;
+          Cb_Signature: TCheckBox;
+    Rb_Uploaded: TRadioButton;
+    Rb_NotUploaded: TRadioButton;
+    Rb_UAll: TRadioButton;
+    Panel1: TPanel;
+    SpeedButton4: TSpeedButton;
+    SpeedButton5: TSpeedButton;
+    Table_List: TTable;
+    Query_samplecollectedright: TOraQuery;
+    pnl_Search: TPanel;
+    img1: TImage;
+    edt_GlobalSearch: TEdit;
+    Label3: TLabel;
+    SpeedButton8: TSpeedButton;
+    Dex_Today: TDateEditX;
+    pnl_button: TPanel;
+    Sb_Preview: TSpeedButton;
+    SpeedButton6: TSpeedButton;
+    SpeedButton7: TSpeedButton;
+    sb_serdetail: TSpeedButton;
+    SPB_From1: TSpeedButton;
+    Cb_ExternalPreview: TCheckBox;
+    CB_EmergencyReporting: TCheckBox;
+    Shape1: TShape;
+    Label6: TLabel;
+    Shape2: TShape;
+    Label9: TLabel;
+    Shape3: TShape;
+    Label37: TLabel;
+    shp1: TShape;
+    lbl1: TLabel;
+    pnl1: TPanel;
+    Edit8: TEdit;
+    Edit9: TEdit;
+    Edit10: TEdit;
+    Edit11: TEdit;
+    Edit12: TEdit;
+    Edit14: TEdit;
+    Edit15: TEdit;
+    Cb_All: TCheckBox;
+    shp_gap: TShape;
+    Table_Findings: TTable;
+    Table_Footnote: TTable;
+    Table_Footer: TTable;
+    rb_UnderAnalysis: TRadioButton;
+    rb_both: TRadioButton;
+    CB_DeptypeCheck: TComboBox;
+    Label40: TLabel;
+    lbl_remarks: TLabel;
+    CB_LAbNo: TCheckBox;
+    BitBtn_ResultVerification: TBitBtn;
+    btn_SpecialTestCancel: TBitBtn;
+    OraQuery_IsMaster: TOraQuery;
+    SB_AddBlockTest: TSpeedButton;
+    CB_SearchPatient: TCheckBox;
+    oraQueryREFHOSDOC: TOraQuery;
+    Shape_SentMail: TShape;
+    Label4: TLabel;
+    QueryProcess1: TQuery;
+    BitBtn3: TBitBtn;
+    SaveDialog1: TSaveDialog;
+    OraQuery_Service: TOraQuery;
+    OraQuery_Sms: TOraQuery;
+    OraQuery_CheckSentSms: TOraQuery;
+    OraQuery_GetPassword: TOraQuery;
+    OraQuery_CheckBeforeSMS: TOraQuery;
+    Memo_Message: TMemo;
+          procedure FormCreate(Sender: TObject);
+          procedure BB_RefreshClick(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure BB_CloseClick(Sender: TObject);
+          procedure Sb_PreviewClick(Sender: TObject);
+          procedure SpeedButton2Click(Sender: TObject);
+          procedure SpeedButton3Click(Sender: TObject);
+          procedure SpeedButton4Click(Sender: TObject);
+          procedure DBGrid1CellClick(Column: TColumn);
+          procedure Query_SampleCollectedAfterScroll(DataSet: TDataSet);
+          procedure Edit_SearchCollectedListChange(Sender: TObject);
+          procedure Edit9Change(Sender: TObject);
+          procedure Cb_ModeChange(Sender: TObject);
+          procedure Timer1Timer(Sender: TObject);
+          procedure SpeedButton5Click(Sender: TObject);
+          procedure CheckBoxGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+          procedure Cb_AllClick(Sender: TObject);
+          procedure Se_CLDaysKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure BitBtn1Click(Sender: TObject);
+          procedure BitBtn2Click(Sender: TObject);
+          procedure Dex_CLFromEnter(Sender: TObject);
+          procedure BB_FullScreenClick(Sender: TObject);
+          procedure BB_HideClick(Sender: TObject);
+          procedure Edit_SearchCollectedListKeyPress(Sender: TObject; var Key: Char);
+          procedure SpeedButton12Click(Sender: TObject);
+          procedure Cb_HalfpageClick(Sender: TObject);
+          procedure Cb_HideIndicationClick(Sender: TObject);
+          procedure Cb_SampleSourceClick(Sender: TObject);
+          procedure Cb_HideRangeClick(Sender: TObject);
+          procedure Cb_SignatureClick(Sender: TObject);
+          procedure Rb_VerifiedClick(Sender: TObject);
+          procedure Rb_NonVerifiedClick(Sender: TObject);
+          procedure Rb_AllClick(Sender: TObject);
+    procedure CB_EmergencyReportingClick(Sender: TObject);
+    procedure Cb_NoResultClick(Sender: TObject);
+    procedure Sb_ResultVerificationClick(Sender: TObject);
+    procedure CRTemp_Query_samplecollectedrightAfterSmartRefresh(DataSet: TDataSet);
+    procedure FormShow(Sender: TObject);
+    procedure SPB_From1Click(Sender: TObject);
+    procedure edt_GlobalSearchKeyPress(Sender: TObject; var Key: Char);
+    procedure DBGrid1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure SpeedButton8Click(Sender: TObject);
+    procedure SPB_FromClick(Sender: TObject);
+    procedure SPB_ToClick(Sender: TObject);
+    procedure Query_samplecollectedrightAfterScroll(DataSet: TDataSet);
+    procedure Edit15Change(Sender: TObject);
+    procedure Edit14Change(Sender: TObject);
+    procedure Edit12Change(Sender: TObject);
+    procedure Edit11Change(Sender: TObject);
+    procedure Edit10Change(Sender: TObject);
+    procedure Edit8Change(Sender: TObject);
+    procedure CB_DeptypeCheckChange(Sender: TObject);
+    procedure Cb_hideallClick(Sender: TObject);
+    procedure BitBtn_ResultVerificationClick(Sender: TObject);
+    procedure btn_SpecialTestCancelClick(Sender: TObject);
+    procedure SB_AddBlockTestClick(Sender: TObject);
+    procedure CB_SearchPatientClick(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+     private
+          { Private declarations }
+          Procedure CreateTable;
+          Procedure LocateSampleNo;
+     public
+          Ps_TodaysDate,pi_TestProgress: String;
+          IsSpecialTestCancel,IsTestEdit,IsService:Boolean;
+          { Public declarations }
+          procedure CreateFindingsTable;
+          procedure GetSelectedPatientTestId;
+     end;
+
+var
+     Form_Verification: TForm_Verification;
+     Frame_Finding: Unit_FindingFrame.TFrame_Finding;
+     Frame_ClinicalPathFinding: Unit_ClinicalPathFinding.TFrame_ClinicalPathFinding;
+     Frame_ClinicalPathFindingNew: Unit_ClinicalPathFindingNew.TFrame_ClinicalPathFindingNew;
+     Frame_ClinicalPathFindingCentralNew:Unit_ClinicalPathFindingCentralNew.TFrame_ClinicalPathFindingCentralNew;
+
+implementation
+
+uses Unit_Broadcastpopup,Unit_QrMangalamHistoPathInvestigativeResult,Unit_ResultVerification,Unit_QrDeptWiseCivilHospitalReport, Unit_BroadcastStatus,Unit_QrDeptWiseGautamBuddhaReport,Unit_QrDeptWiseENTReport,Unit_QrDeptWiseDhirghayuReport, Unit_QrInvestigationPreview, Unit_ServiceDetail,Unit_Mangalam_QrInvestigativeResult,
+     Unit_QrDeptWiseNeuroBrtReport,Unit_QrDeptWiseNeuroBrtMicrobiologyReport,Unit_TestCancelNew,Unit_QrDeptWiseINTREPIDA4MicrobiologyReport,Unit_QrFindingMangalamReport,Unit_QrDeptWiseMANGALAMA4MicrobiologyReport,
+     Unit_QrPathNepalCancerRadiology, Unit_QrDeptWiseBNBReport,Unit_QrAarogyaMicrobiologyReport,Unit_QrIntrepidMicrobiologyReport,Unit_QrDeptWiseNCHRCA4MicrobiologyReport,
+     Unit_QrDeptWiseMeridianReport,Unit_QrDeptWiseGMCLABA4MicrobiologyReport_kpl,Unit_QrDeptWiseNRLLABA4MicrobiologyReport,Unit_QrFindingGMCLabReport_kpl,Unit_QrFindingIntrepidReport_KPL,Unit_QrNRLHistoPathInvestigativeResult,Unit_QrFindingNRLLabReport,Unit_QrDeptWiseGMCLABA4MicrobiologyReport,Unit_QrFindingGMCLabReport,Unit_QrGMCHistoPathInvestigativeResult,Unit_QrBNBHistoPathInvestigativeResult,Unit_QrFindingAarogyaReport,Unit_QrFindingIntrepidReport,Unit_ClinicalPathFindingReport,Unit_PatientSearch;
+{$R *.dfm}
+
+
+procedure TForm_Verification.CreateFindingsTable;
+begin
+     if FileExists(gs_temppath + '\Findings.db') then
+     begin
+          with Table_Findings do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'Findings.db';
+               DeleteTable;
+          end;
+     end;
+     with Table_Findings do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          TableName := 'Findings.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('TestNameID', ftInteger);
+          FieldDefs.Add('TestID', ftInteger);
+          FieldDefs.Add('TestHead', ftString, 64);
+          FieldDefs.Add('Test', ftString, 64);
+          FieldDefs.Add('Finding', ftString, 255);
+          FieldDefs.Add('Range', ftString, 250);
+          FieldDefs.Add('Unit', ftString, 32);
+          FieldDefs.Add('Extra', ftString, 100);
+          FieldDefs.Add('ExtraFinding', ftString, 100);
+          FieldDefs.Add('SampleNo', ftString, 32);
+          FieldDefs.Add('Flag', ftString, 3);
+          FieldDefs.Add('IsSubjective', ftString, 1);
+          FieldDefs.Add('IsHeading', ftString, 1);
+          FieldDefs.Add('CptCode', ftString, 100);
+          FieldDefs.Add('SIUnit', ftString, 5);
+          CreateTable;
+     end;
+
+     if FileExists(gs_temppath + '\FindingFooter.db') then
+     begin
+          with Table_Footer do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'FindingFooter.db';
+               DeleteTable;
+          end;
+     end;
+     with Table_Footer do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          TableName := 'FindingFooter.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('SampleNO', ftString, 64);
+          FieldDefs.Add('SampleSource', ftString, 64);
+          FieldDefs.Add('Collected', ftString, 32);
+          FieldDefs.Add('Collectedby', ftString, 32);
+          FieldDefs.Add('Received', ftString, 32);
+          FieldDefs.Add('ReceivedBy', ftString, 32);
+          CreateTable;
+     end;
+
+     if FileExists(gs_temppath + '\Footnote.db') then
+     begin
+          with Table_Footnote do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'Footnote.db';
+               DeleteTable;
+          end;
+     end;
+     with Table_Footnote do
+     begin
+          Close;
+          DatabaseName := gs_temppath;
+          TableName := 'Footnote.db';
+          TableType := ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('FootNote', ftMemo);
+          CreateTable;
+     end;
+
+end;
+procedure TForm_Verification.BB_CloseClick(Sender: TObject);
+begin
+     if FrameCleared = false then
+     begin
+          Edit_SearchCollectedList.Text := IntToStr(gi_PatientID);
+          BB_RefreshClick(Sender);
+          FreeAndNil(Frame_Finding);
+          Panel_Parent.SendToBack;
+          FrameCleared := true;
+     end
+     else
+          Close;
+end;
+
+procedure TForm_Verification.BB_RefreshClick(Sender: TObject);
+Var
+     depid: string;
+     i, li_Verified: Integer;
+     Column: TColumn;
+     refreshDate:string;
+     refreshdays:Integer;
+     refresh_date:TDateEditX;
+begin
+     CreateQuery;
+     {if gi_compileValue in [9,12,14,15,16,17] then
+     begin
+        gi_datesystem:=0;
+     end;}
+     Cb_All.Checked := false;
+     if gi_datesystem = 0 then
+          Ps_TodaysDate := TodaysDateVS  //nepali date
+     else
+          Ps_TodaysDate := TodaysDate;   //english date
+     gs_From := Dex_CLFrom.Text;
+     gs_to := Dex_CLTo.Text;
+
+     if gi_datesystem=0 then
+     begin
+       try
+        refresh_date:=TDateEditX.Create(nil);
+        //refreshdays:=(Dex_Today.VSDateAsDays-strtoint(Se_CLDays.Text));
+        refreshdays := (refresh_date.VSDateAsDays - StrtoInt(Se_CLDays.Text));
+        refresh_date.VSDateAsDays:=refreshdays;
+        refreshDate:= refresh_date.text;
+       finally
+         refresh_date.Free;
+       end;
+     end;
+
+
+     for i := 0 to CLB_Department.Items.Count - 1 do
+     begin
+          if CLB_Department.State[i] = cbChecked then
+          begin
+               if depid = '' then
+                    depid := Arr_CLB_DepartmentID[i, 0]
+               else
+                    depid := depid + ',' + Arr_CLB_DepartmentID[i, 0];
+          end;
+     end;
+
+     if Rb_Verified.Checked=true then
+          li_Verified := 5
+     else if Rb_NonVerified.Checked=true then
+          li_Verified := 4
+     else if Rb_All.Checked=true then
+          li_Verified := 0;
+
+     with Query_SampleCollected do
+     begin
+          { ALL
+            TO EMAIL
+            TO WEB
+            EMAIL  BROADCASTED
+            WEB BROADCASTED
+            }
+          Close;
+          Session:=DM_Hospital.DB;
+          if StrToInt(Se_CLDays.Text) > 0 then
+          begin
+               if gi_datesystem=1 then
+                SQL[1] := 'Where Testdate >= TO_CHAR(SYSDATE-' + Se_CLDays.Text + ',''YYYY/MM/DD'')'
+               else
+                SQL[1] := 'Where Testdate>='+quotedstr(refreshDate);
+          end
+          else
+          begin
+               if CB_Date.Checked = true then
+                    SQL[1] := 'Where Testdate Between ' + #39 + gs_From + #39 + ' And ' + #39 + gs_to + #39
+               else
+                    SQL[1] := 'Where Testdate =' + #39 + Ps_TodaysDate + #39;
+          end;
+          if depid <> '' then
+               SQL[2] := 'And DepID in (' + depid + ')'
+          else
+               SQL[2] := 'And 99=99';
+          if Cb_Mode.ItemIndex = 0 then
+          begin
+                if Rb_Verified.Checked then
+               begin
+                    if Rb_Uploaded.Checked then
+                         SQL[3] := 'And TestProgressStatus>=' + IntToStr(gi_Verification) + ' And SampleNo in (Select SampleNo from QueryCollection)'
+                    else if Rb_NotUploaded.Checked then
+                         SQL[3] := 'And TestProgressStatus>=' + IntToStr(gi_Verification) +
+                           ' And SampleNo Not in (Select SampleNo from QueryCollection)'
+                    else
+                         SQL[3] := 'And TestProgressStatus>=' + IntToStr(gi_Verification);
+               end
+               else if Rb_NonVerified.Checked then
+                    SQL[3] := 'And TestProgressStatus=' + (IntToStr(gi_Verification-1))
+               else if rb_UnderAnalysis.Checked then
+                    SQL[3] := 'And TestProgressStatus=' + (IntToStr(gi_Verification-2))
+               else if rb_both.Checked then
+                    SQL[3] := 'And TestProgressStatus between ' + (IntToStr(gi_Verification-2))+' and '+(IntToStr(gi_Verification-1))
+               else
+                    SQL[3] := 'And 99=99';
+          end
+          else if Cb_Mode.ItemIndex = 1 then
+               SQL[3] := 'And billno in (select billno from billmaster where tobe_senttoemail=''Y'')' + 'And TestProgressStatus>=' + IntToStr
+                 (gi_Investigation)
+          else if Cb_Mode.ItemIndex = 2 then
+               SQL[3] := 'And billno in (select billno from billmaster where tobe_senttoweb=''Y'')' + 'And TestProgressStatus>=' + IntToStr
+                 (gi_Investigation)
+          else if Cb_Mode.ItemIndex = 3 then
+               SQL[3] := 'And billno in (select billno from billmaster where senttoemail=''Y'')' + 'And TestProgressStatus>=' + IntToStr
+                 (gi_Investigation)
+          else if Cb_Mode.ItemIndex = 4 then
+               SQL[3] := 'And billno in (select billno from billmaster where senttoemail=''Y'')' + 'And TestProgressStatus>=' + IntToStr
+                 (gi_Investigation);
+          //SQL[6] := ' And DepID in ('+gs_UserDepId+') And DepType='+#39+GetUserDepType(gi_UserID)+#39;
+            SQL[6] := ' And DepID in ('+gs_UserDepId+') And DepType='+#39+gs_DepType+#39;
+         // SQL.SaveToFile('c:\checkdepid.txt');
+          Open;
+     end;
+      with Query_samplecollectedright do
+     begin
+          { ALL
+            REPORT ENTERED
+            VERIFIED
+            TO BROADCAST
+            BROADCASTED
+            SUSPENDED }
+          Close;
+          Session:=DM_Hospital.DB;
+          if gi_compileValue=16 then
+          SQL[0]:='select rownum as sno,a.* from (Select Distinct PatientID,PatientName,TestDate,SampleNo,title,agesex From VW_SAMPLE_COLLECTED';
+          if StrToInt(Se_CLDays.Text) > 0 then
+          begin
+             if gi_datesystem=1 then
+                SQL[1] := 'Where Testdate>= TO_CHAR(SYSDATE-' + Se_CLDays.Text + ',''YYYY/MM/DD'')'
+               else
+                SQL[1] := 'Where Testdate>='+QuotedStr(refreshDate);
+          end
+          else
+          begin
+               if CB_Date.Checked = true then
+                    SQL[1] := 'Where Testdate Between ' + #39 + gs_From + #39 + ' And ' + #39 + gs_to + #39
+               else
+                    SQL[1] := 'Where Testdate =' + #39 + Ps_TodaysDate + #39;
+          end;
+          if depid <> '' then
+               SQL[2] := 'And DepID in (' + depid + ')'
+          else
+               SQL[2] := 'And 99=99';
+
+          if Cb_Mode.ItemIndex = 0 then
+          begin
+               if Rb_Verified.Checked then
+               begin
+                    if Rb_Uploaded.Checked then
+                         SQL[3] := 'And TestProgressStatus>=' + IntToStr(gi_Verification) + ' And SampleNo in (Select SampleNo from QueryCollection)'
+                    else if Rb_NotUploaded.Checked then
+                         SQL[3] := 'And TestProgressStatus>=' + IntToStr(gi_Verification) +
+                           ' And SampleNo Not in (Select SampleNo from QueryCollection)'
+                    else
+                         SQL[3] := 'And TestProgressStatus>=' + IntToStr(gi_Verification);
+               end
+               else if Rb_NonVerified.Checked then
+                    SQL[3] := 'And TestProgressStatus=' + (IntToStr(gi_Verification-1))
+               else if rb_UnderAnalysis.Checked then
+                    SQL[3] := 'And TestProgressStatus=' + (IntToStr(gi_Verification-2))
+               else if rb_both.Checked then
+                    SQL[3] := 'And TestProgressStatus between ' + (IntToStr(gi_Verification-2))+' and '+(IntToStr(gi_Verification-1))
+               else
+                    SQL[3] := 'And 99=99';
+          end
+          else if Cb_Mode.ItemIndex = 1 then
+               SQL[3] := 'And billno in (select billno from billmaster where tobe_senttoemail=''Y'')' + 'And TestProgressStatus>=' + IntToStr
+                 (gi_Investigation)
+          else if Cb_Mode.ItemIndex = 2 then
+               SQL[3] := 'And billno in (select billno from billmaster where tobe_senttoweb=''Y'')' + 'And TestProgressStatus>=' + IntToStr
+                 (gi_Investigation)
+          else if Cb_Mode.ItemIndex = 3 then
+               SQL[3] := 'And billno in (select billno from billmaster where senttoemail=''Y'')' + 'And TestProgressStatus>=' + IntToStr
+                 (gi_Investigation)
+          else if Cb_Mode.ItemIndex = 4 then
+               SQL[3] := 'And billno in (select billno from billmaster where senttoemail=''Y'')' + 'And TestProgressStatus>=' + IntToStr
+                 (gi_Investigation);
+          //SQL[5] := 'And DepID in ('+gs_UserDepId+') And DepType='+#39+GetUserDepType(gi_UserID)+#39;
+          SQL[5] := ' And DepID in ('+gs_UserDepId+') And DepType='+#39+gs_DepType+#39;
+          SQL[6]:='and 1=1';
+          //SQL.SaveToFile('c:\Query_samplecollectedright.txt');
+          Open;
+     end;
+     DBGrid1CellClick(Column);
+end;
+
+procedure TForm_Verification.BitBtn1Click(Sender: TObject);
+Var
+     Column: TColumn;
+begin
+     // Query_ListOfSampleNo.Next;
+     // Query_samplecollectedright.Locate('PatientID', Query_ListOfSampleNo.FieldByName('PatientID').AsInteger, []);
+     Query_samplecollectedright.Next;
+     DBGrid1CellClick(Column);
+     Sb_PreviewClick(Sender);
+end;
+
+procedure TForm_Verification.BitBtn2Click(Sender: TObject);
+Var
+     Column: TColumn;
+begin
+     Query_samplecollectedright.Prior;
+     DBGrid1CellClick(Column);
+     Sb_PreviewClick(Sender);
+end;
+
+procedure TForm_Verification.BitBtn3Click(Sender: TObject);
+begin
+
+     if (Table_List.FieldByName('TestProgressStatus').AsInteger >= 5) then
+     begin
+           SaveDialog1.FileName:=intToStr(gi_PatientID)+'.pdf';
+           if SaveDialog1.Execute then
+           begin
+              //  (SaveDialog1.FileName + '.pdf');
+
+               CreateQuery;
+               CreateFindingsTable;
+
+               gb_QRHeadFoot:=false;
+               (*gi_PatientID := Query_SampleCollected.FieldByName('PatientID').AsInteger;
+               gi_InPatientID := Query_SampleCollected.FieldByName('InPatientID').AsInteger;
+               gi_PatientTestID := Query_SampleCollected.FieldByName('PatientTestId').AsInteger;
+               Gs_BillNo := Query_SampleCollected.FieldByName('BillNo').AsString;
+               gs_SampleNo := Query_SampleCollected.FieldByName('SampleNo').AsString;
+               gs_TestDate := Query_SampleCollected.FieldByName('TestDate').AsString;
+               Gi_DepID:= Query_SampleCollected.FieldByName('DepID').AsInteger;
+               gi_TestNameId:= Query_SampleCollected.FieldByName('TestNameID').AsInteger;*)
+
+               gi_PatientID := Table_List.FieldByName('PatientID').AsInteger;
+               Gs_BillNo := Table_List.FieldByName('BillNo').AsString;
+               gi_TestNameId := Table_List.FieldByName('TestNameId').AsInteger;
+               gs_TestName := Table_List.FieldByName('TestName').AsString;
+               gs_SampleNo := Table_List.FieldByName('SampleNo').AsString;
+               gs_TestNameCode := Table_List.FieldByName('TestNameCode').AsString;
+               gi_PatientTestID := Table_List.FieldByName('PatientTestId').AsInteger;
+               gs_TestDate := Table_List.FieldByName('TestDate').AsString;
+               Gi_DepID:=Table_List.FieldByName('DepID').AsInteger;
+
+
+               GetSelectedPatientTestId;
+               gb_PrintSelected := false;
+
+
+               if Gi_DepID=2 then
+               begin
+                    Try
+                         Form_QrDeptWiseNCHRCA4MicrobiologyReport := TForm_QrDeptWiseNCHRCA4MicrobiologyReport.Create(nil);
+                         Form_QrDeptWiseNCHRCA4MicrobiologyReport.Qr_NCHRCA4Microbiology.Prepare;
+
+                         Form_QrDeptWiseNCHRCA4MicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseNCHRCA4MicrobiologyReport.Qr_NCHRCA4Microbiology.QRPrinter.PageCount);
+                         Form_QrDeptWiseNCHRCA4MicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseNCHRCA4MicrobiologyReport.Qr_NCHRCA4Microbiology.QRPrinter.PageCount);
+
+                         Form_QrDeptWiseNCHRCA4MicrobiologyReport.Qr_NCHRCA4Microbiology.ExportToFilter(TQRPDFDocumentFilter.Create( SaveDialog1.FileName));
+                    Finally
+                         Form_QrDeptWiseNCHRCA4MicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                    End;
+               end
+               else
+               begin
+                    Try
+
+                       Form_QrDeptWiseBioDiagReportKpl := TForm_QrDeptWiseBioDiagReportKpl.Create(nil);
+                       Form_QrDeptWiseBioDiagReportKpl.Qr_NMCA4DeptWise.Prepare;
+                       Form_QrDeptWiseBioDiagReportKpl.lbl_totpage.Caption :=IntToStr(Form_QrDeptWiseBioDiagReportKpl.Qr_NMCA4DeptWise.QRPrinter.PageCount);
+                       Form_QrDeptWiseBioDiagReportKpl.lbl_totpageh.Caption:=IntToStr(Form_QrDeptWiseBioDiagReportKpl.Qr_NMCA4DeptWise.QRPrinter.PageCount);
+                       //Form_QrDeptWiseBioDiagReportKpl.QRLabel_ReportHeader.Caption:='Test Report Form ' +ComboBox_ReportHeading.Text;
+
+                       Form_QrDeptWiseBioDiagReportKpl.Qr_NMCA4DeptWise.ExportToFilter(TQRPDFDocumentFilter.Create( SaveDialog1.FileName));
+                    Finally
+                          Form_QrDeptWiseBioDiagReportKpl.Free;
+                          Query_SampleCollected.Close;
+                          Query_SampleCollected.Open;
+                    End;
+               end;
+           end;
+
+     end
+     else
+     begin
+          ShowMessage('Only the Verified Report Can be Saved !!!');
+          Exit;
+     end;
+
+end;
+
+procedure TForm_Verification.BitBtn_ResultVerificationClick(Sender: TObject);
+begin
+     try
+        Form_ResultVerification:=TForm_ResultVerification.Create(nil);
+        Form_ResultVerification.ShowModal;
+     finally
+        Form_ResultVerification.Free;
+        //BitBtn4.Enabled:=False;
+        //BitBtn3.Enabled:=False;
+        //BitBtn2.Enabled:=False;
+        //BitBtn1.Enabled:=False;
+        //shp_map.Visible:=False;
+        //shp_setup.Visible:=False;
+     end;
+end;
+
+procedure TForm_Verification.btn_SpecialTestCancelClick(Sender: TObject);
+Var
+     I:Integer;
+begin
+
+     Try
+          Form_TestCancelNew := TForm_TestCancelNew.Create(Nil);
+          with Form_TestCancelNew do
+          begin
+               IsSpecialTestCancel:=True;
+               lbl_Patientid.Caption:=IntToStr(gi_PatientID);
+               lbl_SampleNo.Caption:=gs_SampleNo;
+               lbl_PatientName.Caption:=Query_samplecollectedright.FieldByName('PatientName').AsString;
+               ps_canceltestpatienttesid:='';
+               // *****************Load into CheckBox list************************************
+               chklst_testname.Items.Clear;
+               I := 0;
+               SetLength(Arr_CLB_Patienttestid, Table_List.RecordCount);
+               pi_testcount:= Table_List.RecordCount;
+               with Table_List do
+               begin
+                  First;
+                  while not eof do
+                  begin
+                      SetLength(Arr_CLB_Patienttestid[I], 2);
+                      chklst_testname.Items.Add(FieldByName('TestName').AsString);
+                      Arr_CLB_Patienttestid[I, 0] := FieldByName('patienttestId').AsString;
+                      Arr_CLB_Patienttestid[I, 1] := Trim(FieldByName('TestName').AsString);
+
+                      if ps_canceltestpatienttesid='' then
+                         ps_canceltestpatienttesid:=Arr_CLB_Patienttestid[I, 0]
+                      else
+                         ps_canceltestpatienttesid:=ps_canceltestpatienttesid+','+Arr_CLB_Patienttestid[I, 0];
+                      Inc(I);
+                      Next;
+                  end;
+               end;
+               //*******************************************************************************
+          end;
+          Form_TestCancelNew.ShowModal;
+     Finally
+          Form_TestCancelNew.Free;
+     End;
+end;
+
+procedure TForm_Verification.BB_HideClick(Sender: TObject);
+begin
+     Panel_Preview.Visible := false
+end;
+
+procedure TForm_Verification.BB_FullScreenClick(Sender: TObject);
+begin
+     if Panel_Preview.Align = alNone then
+     begin
+          Panel_Preview.Align := alClient;
+          BB_FullScreen.Visible := false;
+     end;
+end;
+
+procedure TForm_Verification.Cb_HalfpageClick(Sender: TObject);
+begin
+     if Cb_Halfpage.Checked = true then
+          gb_isHalfPage := true
+     else
+          gb_isHalfPage := false;
+end;
+
+procedure TForm_Verification.Cb_hideallClick(Sender: TObject);
+begin
+
+//     if Cb_hideall.Checked then
+//     begin
+//        gb_HideUFRM:=True;
+//     end
+//     else
+//     begin
+//        gb_HideUFRM:=False;
+//     end;
+end;
+
+procedure TForm_Verification.Cb_HideIndicationClick(Sender: TObject);
+begin
+     if gi_compileValue=3 then
+     begin
+        if Cb_HideIndication.Checked then
+              gb_hideunitRange := true
+        else
+              gb_hideunitRange := false;
+     end
+     else
+     begin
+         if Cb_HideIndication.Checked then
+              gb_HideIndication := true
+         else
+              gb_HideIndication := false;
+     end;
+
+end;
+
+procedure TForm_Verification.Cb_HideRangeClick(Sender: TObject);
+begin
+//     if Cb_HideRange.Checked then
+//          gb_HideUnitFlagRefrange := true
+//     else
+//          gb_HideUnitFlagRefrange := false;
+     if Cb_HideRange.Checked then
+          gb_ReportLineRemove := true
+     else
+          gb_ReportLineRemove := false;
+
+end;
+
+procedure TForm_Verification.Cb_ModeChange(Sender: TObject);
+begin
+     BB_RefreshClick(Sender);
+end;
+
+procedure TForm_Verification.Cb_NoResultClick(Sender: TObject);
+Var
+     Column:TColumn;
+begin
+     DBGrid1CellClick(Column);
+end;
+
+procedure TForm_Verification.Cb_SampleSourceClick(Sender: TObject);
+begin
+     if Cb_SampleSource.Checked then
+          gb_HideSource := true
+     else
+          gb_HideSource := false;
+end;
+
+procedure TForm_Verification.CB_SearchPatientClick(Sender: TObject);
+begin
+     if CB_SearchPatient.Checked=True then
+     begin
+           try
+               Form_PatientSearch := TForm_PatientSearch.Create(nil);
+
+               Form_PatientSearch.ShowModal;
+          finally
+               Form_PatientSearch.Free;
+          end;
+     end;
+end;
+
+procedure TForm_Verification.Cb_SignatureClick(Sender: TObject);
+begin
+     if Cb_Signature.Checked then
+          gb_Signature := true
+     else
+          gb_Signature := false;
+end;
+
+procedure TForm_Verification.CB_DeptypeCheckChange(Sender: TObject);
+begin
+      if CB_DeptypeCheck.ItemIndex=0 then
+      begin
+          gs_DepType:='P' ;
+          gs_ReportFooterRegulation:='C';
+      end
+     else if CB_DeptypeCheck.ItemIndex=1 then
+          gs_DepType:='H'
+     else if CB_DeptypeCheck.ItemIndex=2 then
+          gs_DepType:='R';
+
+     BB_RefreshClick(Sender);
+
+    {gs_DepType:=Trim(cb_staffdepartment.Text);
+    BB_RefreshClick(sender);}
+end;
+
+procedure TForm_Verification.Cb_AllClick(Sender: TObject);
+begin
+     if Cb_All.Checked then
+          ToogleCheckState(Table_List, true)
+     else
+          ToogleCheckState(Table_List, false);
+end;
+
+procedure TForm_Verification.CB_EmergencyReportingClick(Sender: TObject);
+begin
+     if CB_EmergencyReporting.Checked then
+          gb_IsEmergencyReporting:=True
+     Else
+          gb_IsEmergencyReporting:=False;
+end;
+
+procedure TForm_Verification.CheckBoxGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+     State: TGridDrawState);
+begin
+     if (Table_List.FieldByName('TestProgressStatus').AsInteger = 4) then
+     begin
+          with CheckBoxGrid1.Canvas do
+          begin
+               Brush.Color := clWebRosyBrown;
+               Font.Color := clWhite;
+          end;
+          if DataCol in [0 .. 7] then
+               CheckBoxGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     end;
+     if (Table_List.FieldByName('TestProgressStatus').AsInteger = 5) then
+     begin
+          with CheckBoxGrid1.Canvas do
+          begin
+               Brush.Color := clWebDarkOrange;
+               Font.Color := clWhite;
+          end;
+          if DataCol in [0 .. 7] then
+               CheckBoxGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     end;
+     if (Table_List.FieldByName('TestProgressStatus').AsInteger = 6) then
+     begin
+          with CheckBoxGrid1.Canvas do
+          begin
+               Brush.Color := clWebGreen;
+               Font.Color := clWhite;
+          end;
+          if DataCol in [0 .. 7] then
+               CheckBoxGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     end;
+
+     if (Table_List.FieldByName('CancelStatus').AsString='Y') then
+     begin
+          with CheckBoxGrid1.Canvas do
+          begin
+               Brush.Color := clWebBlueViolet;
+               Font.Color := clWhite;
+          end;
+          if DataCol in [0 .. 7] then
+               CheckBoxGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+     end;
+
+     if (Table_List.FieldByName('ismailSent').AsString = 'Y') then
+     begin
+          if gs_CalledFrom = 'BROADCAST' then
+          begin
+               with CheckBoxGrid1.Canvas do
+               begin
+                    Brush.Color := clWebRoyalBlue;
+                    Font.Color := clWhite;
+               end;
+               if DataCol in [4] then
+                    CheckBoxGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+          end;
+     end;
+
+end;
+
+procedure TForm_Verification.CreateTable;
+begin
+     if FileExists(gs_temppath + '\Verification.db') then
+     begin
+          With Table_List do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               TableName := 'Verification.db';
+               EmptyTable;
+          end;
+     end;
+     with Table_List do
+     begin
+          Close;
+          TableName := 'Verification.db';
+          TableType := ttDefault;
+          DatabaseName := gs_temppath;
+          FieldDefs.Clear;
+          FieldDefs.Add('PatientTestID', ftInteger);
+          FieldDefs.Add('PatientID', ftInteger);
+          FieldDefs.Add('DepID', ftInteger);
+          FieldDefs.Add('TestProgressStatus', ftInteger);
+          FieldDefs.Add('TestDate', ftString, 10);
+          FieldDefs.Add('TestNameID', ftInteger);
+          FieldDefs.Add('TestNameCode', ftString, 15);
+          FieldDefs.Add('BillNo', ftString, 15);
+          FieldDefs.Add('TestTime', ftString, 10);
+          FieldDefs.Add('SampleNo', ftString, 12);
+          FieldDefs.Add('TestName', ftString, 200);
+          FieldDefs.Add('REFHOSNAME', ftString,50);
+          FieldDefs.Add('REFDOCNAME', ftString, 50);
+          FieldDefs.Add('IdentificationNo', ftString, 200);
+          FieldDefs.Add('CollectedBy', ftString, 32);
+          FieldDefs.Add('FindingPostBy', ftString, 32);
+          FieldDefs.Add('Verifiedby', ftString, 32);
+          FieldDefs.Add('CancelStatus', ftString, 1);
+          FieldDefs.Add('Labno',ftString,6);
+          FieldDefs.Add('IsMailSent',ftString,1);
+          //FieldDefs.Add('Mobileno', ftString, 10);
+          FieldDefs.Add('State', ftBoolean);
+          CreateTable;
+     end;
+end;
+
+procedure TForm_Verification.DBGrid1CellClick(Column: TColumn);
+Var
+     i: Integer;
+begin
+     if Query_samplecollectedright.FieldByName('PatientId').AsString <> '' then
+     begin
+          gi_PatientID := Query_samplecollectedright.FieldByName('PatientId').AsInteger;
+          gs_SampleNo := Query_samplecollectedright.FieldByName('SampleNo').AsString;
+          gs_patientType:= Copy(Query_samplecollectedright.FieldByName('PatientType').AsString,0,3);
+     end
+     else
+          gi_PatientID := 0;
+     with Query_SampleCollected do
+     begin
+          Close;
+          SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+          SQL[5] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+//          if Cb_NoResult.Checked then
+//          begin
+//               SQL[8] := 'And TestProgressStatus='+IntToStr(gi_SampleColl);
+//               Gb_ShowTestWithoutResult:=True;
+//          end
+//          else
+//          begin
+//               SQL[8] := 'And 99=99';
+//               Gb_ShowTestWithoutResult:=False;
+//          end;
+          SQL.SaveToFile('tt.txt');
+          Open;
+          i := 0;
+          CreateTable;
+          with Table_List do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               EmptyTable;
+               Open;
+          end;
+          while not Eof do
+          begin
+               with Table_List do
+               begin
+                    Append;
+                    FieldByName('PatientTestId').AsInteger := Query_SampleCollected.FieldByName('PatientTestId').AsInteger;
+                    FieldByName('PatientID').AsInteger := Query_SampleCollected.FieldByName('PatientID').AsInteger;
+                    FieldByName('DepID').AsInteger := Query_SampleCollected.FieldByName('DepID').AsInteger;
+                    FieldByName('TestProgressStatus').AsInteger := Query_SampleCollected.FieldByName('TestProgressStatus').AsInteger;
+                    FieldByName('TestDate').AsString := Query_SampleCollected.FieldByName('TestDate').AsString;
+                    FieldByName('TestNameID').AsInteger := Query_SampleCollected.FieldByName('TestNameID').AsInteger;
+                    FieldByName('TestNameCode').AsString := Query_SampleCollected.FieldByName('TestNameCode').AsString;
+                    FieldByName('IdentificationNo').AsString := Query_SampleCollected.FieldByName('IdentificationNo').AsString;
+                    FieldByName('BillNo').AsString := Query_SampleCollected.FieldByName('BillNo').AsString;
+                    FieldByName('TestTime').AsString := Query_SampleCollected.FieldByName('TestTime').AsString;
+                    FieldByName('SampleNo').AsString := Query_SampleCollected.FieldByName('SampleNo').AsString;
+                    FieldByName('TestName').AsString := Query_SampleCollected.FieldByName('TestName').AsString;
+                    FieldByName('REFHOSNAME').AsString := Query_SampleCollected.FieldByName('REFHOSNAME').AsString;
+                    FieldByName('REFDOCNAME').AsString := Query_SampleCollected.FieldByName('REFDOCNAME').AsString;
+                    FieldByName('CollectedBy').AsString := Query_SampleCollected.FieldByName('CollectedBy').AsString;
+                    FieldByName('FindingPostBy').AsString := Query_SampleCollected.FieldByName('FindingPostBy').AsString;
+                    FieldByName('VerifiedBy').AsString := Query_SampleCollected.FieldByName('VerifiedBy').AsString;
+                    FieldByName('CancelStatus').AsString := Query_SampleCollected.FieldByName('CancelStatus').AsString;
+                    FieldByname('labno').AsString:= Query_SampleCollected.FieldByName('labno').AsString;
+                    FieldByname('ismailsent').AsString:= Query_SampleCollected.FieldByName('ismailsent').AsString;
+                    //FieldByName('mobileno').AsString := Query_SampleCollected.FieldByName('mobileno').AsString;
+                    FieldByName('State').AsString := 'False';
+                    Post;
+               end;
+               Next;
+          end;
+     end;
+     lbl_SampleNo.Caption := Query_SampleCollected.FieldByName('SampleNo').AsString;
+
+     lbl_remarks.Caption:='';
+      //.........For showing sample remarks............//
+     if getsampleremarks(gs_SampleNo)<>'' then
+     begin
+       lbl_remarks.Visible:=True;
+       lbl_remarks.Caption:='Remarks :'+' '+getsampleremarks(gs_SampleNo);
+     end
+     else
+       lbl_remarks.visible:=false;
+     //************************************************//
+end;
+
+procedure TForm_Verification.DBGrid1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+  var
+  i:Integer;
+begin
+if (Key=VK_UP) or (Key=VK_DOWN) then
+begin
+    if Query_samplecollectedright.FieldByName('PatientId').AsString <> '' then
+     begin
+          gi_PatientID := Query_samplecollectedright.FieldByName('PatientId').AsInteger;
+          gs_SampleNo := Query_samplecollectedright.FieldByName('SampleNo').AsString;
+     end
+     else
+          gi_PatientID := 0;
+     with Query_SampleCollected do
+     begin
+          Close;
+          SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+          SQL[5] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+//          if Cb_NoResult.Checked then
+//          begin
+//               SQL[8] := 'And TestProgressStatus='+IntToStr(gi_SampleColl);
+//               Gb_ShowTestWithoutResult:=True;
+//          end
+//          else
+//          begin
+//               SQL[8] := 'And 99=99';
+//               Gb_ShowTestWithoutResult:=False;
+//          end;
+          Open;
+          i := 0;
+          with Table_List do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               EmptyTable;
+               Open;
+          end;
+          while not Eof do
+          begin
+               with Table_List do
+               begin
+                    Append;
+                    FieldByName('PatientTestId').AsInteger := Query_SampleCollected.FieldByName('PatientTestId').AsInteger;
+                    FieldByName('PatientID').AsInteger := Query_SampleCollected.FieldByName('PatientID').AsInteger;
+                    FieldByName('DepID').AsInteger := Query_SampleCollected.FieldByName('DepID').AsInteger;
+                    FieldByName('TestProgressStatus').AsInteger := Query_SampleCollected.FieldByName('TestProgressStatus').AsInteger;
+                    FieldByName('TestDate').AsString := Query_SampleCollected.FieldByName('TestDate').AsString;
+                    FieldByName('TestNameID').AsInteger := Query_SampleCollected.FieldByName('TestNameID').AsInteger;
+                    FieldByName('TestNameCode').AsString := Query_SampleCollected.FieldByName('TestNameCode').AsString;
+                    FieldByName('IdentificationNo').AsString := Query_SampleCollected.FieldByName('IdentificationNo').AsString;
+                    FieldByName('BillNo').AsString := Query_SampleCollected.FieldByName('BillNo').AsString;
+                    FieldByName('TestTime').AsString := Query_SampleCollected.FieldByName('TestTime').AsString;
+                    FieldByName('SampleNo').AsString := Query_SampleCollected.FieldByName('SampleNo').AsString;
+                    FieldByName('TestName').AsString := Query_SampleCollected.FieldByName('TestName').AsString;
+                    FieldByName('REFHOSNAME').AsString := Query_SampleCollected.FieldByName('REFHOSNAME').AsString;
+                    FieldByName('REFDOCNAME').AsString := Query_SampleCollected.FieldByName('REFDOCNAME').AsString;
+                    FieldByName('CollectedBy').AsString := Query_SampleCollected.FieldByName('CollectedBy').AsString;
+                    FieldByName('FindingPostBy').AsString := Query_SampleCollected.FieldByName('FindingPostBy').AsString;
+                    FieldByName('VerifiedBy').AsString := Query_SampleCollected.FieldByName('VerifiedBy').AsString;
+                    FieldByName('CancelStatus').AsString := Query_SampleCollected.FieldByName('CancelStatus').AsString;
+                    FieldByName('IsMailSent').AsString := Query_SampleCollected.FieldByName('IsMailSent').AsString;
+                    FieldByName('State').AsString := 'False';
+                    Post;
+               end;
+               Next;
+          end;
+     end;
+     lbl_SampleNo.Caption := Query_SampleCollected.FieldByName('SampleNo').AsString;
+end;
+end;
+
+procedure TForm_Verification.Dex_CLFromEnter(Sender: TObject);
+begin
+     CB_Date.Checked := true;
+end;
+
+procedure TForm_Verification.Edit10Change(Sender: TObject);
+begin
+     with Table_List do
+     Begin
+          IF trim(Edit10.Text) <> '' Then
+          Begin
+               Filter := 'testdate =' + #39 + Edit10.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TForm_Verification.Edit11Change(Sender: TObject);
+begin
+     with Table_List do
+     Begin
+          IF trim(Edit11.Text) <> '' Then
+          Begin
+               Filter := 'billno =' + #39 + Edit11.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TForm_Verification.Edit12Change(Sender: TObject);
+begin
+     with Table_List do
+     Begin
+          IF trim(Edit12.Text) <> '' Then
+          Begin
+               Filter := 'testtime =' + #39 + Edit12.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TForm_Verification.Edit14Change(Sender: TObject);
+begin
+     with Table_List do
+     Begin
+          IF trim(Edit14.Text) <> '' Then
+          Begin
+               Filter := 'sampleno =' + #39 + Edit14.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TForm_Verification.Edit15Change(Sender: TObject);
+begin
+     with Table_List do
+     Begin
+          IF trim(Edit15.Text) <> '' Then
+          Begin
+               Filter := 'testname =' + #39 + Edit15.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+     //BB_RefreshClick(Sender);
+end;
+
+procedure TForm_Verification.Edit8Change(Sender: TObject);
+begin
+     with Query_samplecollectedright do
+     Begin
+          IF Edit8.Text <> '' Then
+          Begin
+               Filter := 'Patientid =' + #39 + Edit8.Text  + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+     //BB_RefreshClick(Sender);
+end;
+
+procedure TForm_Verification.Edit9Change(Sender: TObject);
+begin
+     with Query_samplecollectedright do
+     Begin
+          IF trim(Edit9.Text) <> '' Then
+          Begin
+               Filter := 'PatientName =' + #39 + Edit9.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+     //BB_RefreshClick(Sender);
+
+end;
+
+procedure TForm_Verification.Edit_SearchCollectedListChange(Sender: TObject);
+begin
+     {Edit_SearchCollectedList.Text := StringReplace(Edit_SearchCollectedList.Text, '''', '''''', [rfReplaceAll]);
+     with Query_samplecollectedright do
+     Begin
+          IF trim(Edit_SearchCollectedList.Text) <> '' Then
+          Begin
+               if IsStrANumber(Edit_SearchCollectedList.Text) then
+                    Filter := 'PatientID =' + #39 + Edit_SearchCollectedList.Text + #39
+               else
+                    Filter := 'PatientName =' + #39 + Edit_SearchCollectedList.Text + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := False;
+     End;
+     BB_RefreshClick(Sender); }
+
+end;
+
+procedure TForm_Verification.Edit_SearchCollectedListKeyPress(Sender: TObject; var Key: Char);
+Var
+     li_PatientID: String;
+begin
+    if Key = #13 then
+     begin
+          Edit_SearchCollectedList.Text := StringReplace(Edit_SearchCollectedList.Text, '''', '''''', [rfReplaceAll]);
+          with Query_samplecollectedright do
+          Begin
+               IF trim(Edit_SearchCollectedList.Text) <> '' Then
+               Begin
+                    if IsStrANumber(Edit_SearchCollectedList.Text) then
+                         Filter := 'PatientID =' + #39 + Edit_SearchCollectedList.Text + #39
+                    else
+                         Filter := 'PatientName =' + #39 + Edit_SearchCollectedList.Text + '*' + #39;
+                    Filtered := true;
+               End
+               Else
+                    Filtered := False;
+          End;
+         // BB_RefreshClick(Sender);
+     end;
+end;
+
+procedure TForm_Verification.edt_GlobalSearchKeyPress(Sender: TObject;
+  var Key: Char);
+var
+     Qry_1:TOraQuery;
+     PatientID:String;
+     Column:TColumn;
+     refreshDate:string;
+     refreshdays:Integer;
+     refresh_date:TDateEditX;
+begin
+     if gi_datesystem=0 then
+     begin
+       try
+        refresh_date:=TDateEditX.Create(nil);
+        refreshdays:=(Dex_Today.VSDateAsDays-strtoint(Se_CLDays.Text));
+        refresh_date.VSDateAsDays:=refreshdays;
+        refreshDate:= refresh_date.text;
+       finally
+         refresh_date.Free;
+       end;
+     end;
+
+
+
+     if (IsHistoCytoUser)   then         //Search in clinical report finding wise..
+     begin
+         if Key=#13 then
+         begin
+              if Trim(Edt_GlobalSearch.Text)<>'' then
+              begin
+                   Qry_1:=TOraQuery.Create(Nil);
+                   with qry_1 do
+                   begin
+                        Close;
+                        Session:=DM_Hospital.DB;
+                        Sql.Clear;
+                        Sql.Add('select * from PatientClinicalTestDetail');
+                        Sql.Add('Where Upper(Finding_Rich) like ''%'+StringReplace(Edt_GlobalSearch.Text,'''','''''',[rfReplaceAll])+'%'' ');
+                        Sql.Add('And PatientTestID in (Select PatientTestId from '+gs_Hos_DB_UserName+'.PatientTest');
+                        Sql.Add('Where Testdate>= TO_CHAR(SYSDATE-' + Se_CLDays.Text + ',''YYYY/MM/DD''))');
+                        Open;
+                        PatientID:='0';
+                        while not eof do
+                        begin
+                             if PatientID='' then
+                                  PatientID:=FieldByName('PatientId').AsString
+                             else
+                                  PatientID:=PatientID+','+FieldByName('PatientId').AsString;
+                             Next;
+                        end;
+                   end;
+              end;
+         end;
+     end
+     else      //search test wise
+     begin
+       if Key=#13 then
+         begin
+              if Trim(Edt_GlobalSearch.Text)<>'' then
+              begin
+                   Qry_1:=TOraQuery.Create(Nil);
+
+                   with Qry_1 do
+                   begin
+                        Close;
+                        Session:=DM_Hospital.DB;
+                        Sql.Clear;
+                        sql.Add('select * from '+gs_Hos_DB_UserName+'.patienttest  ');
+                        if CB_LAbNo.Checked=False then
+                        begin
+
+                             sql.Add('where testnameid in (select tena_testnameid from '+gs_Hos_DB_UserName+'.hs_tena_testname where tena_testname like ''%'+StringReplace(Edt_GlobalSearch.Text,'''','''''',[rfReplaceAll])+'%'' )');
+                        end
+                        else
+                        begin
+                             sql.Add('where PatientTestId in (select distinct PatientTestId from SampleCollection where LabNo='+StringReplace(Edt_GlobalSearch.Text,'''','''''',[rfReplaceAll])+')');
+                        end;
+
+                        if CB_Date.Checked then
+                            SQL.Add('and testdate between'+quotedstr(Dex_CLFrom.Text)+' and '+quotedstr(Dex_CLTo.Text)+')')
+                        else
+                        begin
+                          if gi_datesystem=1 then
+                              SQL.Add('and Testdate >= TO_CHAR(SYSDATE-' + Se_CLDays.Text + ',''YYYY/MM/DD'')' )
+                          else
+                              SQL.Add('and Testdate>='+quotedstr(refreshDate));
+                        end;
+
+                         if Rb_Verified.Checked then
+                            SQL.Add('and testprogressstatus>=5' )
+                         else if Rb_NonVerified.Checked then
+                            SQL.Add('and testprogressstatus=4' )
+                         else if rb_UnderAnalysis.Checked then
+                            SQL.Add('and testprogressstatus<=3' );
+                        //sql.savetofile('c:/searchinglabno.txt');
+                        Open;
+                        PatientID:='0';
+                        while not eof do
+                        begin
+                             if PatientID='' then
+                                  PatientID:=FieldByName('patientid').AsString
+                             else
+                                  PatientID:=PatientID+','+FieldByName('patientid').AsString;
+                             Next;
+                        end;
+                   end;
+              end;
+         end;
+     end;
+if Key=#13 then
+begin
+     with Query_samplecollectedright do
+     begin
+          Close;
+          if Trim(PatientID)<>'' then
+          begin
+               if Rb_Verified.Checked then
+               begin
+                  SQL[6]:='And patientid in ('+PatientID+') and testprogressstatus>=5' ;
+                  if CB_LAbNo.checked=True then
+                  SQL[7]:='And labno in ('+StringReplace(Edt_GlobalSearch.Text,'''','''''',[rfReplaceAll])+')'
+                  else
+                  SQL[7]:='And TESTNAME like '+quotedstr('%'+StringReplace(Edt_GlobalSearch.Text,'''','''''',[rfReplaceAll])+'%');
+               end
+               else if Rb_NonVerified.Checked then
+               begin
+                  SQL[6]:='And patientid in ('+PatientID+') and testprogressstatus=4';
+                  if CB_LAbNo.checked=True then
+                  SQL[7]:='And labno in ('+StringReplace(Edt_GlobalSearch.Text,'''','''''',[rfReplaceAll])+')'
+                  else
+                  SQL[7]:='And TESTNAME like '+quotedstr('%'+StringReplace(Edt_GlobalSearch.Text,'''','''''',[rfReplaceAll])+'%');
+               end
+               else if rb_UnderAnalysis.Checked then
+               begin
+                  SQL[6]:='And patientid in ('+PatientID+') and testprogressstatus<=3' ;
+                  if CB_LAbNo.checked=True then
+                  SQL[7]:='And labno in ('+StringReplace(Edt_GlobalSearch.Text,'''','''''',[rfReplaceAll])+')'
+                  else
+                  SQL[7]:='And TESTNAME like '+quotedstr('%'+StringReplace(Edt_GlobalSearch.Text,'''','''''',[rfReplaceAll])+'%');
+               end
+               else
+               begin
+                  SQL[6]:='And patientid in ('+PatientID+')';
+                  if CB_LAbNo.checked=True then
+                  SQL[7]:='And labno in ('+StringReplace(Edt_GlobalSearch.Text,'''','''''',[rfReplaceAll])+')'
+                  else
+                  SQL[7]:='And TESTNAME like '+quotedstr('%'+StringReplace(Edt_GlobalSearch.Text,'''','''''',[rfReplaceAll])+'%');
+               end;
+          end
+          else
+          begin
+               SQL[6]:='And 1=1';
+               sql[7]:='and 1=1';
+          end;
+         // sql.SaveToFile('c:\as.txt');
+          Open;
+          DBGrid1CellClick(Column);
+          BB_RefreshClick(Sender);
+     end;
+     Qry_1.Free;
+end;
+end;
+
+procedure TForm_Verification.FormCreate(Sender: TObject);
+begin
+     CreateQuery;
+     CreateFindingsTable;
+     gs_sampleno:='';
+
+     CB_DeptypeCheck.ItemIndex:=0;
+
+     Dex_Today.SystemOfDate := gi_datesystem;
+
+     Dex_Today.Text := TodaysDate;
+     speedbutton8.Caption:=gs_DateCaption;
+
+     gb_isHalfPage := true;
+     //Cb_Halfpage.Checked:=True;
+    // cb_staffdepartment.ItemIndex:=cb_staffdepartment.Items.IndexOf(gs_DepType);
+
+    if gi_compileValue=22 then
+    begin
+          BitBtn3.Visible:=True;
+          Cb_Signature.Checked:=True;
+    end;
+
+    if gi_compilevalue in [14,22] then
+    begin
+         Cb_Signature.Checked:=True;
+         Cb_Halfpage.checked:=True;
+    end;
+
+     if gi_compileValue=3 then
+     begin
+        Cb_HideIndication.Caption:='Hide Unit/Refrange';
+        Cb_HideIndication.Checked:=false;
+        gb_hideunitRange:=false;
+     end;
+
+     if gs_CalledFrom = 'BROADCAST' then
+     begin
+          TabSheet1.Caption:='Report Dispatch';
+          Sb_Preview.Visible := true;
+          //SpeedButton1.Visible := false;
+          // SpeedButton4.Left := 792;
+          SpeedButton5.Left := 792;
+          // SpeedButton5.Top := 3;
+          // SpeedButton5.Height := 33;
+          Cb_ExternalPreview.Checked := true;
+          Rb_Verified.Checked := true;
+          Rb_Verified.Enabled := false;
+          Rb_NonVerified.Enabled := false;
+          Rb_All.Enabled := false;
+          //Cb_Halfpage.Checked:=True;
+          Cb_ExternalPreview.Enabled := false;
+          SpeedButton6.Visible:=FALSE;
+          SpeedButton7.Visible:=False;
+          sb_serdetail.Visible:=false;
+          SPB_From1.Visible:=false;
+          rb_UnderAnalysis.Enabled:=false;
+          rb_both.enabled:=false;
+
+          //
+          Shape_SentMail.Visible:=True;
+          Label4.Visible:=True;
+          Shape_SentMail.Brush.Color:=clWebRoyalBlue;
+          //
+     end
+     else if gs_CalledFrom = 'VERIFICATION' then
+     begin
+          if gi_compileValue=15 then
+               Rb_NonVerified.Checked:=True
+          else
+               rb_both.Checked:=true;
+          Cb_Halfpage.Checked:=True;
+          sb_serdetail.Visible:=True;
+
+          if gi_compileValue=14 then
+               SpeedButton4.Visible:=false
+          else
+          SpeedButton4.Visible:=True;
+
+
+
+     end;
+
+     if gi_compileValue=15 then
+     begin
+          Cb_Halfpage.Checked:=False;
+          Cb_Halfpage.Checked:=True;
+     end;
+
+     if gi_compileValue<>3 then
+     begin
+       // cb_staffdepartment.Visible:=False;
+       // Label40.Visible:=false;
+     end;
+
+//     DBGrid1.Color := clWebLightSeaGreen;
+//     CheckBoxGrid1.Color := clWebLightBlue;
+     CreateTable;
+     Shape1.Brush.Color := clWebRosyBrown;
+     Shape2.Brush.Color := clWebGreen;
+     Shape3.Brush.Color := clWebDarkOrange;
+     shp1.Brush.Color:=clWebBlueViolet;
+     FrameCleared := true;
+     LoadDepartmentINCheckListBox(CLB_Department);
+     Cb_Mode.ItemIndex := 0;
+     Dex_CLFrom.SystemOfDate := gi_datesystem;
+     //Dex_CLFrom.ADDateAsText := TodaysDate;
+     Dex_CLFrom.Text := TodaysDate;
+
+     SPB_From.Caption := gs_DateCaption;
+     Dex_CLTo.SystemOfDate := gi_datesystem;
+     //Dex_CLTo.ADDateAsText := TodaysDate;
+     Dex_CLTo.Text := TodaysDate;
+
+     SPB_To.Caption := gs_DateCaption;
+     DBGrid1.Columns[1].Title.Caption := Gs_PatientIdCaption;
+     BB_RefreshClick(Sender);
+end;
+
+procedure TForm_Verification.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+
+begin
+     if Key = 27 then
+     begin
+          Key := 0;
+          BB_CloseClick(Sender);
+     end;
+      if Shift = [ssCtrl, ssShift] then
+     begin
+          Edit_SearchCollectedList.Clear;
+          if gi_compileValue in [1,2,3,4,5,6,7,8,9,10,12,14,11,15,16,17,18,19,20,21,22,23,24,25,26,27,28] then
+          begin
+              edt_GlobalSearch.SetFocus;
+          end;
+          Edit_SearchCollectedList.SetFocus;//che
+          CB_LAbNo.Checked:= false;
+          CB_LAbNo.Checked:=true;
+     end;
+end;
+
+procedure TForm_Verification.FormShow(Sender: TObject);
+begin
+    edt_GlobalSearch.SetFocus;
+    Cb_Halfpage.Checked:= true;
+    Cb_Halfpage.Checked:= false;
+    //Cb_Signature.Checked:= false;
+    //Cb_Signature.Checked:= True;
+
+    if gi_compileValue=21 then
+    begin
+         Cb_Signature.Checked:=True;
+    end;
+
+
+
+    if gi_compileValue in [15,12,16,19] then
+    begin
+          Cb_Halfpage.Checked:= false;
+          Cb_Halfpage.Checked:= true;
+    end;
+
+     if gi_compileValue in [1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28] then
+     begin
+          CB_LAbNo.Visible:=True;
+          BitBtn_ResultVerification.Visible:= True;
+          edt_GlobalSearch.SetFocus;
+     end
+     else
+     begin
+          CB_LAbNo.Visible:=False;
+          BitBtn_ResultVerification.Visible:= False;
+          Edit_SearchCollectedList.SetFocus;
+     end;
+     if gi_compileValue in [1,2,3,4,5,6,7,8,9,10,11,12,14,17,21,22,23,24,25,26,27,28] then
+     begin
+          if CheckAccess('SPECIAL TEST CANCEL') then
+          begin
+               Btn_SpecialTestCancel.Visible:=True;
+          end;
+     end;
+
+     if gi_compileValue in [1,2,3,4,5,6,7,8,9,10,11,12,14,17,21,22] then
+     begin
+          if CheckAccess('BLOCKABLE TEST') then
+          begin
+               SB_AddBlockTest.Visible:=True;
+          end;
+     end;
+
+     if gs_CalledFrom='VERIFICATION' then
+     begin
+          if gi_compileValue=15 then
+       Rb_NonVerified.Checked:=True
+       else
+        rb_both.Checked:=True;
+     end;
+//     if IsHistoCytoUser then
+//     begin
+//          Panel1.Visible:=True;
+//          pnl_Search.Visible:=True;
+//          SpeedButton3.Visible:=false;
+//          SpeedButton2.Visible:=false;
+//     end
+//     else
+//     begin
+//          Pnl_Search.Visible:=False;
+//     end;
+
+     if gs_CalledFrom = 'BROADCAST' then
+     begin
+         Form_Verification.Caption:='REPORT';
+     end;
+     if gi_compileValue=12 then
+     begin
+          DBGrid1.Columns[2].Visible:=False;
+          DBGrid1.Columns[4].Visible:=true;
+          DBGrid1.Columns[5].Visible:=true;
+
+     end
+     else
+     begin
+          //DBGrid1.Columns[2].Visible:=True;
+          //DBGrid1.Columns[4].Visible:=False;
+          //DBGrid1.Columns[5].Visible:=False;
+
+     end;
+
+
+
+end;
+
+procedure TForm_Verification.LocateSampleNo;
+begin
+     with Query_ListOfSampleNo do
+     begin
+          Close;
+          SQL.Clear;
+          Session:=Dm_Hospital.Db;
+          SQL.Add('Select Distinct PatientID,SampleNo From VW_SAMPLE_COLLECTED');
+          SQL.Add('Where TestDate Between ' + #39 + gs_From + #39 + ' And ' + #39 + gs_to + #39);
+          SQL.Add('Order by SampleNo');
+          Open;
+     end;
+     Query_samplecollectedright.Locate('PatientID', Query_ListOfSampleNo.FieldByName('PatientID').AsInteger, []);
+end;
+
+procedure TForm_Verification.Query_SampleCollectedAfterScroll(DataSet: TDataSet);
+begin
+     (*gi_PatientTestID := Query_SampleCollected.FieldByName('PatientTestId').AsInteger;
+     gi_PatientID := Query_SampleCollected.FieldByName('PatientId').AsInteger;*)
+end;
+
+procedure TForm_Verification.Query_samplecollectedrightAfterScroll(
+  DataSet: TDataSet);
+Var
+     i: Integer;
+begin
+     if Query_samplecollectedright.FieldByName('PatientId').AsString <> '' then
+     begin
+          gi_PatientID := Query_samplecollectedright.FieldByName('PatientId').AsInteger;
+          gs_SampleNo := Query_samplecollectedright.FieldByName('SampleNo').AsString;
+     end
+     else
+          gi_PatientID := 0;
+     with Query_SampleCollected do
+     begin
+          Close;
+          SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+          SQL[5] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+//          if Cb_NoResult.Checked then
+//          begin
+//               SQL[8] := 'And TestProgressStatus='+IntToStr(gi_SampleColl);
+//               Gb_ShowTestWithoutResult:=True;
+//          end
+//          else
+//          begin
+//               SQL[8] := 'And 99=99';
+//               Gb_ShowTestWithoutResult:=False;
+//          end;
+          Open;
+          i := 0;
+          CreateTable;
+          with Table_List do
+          begin
+               Close;
+               DatabaseName := gs_temppath;
+               EmptyTable;
+               Open;
+          end;
+          while not Eof do
+          begin
+               with Table_List do
+               begin
+                    Append;
+                    FieldByName('PatientTestId').AsInteger := Query_SampleCollected.FieldByName('PatientTestId').AsInteger;
+                    FieldByName('PatientID').AsInteger := Query_SampleCollected.FieldByName('PatientID').AsInteger;
+                    FieldByName('DepID').AsInteger := Query_SampleCollected.FieldByName('DepID').AsInteger;
+                    FieldByName('TestProgressStatus').AsInteger := Query_SampleCollected.FieldByName('TestProgressStatus').AsInteger;
+                    FieldByName('TestDate').AsString := Query_SampleCollected.FieldByName('TestDate').AsString;
+                    FieldByName('TestNameID').AsInteger := Query_SampleCollected.FieldByName('TestNameID').AsInteger;
+                    FieldByName('TestNameCode').AsString := Query_SampleCollected.FieldByName('TestNameCode').AsString;
+                    FieldByName('IdentificationNo').AsString := Query_SampleCollected.FieldByName('IdentificationNo').AsString;
+                    FieldByName('BillNo').AsString := Query_SampleCollected.FieldByName('BillNo').AsString;
+                    FieldByName('TestTime').AsString := Query_SampleCollected.FieldByName('TestTime').AsString;
+                    FieldByName('SampleNo').AsString := Query_SampleCollected.FieldByName('SampleNo').AsString;
+                    FieldByName('TestName').AsString := Query_SampleCollected.FieldByName('TestName').AsString;
+                    FieldByName('REFHOSNAME').AsString := Query_SampleCollected.FieldByName('REFHOSNAME').AsString;
+                    FieldByName('REFDOCNAME').AsString := Query_SampleCollected.FieldByName('REFDOCNAME').AsString;
+                    FieldByName('CollectedBy').AsString := Query_SampleCollected.FieldByName('CollectedBy').AsString;
+                    FieldByName('FindingPostBy').AsString := Query_SampleCollected.FieldByName('FindingPostBy').AsString;
+                    FieldByName('VerifiedBy').AsString := Query_SampleCollected.FieldByName('VerifiedBy').AsString;
+                    FieldByName('CancelStatus').AsString := Query_SampleCollected.FieldByName('CancelStatus').AsString;
+                    FieldByName('IsMailSent').AsString := Query_SampleCollected.FieldByName('IsMailSent').AsString;
+                    FieldByName('State').AsString := 'False';
+                    Post;
+               end;
+               Next;
+          end;
+     end;
+     lbl_SampleNo.Caption := Query_SampleCollected.FieldByName('SampleNo').AsString;
+end;
+
+procedure TForm_Verification.CRTemp_Query_samplecollectedrightAfterSmartRefresh(DataSet: TDataSet);
+begin
+     MessageBeep(1);
+end;
+
+procedure TForm_Verification.Rb_AllClick(Sender: TObject);
+begin
+//     if (Rb_Verified.Checked) then
+//     begin
+//          Rb_Uploaded.Visible := true;
+//          Rb_NotUploaded.Visible := true;
+//          Rb_UAll.Visible := true;
+//     end
+//     else
+//     begin
+//          Rb_Uploaded.Visible := false;
+//          Rb_NotUploaded.Visible := false;
+//          Rb_UAll.Visible := false;
+//     end;
+end;
+
+procedure TForm_Verification.Rb_NonVerifiedClick(Sender: TObject);
+begin
+//     if (Rb_Verified.Checked) then
+//     begin
+//          Rb_Uploaded.Visible := true;
+//          Rb_NotUploaded.Visible := true;
+//          Rb_UAll.Visible := true;
+//     end
+//     else
+//     begin
+//          Rb_Uploaded.Visible := false;
+//          Rb_NotUploaded.Visible := false;
+//          Rb_UAll.Visible := false;
+//     end;
+end;
+
+procedure TForm_Verification.Rb_VerifiedClick(Sender: TObject);
+begin
+//     if (Rb_Verified.Checked) then
+//     begin
+//          Rb_Uploaded.Visible := true;
+//          Rb_NotUploaded.Visible := true;
+//          Rb_UAll.Visible := true;
+//     end
+//     else
+//     begin
+//          Rb_Uploaded.Visible := false;
+//          Rb_NotUploaded.Visible := false;
+//          Rb_UAll.Visible := false;
+//     end;
+          BB_RefreshClick(Sender);
+
+end;
+
+procedure TForm_Verification.Se_CLDaysKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = 13 then
+          BB_Refresh.SetFocus;
+end;
+
+procedure TForm_Verification.SPB_From1Click(Sender: TObject);
+var
+    I:Integer;
+begin
+     if not CheckAccess('TEST CANCEL') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+     Try
+          Form_TestCancel := TForm_TestCancel.Create(Nil);
+          with Form_TestCancel do
+          begin
+               lbl_Patientid.Caption:=IntToStr(gi_PatientID);
+               lbl_SampleNo.Caption:=gs_SampleNo;
+               lbl_PatientName.Caption:=Query_samplecollectedright.FieldByName('PatientName').AsString;
+               ps_canceltestpatienttesid:='';
+               // *****************Load into CheckBox list************************************
+               chklst_testname.Items.Clear;
+               I := 0;
+               SetLength(Arr_CLB_Patienttestid, Table_List.RecordCount);
+               pi_testcount:= Table_List.RecordCount;
+               with Table_List do
+               begin
+                  First;
+                  while not eof do
+                  begin
+                      SetLength(Arr_CLB_Patienttestid[I], 2);
+                      chklst_testname.Items.Add(FieldByName('TestName').AsString);
+                      Arr_CLB_Patienttestid[I, 0] := FieldByName('patienttestId').AsString;
+                      Arr_CLB_Patienttestid[I, 1] := Trim(FieldByName('TestName').AsString);
+
+                      if ps_canceltestpatienttesid='' then
+                         ps_canceltestpatienttesid:=Arr_CLB_Patienttestid[I, 0]
+                      else
+                         ps_canceltestpatienttesid:=ps_canceltestpatienttesid+','+Arr_CLB_Patienttestid[I, 0];
+                      Inc(I);
+                      Next;
+                  end;
+               end;
+               //*******************************************************************************
+          end;
+          Form_TestCancel.ShowModal;
+     Finally
+          Form_TestCancel.Free;
+     End;
+end;
+
+procedure TForm_Verification.SPB_FromClick(Sender: TObject);
+begin
+      if SPB_From.Caption = 'BS' then
+      begin
+        Dex_CLFrom.SystemOfDate := 1;
+        SPB_From.Caption := 'AD';
+      end
+      else
+      begin
+        Dex_CLFrom.SystemOfDate := 0;
+        SPB_From.Caption := 'BS';
+      end;
+end;
+
+procedure TForm_Verification.SPB_ToClick(Sender: TObject);
+begin
+      if SPB_To.Caption = 'BS' then
+      begin
+        Dex_CLTo.SystemOfDate := 1;
+        SPB_To.Caption := 'AD';
+      end
+      else
+      begin
+        Dex_CLTo.SystemOfDate := 0;
+        SPB_To.Caption := 'BS';
+      end;
+end;
+
+procedure TForm_Verification.GetSelectedPatientTestId;
+Var SelectedPatientTestId: Integer;
+     AllPatientTestID:String;
+     bill : string;
+Begin
+     Table_List.DisableControls;
+     SelectedPatientTestId := Table_List.FieldByName('PatientTestId').AsInteger;
+     Gs_SelectedPatientTestID := '';
+     AllPatientTestID:='';
+     with Table_List do
+     begin
+          Close;
+          Open;
+          bill := Copy(Table_List.FieldByName('billno').asstring,1,2);
+          if ((bill='TP')or(bill='CR'))and (gi_compileValue in [23]) then
+          begin
+               with OraQuery_Service do
+               begin
+                    Close;
+                    Session:=Dm_Hospital.Db;
+                    SQL.Clear;
+                    sql.Add('select sebd_billdetailid from hs_sebd_servicebilldetail where sebd_billno='+quotedstr(Table_List.FieldByName('billno').asstring));
+                    Open;
+                    if OraQuery_Service.FieldByName('sebd_billdetailid').AsInteger=0 then
+                    begin
+                         IsService:=True;
+                         Table_List.EnableControls;
+                         Exit;
+                    end;
+
+               end;
+          end;
+          while not Eof do
+          begin
+               if AllPatientTestID = '' then
+                         AllPatientTestID := FieldByName('PatientTestId').AsString
+               else
+                         AllPatientTestID := AllPatientTestID + ',' + FieldByName('PatientTestId').AsString;
+               if FieldByName('State').AsBoolean = true then
+               begin
+                    if Gs_SelectedPatientTestID = '' then
+                         Gs_SelectedPatientTestID := FieldByName('PatientTestId').AsString
+                    else
+                         Gs_SelectedPatientTestID := Gs_SelectedPatientTestID + ',' + FieldByName('PatientTestId').AsString;
+               end;
+               Next;
+          end;
+          if Gs_SelectedPatientTestID='' then
+          Gs_SelectedPatientTestID:=AllPatientTestID;
+          IsService:=False;
+     end;
+     Table_List.EnableControls;
+     Table_List.Locate('PatientTestId', SelectedPatientTestId, []);
+
+
+     if Table_List.RecordCount=0 then
+     begin
+        MessageDlg('Sorry ! No data available.', mtWarning, [mbok], 0);
+        Exit;
+     end;
+End;
+
+procedure TForm_Verification.SB_AddBlockTestClick(Sender: TObject);
+var oraQuery_SaveServiceBill,Oraquery_process,oraquery_isblockabletest,oraQuery_saveServicemaster:TOraQuery;
+var li_servicebilldetailid,li_patienttestid:Integer;
+ ls_billno:String;
+ query1:tquery;
+begin
+     oraquery_isblockabletest:=TOraQuery.Create(nil);
+     query1:=TQuery.Create(nil);
+
+     with oraquery_isblockabletest do
+     begin
+          close;
+          Session:=DM_Hospital.DB;
+          sql.Clear;
+          sql.Add('select TENA_ISBLOCKTEST,tena_ispackagetest from hs_tena_testname where tena_testnameid='+intTOStr(Table_List.FieldByName('testnameid').Asinteger));
+          open;
+     end;
+
+
+     if oraquery_isblockabletest.FieldByName('TENA_ISBLOCKTEST').AsString<>'Y' then
+     begin
+          ShowMessage('The Test is not a Block Test');
+          exit;
+     end;
+
+     if oraquery_isblockabletest.FieldByName('tena_ispackagetest').AsString='Y' then
+     begin
+          ShowMessage('Sorry You cannot Perform this Operation On Package Test !!!');
+          exit;
+     end;
+
+     if Copy((Table_List.FieldByName('billno').AsString),0,2)<>'TP' then
+     begin
+          ShowMessage('Sorry You cannot Perform this Operation On Cash Bill Test !!!');
+          exit;
+     end;
+
+
+      with query1 do
+      begin
+           close;
+           Databasename:=gs_temppath;
+           sql.Add('select count(State) as count11 from verification.db where state=True');
+           open;
+      end;
+      if query1.fieldbyname('count11').AsInteger>1 then
+      begin
+          showmessage('You Cannot Perform this Operation For More than One Test At a Time !!!');
+          exit;
+      end;
+
+
+
+     if MessageDlg('Are You Sure to Continue Add Block Test Billing ?',mtConfirmation,[mbYes,mbNo],0)=mrNo then
+     begin
+          Exit;
+     end;
+
+     try
+           DM_Hospital.Db.StartTransaction;
+
+            oraQuery_SaveServiceBill:=TOraQuery.Create(nil);
+           Oraquery_process:=TOraQuery.Create(nil);
+           oraQuery_saveServicemaster:=TOraQuery.Create(nil);
+
+
+           ls_BillNo := GetNextBillNo1('TP', 'HS_SEBD_SERVICEBILLDETAIL','SEBD_BILLNO');
+           li_servicebilldetailid:=GetMaxId('HS_SEBD_SERVICEBILLDETAIL','SEBD_SERVICEBILLDETAILID');
+
+           with Oraquery_process do
+           begin
+                close;
+                Session:=DM_Hospital.DB;
+                sql.Clear;
+                sql.Add('select * from hs_sebd_servicebilldetail where SEBD_PATIENTID='+FloatToStr(Table_List.FieldByName('patientid').asFloat));
+                sql.Add(' and sebd_billno='+QuotedStr(Table_List.FieldByName('billno').AsString)+' and sebd_service='+quotedstr(Table_List.FieldByName('testnamecode').AsString));
+                open;
+           end;
+
+           if  Oraquery_process.RecordCount>0 then
+           begin
+                 with oraquery_isblockabletest do
+                 begin
+                      close;
+                      session:=DM_Hospital.db;
+                      sql.clear;
+                      sql.Add('select distinct PAVI_PATIENTVISITID from hs_pavi_patientvisit where pavi_patientid='+intToStr(Table_List.FieldByName('patientid').Asinteger));
+                      open;
+                 end;
+
+                 with oraQuery_saveServicemaster do
+                 begin
+                      close;
+                      session:=DM_Hospital.DB;
+                      sql.Clear;
+                      sql.Add('insert into hs_sebm_servicebillmaster (SEBM_BILLNO,SEBM_BILLDATE,SEBM_BILLTIME,SEBM_BILLBY,SEBM_VISITID,SEBM_PATIENTID,SEBM_GROSSTOTAL,SEBM_NETTOTAL,SEBM_BILLTYPE,SEBM_PAYTYPE,SEBM_RATETYPE,SEBM_PATIENTTYPE,SEBM_ORGID,SEBM_MACID)');
+                      sql.Add(' values('+QuotedStr(ls_BillNo)+','+QuotedStr(serverdate.TodaysDate)+','+quotedStr(serverdate.TodaysTime)+','+IntToStr(gi_UserID)+','+FloatToStr(oraquery_isblockabletest.FieldByName('PAVI_PATIENTVISITID').AsFloat)+','+FloatToStr(Oraquery_process.FieldByName('SEBD_Patientid').asFloat));
+                      sql.Add(','+FloatToStr(Oraquery_process.FieldByName('SEBD_TOTALAMOUNT').AsFloat)+','+FloatToStr(Oraquery_process.FieldByName('SEBD_AMOUNT').AsFloat)+','+QuotedStr('B')+','+QuotedStr('CREDIT')+','+QuotedStr('GEN')+','+QuotedStr('GEN')+','+intToStr(gi_compileValue));
+                      sql.Add(','+QuotedStr(gs_MacID));
+                      sql.add(')');
+                     // sql.SaveToFile('C:\abc55.txt');
+                      ExecSQL;
+                 end;
+
+
+                 with oraQuery_SaveServiceBill do
+                 begin
+                      close;
+                      session:=DM_Hospital.DB;
+                      sql.Clear;
+                      SQL.Add('insert into hs_sebd_servicebilldetail (SEBD_SERVICEBILLDETAILID,SEBD_BILLDETAILID,SEBD_PATIENTTESTID,SEBD_PATIENTID,sebd_billno,SEBD_BILLDATE,SEBD_BILLTIME,SEBD_BILLBY,');
+                      sql.Add('SEBD_SERVICE,SEBD_SERVICETYPE,SEBD_AMOUNT,SEBD_QTY,SEBD_VATAMT,SEBD_TOTALAMOUNT,SEBD_DISPER,SEBD_DISCOUNT,SEBD_SERVICECHARGE,SEBD_BILLTYPE,');
+                      sql.Add('SEBD_PAYTYPE,SEBD_RATETYPE,SEBD_DEPID,SEBD_CRSCHEMEID,SEBD_ORGBILLCATEGORY,SEBD_REMARKS )');
+                      sql.Add(' values('+inttoStr(li_servicebilldetailid)+','+FloatToStr(Oraquery_process.FieldByName('SEBD_BILLDETAILID').AsFloat)+','+FloatToStr(Oraquery_process.FieldByName('SEBD_PATIENTTESTID').AsFloat)+','+FloatToStr(Oraquery_process.FieldByName('sebd_patientid').AsFloat));
+                      SQL.Add(','+QuotedStr(ls_BillNo)+','+QuotedStr(serverdate.TodaysDate)+','+QuotedSTr(serverdate.TodaysTime)+','+intToStr(gi_UserID));
+                      sql.Add(','+QuotedStr(Oraquery_process.FieldByName('SEBD_SERVICE').AsString)+','+QuotedStr(Oraquery_process.FieldByName('SEBD_SERVICETYPE').AsString));
+                      sql.Add(','+FloatToStr(Oraquery_process.FieldByName('SEBD_AMOUNT').AsFloat)+','+QuotedStr(Oraquery_process.FieldByName('SEBD_QTY').AsString));
+                      sql.Add(','+QuotedStr(Oraquery_process.FieldByName('SEBD_VATAMT').AsString)+','+FloatToStr(Oraquery_process.FieldByName('SEBD_TOTALAMOUNT').AsFloat));
+                     sql.Add(','+FloatToStr(Oraquery_process.FieldByName('SEBD_DISPER').AsFloat)+','+FloatToStr(Oraquery_process.FieldByName('SEBD_DISPER').asFloat));
+                     sql.Add(','+FloatToSTr(Oraquery_process.FieldByName('SEBD_SERVICECHARGE').AsFloat)+','+QuotedStr(Oraquery_process.FieldByName('SEBD_BILLTYPE').AsString)+','+QuotedSTr('CREDIT')+','+QuotedSTr('GEN')+','+inttoStr(Oraquery_process.FieldByName('SEBD_DEPID').asinteger)+','+intToStr(Oraquery_process.FieldByName('SEBD_CRSCHEMEID').asinteger));
+                     sql.Add(','+QuotedStr('HOS')+','+QuotedStr('BLOCK TEST')+')');
+                     //sql.SaveToFile('C:\abc22.txt');
+                     ExecSQL;
+
+                 end;
+
+
+
+
+                { with oraQueryREFHOSDOC do
+                 begin
+                      close;
+                      Session:=DM_Hospital.DB;
+                      SQL.Clear;
+                      sql.Add('select REFDOCID,REFHOSCODE,testnameid from patienttest where PATIENTID='+FloatTOStr(Table_List.FieldByName('patientid').asFloat));
+                      sql.Add(' and billno='+QuotedStr(Table_List.FieldByName('billno').AsString)+' and testnamecode='+quotedstr(Table_List.FieldByName('testnamecode').AsString));
+                      //sql.savetofile('C:\abc404.txt');
+                      open;
+                 end;}
+
+
+                // li_PatientTestID := GetMaxId('PatientTest', 'PatientTestId');
+
+                { with oraquery_isblockabletest do
+                 begin
+                    Close;
+                    Session := DM_Hospital.db;
+                    SQL.Clear;
+                    SQL.Add(' Insert Into PatientTest(PATIENTTESTID,ServiceBillDetailid,PATIENTID,DEPID,');
+                    SQL.Add(' TESTNAMEID,TestNameCode,BILLNO,PAYSTATUS,TESTDATE,TESTTIME,TESTAMOUNT,REFPATIENTTESTID,PRINTCOUNT,REMARKS');
+                    SQL.Add('  ,DATAPOSTDate,DataPostTime,DataPostBy,TestProgressStatus,SyncStatus,ControlStatus,REFDOCID,REFHOSCODE ) Values (');
+                    SQL.Add(inttostr(li_patienttestid) + ' ,' + inttostr(li_servicebilldetailid)+ ' ,' + FloatToStr(Oraquery_process.FieldByName('sebd_patientid').AsFloat) + ',');
+                    SQL.Add(inttoStr(Oraquery_process.FieldByName('SEBD_DEPID').asinteger) + ',');
+                    SQL.Add(inttostr(oraQueryREFHOSDOC.FieldByName('testnameid').Asinteger) + ',' + #39 +Oraquery_process.FieldByName('SEBD_SERVICE').AsString + #39 + ',' +QuotedStr(ls_BillNo));
+                    SQL.Add(',' + #39 + Oraquery_process.FieldByName('SEBD_PAYTYPE').AsString + #39 + ',');
+                    SQL.Add(QuotedStr(serverdate.TodaysDate)+ ','+QuotedStr(serverdate.TodaysTime)+',');
+                    SQL.Add(FloatToStr(Oraquery_process.FieldByName('SEBD_AMOUNT').asFloat ) + ',' + inttostr(0) + ',');
+                    SQL.Add(inttostr(0) + ',' + QuotedStr('BLOCK TEST') + ',');
+                    SQL.Add(QuotedStr(serverdate.TodaysDate) + ',' + QuotedStr(serverdate.TodaysTime)+ ',' + inttostr(gi_UserID));
+                    SQL.Add(',' + inttostr(1));
+                    SQL.Add(',' + inttostr(-1) + ',' + inttostr(1)+','+intToStr(oraQueryREFHOSDOC.FieldByName('REFDOCID').AsInteger)+','+QuotedStr((oraQueryREFHOSDOC.FieldByName('REFHOSCODE').AsString)));
+                    SQL.Add(')');
+                    //sql.savetofile('C:\abc.txt');
+                    ExecSQL;
+                 end;  }
+
+           end;
+
+
+          DM_Hospital.Db.Commit;
+          ShowDoneMessage;
+     except
+          DM_Hospital.Db.RollBack;
+          MessageDlg('Failuer To Save Data.', mtWarning, [mbok], 0);
+          Exit;
+     end;
+
+     oraQuery_SaveServiceBill.Free;
+     Oraquery_process.Free;
+     oraquery_isblockabletest.Free;
+     oraQuery_saveServicemaster.Free;
+     query1.free;
+end;
+
+procedure TForm_Verification.Sb_PreviewClick(Sender: TObject);
+Var
+     i,ls_RepControl: Integer;
+begin
+     CreateQuery;
+     CreateFindingsTable;
+
+     gb_QRHeadFoot:=false;
+     (*gi_PatientID := Query_SampleCollected.FieldByName('PatientID').AsInteger;
+     gi_InPatientID := Query_SampleCollected.FieldByName('InPatientID').AsInteger;
+     gi_PatientTestID := Query_SampleCollected.FieldByName('PatientTestId').AsInteger;
+     Gs_BillNo := Query_SampleCollected.FieldByName('BillNo').AsString;
+     gs_SampleNo := Query_SampleCollected.FieldByName('SampleNo').AsString;
+     gs_TestDate := Query_SampleCollected.FieldByName('TestDate').AsString;
+     Gi_DepID:= Query_SampleCollected.FieldByName('DepID').AsInteger;
+     gi_TestNameId:= Query_SampleCollected.FieldByName('TestNameID').AsInteger;*)
+
+     gi_PatientID := Table_List.FieldByName('PatientID').AsInteger;
+     Gs_BillNo := Table_List.FieldByName('BillNo').AsString;
+     gi_TestNameId := Table_List.FieldByName('TestNameId').AsInteger;
+     gs_TestName := Table_List.FieldByName('TestName').AsString;
+     gs_SampleNo := Table_List.FieldByName('SampleNo').AsString;
+     gs_TestNameCode := Table_List.FieldByName('TestNameCode').AsString;
+     gi_PatientTestID := Table_List.FieldByName('PatientTestId').AsInteger;
+     gs_TestDate := Table_List.FieldByName('TestDate').AsString;
+     Gi_DepID:=Table_List.FieldByName('DepID').AsInteger;
+
+
+     GetSelectedPatientTestId;
+     if (IsService=True)and(gi_compileValue in [23]) then
+     begin
+          MessageDlg('Sorry ! Please clear the dues.', mtWarning, [mbok], 0);
+          exit;
+     end;
+    // if gi_compileValue=14 then
+     begin
+          with OraQuery_Ismaster do
+          begin
+               close;
+               Session:=DM_Hospital.DB;
+               sql.Clear;
+               sql.Add('select twms_panelid from hc_twms_testwisemastersetup');
+               sql.Add(' where twms_testnameid='+inttostr(Gi_TestnameID));
+               //sql.SaveToFile('c:\test1.txt');
+               open;
+          end;
+          ls_RepControl:=OraQuery_IsMaster.FieldByName('twms_panelid').AsInteger;
+     end;
+
+
+     gb_PrintSelected := false;
+     // gs_CalledFrom := 'VERIFICATION';
+
+
+    //     (*Semen Analysis Report*)
+    //     if gi_TestNameId=682 then
+    //     begin
+    //          try
+    //               Form_SemenAnalysis := TForm_SemenAnalysis.Create(nil);
+    //               with Form_SemenAnalysis do
+    //               begin
+    //                    QuickRep1.Preview;
+    //               end;
+    //          finally
+    //               Form_SemenAnalysis.Free;
+    //          end;
+    //     end
+    //     else
+    if Not IsClinicalDep(Gi_DepID) then
+    begin
+
+          if gi_compileValue = 11 then   //nepal cancer
+          begin
+               Try
+                    Form_QrDeptWiseNepalCancerReport := TForm_QrDeptWiseNepalCancerReport.Create(nil);
+                    Form_QrDeptWiseNepalCancerReport.Qr_NepalCancerDeptWise.Prepare;
+
+                    Form_QrDeptWiseNepalCancerReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseNepalCancerReport.Qr_NepalCancerDeptWise.QRPrinter.PageCount);
+                    Form_QrDeptWiseNepalCancerReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseNepalCancerReport.Qr_NepalCancerDeptWise.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseNepalCancerReport.Qr_NepalCancerDeptWise.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_QrDeptWiseNepalCancerReport.Qr_NepalCancerDeptWise.Preview;
+               Finally
+                    Form_QrDeptWiseNepalCancerReport.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+               End;
+          end
+          else if gi_compileValue=22 then     //BIODIAGNOSIS SUKEDHARA
+          begin
+               if Gi_DepID=2 then
+               begin
+                    Try
+                         Form_QrDeptWiseNCHRCA4MicrobiologyReport := TForm_QrDeptWiseNCHRCA4MicrobiologyReport.Create(nil);
+                         Form_QrDeptWiseNCHRCA4MicrobiologyReport.Qr_NCHRCA4Microbiology.Prepare;
+
+                         Form_QrDeptWiseNCHRCA4MicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseNCHRCA4MicrobiologyReport.Qr_NCHRCA4Microbiology.QRPrinter.PageCount);
+                         Form_QrDeptWiseNCHRCA4MicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseNCHRCA4MicrobiologyReport.Qr_NCHRCA4Microbiology.QRPrinter.PageCount);
+                         if Cb_ExternalPreview.Checked = false then
+                         begin
+                              Panel_Preview.Visible := true;
+                              Panel_Preview.BringToFront;
+                              QRPreview1.QRPrinter :=
+                              Form_QrDeptWiseNCHRCA4MicrobiologyReport.Qr_NCHRCA4Microbiology.QRPrinter;
+                              QRPreview1.Zoom := 100;
+                         end
+                         else
+                              Form_QrDeptWiseNCHRCA4MicrobiologyReport.Qr_NCHRCA4Microbiology.Preview;
+                    Finally
+                         Form_QrDeptWiseNCHRCA4MicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                    End;
+               end
+
+               else
+               begin
+                    Try
+
+                       Form_QrDeptWiseBioDiagReportKpl := TForm_QrDeptWiseBioDiagReportKpl.Create(nil);
+                       Form_QrDeptWiseBioDiagReportKpl.Qr_NMCA4DeptWise.Prepare;
+                       Form_QrDeptWiseBioDiagReportKpl.lbl_totpage.Caption :=IntToStr(Form_QrDeptWiseBioDiagReportKpl.Qr_NMCA4DeptWise.QRPrinter.PageCount);
+                       Form_QrDeptWiseBioDiagReportKpl.lbl_totpageh.Caption:=IntToStr(Form_QrDeptWiseBioDiagReportKpl.Qr_NMCA4DeptWise.QRPrinter.PageCount);
+                       //Form_QrDeptWiseBioDiagReportKpl.QRLabel_ReportHeader.Caption:='Test Report Form ' +ComboBox_ReportHeading.Text;
+                       if Cb_ExternalPreview.Checked = false then
+                       begin
+                            Panel_Preview.Visible := true;
+                            Panel_Preview.BringToFront;
+                            QRPreview1.QRPrinter :=
+                            Form_QrDeptWiseBioDiagReportKpl.Qr_NMCA4DeptWise.QRPrinter;
+                            QRPreview1.Zoom := 100;
+                       end
+                       else
+                            Form_QrDeptWiseBioDiagReportKpl.Qr_NMCA4DeptWise.Preview;
+                    Finally
+                          Form_QrDeptWiseBioDiagReportKpl.Free;
+                          Query_SampleCollected.Close;
+                          Query_SampleCollected.Open;
+                    End;
+               end;
+             end
+           else if gi_compileValue=26 then     //NOZOMI
+          begin
+               if Gi_DepID=14 then
+               begin
+                    Try
+                         Form_QrDeptWiseNOZOMIMicrobiologyReport := TForm_QrDeptWiseNOZOMIMicrobiologyReport.Create(nil);
+                         Form_QrDeptWiseNOZOMIMicrobiologyReport.Qr_NOZOMIMicrobiology.Prepare;
+
+                         Form_QrDeptWiseNOZOMIMicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseNOZOMIMicrobiologyReport.Qr_NOZOMIMicrobiology.QRPrinter.PageCount);
+                         Form_QrDeptWiseNOZOMIMicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseNOZOMIMicrobiologyReport.Qr_NOZOMIMicrobiology.QRPrinter.PageCount);
+                         if Cb_ExternalPreview.Checked = false then
+                         begin
+                              Panel_Preview.Visible := true;
+                              Panel_Preview.BringToFront;
+                              QRPreview1.QRPrinter :=
+                              Form_QrDeptWiseNOZOMIMicrobiologyReport.Qr_NOZOMIMicrobiology.QRPrinter;
+                              QRPreview1.Zoom := 100;
+                         end
+                         else
+                         Form_QrDeptWiseNOZOMIMicrobiologyReport.Qr_NOZOMIMicrobiology.Preview;
+                    Finally
+                         Form_QrDeptWiseNOZOMIMicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                    End;
+               end
+               else
+               begin
+                    Try
+
+                       Form_QrDeptWiseA4_hetaudarefl := TForm_QrDeptWiseA4_hetaudarefl.Create(nil);
+                       Form_QrDeptWiseA4_hetaudarefl.Qr_HetaudaRefDeptWise.Prepare;
+                       Form_QrDeptWiseA4_hetaudarefl.lbl_totpage.Caption :=IntToStr(Form_QrDeptWiseA4_hetaudarefl.Qr_HetaudaRefDeptWise.QRPrinter.PageCount);
+                       Form_QrDeptWiseA4_hetaudarefl.lbl_totpageh.Caption:=IntToStr(Form_QrDeptWiseA4_hetaudarefl.Qr_HetaudaRefDeptWise.QRPrinter.PageCount);
+                       //Form_QrDeptWiseBioDiagReportKpl.QRLabel_ReportHeader.Caption:='Test Report Form ' +ComboBox_ReportHeading.Text;
+                       if Cb_ExternalPreview.Checked = false then
+                       begin
+                            Panel_Preview.Visible := true;
+                            Panel_Preview.BringToFront;
+                            QRPreview1.QRPrinter :=
+                            Form_QrDeptWiseA4_hetaudarefl.Qr_HetaudaRefDeptWise.QRPrinter;
+                            QRPreview1.Zoom := 100;
+                       end
+                       else
+                            Form_QrDeptWiseA4_hetaudarefl.Qr_HetaudaRefDeptWise.Preview;
+                    Finally
+                          Form_QrDeptWiseA4_hetaudarefl.Free;
+                          Query_SampleCollected.Close;
+                          Query_SampleCollected.Open;
+                    End;
+               end;
+          end
+          else if gi_compileValue=28 then     // Hetauda Rference lab
+          begin
+               if Gi_DepID=14 then
+               begin
+                    Try
+                         Form_QrDeptWiseMicrobiologyReport_hetaudaref := TForm_QrDeptWiseMicrobiologyReport_hetaudaref.Create(nil);
+                         Form_QrDeptWiseMicrobiologyReport_hetaudaref.Qr_HetaudaMicrobiology.Prepare;
+
+                         Form_QrDeptWiseMicrobiologyReport_hetaudaref.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseMicrobiologyReport_hetaudaref.Qr_HetaudaMicrobiology.QRPrinter.PageCount);
+                         Form_QrDeptWiseMicrobiologyReport_hetaudaref.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseMicrobiologyReport_hetaudaref.Qr_HetaudaMicrobiology.QRPrinter.PageCount);
+                         if Cb_ExternalPreview.Checked = false then
+                         begin
+                              Panel_Preview.Visible := true;
+                              Panel_Preview.BringToFront;
+                              QRPreview1.QRPrinter :=
+                              Form_QrDeptWiseMicrobiologyReport_hetaudaref.Qr_HetaudaMicrobiology.QRPrinter;
+                              QRPreview1.Zoom := 100;
+                         end
+                         else
+                         Form_QrDeptWiseMicrobiologyReport_hetaudaref.Qr_HetaudaMicrobiology.Preview;
+                    Finally
+                         Form_QrDeptWiseMicrobiologyReport_hetaudaref.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                    End;
+               end
+
+               else
+               begin
+                    Try
+
+                       Form_QrDeptWiseA4_hetaudarefl := TForm_QrDeptWiseA4_hetaudarefl.Create(nil);
+                       Form_QrDeptWiseA4_hetaudarefl.Qr_HetaudaRefDeptWise.Prepare;
+                       Form_QrDeptWiseA4_hetaudarefl.lbl_totpage.Caption :=IntToStr(Form_QrDeptWiseA4_hetaudarefl.Qr_HetaudaRefDeptWise.QRPrinter.PageCount);
+                       Form_QrDeptWiseA4_hetaudarefl.lbl_totpageh.Caption:=IntToStr(Form_QrDeptWiseA4_hetaudarefl.Qr_HetaudaRefDeptWise.QRPrinter.PageCount);
+                       //Form_QrDeptWiseBioDiagReportKpl.QRLabel_ReportHeader.Caption:='Test Report Form ' +ComboBox_ReportHeading.Text;
+                       if Cb_ExternalPreview.Checked = false then
+                       begin
+                            Panel_Preview.Visible := true;
+                            Panel_Preview.BringToFront;
+                            QRPreview1.QRPrinter :=
+                            Form_QrDeptWiseA4_hetaudarefl.Qr_HetaudaRefDeptWise.QRPrinter;
+                            QRPreview1.Zoom := 100;
+                       end
+                       else
+                            Form_QrDeptWiseA4_hetaudarefl.Qr_HetaudaRefDeptWise.Preview;
+                    Finally
+                          Form_QrDeptWiseA4_hetaudarefl.Free;
+                          Query_SampleCollected.Close;
+                          Query_SampleCollected.Open;
+                    End;
+               end;
+          end
+          else if gi_compileValue=27 then     //KATHMANDU PATHLAB
+          begin
+               if Gi_DepID=2 then
+               begin
+                    Try
+                         Form_QrDeptWiseGMCA4MicrobiologyReport_kpl:= TForm_QrDeptWiseGMCA4MicrobiologyReport_kpl.Create(nil);
+                         Form_QrDeptWiseGMCA4MicrobiologyReport_kpl.Qr_GMClabA4Microbiology.Prepare;
+                         Form_QrDeptWiseGMCA4MicrobiologyReport_kpl.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseGMCA4MicrobiologyReport_kpl.Qr_GMClabA4Microbiology.QRPrinter.PageCount);
+                         Form_QrDeptWiseGMCA4MicrobiologyReport_kpl.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseGMCA4MicrobiologyReport_kpl.Qr_GMClabA4Microbiology.QRPrinter.PageCount);
+                         if Cb_ExternalPreview.Checked = false then
+                         begin
+                              Panel_Preview.Visible := true;
+                              Panel_Preview.BringToFront;
+                              QRPreview1.QRPrinter :=
+                              Form_QrDeptWiseGMCA4MicrobiologyReport_kpl.Qr_GMClabA4Microbiology.QRPrinter;
+                              QRPreview1.Zoom := 100;
+                         end
+                         else
+                         Form_QrDeptWiseGMCA4MicrobiologyReport_kpl.Qr_GMClabA4Microbiology.Preview;
+                    Finally
+                        Form_QrDeptWiseGMCA4MicrobiologyReport_kpl.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                    End;
+               end
+
+               else
+               begin
+                    Try
+
+                       Form_QrFindingGMCLabReport_kpl:= TForm_QrFindingGMCLabReport_kpl.Create(nil);
+                       Form_QrFindingGMCLabReport_kpl.Qr_GMClabFinding.Prepare;
+                       Form_QrFindingGMCLabReport_kpl.lbl_totpage.Caption :=IntToStr(Form_QrFindingGMCLabReport_kpl.Qr_GMClabFinding.QRPrinter.PageCount);
+                       Form_QrFindingGMCLabReport_kpl.lbl_totpageh.Caption:=IntToStr(Form_QrFindingGMCLabReport_kpl.Qr_GMClabFinding.QRPrinter.PageCount);
+                       //Form_QrDeptWiseBioDiagReportKpl.QRLabel_ReportHeader.Caption:='Test Report Form ' +ComboBox_ReportHeading.Text;
+                       if Cb_ExternalPreview.Checked = false then
+                       begin
+                            Panel_Preview.Visible := true;
+                            Panel_Preview.BringToFront;
+                            QRPreview1.QRPrinter :=
+                           Form_QrFindingGMCLabReport_kpl.Qr_GMClabFinding.QRPrinter;
+                            QRPreview1.Zoom := 100;
+                       end
+                       else
+                            Form_QrFindingGMCLabReport_kpl.Qr_GMClabFinding.Preview;
+                    Finally
+                          Form_QrFindingGMCLabReport_kpl.Free;
+                          Query_SampleCollected.Close;
+                          Query_SampleCollected.Open;
+                    End;
+               end;
+          end
+          else if (gi_compileValue=24) and (gb_isppl = True) then     //PATAN PATH LAB
+          begin
+               if Gi_DepID=14 then
+               begin
+                    Try
+                         Form_QrDeptWisepatanA4MicrobiologyReport:= TForm_QrDeptWisepatanA4MicrobiologyReport.Create(nil);
+                         Form_QrDeptWisepatanA4MicrobiologyReport.Qr_patanlabA4Microbiology.Prepare;
+
+                         Form_QrDeptWisepatanA4MicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWisepatanA4MicrobiologyReport.Qr_patanlabA4Microbiology.QRPrinter.PageCount);
+                         Form_QrDeptWisepatanA4MicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWisepatanA4MicrobiologyReport.Qr_patanlabA4Microbiology.QRPrinter.PageCount);
+                         if Cb_ExternalPreview.Checked = false then
+                         begin
+                              Panel_Preview.Visible := true;
+                              Panel_Preview.BringToFront;
+                              QRPreview1.QRPrinter :=
+                              Form_QrDeptWisepatanA4MicrobiologyReport.Qr_patanlabA4Microbiology.QRPrinter;
+                              QRPreview1.Zoom := 100;
+                         end
+                         else
+                              Form_QrDeptWisepatanA4MicrobiologyReport.Qr_patanlabA4Microbiology.Preview;
+                    Finally
+                         Form_QrDeptWisepatanA4MicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                    End;
+               end
+               else
+               begin
+                    Try
+
+                       Form_QrFindingPatanLabReport := TForm_QrFindingPatanLabReport.Create(nil);
+                       Form_QrFindingPatanLabReport.Qr_patanlabFinding.Prepare;
+                       Form_QrFindingPatanLabReport.lbl_totpage.Caption :=IntToStr(Form_QrFindingPatanLabReport.Qr_patanlabFinding.QRPrinter.PageCount);
+                       Form_QrFindingPatanLabReport.lbl_totpageh.Caption:=IntToStr(Form_QrFindingPatanLabReport.Qr_patanlabFinding.QRPrinter.PageCount);
+                       //Form_QrDeptWiseBioDiagReportKpl.QRLabel_ReportHeader.Caption:='Test Report Form ' +ComboBox_ReportHeading.Text;
+                       if Cb_ExternalPreview.Checked = false then
+                       begin
+                            Panel_Preview.Visible := true;
+                            Panel_Preview.BringToFront;
+                            QRPreview1.QRPrinter :=
+                            Form_QrFindingPatanLabReport.Qr_patanlabFinding.QRPrinter;
+                            QRPreview1.Zoom := 100;
+                       end
+                       else
+                            Form_QrFindingPatanLabReport.Qr_patanlabFinding.Preview;
+                    Finally
+                          Form_QrFindingPatanLabReport.Free;
+                          Query_SampleCollected.Close;
+                          Query_SampleCollected.Open;
+                    End;
+               end;
+          end
+          else if (gi_compileValue=24) and (gb_isppl = False) then     //Narayani Reference lab
+          begin
+               if Gi_DepID=14 then
+               begin
+                    Try
+                         Form_QrDeptWiseNRLA4MicrobiologyReport:= TForm_QrDeptWiseNRLA4MicrobiologyReport.Create(nil);
+                         Form_QrDeptWiseNRLA4MicrobiologyReport.Qr_NRLlabA4Microbiology.Prepare;
+
+                         Form_QrDeptWiseNRLA4MicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseNRLA4MicrobiologyReport.Qr_NRLlabA4Microbiology.QRPrinter.PageCount);
+                         Form_QrDeptWiseNRLA4MicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseNRLA4MicrobiologyReport.Qr_NRLlabA4Microbiology.QRPrinter.PageCount);
+                         if Cb_ExternalPreview.Checked = false then
+                         begin
+                              Panel_Preview.Visible := true;
+                              Panel_Preview.BringToFront;
+                              QRPreview1.QRPrinter :=
+                              Form_QrDeptWiseNRLA4MicrobiologyReport.Qr_NRLlabA4Microbiology.QRPrinter;
+                              QRPreview1.Zoom := 100;
+                         end
+                         else
+                              Form_QrDeptWiseNRLA4MicrobiologyReport.Qr_NRLlabA4Microbiology.Preview;
+                    Finally
+                         Form_QrDeptWiseNRLA4MicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                    End;
+               end
+               else
+               begin
+                    Try
+
+                       Form_QrFindingNRLLabReport := TForm_QrFindingNRLLabReport.Create(nil);
+                       Form_QrFindingNRLLabReport.Qr_NRLlabFinding.Prepare;
+                       Form_QrFindingNRLLabReport.lbl_totpage.Caption :=IntToStr(Form_QrFindingNRLLabReport.Qr_NRLlabFinding.QRPrinter.PageCount);
+                       Form_QrFindingNRLLabReport.lbl_totpageh.Caption:=IntToStr(Form_QrFindingNRLLabReport.Qr_NRLlabFinding.QRPrinter.PageCount);
+                       //Form_QrDeptWiseBioDiagReportKpl.QRLabel_ReportHeader.Caption:='Test Report Form ' +ComboBox_ReportHeading.Text;
+                       if Cb_ExternalPreview.Checked = false then
+                       begin
+                            Panel_Preview.Visible := true;
+                            Panel_Preview.BringToFront;
+                            QRPreview1.QRPrinter :=
+                            Form_QrFindingNRLLabReport.Qr_NRLlabFinding.QRPrinter;
+                            QRPreview1.Zoom := 100;
+                       end
+                       else
+                            Form_QrFindingNRLLabReport.Qr_NRLlabFinding.Preview;
+                    Finally
+                          Form_QrFindingNRLLabReport.Free;
+                          Query_SampleCollected.Close;
+                          Query_SampleCollected.Open;
+                    End;
+               end;
+          end
+          else if (gi_compileValue=25)  then     //Green Medical Center lab
+          begin
+               if Gi_DepID=14 then
+               begin
+                    Try
+                         Form_QrDeptWiseGMCA4MicrobiologyReport:= TForm_QrDeptWiseGMCA4MicrobiologyReport.Create(nil);
+                         Form_QrDeptWiseGMCA4MicrobiologyReport.Qr_GMClabA4Microbiology.Prepare;
+
+                         Form_QrDeptWiseGMCA4MicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseGMCA4MicrobiologyReport.Qr_GMClabA4Microbiology.QRPrinter.PageCount);
+                         Form_QrDeptWiseGMCA4MicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseGMCA4MicrobiologyReport.Qr_GMClabA4Microbiology.QRPrinter.PageCount);
+                         if Cb_ExternalPreview.Checked = false then
+                         begin
+                              Panel_Preview.Visible := true;
+                              Panel_Preview.BringToFront;
+                              QRPreview1.QRPrinter :=
+                              Form_QrDeptWiseGMCA4MicrobiologyReport.Qr_GMClabA4Microbiology.QRPrinter;
+                              QRPreview1.Zoom := 100;
+                         end
+                         else
+                              Form_QrDeptWiseGMCA4MicrobiologyReport.Qr_GMClabA4Microbiology.Preview;
+                    Finally
+                         Form_QrDeptWiseGMCA4MicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                    End;
+               end
+               else
+               begin
+                    Try
+
+                       Form_QrFindingGMCLabReport := TForm_QrFindingGMCLabReport.Create(nil);
+                       Form_QrFindingGMCLabReport.Qr_GMClabFinding.Prepare;
+                       Form_QrFindingGMCLabReport.lbl_totpage.Caption :=IntToStr(Form_QrFindingGMCLabReport.Qr_GMClabFinding.QRPrinter.PageCount);
+                       Form_QrFindingGMCLabReport.lbl_totpageh.Caption:=IntToStr(Form_QrFindingGMCLabReport.Qr_GMClabFinding.QRPrinter.PageCount);
+                       //Form_QrDeptWiseBioDiagReportKpl.QRLabel_ReportHeader.Caption:='Test Report Form ' +ComboBox_ReportHeading.Text;
+                       if Cb_ExternalPreview.Checked = false then
+                       begin
+                            Panel_Preview.Visible := true;
+                            Panel_Preview.BringToFront;
+                            QRPreview1.QRPrinter :=
+                            Form_QrFindingGMCLabReport.Qr_GMClabFinding.QRPrinter;
+                            QRPreview1.Zoom := 100;
+                       end
+                       else
+                            Form_QrFindingGMCLabReport.Qr_GMClabFinding.Preview;
+                    Finally
+                          Form_QrFindingGMCLabReport.Free;
+                          Query_SampleCollected.Close;
+                          Query_SampleCollected.Open;
+                    End;
+               end;
+          end
+          else if gi_compileValue=21 then //Aarogya
+          begin
+              if Gi_DepID=23 then
+              begin
+                  Try
+                    Form_QrAarogyaMicrobiologyReport := TForm_QrAarogyaMicrobiologyReport.Create(nil);
+                    if CB_EmergencyReporting.Checked=true then
+                    Form_QrAarogyaMicrobiologyReport.pbIsEmergency:=True
+                    else
+                    Form_QrAarogyaMicrobiologyReport.pbIsEmergency:=False;
+
+
+                    Form_QrAarogyaMicrobiologyReport.Qr_AarogyaMicrobiology.Prepare;
+
+                    Form_QrAarogyaMicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrAarogyaMicrobiologyReport.Qr_AarogyaMicrobiology.QRPrinter.PageCount);
+                    Form_QrAarogyaMicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrAarogyaMicrobiologyReport.Qr_AarogyaMicrobiology.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrAarogyaMicrobiologyReport.Qr_AarogyaMicrobiology.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                    begin
+                         Form_QrAarogyaMicrobiologyReport.pi_testnameid:=gi_TestNameId;
+                         Form_QrAarogyaMicrobiologyReport.Qr_AarogyaMicrobiology.Preview;
+                    end;
+                  Finally
+                         Form_QrAarogyaMicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                    End;
+              end
+              else
+              begin
+                  Try
+                    Form_QrFindingAarogyaReport := TForm_QrFindingAarogyaReport.Create(nil);  //SIGNATURE
+                    Form_QrFindingAarogyaReport.Qr_AarogyaFinding.Prepare;
+
+                    Form_QrFindingAarogyaReport.lbl_totpage.Caption := IntToStr(Form_QrFindingAarogyaReport.Qr_AarogyaFinding.QRPrinter.PageCount);
+                    Form_QrFindingAarogyaReport.lbl_totpageh.Caption := IntToStr(Form_QrFindingAarogyaReport.Qr_AarogyaFinding.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrFindingAarogyaReport.Qr_AarogyaFinding.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_QrFindingAarogyaReport.Qr_AarogyaFinding.Preview;
+                  Finally
+                    Form_QrFindingAarogyaReport.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+                  End;
+
+              end;
+          end
+          else if gi_compileValue=14 then //Intrepid
+          begin
+              if Gi_DepID=6 then     //6
+              begin
+                  Try
+                    Form_QrDeptWiseINTREPIDA4MicrobiologyReport := TForm_QrDeptWiseINTREPIDA4MicrobiologyReport.Create(nil);
+                    if CB_EmergencyReporting.Checked=true then
+                    Form_QrDeptWiseINTREPIDA4MicrobiologyReport.pbIsEmergency:=True
+                    else
+                    Form_QrDeptWiseINTREPIDA4MicrobiologyReport.pbIsEmergency:=False;
+
+
+                    Form_QrDeptWiseINTREPIDA4MicrobiologyReport.Qr_INTREPIDA4Microbiology.Prepare;
+
+                    Form_QrDeptWiseINTREPIDA4MicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseINTREPIDA4MicrobiologyReport.Qr_INTREPIDA4Microbiology.QRPrinter.PageCount);
+                    Form_QrDeptWiseINTREPIDA4MicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseINTREPIDA4MicrobiologyReport.Qr_INTREPIDA4Microbiology.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseINTREPIDA4MicrobiologyReport.Qr_INTREPIDA4Microbiology.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                    begin
+                        // Form_QrDeptWiseINTREPIDA4MicrobiologyReport.pi_testnameid:=gi_TestNameId;
+                         Form_QrDeptWiseINTREPIDA4MicrobiologyReport.Qr_INTREPIDA4Microbiology.Preview;
+                    end;
+                  Finally
+                         Form_QrDeptWiseINTREPIDA4MicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                    End;
+              end
+              else
+              begin
+                  Try
+                    Form_QrFindingIntrepidReport := TForm_QrFindingIntrepidReport.Create(nil);  //SIGNATURE
+                    Form_QrFindingIntrepidReport.Qr_IntrepidFinding.Prepare;
+
+                    Form_QrFindingIntrepidReport.lbl_totpage.Caption := IntToStr(Form_QrFindingIntrepidReport.Qr_IntrepidFinding.QRPrinter.PageCount);
+                    Form_QrFindingIntrepidReport.lbl_totpageh.Caption := IntToStr(Form_QrFindingIntrepidReport.Qr_IntrepidFinding.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrFindingIntrepidReport.Qr_IntrepidFinding.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_QrFindingIntrepidReport.Qr_IntrepidFinding.Preview;
+                  Finally
+                    Form_QrFindingIntrepidReport.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+                  End;
+
+              end;
+          end
+          else if gi_compileValue=23 then //MANGALAM
+          begin
+              if Gi_DepID=14 then     //6
+              begin
+                  Try
+                    Form_QrDeptWiseMANGALAMA4MicrobiologyReport := TForm_QrDeptWiseMANGALAMA4MicrobiologyReport.Create(nil);
+                    if CB_EmergencyReporting.Checked=true then
+                    Form_QrDeptWiseMANGALAMA4MicrobiologyReport.pbIsEmergency:=True
+                    else
+                    Form_QrDeptWiseMANGALAMA4MicrobiologyReport.pbIsEmergency:=False;
+
+
+                    Form_QrDeptWiseMANGALAMA4MicrobiologyReport.Qr_MANGALAMA4Microbiology.Prepare;
+
+                    Form_QrDeptWiseMANGALAMA4MicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseMANGALAMA4MicrobiologyReport.Qr_MANGALAMA4Microbiology.QRPrinter.PageCount);
+                    Form_QrDeptWiseMANGALAMA4MicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseMANGALAMA4MicrobiologyReport.Qr_MANGALAMA4Microbiology.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseMANGALAMA4MicrobiologyReport.Qr_MANGALAMA4Microbiology.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                    begin
+                        // Form_QrDeptWiseINTREPIDA4MicrobiologyReport.pi_testnameid:=gi_TestNameId;
+                         Form_QrDeptWiseMANGALAMA4MicrobiologyReport.Qr_MANGALAMA4Microbiology.Preview;
+                    end;
+                  Finally
+                         Form_QrDeptWiseMANGALAMA4MicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                  End;
+              end
+              else
+              begin
+                  Try
+                    Form_QrFindingMangalamReport := TForm_QrFindingMangalamReport.Create(nil);  //SIGNATURE
+                    Form_QrFindingMangalamReport.Qr_MangalamFinding.Prepare;
+
+                    Form_QrFindingMangalamReport.lbl_totpage.Caption := IntToStr(Form_QrFindingMangalamReport.Qr_MangalamFinding.QRPrinter.PageCount);
+                    Form_QrFindingMangalamReport.lbl_totpageh.Caption := IntToStr(Form_QrFindingMangalamReport.Qr_MangalamFinding.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrFindingMangalamReport.Qr_MangalamFinding.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_QrFindingMangalamReport.Qr_MangalamFinding.Preview;
+                  Finally
+                    Form_QrFindingMangalamReport.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+                  End;
+
+              end;
+          end
+
+          else if gi_compileValue in [1] then //NOVUS
+          begin
+              if Gi_DepID=23 then
+              begin
+                  Try
+                    Form_QrDeptWiseNeuroBrtMicrobiologyReport := TForm_QrDeptWiseNeuroBrtMicrobiologyReport.Create(nil);
+                    if CB_EmergencyReporting.Checked=true then
+                    Form_QrDeptWiseNeuroBrtMicrobiologyReport.pbIsEmergency:=True
+                    else
+                    Form_QrDeptWiseNeuroBrtMicrobiologyReport.pbIsEmergency:=False;
+
+
+                    Form_QrDeptWiseNeuroBrtMicrobiologyReport.Qr_NeuroBrtMicrobiology.Prepare;
+
+                    Form_QrDeptWiseNeuroBrtMicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseNeuroBrtMicrobiologyReport.Qr_NeuroBrtMicrobiology.QRPrinter.PageCount);
+                    Form_QrDeptWiseNeuroBrtMicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseNeuroBrtMicrobiologyReport.Qr_NeuroBrtMicrobiology.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseNeuroBrtMicrobiologyReport.Qr_NeuroBrtMicrobiology.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                    begin
+                         Form_QrDeptWiseNeuroBrtMicrobiologyReport.pi_testnameid:=gi_TestNameId;
+                         Form_QrDeptWiseNeuroBrtMicrobiologyReport.Qr_NeuroBrtMicrobiology.Preview;
+                    end;
+                  Finally
+                         Form_QrDeptWiseNeuroBrtMicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                    End;
+              end
+              else
+              begin
+                  Try
+                    Form_QrDeptWiseNeuroBrtReport := TForm_QrDeptWiseNeuroBrtReport.Create(nil);  //SIGNATURE
+                    Form_QrDeptWiseNeuroBrtReport.Qr_NeuroBrtDeptWise.Prepare;
+
+                    Form_QrDeptWiseNeuroBrtReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseNeuroBrtReport.Qr_NeuroBrtDeptWise.QRPrinter.PageCount);
+                    Form_QrDeptWiseNeuroBrtReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseNeuroBrtReport.Qr_NeuroBrtDeptWise.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseNeuroBrtReport.Qr_NeuroBrtDeptWise.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_QrDeptWiseNeuroBrtReport.Qr_NeuroBrtDeptWise.Preview;
+                  Finally
+                    Form_QrDeptWiseNeuroBrtReport.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+                  End;
+
+              end
+          end
+          else if gi_compileValue = 12 then   //BNB hospital
+          begin
+               Try
+                    Form_QrDeptWiseBnbReport := TForm_QrDeptWiseBnbReport.Create(nil);
+                    Form_QrDeptWiseBnbReport.Qr_BnbDeptWise.Prepare;
+
+                    Form_QrDeptWiseBnbReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseBnbReport.Qr_BnbDeptWise.QRPrinter.PageCount);
+                    Form_QrDeptWiseBnbReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseBnbReport.Qr_BnbDeptWise.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseBnbReport.Qr_BnbDeptWise.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_QrDeptWiseBnbReport.Qr_BnbDeptWise.Preview;
+               Finally
+                    Form_QrDeptWiseBnbReport.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+               End;
+          end
+          else if gi_compileValue = 15 then   //Meridian hospital
+          begin
+               Try
+                    Form_QrDeptWiseMeridianReport := TForm_QrDeptWiseMeridianReport.Create(nil);
+                    Form_QrDeptWiseMeridianReport.Qr_MeridianDeptWise.Prepare;
+
+                    Form_QrDeptWiseMeridianReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseMeridianReport.Qr_MeridianDeptWise.QRPrinter.PageCount);
+                    Form_QrDeptWiseMeridianReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseMeridianReport.Qr_MeridianDeptWise.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseMeridianReport.Qr_MeridianDeptWise.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_QrDeptWiseMeridianReport.Qr_MeridianDeptWise.Preview;
+               Finally
+                    Form_QrDeptWiseMeridianReport.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+               End;
+          end
+          else if gi_compileValue in [ 16,18,20] then //Shankarapur
+          begin
+              if Gi_DepID=23 then
+              begin
+                  Try
+                    Form_QrDeptWiseShankarapurMicrobiologyReport := TForm_QrDeptWiseShankarapurMicrobiologyReport.Create(nil);
+                    if CB_EmergencyReporting.Checked=true then
+                    Form_QrDeptWiseShankarapurMicrobiologyReport.pbIsEmergency:=True
+                    else
+                    Form_QrDeptWiseShankarapurMicrobiologyReport.pbIsEmergency:=False;
+
+
+                    Form_QrDeptWiseShankarapurMicrobiologyReport.Qr_ShankarapurMicrobiology.Prepare;
+
+                    Form_QrDeptWiseShankarapurMicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseShankarapurMicrobiologyReport.Qr_ShankarapurMicrobiology.QRPrinter.PageCount);
+                    Form_QrDeptWiseShankarapurMicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseShankarapurMicrobiologyReport.Qr_ShankarapurMicrobiology.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseShankarapurMicrobiologyReport.Qr_ShankarapurMicrobiology.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                    begin
+                         Form_QrDeptWiseShankarapurMicrobiologyReport.pi_testnameid:=gi_TestNameId;
+                         Form_QrDeptWiseShankarapurMicrobiologyReport.Qr_ShankarapurMicrobiology.Preview;
+                    end;
+                  Finally
+                         Form_QrDeptWiseShankarapurMicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                  End;
+              end
+              else
+              begin
+                  Try
+                    Form_QrDeptWiseShankarapurReport := TForm_QrDeptWiseShankarapurReport.Create(nil);
+                    Form_QrDeptWiseShankarapurReport.Qr_ShankarapurDeptWise.Prepare;
+
+                    Form_QrDeptWiseShankarapurReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseShankarapurReport.Qr_ShankarapurDeptWise.QRPrinter.PageCount);
+                    Form_QrDeptWiseShankarapurReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseShankarapurReport.Qr_ShankarapurDeptWise.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseShankarapurReport.Qr_ShankarapurDeptWise.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_QrDeptWiseShankarapurReport.Qr_ShankarapurDeptWise.Preview;
+                  Finally
+                    Form_QrDeptWiseShankarapurReport.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+                  End;
+
+              end
+          end
+          else if gi_compileValue=19 then //Vigour
+          begin
+              if Gi_DepID=23 then
+              begin
+                  Try
+                    Form_QrDeptWiseVigourMicrobiologyReport := TForm_QrDeptWiseVigourMicrobiologyReport.Create(nil);
+                    if CB_EmergencyReporting.Checked=true then
+                    Form_QrDeptWiseVigourMicrobiologyReport.pbIsEmergency:=True
+                    else
+                    Form_QrDeptWiseVigourMicrobiologyReport.pbIsEmergency:=False;
+
+
+                    Form_QrDeptWiseVigourMicrobiologyReport.Qr_VigourMicrobiology.Prepare;
+
+                    Form_QrDeptWiseVigourMicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseVigourMicrobiologyReport.Qr_VigourMicrobiology.QRPrinter.PageCount);
+                    Form_QrDeptWiseVigourMicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseVigourMicrobiologyReport.Qr_vigourMicrobiology.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseVigourMicrobiologyReport.Qr_VigourMicrobiology.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                    begin
+                         Form_QrDeptWiseVigourMicrobiologyReport.pi_testnameid:=gi_TestNameId;
+                         Form_QrDeptWiseVigourMicrobiologyReport.Qr_VigourMicrobiology.Preview;
+                    end;
+                  Finally
+                         Form_QrDeptWiseVigourMicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                  End;
+              end
+              else
+              begin
+                  Try
+                    Form_QrDeptWiseVigourReport := TForm_QrDeptWiseVigourReport.Create(nil);
+                    Form_QrDeptWiseVigourReport.Qr_VigourDeptWise.Prepare;
+
+                    Form_QrDeptWiseVigourReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseVigourReport.Qr_VigourDeptWise.QRPrinter.PageCount);
+                    Form_QrDeptWiseVigourReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseVigourReport.Qr_VigourDeptWise.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseVigourReport.Qr_VigourDeptWise.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_QrDeptWiseVigourReport.Qr_VigourDeptWise.Preview;
+                  Finally
+                    Form_QrDeptWiseVigourReport.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+                  End;
+
+              end
+          end
+          else if gi_compileValue=17 then //Era
+          begin
+              if Gi_DepID=23 then
+              begin
+                  Try
+                    Form_QrDeptWiseEraMicrobiologyReport := TForm_QrDeptWiseEraMicrobiologyReport.Create(nil);
+                    if CB_EmergencyReporting.Checked=true then
+                    Form_QrDeptWiseEraMicrobiologyReport.pbIsEmergency:=True
+                    else
+                    Form_QrDeptWiseEraMicrobiologyReport.pbIsEmergency:=False;
+
+
+                    Form_QrDeptWiseEraMicrobiologyReport.Qr_EraMicrobiology.Prepare;
+
+                    Form_QrDeptWiseEraMicrobiologyReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseEraMicrobiologyReport.Qr_EraMicrobiology.QRPrinter.PageCount);
+                    Form_QrDeptWiseEraMicrobiologyReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseEraMicrobiologyReport.Qr_EraMicrobiology.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseEraMicrobiologyReport.Qr_EraMicrobiology.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                    begin
+                         Form_QrDeptWiseEraMicrobiologyReport.pi_testnameid:=gi_TestNameId;
+                         Form_QrDeptWiseEraMicrobiologyReport.Qr_eraMicrobiology.Preview;
+                    end;
+                  Finally
+                         Form_QrDeptWiseEraMicrobiologyReport.Free;
+                         Query_SampleCollected.Close;
+                         Query_SampleCollected.Open;
+                  End;
+              end
+              else
+              begin
+                  Try
+                    Form_QrDeptWiseEraReport := TForm_QrDeptWiseEraReport.Create(nil);
+                    Form_QrDeptWiseEraReport.Qr_EraDeptWise.Prepare;
+
+                    Form_QrDeptWiseEraReport.lbl_totpage.Caption := IntToStr(Form_QrDeptWiseEraReport.Qr_EraDeptWise.QRPrinter.PageCount);
+                    Form_QrDeptWiseEraReport.lbl_totpageh.Caption := IntToStr(Form_QrDeptWiseEraReport.Qr_EraDeptWise.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter :=
+                         Form_QrDeptWiseEraReport.Qr_EraDeptWise.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_QrDeptWiseEraReport.Qr_EraDeptWise.Preview;
+                  Finally
+                    Form_QrDeptWiseEraReport.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+                  End;
+
+              end
+          end
+          else
+          begin
+             Try
+                  Form_QrFinding := TForm_QrFinding.Create(nil);
+                  Form_QrFinding.QrFinding.Prepare;
+                  if Cb_ExternalPreview.Checked = false then
+                  begin
+                       Panel_Preview.Visible := true;
+                       Panel_Preview.BringToFront;
+                       QRPreview1.QRPrinter := Form_QrFinding.QrFinding.QRPrinter;
+                       QRPreview1.Zoom := 100;
+                  end
+                  else
+                       Form_QrFinding.QrFinding.Preview;
+             Finally
+                  Form_QrFinding.Free;
+                  Query_SampleCollected.Close;
+                  Query_SampleCollected.Open;
+             End;
+          end;
+    end
+    else
+    begin
+         {if gi_compileValue in [1,14,21,22] then
+         begin
+             Try
+                   Form_NeuroBrtHistoQrPathFinding := TForm_NeuroBrtHistoQrPathFinding.Create(nil);
+                   Form_NeuroBrtHistoQrPathFinding.Qr_NeuroBrtHistorFinding.Prepare;
+                   if Cb_ExternalPreview.Checked = false then
+                   begin
+                        Panel_Preview.Visible := true;
+                        Panel_Preview.BringToFront;
+                        QRPreview1.QRPrinter := Form_NeuroBrtHistoQrPathFinding.Qr_NeuroBrtHistorFinding.QRPrinter;
+                        QRPreview1.Zoom := 100;
+                   end
+                   else
+                        Form_NeuroBrtHistoQrPathFinding.Qr_NeuroBrtHistorFinding.Preview;
+              Finally
+                   Form_NeuroBrtHistoQrPathFinding.Free;
+                   Query_SampleCollected.Close;
+                   Query_SampleCollected.Open;
+              End;
+         end
+         else}
+
+
+          if gi_compilevalue IN [23] then
+          begin
+               Try
+                    Form_MangalamHistoQrPathFinding := TForm_MangalamHistoQrPathFinding.Create(nil);
+                    Form_MangalamHistoQrPathFinding.Qr_MangalamHistorFinding.Prepare;
+
+                    Form_MangalamHistoQrPathFinding.lbl_totpage.Caption := IntToStr(Form_MangalamHistoQrPathFinding.Qr_MangalamHistorFinding.QRPrinter.PageCount);
+                    Form_MangalamHistoQrPathFinding.lbl_totpageh.Caption := IntToStr(Form_MangalamHistoQrPathFinding.Qr_MangalamHistorFinding.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter := Form_MangalamHistoQrPathFinding.Qr_MangalamHistorFinding.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_MangalamHistoQrPathFinding.Qr_MangalamHistorFinding.Preview;
+               Finally
+                    Form_MangalamHistoQrPathFinding.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+               End;
+          end
+          else if (gi_compileValue=24) and (gb_isppl=True) then
+          begin
+               Try
+                    Form_patanHistoQrPathFinding := TForm_patanHistoQrPathFinding.Create(nil);
+                    Form_patanHistoQrPathFinding.Qr_patanlabHistorFinding.Prepare;
+
+                    Form_patanHistoQrPathFinding.lbl_totpage.Caption := IntToStr(Form_patanHistoQrPathFinding.Qr_patanlabHistorFinding.QRPrinter.PageCount);
+                    Form_patanHistoQrPathFinding.lbl_totpageh.Caption := IntToStr(Form_patanHistoQrPathFinding.Qr_patanlabHistorFinding.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter := Form_patanHistoQrPathFinding.Qr_patanlabHistorFinding.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_patanHistoQrPathFinding.Qr_patanlabHistorFinding.Preview;
+               Finally
+                    Form_patanHistoQrPathFinding.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+               End;
+          end
+           else if (gi_compileValue=24) and (gb_isppl=False) then
+          begin
+               Try
+                    Form_NRLHistoQrPathFinding := TForm_NRLHistoQrPathFinding.Create(nil);
+                    Form_NRLHistoQrPathFinding.Qr_NRLlabHistorFinding.Prepare;
+
+                    Form_NRLHistoQrPathFinding.lbl_totpage.Caption := IntToStr(Form_NRLHistoQrPathFinding.Qr_NRLlabHistorFinding.QRPrinter.PageCount);
+                    Form_NRLHistoQrPathFinding.lbl_totpageh.Caption := IntToStr(Form_NRLHistoQrPathFinding.Qr_NRLlabHistorFinding.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter := Form_NRLHistoQrPathFinding.Qr_NRLlabHistorFinding.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_NRLHistoQrPathFinding.Qr_NRLlabHistorFinding.Preview;
+               Finally
+                    Form_NRLHistoQrPathFinding.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+               End;
+          end
+          else if (gi_compileValue=25)  then
+          begin
+               Try
+                    Form_GMCHistoQrPathFinding := TForm_GMCHistoQrPathFinding.Create(nil);
+                    Form_GMCHistoQrPathFinding.Qr_GMClabHistorFinding.Prepare;
+
+                    Form_GMCHistoQrPathFinding.lbl_totpage.Caption := IntToStr(Form_GMCHistoQrPathFinding.Qr_GMClabHistorFinding.QRPrinter.PageCount);
+                    Form_GMCHistoQrPathFinding.lbl_totpageh.Caption := IntToStr(Form_GMCHistoQrPathFinding.Qr_GMClabHistorFinding.QRPrinter.PageCount);
+                    if Cb_ExternalPreview.Checked = false then
+                    begin
+                         Panel_Preview.Visible := true;
+                         Panel_Preview.BringToFront;
+                         QRPreview1.QRPrinter := Form_GMCHistoQrPathFinding.Qr_GMClabHistorFinding.QRPrinter;
+                         QRPreview1.Zoom := 100;
+                    end
+                    else
+                         Form_GMCHistoQrPathFinding.Qr_GMClabHistorFinding.Preview;
+               Finally
+                    Form_GMCHistoQrPathFinding.Free;
+                    Query_SampleCollected.Close;
+                    Query_SampleCollected.Open;
+               End;
+          end
+
+          else if gi_compileValue=14 then
+         begin
+              Try
+                   Form_Report :=TForm_Report.Create(nil);
+                   with  Form_Report do
+                   begin
+                         if ls_RepControl=2 then
+                         begin
+                              with OraQuery_Pap do
+                              begin
+                                   close;
+                                   Session:=Dm_Hospital.Db;
+                                   sql[6] :='WHERE PAIN_PATIENTID='+INTTOSTR(gi_patientid);
+                                   SQL[7] :='AND PAIN_PATIENTTESTID='+IntToStr(gi_PatientTestID);
+                                   //sql.savetofile('C:\pap.txt');
+                                   open;
+                              end;
+                         end
+                         else if ls_RepControl=1 then
+                         begin
+                              with OraQuery_FNAC do
+                              begin
+                                   close;
+                                   Session:=Dm_Hospital.Db;
+                                   sql[5] :='WHERE FNIN_PATIENTID='+INTTOSTR(gi_patientid);
+                                   SQL[6] :='AND FNIN_PATIENTTESTID='+IntToStr(gi_PatientTestID);
+                                   //sql.savetofile('C:\fnac.txt');
+                                   open;
+                              end;
+                         end
+                         else if ls_RepControl=6 then
+                         begin
+                              with OraQuery_BoneMarrow do
+                              begin
+                                   close;
+                                   Session:=Dm_Hospital.Db;
+                                   sql[5] :='WHERE BOIN_PATIENTID='+INTTOSTR(gi_patientid);
+                                   SQL[6] :='AND BOIN_PATIENTTESTID='+IntToStr(gi_PatientTestID);
+                                   //sql.savetofile('C:\marrow.txt');
+                                   open;
+                              end;
+                         end
+                         else if ls_RepControl=5 then
+                         begin
+                              with OraQuery_Surgical do
+                              begin
+                                   close;
+                                   session:= DM_Hospital.DB;
+                                   sql[6]:='WHERE SUIN_PATIENTID='+IntToStr(gi_PatientID);
+                                   SQL[7] :='AND SUIN_PATIENTTESTID='+IntToStr(gi_PatientTestID);
+                                   //sql.SaveToFile('c:\surgreport.txt');
+                                   OPEN;
+                              end;
+                         end
+                         else if ls_RepControl=4 then
+                         begin
+                              with OraQuery_FluidMalignant do
+                              begin
+                                   Close;
+                                   session:=DM_Hospital.DB;
+                                   sql[5]:='WHERE FLMI_PATIENTID='+IntToStr(gi_PatientID);
+                                   SQL[6]:='AND FLMI_PATIENTTESTID='+IntToStr(gi_PatientTestID);
+                                   Open;
+                              end;
+                         end
+                         else if ls_RepControl=3 then
+                         begin
+                              with OraQuery_FluidForDC do
+                              begin
+                                   Close;
+                                   session:=DM_Hospital.DB;
+                                   sql[5]:='WHERE FLDC_PATIENTID='+IntToStr(gi_PatientID);
+                                   SQL[6]:='AND FLDC_PATIENTTESTID='+IntToStr(gi_PatientTestID);
+                                   Open;
+                              end;
+                         end
+                         else if ls_RepControl=7 then
+                         begin
+                              With OraQuery_VSGFNAC do
+                              begin
+                                   Close;
+                                   Session:=DM_Hospital.DB;
+                                   Sql[5]:='WHERE USFN_PATIENTID='+IntToStr(gi_PatientID);
+                                   SQL[6] :='AND USFN_PATIENTTESTID='+IntToStr(gi_PatientTestID);
+                                   Open;
+                              end;
+                         end
+                         else if ls_RepControl=8 then
+                         begin
+                              with OraQuery_PBS do
+                              begin
+                                   close;
+                                   Session:=DM_Hospital.DB;
+                                   sql[7]:='WHERE PBIN_PATIENTID='+IntToStr(gi_PatientID);
+                                   sql[8]:='AND PBIN_PATIENTTESTID='+intToStr(gi_PatientTestID);
+                                   open;
+                              end;
+                              //OraQuery_PBSDoctor.Close;
+                              //OraQuery_PBSDoctor.Open;
+                         end;
+
+
+                      if ls_RepControl=2 then
+                      begin
+                           QR_Pap.Preview;
+                           OraQuery_Pap.free;
+                      end
+                      else if ls_RepControl=1 then
+                      begin
+                            QR_FNAC.Preview;
+                            OraQuery_FNAC.free;
+                      end
+                      else if ls_RepControl=5 then
+                      begin
+                           QR_Surgical.Preview;
+                           OraQuery_Surgical.Free;
+                      end
+                      else if ls_RepControl=6 then
+                      begin
+                           QR_Bonemarrow.Preview;
+                           OraQuery_BoneMarrow.free;
+                      end
+                      else if ls_RepControl=4 then
+                      begin
+                           QR_FluidMalignant.Preview;
+                           OraQuery_FluidMalignant.Free;
+                      end
+                      else if ls_RepControl=3 then
+                      begin
+                           QR_FluidForDc.Preview;
+                           OraQuery_FluidForDC.Free;
+                      end
+                      else if ls_RepControl=7 then
+                      begin
+                           QR_VSGFNAC.Preview;
+                           OraQuery_VSGFNAC.Free;
+                      end
+                      else if ls_RepControl=8 then
+                      begin
+                           QR_PBS.Preview;
+                           OraQuery_PBS.Free;
+                      end;
+
+                   end;
+               Finally
+                  Form_Report.Free;
+                  Query_SampleCollected.Close;
+                  Query_SampleCollected.Open;
+               End;
+         end
+
+         else if gi_compileValue in [12] then
+         begin
+             Try
+                   Form_BNBHistoQrPathFinding := TForm_BNBHistoQrPathFinding.Create(nil);
+                   Form_BNBHistoQrPathFinding.Qr_BNBHistorFinding.Prepare;
+                   if Cb_ExternalPreview.Checked = false then
+                   begin
+                        Panel_Preview.Visible := true;
+                        Panel_Preview.BringToFront;
+                        QRPreview1.QRPrinter := Form_BNBHistoQrPathFinding.Qr_BNBHistorFinding.QRPrinter;
+                        QRPreview1.Zoom := 100;
+                   end
+                   else
+                        Form_BNBHistoQrPathFinding.Qr_BNBHistorFinding.Preview;
+              Finally
+                   Form_BNBHistoQrPathFinding.Free;
+                   Query_SampleCollected.Close;
+                   Query_SampleCollected.Open;
+              End;
+         end
+     else if gi_compileValue in [11] then   //Nepal Cancer
+      begin
+        if gs_DepType='H' then
+           begin
+              Try
+                Form_QrPathFinding := TForm_QrPathFinding.Create(nil);
+                Form_QrPathFinding.QrFinding.Prepare;
+                Form_QrPathFinding.lbl_totpage.Caption := IntToStr(Form_QrPathFinding.QrFinding.QRPrinter.PageCount);
+                Form_QrPathFinding.lbl_totpageh.Caption := IntToStr(Form_QrPathFinding.QrFinding.QRPrinter.PageCount);
+                if Cb_ExternalPreview.Checked = false then
+                begin
+                   Panel_Preview.Visible := true;
+                   Panel_Preview.BringToFront;
+                   QRPreview1.QRPrinter := Form_QrPathFinding.QrFinding.QRPrinter;
+                   QRPreview1.Zoom := 100;
+                end
+                else
+                   Form_QrPathFinding.QrFinding.Preview;
+              Finally
+              Form_QrPathFinding.Free;
+              Query_SampleCollected.Close;
+              Query_SampleCollected.Open;
+              End;
+            end
+
+        else if gs_DepType='R' then
+        begin
+              Try
+                Form_QrNepalCancerRadiology := TForm_QrNepalCancerRadiology.Create(nil);
+                Form_QrNepalCancerRadiology.QrFindingNepalCancer.Prepare;
+                Form_QrNepalCancerRadiology.lbl_totpage.Caption := IntToStr(Form_QrNepalCancerRadiology.QrFindingNepalCancer.QRPrinter.PageCount);
+                Form_QrNepalCancerRadiology.lbl_totpageh.Caption := IntToStr(Form_QrNepalCancerRadiology.QrFindingNepalCancer.QRPrinter.PageCount);
+                if Cb_ExternalPreview.Checked = false then
+                begin
+                   Panel_Preview.Visible := true;
+                   Panel_Preview.BringToFront;
+                   QRPreview1.QRPrinter := Form_QrNepalCancerRadiology.QrFindingNepalCancer.QRPrinter;
+                   QRPreview1.Zoom := 100;
+                end
+                else
+                   Form_QrNepalCancerRadiology.QrFindingNepalCancer.Preview;
+              Finally
+              Form_QrNepalCancerRadiology.Free;
+              Query_SampleCollected.Close;
+              Query_SampleCollected.Open;
+              End;
+
+        end;
+      end
+           
+    else
+    begin
+         Try
+              Form_QrPathFinding := TForm_QrPathFinding.Create(nil);
+              Form_QrPathFinding.QrFinding.Prepare;
+              Form_QrPathFinding.lbl_totpage.Caption := IntToStr(Form_QrPathFinding.QrFinding.QRPrinter.PageCount);
+              Form_QrPathFinding.lbl_totpageh.Caption := IntToStr(Form_QrPathFinding.QrFinding.QRPrinter.PageCount);
+              if Cb_ExternalPreview.Checked = false then
+              begin
+                   Panel_Preview.Visible := true;
+                   Panel_Preview.BringToFront;
+                   QRPreview1.QRPrinter := Form_QrPathFinding.QrFinding.QRPrinter;
+                   QRPreview1.Zoom := 100;
+              end
+              else
+                   Form_QrPathFinding.QrFinding.Preview;
+         Finally
+              Form_QrPathFinding.Free;
+              Query_SampleCollected.Close;
+              Query_SampleCollected.Open;
+         End;
+    end;
+    end;
+end;
+
+procedure TForm_Verification.SpeedButton12Click(Sender: TObject);
+begin
+     Edit_SearchCollectedList.Clear;
+     Edit_SearchCollectedList.SetFocus;
+end;
+
+procedure TForm_Verification.Sb_ResultVerificationClick(Sender: TObject);
+begin
+     Try
+          Form_ServiceDetail:=TForm_ServiceDetail.Create(Nil);
+          Form_ServiceDetail.ShowModal;
+     Finally
+          Form_ServiceDetail.Free;
+     End;
+end;
+
+procedure TForm_Verification.SpeedButton2Click(Sender: TObject);
+var
+     SelectedPatientTestId: Integer;
+     AllPatientTestID:String;
+begin
+     CreateQuery;
+     if not CheckAccess('TEST RESULT') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+     gs_CalledFrom := 'VERIFICATION';
+     (*gi_PatientID := Query_SampleCollected.FieldByName('PatientID').AsInteger;
+     Gs_BillNo := Query_SampleCollected.FieldByName('BillNo').AsString;
+     gi_TestNameId := Query_SampleCollected.FieldByName('TestNameId').AsInteger;
+     gs_TestName := Query_SampleCollected.FieldByName('TestName').AsString;
+     gs_SampleNo := Query_SampleCollected.FieldByName('SampleNo').AsString;
+     gs_TestNameCode := Query_SampleCollected.FieldByName('TestNameCode').AsString;
+     gi_PatientTestID := Query_SampleCollected.FieldByName('PatientTestId').AsInteger;
+     gs_TestDate := Query_SampleCollected.FieldByName('TestDate').AsString;
+     Gi_DepID:=Query_SampleCollected.FieldByName('DepID').AsInteger;*)
+
+     gi_PatientID := Table_List.FieldByName('PatientID').AsInteger;
+     Gs_BillNo := Table_List.FieldByName('BillNo').AsString;
+     gi_TestNameId := Table_List.FieldByName('TestNameId').AsInteger;
+     gs_TestName := Table_List.FieldByName('TestName').AsString;
+     gs_SampleNo := Table_List.FieldByName('SampleNo').AsString;
+     gs_TestNameCode := Table_List.FieldByName('TestNameCode').AsString;
+     gi_PatientTestID := Table_List.FieldByName('PatientTestId').AsInteger;
+     gs_TestDate := Table_List.FieldByName('TestDate').AsString;
+     Gi_DepID:=Table_List.FieldByName('DepID').AsInteger;
+
+     Panel_Parent.BringToFront;
+
+     Table_List.DisableControls;
+     SelectedPatientTestId := Table_List.FieldByName('PatientTestId').AsInteger;
+     Gs_SelectedPatientTestID := '';
+     AllPatientTestID:='';
+
+     with Table_List do
+     begin
+          Close;
+          Open;
+          while not Eof do
+          begin
+               if AllPatientTestID = '' then
+                         AllPatientTestID := FieldByName('PatientTestId').AsString
+                    else
+                         AllPatientTestID := AllPatientTestID + ',' + FieldByName('PatientTestId').AsString;
+               if FieldByName('State').AsBoolean = true then
+               begin
+                    if Gs_SelectedPatientTestID = '' then
+                         Gs_SelectedPatientTestID := FieldByName('PatientTestId').AsString
+                    else
+                         Gs_SelectedPatientTestID := Gs_SelectedPatientTestID + ',' + FieldByName('PatientTestId').AsString;
+               end;
+               Next;
+          end;
+          if Gs_SelectedPatientTestID='' then
+          Gs_SelectedPatientTestID:=AllPatientTestID;
+     end;
+     Table_List.EnableControls;
+     Table_List.Locate('PatientTestId', SelectedPatientTestId, []);
+
+     if Not IsClinicalDep(Gi_DepID) then
+     begin
+          Try
+               FreeAndNil(Frame_Finding);
+          Except
+
+          End;
+          Frame_Finding := TFrame_Finding.Create(nil);
+          with Frame_Finding do
+          begin
+               Parent := Panel_Parent;
+               Align := alClient;
+               show;
+               FrameCleared := false;
+               DBGrid1.SelectedIndex := 2;
+               DBGrid1.SetFocus;
+          end;
+          { ***************************************** }
+     end
+     else
+     begin
+          if gi_compilevalue in [23,24,25,26,27,28] then
+          begin
+                    Try
+                    FreeAndNil(Frame_ClinicalPathFindingNEw);
+               Except
+
+               End;
+               //LabeledEdit1.Visible:=False;
+               //LabeledEdit2.Visible:=False;
+
+               Frame_ClinicalPathFindingNEw := TFrame_ClinicalPathFindingNEw.Create(Nil);
+               with Frame_ClinicalPathFindingNEw do
+               begin
+                    Parent := Panel_Parent;
+                    Align := alClient;
+                    show;
+                    FrameCleared := false;
+               end;
+          end
+          else if gi_compileValue=11 then
+          begin
+              Try
+                   FreeAndNil(Frame_ClinicalPathFinding);
+              Except
+
+              End;
+              Frame_ClinicalPathFinding := TFrame_ClinicalPathFinding.Create(Nil);
+              with Frame_ClinicalPathFinding do
+              begin
+                   Parent := Panel_Parent;
+                   Align := alClient;
+                   show;
+                   FrameCleared := false;
+              end;
+              Try
+                   FreeAndNil(Frame_ClinicalPathFindingNew);
+              Except
+
+              End;
+          end
+          else
+          begin
+              Try
+                   FreeAndNil(Frame_ClinicalPathFindingCentralNew);
+              Except
+
+              End;
+              Frame_ClinicalPathFindingCentralNew := TFrame_ClinicalPathFindingCentralNew.Create(Nil);
+              with Frame_ClinicalPathFindingCentralNew do
+              begin
+                   Parent := Panel_Parent;
+                   Align := alClient;
+                   show;
+                   FrameCleared := false;
+              end;
+
+          end;
+          {else
+          begin
+              Try
+                   FreeAndNil(Frame_ClinicalPathFindingNew);
+              Except
+
+              End;
+              Frame_ClinicalPathFindingNew := TFrame_ClinicalPathFindingNew.Create(Nil);
+              with Frame_ClinicalPathFindingNew do
+              begin
+                   Parent := Panel_Parent;
+                   Align := alClient;
+                   show;
+                   FrameCleared := false;
+              end;
+          end;}
+     end;
+     gs_CalledFrom := 'VERIFICATION';
+end;
+
+procedure TForm_Verification.SpeedButton3Click(Sender: TObject);
+Var
+     SelectedPatientTestId: Integer;
+     TestProgressStatus: Integer;
+     PatientTestID: Integer;
+     TempPatientID: Integer;
+     Column: TColumn;
+     ls_token,Ls_Identification,Ls_Api,Ls_MobileNo: string;
+     ismessagesent:Boolean;
+begin
+     if not CheckAccess('TEST RESULT') then
+     begin
+          ShowMessage('Access Denied');
+          exit;
+     end;
+     TempPatientID := gi_PatientID;
+     Try
+          Table_List.DisableControls;
+          SelectedPatientTestId := Table_List.FieldByName('PatientTestId').AsInteger;
+          with Table_List do
+          begin
+               Close;
+               Open;
+               while not Eof do
+               begin
+                    PatientTestID := FieldByName('PatientTestID').AsInteger;
+                    TestProgressStatus := GetTestProgressStatus(PatientTestID);
+                    if FieldByName('State').AsBoolean = true then
+                    begin
+                         if TestProgressStatus = 4 then
+                         begin
+                              UpdateTestProgressStatus('', '', PatientTestID, gi_Verification);
+                              UpdateVerifiedBy(PatientTestID);
+                         end;
+                    end;
+                    Next;
+               end;
+          end;
+          Table_List.EnableControls;
+          Table_List.Locate('PatientTestId', SelectedPatientTestId, []);
+
+
+                ///SMS part if needed in future..
+               { if gb_Local=True then     // for not sending message in local
+                begin
+                     if gi_compileValue=23 then      // automatic sms sending for mangalam
+                     begin
+                          OraQuery_Sms := TOraQuery.Create(Nil);
+                          with OraQuery_Sms do
+                          begin
+                               close;
+                               Session:=DM_Hospital.DB;
+                               SQL.Clear;
+                               SQL.Add('select * from smsinfo');
+                               open;
+                          end;
+                          ls_Token:= OraQuery_Sms.FieldByName('Token').AsString;
+                          Ls_Identification:= OraQuery_Sms.FieldByName('Identification').AsString;
+                          Ls_Api:=OraQuery_Sms.FieldByName('SmsApi').AsString;
+                          Ls_MobileNo:=  (Table_List.FieldByName('MobileNo').AsString);
+
+                          with OraQuery_CheckSentSms do
+                          begin
+                               Close;
+                               Session:=DM_Hospital.DB ;
+                               sql.Clear;
+                               sql.Add('select smssentstatus from patienttest where patientid='+IntToStr(gi_PatientID));
+                               sql.Add('and billno='+QuotedStr(Table_List.FieldByName('billno').asstring));
+                               open;
+                          end;
+
+                          with OraQuery_GetPassword do     //for user password
+                          begin
+                               Close;
+                               Session:=DM_Hospital.DB ;
+                               sql.Clear;
+                               sql.Add('select pama_userpassword from hs_pama_patientmain where pama_patientid='+IntToStr(gi_PatientID));
+                               open;
+                          end;
+
+                         with OraQuery_CheckBeforeSMS do
+                         begin
+                              Close;
+                              Session:=DM_Hospital.DB ;
+                              sql.Clear;
+                              SQL.Add('select distinct testprogressstatus from patienttest where  billno='+QuotedStr(Table_List.FieldByName('billno').asstring));    // not for microbiology
+                              Open;
+                         end;
+
+
+                          if OraQuery_CheckBeforeSMS.RecordCount=1 then
+                          begin
+                               if StrToInt(OraQuery_CheckBeforeSMS.FieldByName('testprogressstatus').AsString)>=5 then
+                               begin
+                                    if OraQuery_CheckSentSms.FieldByName('smssentstatus').AsString='N' then
+                                    begin
+
+                                         if (Ls_MobileNo<>'') then  //and (Table_List.fieldbyname('Inpatientid').asinteger<=0) then
+                                         begin
+
+                                             Try
+                                                   LoadSmsMessageNew('', Ls_MobileNo,inttostr(gi_PatientID),Memo_Message);
+                                                   SendAPIMessage(ls_Token,Ls_Identification,Memo_Message.Text,Ls_MobileNo,Ls_Api);
+                                                   //ShowDoneMessage;
+                                                   //Self.Close;
+                                             Except
+                                                  ShowMessage('SMS NOT SENT ! Please recharge or get credit limit');
+                                                  ismessagesent:=False;
+                                             End;
+                                             if ismessagesent=true then
+                                             UpdateSmsSentData(Gs_BillNo,(gi_PatientID));
+                                         end;
+                                    end;
+                               end;
+                          end;
+                     end;
+                end; }////////SMS Part If needed to use in future
+
+
+//          Gs_BillNo := Form_Verification.Query_SampleCollected.FieldByName('BillNo').AsString;
+//
+//          // Upload data for Final bill Only
+//          if (GetFinalBillno(Gs_BillNo) <> '') or (Copy(Gs_BillNo, 1, 2) = 'CS') or (Copy(Gs_BillNo, 1, 2) = 'CR') then
+//          begin
+//               Try
+//                    if not DirectoryExists(gs_picpath + '\Ftp') then
+//                         CreateDir(gs_picpath + '\Ftp');
+//                    if not DirectoryExists(gs_picpath + '\VRep') then
+//                         CreateDir(gs_picpath + '\VRep');
+//                    gi_PatientID := Form_Verification.Query_SampleCollected.FieldByName('PatientID').AsInteger;
+//                    gi_PatientTestID := Form_Verification.Query_SampleCollected.FieldByName('PatientTestId').AsInteger;
+//                    gs_TestDate := Form_Verification.Query_SampleCollected.FieldByName('TestDate').AsString;
+//                    gs_SampleNo := Form_Verification.Query_SampleCollected.FieldByName('SampleNo').AsString;
+//                    Gs_BillNo := Form_Verification.Query_SampleCollected.FieldByName('BillNo').AsString;
+//                    Form_QrFinding := TForm_QrFinding.Create(nil);
+//                    with Form_QrFinding do
+//                    begin
+//                         lbl_verifiedby.Caption := Form_Verification.Query_SampleCollected.FieldByName('VerifiedBy').AsString;
+//                         QrFinding.Prepare;
+//                         lbl_totpage.Caption := IntToStr(QrFinding.QRPrinter.PageCount);
+//                         lbl_totpageh.Caption := IntToStr(QrFinding.QRPrinter.PageCount);
+//                         Try
+//                              DM_Hospital.DB.StartTransaction;
+//                              SaveQrAsJpg(QrFinding, gs_picpath + '\Ftp');
+//                              // ShowMessage('1');
+//                              // SaveQrAsJpg(QrFinding, gs_picpath + '\VRep');
+//                              SaveQueryCollection(gi_PatientID, gi_PatientTestID);
+//                              DM_Hospital.DB.Commit;
+//                         Except
+//                              DM_Hospital.DB.Rollback;
+//                         End;
+//                    end;
+//               Finally
+//                    Form_QrFinding.Free;
+//               End;
+//          end;
+
+          ShowDoneMessage;
+     except
+          MsgBox(1005, 0, '', '', '')
+     end;
+     BB_RefreshClick(Sender);
+     Query_samplecollectedright.Locate('PatientID', TempPatientID, []);
+     DBGrid1CellClick(Column);
+
+     edt_GlobalSearch.SetFocus;
+end;
+
+procedure TForm_Verification.SpeedButton4Click(Sender: TObject);
+begin
+     Gs_BillNo := Query_SampleCollected.FieldByName('Billno').AsString;
+     gi_PatientID := Query_SampleCollected.FieldByName('PatientID').AsInteger;
+     gs_SampleNo := Query_SampleCollected.FieldByName('SampleNo').AsString;
+     gi_PatientTestID:= Query_SampleCollected.FieldByName('PatientTestid').AsInteger;
+
+     GetSelectedPatientTestId;
+
+      with QueryProcess1 do
+      begin
+           close;
+           DatabaseName:=gs_temppath;
+           sql.clear;
+           sql.Add('select count(State) as count12 from verification.db where state=True');
+           open;
+      end;
+      if QueryProcess1.fieldbyname('count12').AsInteger<=0 then
+      begin
+          showmessage('Plz Select the Test To Continue !!!');
+          Exit;
+      end;
+
+      begin
+          try
+               Form_Broadcastpopup := TForm_Broadcastpopup.Create(nil);
+               Form_Broadcastpopup.ShowModal;
+          finally
+               Form_Broadcastpopup.Free;
+          end;
+      end;
+
+end;
+
+procedure TForm_Verification.SpeedButton5Click(Sender: TObject);
+begin
+     Try
+          Form_BroadcastStatus := TForm_BroadcastStatus.Create(Nil);
+          Form_BroadcastStatus.ShowModal;
+     Finally
+          Form_BroadcastStatus.Free;
+     End;
+end;
+
+procedure TForm_Verification.SpeedButton8Click(Sender: TObject);
+begin
+      if SpeedButton8.Caption = 'BS' then
+      begin
+        Dex_Today.SystemOfDate := 1;
+        SpeedButton8.Caption := 'AD';
+      end
+      else
+      begin
+        Dex_Today.SystemOfDate := 0;
+        SpeedButton8.Caption := 'BS';
+      end;
+end;
+
+procedure TForm_Verification.Timer1Timer(Sender: TObject);
+begin
+     LoadPatientData(gi_PatientID);
+end;
+
+end.

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2012/02/09 12:44:35.080.pas,C:\Users\vicky\Documents\RAD Studio\Projects\Unit2.pas=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Sensitive Medicine Test Wise Setup\Unit_SensitiveMedicineTestWiseSetup.pas</Transaction>
+    <Transaction>2012/02/09 12:44:35.080.dfm,C:\Users\vicky\Documents\RAD Studio\Projects\Unit2.dfm=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Sensitive Medicine Test Wise Setup\Unit_SensitiveMedicineTestWiseSetup.dfm</Transaction>
+    <Transaction>2012/02/09 12:44:47.303.dproj,C:\Users\vicky\Documents\RAD Studio\Projects\Package1.dproj=D:\Working Vicky\Midas Dr.Homs V 3.0\Source\Units\Packages\Sensitive Medicine Test Wise Setup\SensitiveMedicineTestWiseSetup.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

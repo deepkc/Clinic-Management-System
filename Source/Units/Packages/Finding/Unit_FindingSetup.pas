@@ -1,0 +1,319 @@
+unit Unit_FindingSetup;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     fxn, dm, DbGridExporttoExcel, serverdate,Unit_master,
+     Dialogs, DB, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, StdCtrls, ExtCtrls, Grids, DBGrids, DBCtrls, Buttons, ComCtrls;
+
+type
+     TForm_FindingSetup = class(TForm)
+          Panel2: TPanel;
+          BB_Save: TBitBtn;
+          BB_Close: TBitBtn;
+          BB_New: TBitBtn;
+          PageControl1: TPageControl;
+          TabSheet1: TTabSheet;
+          Label2: TLabel;
+          SpeedButton1: TSpeedButton;
+          SpeedButton2: TSpeedButton;
+          Edit_Search: TEdit;
+          DBGrid1: TDBGrid;
+          TabSheet2: TTabSheet;
+          Label3: TLabel;
+          Label7: TLabel;
+          Label8: TLabel;
+          le_Findingcode: TLabeledEdit;
+          le_findings: TLabeledEdit;
+          Dblcb_TestNew: TDBLookupComboBox;
+          Query_Test: TOraQuery;
+          Ds_Test: TDataSource;
+          Query_list: TOraQuery;
+          Ds_List: TDataSource;
+    CB_IsDefaultFindings: TCheckBox;
+    OraQuery_Testname: TOraQuery;
+    OraQuery_Department: TOraQuery;
+    DS_Department: TDataSource;
+    DS_Testname: TDataSource;
+    DBLCB_Test: TDBLookupComboBox;
+    Label1: TLabel;
+    Label5: TLabel;
+    DBLCB_Depname: TDBLookupComboBox;
+    Label4: TLabel;
+    DBLCB_Testname: TDBLookupComboBox;
+          procedure PageControl1Change(Sender: TObject);
+          procedure BB_NewClick(Sender: TObject);
+          procedure BB_CloseClick(Sender: TObject);
+          procedure BB_SaveClick(Sender: TObject);
+          procedure SpeedButton1Click(Sender: TObject);
+          procedure DBLCB_TestClick(Sender: TObject);
+          procedure Edit_SearchChange(Sender: TObject);
+          procedure SpeedButton2Click(Sender: TObject);
+          procedure FormCreate(Sender: TObject);
+          procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+          procedure DBGrid1DblClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure DBLCB_TestKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBLCB_DepnameClick(Sender: TObject);
+    procedure DBLCB_TestnameClick(Sender: TObject);
+     private
+          { Private declarations }
+     public
+          pb_isnew: Boolean;
+          pi_findingsID: integer;
+          { Public declarations }
+     end;
+
+var
+     Form_FindingSetup: TForm_FindingSetup;
+
+implementation
+
+{Procedure SaveFinding(FINDINGCODE, FINDINGS, IsDefaultFindings: String; TESTID : integer); stdcall; external 'MidasFunction.bpl';
+Procedure UpdateFinding(FINDINGCODE, FINDINGS, IsDefaultFindings: String; FINDINGID, TESTID: integer); stdcall;
+external 'MidasFunction.bpl';
+Procedure DeleteFinding(FINDINGID: integer); stdcall; external 'MidasFunction.bpl';}
+{$R *.dfm}
+
+procedure TForm_FindingSetup.BB_CloseClick(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+     Begin
+          PageControl1.ActivePageIndex := 0;
+          Query_list.Close;
+          Query_list.Session:=Dm_Hospital.Db;
+          Query_list.Open;
+     End
+     else
+          Close;
+end;
+
+procedure TForm_FindingSetup.BB_NewClick(Sender: TObject);
+begin
+     pb_isnew := true;
+     if DBLCB_Depname.keyvalue=null then
+     begin
+          showmessage('Please enter Department');
+          DBLCB_Depname.SetFocus;
+          exit;
+     end
+     else if
+     DBLCB_Testname.KeyValue=null then
+     begin
+          ShowMessage('Please enter Testname');
+          DBLCB_Testname.SetFocus;
+          exit;
+     end
+     else if DBLCB_Test.KeyValue=null then
+          begin
+              ShowMessage('Please enter Test');
+              DBLCB_Test.SetFocus;
+              exit;
+          end
+          else
+     PageControl1.ActivePageIndex := 1;
+     CB_IsDefaultFindings.Checked:= False;
+
+
+     if DBLCB_Test.Text<>'' then
+     Dblcb_TestNew.KeyValue:=DBLCB_Test.KeyValue;
+
+     le_Findingcode.SetFocus;
+end;
+
+procedure TForm_FindingSetup.BB_SaveClick(Sender: TObject);
+Var
+     FINDINGCODE, FINDINGS, ISDEFAULTFINDING: String;
+     TESTID, DEFFIND: integer;
+begin
+     //(le_Findingcode.Text = '') or
+     if (le_findings.Text = '') then
+     begin
+          MsgBox(1004, 0, '', '', '');
+          exit;
+     end;
+
+     if Dblcb_TestNew.Text='' then
+     Begin
+          MessageDlg('Compulsory to Choose Test.', mtWarning,[mbok],0);
+          Dblcb_TestNew.SetFocus;
+          Exit;
+     End;
+
+
+     FINDINGCODE := le_Findingcode.Text;
+     FINDINGS := le_findings.Text;
+
+     if CB_IsDefaultFindings.Checked=True then
+     ISDEFAULTFINDING:='Y'
+     else
+     ISDEFAULTFINDING:='N';
+
+     TESTID := Dblcb_TestNew.KeyValue;
+     //DEFFIND := 0;
+     try
+          if pb_isnew then
+               SaveFinding(FINDINGCODE, FINDINGS,ISDEFAULTFINDING, TESTID)
+          else
+               UpdateFinding(FINDINGCODE, FINDINGS,ISDEFAULTFINDING, pi_findingsID, TESTID);
+          ShowDoneMessage;
+          ClearAll(PageControl1.Pages[1]);
+          pb_isnew := true;
+          le_Findingcode.SetFocus;
+     except
+          MsgBox(1005, 0, '', '', '');
+     end;
+
+     PageControl1.ActivePageIndex := 0;
+     Query_list.Close;
+     Query_list.Session:=Dm_Hospital.Db;
+     Query_list.Open;
+
+
+end;
+
+procedure TForm_FindingSetup.DBGrid1DblClick(Sender: TObject);
+begin
+     PageControl1.ActivePageIndex := 1;
+     pb_isnew := false;
+     with Query_list do
+     begin
+          Dblcb_TestNew.KeyValue:=FieldByName('TEFI_TestId').AsInteger;
+          le_Findingcode.Text := FieldByName('TEFI_FindingCode').AsString;
+          le_findings.Text := FieldByName('TEFI_Findings').AsString;
+          pi_findingsID := FieldByName('TEFI_TestFindingID').AsInteger;
+     end;
+end;
+
+procedure TForm_FindingSetup.DBLCB_DepnameClick(Sender: TObject);
+begin
+     With OraQuery_Testname Do
+      Begin
+        Close;
+        Session:=Dm_Hospital.Db;
+        ParamByName('DepId').ASInteger:=DBLCB_Depname.KeyValue;
+        Open;
+      End;
+end;
+
+procedure TForm_FindingSetup.DBLCB_TestClick(Sender: TObject);
+begin
+     if DBLCB_Test.Text<>'' then
+     Begin
+          with Query_list do
+          begin
+               Close;
+               Session:=Dm_Hospital.Db;
+               SQL[1] := 'Where TEFI_TestId=' + IntToStr(DBLCB_Test.KeyValue);
+               Open;
+          end;
+     End;
+end;
+
+procedure TForm_FindingSetup.DBLCB_TestKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key=VK_Delete then
+     Begin
+          DBLCB_Test.KeyValue:='';
+          DBLCB_TestClick(Sender);
+     End;
+end;
+
+procedure TForm_FindingSetup.DBLCB_TestnameClick(Sender: TObject);
+begin
+    With Query_Test do
+  Begin
+    Close;
+    ParamByName('TestNameID').AsInteger:=DBLCB_Testname.KeyValue;
+    Open;
+  End;
+end;
+
+procedure TForm_FindingSetup.Edit_SearchChange(Sender: TObject);
+begin
+     Edit_Search.Text := StringReplace(Edit_Search.Text, '''', '''''', [rfReplaceAll]);
+     with Query_list do
+     Begin
+          IF Trim(Edit_Search.Text) <> '' Then
+          Begin
+               Filter := 'TEFI_Findings =' + #39 + Trim(Edit_Search.Text) + '*' + #39;
+               Filtered := true;
+          End
+          Else
+               Filtered := false;
+     End;
+end;
+
+procedure TForm_FindingSetup.FormCreate(Sender: TObject);
+begin
+     //Query_list.Close;
+     //Query_list.Session:=Dm_Hospital.Db;
+     //Query_list.Open;
+     // Query_Test.Close;
+     // Query_Test.DatabaseName:=gs_DatabaseName;
+     // Query_Test.Open;
+     PageControl1.ActivePageIndex := 0;
+end;
+
+procedure TForm_FindingSetup.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = 27 then
+          BB_CloseClick(Sender);
+end;
+
+procedure TForm_FindingSetup.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#13 then
+     keybd_event(9,13,0,0);
+end;
+
+procedure TForm_FindingSetup.FormShow(Sender: TObject);
+begin
+     Query_Test.Close;
+     Query_Test.Open;
+     with OraQuery_Department do
+     begin
+         close;
+         Session:=Dm_Hospital.Db;
+         open;
+     end;
+
+     {with OraQuery_TestRetrive do
+     begin
+         close;
+         Session:=Dm_Hospital.Db;
+         open;
+     end;}
+
+     Edit_Search.SetFocus;
+end;
+
+procedure TForm_FindingSetup.PageControl1Change(Sender: TObject);
+begin
+     if PageControl1.ActivePageIndex = 1 then
+          PageControl1.ActivePageIndex := 0
+     else
+          PageControl1.ActivePageIndex := 1;
+end;
+
+procedure TForm_FindingSetup.SpeedButton1Click(Sender: TObject);
+begin
+     if MsgBox(1002, 1, '', '', '') then
+     begin
+          DeleteFinding(Query_list.FieldByName('TEFI_TestFindingID').AsInteger);
+     end;
+     Query_list.Close;
+     Query_list.Open;
+end;
+
+procedure TForm_FindingSetup.SpeedButton2Click(Sender: TObject);
+begin
+     if MsgBox(1010, 1, '', '', '') then
+     begin
+          ExportDBGrid(Form_FindingSetup, DBGrid1, true, 'Findings List of ', TodaysDate + ' AD');
+     end;
+end;
+
+end.

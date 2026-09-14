@@ -1,0 +1,210 @@
+BDE Migration Wizard log
+
+Created at: 2017/06/04 2:51:50 PM
+
+Initializing unit list
+
+Allocating temporary folder
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\BirHos\Unit_NewPatient_BirHos.pas
+
+48 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Camera.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Frame_Video.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\UnitNewPatientFxn.pas
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_AppointmentList.pas
+
+25 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_AppointmentSearch.pas
+
+18 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_AppointmentSearch1.pas
+
+24 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_DayCare.pas
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_DmNewPatient.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_Main.pas
+
+19 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_NewCRFileCreate.pas
+
+4 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_NewPatient.pas
+
+37 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_NewPatient_Old.pas
+
+15 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_OPDDocWiseIncomeDetail.pas
+
+4 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_OPDVisit.pas
+
+17 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_PatientInOut.pas
+
+3 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_PatientSearch.pas
+
+10 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_PatientVisitDetail.pas
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_QrCard.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_QrOpSticker.pas
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_QrOpSticker_DeptDoc.pas
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_QueueList.pas
+
+13 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_ReferralSetup.pas
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\VDCMCPT\UnitVDC.pas
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\VFrames.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\VSample.pas
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\BirHos\Unit_NewPatient_BirHos.DFM
+
+32 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Camera.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Frame_Video.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_AppointmentList.DFM
+
+7 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_AppointmentSearch.DFM
+
+7 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_AppointmentSearch1.DFM
+
+7 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_DayCare.DFM
+
+4 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_DmNewPatient.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_Main.DFM
+
+5 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_NewCRFileCreate.DFM
+
+3 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_NewPatient.DFM
+
+19 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_NewPatient_Old.DFM
+
+12 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_OPDDocWiseIncomeDetail.DFM
+
+3 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_OPDVisit.DFM
+
+16 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_PatientInOut.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_PatientSearch.DFM
+
+9 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_PatientVisitDetail.DFM
+
+4 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_QrCard.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_QrOpSticker.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_QrOpSticker_DeptDoc.DFM
+
+No changes
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_QueueList.DFM
+
+2 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\Unit_ReferralSetup.DFM
+
+1 change(s)
+
+Processing file: F:\Gokul\Hospital\Central Source\Source Central - Copy\Packages\Registration\VDCMCPT\UnitVDC.DFM
+
+4 change(s)
+
+Replacing original files with changed versions
+
+Removing temporary folder
+
+Replace procedure was performed sucessfully.
+

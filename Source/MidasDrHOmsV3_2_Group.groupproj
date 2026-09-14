@@ -1,0 +1,492 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{F75A12F9-1999-4F47-A74F-EDFECBDF34B8}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="MidasDrHomsV3_2.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Global\Global.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Function\MidasFunction.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Midas Fxn Fraction\MidasFxnFraction.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Sample Collection\SampleCollection.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Finding\Finding.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Test Package Setup\TestPackageSetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Name Modify\NameModify.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Test\Test.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Valid Test Cancel\ValidTestCancel.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Remaining Test\RemainingTest.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Billing\Billing.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Registration\Registration.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Register Monitor\RegisterMonitor.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Test Name Setup\TestNameSetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Sample Register\SampleRegister.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Reports\Reports.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Footer Setup\FooterSetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Comment Setup\CommentSetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Doctor Setup\DoctorSetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Clinical Pathology\ClinicalPathology.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Machine Integration\MachineIntegration.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Sample Source Setup\SampleSourceSetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Clinical Histology\ClinicalHistology.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Verification\Verification.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Department Setup\DepartmentSetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Community Scheme Setup\CommunitySchemeSetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Reg Account\RegAccount.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Sensitive Medicine Setup\SensitiveMedicineSetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Sensitive Medicine Test Wise Setup\SensitiveMedicineTestWiseSetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Community Setup\CommunitySetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Scheme Setup\SchemeSetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Blood Bank\BloodBank.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Menu Previlage\MenuPrevilage.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Privilege Setup\PrivilegeSetup.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Credit Payment\CreditPayment.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Correction and Modification\CorrectionAndModification.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\Fraction Sharing\FractionSharing.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Units\Packages\FractionSetup\FractionSetup.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="MidasDrHomsV3_2">
+			<MSBuild Projects="MidasDrHomsV3_2.dproj"/>
+		</Target>
+		<Target Name="MidasDrHomsV3_2:Clean">
+			<MSBuild Targets="Clean" Projects="MidasDrHomsV3_2.dproj"/>
+		</Target>
+		<Target Name="MidasDrHomsV3_2:Make">
+			<MSBuild Targets="Make" Projects="MidasDrHomsV3_2.dproj"/>
+		</Target>
+		<Target Name="Global">
+			<MSBuild Projects="Units\Packages\Global\Global.dproj"/>
+		</Target>
+		<Target Name="Global:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Global\Global.dproj"/>
+		</Target>
+		<Target Name="Global:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Global\Global.dproj"/>
+		</Target>
+		<Target Name="MidasFunction">
+			<MSBuild Projects="Units\Packages\Function\MidasFunction.dproj"/>
+		</Target>
+		<Target Name="MidasFunction:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Function\MidasFunction.dproj"/>
+		</Target>
+		<Target Name="MidasFunction:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Function\MidasFunction.dproj"/>
+		</Target>
+		<Target Name="MidasFxnFraction">
+			<MSBuild Projects="Units\Packages\Midas Fxn Fraction\MidasFxnFraction.dproj"/>
+		</Target>
+		<Target Name="MidasFxnFraction:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Midas Fxn Fraction\MidasFxnFraction.dproj"/>
+		</Target>
+		<Target Name="MidasFxnFraction:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Midas Fxn Fraction\MidasFxnFraction.dproj"/>
+		</Target>
+		<Target Name="SampleCollection">
+			<MSBuild Projects="Units\Packages\Sample Collection\SampleCollection.dproj"/>
+		</Target>
+		<Target Name="SampleCollection:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Sample Collection\SampleCollection.dproj"/>
+		</Target>
+		<Target Name="SampleCollection:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Sample Collection\SampleCollection.dproj"/>
+		</Target>
+		<Target Name="Finding">
+			<MSBuild Projects="Units\Packages\Finding\Finding.dproj"/>
+		</Target>
+		<Target Name="Finding:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Finding\Finding.dproj"/>
+		</Target>
+		<Target Name="Finding:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Finding\Finding.dproj"/>
+		</Target>
+		<Target Name="TestPackageSetup">
+			<MSBuild Projects="Units\Packages\Test Package Setup\TestPackageSetup.dproj"/>
+		</Target>
+		<Target Name="TestPackageSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Test Package Setup\TestPackageSetup.dproj"/>
+		</Target>
+		<Target Name="TestPackageSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Test Package Setup\TestPackageSetup.dproj"/>
+		</Target>
+		<Target Name="NameModify">
+			<MSBuild Projects="Units\Packages\Name Modify\NameModify.dproj"/>
+		</Target>
+		<Target Name="NameModify:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Name Modify\NameModify.dproj"/>
+		</Target>
+		<Target Name="NameModify:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Name Modify\NameModify.dproj"/>
+		</Target>
+		<Target Name="Test">
+			<MSBuild Projects="Units\Packages\Test\Test.dproj"/>
+		</Target>
+		<Target Name="Test:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Test\Test.dproj"/>
+		</Target>
+		<Target Name="Test:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Test\Test.dproj"/>
+		</Target>
+		<Target Name="ValidTestCancel">
+			<MSBuild Projects="Units\Packages\Valid Test Cancel\ValidTestCancel.dproj"/>
+		</Target>
+		<Target Name="ValidTestCancel:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Valid Test Cancel\ValidTestCancel.dproj"/>
+		</Target>
+		<Target Name="ValidTestCancel:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Valid Test Cancel\ValidTestCancel.dproj"/>
+		</Target>
+		<Target Name="RemainingTest">
+			<MSBuild Projects="Units\Packages\Remaining Test\RemainingTest.dproj"/>
+		</Target>
+		<Target Name="RemainingTest:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Remaining Test\RemainingTest.dproj"/>
+		</Target>
+		<Target Name="RemainingTest:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Remaining Test\RemainingTest.dproj"/>
+		</Target>
+		<Target Name="Billing">
+			<MSBuild Projects="Units\Packages\Billing\Billing.dproj"/>
+		</Target>
+		<Target Name="Billing:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Billing\Billing.dproj"/>
+		</Target>
+		<Target Name="Billing:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Billing\Billing.dproj"/>
+		</Target>
+		<Target Name="Registration">
+			<MSBuild Projects="Units\Packages\Registration\Registration.dproj"/>
+		</Target>
+		<Target Name="Registration:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Registration\Registration.dproj"/>
+		</Target>
+		<Target Name="Registration:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Registration\Registration.dproj"/>
+		</Target>
+		<Target Name="RegisterMonitor">
+			<MSBuild Projects="Units\Packages\Register Monitor\RegisterMonitor.dproj"/>
+		</Target>
+		<Target Name="RegisterMonitor:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Register Monitor\RegisterMonitor.dproj"/>
+		</Target>
+		<Target Name="RegisterMonitor:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Register Monitor\RegisterMonitor.dproj"/>
+		</Target>
+		<Target Name="TestNameSetup">
+			<MSBuild Projects="Units\Packages\Test Name Setup\TestNameSetup.dproj"/>
+		</Target>
+		<Target Name="TestNameSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Test Name Setup\TestNameSetup.dproj"/>
+		</Target>
+		<Target Name="TestNameSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Test Name Setup\TestNameSetup.dproj"/>
+		</Target>
+		<Target Name="SampleRegister">
+			<MSBuild Projects="Units\Packages\Sample Register\SampleRegister.dproj"/>
+		</Target>
+		<Target Name="SampleRegister:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Sample Register\SampleRegister.dproj"/>
+		</Target>
+		<Target Name="SampleRegister:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Sample Register\SampleRegister.dproj"/>
+		</Target>
+		<Target Name="Reports">
+			<MSBuild Projects="Units\Packages\Reports\Reports.dproj"/>
+		</Target>
+		<Target Name="Reports:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Reports\Reports.dproj"/>
+		</Target>
+		<Target Name="Reports:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Reports\Reports.dproj"/>
+		</Target>
+		<Target Name="FooterSetup">
+			<MSBuild Projects="Units\Packages\Footer Setup\FooterSetup.dproj"/>
+		</Target>
+		<Target Name="FooterSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Footer Setup\FooterSetup.dproj"/>
+		</Target>
+		<Target Name="FooterSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Footer Setup\FooterSetup.dproj"/>
+		</Target>
+		<Target Name="CommentSetup">
+			<MSBuild Projects="Units\Packages\Comment Setup\CommentSetup.dproj"/>
+		</Target>
+		<Target Name="CommentSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Comment Setup\CommentSetup.dproj"/>
+		</Target>
+		<Target Name="CommentSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Comment Setup\CommentSetup.dproj"/>
+		</Target>
+		<Target Name="DoctorSetup">
+			<MSBuild Projects="Units\Packages\Doctor Setup\DoctorSetup.dproj"/>
+		</Target>
+		<Target Name="DoctorSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Doctor Setup\DoctorSetup.dproj"/>
+		</Target>
+		<Target Name="DoctorSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Doctor Setup\DoctorSetup.dproj"/>
+		</Target>
+		<Target Name="ClinicalPathology">
+			<MSBuild Projects="Units\Packages\Clinical Pathology\ClinicalPathology.dproj"/>
+		</Target>
+		<Target Name="ClinicalPathology:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Clinical Pathology\ClinicalPathology.dproj"/>
+		</Target>
+		<Target Name="ClinicalPathology:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Clinical Pathology\ClinicalPathology.dproj"/>
+		</Target>
+		<Target Name="MachineIntegration">
+			<MSBuild Projects="Units\Packages\Machine Integration\MachineIntegration.dproj"/>
+		</Target>
+		<Target Name="MachineIntegration:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Machine Integration\MachineIntegration.dproj"/>
+		</Target>
+		<Target Name="MachineIntegration:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Machine Integration\MachineIntegration.dproj"/>
+		</Target>
+		<Target Name="SampleSourceSetup">
+			<MSBuild Projects="Units\Packages\Sample Source Setup\SampleSourceSetup.dproj"/>
+		</Target>
+		<Target Name="SampleSourceSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Sample Source Setup\SampleSourceSetup.dproj"/>
+		</Target>
+		<Target Name="SampleSourceSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Sample Source Setup\SampleSourceSetup.dproj"/>
+		</Target>
+		<Target Name="ClinicalHistology">
+			<MSBuild Projects="Units\Packages\Clinical Histology\ClinicalHistology.dproj"/>
+		</Target>
+		<Target Name="ClinicalHistology:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Clinical Histology\ClinicalHistology.dproj"/>
+		</Target>
+		<Target Name="ClinicalHistology:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Clinical Histology\ClinicalHistology.dproj"/>
+		</Target>
+		<Target Name="Verification">
+			<MSBuild Projects="Units\Packages\Verification\Verification.dproj"/>
+		</Target>
+		<Target Name="Verification:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Verification\Verification.dproj"/>
+		</Target>
+		<Target Name="Verification:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Verification\Verification.dproj"/>
+		</Target>
+		<Target Name="DepartmentSetup">
+			<MSBuild Projects="Units\Packages\Department Setup\DepartmentSetup.dproj"/>
+		</Target>
+		<Target Name="DepartmentSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Department Setup\DepartmentSetup.dproj"/>
+		</Target>
+		<Target Name="DepartmentSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Department Setup\DepartmentSetup.dproj"/>
+		</Target>
+		<Target Name="CommunitySchemeSetup">
+			<MSBuild Projects="Units\Packages\Community Scheme Setup\CommunitySchemeSetup.dproj"/>
+		</Target>
+		<Target Name="CommunitySchemeSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Community Scheme Setup\CommunitySchemeSetup.dproj"/>
+		</Target>
+		<Target Name="CommunitySchemeSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Community Scheme Setup\CommunitySchemeSetup.dproj"/>
+		</Target>
+		<Target Name="RegAccount">
+			<MSBuild Projects="Units\Packages\Reg Account\RegAccount.dproj"/>
+		</Target>
+		<Target Name="RegAccount:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Reg Account\RegAccount.dproj"/>
+		</Target>
+		<Target Name="RegAccount:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Reg Account\RegAccount.dproj"/>
+		</Target>
+		<Target Name="SensitiveMedicineSetup">
+			<MSBuild Projects="Units\Packages\Sensitive Medicine Setup\SensitiveMedicineSetup.dproj"/>
+		</Target>
+		<Target Name="SensitiveMedicineSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Sensitive Medicine Setup\SensitiveMedicineSetup.dproj"/>
+		</Target>
+		<Target Name="SensitiveMedicineSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Sensitive Medicine Setup\SensitiveMedicineSetup.dproj"/>
+		</Target>
+		<Target Name="SensitiveMedicineTestWiseSetup">
+			<MSBuild Projects="Units\Packages\Sensitive Medicine Test Wise Setup\SensitiveMedicineTestWiseSetup.dproj"/>
+		</Target>
+		<Target Name="SensitiveMedicineTestWiseSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Sensitive Medicine Test Wise Setup\SensitiveMedicineTestWiseSetup.dproj"/>
+		</Target>
+		<Target Name="SensitiveMedicineTestWiseSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Sensitive Medicine Test Wise Setup\SensitiveMedicineTestWiseSetup.dproj"/>
+		</Target>
+		<Target Name="CommunitySetup">
+			<MSBuild Projects="Units\Packages\Community Setup\CommunitySetup.dproj"/>
+		</Target>
+		<Target Name="CommunitySetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Community Setup\CommunitySetup.dproj"/>
+		</Target>
+		<Target Name="CommunitySetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Community Setup\CommunitySetup.dproj"/>
+		</Target>
+		<Target Name="SchemeSetup">
+			<MSBuild Projects="Units\Packages\Scheme Setup\SchemeSetup.dproj"/>
+		</Target>
+		<Target Name="SchemeSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Scheme Setup\SchemeSetup.dproj"/>
+		</Target>
+		<Target Name="SchemeSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Scheme Setup\SchemeSetup.dproj"/>
+		</Target>
+		<Target Name="BloodBank">
+			<MSBuild Projects="Units\Packages\Blood Bank\BloodBank.dproj"/>
+		</Target>
+		<Target Name="BloodBank:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Blood Bank\BloodBank.dproj"/>
+		</Target>
+		<Target Name="BloodBank:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Blood Bank\BloodBank.dproj"/>
+		</Target>
+		<Target Name="MenuPrevilage">
+			<MSBuild Projects="Units\Packages\Menu Previlage\MenuPrevilage.dproj"/>
+		</Target>
+		<Target Name="MenuPrevilage:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Menu Previlage\MenuPrevilage.dproj"/>
+		</Target>
+		<Target Name="MenuPrevilage:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Menu Previlage\MenuPrevilage.dproj"/>
+		</Target>
+		<Target Name="PrivilegeSetup">
+			<MSBuild Projects="Units\Packages\Privilege Setup\PrivilegeSetup.dproj"/>
+		</Target>
+		<Target Name="PrivilegeSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Privilege Setup\PrivilegeSetup.dproj"/>
+		</Target>
+		<Target Name="PrivilegeSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Privilege Setup\PrivilegeSetup.dproj"/>
+		</Target>
+		<Target Name="CreditPayment">
+			<MSBuild Projects="Units\Packages\Credit Payment\CreditPayment.dproj"/>
+		</Target>
+		<Target Name="CreditPayment:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Credit Payment\CreditPayment.dproj"/>
+		</Target>
+		<Target Name="CreditPayment:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Credit Payment\CreditPayment.dproj"/>
+		</Target>
+		<Target Name="CorrectionAndModification">
+			<MSBuild Projects="Units\Packages\Correction and Modification\CorrectionAndModification.dproj"/>
+		</Target>
+		<Target Name="CorrectionAndModification:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Correction and Modification\CorrectionAndModification.dproj"/>
+		</Target>
+		<Target Name="CorrectionAndModification:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Correction and Modification\CorrectionAndModification.dproj"/>
+		</Target>
+		<Target Name="FractionSharing">
+			<MSBuild Projects="Units\Packages\Fraction Sharing\FractionSharing.dproj"/>
+		</Target>
+		<Target Name="FractionSharing:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\Fraction Sharing\FractionSharing.dproj"/>
+		</Target>
+		<Target Name="FractionSharing:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\Fraction Sharing\FractionSharing.dproj"/>
+		</Target>
+		<Target Name="FractionSetup">
+			<MSBuild Projects="Units\Packages\FractionSetup\FractionSetup.dproj"/>
+		</Target>
+		<Target Name="FractionSetup:Clean">
+			<MSBuild Targets="Clean" Projects="Units\Packages\FractionSetup\FractionSetup.dproj"/>
+		</Target>
+		<Target Name="FractionSetup:Make">
+			<MSBuild Targets="Make" Projects="Units\Packages\FractionSetup\FractionSetup.dproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="MidasDrHomsV3_2;Global;MidasFunction;MidasFxnFraction;SampleCollection;Finding;TestPackageSetup;NameModify;Test;ValidTestCancel;RemainingTest;Billing;Registration;RegisterMonitor;TestNameSetup;SampleRegister;Reports;FooterSetup;CommentSetup;DoctorSetup;ClinicalPathology;MachineIntegration;SampleSourceSetup;ClinicalHistology;Verification;DepartmentSetup;CommunitySchemeSetup;RegAccount;SensitiveMedicineSetup;SensitiveMedicineTestWiseSetup;CommunitySetup;SchemeSetup;BloodBank;MenuPrevilage;PrivilegeSetup;CreditPayment;CorrectionAndModification;FractionSharing;FractionSetup"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="MidasDrHomsV3_2:Clean;Global:Clean;MidasFunction:Clean;MidasFxnFraction:Clean;SampleCollection:Clean;Finding:Clean;TestPackageSetup:Clean;NameModify:Clean;Test:Clean;ValidTestCancel:Clean;RemainingTest:Clean;Billing:Clean;Registration:Clean;RegisterMonitor:Clean;TestNameSetup:Clean;SampleRegister:Clean;Reports:Clean;FooterSetup:Clean;CommentSetup:Clean;DoctorSetup:Clean;ClinicalPathology:Clean;MachineIntegration:Clean;SampleSourceSetup:Clean;ClinicalHistology:Clean;Verification:Clean;DepartmentSetup:Clean;CommunitySchemeSetup:Clean;RegAccount:Clean;SensitiveMedicineSetup:Clean;SensitiveMedicineTestWiseSetup:Clean;CommunitySetup:Clean;SchemeSetup:Clean;BloodBank:Clean;MenuPrevilage:Clean;PrivilegeSetup:Clean;CreditPayment:Clean;CorrectionAndModification:Clean;FractionSharing:Clean;FractionSetup:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="MidasDrHomsV3_2:Make;Global:Make;MidasFunction:Make;MidasFxnFraction:Make;SampleCollection:Make;Finding:Make;TestPackageSetup:Make;NameModify:Make;Test:Make;ValidTestCancel:Make;RemainingTest:Make;Billing:Make;Registration:Make;RegisterMonitor:Make;TestNameSetup:Make;SampleRegister:Make;Reports:Make;FooterSetup:Make;CommentSetup:Make;DoctorSetup:Make;ClinicalPathology:Make;MachineIntegration:Make;SampleSourceSetup:Make;ClinicalHistology:Make;Verification:Make;DepartmentSetup:Make;CommunitySchemeSetup:Make;RegAccount:Make;SensitiveMedicineSetup:Make;SensitiveMedicineTestWiseSetup:Make;CommunitySetup:Make;SchemeSetup:Make;BloodBank:Make;MenuPrevilage:Make;PrivilegeSetup:Make;CreditPayment:Make;CorrectionAndModification:Make;FractionSharing:Make;FractionSetup:Make"/>
+		</Target>
+		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+	</Project>

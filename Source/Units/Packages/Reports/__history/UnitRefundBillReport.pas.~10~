@@ -1,0 +1,210 @@
+unit UnitRefundBillReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, OleCtrls,ServerDate, DateEditXControl_TLB, DBCtrls, Db,
+  DBTables, DBAccess, Ora, OraSmart, MemDS, OraError,OleServer,ComObj, Buttons, ExtCtrls, ComCtrls;
+
+type
+  TFormRefundBillReport = class(TForm)
+    SelectFile: TSaveDialog;
+    Panel1: TPanel;
+    BitBtnPreview: TBitBtn;
+    BitBtn2: TBitBtn;
+    BitBtnExcel: TBitBtn;
+    Panel2: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    DateEditX_FromDate: TDateEditX;
+    DateEditX_ToDate: TDateEditX;
+    Bevel1: TBevel;
+    StatusBar1: TStatusBar;
+    RadioButton_OPCollection: TRadioButton;
+    RadioButton_IPCollection: TRadioButton;
+    Query1: TOraQuery;
+    GroupBox1: TGroupBox;
+    RB_RefundDetail: TRadioButton;
+    RB_IPTestCancel: TRadioButton;
+    RB_IPTestCancelTestWise: TRadioButton;
+    BtnFrom: TSpeedButton;
+    BtnTo: TSpeedButton;
+    procedure BitBtnPreviewClick(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure RadioButton_OPCollectionClick(Sender: TObject);
+    procedure RadioButton_IPCollectionClick(Sender: TObject);
+    procedure RadioButton_OPIPCollectionClick(Sender: TObject);
+    procedure BitBtnExcelClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure BtnFromClick(Sender: TObject);
+    procedure BtnToClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+      b_SendToExcel:Boolean;
+    { Public declarations }
+  end;
+
+var
+  FormRefundBillReport: TFormRefundBillReport;
+
+implementation
+
+uses  Fxn, UnitSendToExcel,UnitReportBillCancel;
+
+
+{$R *.DFM}
+
+procedure TFormRefundBillReport.BitBtnPreviewClick(Sender: TObject);
+ Var TempPath:String;
+begin
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     BtnFrom.Caption := gs_DateCaption;
+     BtnTo.Caption := gs_DateCaption;
+     gs_From := DateEditX_FromDate.text;
+     gs_to := DateEditX_ToDate.text;
+     DateEditX_FromDate.SystemOfDate := 0;
+     DateEditX_ToDate.SystemOfDate := 0;
+     BtnFrom.Caption := 'BS';
+     BtnTo.Caption := 'BS';
+     IF RB_RefundDetail.Checked Then
+     Begin
+          With FormReportBillCancel Do
+          Begin
+               With QueryMaster Do
+               Begin
+                    Close;
+                    Sql.Clear;
+                    Sql.Add('Select Rownum as sn,a.* from (');
+                    Sql.add('Select REDE_Refundbillno BILLNO ,REDE_refunddate REFUNDDATE,REDE_refundtime,REDE_Patientid PATIENTID,(Select pama_patientname from HS_PAMA_Patientmain where PAMA_Patientid=RD.REDE_patientid)patientname,');
+                    sql.Add('REDE_paytype,(select COMM_COMMUNITY from HS_COMM_COMMUNITY where COMM_COMMUNITYid=RD.REDE_communityid)community,');
+                    sql.Add('(select SCHE_SCHEME from HS_SCHE_Scheme where SCHE_schemeid=RD.REDE_schemeid)scheme,');
+                    sql.Add('(Select username from lab_usermain where userid=RD.REDE_refundby)refundby,');
+                    sql.Add('sum(REDE_amount*REDE_qty)amount,Sum((REDE_Amount*REDE_Qty*REDE_DISPER)/100) as FreeCon,');
+                    sql.Add('Sum(REDE_VatAmt*REDE_qty) as SVRTax,Sum((REDE_Amount*REDE_Qty+REDE_VatAmt)-((REDE_Amount*REDE_Qty*REDE_DISPER)/100)) as Total ,(select DOCT_DOCNAME from HS_DOCT_doctor where DOCT_doccode=RD.REDE_REFDOCCODE)ReferBy');
+                    sql.add(',(select username from LAB_USERMAIN where userid=RD.REDE_refundby)entryby,');
+                    sql.Add('(Select BIDE_billno from HS_BIDE_billdetail where BIDE_billdetailid=RD.REDE_BILLDETAILID) billno from HS_REDE_refunddetail RD');
+                    sql.Add(' where REDE_REFUNDDATE between '+Quotedstr(gs_From)+' and '+Quotedstr(gs_to));
+                    sql.Add('group by REDE_RefundBillNo,REDE_refunddate,REDE_PatientId,REDE_refundby,REDE_refundtime,REDE_communityid,REDE_schemeid,REDE_REFDOCCODE,REDE_paytype,REDE_BILLDETAILID');
+                    sql.Add(' order by REDE_Refundbillno');
+                    sql.Add(')a');
+                    //sql.SaveToFile('refund.txt');
+                    Open;
+               End;
+               IF b_SendToExcel=True Then
+               Begin
+                    SendToExcels_query(QueryMaster,nil,'Refund Bills Report',DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,'',gs_Hospitalname,gs_Hospitaladdress,7);
+                    b_SendToExcel:=False;
+               End
+               Else
+               Begin
+                    QRLabelFrom.Caption:=DateEditX_FromDate.Text;
+                    QRLabelTo.Caption:=DateEditX_ToDate.Text;
+                    QRLabelToday.Caption:=ServerDate.TodaysDate;
+                    QuickRep1.Preview;
+               End;
+               QueryMaster.Close;
+          End;
+     End;
+End;
+
+procedure TFormRefundBillReport.Button2Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFormRefundBillReport.FormShow(Sender: TObject);
+begin
+     DateEditX_FromDate.SystemOfDate := gi_datesystem;
+     DateEditX_ToDate.SystemOfDate := gi_datesystem;
+     DateEditX_FromDate.text := serverdate.TodaysDate;
+     DateEditX_ToDate.text := serverdate.TodaysDate;
+     DateEditX_FromDate.SystemOfDate := 0;
+     DateEditX_ToDate.SystemOfDate := 0;
+End;
+
+procedure TFormRefundBillReport.FormKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+   IF key=VK_F1 Then
+   BitBtnPreviewClick(Sender);
+   IF key=VK_F2 Then
+   BitBtnExcelClick(Sender);
+   IF key=VK_F3 Then
+   RadioButton_OPCollection.Checked:=True;
+   IF key=VK_F4 Then
+   RadioButton_IPCollection.Checked:=True;
+   IF key=VK_F5 Then
+   RB_RefundDetail.Checked:=Not(RB_RefundDetail.Checked);
+   IF (key=13) and (ActiveControl=DateEditX_FromDate) Then
+   DateEditX_ToDate.SetFocus;
+   IF (key=13) and (ActiveControl=DateEditX_ToDate) Then
+   BitBtnPreview.SetFocus;
+   IF (key=VK_Prior) and (ActiveControl=BitBtnPreview) Then
+   DateEditX_ToDate.SetFocus;
+   IF (key=VK_Prior) and (ActiveControl=DateEditX_ToDate) Then
+   DateEditX_FromDate.SetFocus;
+   if key=27 then
+   close;
+end;
+
+procedure TFormRefundBillReport.BtnFromClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX_FromDate,BtnFrom);
+end;
+
+procedure TFormRefundBillReport.BtnToClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX_ToDate,BtnTo);
+end;
+
+procedure TFormRefundBillReport.BitBtn2Click(Sender: TObject);
+begin
+   Close;
+end;
+
+procedure TFormRefundBillReport.RadioButton_OPCollectionClick(
+  Sender: TObject);
+begin
+//
+end;
+
+procedure TFormRefundBillReport.RadioButton_IPCollectionClick(
+  Sender: TObject);
+begin
+//
+end;
+
+procedure TFormRefundBillReport.RadioButton_OPIPCollectionClick(
+  Sender: TObject);
+begin
+//
+end;
+
+procedure TFormRefundBillReport.BitBtnExcelClick(Sender: TObject);
+begin
+   IF MessageDlg(' Are you sure to send in excel ?',mtInformation,[mbYes,mbNo],0)=mrYes Then
+   Begin
+      b_SendToExcel:=True;
+      BitBtnPreviewClick(Sender);
+   End;
+End;
+
+procedure TFormRefundBillReport.FormCreate(Sender: TObject);
+begin
+   Application.CreateForm(TFormReportBillCancel,FormReportBillCancel);
+end;
+
+procedure TFormRefundBillReport.FormDestroy(Sender: TObject);
+begin
+   FormReportBillCancel.Free;
+end;
+
+end.

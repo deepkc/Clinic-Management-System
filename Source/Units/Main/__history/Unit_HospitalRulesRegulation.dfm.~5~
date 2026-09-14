@@ -1,0 +1,720 @@
+object Form_HospitalRulesRegulation: TForm_HospitalRulesRegulation
+  Left = 526
+  Top = 174
+  Caption = 'Hospital Rules & Regulation'
+  ClientHeight = 498
+  ClientWidth = 879
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 879
+    Height = 38
+    Align = alTop
+    TabOrder = 0
+    object BtnCancel: TBitBtn
+      Left = 787
+      Top = 0
+      Width = 90
+      Height = 38
+      Caption = '&Cancel (ESC)'
+      DoubleBuffered = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        333333333333333333333333333333333333333FFF33FF333FFF339993370733
+        999333777FF37FF377733339993000399933333777F777F77733333399970799
+        93333333777F7377733333333999399933333333377737773333333333990993
+        3333333333737F73333333333331013333333333333777FF3333333333910193
+        333333333337773FF3333333399000993333333337377737FF33333399900099
+        93333333773777377FF333399930003999333337773777F777FF339993370733
+        9993337773337333777333333333333333333333333333333333333333333333
+        3333333333333333333333333333333333333333333333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 0
+      OnClick = BtnCancelClick
+    end
+    object BtnSave: TBitBtn
+      Left = 697
+      Top = 0
+      Width = 90
+      Height = 38
+      Caption = '&Save (F12)'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333330070
+        7700333333337777777733333333008088003333333377F73377333333330088
+        88003333333377FFFF7733333333000000003FFFFFFF77777777000000000000
+        000077777777777777770FFFFFFF0FFFFFF07F3333337F3333370FFFFFFF0FFF
+        FFF07F3FF3FF7FFFFFF70F00F0080CCC9CC07F773773777777770FFFFFFFF039
+        99337F3FFFF3F7F777F30F0000F0F09999937F7777373777777F0FFFFFFFF999
+        99997F3FF3FFF77777770F00F000003999337F773777773777F30FFFF0FF0339
+        99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
+        93337FFFF7737777733300000033333333337777773333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BtnSaveClick
+    end
+    object BitBtn_StartHospital: TBitBtn
+      Left = 1
+      Top = 1
+      Width = 196
+      Height = 36
+      Align = alLeft
+      Caption = 'Basic Data For Starup Hospital'
+      DoubleBuffered = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000130B0000130B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333330070
+        7700333333337777777733333333008088003333333377F73377333333330088
+        88003333333377FFFF7733333333000000003FFFFFFF77777777000000000000
+        000077777777777777770FFFFFFF0FFFFFF07F3333337F3333370FFFFFFF0FFF
+        FFF07F3FF3FF7FFFFFF70F00F0080CCC9CC07F773773777777770FFFFFFFF039
+        99337F3FFFF3F7F777F30F0000F0F09999937F7777373777777F0FFFFFFFF999
+        99997F3FF3FFF77777770F00F000003999337F773777773777F30FFFF0FF0339
+        99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
+        93337FFFF7737777733300000033333333337777773333333333}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      Visible = False
+      OnClick = BitBtn_StartHospitalClick
+    end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 479
+    Width = 879
+    Height = 19
+    Panels = <
+      item
+        Width = 50
+      end
+      item
+        Width = 50
+      end>
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 38
+    Width = 879
+    Height = 441
+    Align = alClient
+    BevelOuter = bvLowered
+    TabOrder = 2
+    object Label1: TLabel
+      Left = 16
+      Top = 351
+      Width = 181
+      Height = 13
+      Caption = 'No of Sample Sticker for Biochemestry'
+    end
+    object Label2: TLabel
+      Left = 16
+      Top = 402
+      Width = 165
+      Height = 13
+      Caption = 'No of Sample Sticker for Pathology'
+    end
+    object Label4: TLabel
+      Left = 279
+      Top = 416
+      Width = 99
+      Height = 13
+      Caption = 'Sticker Height (OPD)'
+    end
+    object Label5: TLabel
+      Left = 434
+      Top = 416
+      Width = 97
+      Height = 13
+      Caption = 'Sticker Height (Adm)'
+    end
+    object GroupBox1: TGroupBox
+      Left = 274
+      Top = 248
+      Width = 295
+      Height = 87
+      Caption = 'Discharge System'
+      Enabled = False
+      TabOrder = 0
+      Visible = False
+      object GroupBox5: TGroupBox
+        Left = 8
+        Top = 15
+        Width = 151
+        Height = 47
+        TabOrder = 0
+        object RB_MedicalDischargeFirst: TRadioButton
+          Left = 4
+          Top = 7
+          Width = 136
+          Height = 17
+          Caption = 'Medical Discharge First'
+          Checked = True
+          TabOrder = 0
+          TabStop = True
+        end
+        object RB_FinancialDischargeFirst: TRadioButton
+          Left = 4
+          Top = 24
+          Width = 137
+          Height = 17
+          Caption = 'Financial Discharge First'
+          TabOrder = 1
+        end
+      end
+      object CB_MakeNillAtDischargeBilling: TCheckBox
+        Left = 9
+        Top = 67
+        Width = 184
+        Height = 17
+        Hint = 
+          'Make Zero Payment Amt. at Discharge By Adding  or Refunding Depo' +
+          'sit.'
+        Caption = 'Make Nill Paid/Refund Amt'
+        TabOrder = 1
+      end
+    end
+    object GroupBox2: TGroupBox
+      Left = 274
+      Top = 339
+      Width = 296
+      Height = 56
+      Caption = 'Pharmacy '
+      Enabled = False
+      TabOrder = 1
+      Visible = False
+      object CB_IsIntegratedPharmacy: TCheckBox
+        Left = 9
+        Top = 16
+        Width = 165
+        Height = 17
+        Caption = 'Is Integrated Pharmacy'
+        TabOrder = 0
+      end
+      object CB_IsPHClearanceBeforeDisBilling: TCheckBox
+        Left = 9
+        Top = 34
+        Width = 240
+        Height = 17
+        Caption = 'Is Phar. Clearance  Before Dis. Billing Apply'
+        TabOrder = 1
+      end
+    end
+    object GB_DoctorFraction: TGroupBox
+      Left = 576
+      Top = 348
+      Width = 296
+      Height = 39
+      Caption = 'Doctor Fraction '
+      Enabled = False
+      TabOrder = 2
+      Visible = False
+      object CB_IsFarctionSharingActive: TCheckBox
+        Left = 9
+        Top = 17
+        Width = 178
+        Height = 17
+        Caption = 'Is Doctor Fraction Module Active'
+        TabOrder = 0
+      end
+    end
+    object GroupBox4: TGroupBox
+      Left = 10
+      Top = 6
+      Width = 252
+      Height = 339
+      Caption = 'Registration / Appointment'
+      TabOrder = 3
+      object CB_AppointmentSystem: TCheckBox
+        Left = 9
+        Top = 58
+        Width = 141
+        Height = 17
+        Caption = 'Is Appointment System'
+        TabOrder = 0
+      end
+      object CB_IsDoctorCompForRegFollowup: TCheckBox
+        Left = 9
+        Top = 81
+        Width = 196
+        Height = 17
+        Caption = 'Is Doctor Comp. For Reg + Followup'
+        TabOrder = 1
+      end
+      object CB_IsOPDBookChrg: TCheckBox
+        Left = 9
+        Top = 127
+        Width = 209
+        Height = 17
+        Caption = 'Is OPD Book Charge Provision'
+        TabOrder = 2
+      end
+      object CB_IsRegQuotaSystem: TCheckBox
+        Left = 9
+        Top = 150
+        Width = 223
+        Height = 17
+        Caption = 'Is Cota System For  Reg + Followup'
+        TabOrder = 3
+      end
+      object CB_DocRateTimeWise: TCheckBox
+        Left = 9
+        Top = 196
+        Width = 201
+        Height = 17
+        Caption = 'Is OPD Rate (Doctor / Time Wise)'
+        TabOrder = 4
+      end
+      object CB_IsDutyDocCompForEmrVisit: TCheckBox
+        Left = 9
+        Top = 104
+        Width = 228
+        Height = 17
+        Caption = 'Is Duty Doctor Comp. For Emergency Visit'
+        TabOrder = 5
+      end
+      object CB_IsQueueNoGenarateForRegReVisit: TCheckBox
+        Left = 9
+        Top = 172
+        Width = 223
+        Height = 17
+        Caption = 'Is Queue No Generate For  Reg + Followup'
+        TabOrder = 6
+      end
+      object CB_IsPatientCardGenerate: TCheckBox
+        Left = 9
+        Top = 218
+        Width = 201
+        Height = 17
+        Caption = 'Is Patient Card Generate'
+        TabOrder = 7
+      end
+      object CB_IsOPDStickerGenerate: TCheckBox
+        Left = 9
+        Top = 238
+        Width = 201
+        Height = 17
+        Caption = 'Is OPD Sticker Generate'
+        TabOrder = 8
+      end
+      object RG_PatientIdType: TRadioGroup
+        Left = 3
+        Top = 16
+        Width = 178
+        Height = 36
+        Caption = 'Patient Id Type'
+        Columns = 2
+        Items.Strings = (
+          'Nepali'
+          'English')
+        TabOrder = 9
+      end
+      object CB_IsOPDBillGenerate: TCheckBox
+        Left = 9
+        Top = 276
+        Width = 201
+        Height = 17
+        Caption = 'Is OPD Bill Generate'
+        TabOrder = 10
+      end
+      object CB_IsAmtShowInRegSticker: TCheckBox
+        Left = 9
+        Top = 257
+        Width = 201
+        Height = 17
+        Caption = 'Is Amt. Show In Reg. Sticker'
+        TabOrder = 11
+      end
+      object CB_IsPoliceCaseInfoNeeded: TCheckBox
+        Left = 9
+        Top = 308
+        Width = 201
+        Height = 17
+        Caption = 'Is Police Case Info Needed'
+        TabOrder = 12
+      end
+    end
+    object GroupBox6: TGroupBox
+      Left = 274
+      Top = 8
+      Width = 295
+      Height = 186
+      Caption = 'Billing System'
+      TabOrder = 4
+      object CB_IsServiceBillingConcepInOPD: TCheckBox
+        Left = 9
+        Top = 51
+        Width = 197
+        Height = 17
+        Hint = 
+          'OP Advance Billing (Not Credit Billing). Patient May Could Pay P' +
+          'artial Afterward Patient Make Full Payment.'
+        Caption = 'Is Service Billing Concept In OPD'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+      end
+      object CB_IsDoctorCompulsoryForBilling: TCheckBox
+        Left = 9
+        Top = 71
+        Width = 206
+        Height = 16
+        Caption = 'Is Doctor Compulsory For Billing In Grid'
+        TabOrder = 1
+      end
+      object CB_IsAdvanceSystemforIPBilling: TCheckBox
+        Left = 9
+        Top = 89
+        Width = 189
+        Height = 17
+        Caption = 'Is Advance System'
+        TabOrder = 2
+      end
+      object CB_IsMultiOrgBilling: TCheckBox
+        Left = 9
+        Top = 33
+        Width = 218
+        Height = 17
+        Caption = 'Is Multi Org. Billing (In Single Bill)'
+        Enabled = False
+        TabOrder = 3
+        Visible = False
+      end
+      object CB_IsContHosNoFromOthPatReg: TCheckBox
+        Left = 9
+        Top = 15
+        Width = 274
+        Height = 17
+        Caption = 'Is Continuous Hosp. No From Other Patient Reg.'
+        TabOrder = 4
+      end
+      object GroupBox9: TGroupBox
+        Left = 9
+        Top = 107
+        Width = 271
+        Height = 55
+        TabOrder = 5
+        object Label3: TLabel
+          Left = 104
+          Top = 22
+          Width = 19
+          Height = 13
+          Caption = 'OR'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clRed
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object CB_IsReferralDoctorInBilling: TCheckBox
+          Left = 6
+          Top = 5
+          Width = 229
+          Height = 17
+          Caption = 'Is Referral Doctor (For Investigation Billing)'
+          TabOrder = 0
+          OnClick = CB_IsReferralDoctorInBillingClick
+        end
+        object CB_IsReferralDeptInBilling: TCheckBox
+          Left = 6
+          Top = 34
+          Width = 250
+          Height = 17
+          Caption = 'Is Referral Department (For Investigation Billing)'
+          TabOrder = 1
+          OnClick = CB_IsReferralDeptInBillingClick
+        end
+      end
+      object CB_IsMKTGreferral: TCheckBox
+        Left = 9
+        Top = 165
+        Width = 229
+        Height = 17
+        Caption = 'Is MKTG Referral (For Investigation Billing)'
+        TabOrder = 6
+        OnClick = CB_IsReferralDoctorInBillingClick
+      end
+    end
+    object GroupBox7: TGroupBox
+      Left = 575
+      Top = 6
+      Width = 296
+      Height = 188
+      Caption = 'Admission System'
+      Enabled = False
+      TabOrder = 5
+      Visible = False
+      object CB_IsDocCompAtAdmn: TCheckBox
+        Left = 9
+        Top = 33
+        Width = 197
+        Height = 17
+        Hint = 
+          'OP Advance Billing (Not Credit Billing). Patient May Could Pay P' +
+          'artial Afterward Patient Make Full Payment.'
+        Caption = 'Is Doctor Compulsory At Admission'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+      end
+      object GroupBox3: TGroupBox
+        Left = 9
+        Top = 92
+        Width = 243
+        Height = 68
+        TabOrder = 1
+        object RB_DepositOnly: TRadioButton
+          Left = 5
+          Top = 24
+          Width = 225
+          Height = 17
+          Caption = 'Only Deposit At Admission (No Inpt. Charge)'
+          Checked = True
+          TabOrder = 0
+          TabStop = True
+        end
+        object RB_DepositWithInptChrg: TRadioButton
+          Left = 5
+          Top = 2
+          Width = 131
+          Height = 17
+          Caption = 'Deposit + Inpt. Charge'
+          TabOrder = 1
+        end
+        object RB_OnlyInptChrg: TRadioButton
+          Left = 5
+          Top = 47
+          Width = 225
+          Height = 17
+          Caption = 'Only Inpt. Charge At Admission (No Deposit)'
+          TabOrder = 2
+        end
+      end
+      object CB_OxygenChargeAuto: TCheckBox
+        Left = 9
+        Top = 165
+        Width = 191
+        Height = 17
+        Caption = 'Oxygen Charge Auto In ICU && CCU'
+        TabOrder = 2
+        Visible = False
+      end
+      object CB_IsUserDefineAdmissionDate: TCheckBox
+        Left = 9
+        Top = 15
+        Width = 197
+        Height = 17
+        Hint = 
+          'OP Advance Billing (Not Credit Billing). Patient May Could Pay P' +
+          'artial Afterward Patient Make Full Payment.'
+        Caption = 'Is User Define Admission Date'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 3
+      end
+      object CB_IsInpatientStickerPrint: TCheckBox
+        Left = 9
+        Top = 51
+        Width = 197
+        Height = 18
+        Hint = 
+          'OP Advance Billing (Not Credit Billing). Patient May Could Pay P' +
+          'artial Afterward Patient Make Full Payment.'
+        Caption = 'Is Inpatient Sticker Print'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 4
+      end
+      object CB_IsWristBandPrint: TCheckBox
+        Left = 9
+        Top = 71
+        Width = 197
+        Height = 18
+        Hint = 
+          'OP Advance Billing (Not Credit Billing). Patient May Could Pay P' +
+          'artial Afterward Patient Make Full Payment.'
+        Caption = 'Is Wrist Band Print'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 5
+      end
+    end
+    object GroupBox8: TGroupBox
+      Left = 576
+      Top = 197
+      Width = 296
+      Height = 104
+      Caption = 'Indoor Round Visit System'
+      Enabled = False
+      TabOrder = 6
+      Visible = False
+      object CB_IsIPVisitChargeConcept: TCheckBox
+        Left = 10
+        Top = 18
+        Width = 261
+        Height = 17
+        Caption = 'Is IP Round Visit Charge Concept'
+        TabOrder = 0
+        OnClick = CB_IsIPVisitChargeConceptClick
+      end
+      object CB_IsAutoIPRoundVisitCharge: TCheckBox
+        Left = 10
+        Top = 38
+        Width = 261
+        Height = 17
+        Caption = 'Is Auto IP Round Visit Charge for Main Consultant'
+        Enabled = False
+        TabOrder = 1
+      end
+      object CB_IsAutoIPVisitCharge2ndDoc: TCheckBox
+        Left = 10
+        Top = 61
+        Width = 269
+        Height = 17
+        Caption = 'Is Auto IP Round Visit Charge for 2nd Consultant'
+        Enabled = False
+        TabOrder = 2
+      end
+      object CB_IsAutoNursingCharge: TCheckBox
+        Left = 10
+        Top = 81
+        Width = 210
+        Height = 17
+        Caption = 'Is Auto Nursing Charge'
+        TabOrder = 3
+      end
+    end
+    object BitBtn_SetNoofSticker: TBitBtn
+      Left = 16
+      Top = 372
+      Width = 75
+      Height = 25
+      Caption = '&Set Changes'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 7
+      OnClick = BitBtn_SetNoofStickerClick
+    end
+    object Edit_NoofStickerBio: TEdit
+      Left = 93
+      Top = 374
+      Width = 66
+      Height = 21
+      TabOrder = 8
+      Text = '1'
+    end
+    object BitBtn1: TBitBtn
+      Left = 16
+      Top = 420
+      Width = 75
+      Height = 25
+      Caption = '&Set Changes'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 9
+      OnClick = BitBtn1Click
+    end
+    object Edit_NoofStickerPatho: TEdit
+      Left = 93
+      Top = 422
+      Width = 66
+      Height = 21
+      TabOrder = 10
+      Text = '1'
+    end
+    object GroupBox10: TGroupBox
+      Left = 274
+      Top = 198
+      Width = 295
+      Height = 47
+      Caption = 'Billing Refund Policy'
+      TabOrder = 11
+      object CB_IsRefundInSvrDeptApproval: TCheckBox
+        Left = 9
+        Top = 23
+        Width = 272
+        Height = 17
+        Caption = 'Is Refund After Service Department Approval '
+        TabOrder = 0
+      end
+    end
+    object grp1: TGroupBox
+      Left = 576
+      Top = 304
+      Width = 296
+      Height = 32
+      Enabled = False
+      TabOrder = 12
+      Visible = False
+      object CB_IsIntegratedAccount: TCheckBox
+        Left = 9
+        Top = 5
+        Width = 165
+        Height = 17
+        Caption = 'Is Integrated Account'
+        TabOrder = 0
+      end
+    end
+    object Edit_StickerHeight: TEdit
+      Left = 382
+      Top = 412
+      Width = 47
+      Height = 21
+      TabOrder = 13
+    end
+    object BitBtn_SetStickerHeight: TBitBtn
+      Left = 590
+      Top = 409
+      Width = 95
+      Height = 25
+      Caption = 'Set Sticker Height'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 14
+      OnClick = BitBtn_SetStickerHeightClick
+    end
+    object Edit_Admn: TEdit
+      Left = 537
+      Top = 412
+      Width = 47
+      Height = 21
+      TabOrder = 15
+    end
+  end
+  object QueryVoid: TOraQuery
+    Left = 416
+    Top = 6
+  end
+  object Query_Process: TOraQuery
+    Left = 312
+    Top = 6
+  end
+end

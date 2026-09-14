@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2002/07/25 07:21:43.704.pas,C:\Users\Administrator\Documents\RAD Studio\Projects\Unit1.pas=D:\Clinical Pathology\Unit_Main.pas</Transaction>
+    <Transaction>2002/07/25 07:21:43.704.dfm,C:\Users\Administrator\Documents\RAD Studio\Projects\Unit1.dfm=D:\Clinical Pathology\Unit_Main.dfm</Transaction>
+    <Transaction>2002/07/25 07:21:55.622.dproj,C:\Users\Administrator\Documents\RAD Studio\Projects\Project1.dproj=D:\Clinical Pathology\Project1.dproj</Transaction>
+    <Transaction>2002/07/25 07:35:40.873.pas,D:\Midas Dr. Homs V 4.0\Source\Units\Packages\Global\Fxn.pas=</Transaction>
+    <Transaction>2002/07/25 07:43:55.999.pas,D:\Clinical Pathology\Fxn.pas=</Transaction>
+    <Transaction>2002/07/25 07:43:56.061.pas,D:\Clinical Pathology\ServerDate.pas=</Transaction>
+    <Transaction>2002/07/25 07:43:58.542.pas,D:\Clinical Pathology\Unit_ClinicalFindingSetUp.pas=</Transaction>
+    <Transaction>2002/07/25 07:43:58.542.dfm,D:\Clinical Pathology\Unit_ClinicalFindingSetUp.dfm=</Transaction>
+    <Transaction>2002/07/25 07:43:58.823.pas,D:\Clinical Pathology\Unit_ClinicalPathDep.pas=</Transaction>
+    <Transaction>2002/07/25 07:43:58.823.dfm,D:\Clinical Pathology\Unit_ClinicalPathDep.dfm=</Transaction>
+    <Transaction>2002/07/25 07:43:58.909.pas,D:\Clinical Pathology\Unit_ClinicalPathFinding.pas=</Transaction>
+    <Transaction>2002/07/25 07:43:58.909.dfm,D:\Clinical Pathology\Unit_ClinicalPathFinding.dfm=</Transaction>
+    <Transaction>2002/07/25 07:43:58.988.pas,D:\Clinical Pathology\Unit_ClinicalPathSetup.pas=</Transaction>
+    <Transaction>2002/07/25 07:43:58.989.dfm,D:\Clinical Pathology\Unit_ClinicalPathSetup.dfm=</Transaction>
+    <Transaction>2002/07/25 07:44:01.105.pas,D:\Clinical Pathology\Unit_ClinicalReportType.pas=</Transaction>
+    <Transaction>2002/07/25 07:44:01.106.dfm,D:\Clinical Pathology\Unit_ClinicalReportType.dfm=</Transaction>
+    <Transaction>2002/07/25 07:44:01.191.pas,D:\Clinical Pathology\Unit_ClinicalSetup.pas=</Transaction>
+    <Transaction>2002/07/25 07:44:01.192.dfm,D:\Clinical Pathology\Unit_ClinicalSetup.dfm=</Transaction>
+    <Transaction>2002/07/25 00:13:56.406.pas,D:\Clinical Pathology\Fxn.pas=</Transaction>
+    <Transaction>2002/07/25 00:37:43.804.pas,D:\Clinical Pathology\ServerDate.pas=</Transaction>
+    <Transaction>2002/07/25 00:37:47.611.pas,D:\Clinical Pathology\Fxn.pas=</Transaction>
+    <Transaction>2002/07/25 00:37:53.053.pas,D:\Clinical Pathology\DM.pas=</Transaction>
+    <Transaction>2002/07/25 00:37:53.054.dfm,D:\Clinical Pathology\DM.dfm=</Transaction>
+  </Transactions>
+</BorlandProject>

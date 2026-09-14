@@ -1,0 +1,358 @@
+object Form_TestPackage: TForm_TestPackage
+  Left = 293
+  Top = 128
+  Caption = 'Test Package '
+  ClientHeight = 525
+  ClientWidth = 785
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object PageTestName: TPageControl
+    Left = 0
+    Top = 28
+    Width = 785
+    Height = 497
+    ActivePage = PageDepNew
+    Align = alClient
+    TabOrder = 0
+    OnChange = PageTestNameChange
+    object PageDep: TTabSheet
+      Caption = '&Test Package'
+      DesignSize = (
+        777
+        469)
+      object Label1: TLabel
+        Left = 6
+        Top = 5
+        Width = 66
+        Height = 13
+        Caption = 'Search Key'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object SpeedButton1: TSpeedButton
+        Left = 752
+        Top = 0
+        Width = 31
+        Height = 25
+        Flat = True
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000130B0000130B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+          00033FFFFFFFFFFFFFFF0888888888888880777777777777777F088888888888
+          8880777777777777777F0000000000000000FFFFFFFFFFFFFFFF0F8F8F8F8F8F
+          8F80777777777777777F08F8F8F8F8F8F9F0777777777777777F0F8F8F8F8F8F
+          8F807777777777777F7F0000000000000000777777777777777F3330FFFFFFFF
+          03333337F3FFFF3F7F333330F0000F0F03333337F77773737F333330FFFFFFFF
+          03333337F3FF3FFF7F333330F00F000003333337F773777773333330FFFF0FF0
+          33333337F3FF7F3733333330F08F0F0333333337F7737F7333333330FFFF0033
+          33333337FFFF7733333333300000033333333337777773333333}
+        NumGlyphs = 2
+      end
+      object EditSearch: TEdit
+        Left = 5
+        Top = 21
+        Width = 178
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 0
+      end
+      object DBGridTestName: TDBGrid
+        Left = 5
+        Top = 50
+        Width = 771
+        Height = 416
+        Anchors = [akLeft, akTop, akRight]
+        Color = clBtnFace
+        DataSource = DS_PackageTestName
+        TabOrder = 1
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'MS Sans Serif'
+        TitleFont.Style = []
+        OnDblClick = DBGridTestNameDblClick
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'TESTNAMECODE'
+            Title.Alignment = taCenter
+            Title.Caption = 'Test Name Code'
+            Width = 87
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'TESTNAME'
+            Title.Alignment = taCenter
+            Title.Caption = 'Test Name'
+            Width = 433
+            Visible = True
+          end>
+      end
+      object Button1: TButton
+        Left = 184
+        Top = 22
+        Width = 23
+        Height = 19
+        Caption = '&Go'
+        TabOrder = 2
+      end
+    end
+    object PageDepNew: TTabSheet
+      Caption = '&New Test Package'
+      ImageIndex = 1
+      object Label2: TLabel
+        Left = 5
+        Top = 27
+        Width = 116
+        Height = 13
+        Caption = 'Package Test Name'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Bevel2: TBevel
+        Left = -3
+        Top = 469
+        Width = 561
+        Height = 4
+      end
+      object Label3: TLabel
+        Left = 59
+        Top = 55
+        Width = 60
+        Height = 13
+        Caption = 'Test Items'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object SPBAdd: TSpeedButton
+        Left = 123
+        Top = 83
+        Width = 112
+        Height = 25
+        Hint = 'To Add In List'
+        Caption = '&Add Items (F1)'
+        Flat = True
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000120B0000120B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333303333
+          333333333337F33333333333333033333333333333373F333333333333090333
+          33333333337F7F33333333333309033333333333337373F33333333330999033
+          3333333337F337F33333333330999033333333333733373F3333333309999903
+          333333337F33337F33333333099999033333333373333373F333333099999990
+          33333337FFFF3FF7F33333300009000033333337777F77773333333333090333
+          33333333337F7F33333333333309033333333333337F7F333333333333090333
+          33333333337F7F33333333333309033333333333337F7F333333333333090333
+          33333333337F7F33333333333300033333333333337773333333}
+        NumGlyphs = 2
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = SPBAddClick
+      end
+      object SpeedButton3: TSpeedButton
+        Left = 236
+        Top = 83
+        Width = 121
+        Height = 25
+        Hint = 'To Remove From List'
+        Caption = '&Remove Items (F2)'
+        Flat = True
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000120B0000120B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333000000000
+          3333333777777777F3333330F777777033333337F3F3F3F7F3333330F0808070
+          33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+          33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+          333333F7F7F7F7F7F3F33030F080707030333737F7F7F7F7F7333300F0808070
+          03333377F7F7F7F773333330F080707033333337F7F7F7F7F333333070707070
+          33333337F7F7F7F7FF3333000000000003333377777777777F33330F88877777
+          0333337FFFFFFFFF7F3333000000000003333377777777777333333330777033
+          3333333337FFF7F3333333333000003333333333377777333333}
+        NumGlyphs = 2
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = SpeedButton3Click
+      end
+      object DBLCB_PackageTest: TDBLookupComboBox
+        Left = 125
+        Top = 24
+        Width = 312
+        Height = 21
+        Color = clBtnFace
+        KeyField = 'TESTNAMEID'
+        ListField = 'TESTNAME'
+        ListSource = DS_PackageTestName
+        ReadOnly = True
+        TabOrder = 0
+        OnClick = DBLCB_PackageTestClick
+        OnKeyDown = DBLCB_PackageTestKeyDown
+      end
+      object DBGrid_TestPackage: TDBGrid
+        Left = 0
+        Top = 120
+        Width = 774
+        Height = 346
+        DataSource = DS_PackageTestList
+        TabOrder = 1
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'MS Sans Serif'
+        TitleFont.Style = []
+        OnDrawColumnCell = DBGrid_TestPackageDrawColumnCell
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'TestName'
+            Title.Alignment = taCenter
+            Title.Caption = 'Test Name'
+            Width = 340
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'IsActive'
+            Title.Alignment = taCenter
+            Title.Caption = 'Is Active'
+            Visible = True
+          end>
+      end
+      object DBLCB_TestItems: TDBLookupComboBox
+        Left = 125
+        Top = 51
+        Width = 312
+        Height = 21
+        KeyField = 'TESTNAMEID'
+        ListField = 'TESTNAME'
+        ListSource = DS_TestName
+        TabOrder = 2
+        OnKeyDown = DBLCB_TestItemsKeyDown
+      end
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 785
+    Height = 28
+    Align = alTop
+    TabOrder = 1
+    object BitBtnNew: TBitBtn
+      Left = 566
+      Top = 2
+      Width = 75
+      Height = 25
+      Caption = '&New'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BitBtnNewClick
+    end
+    object BitBtnSave: TBitBtn
+      Left = 641
+      Top = 2
+      Width = 75
+      Height = 25
+      Caption = '&Save'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BitBtnSaveClick
+    end
+    object BitBtnCancel: TBitBtn
+      Left = 716
+      Top = 2
+      Width = 75
+      Height = 25
+      Caption = '&Cancel'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = BitBtnCancelClick
+    end
+  end
+  object Query_PackageTestName: TOraQuery
+    SQL.Strings = (
+      
+        'Select tena_TestNameId as TestNameId,tena_TestNameCode as TestNa' +
+        'meCode,tena_TestName as TestName From hs_tena_TestName where ten' +
+        'a_IsPackageTest='#39'Y'#39' Order By tena_TestName')
+    Left = 86
+    Top = 188
+  end
+  object DS_PackageTestName: TDataSource
+    DataSet = Query_PackageTestName
+    Left = 150
+    Top = 228
+  end
+  object DS_PackageTestList: TDataSource
+    DataSet = Query_PackageTestList
+    Left = 364
+    Top = 345
+  end
+  object Query_Process: TOraQuery
+    Left = 316
+    Top = 187
+  end
+  object Query_TestName: TOraQuery
+    SQL.Strings = (
+      
+        'Select tena_TestNameId as TestNameId,tena_TestNameCode as TestNa' +
+        'meCode,tena_TestName as TestName From '
+      
+        'hs_tena_TestName where tena_IsActive='#39'Y'#39' Order By Trim(tena_Test' +
+        'Name)')
+    Left = 484
+    Top = 276
+  end
+  object DS_TestName: TDataSource
+    DataSet = Query_TestName
+    Left = 548
+    Top = 284
+  end
+  object Query_SubProcess: TOraQuery
+    Left = 436
+    Top = 155
+  end
+  object Query_TempProcess: TOraQuery
+    Left = 156
+    Top = 345
+  end
+  object Table_PackageTest: TTable
+    Left = 64
+    Top = 248
+  end
+  object Query_PackageTestList: TQuery
+    Left = 560
+    Top = 184
+  end
+end

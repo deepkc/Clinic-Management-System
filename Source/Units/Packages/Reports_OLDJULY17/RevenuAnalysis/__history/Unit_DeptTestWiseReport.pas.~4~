@@ -1,0 +1,2067 @@
+unit Unit_DeptTestWiseReport;
+
+//UnitReportBillDepWise
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,DM,
+  DBCtrls, OleCtrls, DateEditXControl_TLB, StdCtrls,serverdate, Buttons, ExtCtrls,
+  Db, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, ComCtrls, Mask,Variants, Fxn, UnitSendToExcel, CheckLst;
+
+type
+  TForm_DeptTestWiseReport = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Bevel1: TBevel;
+    BitBtnPreview: TBitBtn;
+    BitBtnExcel: TBitBtn;
+    BitBtnCancel: TBitBtn;
+    Label1: TLabel;
+    DateEditX_FromDate: TDateEditX;
+    Label2: TLabel;
+    DateEditX_ToDate: TDateEditX;
+    BitBtn_FromDate: TBitBtn;
+    BitBtn_ToDate: TBitBtn;
+    Label_Identification: TLabel;
+    CMBDepartment: TDBLookupComboBox;
+    StatusBar1: TStatusBar;
+    Query_SubProcess: TOraQuery;
+    Query_Process: TOraQuery;
+    Label3: TLabel;
+    DBLCBTestName: TDBLookupComboBox;
+    Query_Department: TOraQuery;
+    DataSource_Department: TDataSource;
+    Query_TestName: TOraQuery;
+    DataSource_TestName: TDataSource;
+    GroupBox1: TGroupBox;
+    RB_DepartmentWise: TRadioButton;
+    RB_TestWise: TRadioButton;
+    GroupBox2: TGroupBox;
+    RBOPBill: TRadioButton;
+    RBIPBill: TRadioButton;
+    RB_OPIP: TRadioButton;
+    CheckBox_WithQty: TCheckBox;
+    Query_Master1: TOraQuery;
+    DS_Master: TDataSource;
+    Query_Detail2: TOraQuery;
+    Query_Void: TOraQuery;
+    GB_PayType: TGroupBox;
+    RBCash: TRadioButton;
+    RBCredit: TRadioButton;
+    RB_PayTypeBoth: TRadioButton;
+    Query1: TOraQuery;
+    CB_OPDReg: TCheckBox;
+    Cb_Time: TCheckBox;
+    GroupBox3: TGroupBox;
+    Label4: TLabel;
+    Edit_FTime: TMaskEdit;
+    Label5: TLabel;
+    Edit_TTime: TMaskEdit;
+    Cb_ReferalDep: TCheckBox;
+    RG_Category: TRadioGroup;
+    CheckListBox_Department: TCheckListBox;
+    Query_Checklist: TOraQuery;
+    Table_TestWiseBill: TTable;
+    Table_TestWiseDeptWise: TTable;
+    procedure BitBtnCancelClick(Sender: TObject);
+    procedure BitBtnExcelClick(Sender: TObject);
+    procedure BitBtnPreviewClick(Sender: TObject);
+    procedure BitBtn_FromDateClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure BitBtn_ToDateClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CMBDepartmentKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBLCBTestNameKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CMBDepartmentClick(Sender: TObject);
+    Procedure CreateTableTestWiseDeptWise;
+    procedure RB_TestWiseClick(Sender: TObject);
+    procedure RB_DepartmentWiseClick(Sender: TObject);
+    procedure Cb_TimeClick(Sender: TObject);
+    procedure Cb_ReferalDepClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure CheckListBox_DepartmentClickCheck(Sender: TObject);
+    procedure GetPatientInfo(ArrayIndex, InfoIndex: Integer);
+  private
+     DeptPrivateData: Array[0..100] of String;
+          Procedure PharmacyCharge;
+          Procedure MedicineChargeCalculation;
+
+          Procedure Report_TestWiseBill;
+          Procedure CreateTable_TestWiseBill;
+          Procedure PharmacyCharge_TestWise;
+    { Private declarations }
+  public
+      b_SendToExcel:Boolean;
+    { Public declarations }
+  end;
+
+var
+  Form_DeptTestWiseReport: TForm_DeptTestWiseReport;
+
+implementation
+
+uses Unit_QRCreditReport, Unit_QRReportBillDepWise, Unit_QRReportDepWiseQty, Unit_QRTestBillWise;
+
+{$R *.DFM}
+
+
+procedure TForm_DeptTestWiseReport.BitBtnCancelClick(Sender: TObject);
+begin
+  close;
+end;
+
+
+Procedure TForm_DeptTestWiseReport.CreateTableTestWiseDeptWise;
+Begin
+     IF FileExists(gs_TempPath+'\TestWiseDeptWise.db') Then
+     DeleteFile(gs_TempPath+'\TestWiseDeptWise.db');
+
+     With Table_TestWiseDeptWise do
+     Begin
+          DatabaseName:=gs_TempPath;
+          Close;
+          TableName:='TestWiseDeptWise.db';
+          TableType:=ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('DepName',ftString,40);
+          FieldDefs.Add('PayType',ftString,6);
+          FieldDefs.Add('PatientId',ftInteger);
+          FieldDefs.Add('InPatientId',ftInteger);
+          FieldDefs.Add('PatientName',ftString,100);
+          FieldDefs.Add('BillNo',ftString,20);
+          FieldDefs.Add('BillDate',ftString,10);
+          FieldDefs.Add('BillTime',ftString,12);
+          FieldDefs.Add('ServiceType',ftString,50);
+          FieldDefs.Add('Amount',ftFloat);
+          FieldDefs.Add('Discount',ftFloat);
+          FieldDefs.Add('SubTotal',ftFloat);
+          FieldDefs.Add('VatAmt',ftFloat);
+          FieldDefs.Add('NetAmount',ftFloat);
+          FieldDefs.Add('Qty',ftFloat);
+          FieldDefs.Add('UserName',ftString,50);
+          IndexDefs.Clear;
+          CreateTable;
+     End;
+End;
+
+
+Procedure TForm_DeptTestWiseReport.CreateTable_TestWiseBill;
+Begin
+     IF FileExists(gs_TempPath+'\TestWiseBill.db') Then
+     DeleteFile(gs_TempPath+'\TestWiseBill.db');
+
+     With Table_TestWiseBill do
+     Begin
+          DatabaseName:=gs_TempPath;
+          Close;
+          TableName:='TestWiseBill.db';
+          TableType:=ttDefault;
+          FieldDefs.Clear;
+          FieldDefs.Add('TestNameCode',ftString,10);
+          FieldDefs.Add('TestName',ftString,60);
+          FieldDefs.Add('PayType',ftString,6);
+          FieldDefs.Add('PatientId',ftInteger);
+          FieldDefs.Add('InPatientId',ftInteger);
+          FieldDefs.Add('PatientName',ftString,100);
+          FieldDefs.Add('BillNo',ftString,20);
+          FieldDefs.Add('BillDate',ftString,10);
+          FieldDefs.Add('BillTime',ftString,12);
+          FieldDefs.Add('ServiceType',ftString,50);
+          FieldDefs.Add('Amount',ftFloat);
+          FieldDefs.Add('Discount',ftFloat);
+          FieldDefs.Add('SubTotal',ftFloat);
+          FieldDefs.Add('VatAmt',ftFloat);
+          FieldDefs.Add('NetAmount',ftFloat);
+          FieldDefs.Add('Qty',ftFloat);
+          FieldDefs.Add('UserName',ftString,50);
+          IndexDefs.Clear;
+          CreateTable;
+     End;
+End;
+
+procedure TForm_DeptTestWiseReport.BitBtnPreviewClick(Sender: TObject);
+var b_TempPHSolution:Boolean;
+    lf_TotMedCharge:Double;
+    ls_ReportTitle:String;
+    i:Integer;
+    ls_FromTime,ls_TTime,ls_PatientCategory:String;
+begin
+     for I := 0 to CheckListBox_Department.Count - 1 do
+     begin
+          if CheckListBox_Department.Checked[I] then
+          begin
+               if ls_PatientCategory='' then
+                    ls_PatientCategory:=Quotedstr(CheckListBox_Department.Items[I])
+               else
+               begin
+                    ls_PatientCategory:=ls_PatientCategory+','+Quotedstr(CheckListBox_Department.Items[I]);
+               end;
+          end;
+     end;
+
+     ls_FromTime:=Edit_FTime.Text;
+     ls_TTime:=Edit_TTime.Text;
+
+     ChangeToDefaultDate(DateEditX_FromDate,DateEditX_ToDate);
+     IF RB_TestWise.Checked=True Then
+     Begin
+          Report_TestWiseBill;
+          Exit;
+     End;
+
+   IF RB_DepartmentWise.Checked=True Then
+   Begin
+      If CheckBox_WithQty.Checked=False then
+      begin
+          With Form_QRReportBillDepWise Do
+          Begin
+               IF RBOPBill.Checked=True Then
+               Begin
+                    IF RB_PayTypeBoth.Checked=True Then
+                    ls_ReportTitle:='Department / Test wise Revenue Report (OP)'
+                    Else IF RBCash.Checked=True Then
+                    ls_ReportTitle:='Department / Test wise Revenue Report (OP) - CASH'
+                    Else
+                    ls_ReportTitle:='Department / Test wise Revenue Report (OP) - CREDIT';
+               End
+               Else IF RBIPBill.Checked=True Then
+               Begin
+                    IF RB_PayTypeBoth.Checked=True Then
+                    ls_ReportTitle:='Department / Test wise Revenue Report (IP)'
+                    Else IF RBCash.Checked=True Then
+                    ls_ReportTitle:='Department / Test wise Revenue Report (IP) - CASH'
+                    Else
+                    ls_ReportTitle:='Department / Test wise Revenue Report (IP) - CREDIT';
+               End
+               Else IF RB_OPIP.Checked=True Then
+               Begin
+                    IF RB_PayTypeBoth.Checked=True Then
+                    ls_ReportTitle:='Department / Test wise Revenue Report(OP+IP)'
+                    Else IF RBCash.Checked=True Then
+                    ls_ReportTitle:='Department / Test wise Revenue Report(OP+IP) - CASH'
+                    Else
+                    ls_ReportTitle:='Department / Test wise Revenue Report(OP+IP) - CREDIT';
+               End;
+
+               if Cb_ReferalDep.Checked=True then
+               begin
+                    if CMBDepartment.Text<>'' then
+                    ls_ReportTitle:=ls_ReportTitle+'  ( Referal Department : '+CMBDepartment.Text+')';
+               end
+               else
+               begin
+                    if CMBDepartment.Text<>'' then
+                    ls_ReportTitle:=ls_ReportTitle+'  ( Department : '+CMBDepartment.Text+')';
+               end;
+
+               IF b_SendToExcel=False Then
+               Begin
+                    With QueryDetail Do
+                    Begin
+                         Close;
+                         Session := DM_hospi
+                         sql.Clear;
+                         sql.add('Select DepName,PatientId,InpatientId,PayType,BillNo,BillDate,BillBy UserName,TestName ServiceType,Sum(Amount)as UnitCost,Sum(Qty) as Qty,Sum(Gross) as Amount,Sum(Discount) as Discount,');
+                         sql.add(' Sum(SubTotal) as SubTotal,Sum(SvrTax) as VatAmt,Sum(NetTotal) as NetAmount,Scheme');
+                         SQL.Add('From VW_HS_DEPTTESTWISE_DETAIL');
+                         SQL.Add('where Billdate>='+#39+DateEditX_FromDate.Text+#39);
+                         SQL.add('and Billdate<='+#39+DateEditX_ToDate.Text+#39);
+                         if Cb_Time.Checked then
+                         Sql.Add('And BillTime Between'+#39+ls_FromTime+#39+' And '+#39+ls_TTime+#39);
+
+                         IF CB_OPDReg.Checked=False Then
+                         Begin
+                               IF RBOPBill.Checked=True Then
+                               SQL.Add('and billtype=''B''')
+                               Else IF RBIPBill.Checked=True Then
+                               SQL.Add('and billtype=''IP''')
+                               Else IF RB_OPIP.Checked=True Then
+                               SQL.Add('and billtype in(''IP'',''B'')');
+                         End
+                         Else
+                         Begin
+                               IF RBOPBill.Checked=True Then
+                               SQL.Add('and billtype in(''R'',''B'')')
+                               Else IF RBIPBill.Checked=True Then
+                               SQL.Add('and billtype=''IP''');
+                         End;
+
+                         IF RBCash.Checked=True Then
+                          sql.add(' and PayType=''CASH''')
+                         Else IF RBCredit.Checked=True Then
+                         sql.add(' and PayType=''CREDIT''');
+
+                         IF CMBDepartment.KeyValue<>NULL Then
+                         begin
+                             if Cb_ReferalDep.Checked=true then
+                             SQL.add(' And RefDepId='+IntToStr(CMBDepartment.KeyValue))
+                             else
+                             SQL.add(' And DepId='+IntToStr(CMBDepartment.KeyValue));
+                         end;
+                         IF DBLCBTestName.KeyValue<>NULL Then
+                         sql.add(' And TestNameCode='+#39+DBLCBTestName.KeyValue+#39);
+                         if ls_PatientCategory<>'' then
+                              sql.add('and PatientCategory in ('+ls_PatientCategory+')')
+                         else
+                              sql.Add('and 1=1');
+                         {if RG_Category.ItemIndex=1 then
+                              SQL.Add('and PatientCategory=''BNB''')
+                         Else if RG_Category.ItemIndex=2 then
+                              SQL.Add('and PatientCategory=''BLK''')
+                         Else
+                              SQL.Add('And 1=1');}
+                         sql.add('Group BY DepName,PatientId,InpatientId,PayType,BillNo,BillDate,BillBy,TestName,Scheme Order By DepName,PayType,BillNo');
+                         //sql.savetofile('d:\tt.txt');
+                         Open;
+                    End;
+
+                    IF DBLCBTestName.KeyValue<>NULL Then
+                    Begin
+                         QRLabel20.Font.Color:=clBlack;
+                         QRLabelTestName.Font.Color:=clBlack;
+                         QRLabelTestName.Caption:=DBLCBTestName.Text;
+                    End
+                    Else
+                    Begin
+                         QRLabel20.Font.Color:=clWhite;
+                         QRLabelTestName.Font.Color:=clWhite;
+                    End;
+
+                    IF CMBDepartment.KeyValue<>NULL Then
+                    GroupFooter1st.Height:=1;
+
+                    QRLabel27.Caption:=ls_ReportTitle;
+                    QRLabelFrom.Caption:=DateEditX_FromDate.Text;
+                    QRLabelTo.Caption:=DateEditX_ToDate.Text;
+                    QRLabelToday.Caption:=ServerDate.TodaysDate;
+                    QuickRep1.Preview;
+               End
+               else
+               Begin
+                    With QueryMaster Do
+                    Begin
+                         Close;
+                         DatabaseName:=gs_DatabaseName;
+                         sql.Clear;
+                         sql.add(' Select Distinct DepName,PayType From VW_HS_DEPTTESTWISE_DETAIL');
+                         SQL.Add(' where Billdate>='+#39+DateEditX_FromDate.Text+#39);
+                         SQL.add(' and Billdate<='+#39+DateEditX_ToDate.Text+#39);
+                         IF RBOPBill.Checked=True Then
+                         SQL.Add('and billtype=''B''')
+                         Else IF RBIPBill.Checked=True Then
+                         SQL.Add('and billtype=''IP''')
+                         Else IF RB_OPIP.Checked=True Then
+                         SQL.Add('and billtype in(''IP'',''B'')');
+                         if ls_PatientCategory<>'' then
+                              sql.add('and PatientCategory in ('+ls_PatientCategory+')')
+                         else
+                              sql.Add('and 1=1');
+                         {if RG_Category.ItemIndex=1 then
+                              SQL.Add('and PatientCategory=''BNB''')
+                         Else if RG_Category.ItemIndex=2 then
+                              SQL.Add('and PatientCategory=''BLK''')
+                         Else
+                              SQL.Add('And 1=1'); }
+
+                         IF RBCash.Checked=True Then
+                          sql.add(' and PayType=''CASH''')
+                         Else IF RBCredit.Checked=True Then
+                         sql.add(' and PayType=''CREDIT''');
+
+                         IF CMBDepartment.KeyValue<>NULL Then
+                         begin
+                             if Cb_ReferalDep.Checked=true then
+                             SQL.add(' And RefDepId='+IntToStr(CMBDepartment.KeyValue))
+                             else
+                             SQL.add(' And DepId='+IntToStr(CMBDepartment.KeyValue));
+                         end;
+                         //SQL.SaveToFile('C:/Depwise.txt');
+                         Open;
+                    End;
+
+                    With QueryDetail Do
+                    Begin
+                         Close;
+                         DatabaseName:=gs_DatabaseName;
+                         sql.Clear;
+                         sql.add(' Select DepName,NAME,PatientId,InpatientId,PayType,BillNo,BillDate,BillBy UserName,TestName ServiceType,Sum(Amount)as UnitCost,Sum(Qty) as Qty,Sum(Gross) as Amount,Sum(Discount) as Discount,');
+                         sql.add(' Sum(SubTotal) as SubTotal,Sum(SvrTax) as VatAmt,Sum(NetTotal) as NetAmount,Scheme');
+                         SQL.Add(' From VW_HS_DEPTTESTWISE_DETAIL');
+                         SQL.Add(' where Billdate>='+#39+DateEditX_FromDate.Text+#39);
+                         SQL.add(' and Billdate<='+#39+DateEditX_ToDate.Text+#39);
+                         if Cb_Time.Checked then
+                         Sql.Add(' And BillTime Between'+#39+ls_FromTime+#39+' And '+#39+ls_TTime+#39);
+
+                         IF CB_OPDReg.Checked=False Then
+                         Begin
+                               IF RBOPBill.Checked=True Then
+                               SQL.Add('and billtype=''B''')
+                               Else IF RBIPBill.Checked=True Then
+                               SQL.Add('and billtype=''IP''')
+                               Else IF RB_OPIP.Checked=True Then
+                               SQL.Add('and billtype in(''IP'',''B'')');
+                         End
+                         Else
+                         Begin
+                               IF RBOPBill.Checked=True Then
+                               SQL.Add('and billtype in(''R'',''B'')')
+                               Else IF RBIPBill.Checked=True Then
+                               SQL.Add('and billtype=''IP''');
+                         End;
+
+                         IF RBCash.Checked=True Then
+                          sql.add(' and PayType=''CASH''')
+                         Else IF RBCredit.Checked=True Then
+                         sql.add(' and PayType=''CREDIT''');
+
+                         IF CMBDepartment.KeyValue<>NULL Then
+                         begin
+                             if Cb_ReferalDep.Checked=true then
+                             SQL.add(' And RefDepId='+IntToStr(CMBDepartment.KeyValue))
+                             else
+                             SQL.add(' And DepId='+IntToStr(CMBDepartment.KeyValue));
+                         end;
+                         IF DBLCBTestName.KeyValue<>NULL Then
+                         sql.add(' And TestNameCode='+#39+DBLCBTestName.KeyValue+#39);
+
+                         sql.Add(' and DepName=:DepName');
+                         SQL.Add('and PayType=:Paytype');
+
+                         if ls_PatientCategory<>'' then
+                              sql.add('and PatientCategory in ('+ls_PatientCategory+')')
+                         else
+                              sql.Add('and 1=1');
+                         {if RG_Category.ItemIndex=1 then
+                              SQL.Add('and PatientCategory=''BNB''')
+                         Else if RG_Category.ItemIndex=2 then
+                              SQL.Add('and PatientCategory=''BLK''')
+                         Else
+                              SQL.Add('And 1=1');}
+                         sql.add(' Group BY DepName,NAME,PatientId,InpatientId,PayType,BillNo,BillDate,BillBy,TestName,Scheme Order By DepName,PayType,BillNo');
+                         Params[0].DataType:=ftString;
+                         Params[1].DataType:=ftString;
+                         //SQL.SaveToFile('C:/DepwiseDetail.txt');
+                         Open;
+                    End;
+
+                    SendToExcelMasterDetail(QueryMaster,QueryDetail,ls_ReportTitle,DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,
+                    '',gs_HospitalName,gs_HospitalAddress,'DEPARTMENTBNB',6);
+                    b_SendToExcel:=False;
+               end;
+               QueryDetail.Close;
+               QueryMaster.Close;
+          End;
+      End
+      Else
+      Begin
+           //Show only with the Qty
+           Try
+               With Form_QRReportDepWiseQty Do
+               Begin
+                    With QueryMaster Do
+                    Begin
+                         Close;
+                         DatabaseName:=gs_DatabaseName;
+                         SQL.Clear;
+                         SQL.Add('Select Distinct DepId,DepName From VW_HS_DEPTTESTWISE_DETAIL');
+                         SQL.Add('where Billdate>='+#39+DateEditX_FromDate.Text+#39);
+                         SQL.add('and Billdate<='+#39+DateEditX_ToDate.Text+#39);
+                         SQL.Add('And DepId>0');
+                         if Cb_Time.Checked then
+                         Sql.Add('And BillTime Between'+#39+ls_FromTime+#39+' And '+#39+ls_TTime+#39);
+                         IF CB_OPDReg.Checked=False Then
+                         Begin
+                               IF RBOPBill.Checked=True Then
+                               SQL.Add('and billtype=''B''')
+                               Else IF RBIPBill.Checked=True Then
+                               SQL.Add('and billtype=''IP''')
+                               Else IF RB_OPIP.Checked=True Then
+                               SQL.Add('and billtype in(''IP'',''B'')');
+                         End
+                         Else
+                         Begin
+                               IF RBOPBill.Checked=True Then
+                               SQL.Add('and billtype in(''R'',''B'')')
+                               Else IF RBIPBill.Checked=True Then
+                               SQL.Add('and billtype=''IP''');
+                         End;
+                         IF RBCash.Checked=True Then
+                          sql.add(' and PayType=''CASH''')
+                         Else IF RBCredit.Checked=True Then
+                         sql.add(' and PayType=''CREDIT''');
+
+                         IF CMBDepartment.KeyValue<>NULL Then
+                         begin
+                             if Cb_ReferalDep.Checked=true then
+                             SQL.add(' And RefDepId='+IntToStr(CMBDepartment.KeyValue))
+                             else
+                             SQL.add(' And DepId='+IntToStr(CMBDepartment.KeyValue));
+                         end;
+                         IF DBLCBTestName.KeyValue<>NULL Then
+                         sql.add(' And TestNameCode='+#39+DBLCBTestName.KeyValue+#39);
+                         if ls_PatientCategory<>'' then
+                              sql.add('and PatientCategory in ('+ls_PatientCategory+')')
+                         else
+                              sql.Add('and 1=1');
+                         {if RG_Category.ItemIndex=1 then
+                              SQL.Add('and PatientCategory=''BNB''')
+                         Else if RG_Category.ItemIndex=2 then
+                              SQL.Add('and PatientCategory=''BLK''')
+                         Else
+                              SQL.Add('And 1=1');}
+
+                         Open;
+                    End;
+
+                    With QueryDetail Do
+                    Begin
+                         Close;
+                         DatabaseName:=gs_DatabaseName;
+                         SQL.Clear;
+                         SQL.Add('Select TestNameCode Service,TestName ServiceType,Sum(Qty) as Qty,Sum(Gross) as Amount,');
+                         SQL.Add('Sum(Discount) as Discount,Sum(SubTotal) as SubTotal,');
+                         SQL.Add('Sum(NetTotal) as NetAmount,Sum(SvrTax) as VatAmt');
+                         SQL.Add('From VW_HS_DEPTTESTWISE_DETAIL');
+                         SQL.Add('where Billdate>='+#39+DateEditX_FromDate.Text+#39);
+                         SQL.add('and Billdate<='+#39+DateEditX_ToDate.Text+#39);
+                         SQL.Add('And DepId=:DepId');
+                         if Cb_Time.Checked then
+                         Sql.Add('And BillTime Between'+#39+ls_FromTime+#39+' And '+#39+ls_TTime+#39);
+                         IF CB_OPDReg.Checked=False Then
+                         Begin
+                               IF RBOPBill.Checked=True Then
+                               SQL.Add('and billtype=''B''')
+                               Else IF RBIPBill.Checked=True Then
+                               SQL.Add('and billtype=''IP''')
+                               Else IF RB_OPIP.Checked=True Then
+                               SQL.Add('and billtype in(''IP'',''B'')');
+                         End
+                         Else
+                         Begin
+                               IF RBOPBill.Checked=True Then
+                               SQL.Add('and billtype in(''R'',''B'')')
+                               Else IF RBIPBill.Checked=True Then
+                               SQL.Add('and billtype=''IP''');
+                         End;
+
+                         IF RBCash.Checked=True Then
+                          sql.add(' and PayType=''CASH''')
+                         Else IF RBCredit.Checked=True Then
+                         sql.add(' and PayType=''CREDIT''');
+
+                         IF CMBDepartment.KeyValue<>NULL Then
+                         begin
+                             if Cb_ReferalDep.Checked=true then
+                             SQL.add(' And RefDepId='+IntToStr(CMBDepartment.KeyValue))
+                             else
+                             SQL.add(' And DepId='+IntToStr(CMBDepartment.KeyValue));
+                         end;
+                         IF DBLCBTestName.KeyValue<>NULL Then
+                         sql.add(' And TestNameCode='+#39+DBLCBTestName.KeyValue+#39);
+                         if ls_PatientCategory<>'' then
+                              sql.add('and PatientCategory in ('+ls_PatientCategory+')')
+                         else
+                              sql.Add('and 1=1');
+                         {if RG_Category.ItemIndex=1 then
+                              SQL.Add('and PatientCategory=''BNB''')
+                         Else if RG_Category.ItemIndex=2 then
+                              SQL.Add('and PatientCategory=''BLK''')
+                         Else
+                              SQL.Add('And 1=1');}
+                         sql.add('Group by TestNameCode,TestName Order by TestName');
+                        //sql.SaveToFile('C:\Detail.TXT');
+                        Params[0].DataType:=ftInteger;
+                        Open;
+                    End;
+                    IF RBOPBill.Checked=True Then
+                    ls_ReportTitle:='Department / Test wise With Quantity Revenue Report (OP)'
+                    Else IF RBIPBill.Checked=True Then
+                    ls_ReportTitle:='Department / Test wise With Quantity Revenue Report(IP)'
+                    Else IF RB_OPIP.Checked=True Then
+                    ls_ReportTitle:='Department / Test wise With Quantity Revenue Report(OP+IP)';
+
+                    if Cb_ReferalDep.Checked=True then
+                    begin
+                          if CMBDepartment.Text<>'' then
+                          ls_ReportTitle:=ls_ReportTitle+'  ( Referal Department : '+CMBDepartment.Text+')';
+                    end
+                    else
+                    begin
+                          if CMBDepartment.Text<>'' then
+                          ls_ReportTitle:=ls_ReportTitle+'  ( Department : '+CMBDepartment.Text+')';
+                    end;
+
+
+                    IF b_SendToExcel=True Then
+                    Begin
+                        SendToExcelMasterDetail(QueryMaster,QueryDetail,ls_ReportTitle,DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,
+                        '',gs_HospitalName,gs_HospitalAddress,'DEPARTMENT',6);
+                        b_SendToExcel:=False;
+                    End
+                    Else
+                    Begin
+                        IF DBLCBTestName.KeyValue<>NULL Then
+                        Begin
+                           QRLabel20.Font.Color:=clBlack;
+                           QRLabelTestName.Font.Color:=clBlack;
+                           QRLabelTestName.Caption:=DBLCBTestName.Text;
+                        End
+                        Else
+                        Begin
+                           QRLabel20.Font.Color:=clWhite;
+                           QRLabelTestName.Font.Color:=clWhite;
+                        End;
+                        QRLabel27.Caption:=ls_ReportTitle;
+                        QRLabelFrom.Caption:=DateEditX_FromDate.Text;
+                        QRLabelTo.Caption:=DateEditX_ToDate.Text;
+                        QRLabelToday.Caption:=ServerDate.TodaysDate;
+                        Preview;
+                    End;
+               End;
+           Finally
+           End;
+      End;
+   End Else IF RB_TestWise.Checked=True Then
+   Begin
+      If CheckBox_WithQty.Checked=False then
+      begin
+      End
+      Else
+      Begin
+          Try
+             With Form_QRReportDepWiseQty do
+             begin
+                  With QueryDetail Do
+                  Begin
+                     Close;
+                     ParamByName('FromDate').AsString:=DateEditX_FromDate.Text;
+                     ParamByName('ToDate').AsString:=DateEditX_ToDate.Text;
+
+                     IF CB_OPDReg.Checked=False Then
+                     Begin
+                          IF RBOPBill.Checked=True Then
+                          sql[4]:=' (BillType=''B'')'
+                          Else IF RBIPBill.Checked=True Then
+                          sql[4]:=' BillType=''IP'''
+                          Else IF RB_OPIP.Checked=True Then
+                          sql[4]:=' (BillType=''B'' or BillType=''IP'') ';
+                     End
+                     Else
+                     Begin
+                          IF RBOPBill.Checked=True Then
+                          sql[4]:=' (BillType=''B'' Or BillType=''O'')'
+                          Else IF RBIPBill.Checked=True Then
+                          sql[4]:=' BillType=''IP'''
+                          Else IF RB_OPIP.Checked=True Then
+                          sql[4]:=' (BillType=''B'' or BillType=''IP'' Or BillType=''O'') ';
+                     End;
+
+                     {IF RBCash.Checked=True Then
+                     sql[5]:=' And PayType=''CASH'' And CancelStatus=''N'''
+                     Else IF RBCredit.Checked=True Then
+                     sql[5]:=' And PayType=''CREDIT'' And CancelStatus=''N'''
+                     Else IF RbRefund.Checked Then
+                     sql[5]:=' And PayType=''REFUND'' And CancelStatus=''Y'' And Service Not In(''IPREF'',''OPREF'',''DISREF'') '
+                     Else IF RBCashCredit.Checked=True Then
+                     sql[5]:=' And Service Not In(''IPREF'',''OPREF'',''DISREF'') ';}
+
+                     IF DBLCBTestName.KeyValue<>NULL Then
+                     sql[9]:=' And Service='+#39+DBLCBTestName.KeyValue+#39
+                     Else
+                     sql[9]:=' ';
+                     //sql.SaveToFile('C:\Detail.TXT');
+                     Open;
+                  End;
+
+                  IF RBOPBill.Checked=True Then
+                  ls_ReportTitle:='Test wise with quantity Revenue Report (OP)'
+                  Else IF RBIPBill.Checked=True Then
+                  ls_ReportTitle:='Test wise with quantity Revenue Report (IP)'
+                  Else IF RB_OPIP.Checked=True Then
+                  ls_ReportTitle:='Test wise with quantity Revenue Report (OP+IP)';
+                  IF b_SendToExcel=True Then
+                  Begin
+                     SendToExcels(QueryDetail,Nil,ls_ReportTitle,DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,
+                         '',gs_HospitalName,gs_HospitalAddress,2);
+                     b_SendToExcel:=False;
+                  End
+                  Else
+                  Begin
+                     IF CMBDepartment.KeyValue<>NULL Then
+                     Begin
+                        QRLabel20.Font.Color:=clBlack;
+                        //QRLabelDept.Font.Color:=clBlack;
+                        //QRLabelDept.Caption:=CMBDepartment.Text;
+                     End
+                     Else
+                     Begin
+                        QRLabel20.Font.Color:=clWhite;
+                        //QRLabelDept.Font.Color:=clWhite;
+                     End;
+                     //QRLabel23.Caption:=ls_ReportTitle;
+                     QRLabelFrom.Caption:=DateEditX_FromDate.Text;
+                     QRLabelTo.Caption:=DateEditX_ToDate.Text;
+                     QRLabelToday.Caption:=ServerDate.TodaysDate;
+                     Preview;
+                  End;
+             End;
+          Finally
+          End;
+      End;
+   End;
+End;
+
+
+Procedure TForm_DeptTestWiseReport.PharmacyCharge;
+Var lf_MDTotal,lf_MDDiscount,Tot_PharCreRefund:Double;
+Begin
+     With Query_SubProcess Do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select DepName From Department where DepId=28');
+          Open;
+     End;
+
+     //Pharmacy Credit Refund after the Patient is DisCharge
+     //Retrive Those data who are not InPatient and have a Credit Refund
+     Tot_PharCreRefund:=0;
+     IF (RBOPBill.Checked=False)
+     and ((CMBDepartment.KeyValue=NULL) or (CMBDepartment.KeyValue=28)) and
+     ((RB_PayTypeBoth.Checked=True) or (RBCredit.Checked=True)) Then // 28 -Pharmacy Department
+     Begin
+          With Query_Process Do
+          Begin
+               Close;
+               Sql.Clear;
+               sql.add(' Select Sum(RD.Qty) as Qty,Sum( Round((RD.Qty*RD.UnitPrice),5)) as Amount,Sum( Round((RD.Qty*RD.UnitPrice) * RD.Discount/100)) as Discount,');
+               sql.add(' Sum( Round((RD.Qty*RD.UnitPrice),5)-Round(((RD.Qty*RD.UnitPrice) * RD.Discount/100),5)) as NetTotal ');
+               sql.add(' From ReturnMaster RM,ReturnDetail RD where (RM.ReturnMasterId=RD.ReturnMasterId(+))');
+               sql.add(' and (RM.ST=''N'') and (RM.Credit1=1) and RM.InPatientID>0 ');
+               sql.add(' and RM.ReturnDate>='+#39+DateEditX_FromDate.text+#39);
+               sql.add(' and RM.ReturnDate<='+#39+DateEditX_ToDate.text+#39);
+               Sql.add(' and (RM.CustomerID < 9999900) AND RM.CustomerID Not In(Select PatientID From InpatientReg ');
+               Sql.Add(' Where  (RM.Returndate>=Inptdate and (RM.Returndate<Disdate OR Trim(DisDate) Is Null )) ');
+               Sql.Add('     OR (RM.Returndate=DisDate And RM.Rettime<=(Select OutTime From InpatientDetail');
+               Sql.Add(' Where InPatientId=InpatientReg.InPatientId and DisBillDate=InpatientReg.DisDate)))');
+               //sql.saveToFile('C:\CreditMedRefund.Txt');
+               Open;
+               IF Query_Process.RecordCount > 0 Then
+               Begin
+                    First;
+                    While Not EOF Do
+                    Begin
+                         Table_TestWiseDeptWise.Append;
+                         Table_TestWiseDeptWise.FieldByName('DepName').AsString:=Query_SubProcess.FieldByName('DepName').AsString;
+                         Table_TestWiseDeptWise.FieldByName('PayType').AsString:='REFUND';
+                         Table_TestWiseDeptWise.FieldByName('BillDate').AsString:='';
+                         Table_TestWiseDeptWise.FieldByName('BillNo').AsString:='';
+                         Table_TestWiseDeptWise.FieldByName('ServiceType').AsString:='PHARMACY ITEMS';
+                         Table_TestWiseDeptWise.FieldByName('Qty').AsFloat:=Query_Process.FieldByName('Qty').AsFloat;
+                         Table_TestWiseDeptWise.FieldByName('Amount').AsFloat:=Query_Process.FieldByName('Amount').AsFloat;
+                         Table_TestWiseDeptWise.FieldByName('Discount').AsFloat:=FieldByName('Discount').AsFloat;
+                         Table_TestWiseDeptWise.FieldByName('SubTotal').AsFloat:=FieldByName('Amount').AsFloat-FieldByName('Discount').AsFloat;
+                         Table_TestWiseDeptWise.FieldByName('VatAmt').AsFloat:=0;
+                         Table_TestWiseDeptWise.FieldByName('NetAmount').AsFloat:=FieldByName('NetTotal').AsFloat;
+                         Table_TestWiseDeptWise.FieldByName('UserName').AsString:='';
+                         Table_TestWiseDeptWise.Post;
+                         Query_Process.Next;
+                   End;
+              End;
+          End;
+     End;
+
+     {   Medicine Charge Calculation   }
+     If (RBOPBill.Checked=False) and ((CMBDepartment.KeyValue=NULL) Or (CMBDepartment.KeyValue=28)) Then //28 -->>Pharmacy Department
+     begin
+          IF (DateEditX_FromDate.text<'2007/12/07')  and (DateEditX_ToDate.text>='2007/12/07') Then // 2007/12/07 is middle point one type of condition and another so
+          MedicineChargeCalculation
+          Else
+          Begin
+               IF (RB_PayTypeBoth.Checked=True) or (RBCash.Checked=True) Then
+               Begin
+                    { Medicine Charge Cash }
+                    IF (DateEditX_FromDate.Text >='2007/12/07') Then
+                    Begin
+                         with Query_Process do
+                         Begin
+                              Close;
+                              sql.Clear;
+                              sql.add(' select Sum(Round(SD.Qty*SD.UnitRate,5))  as Total,');
+                              sql.add(' Sum(Round((SD.Qty*SD.UnitRate) * SD.Discount/100,5)) as Discount,');
+                              sql.add(' Sum(Round((SD.Qty*SD.UnitRate),5) -Round(((SD.Qty*SD.UnitRate) * SD.Discount/100),5)) as NetTotal ');
+                              sql.add(' From SaleMaster SM,SaleDetail SD where (SM.SaleMasterId=SD.SaleMasterId)');
+                              sql.add(' and (SM.ST=''N'') and (SM.STATUS1=1) And (SD.PatientId < 9999900)');
+                              sql.add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+                              sql.add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CASH'' and CancelStatus=''N'' and ');
+                              sql.add(' InpatientId In (Select InpatientId From InpatientReg where ');
+                              sql.add(' Discharged=''YES'' and DisDate >='+#39+DateEditX_FromDate.Text+#39);
+                              sql.add(' AND DisDate<='+#39+DateEditX_ToDate.Text+#39+'))');
+                              //sql.saveToFile('C:\Medcine2.Txt');
+                              Open;
+                         End;
+
+                         lf_MDTotal:=Query_Process.FieldByName('Total').AsFloat-Query_Process.FieldByName('Discount').AsFloat;
+                         lf_MDDiscount:=0;
+
+                         //First Find out the Paitnt list for Medicine Refund Cash
+                         With Query_Process do
+                         begin
+                              Close;
+                              Sql.Clear;
+                              sql.add(' Select Distinct InptDate,DisDate,PatientId From InpatientReg');
+                              sql.add(' Where Discharged=''YES'' and DisDate>='+#39+DateEditX_FromDate.Text+#39);
+                              sql.add(' and DisDate<='+#39+DateEditX_ToDate.Text+#39);
+                              sql.add(' and InpatientId In(');
+                              sql.add('Select Distinct InPatientId ');
+                              sql.add(' From BillDetail Where (BillType=''IP'' or BillType=''A'') and PayType=''CASH'' And Service<>''IPREF'' ');
+                              sql.add(' and CancelStatus=''N'' ');
+                              sql.add(')');
+                              open;
+                              While not eof do
+                              begin
+                                   With Query_Void do
+                                   begin
+                                        Close;
+                                        Sql.Clear;
+                                        sql.add(' select Sum(Round(RD.Qty*RD.UnitPrice,5))  as Total, Sum(Round(RD.Qty * RD.Discount/100,5)) as Discount,');
+                                        sql.add(' Sum( Round((RD.Qty*RD.UnitPrice),5) -(Round((RD.Qty*RD.UnitPrice) * RD.Discount/100,5))) as NetTotal ');
+                                        sql.add(' From ReturnMaster RM,ReturnDetail RD where (RM.ReturnMasterId=RD.ReturnMasterId(+))');
+                                        sql.add(' and (RM.ST=''N'') and (RM.Credit1=1) and (RM.CustomerID < 9999900)');
+                                        sql.add(' and RM.ReturnDate >='+#39+Query_Process.fieldbyName('InptDate') .AsString+#39);
+                                        sql.add(' and RM.ReturnDate <='+#39+Query_Process.fieldbyName('DisDate') .AsString+#39);
+                                        sql.add(' and RM.CustomerId='+Query_Process.fieldbyName('PatientId') .AsString);
+
+                                      //  IF Query_Process.fieldbyName('DisDate') .AsString>=gs_SecManageDate Then
+                                        Begin
+                                              Sql.add(' And RM.CustomerID In(Select PatientID From InpatientReg Where PatientID=RM.CustomerId And ');
+                                              Sql.Add(' ((RM.Returndate>=Inptdate And (RM.Returndate<Disdate OR Trim(DisDate) Is Null))) ');
+                                              Sql.Add('    OR (RM.Returndate=DisDate And RM.Rettime<=(Select OutTime From InpatientDetail Where InPatientId=InpatientReg.InPatientId and DisBillDate=InpatientReg.DisDate))) ');
+                                        End;
+
+                                        Open;
+                                        lf_MDTotal:=lf_MDTotal-FieldByName('NetTotal').AsFloat;
+                                   end;
+                                   Next;
+                              end;
+                         end;
+
+                         Table_TestWiseDeptWise.Append;
+                         Table_TestWiseDeptWise.FieldByName('DepName').AsString:=Query_SubProcess.FieldByName('DepName').AsString;
+                         Table_TestWiseDeptWise.FieldByName('PayType').AsString:='CASH';
+                         Table_TestWiseDeptWise.FieldByName('BillDate').AsString:='';
+                         Table_TestWiseDeptWise.FieldByName('BillNo').AsString:='Inpatient Med.';
+                         Table_TestWiseDeptWise.FieldByName('ServiceType').AsString:='PHARMACY ITEMS';
+                         Table_TestWiseDeptWise.FieldByName('Qty').AsFloat:=0;
+                         Table_TestWiseDeptWise.FieldByName('Amount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseDeptWise.FieldByName('Discount').AsFloat:=lf_MDDiscount;
+                         Table_TestWiseDeptWise.FieldByName('SubTotal').AsFloat:=lf_MDTotal-lf_MDDiscount;
+                         Table_TestWiseDeptWise.FieldByName('VatAmt').AsFloat:=0;
+                         Table_TestWiseDeptWise.FieldByName('NetAmount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseDeptWise.FieldByName('UserName').AsString:='';
+                         Table_TestWiseDeptWise.Post;
+                         Query_Process.Next;
+                    End
+                    Else
+                    Begin
+                         with Query_Process do
+                         Begin
+                              Close;
+                              sql.Clear;
+                              sql.add(' select Sum(Round(SD.CurQty*SD.UnitRate,5))  as Total,');
+                              sql.add(' Sum(Round((SD.CurQty*SD.UnitRate) * SD.Discount/100,5)) as Discount');
+                              sql.add(' From SaleMaster SM,SaleDetail SD,ItemsList IL where (SM.SaleMasterId=SD.SaleMasterId)');
+                              sql.add(' and (SD.itemsid=IL.itemsid) and (SM.ST=''N'') and (SM.STATUS1=1) and (SD.CurQty > 0) And (SD.PatientId < 9999900)');
+                              sql.add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+                              sql.add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CASH'' and CancelStatus=''N'' and ');
+                              sql.add(' InpatientId In (Select InpatientId From InpatientReg where ');
+                              sql.add(' Discharged=''YES'' and DisDate >='+#39+DateEditX_FromDate.Text+#39);
+                              sql.add(' AND DisDate<='+#39+DateEditX_ToDate.Text+#39+'))');
+                              Open;
+                         End;
+
+                         lf_MDTotal:=Query_Process.FieldByName('Total').AsFloat-Query_Process.FieldByName('Discount').AsFloat;
+                         lf_MDDiscount:=0;
+
+                         Table_TestWiseDeptWise.Append;
+                         Table_TestWiseDeptWise.FieldByName('DepName').AsString:=Query_SubProcess.FieldByName('DepName').AsString;
+                         Table_TestWiseDeptWise.FieldByName('PayType').AsString:='CASH';
+                         Table_TestWiseDeptWise.FieldByName('BillDate').AsString:='';
+                         Table_TestWiseDeptWise.FieldByName('BillNo').AsString:='Inpatient Med.';
+                         Table_TestWiseDeptWise.FieldByName('ServiceType').AsString:='PHARMACY ITEMS';
+                         Table_TestWiseDeptWise.FieldByName('Qty').AsFloat:=0;
+                         Table_TestWiseDeptWise.FieldByName('Amount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseDeptWise.FieldByName('Discount').AsFloat:=lf_MDDiscount;
+                         Table_TestWiseDeptWise.FieldByName('SubTotal').AsFloat:=lf_MDTotal-lf_MDDiscount;
+                         Table_TestWiseDeptWise.FieldByName('VatAmt').AsFloat:=0;
+                         Table_TestWiseDeptWise.FieldByName('NetAmount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseDeptWise.FieldByName('UserName').AsString:='';
+                         Table_TestWiseDeptWise.Post;
+                         Query_Process.Next;
+                    End;
+               End;
+
+               lf_MDTotal:=0;
+               lf_MDDiscount:=0;
+
+               {  CREDIT   Getting Net medicine(After Medicine Refund) amount     }
+               IF (RB_PayTypeBoth.Checked=True) or (RBCredit.Checked=True) Then
+               Begin
+                    IF (DateEditX_FromDate.Text >='2007/12/07')  Then
+                    Begin
+                         with Query_Process do
+                         Begin
+                              Close;
+                              sql.Clear;
+                              sql.add(' select Sum(Round(SD.Qty*SD.UnitRate,5))  as Total,');
+                              sql.add(' Sum(Round((SD.Qty*SD.UnitRate) * SD.Discount/100,5)) as Discount');
+                              sql.add(' From SaleMaster SM,SaleDetail SD,ItemsList IL where (SM.SaleMasterId=SD.SaleMasterId)');
+                              sql.add(' and (SD.itemsid=IL.itemsid) and (SM.ST=''N'') and (SM.STATUS1=1) And (SD.PatientId < 9999900) ');
+                              sql.add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+                              sql.add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CREDIT'' and CancelStatus=''N'' and ');
+                              sql.add(' InpatientId In (Select InpatientId From InpatientReg where ');
+                              sql.add(' Discharged=''YES'' and DisDate >='+#39+DateEditX_FromDate.Text+#39);
+                              sql.add(' AND DisDate<='+#39+DateEditX_ToDate.Text+#39+'))');
+                              Open;
+                         End;
+
+                         lf_MDTotal:=Query_Process.FieldByName('Total').AsFloat-Query_Process.FieldByName('Discount').AsFloat;
+                         lf_MDDiscount:=0;
+
+                         //First Find out the Paitnt list
+                         With Query_Process do
+                         begin
+                              Close;
+                              Sql.Clear;
+                              sql.add(' Select InptDate,DisDate,PatientId From InpatientReg');
+                              sql.add(' Where Discharged=''YES'' and DisDate>='+#39+DateEditX_FromDate.Text+#39);
+                              sql.add(' and DisDate<='+#39+DateEditX_ToDate.Text+#39);
+                              sql.add(' and InpatientId In(');
+                              sql.add('Select Distinct InPatientId ');
+                              sql.add(' From BillDetail Where (BillType=''IP'' or BillType=''A'') and PayType=''CREDIT'' And Service<>''IPREF'' ');
+                              sql.add(' and CancelStatus=''N'' ');
+                              sql.add(')');
+                              open;
+                              While not eof do
+                              begin
+                                   With Query_Void do
+                                   begin
+                                        Close;
+                                        Sql.Clear;
+                                        sql.add('Select Sum( Round((RD.Qty*RD.UnitPrice),5)-Round(((RD.Qty*RD.UnitPrice) * RD.Discount/100),5)) as NetTotal ');
+                                        sql.add(' From ReturnMaster RM,ReturnDetail RD where (RM.ReturnMasterId=RD.ReturnMasterId(+))');
+                                        sql.add(' and (RM.ST=''N'') and (RM.Credit1=1) and (RM.CustomerID < 9999900)');
+                                        sql.add(' and RM.ReturnDate>='+#39+Query_Process.fieldbyName('InptDate') .AsString+#39);
+                                        sql.add(' and RM.ReturnDate<='+#39+Query_Process.fieldbyName('DisDate') .AsString+#39);
+                                        sql.add(' and RM.CustomerId='+Query_Process.fieldbyName('PatientId') .AsString);
+                                       // IF Query_Process.fieldbyName('DisDate') .AsString >=gs_SecManageDate Then
+                                        Begin
+                                             Sql.add(' And RM.CustomerID In(Select PatientID From InpatientReg Where PatientID=RM.CustomerId And ');
+                                             Sql.Add(' ((RM.Returndate>=Inptdate And (RM.Returndate<Disdate OR Trim(DisDate) Is Null))) ');
+                                             Sql.Add('    OR (RM.Returndate=DisDate And RM.Rettime<=(Select OutTime From InpatientDetail Where InPatientId=InpatientReg.InPatientId and DisBillDate=InpatientReg.DisDate))) ');
+                                        End;
+                                        Open;
+                                        lf_MDTotal:=lf_MDTotal-FieldByName('NetTotal').AsFloat;
+                                   end;
+                                   Next;
+                              end;
+                         end;
+                         Table_TestWiseDeptWise.Append;
+                         Table_TestWiseDeptWise.FieldByName('DepName').AsString:=Query_SubProcess.FieldByName('DepName').AsString;
+                         Table_TestWiseDeptWise.FieldByName('PayType').AsString:='CREDIT';
+                         Table_TestWiseDeptWise.FieldByName('BillDate').AsString:='';
+                         Table_TestWiseDeptWise.FieldByName('BillNo').AsString:='Inpatient Med.';
+                         Table_TestWiseDeptWise.FieldByName('ServiceType').AsString:='PHARMACY ITEMS';
+                         Table_TestWiseDeptWise.FieldByName('Qty').AsFloat:=0;
+                         Table_TestWiseDeptWise.FieldByName('Amount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseDeptWise.FieldByName('Discount').AsFloat:=lf_MDDiscount;
+                         Table_TestWiseDeptWise.FieldByName('SubTotal').AsFloat:=lf_MDTotal-lf_MDDiscount;
+                         Table_TestWiseDeptWise.FieldByName('VatAmt').AsFloat:=0;
+                         Table_TestWiseDeptWise.FieldByName('NetAmount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseDeptWise.FieldByName('UserName').AsString:='';
+                         Table_TestWiseDeptWise.Post;
+                    End
+                    Else
+                    Begin
+                         with Query_Process do
+                         Begin
+                              Close;
+                              sql.Clear;
+                              sql.add(' select Sum(Round(SD.CurQty*SD.UnitRate,5))  as Total,');
+                              sql.add(' Sum(Round((SD.CurQty*SD.UnitRate) * SD.Discount/100,5)) as Discount');
+                              sql.add(' From SaleMaster SM,SaleDetail SD,ItemsList IL where (SM.SaleMasterId=SD.SaleMasterId)');
+                              sql.add(' and (SD.itemsid=IL.itemsid) and (SM.ST=''N'') and (SM.STATUS1=1) and (SD.CurQty > 0) And (SD.PatientId < 9999900) ');
+                              sql.add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+                              sql.add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CREDIT'' and CancelStatus=''N'' and ');
+                              sql.add(' SubStr(BillNo,1,2)<>''TP'' and InpatientId In (Select InpatientId From InpatientReg where ');
+                              sql.add(' Discharged=''YES'' and DisDate >='+#39+DateEditX_FromDate.Text+#39);
+                              sql.add(' AND DisDate<='+#39+DateEditX_ToDate.Text+#39+'))');
+                              Open;
+                         End;
+
+                         lf_MDTotal:=Query_Process.FieldByName('Total').AsFloat-Query_Process.FieldByName('Discount').AsFloat;
+                         lf_MDDiscount:=0;;
+
+                         Table_TestWiseDeptWise.Append;
+                         Table_TestWiseDeptWise.FieldByName('DepName').AsString:=Query_SubProcess.FieldByName('DepName').AsString;
+                         Table_TestWiseDeptWise.FieldByName('PayType').AsString:='CREDIT';
+                         Table_TestWiseDeptWise.FieldByName('BillDate').AsString:='';
+                         Table_TestWiseDeptWise.FieldByName('BillNo').AsString:='Inpatient Med.';
+                         Table_TestWiseDeptWise.FieldByName('ServiceType').AsString:='PHARMACY ITEMS';
+                         Table_TestWiseDeptWise.FieldByName('Qty').AsFloat:=0;
+                         Table_TestWiseDeptWise.FieldByName('Amount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseDeptWise.FieldByName('Discount').AsFloat:=lf_MDDiscount;
+                         Table_TestWiseDeptWise.FieldByName('SubTotal').AsFloat:=lf_MDTotal-lf_MDDiscount;
+                         Table_TestWiseDeptWise.FieldByName('VatAmt').AsFloat:=0;
+                         Table_TestWiseDeptWise.FieldByName('NetAmount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseDeptWise.FieldByName('UserName').AsString:='';
+                         Table_TestWiseDeptWise.Post;
+                    End;
+               End;
+          End;
+     End;
+End;
+
+
+Procedure TForm_DeptTestWiseReport.MedicineChargeCalculation;
+var i:integer;
+    ls_FromDate,ls_ToDate:String;
+    lf_MDTotal,lf_MDDiscount:Double;
+Begin
+     For i:=0 to 1 do
+     Begin
+          IF i=0 Then
+          Begin
+               ls_FromDate:=DateEditX_FromDate.Text;
+               ls_ToDate:='2007/12/06';
+
+               { Medicine Charge Cash }
+               IF (RB_PayTypeBoth.Checked=True) or (RBCash.Checked=True) Then
+               Begin
+                    With Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' select Sum(Round(SD.CurQty*SD.UnitRate,5))  as Total,');
+                         sql.add(' Sum(Round((SD.CurQty*SD.UnitRate) * SD.Discount/100,5)) as Discount');
+                         sql.add(' From SaleMaster SM,SaleDetail SD,ItemsList IL where (SM.SaleMasterId=SD.SaleMasterId)');
+                         sql.add(' and (SD.itemsid=IL.itemsid) and (SM.ST=''N'') and (SM.STATUS1=1) and (SD.CurQty > 0) And (SD.PatientId < 9999900)');
+                         sql.add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+                         sql.add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CASH'' and CancelStatus=''N'' and ');
+                         sql.add(' InpatientId In (Select InpatientId From InpatientReg where ');
+                         sql.add(' Discharged=''YES'' and DisDate >='+#39+ls_FromDate+#39);
+                         sql.add(' AND DisDate<='+#39+ls_ToDate+#39+'))');
+                         Open;
+                    End;
+
+                    lf_MDTotal:=Query_Process.FieldByName('Total').AsFloat-Query_Process.FieldByName('Discount').AsFloat;
+                    lf_MDDiscount:=0;
+
+                    Table_TestWiseDeptWise.Append;
+                    Table_TestWiseDeptWise.FieldByName('DepName').AsString:=Query_SubProcess.FieldByName('DepName').AsString;
+                    Table_TestWiseDeptWise.FieldByName('PayType').AsString:='CASH';
+                    Table_TestWiseDeptWise.FieldByName('BillDate').AsString:='';
+                    Table_TestWiseDeptWise.FieldByName('BillNo').AsString:='Inpatient Med.';
+                    Table_TestWiseDeptWise.FieldByName('ServiceType').AsString:='PHARMACY ITEMS';
+                    Table_TestWiseDeptWise.FieldByName('Qty').AsFloat:=0;
+                    Table_TestWiseDeptWise.FieldByName('Amount').AsFloat:=lf_MDTotal;
+                    Table_TestWiseDeptWise.FieldByName('Discount').AsFloat:=lf_MDDiscount;
+                    Table_TestWiseDeptWise.FieldByName('SubTotal').AsFloat:=lf_MDTotal-lf_MDDiscount;
+                    Table_TestWiseDeptWise.FieldByName('VatAmt').AsFloat:=0;
+                    Table_TestWiseDeptWise.FieldByName('NetAmount').AsFloat:=lf_MDTotal;
+                    Table_TestWiseDeptWise.FieldByName('UserName').AsString:='';
+                    Table_TestWiseDeptWise.Post;
+               End;
+
+               //Medicine Charge Credit
+               IF (RB_PayTypeBoth.Checked=True) or (RBCredit.Checked=True) Then
+               Begin
+                    with Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' select Sum(Round(SD.CurQty*SD.UnitRate,5))  as Total,');
+                         sql.add(' Sum(Round((SD.CurQty*SD.UnitRate) * SD.Discount/100,5)) as Discount');
+                         sql.add(' From SaleMaster SM,SaleDetail SD,ItemsList IL where (SM.SaleMasterId=SD.SaleMasterId)');
+                         sql.add(' and (SD.itemsid=IL.itemsid) and (SM.ST=''N'') and (SM.STATUS1=1) and (SD.CurQty > 0) And (SD.PatientId < 9999900)');
+                         sql.add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+                         sql.add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CREDIT'' and CancelStatus=''N'' and ');
+                         sql.add(' SubStr(BillNo,1,2)<>''TP'' and InpatientId In (Select InpatientId From InpatientReg where ');
+                         sql.add(' Discharged=''YES'' and DisDate >='+#39+ls_FromDate+#39);
+                         sql.add(' AND DisDate<='+#39+ls_ToDate+#39+'))');
+                         Open;
+                    End;
+
+                    lf_MDTotal:=Query_Process.FieldByName('Total').AsFloat-Query_Process.FieldByName('Discount').AsFloat;
+                    lf_MDDiscount:=0;;
+
+                    Table_TestWiseDeptWise.Append;
+                    Table_TestWiseDeptWise.FieldByName('DepName').AsString:=Query_SubProcess.FieldByName('DepName').AsString;
+                    Table_TestWiseDeptWise.FieldByName('PayType').AsString:='CREDIT';
+                    Table_TestWiseDeptWise.FieldByName('BillDate').AsString:='';
+                    Table_TestWiseDeptWise.FieldByName('BillNo').AsString:='Inpatient Med.';
+                    Table_TestWiseDeptWise.FieldByName('ServiceType').AsString:='PHARMACY ITEMS';
+                    Table_TestWiseDeptWise.FieldByName('Qty').AsFloat:=0;
+                    Table_TestWiseDeptWise.FieldByName('Amount').AsFloat:=lf_MDTotal;
+                    Table_TestWiseDeptWise.FieldByName('Discount').AsFloat:=lf_MDDiscount;
+                    Table_TestWiseDeptWise.FieldByName('SubTotal').AsFloat:=lf_MDTotal-lf_MDDiscount;
+                    Table_TestWiseDeptWise.FieldByName('VatAmt').AsFloat:=0;
+                    Table_TestWiseDeptWise.FieldByName('NetAmount').AsFloat:=lf_MDTotal;
+                    Table_TestWiseDeptWise.FieldByName('UserName').AsString:='';
+                    Table_TestWiseDeptWise.Post;
+               End;
+          End
+          Else
+          Begin
+               ls_FromDate:='2007/12/07';
+               ls_ToDate:=DateEditX_ToDate.Text;
+
+               { Medicine Charge Cash }
+               IF (RB_PayTypeBoth.Checked=True) or (RBCash.Checked=True) Then
+               Begin
+                    with Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' select Sum(Round(SD.Qty*SD.UnitRate,5))  as Total,');
+                         sql.add(' Sum(Round((SD.Qty*SD.UnitRate) * SD.Discount/100,5)) as Discount,');
+                         sql.add(' Sum(Round((SD.Qty*SD.UnitRate),5) -Round(((SD.Qty*SD.UnitRate) * SD.Discount/100),5)) as NetTotal ');
+                         sql.add(' From SaleMaster SM,SaleDetail SD where (SM.SaleMasterId=SD.SaleMasterId)');
+                         sql.add(' and (SM.ST=''N'') and (SM.STATUS1=1) And (SD.PatientId < 9999900)');
+                         sql.add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+                         sql.add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CASH'' and CancelStatus=''N'' and ');
+                         sql.add(' InpatientId In (Select InpatientId From InpatientReg where ');
+                         sql.add(' Discharged=''YES'' and DisDate >='+#39+ls_FromDate+#39);
+                         sql.add(' AND DisDate<='+#39+ls_ToDate+#39+'))');
+                         Open;
+                    End;
+
+                    lf_MDTotal:=Query_Process.FieldByName('Total').AsFloat-Query_Process.FieldByName('Discount').AsFloat;
+                    lf_MDDiscount:=0;
+
+                    //First Find out the Paitnt list for Medicine Refund Cash
+                    With Query_Process do
+                    begin
+                         Close;
+                         Sql.Clear;
+                         sql.add(' Select Distinct InptDate,DisDate,PatientId From InpatientReg');
+                         sql.add(' Where Discharged=''YES'' and DisDate>='+#39+ls_FromDate+#39);
+                         sql.add(' and DisDate<='+#39+ls_ToDate+#39);
+                         sql.add(' and InpatientId In(');
+                         sql.add(' Select Distinct InPatientId ');
+                         sql.add(' From BillDetail Where (BillType=''IP'' or BillType=''A'') and PayType=''CASH'' And Service<>''IPREF'' ');
+                         sql.add(' and CancelStatus=''N'' ');
+                         sql.add(' )');
+                         open;
+                         First;
+                         While not eof do
+                         begin
+                              With Query_Void do
+                              begin
+                                   Close;
+                                   Sql.Clear;
+                                   sql.add(' select Sum(Round(RD.Qty*RD.UnitPrice,5))  as Total, Sum(Round(RD.Qty * RD.Discount/100,5)) as Discount,');
+                                   sql.add(' Sum( Round((RD.Qty*RD.UnitPrice),5) -(Round((RD.Qty*RD.UnitPrice) * RD.Discount/100,5))) as NetTotal ');
+                                   sql.add(' From ReturnMaster RM,ReturnDetail RD where (RM.ReturnMasterId=RD.ReturnMasterId(+))');
+                                   sql.add(' and (RM.ST=''N'') and (RM.Credit1=1) and (RM.CustomerID < 9999900)');
+                                   sql.add(' and RM.ReturnDate >='+#39+Query_Process.fieldbyName('InptDate') .AsString+#39);
+                                   sql.add(' and RM.ReturnDate <='+#39+Query_Process.fieldbyName('DisDate') .AsString+#39);
+                                   sql.add(' and RM.CustomerId='+Query_Process.fieldbyName('PatientId') .AsString);
+//                                   IF DateEditX_FromDate.Text>=gs_SecManageDate Then
+                                   Begin
+                                        Sql.add(' And RM.CustomerID In(Select PatientID From InpatientReg Where PatientID=RM.CustomerId And ');
+                                        Sql.Add(' ((RM.Returndate>=Inptdate And (RM.Returndate<Disdate OR Trim(DisDate) Is Null))) ');
+                                        Sql.Add('      OR (RM.Returndate=DisDate And RM.Rettime<=(Select OutTime From InpatientDetail Where InPatientId=InpatientReg.InPatientId and DisBillDate=InpatientReg.DisDate))) ');
+                                   End;
+
+                                   Open;
+                                   lf_MDTotal:=lf_MDTotal-FieldByName('NetTotal').AsFloat;
+                              end;
+                              Next;
+                         end;
+                    end;
+
+                    Table_TestWiseDeptWise.Append;
+                    Table_TestWiseDeptWise.FieldByName('DepName').AsString:=Query_SubProcess.FieldByName('DepName').AsString;
+                    Table_TestWiseDeptWise.FieldByName('PayType').AsString:='CASH';
+                    Table_TestWiseDeptWise.FieldByName('BillDate').AsString:='';
+                    Table_TestWiseDeptWise.FieldByName('BillNo').AsString:='Inpatient Med.';
+                    Table_TestWiseDeptWise.FieldByName('ServiceType').AsString:='PHARMACY ITEMS';
+                    Table_TestWiseDeptWise.FieldByName('Qty').AsFloat:=0;
+                    Table_TestWiseDeptWise.FieldByName('Amount').AsFloat:=lf_MDTotal;
+                    Table_TestWiseDeptWise.FieldByName('Discount').AsFloat:=lf_MDDiscount;
+                    Table_TestWiseDeptWise.FieldByName('SubTotal').AsFloat:=lf_MDTotal-lf_MDDiscount;
+                    Table_TestWiseDeptWise.FieldByName('VatAmt').AsFloat:=0;
+                    Table_TestWiseDeptWise.FieldByName('NetAmount').AsFloat:=lf_MDTotal;
+                    Table_TestWiseDeptWise.FieldByName('UserName').AsString:='';
+                    Table_TestWiseDeptWise.Post;
+               End;
+
+
+               lf_MDTotal:=0;
+               lf_MDDiscount:=0;
+
+               //Medicine Charge Credit
+               IF (RB_PayTypeBoth.Checked=True) or (RBCredit.Checked=True) Then
+               Begin
+                    with Query_Process do
+                    Begin
+                         Close;
+                         sql.Clear;
+                         sql.add(' select Sum(Round(SD.Qty*SD.UnitRate,5))  as Total,');
+                         sql.add(' Sum(Round((SD.Qty*SD.UnitRate) * SD.Discount/100,5)) as Discount');
+                         sql.add(' From SaleMaster SM,SaleDetail SD,ItemsList IL where (SM.SaleMasterId=SD.SaleMasterId)');
+                         sql.add(' and (SD.itemsid=IL.itemsid) and (SM.ST=''N'') and (SM.STATUS1=1) And (SD.PatientId < 9999900) ');
+                         sql.add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+                         sql.add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CREDIT'' and CancelStatus=''N'' and ');
+                         sql.add(' InpatientId In (Select InpatientId From InpatientReg where ');
+                         sql.add(' Discharged=''YES'' and DisDate >='+#39+ls_FromDate+#39);
+                         sql.add(' AND DisDate<='+#39+ls_ToDate+#39+'))');
+                         Open;
+                    End;
+
+                    lf_MDTotal:=Query_Process.FieldByName('Total').AsFloat-Query_Process.FieldByName('Discount').AsFloat;
+                    lf_MDDiscount:=0;
+
+                    //First Find out the Paitnt list
+                    With Query_Process do
+                    begin
+                         Close;
+                         Sql.Clear;
+                         sql.add(' Select InptDate,DisDate,PatientId From InpatientReg');
+                         sql.add(' Where Discharged=''YES'' and DisDate>='+#39+ls_FromDate+#39);
+                         sql.add(' and DisDate<='+#39+ls_ToDate+#39);
+                         sql.add(' and InpatientId In(');
+                         sql.add('Select Distinct InPatientId ');
+                         sql.add(' From BillDetail Where (BillType=''IP'' or BillType=''A'') and PayType=''CREDIT'' And Service<>''IPREF'' ');
+                         sql.add(' and CancelStatus=''N'' ');
+                         sql.add(')');
+                         open;
+                         First;
+                         While not eof do
+                         begin
+                              With Query_Void do
+                              begin
+                                   Close;
+                                   Sql.Clear;
+                                   sql.add('Select Sum( Round((RD.Qty*RD.UnitPrice),5)-Round(((RD.Qty*RD.UnitPrice) * RD.Discount/100),5)) as NetTotal ');
+                                   sql.add(' From ReturnMaster RM,ReturnDetail RD where (RM.ReturnMasterId=RD.ReturnMasterId)');
+                                   sql.add(' and (RM.ST=''N'') and (RM.Credit1=1) and (RM.CustomerID < 9999900)');
+                                   sql.add(' and RM.ReturnDate >='+#39+Query_Process.fieldbyName('InptDate') .AsString+#39);
+                                   sql.add(' and RM.ReturnDate <='+#39+Query_Process.fieldbyName('DisDate') .AsString+#39);
+                                   sql.add(' and RM.CustomerId='+Query_Process.fieldbyName('PatientId') .AsString);
+//                                   IF DateEditX_FromDate.Text>=gs_SecManageDate Then
+                                   Begin
+                                        Sql.add(' And RM.CustomerID In(Select PatientID From InpatientReg Where PatientID=RM.CustomerId And ');
+                                        Sql.Add(' ((RM.Returndate>=Inptdate And (RM.Returndate<Disdate OR Trim(DisDate) Is Null))) ');
+                                        Sql.Add('      OR (RM.Returndate=DisDate And RM.Rettime<=(Select OutTime From InpatientDetail Where InPatientId=InpatientReg.InPatientId and DisBillDate=InpatientReg.DisDate))) ');
+                                   End;
+
+                                   Open;
+                                   lf_MDTotal:=lf_MDTotal-FieldByName('NetTotal').AsFloat;
+                              end;
+                              Next;
+                         end;
+                    end;
+                    Table_TestWiseDeptWise.Append;
+                    Table_TestWiseDeptWise.FieldByName('DepName').AsString:=Query_SubProcess.FieldByName('DepName').AsString;
+                    Table_TestWiseDeptWise.FieldByName('PayType').AsString:='CREDIT';
+                    Table_TestWiseDeptWise.FieldByName('BillDate').AsString:='';
+                    Table_TestWiseDeptWise.FieldByName('BillNo').AsString:='Inpatient Med.';
+                    Table_TestWiseDeptWise.FieldByName('ServiceType').AsString:='PHARMACY ITEMS';
+                    Table_TestWiseDeptWise.FieldByName('Qty').AsFloat:=0;
+                    Table_TestWiseDeptWise.FieldByName('Amount').AsFloat:=lf_MDTotal;
+                    Table_TestWiseDeptWise.FieldByName('Discount').AsFloat:=lf_MDDiscount;
+                    Table_TestWiseDeptWise.FieldByName('SubTotal').AsFloat:=lf_MDTotal-lf_MDDiscount;
+                    Table_TestWiseDeptWise.FieldByName('VatAmt').AsFloat:=0;
+                    Table_TestWiseDeptWise.FieldByName('NetAmount').AsFloat:=lf_MDTotal;
+                    Table_TestWiseDeptWise.FieldByName('UserName').AsString:='';
+                    Table_TestWiseDeptWise.Post;
+               End;
+          End;
+     End;
+End;
+
+
+procedure TForm_DeptTestWiseReport.BitBtnExcelClick(Sender: TObject);
+Var ls_ReportTitle:String;
+begin
+     if MessageDlg('Are you sure to send in Excel ?',mtconfirmation,[mbyes,mbno],0)=mryes then
+     Begin
+          Try
+               b_SendToExcel:=True;
+               BitBtnPreviewClick(Sender);
+          Except
+               b_SendToExcel:=False;
+          End;
+     End;
+End;
+
+procedure TForm_DeptTestWiseReport.BitBtn_FromDateClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX_FromDate,BitBtn_FromDate);
+end;
+
+procedure TForm_DeptTestWiseReport.FormShow(Sender: TObject);
+begin
+     with Query_checklist do
+     begin
+          Close;
+          Databasename:=gs_databasename;
+          Open;
+     end;
+     while not Query_checklist.Eof  do
+     begin
+          CheckListBox_Department.Items.add(Query_checklist.FieldByName('PACA_PATIENTCATEGORY').AsString);
+          Query_checklist.Next;
+     end;
+     DateEditX_FromDate.SystemOfDate:=gi_DateSystem;
+//   ChangeCaption(BitBtn_FromDate,gi_DateSystem);
+     DateEditX_FromDate.text:=serverdate.TodaysDate;
+
+     DateEditX_ToDate.SystemOfDate:=gi_DateSystem;
+//   ChangeCaption(BitBtn_ToDate,gi_DateSystem);
+     DateEditX_ToDate.text:=serverdate.TodaysDate;
+     Query_Department.Open;
+     Query_TestName.Open;
+     b_SendToExcel:=False;
+     CMBDepartment.SetFocus;
+end;
+
+procedure TForm_DeptTestWiseReport.GetPatientInfo(ArrayIndex,
+  InfoIndex: Integer);
+  var  StrVal:TStringList;
+begin
+     StrVal := TStringList.Create;
+     StrVal.CommaText := DeptPrivateData[ArrayIndex];
+     StrVal.Free;
+end;
+
+procedure TForm_DeptTestWiseReport.BitBtn_ToDateClick(Sender: TObject);
+begin
+     ChangeDateSystem(DateEditX_ToDate,BitBtn_ToDate);
+end;
+
+procedure TForm_DeptTestWiseReport.FormCreate(Sender: TObject);
+begin
+     Application.CreateForm(TForm_QRReportBillDepWise,Form_QRReportBillDepWise);
+     Application.CreateForm(TForm_QRReportDepWiseQty,Form_QRReportDepWiseQty);
+     Application.CreateForm(TForm_QRTestBillWise,Form_QRTestBillWise);
+end;
+
+procedure TForm_DeptTestWiseReport.FormDestroy(Sender: TObject);
+begin
+     Form_QRReportBillDepWise.Free;
+     Form_QRReportDepWiseQty.Free;
+     Form_QRTestBillWise.Free;
+end;
+
+procedure TForm_DeptTestWiseReport.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   IF key=27 Then Close;
+   IF key=VK_F1 Then BitBtnPreviewClick(Sender);
+   IF key=VK_F2 Then BitBtnExcelClick(Sender);
+   IF Key=13 Then
+   keybd_event(9,13,0,0);
+end;
+
+procedure TForm_DeptTestWiseReport.CMBDepartmentKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+   IF Key=VK_Delete Then
+   Begin
+       With Query_TestName Do
+       Begin
+          Close;
+          Sql[1]:=' Where 39=39 ';
+          Open;
+       End;
+       CMBDepartment.KeyValue:=NULL;
+   End;
+end;
+
+procedure TForm_DeptTestWiseReport.DBLCBTestNameKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+   IF Key=VK_Delete Then
+   DBLCBTestName.KeyValue:=NULL;
+end;
+
+procedure TForm_DeptTestWiseReport.CMBDepartmentClick(Sender: TObject);
+begin
+      With Query_TestName Do
+      Begin
+           Close;
+           Sql[1]:=' Where Tena_DepID='+VarToStr(CMBDepartment.KeyValue);
+           Open;
+      End;
+end;
+
+procedure TForm_DeptTestWiseReport.RB_TestWiseClick(Sender: TObject);
+begin
+     IF RB_TestWise.Checked=True Then
+     Begin
+          GB_PayType.Enabled:=False;
+          RB_PayTypeBoth.Checked:=True;
+          RB_PayTypeBoth.Enabled:=False;
+          RBCash.Enabled:=False;
+          RBCredit.Enabled:=False;
+     End;
+end;
+
+procedure TForm_DeptTestWiseReport.RB_DepartmentWiseClick(Sender: TObject);
+begin
+     IF RB_DepartmentWise.Checked=True Then
+     Begin
+          GB_PayType.Enabled:=True;
+          RB_PayTypeBoth.Checked:=True;
+          RB_PayTypeBoth.Enabled:=True;
+          RBCash.Enabled:=True;
+          RBCredit.Enabled:=True;
+     End;
+end;
+
+
+
+Procedure TForm_DeptTestWiseReport.Report_TestWiseBill;
+Var i:Integer;
+    ls_ReportTitle,ls_PatientCategory:String;
+Begin
+     for I := 0 to CheckListBox_Department.Count - 1 do
+     begin
+          if CheckListBox_Department.Checked[I] then
+          begin
+               if ls_PatientCategory='' then
+                    ls_PatientCategory:=Quotedstr(CheckListBox_Department.Items[I])
+               else
+               begin
+                    ls_PatientCategory:=ls_PatientCategory+','+Quotedstr(CheckListBox_Department.Items[I]);
+               end;
+          end;
+     end;
+     With Form_QRTestBillWise Do
+     Begin
+          IF RBOPBill.Checked=True Then
+          Begin
+               IF RB_PayTypeBoth.Checked=True Then
+               ls_ReportTitle:='Test wise Revenue Report (OP)'
+               Else IF RBCash.Checked=True Then
+               ls_ReportTitle:='Test wise Revenue Report (OP) - CASH'
+               Else
+               ls_ReportTitle:='Test wise Revenue Report (OP) - CREDIT';
+          End
+          Else IF RBIPBill.Checked=True Then
+          Begin
+               IF RB_PayTypeBoth.Checked=True Then
+               ls_ReportTitle:='Test wise Revenue Report (IP)'
+               Else IF RBCash.Checked=True Then
+               ls_ReportTitle:='Test wise Revenue Report (IP) - CASH'
+               Else
+               ls_ReportTitle:='Test wise Revenue Report (IP) - CREDIT';
+          End
+          Else IF RB_OPIP.Checked=True Then
+          Begin
+               IF RB_PayTypeBoth.Checked=True Then
+               ls_ReportTitle:='Test wise Revenue Report(OP+IP)'
+               Else IF RBCash.Checked=True Then
+               ls_ReportTitle:='Test wise Revenue Report(OP+IP) - CASH'
+               Else
+               ls_ReportTitle:='Test wise Revenue Report(OP+IP) - CREDIT';
+          End;
+
+          if Cb_ReferalDep.Checked=True then
+          begin
+                if CMBDepartment.Text<>'' then
+                ls_ReportTitle:=ls_ReportTitle+'  ( Referal Department : '+CMBDepartment.Text+')';
+          end
+          else
+          begin
+                if CMBDepartment.Text<>'' then
+                ls_ReportTitle:=ls_ReportTitle+'  ( Department : '+CMBDepartment.Text+')';
+          end;
+
+          IF b_SendToExcel=True Then
+          Begin
+               With Query_Master1 Do
+               Begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    sql.Clear;
+                    sql.add(' Select Distinct TestName ,PayType From VW_HS_DEPTTESTWISE_DETAIL where TestName<>'' ''');
+                    SQL.Add('and Billdate>='+#39+DateEditX_FromDate.Text+#39);
+                    SQL.add('and Billdate<='+#39+DateEditX_ToDate.Text+#39);
+//                    if Cb_Time.Checked then
+//                    Sql.Add('And BillTime Between'+#39+ls_FromTime+#39+' And '+#39+ls_TTime+#39);
+
+
+                    IF CB_OPDReg.Checked=False Then
+                    Begin
+                         IF RBOPBill.Checked=True Then
+                         SQL.Add('and billtype=''B''')
+                         Else IF RBIPBill.Checked=True Then
+                         SQL.Add('and billtype=''IP''')
+                         Else IF RB_OPIP.Checked=True Then
+                         SQL.Add('and billtype in(''IP'',''B'')');
+                    End
+                    Else
+                    Begin
+                         IF RBOPBill.Checked=True Then
+                         SQL.Add('and billtype in(''R'',''B'')')
+                         Else IF RBIPBill.Checked=True Then
+                         SQL.Add('and billtype=''IP''');
+                    End;
+
+                    IF RBCash.Checked=True Then
+                    SQL.add(' and PayType=''CASH''')
+                    Else IF RBCredit.Checked=True Then
+                    SQL.add(' and PayType=''CREDIT''');
+
+                    IF CMBDepartment.KeyValue<>NULL Then
+                    begin
+                         if Cb_ReferalDep.Checked=true then
+                         SQL.add(' And RefDepId='+IntToStr(CMBDepartment.KeyValue))
+                         else
+                         SQL.add(' And DepId='+IntToStr(CMBDepartment.KeyValue));
+                    end;
+                    IF DBLCBTestName.KeyValue<>NULL Then
+                    SQL.add(' And TestNameCode='+#39+DBLCBTestName.KeyValue+#39);
+                    if ls_PatientCategory<>'' then
+                         sql.add('and PatientCategory in ('+ls_PatientCategory+')')
+                    else
+                         sql.Add('and 1=1');
+                    //SQL.SaveToFile('C:/testwise.txt');
+                    Open;
+               End;
+               With QueryDetail Do
+               Begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    sql.Clear;
+                    sql.add('Select TestName,PatientId,Name,InpatientId,PayType,BillNo,BillDate,BillBy UserName,TestName ServiceType,Sum(Gross) as Amount,Sum(Discount) as Discount,');
+                    sql.add(' Sum(SubTotal) as SubTotal,Sum(SvrTax) as VatAmt,Sum(NetTotal) as NetAmount');
+                    SQL.Add('From VW_HS_DEPTTESTWISE_DETAIL');
+                    SQL.Add('where Billdate>='+#39+DateEditX_FromDate.Text+#39);
+                    SQL.add('and Billdate<='+#39+DateEditX_ToDate.Text+#39);
+//                    if Cb_Time.Checked then
+//                    Sql.Add('And BillTime Between'+#39+ls_FromTime+#39+' And '+#39+ls_TTime+#39);
+
+
+                    IF CB_OPDReg.Checked=False Then
+                    Begin
+                         IF RBOPBill.Checked=True Then
+                         SQL.Add('and billtype=''B''')
+                         Else IF RBIPBill.Checked=True Then
+                         SQL.Add('and billtype=''IP''')
+                         Else IF RB_OPIP.Checked=True Then
+                         SQL.Add('and billtype in(''IP'',''B'')');
+                    End
+                    Else
+                    Begin
+                         IF RBOPBill.Checked=True Then
+                         SQL.Add('and billtype in(''R'',''B'')')
+                         Else IF RBIPBill.Checked=True Then
+                         SQL.Add('and billtype=''IP''');
+                    End;
+
+                    IF RBCash.Checked=True Then
+                    SQL.add(' and PayType=''CASH''')
+                    Else IF RBCredit.Checked=True Then
+                    SQL.add(' and PayType=''CREDIT''');
+
+                    SQL.Add('and Testname=:Testname');
+                    SQL.Add('and Paytype=:PayType');
+
+                    IF CMBDepartment.KeyValue<>NULL Then
+                    begin
+                         if Cb_ReferalDep.Checked=true then
+                         SQL.add(' And RefDepId='+IntToStr(CMBDepartment.KeyValue))
+                         else
+                         SQL.add(' And DepId='+IntToStr(CMBDepartment.KeyValue));
+                    end;
+                    IF DBLCBTestName.KeyValue<>NULL Then
+                    SQL.add(' And TestNameCode='+#39+DBLCBTestName.KeyValue+#39);
+                    if ls_PatientCategory<>'' then
+                         sql.add('and PatientCategory in ('+ls_PatientCategory+')')
+                    else
+                         sql.Add('and 1=1');
+                    {if RG_Category.ItemIndex=1 then
+                    SQL.Add('and PatientCategory=''BNB''')
+                    Else if RG_Category.ItemIndex=2 then
+                    SQL.Add('and PatientCategory=''BLK''')
+                    Else
+                    SQL.Add('And 1=1');}
+                    SQL.add('Group BY TestName,PatientId,Name,InpatientId,PayType,BillNo,BillDate,BillBy,TestName Order By TestName,PayType,BillNo');
+                    Params[0].DataType:=ftString;
+                    Params[1].DataType:=ftString;
+                    //SQL.savetofile('c:/dETAIL.txt');
+                    Open;
+               End;
+
+                    SendToExcelMasterDetail(Query_Master1,QueryDetail,ls_ReportTitle,DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,
+                    '',gs_HospitalName,gs_HospitalAddress,'TESTNAMEBNB',6);
+              { With Query_Master1 Do
+               Begin
+                    Close;
+                    DatabaseName:=gs_TempPath;
+                    sql.Clear;
+                    sql.add(' Select Distinct TestName,TestNameCode,PayType  From TestWiseBill.db where TestName<>'' ''');
+                    Open;
+               End;
+
+               With Query_Detail2 Do
+               Begin
+                    Close;
+                    DatabaseName:=gs_TempPath;
+                    sql.Clear;
+                    sql.add(' Select PatientId as HospNo,InpatientId as IPNO,TestName,TestNameCode,PayType,BillNo,BillDate,UserName,Sum(Amount) as Amount,Sum(Discount) as Discount,');
+                    sql.add(' Sum(SubTotal) as SubTotal,Sum(VatAmt) as HSTax,Sum(NetAmount) as NetAmount From');
+                    sql.add(' TestWiseBill.db where TestName=:TestName and PayType=:PayType and TestName<>'' '' Group BY PatientId,InpatientId,TestNameCode,TestName,PayType,BillNo,BillDate,UserName');
+                    sql.add(' Order By TestNameCode,TestName,PayType,BillNo');
+                    Open;
+               End;}
+
+{               SendToExcelMasterDetails(Query_Master1,Query_Detail2,ls_ReportTitle,DateEditX_FromDate.Text+'-'+DateEditX_ToDate.Text,
+               '',gs_HosName,gs_HosAddress,'TESTNAME');  }
+               b_SendToExcel:=False;
+          End
+          Else
+          Begin
+               With QueryDetail Do
+               Begin
+                    Close;
+                    DatabaseName:=gs_DatabaseName;
+                    sql.Clear;
+                    sql.add('Select TestName,PatientId,InpatientId,PayType,BillNo,BillDate,BillBy UserName,TestName ServiceType,Sum(Gross) as Amount,Sum(Discount) as Discount,');
+                    sql.add(' Sum(SubTotal) as SubTotal,Sum(SvrTax) as VatAmt,Sum(NetTotal) as NetAmount');
+                    SQL.Add('From VW_HS_DEPTTESTWISE_DETAIL');
+                    SQL.Add('where Billdate>='+#39+DateEditX_FromDate.Text+#39);
+                    SQL.add('and Billdate<='+#39+DateEditX_ToDate.Text+#39);
+//                    if Cb_Time.Checked then
+//                    Sql.Add('And BillTime Between'+#39+ls_FromTime+#39+' And '+#39+ls_TTime+#39);
+
+
+                    IF CB_OPDReg.Checked=False Then
+                    Begin
+                         IF RBOPBill.Checked=True Then
+                         SQL.Add('and billtype=''B''')
+                         Else IF RBIPBill.Checked=True Then
+                         SQL.Add('and billtype=''IP''')
+                         Else IF RB_OPIP.Checked=True Then
+                         SQL.Add('and billtype in(''IP'',''B'')');
+                    End
+                    Else
+                    Begin
+                         IF RBOPBill.Checked=True Then
+                         SQL.Add('and billtype in(''R'',''B'')')
+                         Else IF RBIPBill.Checked=True Then
+                         SQL.Add('and billtype=''IP''');
+                    End;
+
+                    IF RBCash.Checked=True Then
+                    SQL.add(' and PayType=''CASH''')
+                    Else IF RBCredit.Checked=True Then
+                    SQL.add(' and PayType=''CREDIT''');
+
+                    IF CMBDepartment.KeyValue<>NULL Then
+                    begin
+                         if Cb_ReferalDep.Checked=true then
+                         SQL.add(' And RefDepId='+IntToStr(CMBDepartment.KeyValue))
+                         else
+                         SQL.add(' And DepId='+IntToStr(CMBDepartment.KeyValue));
+                    end;
+                    IF DBLCBTestName.KeyValue<>NULL Then
+                    SQL.add(' And TestNameCode='+#39+DBLCBTestName.KeyValue+#39);
+                    if ls_PatientCategory<>'' then
+                         sql.add('and PatientCategory in ('+ls_PatientCategory+')')
+                    else
+                         sql.Add('and 1=1');
+                    {if RG_Category.ItemIndex=1 then
+                    SQL.Add('and PatientCategory=''BNB''')
+                    Else if RG_Category.ItemIndex=2 then
+                    SQL.Add('and PatientCategory=''BLK''')
+                    Else
+                    SQL.Add('And 1=1');}
+                    SQL.add('Group BY TestName,PatientId,InpatientId,PayType,BillNo,BillDate,BillBy,TestName Order By TestName,PayType,BillNo');
+                    SQL.savetofile('tt.txt');
+                    Open;
+               End;
+               {
+               With QueryDetail Do
+               Begin
+                    Close;
+                    DatabaseName:=gs_TempPath;
+                    sql.Clear;
+                    sql.add(' Select PatientId,InpatientId,TestNameCode,TestName,PayType,BillNo,BillDate,UserName,Sum(Amount) as Amount,Sum(Discount) as Discount,');
+                    sql.add(' Sum(SubTotal) as SubTotal,Sum(VatAmt) as VatAmt,Sum(NetAmount) as NetAmount From');
+                    sql.add(' TestWiseBill.db where TestName<>'' '' Group BY PatientId,InpatientId,TestNameCode,TestName,PayType,BillNo,BillDate,UserName Order By TestName,PayType,BillNo');
+                    Open;
+               End;  }
+
+               IF DBLCBTestName.KeyValue<>NULL Then
+               Begin
+                    QRLabel20.Font.Color:=clBlack;
+                    QRLabelTestName.Font.Color:=clBlack;
+                    QRLabelTestName.Caption:=DBLCBTestName.Text;
+               End
+               Else
+               Begin
+                    QRLabel20.Font.Color:=clWhite;
+                    QRLabelTestName.Font.Color:=clWhite;
+               End;
+
+               IF CMBDepartment.KeyValue<>NULL Then
+               GroupFooter1st.Height:=1;
+
+               QRLabel27.Caption:=ls_ReportTitle;
+               QRLabelFrom.Caption:=DateEditX_FromDate.Text;
+               QRLabelTo.Caption:=DateEditX_ToDate.Text;
+               QRLabelToday.Caption:=ServerDate.TodaysDate;
+               QR_TestBillWise.Preview;
+          End;
+          QueryDetail.Close;
+          QueryMaster.Close;
+     End;
+End;
+
+
+Procedure TForm_DeptTestWiseReport.PharmacyCharge_TestWise;
+Var lf_MDTotal,lf_MDDiscount,Tot_PharCreRefund:Double;
+Begin
+     With Query_SubProcess Do
+     Begin
+          Close;
+          sql.Clear;
+          sql.add(' Select DepName From Department where DepId=28');
+          Open;
+     End;
+
+     //Pharmacy Credit Refund after the Patient is DisCharge
+     //Retrive Those data who are not InPatient and have a Credit Refund
+     Tot_PharCreRefund:=0;
+     IF (RBOPBill.Checked=False)// And (DateEditX_ToDate.text >= gs_SecManageDate)
+     and ((CMBDepartment.KeyValue=NULL) or (CMBDepartment.KeyValue=28)) and
+     ((RB_PayTypeBoth.Checked=True) or (RBCredit.Checked=True)) Then // 28 -Pharmacy Department
+     Begin
+          With Query_Process Do
+          Begin
+               Close;
+               Sql.Clear;
+               sql.add(' Select Sum(RD.Qty) as Qty,Sum( Round((RD.Qty*RD.UnitPrice),5)) as Amount,Sum( Round((RD.Qty*RD.UnitPrice) * RD.Discount/100)) as Discount,');
+               sql.add(' Sum( Round((RD.Qty*RD.UnitPrice),5)-Round(((RD.Qty*RD.UnitPrice) * RD.Discount/100),5)) as NetTotal ');
+               sql.add(' From ReturnMaster RM,ReturnDetail RD where (RM.ReturnMasterId=RD.ReturnMasterId(+))');
+               sql.add(' and (RM.ST=''N'') and (RM.Credit1=1) and RM.InPatientID>0 ');
+               sql.add(' and RM.ReturnDate>='+#39+DateEditX_FromDate.text+#39);
+               sql.add(' and RM.ReturnDate<='+#39+DateEditX_ToDate.text+#39);
+               Sql.add(' and (RM.CustomerID < 9999900) AND RM.CustomerID Not In(Select PatientID From InpatientReg ');
+               Sql.Add(' Where  (RM.Returndate>=Inptdate and (RM.Returndate<Disdate OR Trim(DisDate) Is Null )) ');
+               Sql.Add('     OR (RM.Returndate=DisDate And RM.Rettime<=(Select OutTime From InpatientDetail');
+               Sql.Add(' Where InPatientId=InpatientReg.InPatientId and DisBillDate=InpatientReg.DisDate)))');
+               //sql.saveToFile('C:\CreditMedRefund.Txt');
+               Open;
+               IF Query_Process.RecordCount > 0 Then
+               Begin
+                    First;
+                    While Not EOF Do
+                    Begin
+                         Table_TestWiseBill.Append;
+                         Table_TestWiseBill.FieldByName('TestNameCode').AsString:='PHA001';
+                         Table_TestWiseBill.FieldByName('TestName').AsString:='PHARMACY ITEMS';
+                         Table_TestWiseBill.FieldByName('PayType').AsString:='REFUND';
+                         Table_TestWiseBill.FieldByName('BillDate').AsString:='';
+                         Table_TestWiseBill.FieldByName('BillNo').AsString:='';
+                         Table_TestWiseBill.FieldByName('Qty').AsFloat:=Query_Process.FieldByName('Qty').AsFloat;
+                         Table_TestWiseBill.FieldByName('Amount').AsFloat:=Query_Process.FieldByName('Amount').AsFloat;
+                         Table_TestWiseBill.FieldByName('Discount').AsFloat:=FieldByName('Discount').AsFloat;
+                         Table_TestWiseBill.FieldByName('SubTotal').AsFloat:=FieldByName('Amount').AsFloat-FieldByName('Discount').AsFloat;
+                         Table_TestWiseBill.FieldByName('VatAmt').AsFloat:=0;
+                         Table_TestWiseBill.FieldByName('NetAmount').AsFloat:=FieldByName('NetTotal').AsFloat;
+                         Table_TestWiseBill.FieldByName('UserName').AsString:='';
+                         Table_TestWiseBill.Post;
+                         Query_Process.Next;
+                   End;
+              End;
+          End;
+     End;
+
+     {   Medicine Charge Calculation   }
+     If (RBOPBill.Checked=False) and ((CMBDepartment.KeyValue=NULL) Or (CMBDepartment.KeyValue=28)) Then //28 -->>Pharmacy Department
+     begin
+          IF (DateEditX_FromDate.text<'2007/12/07')  and (DateEditX_ToDate.text>='2007/12/07') Then // 2007/12/07 is middle point one type of condition and another so
+          MedicineChargeCalculation
+          Else
+          Begin
+               IF (RB_PayTypeBoth.Checked=True) or (RBCash.Checked=True) Then
+               Begin
+                    { Medicine Charge Cash }
+                    IF (DateEditX_FromDate.Text >='2007/12/07') Then
+                    Begin
+                         with Query_Process do
+                         Begin
+                              Close;
+                              sql.Clear;
+                              sql.add(' select Sum(Round(SD.Qty*SD.UnitRate,5))  as Total,');
+                              sql.add(' Sum(Round((SD.Qty*SD.UnitRate) * SD.Discount/100,5)) as Discount,');
+                              sql.add(' Sum(Round((SD.Qty*SD.UnitRate),5) -Round(((SD.Qty*SD.UnitRate) * SD.Discount/100),5)) as NetTotal ');
+                              sql.add(' From SaleMaster SM,SaleDetail SD where (SM.SaleMasterId=SD.SaleMasterId)');
+                              sql.add(' and (SM.ST=''N'') and (SM.STATUS1=1) And (SD.PatientId < 9999900)');
+                              sql.add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+                              sql.add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CASH'' and CancelStatus=''N'' and ');
+                              sql.add(' InpatientId In (Select InpatientId From InpatientReg where ');
+                              sql.add(' Discharged=''YES'' and DisDate >='+#39+DateEditX_FromDate.Text+#39);
+                              sql.add(' AND DisDate<='+#39+DateEditX_ToDate.Text+#39+'))');
+                              //sql.saveToFile('C:\Medcine2.Txt');
+                              Open;
+                         End;
+
+                         lf_MDTotal:=Query_Process.FieldByName('Total').AsFloat-Query_Process.FieldByName('Discount').AsFloat;
+                         lf_MDDiscount:=0;
+
+                         //First Find out the Paitnt list for Medicine Refund Cash
+                         With Query_Process do
+                         begin
+                              Close;
+                              Sql.Clear;
+                              sql.add(' Select Distinct InptDate,DisDate,PatientId From InpatientReg');
+                              sql.add(' Where Discharged=''YES'' and DisDate>='+#39+DateEditX_FromDate.Text+#39);
+                              sql.add(' and DisDate<='+#39+DateEditX_ToDate.Text+#39);
+                              sql.add(' and InpatientId In(');
+                              sql.add('Select Distinct InPatientId ');
+                              sql.add(' From BillDetail Where (BillType=''IP'' or BillType=''A'') and PayType=''CASH'' And Service<>''IPREF'' ');
+                              sql.add(' and CancelStatus=''N'' ');
+                              sql.add(')');
+                              open;
+                              While not eof do
+                              begin
+                                   With Query_Void do
+                                   begin
+                                        Close;
+                                        Sql.Clear;
+                                        sql.add(' select Sum(Round(RD.Qty*RD.UnitPrice,5))  as Total, Sum(Round(RD.Qty * RD.Discount/100,5)) as Discount,');
+                                        sql.add(' Sum( Round((RD.Qty*RD.UnitPrice),5) -(Round((RD.Qty*RD.UnitPrice) * RD.Discount/100,5))) as NetTotal ');
+                                        sql.add(' From ReturnMaster RM,ReturnDetail RD where (RM.ReturnMasterId=RD.ReturnMasterId(+))');
+                                        sql.add(' and (RM.ST=''N'') and (RM.Credit1=1) and (RM.CustomerID < 9999900)');
+                                        sql.add(' and RM.ReturnDate >='+#39+Query_Process.fieldbyName('InptDate') .AsString+#39);
+                                        sql.add(' and RM.ReturnDate <='+#39+Query_Process.fieldbyName('DisDate') .AsString+#39);
+                                        sql.add(' and RM.CustomerId='+Query_Process.fieldbyName('PatientId') .AsString);
+
+                                       // IF Query_Process.fieldbyName('DisDate') .AsString>=gs_SecManageDate Then
+                                        Begin
+                                              Sql.add(' And RM.CustomerID In(Select PatientID From InpatientReg Where PatientID=RM.CustomerId And ');
+                                              Sql.Add(' ((RM.Returndate>=Inptdate And (RM.Returndate<Disdate OR Trim(DisDate) Is Null))) ');
+                                              Sql.Add('    OR (RM.Returndate=DisDate And RM.Rettime<=(Select OutTime From InpatientDetail Where InPatientId=InpatientReg.InPatientId and DisBillDate=InpatientReg.DisDate))) ');
+                                        End;
+
+                                        Open;
+                                        lf_MDTotal:=lf_MDTotal-FieldByName('NetTotal').AsFloat;
+                                   end;
+                                   Next;
+                              end;
+                         end;
+
+                         Table_TestWiseBill.Append;
+                         Table_TestWiseBill.FieldByName('TestNameCode').AsString:='PHA002';
+                         Table_TestWiseBill.FieldByName('TestName').AsString:='PHARMACY ITEMS';
+                         Table_TestWiseBill.FieldByName('PayType').AsString:='CASH';
+                         Table_TestWiseBill.FieldByName('BillDate').AsString:='';
+                         Table_TestWiseBill.FieldByName('BillNo').AsString:='Inpatient Med.';
+                         Table_TestWiseBill.FieldByName('Qty').AsFloat:=0;
+                         Table_TestWiseBill.FieldByName('Amount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseBill.FieldByName('Discount').AsFloat:=lf_MDDiscount;
+                         Table_TestWiseBill.FieldByName('SubTotal').AsFloat:=lf_MDTotal-lf_MDDiscount;
+                         Table_TestWiseBill.FieldByName('VatAmt').AsFloat:=0;
+                         Table_TestWiseBill.FieldByName('NetAmount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseBill.FieldByName('UserName').AsString:='';
+                         Table_TestWiseBill.Post;
+                         Query_Process.Next;
+                    End
+                    Else
+                    Begin
+                         with Query_Process do
+                         Begin
+                              Close;
+                              sql.Clear;
+                              sql.add(' select Sum(Round(SD.CurQty*SD.UnitRate,5))  as Total,');
+                              sql.add(' Sum(Round((SD.CurQty*SD.UnitRate) * SD.Discount/100,5)) as Discount');
+                              sql.add(' From SaleMaster SM,SaleDetail SD,ItemsList IL where (SM.SaleMasterId=SD.SaleMasterId)');
+                              sql.add(' and (SD.itemsid=IL.itemsid) and (SM.ST=''N'') and (SM.STATUS1=1) and (SD.CurQty > 0) And (SD.PatientId < 9999900)');
+                              sql.add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+                              sql.add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CASH'' and CancelStatus=''N'' and ');
+                              sql.add(' InpatientId In (Select InpatientId From InpatientReg where ');
+                              sql.add(' Discharged=''YES'' and DisDate >='+#39+DateEditX_FromDate.Text+#39);
+                              sql.add(' AND DisDate<='+#39+DateEditX_ToDate.Text+#39+'))');
+                              Open;
+                         End;
+
+                         lf_MDTotal:=Query_Process.FieldByName('Total').AsFloat-Query_Process.FieldByName('Discount').AsFloat;
+                         lf_MDDiscount:=0;
+
+                         Table_TestWiseBill.Append;
+                         Table_TestWiseBill.FieldByName('TestNameCode').AsString:='PHA002';
+                         Table_TestWiseBill.FieldByName('TestName').AsString:='PHARMACY ITEMS';
+                         Table_TestWiseBill.FieldByName('PayType').AsString:='CASH';
+                         Table_TestWiseBill.FieldByName('BillDate').AsString:='';
+                         Table_TestWiseBill.FieldByName('BillNo').AsString:='Inpatient Med.';
+                         Table_TestWiseBill.FieldByName('Qty').AsFloat:=0;
+                         Table_TestWiseBill.FieldByName('Amount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseBill.FieldByName('Discount').AsFloat:=lf_MDDiscount;
+                         Table_TestWiseBill.FieldByName('SubTotal').AsFloat:=lf_MDTotal-lf_MDDiscount;
+                         Table_TestWiseBill.FieldByName('VatAmt').AsFloat:=0;
+                         Table_TestWiseBill.FieldByName('NetAmount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseBill.FieldByName('UserName').AsString:='';
+                         Table_TestWiseBill.Post;
+                         Query_Process.Next;
+                    End;
+               End;
+
+               lf_MDTotal:=0;
+               lf_MDDiscount:=0;
+
+               {  CREDIT   Getting Net medicine(After Medicine Refund) amount     }
+               IF (RB_PayTypeBoth.Checked=True) or (RBCredit.Checked=True) Then
+               Begin
+                    IF (DateEditX_FromDate.Text >='2007/12/07')  Then
+                    Begin
+                         with Query_Process do
+                         Begin
+                              Close;
+                              sql.Clear;
+                              sql.add(' select Sum(Round(SD.Qty*SD.UnitRate,5))  as Total,');
+                              sql.add(' Sum(Round((SD.Qty*SD.UnitRate) * SD.Discount/100,5)) as Discount');
+                              sql.add(' From SaleMaster SM,SaleDetail SD,ItemsList IL where (SM.SaleMasterId=SD.SaleMasterId)');
+                              sql.add(' and (SD.itemsid=IL.itemsid) and (SM.ST=''N'') and (SM.STATUS1=1) And (SD.PatientId < 9999900) ');
+                              sql.add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+                              sql.add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CREDIT'' and CancelStatus=''N'' and ');
+                              sql.add(' InpatientId In (Select InpatientId From InpatientReg where ');
+                              sql.add(' Discharged=''YES'' and DisDate >='+#39+DateEditX_FromDate.Text+#39);
+                              sql.add(' AND DisDate<='+#39+DateEditX_ToDate.Text+#39+'))');
+                              Open;
+                         End;
+
+                         lf_MDTotal:=Query_Process.FieldByName('Total').AsFloat-Query_Process.FieldByName('Discount').AsFloat;
+                         lf_MDDiscount:=0;
+
+                         //First Find out the Paitnt list
+                         With Query_Process do
+                         begin
+                              Close;
+                              Sql.Clear;
+                              sql.add(' Select InptDate,DisDate,PatientId From InpatientReg');
+                              sql.add(' Where Discharged=''YES'' and DisDate>='+#39+DateEditX_FromDate.Text+#39);
+                              sql.add(' and DisDate<='+#39+DateEditX_ToDate.Text+#39);
+                              sql.add(' and InpatientId In(');
+                              sql.add('Select Distinct InPatientId ');
+                              sql.add(' From BillDetail Where (BillType=''IP'' or BillType=''A'') and PayType=''CREDIT'' And Service<>''IPREF'' ');
+                              sql.add(' and CancelStatus=''N'' ');
+                              sql.add(')');
+                              open;
+                              While not eof do
+                              begin
+                                   With Query_Void do
+                                   begin
+                                        Close;
+                                        Sql.Clear;
+                                        sql.add('Select Sum( Round((RD.Qty*RD.UnitPrice),5)-Round(((RD.Qty*RD.UnitPrice) * RD.Discount/100),5)) as NetTotal ');
+                                        sql.add(' From ReturnMaster RM,ReturnDetail RD where (RM.ReturnMasterId=RD.ReturnMasterId(+))');
+                                        sql.add(' and (RM.ST=''N'') and (RM.Credit1=1) and (RM.CustomerID < 9999900)');
+                                        sql.add(' and RM.ReturnDate>='+#39+Query_Process.fieldbyName('InptDate') .AsString+#39);
+                                        sql.add(' and RM.ReturnDate<='+#39+Query_Process.fieldbyName('DisDate') .AsString+#39);
+                                        sql.add(' and RM.CustomerId='+Query_Process.fieldbyName('PatientId') .AsString);
+                                     //   IF Query_Process.fieldbyName('DisDate') .AsString >=gs_SecManageDate Then
+                                        Begin
+                                             Sql.add(' And RM.CustomerID In(Select PatientID From InpatientReg Where PatientID=RM.CustomerId And ');
+                                             Sql.Add(' ((RM.Returndate>=Inptdate And (RM.Returndate<Disdate OR Trim(DisDate) Is Null))) ');
+                                             Sql.Add('    OR (RM.Returndate=DisDate And RM.Rettime<=(Select OutTime From InpatientDetail Where InPatientId=InpatientReg.InPatientId and DisBillDate=InpatientReg.DisDate))) ');
+                                        End;
+                                        Open;
+                                        lf_MDTotal:=lf_MDTotal-FieldByName('NetTotal').AsFloat;
+                                   end;
+                                   Next;
+                              end;
+                         end;
+                         Table_TestWiseBill.Append;
+                         Table_TestWiseBill.FieldByName('TestNameCode').AsString:='PHA001';
+                         Table_TestWiseBill.FieldByName('TestName').AsString:='PHARMACY ITEMS';
+                         Table_TestWiseBill.FieldByName('PayType').AsString:='CREDIT';
+                         Table_TestWiseBill.FieldByName('BillDate').AsString:='';
+                         Table_TestWiseBill.FieldByName('BillNo').AsString:='Inpatient Med.';
+                         Table_TestWiseBill.FieldByName('Qty').AsFloat:=0;
+                         Table_TestWiseBill.FieldByName('Amount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseBill.FieldByName('Discount').AsFloat:=lf_MDDiscount;
+                         Table_TestWiseBill.FieldByName('SubTotal').AsFloat:=lf_MDTotal-lf_MDDiscount;
+                         Table_TestWiseBill.FieldByName('VatAmt').AsFloat:=0;
+                         Table_TestWiseBill.FieldByName('NetAmount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseBill.FieldByName('UserName').AsString:='';
+                         Table_TestWiseBill.Post;
+                    End
+                    Else
+                    Begin
+                         with Query_Process do
+                         Begin
+                              Close;
+                              sql.Clear;
+                              sql.add(' select Sum(Round(SD.CurQty*SD.UnitRate,5))  as Total,');
+                              sql.add(' Sum(Round((SD.CurQty*SD.UnitRate) * SD.Discount/100,5)) as Discount');
+                              sql.add(' From SaleMaster SM,SaleDetail SD,ItemsList IL where (SM.SaleMasterId=SD.SaleMasterId)');
+                              sql.add(' and (SD.itemsid=IL.itemsid) and (SM.ST=''N'') and (SM.STATUS1=1) and (SD.CurQty > 0) And (SD.PatientId < 9999900) ');
+                              sql.add(' and SD.InpatientId In ( Select Distinct InpatientId From BillDetail ');
+                              sql.add(' Where (BillType=''IP'' or BillType=''A'') and PayType=''CREDIT'' and CancelStatus=''N'' and ');
+                              sql.add(' SubStr(BillNo,1,2)<>''TP'' and InpatientId In (Select InpatientId From InpatientReg where ');
+                              sql.add(' Discharged=''YES'' and DisDate >='+#39+DateEditX_FromDate.Text+#39);
+                              sql.add(' AND DisDate<='+#39+DateEditX_ToDate.Text+#39+'))');
+                              Open;
+                         End;
+
+                         lf_MDTotal:=Query_Process.FieldByName('Total').AsFloat-Query_Process.FieldByName('Discount').AsFloat;
+                         lf_MDDiscount:=0;;
+
+                         Table_TestWiseBill.Append;
+                         Table_TestWiseBill.FieldByName('TestNameCode').AsString:='PHA001';
+                         Table_TestWiseBill.FieldByName('TestName').AsString:='PHARMACY ITEMS';
+                         Table_TestWiseBill.FieldByName('PayType').AsString:='CREDIT';
+                         Table_TestWiseBill.FieldByName('BillDate').AsString:='';
+                         Table_TestWiseBill.FieldByName('BillNo').AsString:='Inpatient Med.';
+                         Table_TestWiseBill.FieldByName('Qty').AsFloat:=0;
+                         Table_TestWiseBill.FieldByName('Amount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseBill.FieldByName('Discount').AsFloat:=lf_MDDiscount;
+                         Table_TestWiseBill.FieldByName('SubTotal').AsFloat:=lf_MDTotal-lf_MDDiscount;
+                         Table_TestWiseBill.FieldByName('VatAmt').AsFloat:=0;
+                         Table_TestWiseBill.FieldByName('NetAmount').AsFloat:=lf_MDTotal;
+                         Table_TestWiseBill.FieldByName('UserName').AsString:='';
+                         Table_TestWiseBill.Post;
+                    End;
+               End;
+          End;
+     End;
+End;
+
+procedure TForm_DeptTestWiseReport.Cb_ReferalDepClick(Sender: TObject);
+begin
+     Query_Department.Close;
+     if Cb_ReferalDep.Checked=True then
+     Query_Department.SQL[1]:='where Dept_DepType=''C'''
+     else
+     Query_Department.SQL[1]:='where 1=1';
+     Query_Department.Open;
+end;
+
+procedure TForm_DeptTestWiseReport.Cb_TimeClick(Sender: TObject);
+begin
+     if Cb_Time.Checked then
+          GroupBox3.Enabled:=True
+     else
+          GroupBox3.Enabled:=False;
+end;
+
+procedure TForm_DeptTestWiseReport.CheckListBox_DepartmentClickCheck(
+  Sender: TObject);
+begin
+     GetPatientInfo(CheckListBox_Department.ItemIndex,0);
+end;
+
+end.

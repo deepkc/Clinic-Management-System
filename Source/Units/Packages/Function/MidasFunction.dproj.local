@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2011/11/13 17:07:00.277.dproj,C:\Users\midas\Documents\RAD Studio\Projects\Package1.dproj=D:\Package\Function\MidasFunction.dproj</Transaction>
+    <Transaction>2011/11/13 17:09:10.553.pas,D:\Package\Function\Unit1.pas=D:\Package\Function\Unit\Unit_Master.pas</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="-1" SortType="1"/>
+</BorlandProject>

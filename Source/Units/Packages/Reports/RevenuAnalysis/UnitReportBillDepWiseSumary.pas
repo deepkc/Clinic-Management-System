@@ -1,0 +1,226 @@
+unit UnitReportBillDepWiseSumary;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Qrctrls, QuickRpt, ExtCtrls, Db, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Grids, DBGrids, Fxn,DM;
+
+type
+  TFormReportBillDepWiseSumary = class(TForm)
+    QuickRep1: TQuickRep;
+    SummaryBand1: TQRBand;
+    QRExpr8: TQRExpr;
+    QRExpr9: TQRExpr;
+    ColumnHeaderBand1: TQRBand;
+    QRLabel15: TQRLabel;
+    QRSubDetail1: TQRSubDetail;
+    QueryDiscount: TOraQuery;
+    QueryDetail: TOraQuery;
+    DataSourceQueryMaster: TDataSource;
+    QueryDepartment: TOraQuery;
+    SummaryBand2: TQRBand;
+    QRLabel11: TQRLabel;
+    QueryUser: TOraQuery;
+    QRExpr2: TQRExpr;
+    QRExpr3: TQRExpr;
+    QRLabel6: TQRLabel;
+    QRDBText1: TQRDBText;
+    QueryDiscountDIS: TFloatField;
+    QueryTestName: TOraQuery;
+    DataSource1: TDataSource;
+    QueryDetailDEPID: TFloatField;
+    QueryDetailQTY: TFloatField;
+    QueryDetailAMOUNT: TFloatField;
+    QueryDetailTOT: TFloatField;
+    QueryDetailDEPNAME: TStringField;
+    QRLabel1: TQRLabel;
+    QRLabel5: TQRLabel;
+    QueryRefund1: TOraQuery;
+    QueryDeposit1: TOraQuery;
+    QueryDeposit1TOTAL: TFloatField;
+    QueryRefund1ETOTAL: TFloatField;
+    QRLabel12: TQRLabel;
+    QRExpr1: TQRExpr;
+    QueryRefund: TOraQuery;
+    QueryCancel: TOraQuery;
+    QueryCancelTOTAL: TFloatField;
+    QueryDeposit: TOraQuery;
+    FloatField2: TFloatField;
+    QRDBText19: TQRDBText;
+    QueryDetailDISCOUNT: TFloatField;
+    QRExpr16: TQRExpr;
+    QRLabel56: TQRLabel;
+    Query_RegAmount: TOraQuery;
+    TitleBand1: TQRBand;
+    QRLabelToday: TQRLabel;
+    QRLabelTo: TQRLabel;
+    QRLabel4: TQRLabel;
+    QRLabelFrom: TQRLabel;
+    QRLabel7: TQRLabel;
+    QRLabel20: TQRLabel;
+    QRLabel2: TQRLabel;
+    QuickRep3: TQuickRep;
+    QRBand5: TQRBand;
+    QRLabel35: TQRLabel;
+    QRLabel36: TQRLabel;
+    QRLabel37: TQRLabel;
+    QRLabel38: TQRLabel;
+    QRLabel39: TQRLabel;
+    QRLabel40: TQRLabel;
+    QRLabel41: TQRLabel;
+    QRLabel42: TQRLabel;
+    QRLabel43: TQRLabel;
+    QRBand6: TQRBand;
+    QRExpr11: TQRExpr;
+    QRExpr12: TQRExpr;
+    QRLabel44: TQRLabel;
+    QRExpr13: TQRExpr;
+    QRBand7: TQRBand;
+    QRLabel45: TQRLabel;
+    QRLabel46: TQRLabel;
+    QRSubDetail3: TQRSubDetail;
+    QRDBText12: TQRDBText;
+    QRDBText13: TQRDBText;
+    QRBand8: TQRBand;
+    QRLabel47: TQRLabel;
+    QRExpr14: TQRExpr;
+    QRLabel48: TQRLabel;
+    QRDBText14: TQRDBText;
+    QRLabel49: TQRLabel;
+    QRSysData3: TQRSysData;
+    QRLabel50: TQRLabel;
+    QRLabel51: TQRLabel;
+    QRDBText15: TQRDBText;
+    QRDBText16: TQRDBText;
+    QRLabel52: TQRLabel;
+    QRExpr15: TQRExpr;
+    QRLabel53: TQRLabel;
+    QRDBText17: TQRDBText;
+    QRGroup3: TQRGroup;
+    QRLabel8: TQRLabel;
+    QRLabel9: TQRLabel;
+    QRLabel58: TQRLabel;
+    QRDBText21: TQRDBText;
+    QRExpr18: TQRExpr;
+    QRExpr19: TQRExpr;
+    QRLabel14: TQRLabel;
+    QRLabel16: TQRLabel;
+    QRLabel17: TQRLabel;
+    QRLabel18: TQRLabel;
+    QRLabel19: TQRLabel;
+    QRDBText3: TQRDBText;
+    QRDBText6: TQRDBText;
+    QRDBText7: TQRDBText;
+    QRExpr4: TQRExpr;
+    QRExpr5: TQRExpr;
+    QRExpr6: TQRExpr;
+    Query1: TOraQuery;
+    FloatField3: TFloatField;
+    QRShape1: TQRShape;
+    QRLabel10: TQRLabel;
+    QRExpr7: TQRExpr;
+    QueryRefundREFAMOUNT: TFloatField;
+    QRLabel13: TQRLabel;
+    QRSysData1: TQRSysData;
+    QRLabel3: TQRLabel;
+    QRLabel28: TQRLabel;
+    QRLabel29: TQRLabel;
+    QRLabel21: TQRLabel;
+    QRLabel22: TQRLabel;
+    QRExpr10: TQRExpr;
+    QRDBText2: TQRDBText;
+    QRDBText8: TQRDBText;
+    QRExpr17: TQRExpr;
+    QRExpr20: TQRExpr;
+    QRExpr21: TQRExpr;
+    QRLabel23: TQRLabel;
+    QRExpr22: TQRExpr;
+    QRLabel24: TQRLabel;
+    QRLabel25: TQRLabel;
+    QRExpr23: TQRExpr;
+    QRExpr24: TQRExpr;
+    QRExpr25: TQRExpr;
+    QRExpr26: TQRExpr;
+    QRLabel26: TQRLabel;
+    QRLabel27: TQRLabel;
+    QRLabel30: TQRLabel;
+    QRLabelSno: TQRLabel;
+    QRLabel31: TQRLabel;
+    QRExpr27: TQRExpr;
+    QRLabel32: TQRLabel;
+    Query_CommunityRefund: TOraQuery;
+    Query_CommunityRefundREFUNDTOTAL: TFloatField;
+    QRLabel33: TQRLabel;
+    QRExpr28: TQRExpr;
+    QRLabel34: TQRLabel;
+    QRExpr29: TQRExpr;
+    QRLabel55: TQRLabel;
+    QRExpr30: TQRExpr;
+    QRLabel57: TQRLabel;
+    Query_OPDeposit: TOraQuery;
+    Query_TempCollection: TQuery;
+    procedure QRLabel8Print(sender: TObject; var Value: String);
+    procedure QRLabel9Print(sender: TObject; var Value: String);
+    procedure QRLabel14Print(sender: TObject; var Value: String);
+    procedure QRLabel16Print(sender: TObject; var Value: String);
+    procedure Query_TempCollectionAfterScroll(DataSet: TDataSet);
+    procedure Query_TempCollectionBeforeScroll(DataSet: TDataSet);
+    procedure QuickRep1EndPage(Sender: TCustomQuickRep);
+  private
+    { Private declarations }
+  public
+      pi_Sno:Integer;
+    { Public declarations }
+  end;
+
+var
+  FormReportBillDepWiseSumary: TFormReportBillDepWiseSumary;
+
+implementation
+
+{$R *.DFM}
+
+procedure TFormReportBillDepWiseSumary.QRLabel8Print(sender: TObject;
+  var Value: String);
+begin
+   Value:=gs_HospitalName;
+end;
+
+procedure TFormReportBillDepWiseSumary.QRLabel9Print(sender: TObject;
+  var Value: String);
+begin
+   value:=gs_HosSloganTitle;
+end;
+
+procedure TFormReportBillDepWiseSumary.QRLabel14Print(sender: TObject;
+  var Value: String);
+begin
+   Value:=gs_HospitalAddress;
+end;
+
+procedure TFormReportBillDepWiseSumary.QRLabel16Print(sender: TObject;
+  var Value: String);
+begin
+   Value:=gs_HospitalPhoneNumber;
+end;
+
+procedure TFormReportBillDepWiseSumary.Query_TempCollectionAfterScroll(
+  DataSet: TDataSet);
+begin
+   Inc(pi_Sno);
+end;
+
+procedure TFormReportBillDepWiseSumary.Query_TempCollectionBeforeScroll(
+  DataSet: TDataSet);
+begin
+   QRLabelSno.Caption:=IntToStr(pi_Sno);
+end;
+
+procedure TFormReportBillDepWiseSumary.QuickRep1EndPage(
+  Sender: TCustomQuickRep);
+begin
+   pi_Sno:=1;
+end;
+
+end.

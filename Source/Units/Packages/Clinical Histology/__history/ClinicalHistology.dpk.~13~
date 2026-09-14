@@ -1,0 +1,39 @@
+package ClinicalHistology;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  Global,
+  MidasFunction,
+  ClinicalPathology,
+  vcldbx;
+
+contains
+  Unit_DefaultHistoSetup in 'Setup\Unit_DefaultHistoSetup.pas' {Form_DefaultSetup},
+  Unit_ClinicalPathFindingCentralNew in 'Unit_ClinicalPathFindingCentralNew.pas' {Frame_ClinicalPathFindingCentralNew: TFrame},
+  Unit_ClinicalPathFindingReport in 'Unit_ClinicalPathFindingReport.pas' {Form_Report};
+
+end.

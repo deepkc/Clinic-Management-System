@@ -1,0 +1,53 @@
+package Billing_D;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+{$DEFINE DEBUG}
+
+requires
+  rtl,
+  vcl,
+  dbrtl,
+  vcldb,
+  bdertl,
+  VclSmp,
+  dex,
+  Global,
+  BarcodeD10,
+  MidasFunction;
+
+contains
+  Unit_BillingParent in 'Unit_BillingParent.pas' {Form_BillingParent},
+  Unit_BillListFrame in 'Unit_BillListFrame.pas' {Frame_BillList: TFrame},
+  Unit_IndoorPatientList in 'Unit_IndoorPatientList.pas' {Frame_IndoorPatientList: TFrame},
+  Unit_OutdoorPatientList in 'Unit_OutdoorPatientList.pas' {Frame_OutdoorPatientList: TFrame},
+  Unit_QrBill in 'Unit_QrBill.pas' {Form_QRBill},
+  Unit_TestList in 'Unit_TestList.pas' {Form_Departmentlist},
+  Unit_CustomerMonitor in 'Unit_CustomerMonitor.pas' {Form_CustomerMonitor},
+  Unit_BillingFrame in 'Unit_BillingFrame.pas' {Frame_Billing: TFrame},
+  Unit_Deposit in 'Unit_Deposit.pas' {Form_Deposit},
+  Unit_QrDepositSlip in 'Unit_QrDepositSlip.pas' {Form_QrDepositSlip};
+
+end.
+

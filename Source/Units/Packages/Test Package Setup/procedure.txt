@@ -1,0 +1,102 @@
+Procedure SaveTestPackage(SAMPLESOURCEID, DATAPOSTBY,DISPLAYORDER: Integer; TESTPRICE, VAT, TESTPRICEFOREIGNER, TAXFRG: Double;TESTPACKAGENAME,TESTPACKAGETITLE, TNCATEGORYCODE, REMARKS,
+ DATAPOSTDATE, DATAPOSTTIME, HIDETESTINPATIENTLIST, ISVATABLE, ISEDITABLE, ISACTIVE, ISDISCOUNTABLE, ISPACKAGETEST, ISFRACTIONABLEITEM, WORKLIST: string);
+
+Procedure UpdateTestPackage(TESTPACKAGEID,SAMPLESOURCEID, DATAPOSTBY,DISPLAYORDER: Integer; TESTPRICE, VAT, TESTPRICEFOREIGNER, TAXFRG: Double;TESTPACKAGENAME,TESTPACKAGETITLE,TNCATEGORYCODE, REMARKS,
+ DATAPOSTDATE, DATAPOSTTIME, HIDETESTINPATIENTLIST, ISVATABLE, ISEDITABLE, ISACTIVE, ISDISCOUNTABLE, ISPACKAGETEST, ISFRACTIONABLEITEM, WORKLIST: string);
+
+Procedure SaveTestPackageDetail(TestPackageId,TestNameId:integer;DataPostBy,DataPostDate,DataPostTime,IsActive,Remarks,DisplayOrder:string);
+
+Procedure DeleteTestPackgeDetail(TestPackageId,TestNameId:Integer);
+
+
+
+Procedure SaveTestPackage(SAMPLESOURCEID, DATAPOSTBY,DISPLAYORDER: Integer; TESTPRICE, VAT, TESTPRICEFOREIGNER, TAXFRG: Double;TESTPACKAGENAME,TESTPACKAGETITLE, TNCATEGORYCODE, REMARKS,
+ DATAPOSTDATE, DATAPOSTTIME, HIDETESTINPATIENTLIST, ISVATABLE, ISEDITABLE, ISACTIVE, ISDISCOUNTABLE, ISPACKAGETEST, ISFRACTIONABLEITEM, WORKLIST: string);
+     Var
+     Qry: TQuery;
+begin
+     Qry := TQuery.Create(nil);
+     With Qry do
+     Begin
+          //DIAGNOSISID:=GetMaxId('localdisease','localdiseaseid');
+          Close;
+          DatabaseName := gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add('Insert InTo TestPackage(TESTPACKAGEID,SAMPLESOURCEID, DATAPOSTBY,DISPLAYORDER,TESTPRICE, VAT, TESTPRICEFOREIGNER, TAXFRG,TESTPACKAGENAME,TESTPACKAGETITLE,');
+          SQL.Add(' TNCATEGORYCODE, REMARKS, DATAPOSTDATE, DATAPOSTTIME, HIDETESTINPATIENTLIST, ISVATABLE, ISEDITABLE, ISACTIVE,ISDISCOUNTABLE,');
+          SQL.Add(' ISPACKAGETEST, ISFRACTIONABLEITEM, WORKLIST)');
+          SQL.Add('values('+IntToStr(GetMaxId('TestPackage','TestPackageid'))+','+IntToStr(SAMPLESOURCEID)+','+IntToStr(DATAPOSTBY));
+          SQL.Add(','+IntToStr(DISPLAYORDER)+','+FloatToStr(TESTPRICE)+','+FloatToStr(VAT)+','+FloatToStr(TESTPRICEFOREIGNER)+','+FloatToStr(TAXFRG));
+          SQL.Add(','+#39+TESTPACKAGENAME+#39+','+#39+TESTPACKAGETITLE+#39+','+#39+TNCATEGORYCODE+#39+','+#39+REMARKS+#39+','+#39+DATAPOSTDATE+#39+','+#39+DATAPOSTTIME+#39+','+#39+HIDETESTINPATIENTLIST+#39);
+          SQL.add(','+#39+ISVATABLE+#39+','+#39+ISEDITABLE+#39+','+#39+ISACTIVE+#39+','+#39+ISDISCOUNTABLE+#39+','+#39+ISPACKAGETEST+#39);
+          SQL.Add(','+#39+ISFRACTIONABLEITEM+#39+','+#39+WORKLIST+#39);
+          SQL.Add(')');
+          SQL.SaveToFile('c:\testpackge.txt');
+          ExecSQL;
+     end;
+end;
+
+
+Procedure UpdateTestPackage(TESTPACKAGEID,SAMPLESOURCEID, DATAPOSTBY,DISPLAYORDER: integer; TESTPRICE, VAT, TESTPRICEFOREIGNER, TAXFRG: Double;TESTPACKAGENAME,TESTPACKAGETITLE, TNCATEGORYCODE, REMARKS,
+ DATAPOSTDATE, DATAPOSTTIME, HIDETESTINPATIENTLIST, ISVATABLE, ISEDITABLE, ISACTIVE, ISDISCOUNTABLE, ISPACKAGETEST, ISFRACTIONABLEITEM, WORKLIST: string);
+ Var
+     Qry: TQuery;
+Begin
+     Qry := TQuery.Create(nil);
+     With Qry do
+     Begin
+          Close;
+          DatabaseName := gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add('UPDATE TestPackage Set SAMPLESOURCEID='+INTTOSTR(SAMPLESOURCEID)+',DATAPOSTBY='+INTTOSTR(DATAPOSTBY)+',DISPLAYORDER='+INTTOSTR(DISPLAYORDER));
+          SQL.Add(',TESTPRICE='+FloatToStr(TESTPRICE)+', VAT='+FloatToStr(VAT)+', TESTPRICEFOREIGNER='+FloatToStr(TESTPRICEFOREIGNER)+', TAXFRG='+FloatToStr(TAXFRG));
+          SQL.Add(',TESTPACKAGENAME='+#39+TESTPACKAGENAME+#39+',TNCATEGORYCODE='+#39+TNCATEGORYCODE+#39+',REMARKS='+#39+REMARKS+#39+', DATAPOSTDATE='+#39+DATAPOSTDATE+#39+',DATAPOSTTIME='+#39+DATAPOSTTIME+#39);
+          SQL.Add(',HIDETESTINPATIENTLIST='+#39+HIDETESTINPATIENTLIST+#39+', ISVATABLE='+#39+ISVATABLE+#39+',ISEDITABLE='+#39+ISVATABLE+#39+',ISACTIVE='+#39+ISVATABLE+#39);
+          SQL.Add(  ',ISDISCOUNTABLE='+#39+ISDISCOUNTABLE+#39+', ISPACKAGETEST='+#39+ISPACKAGETEST+#39+',ISFRACTIONABLEITEM='+#39+ISFRACTIONABLEITEM+#39+',WORKLIST='+#39+WORKLIST+#39);
+          SQL.Add(',TESTPACKAGETITLE='+#39+TESTPACKAGETITLE+#39);
+          SQL.Add(' where TESTPACKAGEID='+IntToStr(TESTPACKAGEID));
+          ExecSQL;
+     End;
+     Qry.Free;
+End;
+
+
+
+Procedure SaveTestPackageDetail(TestPackageId,TestNameId:integer;DataPostBy,DataPostDate,DataPostTime,IsActive,Remarks,DisplayOrder:string);
+Var
+     Qry: TQuery;
+Begin
+     Qry := TQuery.Create(nil);
+     With Qry do
+     Begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add('Insert InTo TestPackageDetail(TestPackageDetailId,TestPackageId,TestNameId,');
+          SQL.Add( 'DataPostBy,DataPostDate,DataPostTime,IsActive,Remarks,DisplayOrder)') ;
+          SQL.Add('values('+IntToStr(GetMaxId('TestPackageDetail','TestPackageDetailId'))+','+IntToStr(TestPackageId)+','+IntToStr(TestNameId));
+          SQL.Add(','+#39+DataPostBy+#39+','+#39+DataPostDate+#39+','+#39+DataPostTime+#39+','+#39+IsActive+#39+','+#39+Remarks+#39+','+#39+DisplayOrder+#39);
+          SQL.Add(')');
+          ExecSQL;
+     End;
+     Qry.Free;
+End;
+
+
+
+
+Procedure DeleteTestPackgeDetail(TestPackageId,TestNameId:Integer);
+Var
+     Qry: TQuery;
+Begin
+     Qry := TQuery.Create(nil);
+     With Qry do
+     Begin
+          Close;
+          DatabaseName:=gs_DatabaseName;
+          SQL.Clear;
+          SQL.Add('Delete from TestPackageDetail Where TestPackageId='+IntToStr(TestPackageId)+' and TestNameId='+IntToStr(TestNameId));
+          ExecSQL;
+     End;
+     Qry.Free;
+End;

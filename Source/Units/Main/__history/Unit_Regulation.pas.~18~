@@ -1,0 +1,349 @@
+unit Unit_Regulation;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, ExtCtrls, CheckLst, DB, MemDS, DBAccess, Ora,DM,Unit_Master,Fxn;
+
+type
+  TForm_Regulation = class(TForm)
+    pnl_top: TPanel;
+    pnl_body: TPanel;
+    btn_Save: TBitBtn;
+    btnBB_Close: TBitBtn;
+    grp_reportfooter: TGroupBox;
+    rb_Setup: TRadioButton;
+    rb_checkbox: TRadioButton;
+    rb_user: TRadioButton;
+    lbl_setup: TLabel;
+    edt1: TEdit;
+    lbl1: TLabel;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    edt2: TEdit;
+    lbl4: TLabel;
+    edt3: TEdit;
+    lbl5: TLabel;
+    lbl6: TLabel;
+    chklst_checkbox: TCheckListBox;
+    edt4: TEdit;
+    edt5: TEdit;
+    edt6: TEdit;
+    lbl7: TLabel;
+    lbl8: TLabel;
+    lbl9: TLabel;
+    OraQuery_RepFooter: TOraQuery;
+    grp_AutoCal: TGroupBox;
+    chk_AutoCal: TCheckBox;
+    lbl_AutoCal: TLabel;
+    lbl_note: TLabel;
+    OraQuery_Cal: TOraQuery;
+    btn_MasterReportPrevilage: TBitBtn;
+    BitBtn_Activate: TBitBtn;
+    procedure FormShow(Sender: TObject);
+    procedure btnBB_CloseClick(Sender: TObject);
+    procedure btn_SaveClick(Sender: TObject);
+    procedure rb_SetupClick(Sender: TObject);
+    procedure rb_checkboxClick(Sender: TObject);
+    procedure rb_userClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure grp_AutoCalClick(Sender: TObject);
+    procedure chk_AutoCalClick(Sender: TObject);
+    procedure btn_MasterReportPrevilageClick(Sender: TObject);
+    procedure BitBtn_ActivateClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    pb_new:Boolean;
+    pb_new1:Boolean;
+    { Public declarations }
+  end;
+
+var
+  Form_Regulation: TForm_Regulation;
+
+implementation
+
+uses Unit_MasterHospitalReport,Unit_SystemLicense,Unit_MasterKeyLicense;
+
+{$R *.dfm}
+
+procedure TForm_Regulation.BitBtn_ActivateClick(Sender: TObject);
+begin
+     gs_CalledFromMasterKeyAuthe:='MASTERKEY';
+     try
+          Form_MasterKeyLicense:=TForm_MasterKeyLicense.Create(nil);
+          Form_MasterKeyLicense.Label1.caption:='Please Provide Master Key To Continue.';
+          Form_MasterKeyLicense.showmodal;
+     finally
+          Form_MasterKeyLicense.free;
+     end;
+
+     if gb_MasterkeyAuthe=True then
+     begin
+          gb_LicenseExpiredMidas:=False;
+          gb_MasterkeyAuthe:=false;
+          try
+               Form_SystemLicense:=TForm_SystemLicense.Create(nil);
+               Form_SystemLicense.ShowModal;
+          finally
+               Form_SystemLicense.Free;
+          end;
+     end
+     else
+     begin
+          ShowMessage('Sorry !! Try Again ');
+     end;
+end;
+
+procedure TForm_Regulation.btnBB_CloseClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TForm_Regulation.btn_MasterReportPrevilageClick(Sender: TObject);
+begin
+     try
+          Form_HospitalMasterSetup:=TForm_HospitalMasterSetup.Create(nil);
+          Form_HospitalMasterSetup.ShowModal;
+     finally
+          Form_HospitalMasterSetup.Free;
+     end;
+end;
+
+procedure TForm_Regulation.btn_SaveClick(Sender: TObject);
+var
+  QRy_save :TOraQuery;
+  ls_regulation:string;
+  li_regID:integer;
+  ls_autoCal:string;
+begin
+
+    //Report Footer Value Set//
+    if rb_Setup.Checked then
+      ls_regulation:='S'
+    else if rb_checkbox.Checked then
+      ls_regulation:='C'
+    else if rb_user.Checked then
+      ls_regulation:='U';
+   //***********************//
+
+   //Autocalulation Value Set//
+   if chk_AutoCal.Checked then
+      ls_autoCal:='Y'
+   else
+      ls_autoCal:='N';
+   //************************//
+
+   //Data Store Report Footer//
+    if pb_new then
+    begin
+      try
+      QRy_save:=TOraQuery.Create(nil);
+
+      li_regID:=GetMaxId('LARE_LabRegulation','LARE_RegulationID');
+      with QRy_save do      //For Report Footer Regulation
+      begin
+         close;
+         Session:=DM_Hospital.DB;
+         sql.Clear;
+         sql.Add('insert into LARE_LabRegulation (LARE_RegulationID,LARE_RegulationType,LARE_Regulation)');
+         SQL.Add(' values ('+inttostr(li_regID));
+         sql.Add(',''Report Footer''');
+         sql.Add(','+quotedstr(ls_regulation));
+         sql.Add(')');
+         ExecSQL;
+      end;
+      finally
+         QRy_save.free;
+      end;
+    end
+    else
+    begin
+      try
+      QRy_save:=TOraQuery.Create(nil);
+      with QRy_save do      //For Report Footer Regulation
+      begin
+         close;
+         Session:=DM_Hospital.DB;
+         sql.Clear;
+         sql.Add('Update LARE_LabRegulation set LARE_Regulation='+quotedstr(ls_regulation));
+         SQL.Add(' where LARE_Regulationtype=''Report Footer''');
+         ExecSQL;
+      end;
+      finally
+         QRy_save.free;
+      end;
+    end;
+    //*****************************************************//
+
+   //Data Store Auto Calculation//
+    if pb_new1 then
+    begin
+      try
+      QRy_save:=TOraQuery.Create(nil);
+
+      li_regID:=GetMaxId('LARE_LabRegulation','LARE_RegulationID');
+      with QRy_save do      //For Auto Calculation
+      begin
+         close;
+         Session:=DM_Hospital.DB;
+         sql.Clear;
+         sql.Add('insert into LARE_LabRegulation (LARE_RegulationID,LARE_RegulationType,LARE_Regulation)');
+         SQL.Add(' values ('+inttostr(li_regID));
+         sql.Add(',''Auto Calculation''');
+         sql.Add(','+quotedstr(ls_autoCal));
+         sql.Add(')');
+         ExecSQL;
+         ShowDoneMessage;
+      end;
+      finally
+         QRy_save.free;
+      end;
+    end
+    else
+    begin
+      try
+      QRy_save:=TOraQuery.Create(nil);
+      with QRy_save do      //For Auto Calculation
+      begin
+         close;
+         Session:=DM_Hospital.DB;
+         sql.Clear;
+         sql.Add('Update LARE_LabRegulation set LARE_Regulation='+quotedstr(ls_autoCal));
+         SQL.Add(' where LARE_Regulationtype=''Auto Calculation''');
+         ExecSQL;
+         ShowDoneMessage;
+      end;
+      finally
+         QRy_save.free;
+      end;
+    end;
+
+    //Report Footer Globally Set//
+    if rb_Setup.Checked then
+      gs_ReportFooterRegulation:='S'
+    else if rb_checkbox.Checked then
+      gs_ReportFooterRegulation:='C'
+    else if rb_user.Checked then
+      gs_ReportFooterRegulation:='U';
+   //***************************//
+
+   //Autocalulation Globally Set//
+   if chk_AutoCal.Checked then
+      gb_AutoCalculate:=true
+   else
+      gb_AutoCalculate:=false;
+   //**************************//
+
+end;
+
+procedure TForm_Regulation.chk_AutoCalClick(Sender: TObject);
+begin
+    if chk_AutoCal.Checked=true then
+    begin
+       chk_AutoCal.Caption:='Active';
+       lbl_AutoCal.Font.Style:=[fsBold];
+    end
+    else
+    begin
+       chk_AutoCal.Caption:='Inactive';
+       lbl_AutoCal.Font.Style:=[];
+    end;
+end;
+
+procedure TForm_Regulation.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+if Key=VK_ESCAPE then
+close;
+end;
+
+procedure TForm_Regulation.FormShow(Sender: TObject);
+begin
+    with OraQuery_RepFooter do
+    begin
+       Close;
+       Session:=DM_Hospital.DB;
+       SQL.clear;
+       sql.Add('select * from LARE_LabRegulation where LARE_RegulationType=''Report Footer''');
+       Open;
+    end;
+
+    if OraQuery_RepFooter.RecordCount>0 then
+    begin
+       pb_new:=False;
+       if OraQuery_RepFooter.FieldByName('LARE_Regulation').AsString='S' then
+          rb_Setup.Checked:=True
+       else if OraQuery_RepFooter.FieldByName('LARE_Regulation').AsString='C' then
+          rb_checkbox.Checked:=True
+       else if OraQuery_RepFooter.FieldByName('LARE_Regulation').AsString='U' then
+          rb_user.Checked:=True;
+    end    //'S' -> Setup Wise,  C -> Checkbox wise,  'U' -> UserWise
+    else
+    begin
+       pb_new:=True;
+       rb_Setup.Checked:=True;
+       rb_Setup.SetFocus;
+    end;
+
+    with OraQuery_Cal do
+    begin
+       Close;
+       Session:=DM_Hospital.DB;
+       SQL.clear;
+       sql.Add('select * from LARE_LabRegulation where LARE_RegulationType=''Auto Calculation''');
+       Open;
+    end;
+
+    if OraQuery_Cal.RecordCount>0 then
+    begin
+       pb_new:=False;
+       if OraQuery_Cal.FieldByName('LARE_Regulation').AsString='Y' then
+          chk_AutoCal.Checked:=True
+       else
+          chk_AutoCal.Checked:=False;
+    end    //'S' -> Setup Wise,  C -> Checkbox wise,  'U' -> UserWise
+    else
+    begin
+       pb_new1:=True;
+    end;
+    if gi_UserID=1 then
+          Btn_MasterReportPrevilage.Visible:=True
+    else
+          Btn_MasterReportPrevilage.Visible:=False;
+
+    if gi_UserID=1 then
+    BitBtn_Activate.Visible:=True;
+end;
+
+procedure TForm_Regulation.grp_AutoCalClick(Sender: TObject);
+begin
+  rb_Setup.Font.Style:=[fsBold];
+  rb_checkbox.Font.Style:=[];
+  rb_user.Font.Style:=[];
+end;
+
+procedure TForm_Regulation.rb_checkboxClick(Sender: TObject);
+begin
+  rb_checkbox.Font.Style:=[fsBold];
+  rb_user.Font.Style:=[];
+  rb_Setup.Font.Style:=[];
+end;
+
+procedure TForm_Regulation.rb_SetupClick(Sender: TObject);
+begin
+  rb_Setup.Font.Style:=[fsBold];
+  rb_checkbox.Font.Style:=[];
+  rb_user.Font.Style:=[];
+end;
+
+procedure TForm_Regulation.rb_userClick(Sender: TObject);
+begin
+  rb_user.Font.Style:=[fsBold];
+  rb_checkbox.Font.Style:=[];
+  rb_Setup.Font.Style:=[];
+end;
+
+end.

@@ -1,0 +1,134 @@
+unit Unit_ModuleSetup;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, Grids, StdCtrls, Buttons, DBGrids, DB, DBTables,fxn,unit_master;
+
+type
+  TForm_ModuleSetup = class(TForm)
+    DBGrid1: TDBGrid;
+    Panel_Main: TPanel;
+    DS_Module: TDataSource;
+    Query_Module: TQuery;
+    Edit_GroupName: TEdit;
+    StaticText1: TStaticText;
+    Query_Group: TQuery;
+    Panel2: TPanel;
+    BitBtn1: TBitBtn;
+    BB_Close: TBitBtn;
+    BB_New: TBitBtn;
+    procedure BtnSaveClick(Sender: TObject);
+    procedure BtnCancelClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure BtnNewClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure BB_NewClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+  pb_isNew:Boolean;
+  pi_moduleid:integer;
+    { Public declarations }
+  end;
+
+var
+  Form_ModuleSetup: TForm_ModuleSetup;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_ModuleSetup.BB_NewClick(Sender: TObject);
+begin
+        pb_isNew:=true;
+         Edit_GroupName.Clear;
+end;
+
+procedure TForm_ModuleSetup.BtnCancelClick(Sender: TObject);
+begin
+    close;
+end;
+
+procedure TForm_ModuleSetup.BtnNewClick(Sender: TObject);
+begin
+    pb_isNew:=true;
+    Edit_GroupName.Clear;
+end;
+
+procedure TForm_ModuleSetup.BtnSaveClick(Sender: TObject);
+begin
+     if Edit_GroupName.Text='' then
+       begin
+               MessageDlg('Missing Name', mtInformation, [mbOK], 0);
+               exit;
+       end;
+
+     if pb_isNew=True then
+     begin
+          with Query_Group do
+          begin
+
+               close;
+               DatabaseName:=gs_DatabaseName;
+               sql.clear;
+               pi_moduleid:=GetMaxId('Module','Moduleid');
+               sql.Add('Insert into Module(Moduleid,ModuleName)');
+               sql.Add( 'Values ('+IntToStr(pi_moduleid)+','+#39+Edit_GroupName.Text+#39);
+               sql.Add(')');
+               ExecSQL;
+               ShowDoneMessage;
+          end;
+     end
+     else
+     begin
+          with Query_Group do
+          begin
+               close;
+               sql.Clear;
+               DatabaseName:=gs_DatabaseName;
+               sql.Add('Update Module set Modulename='+#39+Edit_GroupName.Text+#39);
+               sql.Add('where Moduleid='+IntToStr(pi_moduleid));
+               execsql;
+               ShowDoneMessage;
+          end;
+     end;
+     with Query_Module do
+      begin
+           close;
+           Databasename:=gs_DatabaseName;
+           open;
+      end;
+      pb_isNew:=true;
+      Edit_GroupName.Clear;
+
+end;
+
+procedure TForm_ModuleSetup.DBGrid1DblClick(Sender: TObject);
+begin
+     pb_isNew:=false;
+     pi_moduleid:=Query_Module.FieldByName('Moduleid').AsInteger;
+     Edit_GroupName.text:= Query_Module.FieldByName('ModuleName').asstring;
+
+end;
+
+procedure TForm_ModuleSetup.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+     if key=#27 then
+     close;
+end;
+
+procedure TForm_ModuleSetup.FormShow(Sender: TObject);
+begin
+     pb_isNew:=true;
+      with Query_Module do
+      begin
+           close;
+           Databasename:=gs_DatabaseName;
+           open;
+      end;
+end;
+
+end.

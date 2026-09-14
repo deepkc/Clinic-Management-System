@@ -1,0 +1,1006 @@
+unit Unit_QRDFDoctorPartDetail;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ExtCtrls, QuickRpt, Qrctrls, Db, DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, Grids, DBGrids, Fxn;
+
+type
+  TForm_QRDFDoctorPartDetail = class(TForm)
+    QR_DFDoctorPartOP: TQuickRep;
+    TitleBand1: TQRBand;
+    ColumnHeaderBand1: TQRBand;
+    QRGroupHeader: TQRGroup;
+    QRBandFooter1: TQRBand;
+    QRLabel1: TQRLabel;
+    QRLabelAdd: TQRLabel;
+    QRLabel6: TQRLabel;
+    QRLabel9: TQRLabel;
+    QRLabel10: TQRLabel;
+    QRLabel11: TQRLabel;
+    QRLabel13: TQRLabel;
+    QR_DFDoctorPartIP: TQuickRep;
+    QRBand1: TQRBand;
+    QRLabel19: TQRLabel;
+    QRLabelAddIPD: TQRLabel;
+    QRBand2: TQRBand;
+    QRLabel26: TQRLabel;
+    QRLabel27: TQRLabel;
+    QRLabel30: TQRLabel;
+    QRLabel31: TQRLabel;
+    QRLabel32: TQRLabel;
+    QRGroup2: TQRGroup;
+    QRBandOuter: TQRBand;
+    QRLabel34: TQRLabel;
+    QRExpr1: TQRExpr;
+    QRGroup3: TQRGroup;
+    QRBandFooter2: TQRBand;
+    QRExpr18: TQRExpr;
+    QRExpr3: TQRExpr;
+    QRLabel8: TQRLabel;
+    QRExpr4: TQRExpr;
+    QRLabel36: TQRLabel;
+    QRExpr5: TQRExpr;
+    DetailBand1: TQRBand;
+    QRDBText1: TQRDBText;
+    QRDBText3: TQRDBText;
+    QRDBText4: TQRDBText;
+    QRDBText5: TQRDBText;
+    QRDBText6: TQRDBText;
+    QRLabel33: TQRLabel;
+    QRDBText7: TQRDBText;
+    QRLabelTo: TQRLabel;
+    QRLabel4: TQRLabel;
+    QRLabelFrom: TQRLabel;
+    QRLabel7: TQRLabel;
+    QRLabelReportTitle: TQRLabel;
+    QRLabel2: TQRLabel;
+    QRLabelPrintDate: TQRLabel;
+    QRLabelPrintTime: TQRLabel;
+    QRShape1: TQRShape;
+    QRLabel14: TQRLabel;
+    QRShape2: TQRShape;
+    QRLabelToIPD: TQRLabel;
+    QRLabel15: TQRLabel;
+    QRLabelFromIPD: TQRLabel;
+    QRLabel17: TQRLabel;
+    QRLabelReportTitleIPD: TQRLabel;
+    QRLabel21: TQRLabel;
+    QRLabelPrintDateIPD: TQRLabel;
+    QRLabelPrintTimeIPD: TQRLabel;
+    DetailBand2: TQRBand;
+    QRGroup4: TQRGroup;
+    QRBandInner: TQRBand;
+    QRExpr2: TQRExpr;
+    QRExpr7: TQRExpr;
+    QRExpr8: TQRExpr;
+    QRDBText2: TQRDBText;
+    QRDBText8: TQRDBText;
+    QRDBText9: TQRDBText;
+    QRDBText10: TQRDBText;
+    QRDBText11: TQRDBText;
+    QRExpr9: TQRExpr;
+    QRExpr10: TQRExpr;
+    QRLabel18: TQRLabel;
+    QRExpr11: TQRExpr;
+    SummaryBand2: TQRBand;
+    QRLabel20: TQRLabel;
+    QRExpr12: TQRExpr;
+    QR_DFDoctorPartOPIP: TQuickRep;
+    QRBand3: TQRBand;
+    QRLabel22: TQRLabel;
+    QRLabel23: TQRLabel;
+    QRLabel37: TQRLabel;
+    QRBand5: TQRBand;
+    QRLabel38: TQRLabel;
+    QRLabel40: TQRLabel;
+    QRLabel41: TQRLabel;
+    QRLabel42: TQRLabel;
+    QRLabel43: TQRLabel;
+    QRLabel44: TQRLabel;
+    QRLabel45: TQRLabel;
+    QRLabel46: TQRLabel;
+    QRLabel47: TQRLabel;
+    QRLabel48: TQRLabel;
+    QRShape3: TQRShape;
+    QRLabel49: TQRLabel;
+    QRLabel50: TQRLabel;
+    QRLabel51: TQRLabel;
+    QRLabel52: TQRLabel;
+    QRLabel53: TQRLabel;
+    QRLabel54: TQRLabel;
+    QRLabel55: TQRLabel;
+    QRLabel56: TQRLabel;
+    QRGroup5: TQRGroup;
+    QRExpr13: TQRExpr;
+    QRExpr14: TQRExpr;
+    QRBand6: TQRBand;
+    QRLabel57: TQRLabel;
+    QRExpr15: TQRExpr;
+    QRBand7: TQRBand;
+    QRSysData3: TQRSysData;
+    QRBand8: TQRBand;
+    QRDBText13: TQRDBText;
+    QRDBText14: TQRDBText;
+    QRDBText15: TQRDBText;
+    QRDBText16: TQRDBText;
+    QRDBText17: TQRDBText;
+    QRDBText18: TQRDBText;
+    QRGroup6: TQRGroup;
+    QRExpr16: TQRExpr;
+    QRBand9: TQRBand;
+    QRExpr19: TQRExpr;
+    QRExpr20: TQRExpr;
+    QRBand10: TQRBand;
+    QRLabel59: TQRLabel;
+    QRExpr21: TQRExpr;
+    QRDBText12: TQRDBText;
+    QRLabel3: TQRLabel;
+    QRDBText20: TQRDBText;
+    QRLabel29: TQRLabel;
+    QRExpr22: TQRExpr;
+    QRExpr24: TQRExpr;
+    QRShape5: TQRShape;
+    QRShape4: TQRShape;
+    QRShape6: TQRShape;
+    QRShape7: TQRShape;
+    QRLabel62: TQRLabel;
+    QRLabel63: TQRLabel;
+    QRDBText21: TQRDBText;
+    QRDBText22: TQRDBText;
+    QRExpr28: TQRExpr;
+    QRExpr29: TQRExpr;
+    QRExpr30: TQRExpr;
+    QRExpr31: TQRExpr;
+    QRExpr32: TQRExpr;
+    QRExpr33: TQRExpr;
+    QRLabel66: TQRLabel;
+    QRLabel24: TQRLabel;
+    QRLabel67: TQRLabel;
+    QRDBText24: TQRDBText;
+    QRExpr37: TQRExpr;
+    QRExpr38: TQRExpr;
+    QRExpr39: TQRExpr;
+    QRDBText25: TQRDBText;
+    QryOPDProcedureRefund: TOraQuery;
+    IntegerField2: TIntegerField;
+    FloatField5: TFloatField;
+    FloatField6: TFloatField;
+    FloatField7: TFloatField;
+    FloatField8: TFloatField;
+    StringField1: TStringField;
+    DSInPTDetail: TDataSource;
+    QRSummarizeReport: TQuickRep;
+    PageHeaderBand1: TQRBand;
+    QRLabel69: TQRLabel;
+    QRLabel70: TQRLabel;
+    QRLabel71: TQRLabel;
+    QRLabel72: TQRLabel;
+    QRLabel73: TQRLabel;
+    QRLblFDate: TQRLabel;
+    QRLblTDate: TQRLabel;
+    QRLblDrName: TQRLabel;
+    QRLabel75: TQRLabel;
+    QRLblPrintDate: TQRLabel;
+    QRShape11: TQRShape;
+    QRLabel117: TQRLabel;
+    QRLabel118: TQRLabel;
+    QRLabel119: TQRLabel;
+    QRLabel120: TQRLabel;
+    QRLabel121: TQRLabel;
+    QRLabel122: TQRLabel;
+    QRLblOPDIncome: TQRLabel;
+    QRLblIPDIncome: TQRLabel;
+    QRLblRefund: TQRLabel;
+    QRLblTDS: TQRLabel;
+    QRLblNetIncome: TQRLabel;
+    QRLabel74: TQRLabel;
+    QRSubDetail2: TQRSubDetail;
+    QRSubDetail1: TQRSubDetail;
+    QRDBText26: TQRDBText;
+    QRDBText27: TQRDBText;
+    QRDBText28: TQRDBText;
+    QRDBText29: TQRDBText;
+    QRDBText30: TQRDBText;
+    QRDBText31: TQRDBText;
+    QRBand4: TQRBand;
+    QRLabel86: TQRLabel;
+    QRLabel87: TQRLabel;
+    QRLabel88: TQRLabel;
+    QRLabel89: TQRLabel;
+    QRLabel90: TQRLabel;
+    QRLabel91: TQRLabel;
+    QRLabel85: TQRLabel;
+    QRBand11: TQRBand;
+    QRLabel80: TQRLabel;
+    QRLabel78: TQRLabel;
+    QRExpr40: TQRExpr;
+    QRExpr41: TQRExpr;
+    QRExpr42: TQRExpr;
+    QRExpr43: TQRExpr;
+    QRExpr44: TQRExpr;
+    QRLabel79: TQRLabel;
+    QRLabel81: TQRLabel;
+    QRLabel82: TQRLabel;
+    QRLabel83: TQRLabel;
+    QRLabel84: TQRLabel;
+    QRLabel104: TQRLabel;
+    QRDBText55: TQRDBText;
+    QRDBText56: TQRDBText;
+    QRDBText57: TQRDBText;
+    QRDBText58: TQRDBText;
+    QRShape8: TQRShape;
+    QRSubDetail3: TQRSubDetail;
+    QRDBText32: TQRDBText;
+    QRDBText33: TQRDBText;
+    QRDBText34: TQRDBText;
+    QRDBText35: TQRDBText;
+    QRDBText36: TQRDBText;
+    QRDBText37: TQRDBText;
+    QRBand12: TQRBand;
+    QRLabel92: TQRLabel;
+    QRExpr46: TQRExpr;
+    QRExpr47: TQRExpr;
+    QRExpr48: TQRExpr;
+    QRExpr49: TQRExpr;
+    QRLabel93: TQRLabel;
+    QRLabel95: TQRLabel;
+    QRLabel96: TQRLabel;
+    QRLabel97: TQRLabel;
+    QRLabel98: TQRLabel;
+    QRLabel105: TQRLabel;
+    QRShape9: TQRShape;
+    QRSubDetail6: TQRSubDetail;
+    QRBand15: TQRBand;
+    QRShape10: TQRShape;
+    QRShape12: TQRShape;
+    QRShape13: TQRShape;
+    QRShape14: TQRShape;
+    QRLabelTime: TQRLabel;
+    QRLabel99: TQRLabel;
+    QRShape15: TQRShape;
+    QRExpr50: TQRExpr;
+    QRSubDetail4: TQRSubDetail;
+    QRBand13: TQRBand;
+    QRLabel112: TQRLabel;
+    QRExpr52: TQRExpr;
+    QRExpr53: TQRExpr;
+    QRExpr54: TQRExpr;
+    QRExpr45: TQRExpr;
+    QRDBText38: TQRDBText;
+    QRDBText40: TQRDBText;
+    QRDBText41: TQRDBText;
+    QRDBText42: TQRDBText;
+    QRDBText43: TQRDBText;
+    QRDBText39: TQRDBText;
+    QRDBText60: TQRDBText;
+    QRLabel100: TQRLabel;
+    QRLabel101: TQRLabel;
+    QRLabel102: TQRLabel;
+    QRLabel103: TQRLabel;
+    QRLabel106: TQRLabel;
+    QRLabel107: TQRLabel;
+    QRLabel108: TQRLabel;
+    QRShape16: TQRShape;
+    QRLabel109: TQRLabel;
+    QRDBText44: TQRDBText;
+    QRDBText45: TQRDBText;
+    QRDBText46: TQRDBText;
+    QRDBText47: TQRDBText;
+    QRDBText48: TQRDBText;
+    QRDBText49: TQRDBText;
+    QRLabel110: TQRLabel;
+    QRExpr51: TQRExpr;
+    QRExpr55: TQRExpr;
+    QRExpr56: TQRExpr;
+    QRExpr57: TQRExpr;
+    QRShape17: TQRShape;
+    QRExpr58: TQRExpr;
+    QRExpr59: TQRExpr;
+    QRExpr60: TQRExpr;
+    QRExpr61: TQRExpr;
+    QRExpr62: TQRExpr;
+    QRLabel111: TQRLabel;
+    QRShape18: TQRShape;
+    QRLabel113: TQRLabel;
+    QRShape20: TQRShape;
+    QRLabel_OPDAmt: TQRLabel;
+    QRLabel_OPDShare: TQRLabel;
+    QRLabel_OPDTDS: TQRLabel;
+    QRLabel_OPDNet: TQRLabel;
+    QRLabel_IPDAmt: TQRLabel;
+    QRLabel_IPDShare: TQRLabel;
+    QRLabel_IPDTDS: TQRLabel;
+    QRLabel_IPDNet: TQRLabel;
+    QRShape19: TQRShape;
+    QRLabel76: TQRLabel;
+    QRLabel35: TQRLabel;
+    PageFooterBand2: TQRBand;
+    QRLabel68: TQRLabel;
+    QRSysData1: TQRSysData;
+    QRLabel65: TQRLabel;
+    QRLbl_OPDIPDIncome: TQRLabel;
+    SummaryBand3: TQRBand;
+    QRLabel94: TQRLabel;
+    QRLabel_GrandTotal: TQRLabel;
+    PageFooterBand3: TQRBand;
+    QRSysData4: TQRSysData;
+    QRLabel114: TQRLabel;
+    QRLabel5: TQRLabel;
+    QRLabel16: TQRLabel;
+    PageFooterBand1: TQRBand;
+    QRSysData2: TQRSysData;
+    QRLabel60: TQRLabel;
+    QRExpr17: TQRExpr;
+    QRLabel25: TQRLabel;
+    QryOPDDetail: TQuery;
+    QryOPDRefund: TQuery;
+    QryOPDProcedure: TQuery;
+    Query_IPDProcedure: TQuery;
+    Query1: TQuery;
+    QryInPTDetail: TQuery;
+    QryInPTBed: TQuery;
+    Query_Detail: TQuery;
+    Query_DetailIPD: TQuery;
+    procedure QRExpr18Print(sender: TObject; var Value: String);
+    procedure QRExpr3Print(sender: TObject; var Value: String);
+    procedure QRExpr1Print(sender: TObject; var Value: String);
+    procedure QRLabel1Print(sender: TObject; var Value: String);
+    procedure QRLabelAddPrint(sender: TObject; var Value: String);
+    procedure QRLabel36Print(sender: TObject; var Value: String);
+    procedure QRLabel_SNoPrint(sender: TObject; var Value: String);
+    procedure QRExpr6Print(sender: TObject; var Value: String);
+    procedure QRLabel19Print(sender: TObject; var Value: String);
+    procedure QRLabel14Print(sender: TObject; var Value: String);
+    procedure QRLabelAddIPDPrint(sender: TObject; var Value: String);
+    procedure QRExpr2Print(sender: TObject; var Value: String);
+    procedure QRExpr8Print(sender: TObject; var Value: String);
+    procedure QRExpr22Print(sender: TObject; var Value: String);
+    procedure QRExpr23Print(sender: TObject; var Value: String);
+    procedure QRExpr24Print(sender: TObject; var Value: String);
+    procedure QRExpr25Print(sender: TObject; var Value: String);
+    procedure QRExpr26Print(sender: TObject; var Value: String);
+    procedure QRExpr27Print(sender: TObject; var Value: String);
+    procedure QRExpr38Print(sender: TObject; var Value: String);
+    procedure QRExpr34Print(sender: TObject; var Value: String);
+    procedure QRExpr35Print(sender: TObject; var Value: String);
+    procedure QRExpr36Print(sender: TObject; var Value: String);
+    procedure QRExpr37Print(sender: TObject; var Value: String);
+    procedure QRExpr39Print(sender: TObject; var Value: String);
+    procedure QRExpr10Print(sender: TObject; var Value: String);
+    procedure QRExpr11Print(sender: TObject; var Value: String);
+    procedure QRExpr12Print(sender: TObject; var Value: String);
+    procedure QRExpr28Print(sender: TObject; var Value: String);
+    procedure QRExpr30Print(sender: TObject; var Value: String);
+    procedure QRExpr32Print(sender: TObject; var Value: String);
+    procedure QRExpr29Print(sender: TObject; var Value: String);
+    procedure QRExpr31Print(sender: TObject; var Value: String);
+    procedure QRExpr33Print(sender: TObject; var Value: String);
+    procedure QRLabel69Print(sender: TObject; var Value: String);
+    procedure QRLabel70Print(sender: TObject; var Value: String);
+    procedure QRLabel71Print(sender: TObject; var Value: String);
+    procedure QRExpr59Print(sender: TObject; var Value: String);
+    procedure QRExpr60Print(sender: TObject; var Value: String);
+    procedure QRExpr61Print(sender: TObject; var Value: String);
+    procedure QRExpr62Print(sender: TObject; var Value: String);
+    procedure QRExpr46Print(sender: TObject; var Value: String);
+    procedure QRExpr47Print(sender: TObject; var Value: String);
+    procedure QRExpr48Print(sender: TObject; var Value: String);
+    procedure QRExpr49Print(sender: TObject; var Value: String);
+    procedure QRLabel_OPDAmtPrint(sender: TObject; var Value: String);
+    procedure QRLabel_OPDSharePrint(sender: TObject; var Value: String);
+    procedure QRLabel_OPDTDSPrint(sender: TObject; var Value: String);
+    procedure QRLabel_OPDNetPrint(sender: TObject; var Value: String);
+    procedure QRExpr51Print(sender: TObject; var Value: String);
+    procedure QRExpr55Print(sender: TObject; var Value: String);
+    procedure QRExpr56Print(sender: TObject; var Value: String);
+    procedure QRExpr57Print(sender: TObject; var Value: String);
+    procedure QRExpr45Print(sender: TObject; var Value: String);
+    procedure QRExpr52Print(sender: TObject; var Value: String);
+    procedure QRExpr53Print(sender: TObject; var Value: String);
+    procedure QRExpr54Print(sender: TObject; var Value: String);
+    procedure QRLabel_IPDAmtPrint(sender: TObject; var Value: String);
+    procedure QRLabel_IPDSharePrint(sender: TObject; var Value: String);
+    procedure QRLabel_IPDTDSPrint(sender: TObject; var Value: String);
+    procedure QRLabel_IPDNetPrint(sender: TObject; var Value: String);
+    procedure QRDBText33Print(sender: TObject; var Value: String);
+    procedure QRDBText34Print(sender: TObject; var Value: String);
+    procedure QRDBText35Print(sender: TObject; var Value: String);
+    procedure QRDBText36Print(sender: TObject; var Value: String);
+    procedure QRDBText37Print(sender: TObject; var Value: String);
+    procedure QRLabel_GrandTotalPrint(sender: TObject; var Value: String);
+    procedure QRDBText20Print(sender: TObject; var Value: string);
+    procedure QRExpr4Print(sender: TObject; var Value: string);
+    procedure QRDBText6Print(sender: TObject; var Value: string);
+  private
+    { Private declarations }
+  public
+          ps_BillType,Curr_DocCode,Pre_DocCode:String;
+          pf_ServiceTotal,pf_SvrGTotal:Double;
+          pf_TotalAmount,pf_GrandTotAmt:Double;
+          pf_TDS,pf_TDSTotal:Double;
+          pf_DrNetAmt,pf_DrNetTotalAmt:Double;
+          pi_Sno:Integer;
+          pf_OPDIncome,pf_IPDIncome,pf_TotalRefund,pf_AniDTDS:Double;
+
+          pf_FS_OPDAmt,pf_FS_OPDShare,pf_FS_OPDTDS,pf_FS_OPDNet:Double; // FS - Fraction Summary
+          pf_FS_OPDProc_Amt,pf_FS_OPDProc_Share,pf_FS_OPDProc_TDS,pf_FS_OPDProc_Net:Double;
+
+          pf_FS_IPDOT_Amt,pf_FS_IPDOT_Share,pf_FS_IPDOT_TDS,pf_FS_IPDOT_Net:Double;
+          pf_FS_IPDProc_Amt,pf_FS_IPDProc_Share,pf_FS_IPDProc_TDS,pf_FS_IPDProc_Net:Double;
+    { Public declarations }
+  end;
+
+var
+  Form_QRDFDoctorPartDetail: TForm_QRDFDoctorPartDetail;
+
+implementation
+
+
+{$R *.DFM}
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr18Print(sender: TObject;
+  var Value: String);
+begin
+     ps_BillType:=Value;
+
+     IF Value='REFUND BILL' Then
+     Value:='REFUND';
+
+     pi_Sno:=0;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr3Print(sender: TObject;
+  var Value: String);
+begin
+
+
+    // pf_GrandTotAmt:=pf_GrandTotAmt+StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',StrToFloat(Value));
+
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr1Print(sender: TObject;
+  var Value: String);
+begin
+     Curr_DocCode:=Value;
+     If Curr_DocCode<>Pre_DocCode then
+     Begin
+          pf_ServiceTotal:=0;
+          pf_TotalAmount:=0;
+          pf_TDS:=0;
+          pf_DrNetAmt:=0;
+     End;
+     Pre_DocCode:=Curr_DocCode;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel1Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HospitalName;
+
+     pf_ServiceTotal:=0;
+     pf_SvrGTotal:=0;
+
+     pf_TotalAmount:=0;
+     pf_GrandTotAmt:=0;
+
+     pf_TDS:=0;
+     pf_TDSTotal:=0;
+
+     pf_DrNetAmt:=0;
+     pf_DrNetTotalAmt:=0;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabelAddPrint(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HospitalAddress;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel36Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HosSloganTitle;
+     IF Trim(gs_HosSloganTitle)='' Then
+     QRLabelAdd.Top:=27
+     Else
+     QRLabelAdd.Top:=42;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel_SNoPrint(sender: TObject;
+  var Value: String);
+begin
+     pi_Sno:=pi_Sno+1;
+     Value:=IntToStr(pi_Sno);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr6Print(sender: TObject;
+  var Value: String);
+begin
+
+     Value:=FormatFloat('#,##0.00',(pf_TotalAmount));
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel19Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HospitalName;
+
+     pf_ServiceTotal:=0;
+     pf_SvrGTotal:=0;
+
+     pf_TotalAmount:=0;
+     pf_GrandTotAmt:=0;
+
+     pf_TDS:=0;
+     pf_TDSTotal:=0;
+
+     pf_DrNetAmt:=0;
+     pf_DrNetTotalAmt:=0;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel14Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HosSloganTitle;
+     IF Trim(gs_HosSloganTitle)='' Then
+     QRLabelAddIPD.Top:=28
+     Else
+     QRLabelAddIPD.Top:=43;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabelAddIPDPrint(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HospitalAddress;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr2Print(sender: TObject;
+  var Value: String);
+begin
+     Curr_DocCode:=Value;
+     If Curr_DocCode<>Pre_DocCode then
+     Begin
+          pf_ServiceTotal:=0;
+          pf_TotalAmount:=0;
+          pf_TDS:=0;
+          pf_DrNetAmt:=0;
+     End;
+     Pre_DocCode:=Curr_DocCode;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr8Print(sender: TObject;
+  var Value: String);
+begin
+     ps_BillType:=Value;
+     pi_Sno:=0;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr22Print(sender: TObject;
+  var Value: String);
+begin
+     {IF (ps_BillType='CASH BILL') or (ps_BillType='CREDIT BILL') Then
+     pf_TDS:=pf_TDS+StrToFloat(Value)
+     Else
+     pf_TDS:=pf_TDS - StrToFloat(Value);
+
+     Value:=FormatFloat('#,##0.00',StrToFloat(Value));   }
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr23Print(sender: TObject;
+  var Value: String);
+begin
+     IF (ps_BillType='CASH BILL') or (ps_BillType='CREDIT BILL') Then
+     pf_DrNetAmt:=pf_DrNetAmt+StrToFloat(Value)
+     Else
+     pf_DrNetAmt:=pf_DrNetAmt - StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',StrToFloat(Value));
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr24Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_TDS);
+     pf_TDSTotal:=pf_TDS+pf_TDSTotal;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr25Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_DrNetAmt);
+     pf_DrNetTotalAmt:=pf_DrNetAmt+pf_DrNetTotalAmt;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr26Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_TDSTotal);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr27Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_DrNetTotalAmt);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr38Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_ServiceTotal);
+     pf_SvrGTotal:=pf_ServiceTotal+pf_SvrGTotal;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr34Print(sender: TObject;
+  var Value: String);
+begin
+     IF (ps_BillType='CASH BILL') or (ps_BillType='CREDIT BILL') Then
+     pf_ServiceTotal:=pf_ServiceTotal+StrToFloat(Value)
+     Else
+     pf_ServiceTotal:=pf_ServiceTotal - StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',StrToFloat(Value));
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr35Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_ServiceTotal);
+     pf_SvrGTotal:=pf_ServiceTotal+pf_SvrGTotal;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr36Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_SvrGTotal);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr37Print(sender: TObject;
+  var Value: String);
+begin
+     IF (ps_BillType='CASH BILL') or (ps_BillType='CREDIT BILL') Then
+     pf_ServiceTotal:=pf_ServiceTotal+StrToFloat(Value)
+     Else
+     pf_ServiceTotal:=pf_ServiceTotal - StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',StrToFloat(Value));
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr39Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_SvrGTotal);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr10Print(sender: TObject;
+  var Value: String);
+begin
+     IF (ps_BillType='CASH BILL') or (ps_BillType='CREDIT BILL') Then
+     pf_TotalAmount:=pf_TotalAmount+StrToFloat(Value)
+     Else
+     pf_TotalAmount:=pf_TotalAmount - StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',StrToFloat(Value));
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr11Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_TotalAmount);
+     pf_GrandTotAmt:=pf_TotalAmount+pf_GrandTotAmt;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr12Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_GrandTotAmt);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr28Print(sender: TObject;
+  var Value: String);
+begin
+     IF (ps_BillType='CASH BILL') or (ps_BillType='CREDIT BILL') Then
+     pf_TDS:=pf_TDS+StrToFloat(Value)
+     Else
+     pf_TDS:=pf_TDS - StrToFloat(Value);
+
+     Value:=FormatFloat('#,##0.00',StrToFloat(Value));
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr30Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_TDS);
+     pf_TDSTotal:=pf_TDS+pf_TDSTotal;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr32Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_TDSTotal);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr29Print(sender: TObject;
+  var Value: String);
+begin
+     IF (ps_BillType='CASH BILL') or (ps_BillType='CREDIT BILL') Then
+     pf_DrNetAmt:=pf_DrNetAmt+StrToFloat(Value)
+     Else
+     pf_DrNetAmt:=pf_DrNetAmt - StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',StrToFloat(Value));
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr31Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_DrNetAmt);
+     pf_DrNetTotalAmt:=pf_DrNetAmt+pf_DrNetTotalAmt;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr33Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_DrNetTotalAmt);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel69Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HospitalName;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel70Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HosSloganTitle;
+     IF Trim(gs_HosSloganTitle)='' Then
+     QRLabel71.Top:=26;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel71Print(sender: TObject;
+  var Value: String);
+begin
+     Value:=gs_HospitalAddress;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr59Print(sender: TObject;
+  var Value: String);
+begin
+     pf_FS_OPDAmt:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDAmt);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr60Print(sender: TObject;
+  var Value: String);
+begin
+     pf_FS_OPDShare:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDShare);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr61Print(sender: TObject;
+  var Value: String);
+begin
+     pf_FS_OPDTDS:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDTDS);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr62Print(sender: TObject;
+  var Value: String);
+begin
+     pf_FS_OPDNet:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDNet);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr46Print(sender: TObject;
+  var Value: String);
+begin
+     pf_FS_OPDProc_Amt:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDProc_Amt);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr47Print(sender: TObject;
+  var Value: String);
+begin
+     pf_FS_OPDProc_Share:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDProc_Share);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr48Print(sender: TObject;
+  var Value: String);
+begin
+     pf_FS_OPDProc_TDS:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDProc_TDS);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr49Print(sender: TObject;
+  var Value: String);
+begin
+     pf_FS_OPDProc_Net:=StrToFloat(Value);
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDProc_Net);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr4Print(sender: TObject;
+  var Value: string);
+begin
+     IF (ps_BillType='CASH BILL') or (ps_BillType='CREDIT BILL') Then
+     pf_TDSTotal:=pf_TDSTotal+StrToFloat(Value)
+     Else
+     pf_TDSTotal:=pf_TDSTotal - StrToFloat(Value);
+
+     Value:=FormatFloat('#,##0.00',pf_TDS);
+
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel_OPDAmtPrint(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDAmt+pf_FS_OPDProc_Amt);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel_OPDSharePrint(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDShare+pf_FS_OPDProc_Share);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel_OPDTDSPrint(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDTDS+pf_FS_OPDProc_TDS);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel_OPDNetPrint(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDNet+pf_FS_OPDProc_Net);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr51Print(sender: TObject;
+  var Value: String);
+begin
+    pf_FS_IPDProc_Amt:=StrToFloat(Value);
+    Value:=FormatFloat('#,##0.00',pf_FS_IPDProc_Amt);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr55Print(sender: TObject;
+  var Value: String);
+begin
+    pf_FS_IPDProc_Share:=StrToFloat(Value);
+    Value:=FormatFloat('#,##0.00',pf_FS_IPDProc_Share);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr56Print(sender: TObject;
+  var Value: String);
+begin
+    pf_FS_IPDProc_TDS:=StrToFloat(Value);
+    Value:=FormatFloat('#,##0.00',pf_FS_IPDProc_TDS);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr57Print(sender: TObject;
+  var Value: String);
+begin
+    pf_FS_IPDProc_Net:=StrToFloat(Value);
+    Value:=FormatFloat('#,##0.00',pf_FS_IPDProc_Net);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr45Print(sender: TObject;
+  var Value: String);
+begin
+    pf_FS_IPDOT_Amt:=StrToFloat(Value);
+    Value:=FormatFloat('#,##0.00',pf_FS_IPDOT_Amt);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr52Print(sender: TObject;
+  var Value: String);
+begin
+    pf_FS_IPDOT_Share:=StrToFloat(Value);
+    Value:=FormatFloat('#,##0.00',pf_FS_IPDOT_Share);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr53Print(sender: TObject;
+  var Value: String);
+begin
+    pf_FS_IPDOT_TDS:=StrToFloat(Value);
+    Value:=FormatFloat('#,##0.00',pf_FS_IPDOT_TDS);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRExpr54Print(sender: TObject;
+  var Value: String);
+begin
+    pf_FS_IPDOT_Net:=StrToFloat(Value);
+    Value:=FormatFloat('#,##0.00',pf_FS_IPDOT_Net);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel_IPDAmtPrint(sender: TObject;
+  var Value: String);
+begin
+    Value:=FormatFloat('#,##0.00',pf_FS_IPDProc_Amt+pf_FS_IPDOT_Amt);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel_IPDSharePrint(sender: TObject;
+  var Value: String);
+begin
+    Value:=FormatFloat('#,##0.00',pf_FS_IPDProc_Share+pf_FS_IPDOT_Share);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel_IPDTDSPrint(sender: TObject;
+  var Value: String);
+begin
+    Value:=FormatFloat('#,##0.00',pf_FS_IPDProc_TDS+pf_FS_IPDOT_TDS);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel_IPDNetPrint(sender: TObject;
+  var Value: String);
+begin
+    Value:=FormatFloat('#,##0.00',pf_FS_IPDProc_Net+pf_FS_IPDOT_Net);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRDBText20Print(sender: TObject;
+  var Value: string);
+begin
+     IF (ps_BillType='CASH BILL') or (ps_BillType='CREDIT BILL') Then
+     pf_TDS:=pf_TDS+StrToFloat(Value)
+     Else
+     pf_TDS:=pf_TDS - StrToFloat(Value);
+
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRDBText33Print(sender: TObject;
+  var Value: String);
+begin
+     IF Copy(Value,1,1)='-' Then
+     Value:='( '+Copy(Value,2,20)+' )'
+     Else
+     Value:=Value;
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRDBText34Print(sender: TObject;
+  var Value: String);
+begin
+     IF Copy(Value,1,1)='-' Then
+     Value:='( '+FormatFloat('#,##0.00',StrToFloat(Copy(Value,2,20)))+' )'
+     Else
+     Value:=FormatFloat('#,##0.00',StrToFloat(Value));
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRDBText35Print(sender: TObject;
+  var Value: String);
+begin
+     IF Copy(Value,1,1)='-' Then
+     Value:='( '+FormatFloat('#,##0.00',StrToFloat(Copy(Value,2,20)))+' )'
+     Else
+     Value:=FormatFloat('#,##0.00',StrToFloat(Value));
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRDBText36Print(sender: TObject;
+  var Value: String);
+begin
+     IF Copy(Value,1,1)='-' Then
+     Value:='( '+FormatFloat('#,##0.00',StrToFloat(Copy(Value,2,20)))+' )'
+     Else
+     Value:=FormatFloat('#,##0.00',StrToFloat(Value));
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRDBText37Print(sender: TObject;
+  var Value: String);
+begin
+     IF Copy(Value,1,1)='-' Then
+     Value:='( '+FormatFloat('#,##0.00',StrToFloat(Copy(Value,2,20)))+' )'
+     Else
+     Value:=FormatFloat('#,##0.00',StrToFloat(Value));
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRDBText6Print(sender: TObject;
+  var Value: string);
+begin
+     IF (ps_BillType='CASH BILL') or (ps_BillType='CREDIT BILL') Then
+     pf_TotalAmount:=pf_TotalAmount+StrToFloat(Value)
+     Else
+     pf_TotalAmount:=pf_TotalAmount - StrToFloat(Value);
+end;
+
+procedure TForm_QRDFDoctorPartDetail.QRLabel_GrandTotalPrint(sender: TObject;
+  var Value: String);
+begin
+     Value:=FormatFloat('#,##0.00',pf_FS_OPDShare+pf_FS_OPDProc_Share+pf_FS_IPDProc_Share+pf_FS_IPDOT_Share);
+end;
+
+end.

@@ -1,0 +1,122 @@
+unit Unit_QrCard_GMC;
+
+interface
+
+uses
+     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+     Fxn,
+     Dialogs, QuickRpt, ExtCtrls, QRCtrls, jpeg, qrBarcode, pngimage;
+
+type
+     TForm_QRCard_GMC = class(TForm)
+          QrCard: TQuickRep;
+    qrim: TQRBand;
+    QRLabel10: TQRLabel;
+    QRLabel12: TQRLabel;
+    QRLabel16: TQRLabel;
+    lbl_Name: TQRLabel;
+    QRLabel19: TQRLabel;
+    QRLabel21: TQRLabel;
+    lbl_RegisteredDate: TQRLabel;
+    QRLabel4: TQRLabel;
+    QRLabel_ContactNo: TQRLabel;
+    qrlbl_CurrentAddress: TQRLabel;
+    QRLabel11: TQRLabel;
+    QRLabel13: TQRLabel;
+    QrBarcode: TQRAsBarcode;
+    Lbl_HosNo: TQRLabel;
+    QRLabel2: TQRLabel;
+    QRLabel1: TQRLabel;
+    qrlbl_dob: TQRLabel;
+    QRLabel3: TQRLabel;
+    QRLabel5: TQRLabel;
+    QRLabel6: TQRLabel;
+    QRLabel7: TQRLabel;
+    QRLabel8: TQRLabel;
+    QRImage1: TQRImage;
+    QRLabel9: TQRLabel;
+    QRShape1: TQRShape;
+    QRShape2: TQRShape;
+    QRLabel14: TQRLabel;
+          procedure FormCreate(Sender: TObject);
+    procedure QRLabel_HosNoCapPrint(sender: TObject; var Value: string);
+    procedure QRLabel_ContactNoPrint(sender: TObject; var Value: string);
+    procedure lbl_agegenderPrint(sender: TObject; var Value: string);
+    procedure qrimBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+     private
+          { Private declarations }
+     public
+          { Public declarations }
+     end;
+
+var
+     Form_QRCard_GMC: TForm_QRCard_GMC;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_QRCard_GMC.FormCreate(Sender: TObject);
+begin
+     //lbl_hosName.Caption:=gs_HospitalName;
+     //lbl_hosAddress.Caption:=gs_HospitalAddress;
+     //lbl_hosphone.Caption:=gs_HospitalPhone;
+     //lbl_url.Caption:=gs_HospitalUrl;
+     SetPrinter('Card Printer');
+     //lbl_Address.Caption:=UpperCase(Gs_Address);
+     {if gi_FileNo=0 then
+     lbl_hospitalno.caption:=inttostr(gi_patientId)
+     else
+     lbl_hospitalno.caption:=inttostr(gi_patientId)+' / '+inttostr(gi_FileNo);
+     lbl_Gender.Caption:=Gs_CurrentAgeGender; }
+
+     //QRLabel_HosNoCap.Caption:=Gs_HosNoCaptionName;
+     //Lbl_HosNo.Caption:='0'+IntToStr(gi_PatientId);
+     //lbl_dob.Caption:=Gs_DobAD;
+     {if Trim(Gs_MobileNo)<>'' then
+     lbl_mobileno.Caption:=Gs_MobileNo
+     Else
+     lbl_mobileno.Caption:=Gs_PhoneNo;  }
+    { try
+          if LoadImageFromDB(gi_PatientID) then
+          Image_Main.Picture.LoadFromFile(gs_picpath + '\' + IntToStr(gi_PatientID) + 'IMAGEMAIN.JPG');
+     except
+          //MsgBox(1014, 0, '', '', '');
+     end;  }
+
+     if gb_isDotMatrix then
+     begin
+          //QRImage1.Enabled:=false;
+          (*lbl_hosName.Font.Color:=clBlack;
+          lbl_hosAddress.Font.Color:=clBlack;
+          lbl_hosphone.Font.Color:=clBlack;
+          lbl_url.Font.Color:=clBlack;*)
+          //Image_Main.Enabled:=false;
+     end;
+end;
+
+procedure TForm_QRCard_GMC.lbl_agegenderPrint(sender: TObject; var Value: string);
+begin
+     //Value:=Gs_CurrentAgeGender;
+end;
+
+procedure TForm_QRCard_GMC.qrimBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+     QRLabel6.Caption:= gs_HospitalName;
+     QRLabel7.Caption:=gs_HospitalAddress;
+     QRLabel8.caption:=gs_HospitalPhoneNumber;
+end;
+
+procedure TForm_QRCard_GMC.QRLabel_ContactNoPrint(sender: TObject; var Value: string);
+begin
+     if trim(Value)='' then
+          Value:='N/A';
+end;
+
+procedure TForm_QRCard_GMC.QRLabel_HosNoCapPrint(sender: TObject; var Value: string);
+begin
+     //Value:=Gs_HosNoCaptionName;
+end;
+
+end.

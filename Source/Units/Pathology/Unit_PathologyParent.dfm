@@ -1,0 +1,708 @@
+object Form_PathologyParent: TForm_PathologyParent
+  Left = 0
+  Top = 0
+  Caption = 'Pathology'
+  ClientHeight = 722
+  ClientWidth = 984
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  WindowState = wsMaximized
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 703
+    Width = 984
+    Height = 19
+    Panels = <>
+    ParentColor = True
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 0
+    Width = 984
+    Height = 46
+    Align = alTop
+    BevelOuter = bvNone
+    Color = clSkyBlue
+    ParentBackground = False
+    TabOrder = 1
+    object Label1: TLabel
+      Left = 15
+      Top = 17
+      Width = 70
+      Height = 13
+      Caption = 'Today'#39's Date :'
+    end
+    object SpeedButton3: TSpeedButton
+      Left = 161
+      Top = 13
+      Width = 22
+      Height = 22
+      Caption = 'AD'
+      OnClick = SpeedButton3Click
+    end
+    object BB_Close: TBitBtn
+      AlignWithMargins = True
+      Left = 888
+      Top = 6
+      Width = 96
+      Height = 34
+      Margins.Left = 0
+      Margins.Top = 6
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = '&Close [ESC]'
+      DoubleBuffered = True
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        18000000000000030000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFF6569BA717FE06B6EBEFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFDFEFFFFFFFFFFFFB9BADD7A83E6
+        6A80FF273CD9EBECF6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7677
+        C58788D9FFFFFFFFFFFFA0A1D34D54DE2536EB0B20D9E3E3F3FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFDCDCEE0E16C0B1B2DEFFFFFFFFFFFFE9E9F41519BF
+        060EDB0412D87B7DC3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2C34BA1822
+        C1FFFFFFFFFFFFFFFFFFFFFFFF5A5BBA0002CF0309D8080FC1DADAECFFFFFFFF
+        FFFFFFFFFFFFFFFF7A7CC50C21DF9C9DD2FFFFFFFFFFFFFFFFFFFFFFFFFDFDFE
+        1E1FB00001D00106D52326B1FFFFFFFFFFFFFFFFFFA9AAD30C28E52733BEFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE8E9F41112B50000D10103CE5A5CB9FF
+        FFFFB1B2D90B1FD40C26DFD2D1E7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFE2E3F21516B50000D20101C44D4EB8070EC30514E16F70BEFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F5FA2D2DB00001CC00
+        00CC0103D13639B3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFE2E2F23236B70207CF0103D20001C97777C2FFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7174CA0F1ED10717E40510DE0E
+        13BA0507C10608CC6162BEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9B9BD2
+        4F58D23D57F71D3CFA0D26F01921BFEBEBF6C4C4E5191BBE2325D44A4ABBF9F9
+        FCFFFFFFFFFFFFFFFFFF8487D0A2ABF78D9DFF6A7FFF3A55F9313BC1EFEFF7FF
+        FFFFFFFFFFFDFDFE5B5CBF4041D1494AC4A2A2D5FFFFFFFFFFFF8788CCB6BBF5
+        A3ACFB6973E17678C8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC8C8E65555
+        C16061CC5A5ABDADAED9DFDFEF9192D29A9DE29596D2FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFEDEDF77C7DC96162C58383CB}
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BB_CloseClick
+    end
+    object BB_Report: TBitBtn
+      AlignWithMargins = True
+      Left = 684
+      Top = 6
+      Width = 116
+      Height = 34
+      Margins.Left = 0
+      Margins.Top = 6
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Report'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 1
+    end
+    object BB_NameModify: TBitBtn
+      AlignWithMargins = True
+      Left = 800
+      Top = 6
+      Width = 88
+      Height = 34
+      Margins.Left = 0
+      Margins.Top = 6
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Name Modify'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = BB_NameModifyClick
+    end
+    object BB_Preview: TBitBtn
+      AlignWithMargins = True
+      Left = 568
+      Top = 6
+      Width = 116
+      Height = 34
+      Margins.Left = 0
+      Margins.Top = 6
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Preview [F4]'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 3
+      Visible = False
+      OnClick = BB_PreviewClick
+    end
+    object BB_SampleCollection: TBitBtn
+      AlignWithMargins = True
+      Left = 213
+      Top = 6
+      Width = 123
+      Height = 34
+      Margins.Left = 0
+      Margins.Top = 6
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Sample Collection [F1]'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 4
+      OnClick = BB_SampleCollectionClick
+    end
+    object BB_Findings: TBitBtn
+      AlignWithMargins = True
+      Left = 336
+      Top = 6
+      Width = 116
+      Height = 34
+      Margins.Left = 0
+      Margins.Top = 6
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = '&Findings [F2]'
+      DoubleBuffered = True
+      Enabled = False
+      ParentDoubleBuffered = False
+      TabOrder = 5
+      OnClick = BB_FindingsClick
+    end
+    object BB_Print: TBitBtn
+      AlignWithMargins = True
+      Left = 452
+      Top = 6
+      Width = 116
+      Height = 34
+      Margins.Left = 0
+      Margins.Top = 6
+      Margins.Right = 0
+      Margins.Bottom = 6
+      Align = alRight
+      Caption = 'Print [F3]'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 6
+      Visible = False
+      OnClick = BB_PrintClick
+    end
+    object Dex_Today: TDateEditX
+      Left = 96
+      Top = 14
+      Width = 65
+      Height = 21
+      TabOrder = 7
+      ControlData = {
+        545046300A5444617465456469745200044C656674026003546F70020E0B4461
+        746541442E5965617203DB070C4461746541442E4D6F6E746802090A44617465
+        41442E44617902160B4461746556532E596561720314080C4461746556532E4D
+        6F6E746802060A4461746556532E446179020508526561644F6E6C79090000}
+    end
+  end
+  object Panel_Parent: TPanel
+    Left = 0
+    Top = 46
+    Width = 984
+    Height = 657
+    Align = alClient
+    TabOrder = 2
+    object Panel_list: TPanel
+      Left = 1
+      Top = 1
+      Width = 982
+      Height = 655
+      Align = alClient
+      Color = clSkyBlue
+      ParentBackground = False
+      TabOrder = 0
+      DesignSize = (
+        982
+        655)
+      object Label2: TLabel
+        Left = 13
+        Top = 6
+        Width = 115
+        Height = 21
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Patient Searchr'
+        Color = 2922059
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+        Layout = tlCenter
+      end
+      object SpeedButton5: TSpeedButton
+        Left = 868
+        Top = 2
+        Width = 109
+        Height = 22
+        Caption = 'Valid Test Cancel'
+        OnClick = SpeedButton5Click
+      end
+      object SpeedButton6: TSpeedButton
+        Left = 868
+        Top = 26
+        Width = 109
+        Height = 22
+        Caption = 'Register Monitor'
+        OnClick = SpeedButton6Click
+      end
+      object SpeedButton7: TSpeedButton
+        Left = 868
+        Top = 50
+        Width = 109
+        Height = 22
+        Caption = 'Report Remaining'
+        OnClick = SpeedButton7Click
+      end
+      object SpeedButton8: TSpeedButton
+        Left = 868
+        Top = 74
+        Width = 109
+        Height = 22
+        Caption = 'Sample Register'
+        OnClick = SpeedButton8Click
+      end
+      object Label8: TLabel
+        Left = 13
+        Top = 34
+        Width = 58
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Fiscal Year :'
+      end
+      object a: TDBGrid
+        Left = 0
+        Top = 122
+        Width = 982
+        Height = 507
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        DataSource = DS_List
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'PATIENTID'
+            Title.Caption = 'Hospital No'
+            Width = 77
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'FNAME'
+            Title.Caption = 'Patient Name'
+            Width = 71
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'LNAME'
+            Title.Caption = 'Date'
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'AGEGENDER'
+            Title.Caption = 'Test Name'
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DOB'
+            Title.Caption = 'TN Code'
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'PADDRESS'
+            Title.Caption = 'Bill No'
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DEPCODE'
+            Title.Caption = 'Run. No'
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'REGDATE'
+            Title.Caption = 'Status'
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'MARITALSTATUS'
+            Title.Caption = 'Print'
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'PHONENO'
+            Title.Caption = 'Test Amount'
+            Width = 65
+            Visible = True
+          end>
+      end
+      object Edit_PatientID: TEdit
+        Left = 15
+        Top = 98
+        Width = 75
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 1
+      end
+      object Edit_Fname: TEdit
+        Left = 91
+        Top = 98
+        Width = 72
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 2
+      end
+      object Edit2: TEdit
+        Left = 165
+        Top = 98
+        Width = 64
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 3
+      end
+      object Edit4: TEdit
+        Left = 230
+        Top = 98
+        Width = 64
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 4
+      end
+      object Edit5: TEdit
+        Left = 296
+        Top = 98
+        Width = 64
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 5
+      end
+      object Edit6: TEdit
+        Left = 360
+        Top = 98
+        Width = 66
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 6
+      end
+      object Edit7: TEdit
+        Left = 427
+        Top = 98
+        Width = 64
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 7
+      end
+      object Edit8: TEdit
+        Left = 494
+        Top = 98
+        Width = 64
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 8
+      end
+      object Edit9: TEdit
+        Left = 561
+        Top = 98
+        Width = 64
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 9
+      end
+      object Edit_Search: TEdit
+        Left = 131
+        Top = 6
+        Width = 163
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 10
+      end
+      object GroupBox1: TGroupBox
+        Left = 627
+        Top = 2
+        Width = 132
+        Height = 84
+        TabOrder = 11
+        object Label4: TLabel
+          Left = 8
+          Top = 28
+          Width = 31
+          Height = 13
+          Caption = 'From :'
+        end
+        object SpeedButton1: TSpeedButton
+          Left = 106
+          Top = 24
+          Width = 22
+          Height = 22
+          Caption = 'AD'
+        end
+        object Label5: TLabel
+          Left = 23
+          Top = 52
+          Width = 16
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'To:'
+        end
+        object SpeedButton2: TSpeedButton
+          Left = 106
+          Top = 48
+          Width = 22
+          Height = 22
+          Caption = 'AD'
+        end
+        object CheckBox1: TCheckBox
+          Left = 16
+          Top = 4
+          Width = 97
+          Height = 17
+          Caption = 'Search by date'
+          TabOrder = 0
+        end
+        object DateEditX1: TDateEditX
+          Left = 41
+          Top = 25
+          Width = 65
+          Height = 21
+          TabOrder = 1
+          ControlData = {
+            545046300A5444617465456469745200044C656674022903546F7002190B4461
+            746541442E5965617203DB070C4461746541442E4D6F6E746802090A44617465
+            41442E44617902160B4461746556532E596561720314080C4461746556532E4D
+            6F6E746802060A4461746556532E446179020508526561644F6E6C79090000}
+        end
+        object DateEditX2: TDateEditX
+          Left = 41
+          Top = 49
+          Width = 65
+          Height = 21
+          TabOrder = 2
+          ControlData = {
+            545046300A5444617465456469745200044C656674022903546F7002310B4461
+            746541442E5965617203DB070C4461746541442E4D6F6E746802090A44617465
+            41442E44617902160B4461746556532E596561720314080C4461746556532E4D
+            6F6E746802060A4461746556532E446179020508526561644F6E6C79090000}
+        end
+      end
+      object GroupBox2: TGroupBox
+        Left = 761
+        Top = 2
+        Width = 106
+        Height = 84
+        TabOrder = 12
+        object Label6: TLabel
+          Left = 11
+          Top = 4
+          Width = 87
+          Height = 13
+          Caption = 'Include more than'
+        end
+        object Label7: TLabel
+          Left = 75
+          Top = 20
+          Width = 24
+          Height = 13
+          Caption = 'Days'
+        end
+        object SpeedButton4: TSpeedButton
+          Left = 8
+          Top = 44
+          Width = 91
+          Height = 22
+          Caption = 'Refresh'
+        end
+        object SpinEdit1: TSpinEdit
+          Left = 13
+          Top = 17
+          Width = 56
+          Height = 22
+          MaxValue = 0
+          MinValue = 0
+          TabOrder = 0
+          Value = 0
+        end
+      end
+      object CheckBox2: TCheckBox
+        Left = 131
+        Top = 34
+        Width = 97
+        Height = 17
+        Caption = 'Extended Search'
+        TabOrder = 13
+      end
+      object RadioGroup1: TRadioGroup
+        Left = 15
+        Top = 55
+        Width = 285
+        Height = 34
+        Caption = 'Search by'
+        Columns = 2
+        ItemIndex = 1
+        Items.Strings = (
+          'Hospital No'
+          'Sample coll No')
+        TabOrder = 14
+      end
+      object GroupBox3: TGroupBox
+        Left = 301
+        Top = 2
+        Width = 120
+        Height = 84
+        TabOrder = 15
+        object CheckBox3: TCheckBox
+          Left = 8
+          Top = 2
+          Width = 97
+          Height = 17
+          Caption = 'Dept. Break'
+          TabOrder = 0
+        end
+        object CheckBox4: TCheckBox
+          Left = 8
+          Top = 17
+          Width = 110
+          Height = 17
+          Caption = 'Print Selected Only'
+          TabOrder = 1
+        end
+        object CheckBox5: TCheckBox
+          Left = 8
+          Top = 32
+          Width = 97
+          Height = 17
+          Caption = 'Preview'
+          TabOrder = 2
+        end
+        object CheckBox6: TCheckBox
+          Left = 8
+          Top = 48
+          Width = 97
+          Height = 17
+          Caption = 'Custom Print'
+          TabOrder = 3
+        end
+        object CheckBox7: TCheckBox
+          Left = 8
+          Top = 64
+          Width = 97
+          Height = 17
+          Caption = 'Half Page'
+          TabOrder = 4
+        end
+      end
+      object RadioGroup2: TRadioGroup
+        Left = 424
+        Top = 2
+        Width = 50
+        Height = 84
+        ItemIndex = 1
+        Items.Strings = (
+          'Line'
+          'Text')
+        TabOrder = 16
+      end
+      object DBLCB_Religion: TDBLookupComboBox
+        Left = 73
+        Top = 31
+        Width = 55
+        Height = 21
+        KeyField = 'RELIGIONID'
+        ListField = 'RELIGION'
+        TabOrder = 17
+      end
+      object CheckListBox1: TCheckListBox
+        Left = 477
+        Top = 3
+        Width = 147
+        Height = 83
+        ItemHeight = 13
+        Items.Strings = (
+          'BIOCHEMISTRY'
+          'BACTERIOLOGY'
+          'HEMATOLOGY'
+          'HEPATOLOGY'
+          'CT SCAN')
+        TabOrder = 18
+      end
+      object CheckBox8: TCheckBox
+        Left = 630
+        Top = 99
+        Width = 59
+        Height = 17
+        Caption = 'Print All'
+        TabOrder = 19
+      end
+    end
+  end
+  object QueryBlank: TOraQuery
+    Left = 576
+    Top = 408
+  end
+  object DS_List: TDataSource
+    DataSet = QueryList
+    Left = 728
+    Top = 344
+  end
+  object QueryList: TOraQuery
+    SQL.Strings = (
+      
+        'SELECT PM.*,PM.AGE||'#39' '#39'||SUBSTR(PM.AGETYPE,1,1)||'#39' '#39'||SUBSTR(PM.' +
+        'GENDER,1,1) AGEGENDER,T.TITLEID,D.DISTRICTNAME,V.VDCNAME,O.OCCUP' +
+        'ATIONNAME,C.COUNTRYNAME ,RL.RELATION,E.EDUCATION,RG.RELIGION'
+      
+        'FROM PATIENTMAIN PM,DISTRICT D,VDC V,OCCUPATION O,COUNTRY C,RELA' +
+        'TION RL'
+      ',EDUCATION E,RELIGION RG,TITLE T'
+      'WHERE PM.DISTRICTID=D.DISTRICTID(+)'
+      'AND PM.TITLE=T.TITLE(+)'
+      'AND PM.VDCID=V.VDCID(+)'
+      'AND PM.OCCUPATIONID=O.OCCUPATIONID(+)'
+      'AND PM.COUNTRYID=C.COUNTRYID(+)'
+      'AND PM.RELATION=RL.RELATIONID(+)'
+      'AND PM.RELIGION=RG.RELIGION(+)'
+      'AND PM.EDUCATION=E.EDUCATIONID(+)')
+    Left = 672
+    Top = 352
+  end
+end

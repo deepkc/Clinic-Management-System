@@ -1,0 +1,3888 @@
+unit Unit_SampleCollectionFrame;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Grids, DBGrids, Buttons, Spin, ExtCtrls, CheckLst, ComCtrls,
+  fxn, dm, serverdate, Unit_Master, DBCtrls, OleCtrls, DateEditXControl_TLB, DB,
+  DBTables, DBAccess, Ora, OraSmart, MemDS, OraError, TeeProcs, TeeDraw3D,
+  ActnMan, ActnColorMaps, pngimage,Preview;
+
+type
+  TFrame_SampleCollection = class(TFrame)
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    TabSheet3: TTabSheet;
+    DBGrid2: TDBGrid;
+    Label2: TLabel;
+    Label7: TLabel;
+    SpeedButton4: TSpeedButton;
+    Label1: TLabel;
+    Label17: TLabel;
+    SpeedButton1: TSpeedButton;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label18: TLabel;
+    Panel2: TPanel;
+    BB_Save: TBitBtn;
+    Edit_SC_HosNo: TEdit;
+    SpinEdit1: TSpinEdit;
+    CB_PreSampleNO: TCheckBox;
+    CLB_TestName: TCheckListBox;
+    CLB_CollectedSample: TCheckListBox;
+    GroupBox1: TGroupBox;
+    Label16: TLabel;
+    lbl_Hosno: TLabel;
+    Label3: TLabel;
+    Lbl_Name: TLabel;
+    Label5: TLabel;
+    Lbl_AgeSex: TLabel;
+    Label8: TLabel;
+    Lbl_Address: TLabel;
+    Label10: TLabel;
+    Lbl_ContactNo: TLabel;
+    Label12: TLabel;
+    Lbl_BillNo: TLabel;
+    Panel1: TPanel;
+    BB_CollectSample: TBitBtn;
+    Dbgrid5: TDBGrid;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    Edit5: TEdit;
+    Edit6: TEdit;
+    Edit7: TEdit;
+    Edit8: TEdit;
+    Edit9: TEdit;
+    Edit10: TEdit;
+    Edit11: TEdit;
+    Edit12: TEdit;
+    Panel4: TPanel;
+    BB_Modify: TBitBtn;
+    Edit14: TEdit;
+    Edit15: TEdit;
+    Query_TobeCollected: TOraQuery;
+    DS_TobeCollected: TDataSource;
+    BB_CollectedList: TBitBtn;
+    DS_SampleCollected: TDataSource;
+    Query_SampleCollected: TOraQuery;
+    Cb_TestNameAll: TCheckBox;
+    CB_CollectedSampleAll: TCheckBox;
+    Edit_PreviousSampleNo: TEdit;
+    Timer: TTimer;
+    Panel_Head: TPanel;
+    GB_PatientSearch: TGroupBox;
+    Label26: TLabel;
+    Label27: TLabel;
+    Label28: TLabel;
+    Label29: TLabel;
+    Label30: TLabel;
+    Edit_SearchCollectedList: TEdit;
+    ComboBox4: TComboBox;
+    ComboBox5: TComboBox;
+    ComboBox6: TComboBox;
+    DBLookupComboBox1: TDBLookupComboBox;
+    GB_Option: TGroupBox;
+    Cb_Halfpage: TCheckBox;
+    CLB_Department: TCheckListBox;
+    GB_Searchbydate: TGroupBox;
+    Label11: TLabel;
+    SpeedButton6: TSpeedButton;
+    Label13: TLabel;
+    SpeedButton7: TSpeedButton;
+    CB_Date: TCheckBox;
+    Dex_CLFrom: TDateEditX;
+    Dex_CLTo: TDateEditX;
+    GroupBox6: TGroupBox;
+    Label31: TLabel;
+    Label32: TLabel;
+    Se_CLDays: TSpinEdit;
+    DBGrid3: TDBGrid;
+    DS_samplecollectedright: TDataSource;
+    Query_samplecollectedright: TOraQuery;
+    DBGrid4: TDBGrid;
+    Query_tobecollectedr: TOraQuery;
+    DS_tobecolletedr: TDataSource;
+    SpeedButton5: TSpeedButton;
+    se_printcount: TSpinEdit;
+    Label4: TLabel;
+    cb_preview: TCheckBox;
+    BB_Refresh: TBitBtn;
+    Label33: TLabel;
+    lbl_QueueNo: TLabel;
+    Label35: TLabel;
+    lbl_PatientName: TLabel;
+    SpeedButton8: TSpeedButton;
+    SpeedButton9: TSpeedButton;
+    Bevel1: TBevel;
+    SpeedButton10: TSpeedButton;
+    Cb_HideIndication: TCheckBox;
+    Cb_SampleSource: TCheckBox;
+    cb_tick: TCheckListBox;
+    Cb_HideRange: TCheckBox;
+    Cb_SingleDep: TCheckBox;
+    Button1: TButton;
+    Button2: TButton;
+    TwilightColorMap1: TTwilightColorMap;
+    Label38: TLabel;
+    DBGrid6: TDBGrid;
+    DS_SampleNoList: TDataSource;
+    Query_SampleNoList: TOraQuery;
+    Cb_NoResult: TCheckBox;
+    Button3: TButton;
+    Button4: TButton;
+    grp_sampletracking: TGroupBox;
+    btn_RegisterMonitor: TSpeedButton;
+    btn_ReportRemaining: TSpeedButton;
+    btn_SampleRegister: TSpeedButton;
+    pnl_mid: TPanel;
+    lbl_TestCaption: TLabel;
+    GroupBox2: TGroupBox;
+    Label20: TLabel;
+    SpeedButton2: TSpeedButton;
+    Label21: TLabel;
+    SpeedButton3: TSpeedButton;
+    CB_Searchbydate: TCheckBox;
+    Dex_From: TDateEditX;
+    Dex_To: TDateEditX;
+    GroupBox4: TGroupBox;
+    Label19: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label24: TLabel;
+    Label25: TLabel;
+    Edit_SearchTBC: TEdit;
+    ComboBox1: TComboBox;
+    ComboBox2: TComboBox;
+    ComboBox3: TComboBox;
+    DBLCB_Religion: TDBLookupComboBox;
+    GroupBox3: TGroupBox;
+    Label34: TLabel;
+    Label36: TLabel;
+    Se_DaysTBC: TSpinEdit;
+    bb_RefreshTobecoll: TBitBtn;
+    StringGrid1: TStringGrid;
+    Shape1: TShape;
+    Label6: TLabel;
+    Shape2: TShape;
+    Label9: TLabel;
+    Shape3: TShape;
+    Label37: TLabel;
+    Shape4: TShape;
+    Label39: TLabel;
+    rb_underanalysis: TRadioButton;
+    rb_All: TRadioButton;
+    cb_deptype: TComboBox;
+    Label41: TLabel;
+    lbl_mobileno: TLabel;
+    Label42: TLabel;
+    lbl_REMARKS: TLabel;
+    edt_remarks: TEdit;
+    Edit_sampleno: TEdit;
+    labelsample: TLabel;
+    CheckBox_ismanual: TCheckBox;
+    Edit_LabNo: TEdit;
+    Label_Labno: TLabel;
+    CB_LAbNo: TCheckBox;
+    BitBtn_Sample: TBitBtn;
+    Preview: TCheckBox;
+    CB_CPreview: TCheckBox;
+    Table_Patienttestlist: TTable;
+    DBGrid1: TDBGrid;
+    Qry_master: TOraQuery;
+    OraQuery_SensitiveMedicine: TOraQuery;
+    Panel_updateinfo: TPanel;
+    Edit_mobileno: TEdit;
+    Edit_Email: TEdit;
+    Edit_contactno: TEdit;
+    Label40: TLabel;
+    Label43: TLabel;
+    Label44: TLabel;
+    btn_Save: TBitBtn;
+    CheckBox_UpdateInfo: TCheckBox;
+    OraQuery_updateinfo: TOraQuery;
+    lbl_patienttype: TLabel;
+    lbl_type: TLabel;
+    Label45: TLabel;
+    CB_DeptypeCheck: TComboBox;
+    procedure bb_RefreshTobecollClick(Sender: TObject);
+    procedure Query_TobeCollectedAfterScroll(DataSet: TDataSet);
+    procedure BB_CollectSampleClick(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure BB_CollectedListClick(Sender: TObject);
+    procedure BB_SaveClick(Sender: TObject);
+    procedure Query_SampleCollectedAfterScroll(DataSet: TDataSet);
+    procedure BB_ModifyClick(Sender: TObject);
+    procedure Cb_TestNameAllClick(Sender: TObject);
+    procedure CB_CollectedSampleAllClick(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure Dex_FromEnter(Sender: TObject);
+    procedure TobeCollectedAfterScroll(DataSet: TDataSet);
+    procedure Dbgrid5DblClick(Sender: TObject);
+    procedure DBGrid2DblClick(Sender: TObject);
+    procedure TabSheet2Show(Sender: TObject);
+    procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure BB_RefreshClick(Sender: TObject);
+    procedure Dbgrid5KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure Edit_SearchCollectedListChange(Sender: TObject);
+    procedure Edit_SearchTBCChange(Sender: TObject);
+    procedure DBGrid3CellClick(Column: TColumn);
+    procedure DBGrid4CellClick(Column: TColumn);
+    procedure Dex_CLFromEnter(Sender: TObject);
+    procedure Cb_HalfpageClick(Sender: TObject);
+    procedure SpeedButton5Click(Sender: TObject);
+    procedure DBGrid2CellClick(Column: TColumn);
+    procedure Dex_CLToExit(Sender: TObject);
+    procedure Edit_SearchTBCKeyPress(Sender: TObject; var Key: Char);
+    procedure SpeedButton9Click(Sender: TObject);
+    procedure SpeedButton8Click(Sender: TObject);
+    procedure DBGrid4KeyPress(Sender: TObject; var Key: Char);
+    procedure SpeedButton10Click(Sender: TObject);
+    procedure Cb_HideIndicationClick(Sender: TObject);
+    procedure Edit9Change(Sender: TObject);
+    procedure Edit4Change(Sender: TObject);
+    procedure Cb_SampleSourceClick(Sender: TObject);
+    procedure Se_CLDaysChange(Sender: TObject);
+    procedure cb_tickClick(Sender: TObject);
+    procedure Cb_HideRangeClick(Sender: TObject);
+    procedure Cb_SingleDepClick(Sender: TObject);
+    procedure TabSheet1Show(Sender: TObject);
+    procedure Edit_SearchCollectedListKeyPress(Sender: TObject; var Key: Char);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure CB_PreSampleNOClick(Sender: TObject);
+    procedure DBGrid6DblClick(Sender: TObject);
+    procedure Cb_NoResultClick(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure btn_RegisterMonitorClick(Sender: TObject);
+    procedure btn_ReportRemainingClick(Sender: TObject);
+    procedure btn_SampleRegisterClick(Sender: TObject);
+    procedure DBGrid3MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+    procedure DBGrid3KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBGrid4KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure SpeedButton4Click(Sender: TObject);
+    procedure SpeedButton6Click(Sender: TObject);
+    procedure SpeedButton7Click(Sender: TObject);
+    procedure Query_samplecollectedrightAfterScroll(DataSet: TDataSet);
+    procedure Edit3Change(Sender: TObject);
+    procedure Edit8Change(Sender: TObject);
+    procedure Edit10Change(Sender: TObject);
+    procedure Edit11Change(Sender: TObject);
+    procedure Edit12Change(Sender: TObject);
+    procedure Edit14Change(Sender: TObject);
+    procedure Edit15Change(Sender: TObject);
+    procedure Query_tobecollectedrAfterScroll(DataSet: TDataSet);
+    procedure cb_deptypeChange(Sender: TObject);
+    function GetPatientIdFilteredDateFromLabNo(LabNo: string): Integer;
+    procedure BitBtn_SampleClick(Sender: TObject);
+    procedure PreviewClick(Sender: TObject);
+    procedure CheckBox_UpdateInfoClick(Sender: TObject);
+    procedure btn_SaveClick(Sender: TObject);
+    procedure Dbgrid5CellClick(Column: TColumn);
+    procedure CB_LAbNoClick(Sender: TObject);
+    procedure CB_DeptypeCheckClick(Sender: TObject);
+  private
+    Ps_TodaysDate: string;
+    Arr_PTestNameID: array of string;
+    { Private declarations }
+    procedure OntimerEvent(Sender: TObject);
+    procedure PrintSticker;
+    procedure PrintStickerMangalam;
+    procedure PrintStickerMangalam_Histo;
+    procedure ReprintSticker(BillNo: string);
+    procedure GetQueueList;
+    procedure QryQueueList_AfterScroll(DataSet: TDataSet);
+    procedure GetQueue(Val: string);
+    procedure AlternateReportPrint_BNB(refreshdate:string);
+    Function IsSensitiveMedicineExist(TestNameId : Integer):Boolean;
+
+  public
+    pi_PatientId: Integer;
+    pi_depid:Integer;
+     ps_patientid,ps_labno,ps_testname,ps_testnameID,refreshdatereport,ps_printtime:String;
+     isfinallyclosed:boolean;
+
+    { Public declarations }
+    constructor Create(AOwner: TComponent); override;
+  end;
+
+var
+  QryBillList: TOraQuery;
+  DSQryBillList: TDataSource;
+  QryQueueList: TOraQuery;
+
+implementation
+
+uses
+  Unit_QrSticker, Unit_SampleReceive, Unit_ServiceDetail, UnitmonitorRegister,
+  UnitReportRemaining, Unit_SampleRegister,unit_QrSampleCollectionReport,Unit_QrSticker_Histo;
+{$R *.dfm}
+
+procedure TFrame_SampleCollection.BB_SaveClick(Sender: TObject);
+var
+  i, li_PatientTestID: Integer;
+  ls_date, SAMPLENO, LabNo: string;
+begin
+  if gi_datesystem = 0 then
+    ls_date := serverdate.TodaysDateVS            //nepali date system
+  else
+    ls_date := serverdate.TodaysDate;             //english date system
+
+  if (IsValidToSampleColnIntermsofDeposit(QryBillList.FieldByName('BillNo').AsString) = False) and (Copy(QryBillList.FieldByName('BillNo').AsString, 1, 2) = 'TP') then
+  begin
+    Gi_ClinicalDepID := GetClinicalDepID(QryBillList.FieldByName('BillNo').AsString);
+    if gi_compileValue <>14 then
+    begin
+      if (Gi_ClinicalDepID = 2) or (Gi_ClinicalDepID = 93) then
+      begin
+        if not (MessageDlg('Insufficient Deposit Amount, Do you want to Continue', mtWarning, [mbok], 0) = mrYes) then
+          Exit;
+      end
+
+      else
+      begin
+                  // MessageDlg('Sorry ! Sample Cannot Be Collect Due To The Insufficient Deposit.', mtWarning, [mbok], 0);
+                  // Exit;
+      end;
+    end;
+  end;
+
+  try
+    DM_Hospital.DB.StartTransaction;
+    try
+      if CB_PreSampleNO.Checked = true then
+      begin
+        if gi_datesystem = 0 then
+          Edit_PreviousSampleNo.Text := GetSampleNoByDate(gi_PatientID, ls_date)
+        else
+          Edit_PreviousSampleNo.Text := GetPreviousSampleNo(gi_PatientID);
+
+        SAMPLENO := Edit_PreviousSampleNo.Text;
+        if SAMPLENO = '' then
+          SAMPLENO := GetNextSampleNo;
+      end
+      else
+        SAMPLENO := GetNextSampleNo;
+
+      if gi_compilevalue in [1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20, 21,22,23,24,25,26] then
+      begin
+        if gs_DepType = 'H' then
+        begin
+          LabNo := '0';
+          Edit_LabNo.Visible := False;
+          Label_Labno.Visible := False;
+          //SpeedButton5.Visible := False;
+        end
+        else if gs_DepType = 'R' then
+        begin
+          LabNo := '0';
+          Edit_LabNo.Visible := False;
+          Label_Labno.Visible := False;
+          //SpeedButton5.Visible := False;
+        end
+        else
+        begin
+          labno := '';
+          LabNo := FormatFloat('000000', StrtoInt(Copy(SAMPLENO, 7, length(SAMPLENO))));
+        end;
+
+        for i := 0 to CLB_TestName.Items.Count - 1 do
+        begin
+          if CLB_TestName.State[i] = cbChecked then
+          begin
+            if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+                    // integration through devices
+            begin
+              SaveSampleCollectionIntegration(Arr_SampleTobeCollected[i, 0], gi_PatientID, gi_UserID, Gs_BillNo, SAMPLENO, LabNo, ls_date, serverdate.TodaysTime, trim(edt_remarks.Text));
+            end
+            else if gi_compilevalue = 564 then
+            begin
+              SaveSampleCollectionIntegration(Arr_SampleTobeCollected[i, 0], gi_PatientID, gi_UserID, Gs_BillNo, SAMPLENO, LabNo, ls_date, serverdate.TodaysTime, trim(edt_remarks.Text));
+            end
+            else
+            begin
+              SaveSampleCollection(Arr_SampleTobeCollected[i, 0], gi_PatientID, gi_UserID, Gs_BillNo, SAMPLENO, ls_date, TodaysTime, trim(edt_remarks.Text));
+            end;
+            li_PatientTestID := Arr_SampleTobeCollected[i, 0];
+          end;
+        end;
+      end;
+    except
+      try
+        if CB_PreSampleNO.Checked = true then
+        begin
+          if gi_datesystem = 0 then
+            Edit_PreviousSampleNo.Text := GetSampleNoByDate(gi_PatientID, ls_date)
+          else
+            Edit_PreviousSampleNo.Text := GetPreviousSampleNo(gi_PatientID);
+
+          SAMPLENO := Edit_PreviousSampleNo.Text;
+          if SAMPLENO = '' then
+            SAMPLENO := GetNextSampleNo;
+        end
+        else
+          SAMPLENO := GetNextSampleNo;
+
+        if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+        begin
+          if gs_DepType = 'H' then
+          begin
+            LabNo := '0';
+            Edit_LabNo.Visible := False;
+            Label_Labno.Visible := False;
+            SpeedButton5.Visible := False;
+          end
+          else if gs_DepType = 'R' then
+          begin
+            LabNo := '0';
+            Edit_LabNo.Visible := False;
+            Label_Labno.Visible := False;
+            SpeedButton5.Visible := False;
+          end
+          else
+          begin
+            labno := '';
+            LabNo := FormatFloat('000000', StrtoInt(Copy(SAMPLENO, 7, length(SAMPLENO))));
+          end;
+
+          for i := 0 to CLB_TestName.Items.Count - 1 do
+          begin
+            if CLB_TestName.State[i] = cbChecked then
+            begin
+              if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+                          // integration through devices
+              begin
+                SaveSampleCollectionIntegration(Arr_SampleTobeCollected[i, 0], gi_PatientID, gi_UserID, Gs_BillNo, SAMPLENO, LabNo, ls_date, serverdate.TodaysTime, trim(edt_remarks.Text));
+              end
+              else if gi_compilevalue = 564 then
+              begin
+                SaveSampleCollectionIntegration(Arr_SampleTobeCollected[i, 0], gi_PatientID, gi_UserID, Gs_BillNo, SAMPLENO, LabNo, ls_date, serverdate.TodaysTime, trim(edt_remarks.Text));
+              end
+              else
+              begin
+                SaveSampleCollection(Arr_SampleTobeCollected[i, 0], gi_PatientID, gi_UserID, Gs_BillNo, SAMPLENO, ls_date, serverdate.TodaysTime, trim(edt_remarks.Text));
+              end;
+              li_PatientTestID := Arr_SampleTobeCollected[i, 0];
+            end;
+          end;
+        end;
+      except
+        try
+          if CB_PreSampleNO.Checked = true then
+          begin
+            if gi_datesystem = 0 then
+              Edit_PreviousSampleNo.Text := GetSampleNoByDate(gi_PatientID, ls_date)
+            else
+              Edit_PreviousSampleNo.Text := GetPreviousSampleNo(gi_PatientID);
+
+            SAMPLENO := Edit_PreviousSampleNo.Text;
+            if SAMPLENO = '' then
+              SAMPLENO := GetNextSampleNo;
+          end
+          else
+            SAMPLENO := GetNextSampleNo;
+
+          if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+          begin
+            if gs_DepType = 'H' then
+            begin
+              LabNo := '0';
+              Edit_LabNo.Visible := False;
+              Label_Labno.Visible := False;
+              SpeedButton5.Visible := False;
+            end
+            else if gs_DepType = 'R' then
+            begin
+              LabNo := '0';
+              Edit_LabNo.Visible := False;
+              Label_Labno.Visible := False;
+              SpeedButton5.Visible := False;
+            end
+            else
+            begin
+              labno := '';
+              LabNo := FormatFloat('000000', StrtoInt(Copy(SAMPLENO, 7, length(SAMPLENO))));
+            end;
+
+            for i := 0 to CLB_TestName.Items.Count - 1 do
+            begin
+              if CLB_TestName.State[i] = cbChecked then
+              begin
+                if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+                                  // integration through devices
+                begin
+                  SaveSampleCollectionIntegration(Arr_SampleTobeCollected[i, 0], gi_PatientID, gi_UserID, Gs_BillNo, SAMPLENO, LabNo, ls_date, serverdate.TodaysTime, trim(edt_remarks.Text));
+                end
+                else if gi_compilevalue = 564 then
+                begin
+                  SaveSampleCollectionIntegration(Arr_SampleTobeCollected[i, 0], gi_PatientID, gi_UserID, Gs_BillNo, SAMPLENO, LabNo, ls_date, serverdate.TodaysTime, trim(edt_remarks.Text));
+                end
+                else
+                begin
+                  SaveSampleCollection(Arr_SampleTobeCollected[i, 0], gi_PatientID, gi_UserID, Gs_BillNo, SAMPLENO, ls_date, serverdate.TodaysTime, trim(edt_remarks.Text));
+                end;
+                li_PatientTestID := Arr_SampleTobeCollected[i, 0];
+              end;
+            end;
+
+          end;
+        except
+          if CB_PreSampleNO.Checked = true then
+          begin
+            if gi_datesystem = 0 then
+              Edit_PreviousSampleNo.Text := GetSampleNoByDate(gi_PatientID, ls_date)
+            else
+              Edit_PreviousSampleNo.Text := GetPreviousSampleNo(gi_PatientID);
+
+            SAMPLENO := Edit_PreviousSampleNo.Text;
+            if SAMPLENO = '' then
+              SAMPLENO := GetNextSampleNo;
+          end
+          else
+            SAMPLENO := GetNextSampleNo;
+
+          if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+          begin
+            if gs_DepType = 'H' then
+            begin
+              LabNo := '0';
+              Edit_LabNo.Visible := False;
+              Label_Labno.Visible := False;
+              SpeedButton5.Visible := False;
+            end
+            else if gs_DepType = 'R' then
+            begin
+              LabNo := '0';
+              Edit_LabNo.Visible := False;
+              Label_Labno.Visible := False;
+              SpeedButton5.Visible := False;
+            end
+            else
+            begin
+              labno := '';
+              LabNo := FormatFloat('000000', StrtoInt(Copy(SAMPLENO, 7, length(SAMPLENO))));
+            end;
+
+            for i := 0 to CLB_TestName.Items.Count - 1 do
+            begin
+              if CLB_TestName.State[i] = cbChecked then
+              begin
+                if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+                                    // integration through devices
+                begin
+                  SaveSampleCollectionIntegration(Arr_SampleTobeCollected[i, 0], gi_PatientID, gi_UserID, Gs_BillNo, SAMPLENO, LabNo, ls_date, serverdate.TodaysTime, trim(edt_remarks.Text));
+                end
+                else if gi_compilevalue = 564 then
+                begin
+                  SaveSampleCollectionIntegration(Arr_SampleTobeCollected[i, 0], gi_PatientID, gi_UserID, Gs_BillNo, SAMPLENO, LabNo, ls_date, serverdate.TodaysTime, trim(edt_remarks.Text));
+                end
+                else
+                begin
+                  SaveSampleCollection(Arr_SampleTobeCollected[i, 0], gi_PatientID, gi_UserID, Gs_BillNo, SAMPLENO, ls_date, serverdate.TodaysTime, trim(edt_remarks.Text));
+                end;
+                li_PatientTestID := Arr_SampleTobeCollected[i, 0];
+              end;
+            end;
+
+          end;
+        end;
+
+      end;
+
+    end;
+    DM_Hospital.DB.Commit;
+  except
+    DM_Hospital.DB.Rollback;
+  end;
+
+  { if gi_datesystem=0 then
+    Edit_PreviousSampleNo.Text := GetSampleNoByDate(gi_PatientID,ps_todaysdate)
+    else
+    begin
+    Edit_PreviousSampleNo.Text := GetPreviousSampleNo(gi_PatientID);
+    Edit_LabNo.Text:=GetPreviousLabNo(gi_PatientID);
+    end; }
+
+  {if gi_compilevalue in [9, 10, 11, 12, 14, 15] then       //2016-2-26
+  begin
+    if Edit_PreviousSampleNo.Text = '' then
+      Edit_PreviousSampleNo.Text := SAMPLENO;
+    // labno:=StringReplace(Copy(Edit_PreviousSampleNo.text,3), '-', '', [rfReplaceAll]);
+    // labno:=StringReplace(Copy(Edit_PreviousSampleNo.text,1), 'H', '', [rfReplaceAll]);
+    // labno:=StringReplace(Copy(Edit_PreviousSampleNo.text,1), 'N', '', [rfReplaceAll]);
+    // labno:=  FormatFloat('00000',StrtoInt(Copy(Edit_PreviousSampleNo.TEXT,9,length(Edit_PreviousSampleNo.TEXT))));
+    Edit_LabNo.Text := LabNo;
+  end;}
+
+  if gi_datesystem = 0 then
+  begin
+    Edit_PreviousSampleNo.Text := GetSampleNoByDate(gi_PatientID, ls_date);
+    Edit_LabNo.Text := GetLabNoByDate(gi_PatientID, ls_date);
+  end
+  else
+  begin
+    Edit_PreviousSampleNo.Text := GetPreviousSampleNo(gi_PatientID);
+    Edit_LabNo.Text := GetPreviousLabNo(gi_PatientID);
+  end;
+
+  LoadSampleTobeCollected(CLB_TestName, Gs_BillNo);
+  LoadCollectedSample(CLB_CollectedSample, Gs_BillNo);
+  // Query_TobeCollected.Close;
+  // Query_TobeCollected.Open;
+
+  // Query_SampleCollected.Close;
+  // Query_SampleCollected.Sql.SaveToFile('C:\SampleColl.Txt');
+  // Query_SampleCollected.Open;
+  Gs_BillNo := Lbl_BillNo.Caption;
+
+  QryBillList.Close;
+  QryBillList.Open;
+  // CB_PreSampleNO.Checked := true;
+  // ClearVariable;
+end;
+
+procedure TFrame_SampleCollection.BitBtn_SampleClick(Sender: TObject);
+var i:Integer;
+     Bottom,testname:string;
+     qry_dep,qry_datetime:TOraQuery;
+     refreshDate, ls_TestNameId: string;
+    refreshdays: Integer;
+    refresh_date: TDateEditX;
+begin
+     if gi_compileValue=12 then
+     begin
+          qry_DateTime:=TOraQuery.Create(nil);
+          SetPrinter('order printer');
+          with qry_DateTime do
+          begin
+               Close;
+               Session:=DM_Hospital.DB;
+               SQL.Clear;
+               SQL.Add('select max(sampletakentime) as sampletakentime from samplecollection where labno=' + Edit_LabNo.Text);
+               Open;
+          end;
+          ps_printtime:=qry_datetime.FieldByName('sampletakentime').AsString;
+          qry_datetime.Free;
+     end;
+
+
+     if gi_datesystem = 0 then
+     begin
+          try
+               refresh_date := TDateEditX.Create(nil);
+               refresh_date.ADDateAsText := TodaysDate;
+               refreshdays := (refresh_date.VSDateAsDays - StrtoInt(Se_CLDays.Text));
+               refresh_date.VSDateAsDays := refreshdays;
+               refreshDate := refresh_date.VSDateAsText;
+          finally
+               refresh_date.Free;
+          end;
+     end;
+
+     ls_TestNameId:='';
+     begin
+          for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+          begin
+               if CLB_CollectedSample.State[i] = cbChecked then
+               begin
+                    Bottom := CLB_CollectedSample.Items.Strings[i];
+
+                    if ls_TestNameId='' then
+                         ls_TestNameId:=IntToStr(Arr_CollectedSample[i,1])
+                    else
+                         ls_TestNameId:=ls_TestNameId+','+inttostr(Arr_CollectedSample[i,1]);
+               end;
+          end;
+     end;
+
+     with qry_master do
+      begin
+           Close;
+           Session:=DM_Hospital.DB;
+           SQL.Clear;
+           SQL.Add('select distinct tena_depid as depid from hs_tena_testname');
+           SQL.Add(' where tena_testnameID In ('+ls_TestNameId+')');
+           Open;
+      end;
+     begin
+          while not qry_master.Eof do
+          begin
+               Form_QrSampleCollectionReport :=TForm_QrSampleCollectionReport.Create(nil);
+               try
+                    with Form_QrSampleCollectionReport do
+                    begin
+                         pi_depid:=qry_master.FieldByName('depid').AsInteger;
+                         ps_patientid:=lbl_Hosno.Caption;
+                         ps_labno:=Edit_LabNo.Text;
+                         refreshdatereport:=refreshDate;
+                         ps_testnameID:=ls_TestNameId;
+                         LoadData;
+                         QRLabel4.Caption:=Lbl_Name.Caption;
+                         QRLabel10.Caption:=Lbl_Address.Caption;
+                         QRLabel11.Caption:=Edit_PreviousSampleNo.Text;
+                         QRLabel13.Caption:=Lbl_ContactNo.Caption;
+                         QRLabel17.Caption:=Lbl_AgeSex.Caption;
+                         QRLabel15.Caption:=lbl_Hosno.Caption;
+                         QuickRep1.Prepare;
+                         if Preview.Checked then
+                              QuickRep1.Preview
+                         else
+                              QuickRep1.Print;
+                    end;
+               finally
+                    Form_QrSampleCollectionReport.Free;
+               end;
+               qry_master.Next;
+          end;
+          qry_dep.Close;
+          qry_dep.Free;
+          qry_master.Close;
+          qry_master.Free;
+     end;
+end;
+
+procedure TFrame_SampleCollection.btn_RegisterMonitorClick(Sender: TObject);
+begin
+  FormMonitorRegister := TFormMonitorRegister.Create(nil);
+  with FormMonitorRegister do
+  begin
+    showmodal;
+  end;
+end;
+
+procedure TFrame_SampleCollection.btn_ReportRemainingClick(Sender: TObject);
+begin
+  FormReportRemaining := TFormReportRemaining.Create(nil);
+  with FormReportRemaining do
+  begin
+    showmodal;
+  end;
+end;
+
+procedure TFrame_SampleCollection.btn_SampleRegisterClick(Sender: TObject);
+begin
+  Form_SampleRegister := TForm_SampleRegister.Create(nil);
+  with Form_SampleRegister do
+  begin
+    showmodal;
+  end;
+end;
+
+procedure TFrame_SampleCollection.btn_SaveClick(Sender: TObject);
+begin
+     with OraQuery_updateinfo do
+     begin
+          Close;
+          Session:=DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add('update hs_pama_patientmain set');
+          SQL.Add('PAMA_PHONENO='+QuotedStr(Edit_contactno.Text));
+          SQL.Add(',PAMA_MOBILENO='+QuotedStr(Edit_mobileno.Text));
+          sql.Add(',PAMA_EMAIL='+QuotedStr(Edit_Email.Text));
+          SQL.Add('where pama_patientid='+lbl_Hosno.Caption);
+          ExecSQL;
+          ShowDoneMessage;
+     end;
+end;
+
+procedure TFrame_SampleCollection.Button1Click(Sender: TObject);
+// Var
+// Qry: TOraQuery;
+// Qry1: TOraQuery;
+begin
+  // ProgressBar1.Visible := true;
+  // Qry := TOraQuery.Create(nil);
+  // Qry1 := TOraQuery.Create(nil);
+  // with Qry do
+  // begin
+  // Close;
+  // SQL.Clear;
+  // Session := DM_Hospital.DB;
+  // SQL.Add('TRUNCATE TABLE TEST_DATA_UPLOAD');
+  // ExecSQL;
+  // SQL.Clear;
+  // SQL.Add('SELECT * FROM VW_TEST_DATA_UPLOAD');
+  // Open;
+  // FetchAll;
+  // ProgressBar1.Max := Qry.RecordCount;
+  // ProgressBar1.Min := 0;
+  // ProgressBar1.Position := 0;
+  // while not eof do
+  // begin
+  // with Qry1 do
+  // begin
+  // Close;
+  // Session := DM_Hospital.DB;
+  // SQL.Clear;
+  // SQL.Add('Insert into Test_Data_Upload (Patientid,PatientName,SampleNo,SampleTakenDate,SampleTakenTime,TestnameId,Testname');
+  // SQL.Add(',TestId,Test) Values (');
+  // SQL.Add(Qry.FieldByName('PatientID').AsString);
+  // SQL.Add(',' + #39 + Qry.FieldByName('PatientName').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('SampleNo').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('SampleTakenDate').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('SampleTakenTime').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('TestnameId').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('Testname').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('TestId').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('Test').AsString + #39);
+  // SQL.Add(')');
+  // ExecSQL;
+  // end;
+  // Next;
+  // ProgressBar1.Position := ProgressBar1.Position + 1;
+  // end;
+  // end;
+  // ProgressBar1.Visible := False;
+end;
+
+procedure TFrame_SampleCollection.Button2Click(Sender: TObject);
+// Var
+// Qry: TOraQuery;
+// Qry1: TOraQuery;
+begin
+  // ProgressBar1.Visible := true;
+  // Qry := TOraQuery.Create(nil);
+  // Qry1 := TOraQuery.Create(nil);
+  // with Qry do
+  // begin
+  // Close;
+  // SQL.Clear;
+  // Session := DM_Hospital.DB;
+  // SQL.Add('TRUNCATE TABLE TEST_DATA_DOWNLOAD');
+  // ExecSQL;
+  // SQL.Clear;
+  // SQL.Add('SELECT * FROM VW_TEST_DATA_UPLOAD');
+  // Open;
+  // FetchAll;
+  // ProgressBar1.Max := Qry.RecordCount;
+  // ProgressBar1.Min := 0;
+  // ProgressBar1.Position := 0;
+  // while not eof do
+  // begin
+  // with Qry1 do
+  // begin
+  // Close;
+  // Session := DM_Hospital.DB;
+  // SQL.Clear;
+  // SQL.Add('Insert into Test_Data_Download (Patientid,PatientName,SampleNo,SampleTakenDate,SampleTakenTime,TestnameId,Testname');
+  // SQL.Add(',TestId,Test) Values (');
+  // SQL.Add(Qry.FieldByName('PatientID').AsString);
+  // SQL.Add(',' + #39 + Qry.FieldByName('PatientName').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('SampleNo').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('SampleTakenDate').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('SampleTakenTime').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('TestnameId').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('Testname').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('TestId').AsString + #39);
+  // SQL.Add(',' + #39 + Qry.FieldByName('Test').AsString + #39);
+  // SQL.Add(')');
+  // ExecSQL;
+  // SQL.Clear;
+  // SQL.Add('Update Test_Data_Upload Set Read_Status=''Y'' ');
+  // SQL.Add('Where PatientId=' + Qry.FieldByName('PatientId').AsString);
+  // SQL.Add('And TestId=' + Qry.FieldByName('TestId').AsString);
+  // SQL.Add('And SampleNO=' + #39 + Qry.FieldByName('SampleNo').AsString + #39);
+  // ExecSQL;
+  // end;
+  // Next;
+  // ProgressBar1.Position := ProgressBar1.Position + 1;
+  // end;
+  // end;
+  // ProgressBar1.Visible := False;
+end;
+
+procedure TFrame_SampleCollection.Button3Click(Sender: TObject);
+begin
+  try
+    Form_SampleReceive := TForm_SampleReceive.Create(Nil);
+    Form_SampleReceive.showmodal;
+  finally
+    Form_SampleReceive.Free;
+    bb_RefreshTobecollClick(Sender);
+  end;
+end;
+
+procedure TFrame_SampleCollection.Button4Click(Sender: TObject);
+begin
+  try
+    Form_ServiceDetail := TForm_ServiceDetail.Create(Nil);
+    Form_ServiceDetail.showmodal;
+  finally
+    Form_ServiceDetail.Free;
+  end;
+end;
+
+procedure TFrame_SampleCollection.BB_ModifyClick(Sender: TObject);
+var
+  ls_date: string;
+begin
+     ls_date := Query_SampleCollected.FieldByName('TestDate').AsString;
+     // Ps_BarcodeDate:=  ls_date;
+     PageControl1.Pages[0].TabVisible := False;
+     PageControl1.Pages[1].TabVisible := False;
+     PageControl1.Pages[2].TabVisible := true;
+     LoadPatientData(gi_PatientID);
+     Edit_SC_HosNo.Text := IntToStr(gi_PatientID);
+     lbl_Hosno.Caption := IntToStr(gi_PatientID);
+     Lbl_Name.Caption := Gs_PatientName;
+     // Lbl_AgeSex.Caption := Gs_Age + ' ' + Copy(Gs_agetype, 1, 1) + ' /' + Copy(Gs_Gender, 1, 1);
+     Lbl_AgeSex.Caption := Gs_Age + ' / ' + Copy(Gs_Gender, 1, 1);
+     Lbl_Address.Caption := Gs_Address;
+     Lbl_ContactNo.Caption := Gs_PhoneNo;
+     lbl_mobileno.Caption := Gs_MobileNo;
+     Lbl_BillNo.Caption := Gs_BillNo;
+     QryBillList := TOraQuery.Create(nil);
+     DSQryBillList := TDataSource.Create(nil);
+     DSQryBillList.DataSet := QryBillList;
+     SpeedButton4.Enabled := False;
+     SpinEdit1.Enabled := False;
+     with QryBillList do
+     begin
+       Close;
+       Session := DM_Hospital.DB;
+       SQL.Clear;
+       SQL.Add('Select distinct billno,TestDate,patientid,sampleno from Vw_Sample_Collected');
+       SQL.Add('Where Patientid=' + IntToStr(gi_PatientID));
+       SQL.Add('And BillNo=' + #39 + Gs_BillNo + #39);
+       sql.Add('order by testdate desc');
+       Open;
+       AfterScroll := TobeCollectedAfterScroll;
+     end;
+     with DBGrid1 do
+     begin
+       DataSource := DSQryBillList;
+       Columns[0].FieldName := 'TestDate';
+       Columns[1].FieldName := 'Billno';
+     end;
+     if gb_IsMultipleSampleNo = true then
+     begin
+       Label38.Visible := true;
+       DBGrid6.Visible := true;
+       with Query_SampleNoList do
+       begin
+         Close;
+         SQL.Clear;
+         SQL.Add(' select Distinct sampleNo,SampleTakenTime from samplecollection Where PatientID=' + IntToStr(gi_PatientID));
+         SQL.Add(' and SampleTakenDate=' + #39 + ls_date + #39);
+         sql.Add('and sampleno='+QuotedStr(QryBillList.FieldByName('sampleno').AsString));
+         SQL.Add(' Order by Cast(SubStr(SampleNo,9,3) as Integer) Desc,SampleTakenTime Desc');
+         // sql.savetofile('c:\checknewsys.txt');
+         Open;
+       end;
+     end
+     else
+     begin
+       Label38.Visible := False;
+       DBGrid6.Visible := False;
+     end;
+
+     LoadSampleTobeCollected(CLB_TestName, Gs_BillNo);
+     LoadCollectedSampleAfterModify(CLB_CollectedSample, Gs_BillNo,QryBillList.FieldByName('sampleno').AsString);
+     //LoadCollectedSample(CLB_CollectedSample, Gs_BillNo);
+     //Edit_PreviousSampleNo.Text := GetSampleNoByDate(gi_PatientID, ls_date);
+     Edit_PreviousSampleNo.Text:=GetSampleNoByDateInModify(gi_PatientID, ls_date,QryBillList.FieldByName('sampleno').AsString);
+
+     if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,22,23,24,25,26] then
+     begin
+       if gs_UserDepId = '30,31' then
+       begin
+         Edit_LabNo.Visible := False;
+         Label_Labno.Visible := False;
+         SpeedButton5.Visible := False;
+       end
+       else if gs_UserDepId = '32,34' then
+       begin
+         Edit_LabNo.Visible := False;
+         Label_Labno.Visible := False;
+         SpeedButton5.Visible := False;
+       end
+       else
+       begin
+             if gi_datesystem=0 then
+         //Edit_LabNo.Text:=GetLabNoByDate(gi_PatientID,ls_date)
+         Edit_LabNo.Text:=GetLabNoByDateAfterCollection(gi_PatientID, ls_date,QryBillList.FieldByName('sampleno').AsString)
+         else
+         Edit_LabNo.Text := GetPreviousLabNo(gi_PatientID);
+         //Edit_LabNo.Text := '';
+         //Edit_LabNo.Text := FormatFloat('000000', StrtoInt
+             //(Copy(Edit_PreviousSampleNo.Text, 7, length
+                 //(Edit_PreviousSampleNo.Text))));
+       end;
+     end
+     else if gi_compilevalue = 564 then
+     begin
+       if gs_UserDepId = '30,31' then
+       begin
+         Edit_LabNo.Visible := False;
+         Label_Labno.Visible := False;
+         SpeedButton5.Visible := False;
+       end
+       else if gs_UserDepId = '32,34' then
+       begin
+         Edit_LabNo.Visible := False;
+         Label_Labno.Visible := False;
+         SpeedButton5.Visible := False;
+       end
+       else
+       begin
+         // Edit_LabNo.Text:=GetLabNoByDate(gi_PatientID,ls_date);
+         Edit_LabNo.Text := '';
+         Edit_LabNo.Text := FormatFloat('000000', StrtoInt(Copy(Edit_PreviousSampleNo.Text, 7, length(Edit_PreviousSampleNo.Text))));
+       end;
+     end;
+
+     CB_PreSampleNO.Checked := true;
+     DBGrid6.Visible := False;
+     Label38.Visible := False;
+     if gb_IsMultipleSampleNo = true then
+     begin
+       Label38.Visible := true;
+       DBGrid6.Visible := true;
+       with Query_SampleNoList do
+       begin
+         Close;
+         SQL.Clear;
+         SQL.Add(' select Distinct sampleNo,SampleTakenTime from samplecollection Where PatientID=' + IntToStr(gi_PatientID));
+         SQL.Add(' and SampleTakenDate=' + #39 + ls_date + #39);
+         sql.Add('and sampleno='+QuotedStr(QryBillList.FieldByName('sampleno').AsString));
+         SQL.Add(' Order by Cast(SubStr(SampleNo,9,3) as Integer) Desc,SampleTakenTime Desc');
+         Open;
+       end;
+       // Edit_PreviousSampleNo.Text := '';  //che
+     end
+     else
+     begin
+       Label38.Visible := False;
+       DBGrid6.Visible := False;
+     end;
+     edt_remarks.Text := getsampleremarks(gs_SampleNo);
+     edt_remarks.Enabled := False;
+     if gi_compileValue=12 then
+     begin
+        lbl_patienttype.Visible:=true;
+        lbl_type.Visible:=True;
+        lbl_type.Caption:=GetOPDWard(Gs_BillNo);
+     end;
+     // Edit_PreviousSampleNo.Text := '';
+end;
+
+procedure TFrame_SampleCollection.BB_RefreshClick(Sender: TObject);
+var
+  i: Integer;
+  depid, ls_LabNo: string;
+  refreshDate: string;
+  refreshdays: Integer;
+  refresh_date: TDateEditX;
+begin
+  Gb_ShowTestWithoutResult := true;
+  {if gi_compilevalue in [9, 12, 14, 15,16,17] then
+  begin
+    gi_datesystem := 0
+  end
+  else
+    gi_datesystem := 1; }
+
+  if gi_datesystem = 0 then
+  begin
+    try
+      refresh_date := TDateEditX.Create(nil);
+      //refresh_date.ADDateAsText := TodaysDate;
+      refreshdays := (refresh_date.VSDateAsDays - StrtoInt(Se_CLDays.Text));
+      refresh_date.VSDateAsDays := refreshdays;
+      refreshDate := refresh_date.VSDateAsText;
+    finally
+      refresh_date.Free;
+    end;
+  end;
+
+  Se_CLDays.Text := IntToStr(Gi_NoofDays);
+  if gi_datesystem = 0 then
+    Ps_TodaysDate := serverdate.TodaysDateVS   //nepali date
+  else
+    Ps_TodaysDate := serverdate.TodaysDate;   //english date
+  gs_From := Dex_CLFrom.Text;
+  gs_to := Dex_CLTo.Text;
+  for i := 0 to CLB_Department.Items.Count - 1 do
+  begin
+    if CLB_Department.State[i] = cbChecked then
+    begin
+      if depid = '' then
+        depid := Arr_CLB_DepartmentID[i, 0]
+      else
+        depid := depid + ',' + Arr_CLB_DepartmentID[i, 0];
+    end;
+    Gs_SelectedDepList := depid;
+  end;
+
+  with Query_samplecollectedright do
+  begin
+    Close;
+    Session := DM_Hospital.DB;
+    if StrtoInt(Se_CLDays.Text) > 0 then
+    begin
+      if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 12,15,16,17,18,19,20,21,22] then
+        SQL[1] := 'Where Testdate>=' + quotedstr(refreshDate)
+      else
+        SQL[1] := 'Where Testdate>= TO_CHAR(SYSDATE-' + Se_CLDays.Text + ',''YYYY/MM/DD'')'
+    end
+    else
+    begin
+      if CB_Date.Checked = true then
+        SQL[1] := 'Where Testdate Between ' + #39 + gs_From + #39 + ' And ' + #39 + gs_to + #39
+      else
+        SQL[1] := 'Where Testdate =' + #39 + Ps_TodaysDate + #39;
+    end;
+    if depid <> '' then
+      SQL[2] := 'And DepID in (' + depid + ')'
+    else
+      SQL[2] := 'And 99=99';
+
+
+
+
+    // if gs_DepType='PATHOLOGY' then
+    // SQL[3]:='And (DepType='+#39+gs_DepType+#39+' Or ReportByLab=''Y'') '
+    // else
+
+    SQL[3] := 'And DepID in (' + gs_UserDepId + ') And DepType=' + #39 + gs_DepType + #39;
+
+    if rb_underanalysis.Checked then
+      SQL[5] := 'and testprogressstatus=3'
+    else
+      SQL[5] := 'and 1=1';
+
+    if (CB_LAbNo.Checked=True) and (Edit_SearchCollectedList.Text<>'') then
+    begin
+        //ls_LabNo := FormatFloat('000000', StrToFloat(Copy(gs_SampleNo, Pos('-', gs_SampleNo) + 2, 6)));
+        SQL[1]:='where 1=1';
+        SQL[6]:='and labno='+FormatFloat('000000',StrToFloat(Trim(Edit_SearchCollectedList.Text)));
+    end
+    else
+       SQL[6]:='and 1=1';
+
+    //SQL.SAVETOFILE('C:\TESTRIGHTSAMPLE111.TXT');
+    Open;
+  end;
+
+  if Query_samplecollectedright.FieldByName('PatientId').AsString <> '' then
+  begin
+    gi_PatientID := Query_samplecollectedright.FieldByName('PatientId').AsInteger;
+    gs_SampleNo := Query_samplecollectedright.FieldByName('SampleNo').AsString;
+    try
+      ls_LabNo := FormatFloat('000000', StrToFloat(Copy(gs_SampleNo, Pos('-', gs_SampleNo) + 2, 6)));
+    except
+      ls_LabNo := gs_SampleNo;
+    end;
+  end
+  else
+  begin
+    gi_PatientID := 0;
+    gs_SampleNo := '';
+  end;
+
+  if Query_samplecollectedright.FieldByName('PatientId').AsString <> '' then
+  begin
+    gi_PatientID := Query_samplecollectedright.FieldByName('PatientId').AsInteger;
+    gs_SampleNo := Query_samplecollectedright.FieldByName('SampleNo').AsString;
+    try
+      ls_LabNo := FormatFloat('000000', StrToFloat(Copy(gs_SampleNo, Pos('-', gs_SampleNo) + 2, 6)));
+    except
+      ls_LabNo := gs_SampleNo;
+    end;
+  end
+  else
+  begin
+    gi_PatientID := 0;
+    gs_SampleNo := '';
+  end;
+
+  with Query_SampleCollected do
+  begin
+    Close;
+    if StrtoInt(Se_CLDays.Text) > 0 then
+      if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 12, 15,16,17,18,19,20,21,22] then
+      begin
+        SQL[1] := 'Where Testdate>= GetNepDateFromEng(TO_CHAR(SYSDATE-' + Se_CLDays.Text + ',''YYYY/MM/DD''))';
+      end
+      else
+      begin
+        SQL[1] := 'Where Testdate>= TO_CHAR(SYSDATE-' + Se_CLDays.Text + ',''YYYY/MM/DD'')';
+      end
+    else
+    begin
+      if CB_Date.Checked = true then
+        SQL[1] := 'Where Testdate Between ' + #39 + gs_From + #39 + ' And ' + #39 + gs_to + #39
+      else
+        SQL[1] := 'Where Testdate =' + #39 + Ps_TodaysDate + #39;
+    end;
+    if depid <> '' then
+      SQL[2] := 'And DepID in (' + depid + ')'
+    else
+      SQL[2] := 'And 99=99';
+
+    if CB_LAbNo.Checked = False then
+      SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID)
+    else
+    begin
+      SQL[1]:='where 1=1';
+      SQL[4] := 'And PatientTestId in (select PatientTestId from SampleCollection where LabNo=' + #39 + ls_LabNo + #39 + ')';
+    end;
+    // SQL[4] := 'And PatientTestId in (select PatientTestId from SampleCollection where LabNo='+StringReplace(Edt_GlobalSearch.Text,'''','''''',[rfReplaceAll])+')';
+
+    // if gs_DepType='PATHOLOGY' then
+    // SQL[5]:='And (DepType='+#39+gs_DepType+#39+' Or ReportByLab=''Y'') '
+    // else
+    SQL[5] := 'And DepID in (' + gs_UserDepId + ') And DepType=' + #39 + gs_DepType + #39;
+    if Cb_NoResult.Checked then
+    begin
+      SQL[6] := 'And TestProgressStatus=' + IntToStr(gi_SampleColl);
+      SQL[7] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+      Gb_ShowTestWithoutResult := true;
+    end
+    else
+    begin
+      SQL[6] := 'And 99=99';
+      SQL[7] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+      Gb_ShowTestWithoutResult := False;
+    end;
+
+    if rb_underanalysis.Checked then
+      SQL[8] := 'and testprogressstatus=3'
+    else
+      SQL[8] := 'and 1=1';
+   // SQL.SaveToFile('C:\samplecolected.Txt');
+    Open;
+    cb_tick.Items.Clear;
+    i := 0;
+    SetLength(Arr_PTestNameID, RecordCount);
+    while not eof do
+    begin
+      Arr_PTestNameID[i] := FieldByName('PatientTestID').AsString;
+      cb_tick.Items.Add('');
+      cb_tick.Height := cb_tick.Height + 20;
+      Inc(i);
+      Next;
+    end;
+  end;
+end;
+
+procedure TFrame_SampleCollection.Dbgrid5KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+     if Key = vk_f1 then
+       BB_CollectSampleClick(Sender);
+     if Key = vk_f2 then
+       BB_CollectedListClick(Sender);
+end;
+
+procedure TFrame_SampleCollection.DBGrid6DblClick(Sender: TObject);
+begin
+     if CB_PreSampleNO.Checked = true then
+     begin
+          Edit_PreviousSampleNo.Text := Query_SampleNoList.FieldByName('SampleNo').AsString;
+          Edit_LabNo.Text := FormatFloat('000000', StrtoInt(Copy(Edit_PreviousSampleNo.Text, 7, length(Edit_PreviousSampleNo.Text))));
+          Edit_PreviousSampleNo.SetFocus;
+     end;
+end;
+
+procedure TFrame_SampleCollection.AlternateReportPrint_BNB(refreshdate:string);
+var  x,y,i,pi_depid,yval,k,R,li_TestNameId:Integer;
+     QRY,qry_dep{,qry_master}:TOraQuery;
+     Bottom,testname:string;
+begin
+//
+end;
+
+procedure TFrame_SampleCollection.BB_CollectedListClick(Sender: TObject);
+begin
+     PageControl1.Pages[0].TabVisible := False;
+     PageControl1.Pages[2].TabVisible := False;
+     PageControl1.Pages[1].TabVisible := true;
+     Dex_CLFrom.Text := gs_From;
+     Dex_CLTo.Text := gs_to;
+     SpeedButton6.Caption := gs_DateCaption;
+     SpeedButton7.Caption := gs_DateCaption;
+     labelsample.Visible := False;
+     Edit_sampleno.Visible := False;
+     CheckBox_ismanual.Visible := False;
+     BB_RefreshClick(Sender);
+     CB_LAbNo.Checked:=True;
+     // Timer.Enabled := true;
+
+end;
+
+procedure TFrame_SampleCollection.Dbgrid5CellClick(Column: TColumn);
+begin
+     lbl_TestCaption.Caption := GetTestListCaption(gi_PatientID, Gs_BillNo);
+end;
+
+procedure TFrame_SampleCollection.Dbgrid5DblClick(Sender: TObject);
+begin
+  if gi_compilevalue = 5 then
+  begin
+    CheckBox_ismanual.Checked := true;
+  end
+  else
+    CheckBox_ismanual.Checked := False;
+  gi_PatientID := Query_TobeCollected.FieldByName('PatientId').AsInteger;
+  SpinEdit1.Text := Se_DaysTBC.Text;
+  BB_CollectSampleClick(Sender);
+end;
+
+procedure TFrame_SampleCollection.BB_CollectSampleClick(Sender: TObject);
+var
+  ls_date: string;
+  Column: TColumn;
+begin
+  Edit_LabNo.Text := '';
+  CheckBox_ismanual.Checked := False;
+  labelsample.Visible := False;
+  Edit_sampleno.Visible := False;
+  // Edit_SearchTBC.SetFocus;
+  CheckBox_ismanual.Visible := False;
+  if gi_compilevalue = 5 then
+  begin
+    CheckBox_ismanual.Checked := true;
+    labelsample.Visible := true;
+    Edit_sampleno.Visible := true;
+    CheckBox_ismanual.Visible := true;
+  end;
+  gi_PatientID := Query_tobecollectedr.FieldByName('PatientId').AsInteger;
+  if gi_datesystem = 0 then
+    ls_date := TodaysDateVS        //nepali date
+  else
+    ls_date := TodaysDate;         //english date
+  PageControl1.Pages[0].TabVisible := False;
+  PageControl1.Pages[1].TabVisible := False;
+  PageControl1.Pages[2].TabVisible := true;
+  LoadPatientData(gi_PatientID);
+  Edit_SC_HosNo.Text := IntToStr(gi_PatientID);
+  lbl_Hosno.Caption := IntToStr(gi_PatientID);
+  Lbl_Name.Caption := Gs_PatientName;
+  Lbl_AgeSex.Caption := Gs_Age + ' ' + ' /' + Gs_Gender;
+  Lbl_Address.Caption := Gs_Address;
+  Lbl_ContactNo.Caption := Gs_PhoneNo;
+  lbl_mobileno.Caption := Gs_MobileNo;
+  Lbl_BillNo.Caption := Gs_BillNo;
+  QryBillList := TOraQuery.Create(nil);
+  DSQryBillList := TDataSource.Create(nil);
+  DSQryBillList.DataSet := QryBillList;
+  SpeedButton4.Enabled := true;
+  SpinEdit1.Enabled := true;
+  SpinEdit1.Text := Se_DaysTBC.Text;
+  edt_remarks.Text := '';
+  edt_remarks.Enabled := true;
+  with QryBillList do
+  begin
+    Close;
+    Session := DM_Hospital.DB;
+    SQL.Clear;
+    SQL.Add('Select distinct billno, testdate,testtime,patientid from Vw_Sample_To_be_Collected');
+    SQL.Add('Where Patientid=' + IntToStr(gi_PatientID));
+    if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 12, 14, 15,16,17,18,19,20,22,23,24,25,26] then
+    begin
+      SQL.Add('And DepID in (' + gs_UserDepId + ') and testdate =(select GetNepDateFromEng(TO_CHAR(SYSDATE,''YYYY/MM/DD''))DATESYS from dual)');
+    end
+    else if gi_compilevalue = 10 then
+    begin
+      SQL.Add('And DepID in (' + gs_UserDepId + ') and testdate =(select TO_CHAR(SYSDATE,''YYYY/MM/DD'')DATESYS from dual)');
+    end
+    else if gi_compilevalue in [11] then
+    begin
+      SQL.Add('And DepID in (' + gs_UserDepId + ') and testdate =(select TO_CHAR(SYSDATE,''YYYY/MM/DD'')DATESYS from dual)');
+    end
+    else if gi_compilevalue = 564 then
+    begin
+      SQL.Add('And DepID in (' + gs_UserDepId + ') and testdate =(select TO_CHAR(SYSDATE,''YYYY/MM/DD'')DATESYS from dual)');
+    end
+    else
+    begin
+      SQL.Add('And DepID in (' + gs_UserDepId + ') and testdate =(select TO_CHAR(SYSDATE,''YYYY/MM/DD'')DATESYS from dual)');
+    end;
+    // sql.SaveToFile('c:\bill.txt');
+    Open;
+    AfterScroll := TobeCollectedAfterScroll;
+  end;
+  SpeedButton4Click(Sender);
+  with DBGrid1 do
+  begin
+    DataSource := DSQryBillList;
+    Columns[0].FieldName := 'TestDate';
+    Columns[1].FieldName := 'Billno';
+  end;
+  LoadSampleTobeCollected(CLB_TestName, Gs_BillNo);
+  DBGrid1CellClick(Column);
+  //LoadCollectedSample(CLB_CollectedSample, Gs_BillNo);
+  CLB_CollectedSample.Clear;
+  Cb_TestNameAll.Checked := true;
+  Cb_TestNameAllClick(Sender);
+  Edit_PreviousSampleNo.Text := GetSampleNoByDate(gi_PatientID, ls_date);
+  Edit_PreviousSampleNo.Text := '';
+
+  if gb_IsMultipleSampleNo = true then
+  begin
+    Label38.Visible := true;
+    DBGrid6.Visible := true;
+    with Query_SampleNoList do
+    begin
+      Close;
+      SQL.Clear;
+      SQL.Add(' select Distinct sampleNo,SampleTakenTime from samplecollection Where PatientID=' + IntToStr(gi_PatientID));
+      SQL.Add(' and SampleTakenDate=' + #39 + ls_date + #39);
+      SQL.Add(' Order by Cast(SubStr(SampleNo,9,3) as Integer) Desc,SampleTakenTime Desc');
+      Open;
+    end;
+  end
+  else
+  begin
+    Label38.Visible := False;
+    DBGrid6.Visible := False;
+  end;
+  if gi_compileValue in[14] then
+  begin
+       //CB_CPreview.Visible:=True;
+       Preview.Visible:=True;
+       BitBtn_Sample.Visible:=True;
+  end;
+
+  { if Edit_PreviousSampleNo.Text <> '' then
+    CB_PreSampleNO.Checked := true; }
+  with OraQuery_updateinfo do
+  begin
+       Close;
+       Session:=DM_Hospital.DB;
+       SQL.Clear;
+       SQL.Add('select * from hs_pama_patientmain');
+       SQL.Add('where pama_patientid='+IntToStr(gi_PatientID));
+       Open;
+  end;
+     if OraQuery_updateinfo.FieldByName('pama_phoneno').AsString<>'' then
+          CheckBox_UpdateInfo.Checked:=True;
+     Edit_contactno.Text:=OraQuery_updateinfo.FieldByName('pama_phoneno').AsString;
+     Edit_mobileno.Text:=OraQuery_updateinfo.FieldByName('PAMA_MOBILENO').AsString;
+     Edit_Email.Text:=OraQuery_updateinfo.FieldByName('PAMA_EMAIL').AsString;
+     lbl_patienttype.Visible:=False;
+     lbl_type.Visible:=False;
+     //lbl_type.Caption:=GetOPDWard(Gs_BillNo);
+
+end;
+
+procedure TFrame_SampleCollection.CB_CollectedSampleAllClick(Sender: TObject);
+var
+  i: Integer;
+begin
+  if CB_CollectedSampleAll.Checked = true then
+  begin
+    for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+      CLB_CollectedSample.State[i] := cbChecked;
+  end
+  else
+  begin
+    for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+      CLB_CollectedSample.State[i] := cbUnchecked;
+  end;
+end;
+
+procedure TFrame_SampleCollection.Cb_TestNameAllClick(Sender: TObject);
+var
+  i: Integer;
+begin
+  if Cb_TestNameAll.Checked = true then
+  begin
+    for i := 0 to CLB_TestName.Items.Count - 1 do
+      CLB_TestName.State[i] := cbChecked;
+  end
+  else
+  begin
+    for i := 0 to CLB_TestName.Items.Count - 1 do
+      CLB_TestName.State[i] := cbUnchecked;
+  end;
+end;
+
+procedure TFrame_SampleCollection.cb_tickClick(Sender: TObject);
+var
+  i: Integer;
+begin
+  Gs_SelectedPatientTestID := '';
+  for i := 0 to cb_tick.Items.Count - 1 do
+  begin
+    if cb_tick.State[i] = cbChecked then
+      if Gs_SelectedPatientTestID = '' then
+        Gs_SelectedPatientTestID := Arr_PTestNameID[i]
+      else
+        Gs_SelectedPatientTestID := Gs_SelectedPatientTestID + ',' + Arr_PTestNameID[i];
+  end;
+end;
+
+procedure TFrame_SampleCollection.CB_DeptypeCheckClick(Sender: TObject);
+begin
+     if CB_DeptypeCheck.ItemIndex=0 then
+          gs_DepType:='P'
+     else if CB_DeptypeCheck.ItemIndex=1 then
+          gs_DepType:='H'
+     else if cb_deptype.ItemIndex=2 then
+          gs_DepType:='R';
+
+     bb_RefreshTobecollClick(Sender);
+end;
+
+procedure TFrame_SampleCollection.Cb_HalfpageClick(Sender: TObject);
+begin
+  if Cb_Halfpage.Checked = true then
+    gb_isHalfPage := true
+  else
+    gb_isHalfPage := False;
+
+end;
+
+procedure TFrame_SampleCollection.Cb_HideIndicationClick(Sender: TObject);
+begin
+  if Cb_HideIndication.Checked then
+    gb_HideIndication := true
+  else
+    gb_HideIndication := False;
+end;
+
+procedure TFrame_SampleCollection.Cb_HideRangeClick(Sender: TObject);
+begin
+  if Cb_HideRange.Checked then
+    gb_HideUnitFlagRefrange := true
+  else
+    gb_HideUnitFlagRefrange := False;
+end;
+
+procedure TFrame_SampleCollection.CB_LAbNoClick(Sender: TObject);
+begin
+    { if gi_compileValue=21 then
+     begin
+          if CB_LAbNo.Checked=True then
+          begin
+             gb_searchbylabno:=True
+          end
+          else
+          if CB_LAbNo.Checked=False then
+          begin
+               gb_searchbylabno:=false;
+               Edit_SearchCollectedList.Clear;
+               //BB_CollectedListClick(Sender);
+               //BB_RefreshClick(Sender);
+          end;
+     end;
+               }
+end;
+
+procedure TFrame_SampleCollection.Cb_NoResultClick(Sender: TObject);
+var
+  Column: TColumn;
+begin
+  DBGrid3CellClick(Column);
+end;
+
+procedure TFrame_SampleCollection.CB_PreSampleNOClick(Sender: TObject);
+begin
+  if CB_PreSampleNO.Checked = False then
+    Edit_PreviousSampleNo.Text := '';
+end;
+
+procedure TFrame_SampleCollection.Cb_SampleSourceClick(Sender: TObject);
+begin
+  if Cb_SampleSource.Checked then
+    gb_HideSource := true
+  else
+    gb_HideSource := False;
+end;
+
+procedure TFrame_SampleCollection.Cb_SingleDepClick(Sender: TObject);
+begin
+  if Cb_SingleDep.Checked then
+    gb_SingleDep := true
+  else
+    gb_SingleDep := False;
+
+end;
+
+procedure TFrame_SampleCollection.cb_deptypeChange(Sender: TObject);
+begin
+     if cb_deptype.ItemIndex=0 then
+          gs_DepType:='P'
+     else if cb_deptype.ItemIndex=1 then
+          gs_DepType:='H'
+     else if cb_deptype.ItemIndex=2 then
+          gs_DepType:='R';
+
+     BB_RefreshClick(Sender);
+  {gs_DepType := trim(cb_deptype.Text);
+  BB_RefreshClick(Sender);}
+end;
+
+procedure TFrame_SampleCollection.CheckBox_UpdateInfoClick(Sender: TObject);
+begin
+     if CheckBox_UpdateInfo.Checked=true then
+          Panel_updateinfo.Visible:=True
+     else if CheckBox_UpdateInfo.Checked=False then
+          Panel_updateinfo.Visible:=False;
+
+end;
+
+constructor TFrame_SampleCollection.Create(AOwner: TComponent);
+var
+  Sender: TObject;
+begin
+  inherited;
+  CreateQuery;
+  gs_DepType := GetUserDepType(gi_UserID);
+  gb_HideIndication := true;
+  gb_HideUnitFlagRefrange := False;
+  gb_SingleDep := False;
+  gb_isHalfPage := False;
+  gb_HideSource := true;
+  Gs_SelectedPatientTestID := '';
+  cb_tick.Color := clWebLightBlue;
+
+  cb_deptype.ItemIndex:=0;
+  CB_DeptypeCheck.ItemIndex:=0;
+
+  if gs_CalledFrom = 'SAMPLE COLLECTION' then
+  begin
+    cb_tick.Visible := False;
+  end
+  else
+    cb_tick.Visible := False;
+  if gi_datesystem = 0 then
+    Ps_TodaysDate := serverdate.TodaysDateVS //nepali date
+  else
+    Ps_TodaysDate := serverdate.TodaysDate;  //english date
+  PageControl1.Pages[1].TabVisible := False;
+  PageControl1.Pages[2].TabVisible := False;
+  Dex_From.SystemOfDate := gi_datesystem;
+  Dex_To.SystemOfDate := gi_datesystem;
+  Dex_CLFrom.SystemOfDate := gi_datesystem;
+  Dex_CLTo.SystemOfDate := gi_datesystem;
+
+  Dex_From.Text := gs_From;
+  Dex_To.Text := gs_to;
+  // CB_Date.Checked := true;
+  SpeedButton2.Caption := gs_DateCaption;
+  SpeedButton3.Caption := gs_DateCaption;
+  Shape1.Brush.Color := clWebRosyBrown;
+  Shape2.Brush.Color := clWebGreen;
+  Shape3.Brush.Color := clWebDarkOrange;
+  bb_RefreshTobecollClick(Sender);
+
+  DBGrid3.Color := clWebLightSeaGreen;
+  DBGrid2.Color := clWebLightBlue;
+
+  DBGrid4.Color := clWebLightSeaGreen;
+  Dbgrid5.Color := clWebLightBlue;
+
+  DBGrid3.Columns[0].Title.Caption := Gs_PatientIdCaption;
+  DBGrid4.Columns[0].Title.Caption := Gs_PatientIdCaption;
+  Label16.Caption := Gs_PatientIdCaption;
+
+  if isfinallyclosed<>True then
+  LoadDepartmentINCheckListBox(CLB_Department);
+
+  if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+  begin
+    Edit_LabNo.Enabled := true;
+    Edit_LabNo.Visible := true;
+    Edit_LabNo.readonly := true;
+    Label_Labno.Enabled := true;
+    Label_Labno.Visible := true;
+    Edit_LabNo.Text := ''
+  end
+  else if gi_compilevalue = 564 then
+  begin
+    Edit_LabNo.Enabled := true;
+    Edit_LabNo.Visible := true;
+    Edit_LabNo.readonly := true;
+    Label_Labno.Enabled := true;
+    Label_Labno.Visible := true;
+    Edit_LabNo.Text := ''
+  end;
+
+  // edit_searchtbc.setfocus;
+
+  // cb_staffdepartment.ItemIndex:=cb_staffdepartment.Items.IndexOf(gs_DepType);
+  //cb_deptype.ItemIndex := cb_deptype.Items.IndexOf(gs_DepType);
+
+  if gi_compilevalue = 3 then
+    // chk_all.Checked:=True
+
+  else
+  begin
+    // cb_staffdepartment.Visible:=false;
+    //cb_deptype.Visible := False;
+    // Label40.Visible:=False;
+    //Label41.Visible := False;
+  end;
+  if gi_compileValue=12 then
+     CheckBox_UpdateInfo.Visible:=True
+     else
+     CheckBox_UpdateInfo.Visible:=False;
+
+     lbl_patienttype.Visible:=True;
+     lbl_type.Visible:=True;
+
+  if gs_CalledFrom = 'PATHOLOGY' then
+    grp_sampletracking.Visible := true
+  else if gs_CalledFrom = 'SAMPLE COLLECTION' then
+    grp_sampletracking.Visible := False;
+end;
+
+
+
+procedure TFrame_SampleCollection.DBGrid1CellClick(Column: TColumn);
+var
+  Sender: TObject;
+begin
+  Gs_BillNo := DBGrid1.DataSource.DataSet.FieldByName('BillNo').AsString;
+  LoadSampleTobeCollected(CLB_TestName, Gs_BillNo);
+  //LoadCollectedSample(CLB_CollectedSample, Gs_BillNo);
+  Cb_TestNameAll.Checked := true;
+  Cb_TestNameAllClick(Sender);
+end;
+
+
+procedure TFrame_SampleCollection.DBGrid2CellClick(Column: TColumn);
+begin
+  // if DBGrid2.SelectedRows.CurrentRowSelected = true then
+  // begin
+  // // Gs_SelectedTestNameList := Gs_SelectedTestNameList + ',' + Query_SampleCollected.FieldByName('TestNameID').AsString;
+  // Gs_SelectedTestNameList := Gs_SelectedTestNameList + ',' + Query_SampleCollected.FieldByName('PatientTestID')
+  // .AsString;
+  // end
+  // else
+  // begin
+  // { Gs_SelectedTestNameList := StringReplace(Gs_SelectedDepList, ',' + Query_SampleCollected.FieldByName
+  // ('TestNameID').AsString, '', [rfReplaceAll]); }
+  // Gs_SelectedTestNameList := StringReplace(Gs_SelectedDepList, ',' + Query_SampleCollected.FieldByName
+  // ('PatientTestID').AsString, '', [rfReplaceAll]);
+  // end;
+  //
+  // Gs_SelectedTestNameList := trim(Gs_SelectedTestNameList);
+  // if copy(Gs_SelectedTestNameList, 1, 1) = ',' then
+  // Gs_SelectedTestNameList := copy(Gs_SelectedTestNameList, 2, 999);
+end;
+
+procedure TFrame_SampleCollection.DBGrid2DblClick(Sender: TObject);
+begin
+  if gs_CalledFrom = 'SAMPLE COLLECTION' then
+    BB_ModifyClick(Sender);
+end;
+
+procedure TFrame_SampleCollection.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  if (Query_SampleCollected.FieldByName('TestProgressStatus').AsInteger = 4) then
+  begin
+    with DBGrid2.Canvas do
+    begin
+      Brush.Color := clWebRosyBrown;
+      Font.Color := clWhite;
+    end;
+    DBGrid2.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  end;
+  if (Query_SampleCollected.FieldByName('TestProgressStatus').AsInteger = 5) then
+  begin
+    with DBGrid2.Canvas do
+    begin
+      Brush.Color := clWebDarkOrange;
+      Font.Color := clWhite;
+    end;
+    DBGrid2.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  end;
+  if (Query_SampleCollected.FieldByName('TestProgressStatus').AsInteger = 6) then
+  begin
+    with DBGrid2.Canvas do
+    begin
+      Brush.Color := clWebGreen;
+      Font.Color := clWhite;
+    end;
+    DBGrid2.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  end;
+end;
+
+procedure TFrame_SampleCollection.DBGrid3CellClick(Column: TColumn);
+var
+  Sender: TObject;
+  i: Integer;
+begin
+  if Query_samplecollectedright.FieldByName('PatientId').AsString <> '' then
+  begin
+    gi_PatientID := Query_samplecollectedright.FieldByName('PatientId').AsInteger;
+    gs_SampleNo := Query_samplecollectedright.FieldByName('SampleNo').AsString;
+  end
+  else
+  begin
+    gi_PatientID := 0;
+    gs_SampleNo := '';
+  end;
+
+  with Query_SampleCollected do
+  begin
+    Close;
+    SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+    if Cb_NoResult.Checked then
+    begin
+      SQL[6] := 'And TestProgressStatus=' + IntToStr(gi_SampleColl);
+      SQL[7] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+      Gb_ShowTestWithoutResult := true;
+    end
+    else
+    begin
+      SQL[6] := 'And 99=99';
+      SQL[7] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+      Gb_ShowTestWithoutResult := False;
+    end;
+    if rb_underanalysis.Checked then
+      SQL[8] := 'and testprogressstatus=3'
+    else
+      SQL[8] := 'and 1=1';
+
+    Open;
+    cb_tick.Items.Clear;
+    i := 0;
+    SetLength(Arr_PTestNameID, RecordCount);
+    while not eof do
+    begin
+      Arr_PTestNameID[i] := FieldByName('PatientTestID').AsString;
+      cb_tick.Items.Add('');
+      Inc(i);
+      cb_tick.Height := i * 20;
+      Next;
+    end;
+  end;
+  Gs_SelectedPatientTestID := '';
+end;
+
+procedure TFrame_SampleCollection.DBGrid3KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+var
+  i: Integer;
+begin
+  if (Key = VK_UP) or (Key = VK_DOWN) then
+  begin
+
+    if Query_samplecollectedright.FieldByName('PatientId').AsString <> '' then
+    begin
+      gi_PatientID := Query_samplecollectedright.FieldByName('PatientId').AsInteger;
+      gs_SampleNo := Query_samplecollectedright.FieldByName('SampleNo').AsString;
+    end
+    else
+    begin
+      gi_PatientID := 0;
+      gs_SampleNo := '';
+    end;
+
+    with Query_SampleCollected do
+    begin
+      Close;
+      SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+      if Cb_NoResult.Checked then
+      begin
+        SQL[6] := 'And TestProgressStatus=' + IntToStr(gi_SampleColl);
+        SQL[7] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+        Gb_ShowTestWithoutResult := true;
+      end
+      else
+      begin
+        SQL[6] := 'And 99=99';
+        SQL[7] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+        Gb_ShowTestWithoutResult := False;
+      end;
+      Open;
+      cb_tick.Items.Clear;
+      i := 0;
+      SetLength(Arr_PTestNameID, RecordCount);
+      while not eof do
+      begin
+        Arr_PTestNameID[i] := FieldByName('PatientTestID').AsString;
+        cb_tick.Items.Add('');
+        Inc(i);
+        cb_tick.Height := i * 20;
+        Next;
+      end;
+    end;
+    Gs_SelectedPatientTestID := '';
+  end;
+end;
+
+procedure TFrame_SampleCollection.DBGrid3MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+var
+  i: Integer;
+begin
+  if Query_samplecollectedright.FieldByName('PatientId').AsString <> '' then
+  begin
+    gi_PatientID := Query_samplecollectedright.FieldByName('PatientId').AsInteger;
+    gs_SampleNo := Query_samplecollectedright.FieldByName('SampleNo').AsString;
+  end
+  else
+  begin
+    gi_PatientID := 0;
+    gs_SampleNo := '';
+  end;
+
+  with Query_SampleCollected do
+  begin
+    Close;
+    SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+    if Cb_NoResult.Checked then
+    begin
+      SQL[6] := 'And TestProgressStatus=' + IntToStr(gi_SampleColl);
+      SQL[7] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+      Gb_ShowTestWithoutResult := true;
+    end
+    else
+    begin
+      SQL[6] := 'And 99=99';
+      SQL[7] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+      Gb_ShowTestWithoutResult := False;
+    end;
+    Open;
+    cb_tick.Items.Clear;
+    i := 0;
+    SetLength(Arr_PTestNameID, RecordCount);
+    while not eof do
+    begin
+      Arr_PTestNameID[i] := FieldByName('PatientTestID').AsString;
+      cb_tick.Items.Add('');
+      Inc(i);
+      cb_tick.Height := i * 20;
+      Next;
+    end;
+  end;
+  Gs_SelectedPatientTestID := '';
+end;
+
+procedure TFrame_SampleCollection.DBGrid4CellClick(Column: TColumn);
+begin
+  if Query_tobecollectedr.FieldByName('PatientId').AsString <> '' then
+    gi_PatientID := Query_tobecollectedr.FieldByName('PatientId').AsInteger
+  else
+    gi_PatientID := 0;
+  with Query_TobeCollected do
+  begin
+    Close;
+    SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+    Open;
+  end;
+  lbl_TestCaption.Caption := GetTestListCaption(gi_PatientID, Gs_BillNo);
+end;
+
+procedure TFrame_SampleCollection.DBGrid4KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if (Key = VK_UP) or (Key = VK_DOWN) then
+  begin
+    if Query_tobecollectedr.FieldByName('PatientId').AsString <> '' then
+      gi_PatientID := Query_tobecollectedr.FieldByName('PatientId').AsInteger
+    else
+      gi_PatientID := 0;
+    with Query_TobeCollected do
+    begin
+      Close;
+      SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+      Open;
+    end;
+    lbl_TestCaption.Caption := GetTestListCaption(gi_PatientID, Gs_BillNo);
+
+  end;
+end;
+
+procedure TFrame_SampleCollection.DBGrid4KeyPress(Sender: TObject; var Key: Char);
+var
+  Column: TColumn;
+begin
+  if Key = #13 then
+    DBGrid4CellClick(Column);
+end;
+
+procedure TFrame_SampleCollection.Dex_CLFromEnter(Sender: TObject);
+begin
+  CB_Date.Checked := true;
+end;
+
+procedure TFrame_SampleCollection.Dex_CLToExit(Sender: TObject);
+begin
+  BB_Refresh.SetFocus;
+end;
+
+procedure TFrame_SampleCollection.Dex_FromEnter(Sender: TObject);
+begin
+  CB_Searchbydate.Checked := true;
+end;
+
+procedure TFrame_SampleCollection.Edit10Change(Sender: TObject);
+begin
+  with Query_SampleCollected do
+  begin
+    if trim(Edit10.Text) <> '' then
+    begin
+      Filter := 'Billno =' + #39 + Edit10.Text + '*' + #39;
+      Filtered := true;
+    end
+    else
+      Filtered := False;
+  end;
+  // BB_RefreshClick(Sender);
+end;
+
+procedure TFrame_SampleCollection.Edit11Change(Sender: TObject);
+begin
+  with Query_SampleCollected do
+  begin
+    if trim(Edit11.Text) <> '' then
+    begin
+      Filter := 'testdate =' + #39 + Edit11.Text + '*' + #39;
+      Filtered := true;
+    end
+    else
+      Filtered := False;
+  end;
+end;
+
+procedure TFrame_SampleCollection.Edit12Change(Sender: TObject);
+begin
+  with Query_SampleCollected do
+  begin
+    if trim(Edit12.Text) <> '' then
+    begin
+      Filter := 'testtime =' + #39 + Edit12.Text + '*' + #39;
+      Filtered := true;
+    end
+    else
+      Filtered := False;
+  end;
+end;
+
+procedure TFrame_SampleCollection.Edit14Change(Sender: TObject);
+begin
+  with Query_SampleCollected do
+  begin
+    if trim(Edit14.Text) <> '' then
+    begin
+      Filter := 'sample =' + #39 + Edit14.Text + '*' + #39;
+      Filtered := true;
+    end
+    else
+      Filtered := False;
+  end;
+end;
+
+procedure TFrame_SampleCollection.Edit15Change(Sender: TObject);
+begin
+  with Query_SampleCollected do
+  begin
+    if trim(Edit15.Text) <> '' then
+    begin
+      Filter := 'testname =' + #39 + Edit15.Text + '*' + #39;
+      Filtered := true;
+    end
+    else
+      Filtered := False;
+  end;
+end;
+
+procedure TFrame_SampleCollection.Edit3Change(Sender: TObject);
+begin
+  with Query_tobecollectedr do
+  begin
+    if trim(Edit3.Text) <> '' then
+    begin
+      Filter := 'PatientID =' + #39 + Edit3.Text + #39;
+      Filtered := true;
+    end
+    else
+      Filtered := False;
+  end;
+  bb_RefreshTobecollClick(Sender);
+end;
+
+procedure TFrame_SampleCollection.Edit4Change(Sender: TObject);
+begin
+  with Query_tobecollectedr do
+  begin
+    if trim(Edit4.Text) <> '' then
+    begin
+      Filter := 'PatientName =' + #39 + Edit4.Text + '*' + #39;
+      Filtered := true;
+    end
+    else
+      Filtered := False;
+  end;
+  bb_RefreshTobecollClick(Sender);
+end;
+
+procedure TFrame_SampleCollection.Edit8Change(Sender: TObject);
+begin
+  with Query_samplecollectedright do
+  begin
+    if trim(Edit8.Text) <> '' then
+    begin
+      Filter := 'PatientName =' + #39 + Edit8.Text + #39;
+      Filtered := true;
+    end
+    else
+      Filtered := False;
+  end;
+  BB_RefreshClick(Sender);
+end;
+
+procedure TFrame_SampleCollection.Edit9Change(Sender: TObject);
+begin
+  with Query_samplecollectedright do
+  begin
+    if trim(Edit9.Text) <> '' then
+    begin
+      Filter := 'PatientName =' + #39 + Edit9.Text + '*' + #39;
+      Filtered := true;
+    end
+    else
+      Filtered := False;
+  end;
+  //BB_RefreshClick(Sender);
+end;
+
+procedure TFrame_SampleCollection.Edit_SearchCollectedListChange(Sender: TObject);
+var
+  li_PatientID: string;
+begin
+  { Edit_SearchCollectedList.Text := StringReplace(Edit_SearchCollectedList.Text, '''', '''''', [rfReplaceAll]);
+    with Query_samplecollectedright do
+    Begin
+    IF trim(Edit_SearchCollectedList.Text) <> '' Then
+    Begin
+    if IsStrANumber(Edit_SearchCollectedList.Text) then
+    Filter := 'PatientID =' + #39 + Edit_SearchCollectedList.Text + #39
+    else
+    Filter := 'PatientName =' + #39 + Edit_SearchCollectedList.Text + '*' + #39;
+    Filtered := true;
+    End
+    Else
+    Filtered := False;
+    End; }
+  // BB_RefreshClick(Sender);
+end;
+
+procedure TFrame_SampleCollection.Edit_SearchCollectedListKeyPress(Sender: TObject; var Key: Char);
+var
+  li_PatientID: string;
+begin
+  if Key = #13 then
+  begin
+    Edit_SearchCollectedList.Text := StringReplace(Edit_SearchCollectedList.Text, '''', '''''', [rfReplaceAll]);
+    with Query_samplecollectedright do
+    begin
+      if trim(Edit_SearchCollectedList.Text) <> '' then
+      begin
+        if IsStrANumber(Edit_SearchCollectedList.Text) then
+        begin
+          if CB_LAbNo.Checked = true then
+            Filter := 'PatientID =' + #39 + IntToStr(GetPatientIdFilteredDateFromLabNo(Edit_SearchCollectedList.Text)) + #39
+          else
+            Filter := 'PatientID =' + #39 + Edit_SearchCollectedList.Text + #39;
+        end
+        else
+          Filter := 'PatientName =' + #39 + Edit_SearchCollectedList.Text + '*' + #39;
+        Filtered := true;
+      end
+      else
+        Filtered := False;
+    end;
+    BB_RefreshClick(Sender);
+  end;
+end;
+
+procedure TFrame_SampleCollection.Edit_SearchTBCChange(Sender: TObject);
+begin
+  Edit_SearchTBC.Text := StringReplace(Edit_SearchTBC.Text, '''', '''''', [rfReplaceAll]);
+  with Query_tobecollectedr do
+  begin
+    if trim(Edit_SearchTBC.Text) <> '' then
+    begin
+      if IsStrANumber(Edit_SearchTBC.Text) then
+        Filter := 'PatientID =' + #39 + Edit_SearchTBC.Text + #39
+      else
+        Filter := 'PatientName =' + #39 + Edit_SearchTBC.Text + '*' + #39;
+      Filtered := true;
+    end
+    else
+      Filtered := False;
+  end;
+  bb_RefreshTobecollClick(Sender);
+end;
+
+procedure TFrame_SampleCollection.Edit_SearchTBCKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    Edit_SearchTBC.Text := StringReplace(Edit_SearchTBC.Text, '''', '''''', [rfReplaceAll]);
+    with Query_tobecollectedr do
+    begin
+      if trim(Edit_SearchTBC.Text) <> '' then
+      begin
+        if IsStrANumber(Edit_SearchTBC.Text) then
+          Filter := 'PatientID =' + #39 + Edit_SearchTBC.Text + #39
+        else
+          Filter := 'PatientName =' + #39 + Edit_SearchTBC.Text + '*' + #39;
+        Filtered := true;
+      end
+      else
+        Filtered := False;
+    end;
+    bb_RefreshTobecollClick(Sender);
+    // Dbgrid5DblClick(Sender);
+  end;
+end;
+
+function TFrame_SampleCollection.GetPatientIdFilteredDateFromLabNo(LabNo: string): Integer;
+var
+  Qry: TOraQuery;
+  refreshDate: string;
+  refreshdays: Integer;
+  refresh_date, Dex_Today: TDateEditX;
+begin
+
+  if gi_datesystem = 0 then
+  begin
+    try
+      refresh_date := TDateEditX.Create(nil);
+      Dex_Today := TDateEditX.Create(Nil);
+      refreshdays := (Dex_Today.VSDateAsDays - StrtoInt(Se_CLDays.Text));
+      refresh_date.VSDateAsDays := refreshdays;
+      refreshDate := refresh_date.Text;
+    finally
+      refresh_date.Free;
+    end;
+  end;
+
+  Qry := TOraQuery.Create(nil);
+  with Qry do
+  begin
+    Close;
+    Session := DM_Hospital.DB;
+    SQL.Clear;
+    SQL.Add('select Distinct PatientId from samplecollection where LabNo=' + quotedstr(LabNo));
+   { if CB_Date.Checked then
+      SQL.Add('and Sampletakendate between' + quotedstr(Dex_CLFrom.Text) + ' and ' + quotedstr(Dex_CLTo.Text))
+    else
+    begin
+      if gi_datesystem = 1 then
+        SQL.Add('and Sampletakendate >= TO_CHAR(SYSDATE-' + Se_CLDays.Text + ',''YYYY/MM/DD'')')
+      else
+        SQL.Add('and Sampletakendate>=' + quotedstr(refreshDate));
+    end;                                     }
+    // sql.SaveToFile('c:/SaveLabFetch.txt');
+    Open;
+    Result := FieldByName('PatientId').AsInteger;
+  end;
+  Qry.Close;
+  Qry.Free;
+end;
+
+procedure TFrame_SampleCollection.GetQueue(Val: string);
+var
+  BillNo: string;
+  Sender: TObject;
+  Key: Char;
+begin
+  with QryQueueList do
+  begin
+    if UpperCase(Val) = 'NEXT' then
+      Next
+    else if UpperCase(Val) = 'PRE' then
+      Prior;
+    lbl_QueueNo.Caption := FieldByName('QUEUENO').AsString;
+    lbl_PatientName.Caption := FieldByName('PATIENTNAME').AsString;
+    gi_PatientID := FieldByName('PATIENTID').AsInteger;
+  end;
+
+  BillNo := QryQueueList.FieldByName('Billno').AsString;
+  Query_tobecollectedr.Locate('PatientID', gi_PatientID, []);
+  Key := #13;
+  DBGrid4KeyPress(Sender, Key);
+  if not (Query_TobeCollected.Locate('Billno', BillNo, [])) then
+    BillNo := GetFinalBillno(BillNo);
+  Gs_BillNo := BillNo;
+  Query_TobeCollected.Locate('Billno', BillNo, []);
+end;
+
+procedure TFrame_SampleCollection.GetQueueList;
+var
+  BillNo: string;
+  Sender: TObject;
+  Key: Char;
+  DataSet: TDataSet;
+begin
+  QryQueueList := TOraQuery.Create(Nil);
+  QryQueueList.AfterScroll := QryQueueList_AfterScroll;
+  with QryQueueList do
+  begin
+    Close;
+    Session := DM_Hospital.DB;
+    SQL.Clear;
+    SQL.Add('SELECT * FROM VW_QUEUELIST');
+    Open;
+    lbl_QueueNo.Caption := FieldByName('QUEUENO').AsString;
+    lbl_PatientName.Caption := FieldByName('PATIENTNAME').AsString;
+    gi_PatientID := FieldByName('PATIENTID').AsInteger;
+  end;
+  BillNo := QryQueueList.FieldByName('Billno').AsString;
+  Query_tobecollectedr.Locate('PatientID', gi_PatientID, []);
+  Key := #13;
+  DBGrid4KeyPress(Sender, Key);
+  if not (Query_TobeCollected.Locate('Billno', BillNo, [])) then
+    BillNo := GetFinalBillno(BillNo);
+  Gs_BillNo := BillNo;
+  Query_TobeCollected.Locate('Billno', BillNo, []);
+end;
+
+procedure TFrame_SampleCollection.OntimerEvent(Sender: TObject);
+begin
+  Query_SampleCollected.Close;
+  Query_SampleCollected.Open;
+end;
+
+procedure TFrame_SampleCollection.PreviewClick(Sender: TObject);
+begin
+     if Preview.Checked=True then
+          Preview.Caption:='Preview'
+     else if Preview.Checked=False then
+          Preview.Caption:='Print';
+
+end;
+
+procedure TFrame_SampleCollection.PrintSticker;
+var
+  SAMPLENO, LabNo: string;
+  Day, Testname, FinalTestname: string;
+  DayNO: string;
+  Bottom: string;
+  i, J, PrintCount: Integer;
+  qry_dep: TOraQuery;
+  qry_test: TOraQuery;
+  qry_DateTime: TOraQuery;
+begin
+  LabNo := '';
+  if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+  begin
+    LabNo := Edit_LabNo.Text;
+    gs_SampleNo := Edit_PreviousSampleNo.Text;
+    SAMPLENO := gs_SampleNo;
+  end
+  else if gi_compilevalue = 564 then
+  begin
+
+    LabNo := Edit_LabNo.Text;
+    gs_SampleNo := Edit_PreviousSampleNo.Text;
+    SAMPLENO := gs_SampleNo;
+
+  end
+  else
+  begin
+    gs_SampleNo := Edit_PreviousSampleNo.Text;
+    SAMPLENO := gs_SampleNo;
+  end;
+  PrintCount := StrtoInt(se_printcount.Text);
+
+  try
+    Form_Sticker := TForm_Sticker.Create(nil);
+    with Form_Sticker do
+    begin
+      if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+      begin
+        QrBarcode.Text := Labno;
+      end
+      else if gi_compilevalue = 564 then
+      begin
+        QrBarcode.Text := SAMPLENO;
+      end
+      else
+      begin
+        QrBarcode.Text := SAMPLENO;
+      end;
+      // lbl_PatientName.Caption := Lbl_Name.Caption + ' - ' + IntToStr(gi_PatientID);
+      // lbl_PatientName.Caption := Lbl_Name.Caption + ' - ' +IntToStr(gi_PatientID) ;
+      lbl_PatientName.Caption := Lbl_Name.Caption;
+      lbl_patientid.Caption := 'Patientid:' + IntToStr(gi_PatientID);
+      if gi_compileValue=12 then
+          begin
+               QRLabel_patienttype.Enabled:=True;
+               QRLabel_patienttype.Caption:=GetOPDWard(Gs_BillNo);
+          end;
+      if cb_preview.Checked = true then
+      begin
+        if gi_compilevalue = 10 then
+        begin
+          lbl_bottom.Enabled := False;
+          qry_dep := TOraQuery.Create(nil);
+          with qry_dep do
+          begin
+            Close;
+            SQL.Clear;
+            SQL.Add('select distinct depname from ');
+            SQL.Add('(Select (select dept_depname from hs_dept_department where dept_depid=pt.depid)depname from PatientTest pt');
+            SQL.Add('where patienttestid in(');
+            SQL.Add('select patienttestid from samplecollection where labno=' + #39 + LabNo + #39 + '  and sampleno=' + #39 + gs_SampleNo + #39 + ' )');
+            SQL.Add(')');
+            SQL.Add('order by depname');
+            // sql.SaveToFile('c:/samplecheckprint.txt');
+            Open;
+          end;
+          while not qry_dep.eof do
+          begin
+            QRLabel_Labno.Caption := LabNo;
+            lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+            QrSticker.PreviewModal;
+            qry_dep.Next;
+          end;
+          lbl_DepName.Caption := '';
+          QrSticker.PreviewModal;
+        end
+        { if gi_compileValue=10 then
+          begin
+          for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+          begin
+          if CLB_CollectedSample.State[i] = cbChecked then
+          begin
+          qry_dep:=TOraQuery.Create(nil);
+          Bottom := CLB_CollectedSample.Items.Strings[i];
+          with qry_dep do
+          begin
+          Close;
+          sql.Clear;
+          sql.Add('select (select depname from department where depid=t.depid)depname from testname t where t.testname='+quotedstr(Bottom)) ;
+          Open;
+          end;
+          lbl_bottom.Caption := '';
+          QRLabel_Labno.Caption:=Labno;
+          lbl_DepName.Caption:=qry_dep.FieldByName('depname').asstring;
+          QrSticker.PreviewModal;
+          end;
+
+          end;
+          end }
+        else if gi_compilevalue in [9] then
+        begin
+          begin
+            for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+            begin
+              if CLB_CollectedSample.State[i] = cbChecked then
+              begin
+                qry_dep := TOraQuery.Create(nil);
+                Bottom := CLB_CollectedSample.Items.Strings[i];
+                if Testname = '' then
+                  Testname := quotedstr(Bottom)
+                else
+                  Testname := Testname + ',' + quotedstr(Bottom);
+              end;
+            end;
+            { "with qry_dep do
+              begin
+              Close;
+              sql.Clear;
+              sql.Add('select samplesourceid, (select depname from department where depid=t.depid)depname from testname t where t.testname='+quotedstr(Bottom)) ;
+              Open;
+              end; }
+            with qry_dep do
+            begin
+              Close;
+              SQL.Clear;
+              SQL.Add('select distinct tena_samplesourceid from hs_tena_testname t where t.tena_testname in (' + (Testname) + ')');
+              // SQL.SaveToFile('c:\samplesource.txt');
+              Open;
+              First;
+            end;
+
+            if qry_dep.RecordCount > 1 then
+            begin
+              ShowMessage('Different Sample Source Cannot be Collected in Single Tube');
+              Exit;
+            end
+            else
+            begin
+              qry_DateTime := TOraQuery.Create(nil);
+              with qry_DateTime do
+              begin
+                Close;
+                SQL.Clear;
+                SQL.Add('select max(sampletakendate||''>>''||sampletakentime) as sampledatetime from samplecollection where labno=' + Edit_LabNo.Text);
+                Open;
+              end;
+              lbl_bottom.Caption := qry_DateTime.FieldByName('sampledatetime').AsString;
+              // lbl_bottom.Caption := serverdate.TodaysDateVS+'>>'+serverdate.TodaysTime;
+              if gi_compilevalue in [9] then
+              begin
+                qry_test := TOraQuery.Create(nil);
+                with qry_test do
+                begin
+                  Close;
+                  SQL.Clear;
+                  SQL.Add('select case when length(trim(Tena_TESTNAMESHORTCUTCODE))>0 then TESTNAMESHORTCUTCODE else Tena_testname end TESTNAMESHORTCUTCODE from Hs_Tena_testname where Tena_testname in (' + (Testname) + ')');
+                  Open;
+                  First;
+                end;
+
+                FinalTestname := '';
+                while not qry_test.eof do
+                begin
+                  FinalTestname := FinalTestname + ',' + qry_test.FieldByName('TESTNAMESHORTCUTCODE').AsString;
+                  qry_test.Next;
+                end;
+                FinalTestname := Copy(FinalTestname, 2, length(FinalTestname));
+
+                lbl_DepName.Caption := FinalTestname;
+                QRLabel_Labno.Caption := LabNo;
+              end
+              else
+                lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+              QrSticker.PreviewModal;
+            end;
+          end;
+
+        end
+        else if gi_compilevalue in [1,2,3,4,5,6,7,8,9,10,11,12,13,14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+        begin
+          begin
+            for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+            begin
+              if CLB_CollectedSample.State[i] = cbChecked then
+              begin
+                for J := 0 to PrintCount - 1 do
+                begin
+                  qry_dep := TOraQuery.Create(nil);
+                  Bottom := CLB_CollectedSample.Items.Strings[i];
+                  with qry_dep do
+                  begin
+                    Close;
+                    SQL.Clear;
+                    SQL.Add('select (select Dept_depname as Depname from Hs_Dept_department where Dept_depid=t.Tena_depid)depname from Hs_Tena_testname t where t.Tena_testname=' + quotedstr(Bottom));
+                    Open;
+                  end;
+
+                  qry_DateTime := TOraQuery.Create(nil);
+                  with qry_DateTime do
+                  begin
+                    Close;
+                    SQL.Clear;
+                    SQL.Add('select max(sampletakendate||''>>''||sampletakentime) as sampledatetime from samplecollection where labno=' + Edit_LabNo.Text);
+                    SQL.Add('and patientid=' + IntToStr(gi_PatientID));
+                    Open;
+                  end;
+                  lbl_bottom.Caption := qry_DateTime.FieldByName('sampledatetime').AsString;
+                  // Bottom := CLB_CollectedSample.Items.Strings[i];
+                  // lbl_bottom.Caption := '';
+                  QRLabel_Labno.Caption := LabNo;
+                  lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+                  QRLabel_AgeSex.Caption := Gs_Age + ' / ' + Copy(Gs_Gender, 1, 1);
+                  // QrSticker.Prepare;
+                  QrSticker.PreviewModal;
+                end;
+
+              end;
+
+            end;
+
+          end;
+
+          qry_DateTime.Free;
+
+        end;
+
+      end
+      {else if gi_compilevalue = 564 then
+      begin
+        begin
+          for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+          begin
+            if CLB_CollectedSample.State[i] = cbChecked then
+            begin
+              For J := 0 to PrintCount - 1 do
+              begin
+                qry_dep := TOraQuery.Create(nil);
+                Bottom := CLB_CollectedSample.Items.Strings[i];
+                with qry_dep do
+                begin
+                  Close;
+                  SQL.Clear;
+                  SQL.Add(
+                    'select (select Dept_depname as Depname from Hs_Dept_department where Dept_depid=t.Tena_depid)depname from Hs_Tena_testname t where t.Tena_testname=' + quotedstr(Bottom));
+                  Open;
+                end;
+
+                qry_DateTime := TOraQuery.Create(nil);
+                with qry_DateTime do
+                begin
+                  Close;
+                  SQL.Clear;
+                  SQL.Add(
+                    'select max(sampletakendate||''>>''||sampletakentime) as sampledatetime from samplecollection where labno=' + Edit_LabNo.Text);
+                  SQL.Add('and patientid=' + IntToStr(gi_PatientID));
+                  Open;
+                end;
+                lbl_bottom.Caption := qry_DateTime.FieldByName('sampledatetime')
+                  .AsString;
+                // Bottom := CLB_CollectedSample.Items.Strings[i];
+                // lbl_bottom.Caption := '';
+                QRLabel_Labno.Caption := LabNo;
+                lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+                QRLabel_AgeSex.Caption := Gs_Age + ' / ' + Copy
+                  (Gs_Gender, 1, 1);
+                // QrSticker.Prepare;
+                QrSticker.PreviewModal;
+              end;
+
+            end;
+
+          end;
+
+        end;
+
+        qry_DateTime.Free;
+
+      end}
+      else
+      {begin
+        for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+        begin
+          if CLB_CollectedSample.State[i] = cbChecked then
+          begin
+            For J := 0 to PrintCount - 1 do
+            begin
+              qry_dep := TOraQuery.Create(nil);
+              Bottom := CLB_CollectedSample.Items.Strings[i];
+              with qry_dep do
+              begin
+                Close;
+                SQL.Clear;
+                SQL.Add(
+                  'select (select Dept_depname as Depname from Hs_Dept_department where Dept_depid=t.Tena_depid)depname from Hs_Tena_testname t where t.Tena_testname=' + quotedstr(Bottom));
+                Open;
+              end;
+              // Bottom := CLB_CollectedSample.Items.Strings[i];
+              lbl_bottom.Caption := '';
+              lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+              QrSticker.Prepare;
+              QrSticker.Print;
+            end;
+
+          end;
+
+        end;
+      end;}
+
+    end;
+  finally
+    qry_dep.Free;
+    qry_test.Free;
+    Form_Sticker.Free;
+  end;
+end;
+procedure TFrame_SampleCollection.PrintStickerMangalam;
+var
+  SAMPLENO, LabNo: string;
+  Day, Testname, FinalTestname: string;
+  DayNO: string;
+  Bottom: string;
+  i, J, PrintCount,sn: Integer;
+  qry_dep: TOraQuery;
+  qry_test: TOraQuery;
+  qry_DateTime: TOraQuery;
+begin
+  LabNo := '';
+  if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+  begin
+    LabNo := Edit_LabNo.Text;
+    gs_SampleNo := Edit_PreviousSampleNo.Text;
+    SAMPLENO := gs_SampleNo;
+  end
+  else if gi_compilevalue = 564 then
+  begin
+
+    LabNo := Edit_LabNo.Text;
+    gs_SampleNo := Edit_PreviousSampleNo.Text;
+    SAMPLENO := gs_SampleNo;
+
+  end
+  else
+  begin
+    gs_SampleNo := Edit_PreviousSampleNo.Text;
+    SAMPLENO := gs_SampleNo;
+  end;
+  PrintCount := StrtoInt(se_printcount.Text);
+
+  try
+    Form_Sticker := TForm_Sticker.Create(nil);
+    with Form_Sticker do
+    begin
+      if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+      begin
+        QrBarcode.Text := Labno;
+      end
+      else if gi_compilevalue = 564 then
+      begin
+        QrBarcode.Text := SAMPLENO;
+      end
+      else
+      begin
+        QrBarcode.Text := SAMPLENO;
+      end;
+      // lbl_PatientName.Caption := Lbl_Name.Caption + ' - ' + IntToStr(gi_PatientID);
+      // lbl_PatientName.Caption := Lbl_Name.Caption + ' - ' +IntToStr(gi_PatientID) ;
+      lbl_PatientName.Caption := Lbl_Name.Caption;
+      lbl_patientid.Caption := 'Patientid:' + IntToStr(gi_PatientID);
+      if gi_compileValue=12 then
+          begin
+               QRLabel_patienttype.Enabled:=True;
+               QRLabel_patienttype.Caption:=GetOPDWard(Gs_BillNo);
+          end;
+      if cb_preview.Checked = true then
+      begin
+        if gi_compilevalue = 10 then
+        begin
+          lbl_bottom.Enabled := False;
+          qry_dep := TOraQuery.Create(nil);
+          with qry_dep do
+          begin
+            Close;
+            SQL.Clear;
+            SQL.Add('select distinct depname from ');
+            SQL.Add('(Select (select dept_depname from hs_dept_department where dept_depid=pt.depid)depname from PatientTest pt');
+            SQL.Add('where patienttestid in(');
+            SQL.Add('select patienttestid from samplecollection where labno=' + #39 + LabNo + #39 + '  and sampleno=' + #39 + gs_SampleNo + #39 + ' )');
+            SQL.Add(')');
+            SQL.Add('order by depname');
+            // sql.SaveToFile('c:/samplecheckprint.txt');
+            Open;
+          end;
+          while not qry_dep.eof do
+          begin
+            QRLabel_Labno.Caption := LabNo;
+            lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+            QrSticker.PreviewModal;
+            qry_dep.Next;
+          end;
+          lbl_DepName.Caption := '';
+          QrSticker.PreviewModal;
+        end
+        { if gi_compileValue=10 then
+          begin
+          for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+          begin
+          if CLB_CollectedSample.State[i] = cbChecked then
+          begin
+          qry_dep:=TOraQuery.Create(nil);
+          Bottom := CLB_CollectedSample.Items.Strings[i];
+          with qry_dep do
+          begin
+          Close;
+          sql.Clear;
+          sql.Add('select (select depname from department where depid=t.depid)depname from testname t where t.testname='+quotedstr(Bottom)) ;
+          Open;
+          end;
+          lbl_bottom.Caption := '';
+          QRLabel_Labno.Caption:=Labno;
+          lbl_DepName.Caption:=qry_dep.FieldByName('depname').asstring;
+          QrSticker.PreviewModal;
+          end;
+
+          end;
+          end }
+        else if gi_compilevalue in [9] then
+        begin
+          begin
+            for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+            begin
+              if CLB_CollectedSample.State[i] = cbChecked then
+              begin
+                qry_dep := TOraQuery.Create(nil);
+                Bottom := CLB_CollectedSample.Items.Strings[i];
+                if Testname = '' then
+                  Testname := quotedstr(Bottom)
+                else
+                  Testname := Testname + ',' + quotedstr(Bottom);
+              end;
+            end;
+            { "with qry_dep do
+              begin
+              Close;
+              sql.Clear;
+              sql.Add('select samplesourceid, (select depname from department where depid=t.depid)depname from testname t where t.testname='+quotedstr(Bottom)) ;
+              Open;
+              end; }
+            with qry_dep do
+            begin
+              Close;
+              SQL.Clear;
+              SQL.Add('select distinct tena_samplesourceid from hs_tena_testname t where t.tena_testname in (' + (Testname) + ')');
+              // SQL.SaveToFile('c:\samplesource.txt');
+              Open;
+              First;
+            end;
+
+            if qry_dep.RecordCount > 1 then
+            begin
+              ShowMessage('Different Sample Source Cannot be Collected in Single Tube');
+              Exit;
+            end
+            else
+            begin
+              qry_DateTime := TOraQuery.Create(nil);
+              with qry_DateTime do
+              begin
+                Close;
+                SQL.Clear;
+                SQL.Add('select max(sampletakendate||''>>''||sampletakentime) as sampledatetime from samplecollection where labno=' + Edit_LabNo.Text);
+                Open;
+              end;
+              lbl_bottom.Caption := qry_DateTime.FieldByName('sampledatetime').AsString;
+              // lbl_bottom.Caption := serverdate.TodaysDateVS+'>>'+serverdate.TodaysTime;
+              if gi_compilevalue in [9] then
+              begin
+                qry_test := TOraQuery.Create(nil);
+                with qry_test do
+                begin
+                  Close;
+                  SQL.Clear;
+                  SQL.Add('select case when length(trim(Tena_TESTNAMESHORTCUTCODE))>0 then TESTNAMESHORTCUTCODE else Tena_testname end TESTNAMESHORTCUTCODE from Hs_Tena_testname where Tena_testname in (' + (Testname) + ')');
+                  Open;
+                  First;
+                end;
+
+                FinalTestname := '';
+                while not qry_test.eof do
+                begin
+                  FinalTestname := FinalTestname + ',' + qry_test.FieldByName('TESTNAMESHORTCUTCODE').AsString;
+                  qry_test.Next;
+                end;
+                FinalTestname := Copy(FinalTestname, 2, length(FinalTestname));
+
+                lbl_DepName.Caption := FinalTestname;
+                QRLabel_Labno.Caption := LabNo;
+              end
+              else
+                lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+              QrSticker.PreviewModal;
+            end;
+          end;
+
+        end
+        else if gi_compilevalue in [1,2,3,4,5,6,7,8,9,10,11,12,13,14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+        begin
+               for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+               begin
+                    if CLB_CollectedSample.State[i] = cbChecked then
+                    begin
+                          qry_dep := TOraQuery.Create(nil);
+                          Bottom := CLB_CollectedSample.Items.Strings[i];
+                          if Testname = '' then
+                            Testname := quotedstr(Bottom)
+                          else
+                            Testname := Testname + ',' + quotedstr(Bottom);
+                    end;
+               end;
+               qry_dep := TOraQuery.Create(nil);
+           //  Bottom := CLB_CollectedSample.Items.Strings[i];
+             with qry_dep do
+             begin
+               Close;
+               SQL.Clear;
+               SQL.Add('select (select Dept_depname as Depname from Hs_Dept_department where Dept_depid=t.Tena_depid)depname,tena_depid from Hs_Tena_testname t where t.Tena_testname in (' + Testname+') group by tena_depid');
+               //sql.savetofile('c:\abc.txt');
+               Open;
+               sn:=qry_dep.recordcount;
+             end;
+             while not qry_dep.eof do
+             begin
+
+                // for i := 0 to sn - 1 do
+                // begin
+                   //if CLB_CollectedSample.State[i] = cbChecked then
+                   begin
+                     //for J := 0 to PrintCount - 1 do
+                     begin
+                       qry_DateTime := TOraQuery.Create(nil);
+                       with qry_DateTime do
+                       begin
+                         Close;
+                         SQL.Clear;
+                         SQL.Add('select max(sampletakendate||''>>''||sampletakentime) as sampledatetime from samplecollection where labno=' + Edit_LabNo.Text);
+                         SQL.Add('and patientid=' + IntToStr(gi_PatientID));
+                         Open;
+                       end;
+                       lbl_bottom.Caption := qry_DateTime.FieldByName('sampledatetime').AsString;
+                       // Bottom := CLB_CollectedSample.Items.Strings[i];
+                       // lbl_bottom.Caption := '';
+                       QRLabel_Labno.Caption := LabNo;
+                       lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+                       QRLabel_AgeSex.Caption := Gs_Age + ' / ' + Copy(Gs_Gender, 1, 1);
+                       // QrSticker.Prepare;
+                       QrSticker.PreviewModal;
+                     end;
+
+                   end;
+
+                // end;
+                 qry_dep.Next;
+             end;
+
+
+
+              qry_DateTime.Free;
+
+        end;
+
+      end
+      {else if gi_compilevalue = 564 then
+      begin
+        begin
+          for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+          begin
+            if CLB_CollectedSample.State[i] = cbChecked then
+            begin
+              For J := 0 to PrintCount - 1 do
+              begin
+                qry_dep := TOraQuery.Create(nil);
+                Bottom := CLB_CollectedSample.Items.Strings[i];
+                with qry_dep do
+                begin
+                  Close;
+                  SQL.Clear;
+                  SQL.Add(
+                    'select (select Dept_depname as Depname from Hs_Dept_department where Dept_depid=t.Tena_depid)depname from Hs_Tena_testname t where t.Tena_testname=' + quotedstr(Bottom));
+                  Open;
+                end;
+
+                qry_DateTime := TOraQuery.Create(nil);
+                with qry_DateTime do
+                begin
+                  Close;
+                  SQL.Clear;
+                  SQL.Add(
+                    'select max(sampletakendate||''>>''||sampletakentime) as sampledatetime from samplecollection where labno=' + Edit_LabNo.Text);
+                  SQL.Add('and patientid=' + IntToStr(gi_PatientID));
+                  Open;
+                end;
+                lbl_bottom.Caption := qry_DateTime.FieldByName('sampledatetime')
+                  .AsString;
+                // Bottom := CLB_CollectedSample.Items.Strings[i];
+                // lbl_bottom.Caption := '';
+                QRLabel_Labno.Caption := LabNo;
+                lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+                QRLabel_AgeSex.Caption := Gs_Age + ' / ' + Copy
+                  (Gs_Gender, 1, 1);
+                // QrSticker.Prepare;
+                QrSticker.PreviewModal;
+              end;
+
+            end;
+
+          end;
+
+        end;
+
+        qry_DateTime.Free;
+
+      end}
+      else
+      {begin
+        for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+        begin
+          if CLB_CollectedSample.State[i] = cbChecked then
+          begin
+            For J := 0 to PrintCount - 1 do
+            begin
+              qry_dep := TOraQuery.Create(nil);
+              Bottom := CLB_CollectedSample.Items.Strings[i];
+              with qry_dep do
+              begin
+                Close;
+                SQL.Clear;
+                SQL.Add(
+                  'select (select Dept_depname as Depname from Hs_Dept_department where Dept_depid=t.Tena_depid)depname from Hs_Tena_testname t where t.Tena_testname=' + quotedstr(Bottom));
+                Open;
+              end;
+              // Bottom := CLB_CollectedSample.Items.Strings[i];
+              lbl_bottom.Caption := '';
+              lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+              QrSticker.Prepare;
+              QrSticker.Print;
+            end;
+
+          end;
+
+        end;
+      end;}
+
+    end;
+  finally
+    qry_dep.Free;
+    qry_test.Free;
+    Form_Sticker.Free;
+  end;
+end;
+
+procedure TFrame_SampleCollection.PrintStickerMangalam_Histo;
+var
+  SAMPLENO, LabNo: string;
+  Day, Testname, FinalTestname: string;
+  DayNO: string;
+  Bottom: string;
+  i, J, PrintCount,sn: Integer;
+  qry_dep: TOraQuery;
+  qry_test: TOraQuery;
+  qry_DateTime: TOraQuery;
+begin
+  LabNo := '';
+  if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+  begin
+    LabNo := Edit_LabNo.Text;
+    gs_SampleNo := Edit_PreviousSampleNo.Text;
+    SAMPLENO := gs_SampleNo;
+  end
+  else if gi_compilevalue = 564 then
+  begin
+
+    LabNo := Edit_LabNo.Text;
+    gs_SampleNo := Edit_PreviousSampleNo.Text;
+    SAMPLENO := gs_SampleNo;
+
+  end
+  else
+  begin
+    gs_SampleNo := Edit_PreviousSampleNo.Text;
+    SAMPLENO := gs_SampleNo;
+  end;
+  PrintCount := StrtoInt(se_printcount.Text);
+
+  try
+    Form_Sticker_Histo := TForm_Sticker_Histo.Create(nil);
+    with Form_Sticker_Histo do
+    begin
+      if gi_compilevalue in [1,2,3,4,5,6,7,8,9, 10, 11, 12, 14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+      begin
+        QrBarcode.Text := SAMPLENO;
+      end
+      else if gi_compilevalue = 564 then
+      begin
+        QrBarcode.Text := SAMPLENO;
+      end
+      else
+      begin
+        QrBarcode.Text := SAMPLENO;
+      end;
+      // lbl_PatientName.Caption := Lbl_Name.Caption + ' - ' + IntToStr(gi_PatientID);
+      // lbl_PatientName.Caption := Lbl_Name.Caption + ' - ' +IntToStr(gi_PatientID) ;
+      lbl_PatientName.Caption := Lbl_Name.Caption;
+      lbl_patientid.Caption := 'Patientid:' + IntToStr(gi_PatientID);
+      if gi_compileValue=12 then
+          begin
+               QRLabel_patienttype.Enabled:=True;
+               QRLabel_patienttype.Caption:=GetOPDWard(Gs_BillNo);
+          end;
+      if cb_preview.Checked = true then
+      begin
+        if gi_compilevalue = 10 then
+        begin
+          lbl_bottom.Enabled := False;
+          qry_dep := TOraQuery.Create(nil);
+          with qry_dep do
+          begin
+            Close;
+            SQL.Clear;
+            SQL.Add('select distinct depname from ');
+            SQL.Add('(Select (select dept_depname from hs_dept_department where dept_depid=pt.depid)depname from PatientTest pt');
+            SQL.Add('where patienttestid in(');
+            SQL.Add('select patienttestid from samplecollection where labno=' + #39 + LabNo + #39 + '  and sampleno=' + #39 + gs_SampleNo + #39 + ' )');
+            SQL.Add(')');
+            SQL.Add('order by depname');
+            // sql.SaveToFile('c:/samplecheckprint.txt');
+            Open;
+          end;
+          while not qry_dep.eof do
+          begin
+            QRLabel_Labno.Caption := sampleno;
+            lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+            QrSticker_Histo.PreviewModal;
+            qry_dep.Next;
+          end;
+          lbl_DepName.Caption := '';
+          QrSticker_Histo.PreviewModal;
+        end
+        { if gi_compileValue=10 then
+          begin
+          for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+          begin
+          if CLB_CollectedSample.State[i] = cbChecked then
+          begin
+          qry_dep:=TOraQuery.Create(nil);
+          Bottom := CLB_CollectedSample.Items.Strings[i];
+          with qry_dep do
+          begin
+          Close;
+          sql.Clear;
+          sql.Add('select (select depname from department where depid=t.depid)depname from testname t where t.testname='+quotedstr(Bottom)) ;
+          Open;
+          end;
+          lbl_bottom.Caption := '';
+          QRLabel_Labno.Caption:=Labno;
+          lbl_DepName.Caption:=qry_dep.FieldByName('depname').asstring;
+          QrSticker.PreviewModal;
+          end;
+
+          end;
+          end }
+        else if gi_compilevalue in [9] then
+        begin
+          begin
+            for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+            begin
+              if CLB_CollectedSample.State[i] = cbChecked then
+              begin
+                qry_dep := TOraQuery.Create(nil);
+                Bottom := CLB_CollectedSample.Items.Strings[i];
+                if Testname = '' then
+                  Testname := quotedstr(Bottom)
+                else
+                  Testname := Testname + ',' + quotedstr(Bottom);
+              end;
+            end;
+            { "with qry_dep do
+              begin
+              Close;
+              sql.Clear;
+              sql.Add('select samplesourceid, (select depname from department where depid=t.depid)depname from testname t where t.testname='+quotedstr(Bottom)) ;
+              Open;
+              end; }
+            with qry_dep do
+            begin
+              Close;
+              SQL.Clear;
+              SQL.Add('select distinct tena_samplesourceid from hs_tena_testname t where t.tena_testname in (' + (Testname) + ')');
+              // SQL.SaveToFile('c:\samplesource.txt');
+              Open;
+              First;
+            end;
+
+            if qry_dep.RecordCount > 1 then
+            begin
+              ShowMessage('Different Sample Source Cannot be Collected in Single Tube');
+              Exit;
+            end
+            else
+            begin
+              qry_DateTime := TOraQuery.Create(nil);
+              with qry_DateTime do
+              begin
+                Close;
+                SQL.Clear;
+                SQL.Add('select max(sampletakendate||''>>''||sampletakentime) as sampledatetime from samplecollection where labno=' + Edit_LabNo.Text);
+                Open;
+              end;
+              lbl_bottom.Caption := qry_DateTime.FieldByName('sampledatetime').AsString;
+              // lbl_bottom.Caption := serverdate.TodaysDateVS+'>>'+serverdate.TodaysTime;
+              if gi_compilevalue in [9] then
+              begin
+                qry_test := TOraQuery.Create(nil);
+                with qry_test do
+                begin
+                  Close;
+                  SQL.Clear;
+                  SQL.Add('select case when length(trim(Tena_TESTNAMESHORTCUTCODE))>0 then TESTNAMESHORTCUTCODE else Tena_testname end TESTNAMESHORTCUTCODE from Hs_Tena_testname where Tena_testname in (' + (Testname) + ')');
+                  Open;
+                  First;
+                end;
+
+                FinalTestname := '';
+                while not qry_test.eof do
+                begin
+                  FinalTestname := FinalTestname + ',' + qry_test.FieldByName('TESTNAMESHORTCUTCODE').AsString;
+                  qry_test.Next;
+                end;
+                FinalTestname := Copy(FinalTestname, 2, length(FinalTestname));
+
+                lbl_DepName.Caption := FinalTestname;
+                QRLabel_Labno.Caption := sampleno;
+              end
+              else
+                lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+              QrSticker_Histo.PreviewModal;
+            end;
+          end;
+
+        end
+        else if gi_compilevalue in [1,2,3,4,5,6,7,8,9,10,11,12,13,14, 15,16,17,18,19,20,21,22,23,24,25,26] then
+        begin
+               for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+               begin
+                    if CLB_CollectedSample.State[i] = cbChecked then
+                    begin
+                          qry_dep := TOraQuery.Create(nil);
+                          Bottom := CLB_CollectedSample.Items.Strings[i];
+                          if Testname = '' then
+                            Testname := quotedstr(Bottom)
+                          else
+                            Testname := Testname + ',' + quotedstr(Bottom);
+                    end;
+               end;
+               qry_dep := TOraQuery.Create(nil);
+           //  Bottom := CLB_CollectedSample.Items.Strings[i];
+             with qry_dep do
+             begin
+               Close;
+               SQL.Clear;
+               SQL.Add('select (select Dept_depname as Depname from Hs_Dept_department where Dept_depid=t.Tena_depid)depname,tena_depid from Hs_Tena_testname t where t.Tena_testname in (' + Testname+') group by tena_depid');
+               //sql.savetofile('c:\abc.txt');
+               Open;
+               sn:=qry_dep.recordcount;
+             end;
+             while not qry_dep.eof do
+             begin
+
+                // for i := 0 to sn - 1 do
+                // begin
+                   //if CLB_CollectedSample.State[i] = cbChecked then
+                   begin
+                     //for J := 0 to PrintCount - 1 do
+                     begin
+                       qry_DateTime := TOraQuery.Create(nil);
+                       with qry_DateTime do
+                       begin
+                         Close;
+                         SQL.Clear;
+                         SQL.Add('select max(sampletakendate||''>>''||sampletakentime) as sampledatetime from samplecollection where labno=' + Edit_LabNo.Text);
+                         SQL.Add('and patientid=' + IntToStr(gi_PatientID));
+                         Open;
+                       end;
+                       lbl_bottom.Caption := qry_DateTime.FieldByName('sampledatetime').AsString;
+                       // Bottom := CLB_CollectedSample.Items.Strings[i];
+                       // lbl_bottom.Caption := '';
+                       QRLabel_Labno.Caption := SAMPLENO;
+                       lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+                       QRLabel_AgeSex.Caption := Gs_Age + ' / ' + Copy(Gs_Gender, 1, 1);
+                       // QrSticker.Prepare;
+                       QrSticker_Histo.PreviewModal;
+                     end;
+
+                   end;
+
+                // end;
+                 qry_dep.Next;
+             end;
+
+
+
+              qry_DateTime.Free;
+
+        end;
+
+      end
+      {else if gi_compilevalue = 564 then
+      begin
+        begin
+          for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+          begin
+            if CLB_CollectedSample.State[i] = cbChecked then
+            begin
+              For J := 0 to PrintCount - 1 do
+              begin
+                qry_dep := TOraQuery.Create(nil);
+                Bottom := CLB_CollectedSample.Items.Strings[i];
+                with qry_dep do
+                begin
+                  Close;
+                  SQL.Clear;
+                  SQL.Add(
+                    'select (select Dept_depname as Depname from Hs_Dept_department where Dept_depid=t.Tena_depid)depname from Hs_Tena_testname t where t.Tena_testname=' + quotedstr(Bottom));
+                  Open;
+                end;
+
+                qry_DateTime := TOraQuery.Create(nil);
+                with qry_DateTime do
+                begin
+                  Close;
+                  SQL.Clear;
+                  SQL.Add(
+                    'select max(sampletakendate||''>>''||sampletakentime) as sampledatetime from samplecollection where labno=' + Edit_LabNo.Text);
+                  SQL.Add('and patientid=' + IntToStr(gi_PatientID));
+                  Open;
+                end;
+                lbl_bottom.Caption := qry_DateTime.FieldByName('sampledatetime')
+                  .AsString;
+                // Bottom := CLB_CollectedSample.Items.Strings[i];
+                // lbl_bottom.Caption := '';
+                QRLabel_Labno.Caption := LabNo;
+                lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+                QRLabel_AgeSex.Caption := Gs_Age + ' / ' + Copy
+                  (Gs_Gender, 1, 1);
+                // QrSticker.Prepare;
+                QrSticker.PreviewModal;
+              end;
+
+            end;
+
+          end;
+
+        end;
+
+        qry_DateTime.Free;
+
+      end}
+      else
+      {begin
+        for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+        begin
+          if CLB_CollectedSample.State[i] = cbChecked then
+          begin
+            For J := 0 to PrintCount - 1 do
+            begin
+              qry_dep := TOraQuery.Create(nil);
+              Bottom := CLB_CollectedSample.Items.Strings[i];
+              with qry_dep do
+              begin
+                Close;
+                SQL.Clear;
+                SQL.Add(
+                  'select (select Dept_depname as Depname from Hs_Dept_department where Dept_depid=t.Tena_depid)depname from Hs_Tena_testname t where t.Tena_testname=' + quotedstr(Bottom));
+                Open;
+              end;
+              // Bottom := CLB_CollectedSample.Items.Strings[i];
+              lbl_bottom.Caption := '';
+              lbl_DepName.Caption := qry_dep.FieldByName('depname').AsString;
+              QrSticker.Prepare;
+              QrSticker.Print;
+            end;
+
+          end;
+
+        end;
+      end;}
+
+    end;
+  finally
+    qry_dep.Free;
+    qry_test.Free;
+    Form_Sticker_Histo.Free;
+  end;
+end;
+
+procedure TFrame_SampleCollection.QryQueueList_AfterScroll(DataSet: TDataSet);
+begin
+  // lbl_QueueNo.Caption := QryQueueList.FieldByName('QueueNo').AsString;
+  // lbl_PatientName.Caption := QryQueueList.FieldByName('PatientName').AsString;
+end;
+
+procedure TFrame_SampleCollection.Query_SampleCollectedAfterScroll(DataSet: TDataSet);
+begin
+  Gs_BillNo := Query_SampleCollected.FieldByName('BillNo').AsString;
+  gi_PatientID := Query_SampleCollected.FieldByName('PatientId').AsInteger;
+end;
+
+procedure TFrame_SampleCollection.Query_samplecollectedrightAfterScroll(DataSet: TDataSet);
+var
+  i: Integer;
+begin
+  if Query_samplecollectedright.FieldByName('PatientId').AsString <> '' then
+  begin
+    gi_PatientID := Query_samplecollectedright.FieldByName('PatientId').AsInteger;
+    gs_SampleNo := Query_samplecollectedright.FieldByName('SampleNo').AsString;
+  end
+  else
+  begin
+    gi_PatientID := 0;
+    gs_SampleNo := '';
+  end;
+
+  with Query_SampleCollected do
+  begin
+    Close;
+    SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+    if Cb_NoResult.Checked then
+    begin
+      SQL[6] := 'And TestProgressStatus=' + IntToStr(gi_SampleColl);
+      SQL[7] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+      Gb_ShowTestWithoutResult := true;
+    end
+    else
+    begin
+      SQL[6] := 'And 99=99';
+      SQL[7] := 'And SampleNo=' + #39 + gs_SampleNo + #39;
+      Gb_ShowTestWithoutResult := False;
+    end;
+    // sql.savetofile('c:\samplecheck.txt');
+    Open;
+    cb_tick.Items.Clear;
+    i := 0;
+    SetLength(Arr_PTestNameID, RecordCount);
+    while not eof do
+    begin
+      Arr_PTestNameID[i] := FieldByName('PatientTestID').AsString;
+      cb_tick.Items.Add('');
+      Inc(i);
+      cb_tick.Height := i * 20;
+      Next;
+    end;
+  end;
+  Gs_SelectedPatientTestID := '';
+
+  if Query_tobecollectedr.FieldByName('PatientId').AsString <> '' then
+    gi_PatientID := Query_tobecollectedr.FieldByName('PatientId').AsInteger
+  else
+    gi_PatientID := 0;
+  with Query_TobeCollected do
+  begin
+    Close;
+    SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+    Open;
+  end;
+  lbl_TestCaption.Caption := GetTestListCaption(gi_PatientID, Gs_BillNo);
+end;
+
+procedure TFrame_SampleCollection.Query_TobeCollectedAfterScroll(DataSet: TDataSet);
+begin
+  Gs_BillNo := Query_TobeCollected.FieldByName('BillNo').AsString;
+  gi_PatientID := Query_TobeCollected.FieldByName('PatientId').AsInteger;
+end;
+
+procedure TFrame_SampleCollection.Query_tobecollectedrAfterScroll(DataSet: TDataSet);
+begin
+  if Query_tobecollectedr.FieldByName('PatientId').AsString <> '' then
+    gi_PatientID := Query_tobecollectedr.FieldByName('PatientId').AsInteger
+  else
+    gi_PatientID := 0;
+  with Query_TobeCollected do
+  begin
+    Close;
+    SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+    Open;
+  end;
+  lbl_TestCaption.Caption := GetTestListCaption(gi_PatientID, Gs_BillNo);
+end;
+
+procedure TFrame_SampleCollection.ReprintSticker(BillNo: string);
+var
+  Qry: TOraQuery;
+  PatientName, SAMPLENO: string;
+  PatientID: Integer;
+begin
+  Qry := TOraQuery.Create(Nil);
+  try
+    Form_Sticker := TForm_Sticker.Create(Nil);
+    with Form_Sticker do
+    begin
+      if BillNo = '' then
+        BillNo := Lbl_BillNo.Caption;
+
+      with Qry do
+      begin
+        Close;
+        Session := DM_Hospital.DB;
+        SQL.Clear;
+        SQL.Add('Select PatientID,(Select Pama_PatientName from ' + gs_Hos_DB_UserName + '.Hs_Pama_PatientMain Where Pama_PatientId=Sc.PatientId)PatientName');
+        SQL.Add(' ,SampleNO from SampleCollection Sc Where BillNo=' + #39 + BillNo + #39);
+
+        Open;
+        SAMPLENO := FieldByName('SampleNo').AsString;
+        PatientID := FieldByName('PatientId').AsInteger;
+        if SAMPLENO = '' then
+          Exit;
+        PatientName := FieldByName('PatientName').AsString;
+        SQL.Clear;
+        SQL.Add('Select Distinct SampleSourceID,(Select Saso_SampleSource From ' + gs_DB_UserName + '.lb_saso_samplesource Where Saso_SampleSourceID=Tn.Tena_SampleSourceID)SampleSource');
+        SQL.Add(',(Select Dept_DepName from ' + gs_Hos_DB_UserName + '.Hs_Dept_Department Where Dept_DepID=Tn.Tena_DepID)DepName,testname');
+        SQL.Add('from ' + gs_Hos_DB_UserName + '.Hs_Tena_TestName Tn Where TestNameID in (Select TestNameId from ' + gs_Hos_DB_UserName + '.PatientTest Where PatientTestID in');
+        SQL.Add(' (Select PatientTestId from SampleCollection Where BillNo=' + #39 + BillNo + #39 + '))');
+        SQL.Add('And Tn.DepID in (' + gs_UserDepId + ')');
+        Open;
+        QrBarcode.Text := SAMPLENO;
+        while not eof do
+        begin
+          lbl_PatientName.Caption := PatientName + ' - ' + IntToStr(PatientID);
+          lbl_bottom.Caption := FieldByName('SampleSource').AsString;
+          lbl_DepName.Caption := FieldByName('DepName').AsString;
+          // lbl_bottom.Caption:=fieldbyname('testname').AsString;
+          if cb_preview.Checked = true then
+            QrSticker.Preview
+          else
+          begin
+            QrSticker.Print;
+            // QrSticker.Print;
+          end;
+          Next;
+        end;
+      end;
+    end;
+  finally
+    Form_Sticker.Free;
+  end;
+  Qry.Free;
+end;
+
+procedure TFrame_SampleCollection.Se_CLDaysChange(Sender: TObject);
+begin
+  if Se_CLDays.Text <> '' then
+    Gi_NoofDays := StrtoInt(Se_CLDays.Text);
+end;
+
+procedure TFrame_SampleCollection.SpeedButton10Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  with StringGrid1 do
+  begin
+    Cols[0].Text := 'Queue No.';
+    Cols[1].Text := 'Patient Name';
+    Cols[2].Text := 'Bill No.';
+    Cols[3].Text := Gs_PatientIdCaption;
+  end;
+  with QryQueueList do
+  begin
+    Close;
+    Open;
+    i := 1;
+    StringGrid1.RowCount := QryQueueList.RecordCount + 1;
+    while not eof do
+    begin
+      with StringGrid1 do
+      begin
+        Cells[0, i] := FieldByName('QueueNo').AsString;
+        Cells[1, i] := FieldByName('PatientName').AsString;
+        Cells[2, i] := FieldByName('Billno').AsString;
+        Cells[3, i] := FieldByName('PatientID').AsString;
+      end;
+      Inc(i);
+      Next;
+    end;
+  end;
+  with StringGrid1 do
+  begin
+    Left := 289;
+    Height := Dbgrid5.Height + 120;
+    Width := Dbgrid5.Width;
+    if SpeedButton10.Caption = 'Queue list [OFF]' then
+    begin
+      Visible := true;
+      SpeedButton10.Caption := 'Queue list [ON]';
+    end
+    else
+    begin
+      Visible := False;
+      SpeedButton10.Caption := 'Queue list [OFF]'
+    end;
+  end;
+  QryQueueList.First;
+end;
+
+procedure TFrame_SampleCollection.SpeedButton1Click(Sender: TObject);
+var
+  i: Integer;
+  ls_date: string;
+begin
+     if gi_compileValue = 21 then
+     begin
+          if not CheckAccess('UNDO SAMPLE COLLECTION') then
+          begin
+               ShowMessage('Access Denied');
+               exit;
+          end;
+     end;
+
+  if MsgBox(1029, 1, '', '', '') then
+  begin
+    if gi_datesystem = 0 then
+      ls_date := serverdate.TodaysDateVS //nepali date
+    else
+      ls_date := serverdate.TodaysDate;  //english date
+
+    try
+      DM_Hospital.DB.StartTransaction;
+      for i := 0 to CLB_CollectedSample.Items.Count - 1 do
+      begin
+        if CLB_CollectedSample.State[i] = cbChecked then
+        begin
+          if not UndoSampleCollection(Arr_CollectedSample[i, 0]) then
+            MsgBox(1012, 0, '', '', '');
+        end;
+      end;
+      DM_Hospital.DB.Commit;
+    except
+      DM_Hospital.DB.Rollback;
+    end;
+    LoadSampleTobeCollected(CLB_TestName, Gs_BillNo);
+    LoadCollectedSample(CLB_CollectedSample, Gs_BillNo);
+  end;
+end;
+
+procedure TFrame_SampleCollection.SpeedButton4Click(Sender: TObject);
+begin
+     with QryBillList do
+     begin
+          Close;
+          Session := DM_Hospital.DB;
+          SQL.Clear;
+          SQL.Add(
+               'Select distinct billno, testdate,testtime,patientid from Vw_Sample_To_be_Collected');
+          SQL.Add('Where Patientid=' + IntToStr(gi_PatientID));
+          SQL.Add('And DepID in (' + gs_UserDepId + ')');
+
+          if CB_Searchbydate.Checked = true then
+              SQL.Add(' and Testdate between' + quotedstr(Dex_From.Text) + 'and' + quotedstr(Dex_To.Text))
+          else
+          begin
+              if gi_datesystem=1 then
+                  SQL.Add(' and Testdate>= (TO_CHAR(SYSDATE-'+ SpinEdit1.Text + ',''YYYY/MM/DD''))') //english date system
+              else
+                  SQL.Add(' and Testdate>= GetNepDateFromEng(TO_CHAR(SYSDATE-'+ SpinEdit1.Text + ',''YYYY/MM/DD''))');   //nepali date system
+          end;
+          SQL.Add('order by testdate desc');
+          //sql.SaveToFile('c:\bill.txt');
+          Open;
+          AfterScroll := TobeCollectedAfterScroll;
+     end;
+     with DBGrid1 do
+     begin
+          DataSource := DSQryBillList;
+          Columns[0].FieldName := 'TestDate';
+          Columns[1].FieldName := 'Billno';
+     end;
+
+end;
+
+procedure TFrame_SampleCollection.SpeedButton5Click(Sender: TObject);
+begin
+     CB_CollectedSampleAll.Checked := true;
+     if gi_compileValue=12 then
+          SetPrinter('Sticker');
+          //PrintSticker
+     if gs_DepType='H' then
+     PrintStickerMangalam_Histo
+     else
+     PrintStickerMangalam; //for mangalam only
+  // ReprintSticker(QryBillList.FieldByName('BillNo').AsString);
+  { try
+    Form_Sticker := TForm_Sticker.Create(nil);
+    with Form_Sticker do
+    begin
+
+    QrSticker.Preview;
+    end;
+    finally
+    Form_Sticker.Free;
+    end; }
+end;
+
+procedure TFrame_SampleCollection.SpeedButton6Click(Sender: TObject);
+begin
+  if SpeedButton6.Caption = 'BS' then
+  begin
+    Dex_CLFrom.SystemOfDate := 1;
+    SpeedButton6.Caption := 'AD';
+  end
+  else
+  begin
+    Dex_CLFrom.SystemOfDate := 0;
+    SpeedButton6.Caption := 'BS';
+  end;
+end;
+
+procedure TFrame_SampleCollection.SpeedButton7Click(Sender: TObject);
+begin
+  if SpeedButton7.Caption = 'BS' then
+  begin
+    Dex_CLTo.SystemOfDate := 1;
+    SpeedButton7.Caption := 'AD';
+  end
+  else
+  begin
+    Dex_CLTo.SystemOfDate := 0;
+    SpeedButton7.Caption := 'BS';
+  end;
+end;
+
+procedure TFrame_SampleCollection.SpeedButton8Click(Sender: TObject);
+begin
+  Query_tobecollectedr.Prior;
+  if Query_tobecollectedr.FieldByName('PatientId').AsString <> '' then
+    gi_PatientID := Query_tobecollectedr.FieldByName('PatientId').AsInteger
+  else
+    gi_PatientID := 0;
+  with Query_TobeCollected do
+  begin
+    Close;
+    SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+    Open;
+  end;
+  lbl_TestCaption.Caption := GetTestListCaption(gi_PatientID, Gs_BillNo);
+  // GetQueue('Pre');
+end;
+
+procedure TFrame_SampleCollection.SpeedButton9Click(Sender: TObject);
+begin
+  Query_tobecollectedr.Next;
+  if Query_tobecollectedr.FieldByName('PatientId').AsString <> '' then
+    gi_PatientID := Query_tobecollectedr.FieldByName('PatientId').AsInteger
+  else
+    gi_PatientID := 0;
+  with Query_TobeCollected do
+  begin
+    Close;
+    SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+    Open;
+  end;
+  lbl_TestCaption.Caption := GetTestListCaption(gi_PatientID, Gs_BillNo);
+  // GetQueue('Next');
+end;
+
+procedure TFrame_SampleCollection.bb_RefreshTobecollClick(Sender: TObject);
+var
+  refreshDate: string;
+  refreshdays: Integer;
+  refresh_date: TDateEditX;
+begin
+  gs_From := Dex_From.Text;
+  gs_to := Dex_To.Text;
+
+  if gi_datesystem = 0 then
+  begin
+    try
+      refresh_date := TDateEditX.Create(nil);
+      //refresh_date.ADDateAsText := TodaysDate;
+      refreshdays := (refresh_date.VSDateAsDays - StrtoInt(Se_DaysTBC.Text));
+      refresh_date.VSDateAsDays := refreshdays;
+      refreshDate := refresh_date.VSDateAsText;
+    finally
+      refresh_date.Free;
+    end;
+  end;
+
+  if gi_datesystem = 0 then
+    Ps_TodaysDate := serverdate.TodaysDateVS   //nepali date
+  else
+    Ps_TodaysDate := serverdate.TodaysDate;   //english date
+
+  with Query_tobecollectedr do
+  begin
+    Close;
+    Session := DM_Hospital.DB;
+    if StrtoInt(Se_DaysTBC.Text) > 0 then
+    begin
+      if gi_datesystem = 1 then
+        SQL[1] := 'Where Testdate >= TO_CHAR(SYSDATE-' + Se_DaysTBC.Text + ',''YYYY/MM/DD'')'
+      else
+        SQL[1] := 'Where Testdate>=' + quotedstr(refreshDate);
+      // SQL[1] := 'Where Testdate> TO_CHAR(SYSDATE-' + Se_DaysTBC.Text + ',''YYYY/MM/DD'')'
+    end
+
+    else
+    begin
+      if CB_Searchbydate.Checked = true then
+        SQL[1] := 'Where TestDate Between' + #39 + gs_From + #39 + 'And ' + #39 + gs_to + #39
+      else
+        SQL[1] := 'Where TestDate =' + #39 + Ps_TodaysDate + #39;
+    end;
+    // if gs_DepType='PATHOLOGY' then
+    // SQL[3]:='And (DepType='+#39+gs_DepType+#39+' Or ReportByLab=''Y'') '
+    // else
+    if gi_compilevalue = 3 then
+      SQL[3] := 'And DepID in (' + gs_UserDepId + ')'
+      // And DepType=+ #39 + gs_DepType + #39;
+    else
+      SQL[3] := 'And DepID in (' + gs_UserDepId + ') And DepType=' + #39 + gs_DepType + #39;
+     //sql.SaveToFile('c:\Query_tobecollectedr.txt');
+    Open;
+  end;
+  if Query_tobecollectedr.FieldByName('PatientId').AsString <> '' then
+    gi_PatientID := Query_tobecollectedr.FieldByName('PatientId').AsInteger
+  else
+    gi_PatientID := 0;
+  with Query_TobeCollected do
+  begin
+    Close;
+    Session := DM_Hospital.DB;
+    if StrtoInt(Se_DaysTBC.Text) > 0 then
+    begin
+      if gi_datesystem = 1 then
+        SQL[1] := 'Where Testdate >= TO_CHAR(SYSDATE-' + Se_DaysTBC.Text + ',''YYYY/MM/DD'')'
+      else
+        SQL[1] := 'Where Testdate>=' + quotedstr(refreshDate);
+      // SQL[1] := 'Where Testdate> TO_CHAR(SYSDATE-' + Se_DaysTBC.Text + ',''YYYY/MM/DD'')'
+    end
+    else
+    begin
+      if CB_Searchbydate.Checked = true then
+
+        SQL[1] := 'Where TestDate Between' + #39 + gs_From + #39 + 'And ' + #39 + gs_to + #39
+      else
+        SQL[1] := 'Where TestDate =' + #39 + Ps_TodaysDate + #39;
+    end;
+    SQL[4] := 'And PatientId=' + IntToStr(gi_PatientID);
+
+    // if gs_DepType='PATHOLOGY' then
+    // SQL[5]:='And (DepType='+#39+gs_DepType+#39+' Or ReportByLab=''Y'') '
+    // else
+    if gi_compilevalue = 3 then
+      SQL[5] := 'And DepID in (' + gs_UserDepId + ')'
+      // And DepType=+ #39 + gs_DepType + #39;
+    else
+      SQL[5] := 'And DepID in (' + gs_UserDepId + ') And DepType=' + #39 + gs_DepType + #39;
+     //SQL.SaveToFile('c:\tt.txt');
+    Open;
+  end;
+  lbl_TestCaption.Caption := GetTestListCaption(gi_PatientID, Gs_BillNo);
+  // Edit_SearchTBC.SetFocus;
+  // GetQueueList;
+end;
+
+procedure TFrame_SampleCollection.TabSheet1Show(Sender: TObject);
+begin
+  RefreshQuery(Query_TobeCollected, gs_DatabaseName);
+end;
+
+procedure TFrame_SampleCollection.TabSheet2Show(Sender: TObject);
+begin
+  if not (gi_compilevalue in [1,2,3,4,5,6,7,8,9, 11, 12,13, 14, 15,16,17,18,19,20,21,22,23,24,25,26]) then
+  begin
+    Query_SampleCollected.Close;
+    Query_SampleCollected.Open;
+  end
+  else if not gi_compilevalue = 564 then
+  begin
+
+    Query_SampleCollected.Close;
+    Query_SampleCollected.Open;
+
+  end;
+end;
+
+procedure TFrame_SampleCollection.TobeCollectedAfterScroll(DataSet: TDataSet);
+begin
+  try
+    Gs_BillNo := QryBillList.FieldByName('BillNo').AsString;
+    gi_PatientID := QryBillList.FieldByName('PatientId').AsInteger;
+  except
+  end;
+end;
+
+
+Function TFrame_SampleCollection.IsSensitiveMedicineExist(TestNameId : Integer):Boolean;
+begin
+     With OraQuery_SensitiveMedicine do
+     begin
+          Close;
+          Session:=Dm_Hospital.Db;
+          SQL.Clear;
+          SQL.Add(' Select Distinct TestNameId From SENSITIVEMEDICINETESTWISE where TestNameId='+IntToStr(TestNameId));
+          Open;
+          if OraQuery_SensitiveMedicine.FieldByName('TestNameId').AsInteger > 0 then
+          Result:=True
+          else
+          Result:=False;
+     end;
+end;
+
+initialization
+  RegisterClass(TFrame_SampleCollection);
+
+finalization
+  UnRegisterClass(TFrame_SampleCollection);
+
+end.
